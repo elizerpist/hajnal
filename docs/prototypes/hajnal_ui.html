@@ -1274,7 +1274,7 @@
     }
 
     .home-collapsed-screen .home-metrics {
-      top: 552px;
+      top: 590px;
     }
 
     .home-expand-hotspot {
@@ -1282,7 +1282,7 @@
       z-index: 22;
       left: 0;
       right: 0;
-      top: 670px;
+      top: 708px;
       bottom: 70px;
       padding: 0;
       border: 0;
@@ -2734,7 +2734,7 @@
 	      flex: 0 0 auto;
 	      width: max-content;
 	      align-self: end;
-	      grid-template-columns: 148px 104px;
+	      grid-template-columns: 96px 104px;
 	      justify-content: end;
 	      gap: 12px;
 	      margin-right: 10px;
@@ -4411,6 +4411,13 @@
             </div>
 
             <button class="home-expand-hotspot" type="button" aria-label="Főmenü kártya kinyitása" data-action="expand-home-card" data-target-screen="home"></button>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home-collapsed"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
           </article>
         </section>
         <section class="screen-column" id="column-home">
@@ -4552,7 +4559,7 @@
                   </div>
                 </div>
                 <div class="evening-save-actions">
-                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg><span>Később folytatom</span></button>
+                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg><span>Később</span></button>
                   <button class="primary-button" type="button" data-action="save-evening-reflection" data-target-screen="reflection-saved"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg><span>Mentés</span></button>
                 </div>
               </section>

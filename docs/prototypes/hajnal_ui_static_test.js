@@ -284,7 +284,15 @@ const tests = {
     assert.ok(!collapsedHomeScreen.includes('class="home-body"'), 'collapsed home must not show the large opened lower card');
     assert.ok(!collapsedHomeScreen.includes('class="tasks-card"'), 'collapsed home must not show the checklist');
     assert.ok(!collapsedHomeScreen.includes('Mai feladataim'), 'collapsed home must not include checklist heading');
-    assert.match(html, /\.home-collapsed-screen \.home-metrics\s*\{[^}]*top:\s*552px/s, 'collapsed home dashboard must sit slightly lower than the expanded dashboard');
+    assert.match(html, /\.home-collapsed-screen \.home-metrics\s*\{[^}]*top:\s*590px/s, 'collapsed home dashboard must sit lower than the previous 552px position');
+    const collapsedNavStart = collapsedHomeScreen.indexOf('<nav class="bottom-nav"');
+    assert.ok(collapsedNavStart !== -1, 'collapsed home must render its own bottom navigation');
+    const collapsedNavEnd = collapsedHomeScreen.indexOf('</nav>', collapsedNavStart);
+    const collapsedNav = collapsedHomeScreen.slice(collapsedNavStart, collapsedNavEnd);
+    assert.ok(collapsedNav.includes('data-target-screen="home-collapsed"'), 'collapsed home current nav item must target the collapsed home screen');
+    for (const label of ['Kezdőlap', 'Haladás', 'Eszközök', 'Szponzor', 'Profil']) {
+      assert.ok(collapsedNav.includes(label), `collapsed home bottom nav is missing ${label}`);
+    }
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
@@ -348,7 +356,7 @@ const tests = {
       'Új hozzáadása',
       'Fotó hozzáadása',
       'Hangjegyzet',
-      'Később folytatom',
+      'Később',
       'Mentés',
       'Elmentve!',
       'Köszönöm,',
@@ -418,7 +426,7 @@ const tests = {
       'data-component="evening-scroll-area"',
       'data-reflection-prompt="gratitude"',
       'data-component="inline-memo-tools"',
-      'Később folytatom',
+      'Később',
       'data-action="save-evening-reflection" data-target-screen="reflection-saved"'
     ]);
     expectScreenContains('reflection-saved', [
@@ -440,7 +448,8 @@ const tests = {
     assert.match(html, /\.sheet-secondary\s*\{[^}]*min-height:\s*48px;[^}]*background:\s*#FFFFFF;[^}]*color:\s*var\(--hajnal-purple\)/s, 'bottom sheet secondary action must match the screenshot white outline button');
     assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*overflow:\s*hidden/s, 'screen 12 must keep a fixed mother container');
     assert.match(html, /\.evening-section-title\s*\{[^}]*color:\s*rgba\(226,\s*220,\s*242,\s*\.86\)/s, 'screen 12 section titles must use the darker screenshot text color');
-    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*grid-template-columns:\s*148px 104px;[^}]*justify-content:\s*end/s, 'screen 12 footer buttons must be smaller and right-aligned');
+    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*grid-template-columns:\s*96px 104px;[^}]*justify-content:\s*end/s, 'screen 12 footer buttons must be smaller and right-aligned');
+    assert.ok(!eveningReflectionScreen.includes('Később folytatom'), 'screen 12 secondary footer button must use the shorter label');
     assert.match(html, /#evening-reflection \.evening-save-actions \.secondary-button,\s*#evening-reflection \.evening-save-actions \.primary-button\s*\{[^}]*white-space:\s*nowrap/s, 'screen 12 footer labels must stay on one line');
     assert.match(html, /\.reflection-saved-screen::after\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*rgba\(20,\s*18,\s*64,\s*\.10\) 0%,\s*rgba\(97,\s*49,\s*118,\s*\.22\) 48%,\s*rgba\(10,\s*20,\s*37,\s*\.80\) 100%\)/s, 'final saved screen must use the screenshot dusk overlay');
     assert.match(html, /\.reflection-saved-content\s*\{[^}]*min-height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*padding:\s*166px 32px 42px;[^}]*text-align:\s*center/s, 'final saved content must match the source vertical placement');

@@ -144,6 +144,30 @@ try {
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
   assert.ok(rowPositions["daily-image"].top > rowPositions["panic-root"].top + 900, "daily image row must render below the panic row");
 
+  const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
+    const dashboard = screen.querySelector(".home-metrics");
+    const nav = screen.querySelector(".bottom-nav");
+    const homeBody = screen.querySelector(".home-body");
+    if (!dashboard || !nav) return null;
+    const screenBox = screen.getBoundingClientRect();
+    const dashboardBox = dashboard.getBoundingClientRect();
+    const navBox = nav.getBoundingClientRect();
+    return {
+      dashboardTop: Math.round(dashboardBox.top - screenBox.top),
+      hasOpenedCard: Boolean(homeBody),
+      navBottomGap: Math.round(screenBox.bottom - navBox.bottom),
+      navLabels: Array.from(nav.querySelectorAll("button")).map((button) => button.textContent.trim()),
+      currentTarget: nav.querySelector("[aria-current='page']")?.dataset.targetScreen,
+    };
+  });
+  assert.deepEqual(collapsedHomeLayout, {
+    dashboardTop: 590,
+    hasOpenedCard: false,
+    navBottomGap: 0,
+    navLabels: ["Kezdőlap", "Haladás", "Eszközök", "Szponzor", "Profil"],
+    currentTarget: "home-collapsed",
+  }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
+
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {
@@ -244,8 +268,8 @@ try {
     footerAfterScroll: true,
     footerVisible: true,
     footerRightAligned: true,
-    secondaryText: "Később folytatom",
-    secondaryWidth: 148,
+    secondaryText: "Később",
+    secondaryWidth: 96,
     primaryWidth: 104,
   }, "screen 12 must scroll internally while the compact footer stays fixed and right-aligned");
 
