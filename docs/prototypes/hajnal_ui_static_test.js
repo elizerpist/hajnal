@@ -223,10 +223,11 @@ const tests = {
     assert.ok(dashboardIndex !== -1 && homeBodyIndex !== -1 && dashboardIndex < homeBodyIndex, 'home dashboard must float outside and above the lower sheet');
     assert.ok(tasksIndex !== -1 && helpIndex !== -1 && tasksIndex < helpIndex, 'home checklist must render above the help button');
     assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*607px/s, 'home hero must be 68% of the 892px screen height');
-    assert.match(html, /\.home-body\s*\{[^}]*top:\s*548px/s, 'home sheet must overlap the lower edge of the hero');
-    assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*42px 42px 0 0/s, 'home lower sheet must use the smaller requested top corner radius');
+    assert.match(html, /\.home-body\s*\{[^}]*top:\s*586px/s, 'home sheet must move 38px lower after the latest screenshot feedback');
+    assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*92px 92px 0 0/s, 'home lower sheet must restore the larger rounded top radius');
+    assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0/s, 'home lower sheet must restore the large curved top pseudo-element');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
-    assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*480px/s, 'home dashboard must be a top floating layer');
+    assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*518px/s, 'home dashboard must move 38px lower with the sheet');
     assert.match(html, /\.tasks-card\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s, 'home task list must be merged into the lower sheet, not a separate card');
     assert.match(html, /\.task-row\s*\{[^}]*min-height:\s*24px/s, 'home task rows must be compact enough to fit in the sheet');
     assert.match(html, /\.home-actions\s*\{[^}]*margin-top:\s*auto/s, 'home help button must sit at the bottom of the sheet');
