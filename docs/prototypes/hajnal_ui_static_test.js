@@ -319,6 +319,8 @@ const tests = {
       'Kezdj el írni...',
       '0 karakter',
       'Hála lista',
+      '3. Miért vagy hálás ma?',
+      'Írj le legalább 3 dolgot, amiért ma hálás vagy.',
       'Új hozzáadása',
       'Fotó hozzáadása',
       'Hangjegyzet',
@@ -388,11 +390,8 @@ const tests = {
     ]);
     expectScreenContains('evening-reflection', [
       'data-parent-screen="home"',
-      'data-reference-screenshot="Screenshot_20260718-223635.png"',
+      'data-reference-screenshots="Screenshot_20260718-223635.png Screenshot_20260718-225614.png"',
       'data-component="evening-reflection-panel"',
-      'class="evening-screen-actions"',
-      'class="evening-overlay-action back"',
-      'class="evening-overlay-action menu"',
       'class="evening-hero-copy"',
       'Pár perc csak magadnak.',
       'data-component="mood-score"',
@@ -400,6 +399,7 @@ const tests = {
       'data-mood-value="5"',
       'data-component="reflection-selector"',
       'aria-pressed="true"',
+      'data-reflection-section-title',
       'id="evening-reflection-text"',
       'placeholder="Kezdj el írni..."',
       'data-reflection-character-count',
@@ -407,6 +407,9 @@ const tests = {
     ]);
     assert.ok(!eveningReflectionScreen.includes('class="checkin-top-actions"'), 'evening reflection screen must remove top x/check controls');
     assert.ok(!eveningReflectionScreen.includes('class="quiet-link"'), 'evening reflection panel must remove the top save link');
+    assert.ok(!eveningReflectionScreen.includes('class="evening-screen-actions"'), 'screen 12 must remove the top chevron and ellipsis control row');
+    assert.ok(!eveningReflectionScreen.includes('class="evening-overlay-action'), 'screen 12 must not keep top circular action buttons');
+    assert.ok(!eveningReflectionScreen.includes('További opciók'), 'screen 12 must not keep the top ellipsis menu button');
     assert.equal((eveningReflectionScreen.match(/class="reflection-prompt/g) || []).length, 4, 'evening reflection selector must have four cards');
     assert.ok(eveningReflectionScreen.includes('data-reflection-prompt="gratitude"'), 'gratitude must be part of the reflection selector cards');
     assert.ok(eveningReflectionScreen.includes('class="evening-scroll" data-component="evening-scroll-area"'), 'evening reflection content must live in a scroll area');
@@ -419,6 +422,10 @@ const tests = {
     expectContains('addButton.setAttribute(\'data-action\', \'add-gratitude-item\')');
     expectContains('removeButton.setAttribute(\'data-action\', \'remove-gratitude-item\')');
     expectContains('function removeGratitudeItem');
+    expectContains("gratitudeTitle: '3. Miért vagy hálás ma?'");
+    expectContains("gratitudeHelp: 'Írj le legalább 3 dolgot, amiért ma hálás vagy.'");
+    expectContains("dragHandle.className = 'gratitude-drag-handle'");
+    expectContains("indexBadge.className = 'gratitude-index'");
     assert.ok(eveningReflectionScreen.includes('class="reflection-media-toolbar" data-component="inline-memo-tools"'), 'photo and voice memo controls must sit in the screenshot-style media toolbar');
     assert.ok(eveningReflectionScreen.includes('class="reflection-media-action" data-component="inline-media-memos"'), 'photo and voice memo controls must remain inline');
     assert.ok(eveningReflectionScreen.includes('data-action="add-photo-memo-inline"'), 'photo memo control must remain inline inside evening reflection');
@@ -437,15 +444,22 @@ const tests = {
     assert.ok(!/#evening-reflection \.evening-reflection-panel::before/.test(html), 'screen 12 panel must not keep an extra screen-specific backing layer');
     assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*min-height:\s*0;[^}]*overflow:\s*hidden/s, 'evening reflection phone content must keep a fixed viewport-derived height');
     assert.match(html, /#evening-reflection \.checkin-bg\s*\{[^}]*filter:\s*saturate\(\.94\) brightness\(\.78\)/s, 'screen 12 background must be darkened like the screenshot');
-    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*0 0 calc\(var\(--screen-h\) - 32px\);[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*max-height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*0;[^}]*padding:\s*52px 18px 20px;[^}]*background:\s*linear-gradient\(180deg,\s*rgba\(13,\s*12,\s*38,\s*\.06\) 0%,\s*rgba\(17,\s*16,\s*47,\s*\.58\) 44%,\s*rgba\(17,\s*18,\s*48,\s*\.97\) 100%\)/s, 'evening reflection panel must become a fixed-height dark fullscreen screenshot layout');
-    assert.match(html, /\.evening-scroll\s*\{[^}]*flex:\s*1;[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 4px 16px/s, 'evening reflection screen content must scroll above the fixed footer');
-    assert.match(html, /\.evening-mood-row\s*\{[^}]*height:\s*76px;[^}]*border-radius:\s*22px;[^}]*background:\s*rgba\(29,\s*27,\s*57,\s*\.56\)/s, 'screen 12 mood selector must be one dark glass capsule');
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*0 0 calc\(var\(--screen-h\) - 32px\);[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*max-height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*0;[^}]*padding:\s*70px 18px 18px;[^}]*background:\s*linear-gradient\(180deg,\s*rgba\(13,\s*12,\s*38,\s*\.02\) 0%,\s*rgba\(18,\s*16,\s*51,\s*\.48\) 34%,\s*rgba\(18,\s*18,\s*49,\s*\.97\) 100%\)/s, 'evening reflection panel must use the screenshot 70/30 vertical composition');
+    assert.match(html, /\.evening-scroll\s*\{[^}]*flex:\s*1;[^}]*overflow-y:\s*auto;[^}]*gap:\s*16px;[^}]*padding:\s*0 10px 14px/s, 'evening reflection screen content must scroll above the fixed footer with tighter spacing');
+    assert.match(html, /\.evening-hero-copy\s*\{[^}]*margin:\s*0 0 34px/s, 'screen 12 hero must leave the upper 30 percent visually free before section 1');
+    assert.match(html, /\.evening-section-title\s*\{[^}]*color:\s*rgba\(246,\s*240,\s*255,\s*\.94\);[^}]*font-size:\s*16px/s, 'screen 12 section title color must match the screenshot text color');
+    assert.match(html, /\.evening-mood-row\s*\{[^}]*height:\s*70px;[^}]*border-radius:\s*22px;[^}]*background:\s*rgba\(31,\s*27,\s*58,\s*\.72\)/s, 'screen 12 mood selector must be one dark compact capsule');
     assert.match(html, /\.reflection-selector\s*\{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\);[^}]*gap:\s*8px/s, 'screen 12 topic selector must be a single row of four compact chips');
-    assert.match(html, /\.reflection-prompt\s*\{[^}]*min-height:\s*72px;[^}]*grid-template-columns:\s*24px minmax\(0,\s*1fr\);[^}]*background:\s*rgba\(31,\s*29,\s*61,\s*\.58\);[^}]*color:\s*rgba\(255,\s*255,\s*255,\s*\.82\)/s, 'screen 12 topic chips must use the dark screenshot style');
-    assert.match(html, /\.reflection-response-panel\s*\{[^}]*min-height:\s*230px;[^}]*border-radius:\s*18px;[^}]*background:\s*rgba\(31,\s*29,\s*61,\s*\.62\)/s, 'section 3 content container must be a large dark writing panel');
-    assert.match(html, /\.reflection-media-toolbar\s*\{[^}]*min-height:\s*72px;[^}]*grid-template-columns:\s*1fr 1px 1fr;[^}]*border-radius:\s*24px;[^}]*background:\s*rgba\(31,\s*29,\s*61,\s*\.56\)/s, 'screen 12 media tools must use one pill-shaped toolbar');
+    assert.match(html, /\.reflection-prompt\s*\{[^}]*min-height:\s*64px;[^}]*grid-template-rows:\s*20px auto;[^}]*justify-items:\s*center;[^}]*background:\s*rgba\(32,\s*28,\s*58,\s*\.74\);[^}]*color:\s*rgba\(224,\s*218,\s*239,\s*\.88\)/s, 'screen 12 topic chips must be compact vertical icon/text cards');
+    assert.match(html, /\.reflection-response-panel\s*\{[^}]*min-height:\s*184px;[^}]*border-radius:\s*18px;[^}]*background:\s*rgba\(31,\s*29,\s*61,\s*\.62\)/s, 'section 3 content container must be a compact dark writing panel');
+    assert.match(html, /\.reflection-response-panel\[data-active-reflection-prompt="gratitude"\]\s*\{[^}]*min-height:\s*0;[^}]*padding:\s*0;[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s, 'gratitude mode must not render as a form-like textarea card');
+    assert.match(html, /\.gratitude-item\s*\{[^}]*min-height:\s*42px;[^}]*grid-template-columns:\s*34px minmax\(0,\s*1fr\) 24px 32px;[^}]*background:\s*rgba\(49,\s*44,\s*76,\s*\.72\)/s, 'gratitude rows must match the screenshot list-row design');
+    assert.match(html, /\.gratitude-index\s*\{[^}]*background:\s*linear-gradient\(135deg,\s*#6F46CE,\s*#9851DD\);[^}]*color:\s*#F8F3FF/s, 'gratitude rows must use purple numbered badges');
+    assert.match(html, /\.gratitude-add-button\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*42px;[^}]*border:\s*1px dashed rgba\(168,\s*126,\s*226,\s*\.52\)/s, 'gratitude add control must be a full-width dashed row');
+    assert.match(html, /\.help-button\s*\{[^}]*min-height:\s*46px/s, 'screen 8 help button height is the media toolbar reference');
+    assert.match(html, /\.reflection-media-toolbar\s*\{[^}]*min-height:\s*46px;[^}]*grid-template-columns:\s*1fr 1px 1fr;[^}]*border-radius:\s*18px;[^}]*background:\s*rgba\(39,\s*36,\s*68,\s*\.74\)/s, 'screen 12 media tools must match the 46px screen 8 help button height');
     assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*flex:\s*0 0 auto;[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) minmax\(0,\s*1\.22fr\);[^}]*gap:\s*14px/s, 'evening reflection bottom actions must be fixed at the bottom in the screenshot layout');
-    assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*58px/s, 'evening reflection bottom buttons must match the larger screenshot footer buttons');
+    assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*48px/s, 'evening reflection bottom buttons must be smaller than the current oversized footer');
     expectContains('const reflectionPromptContent = {');
     expectContains('function setActiveReflectionPrompt');
     expectContains('function addGratitudeItem');

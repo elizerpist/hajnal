@@ -2054,10 +2054,10 @@
 	      flex-direction: column;
 	      min-height: 0;
 	      margin: 0;
-	      padding: 52px 18px 20px;
+	      padding: 70px 18px 18px;
 	      border: 0;
 	      border-radius: 0;
-	      background: linear-gradient(180deg, rgba(13, 12, 38, .06) 0%, rgba(17, 16, 47, .58) 44%, rgba(17, 18, 48, .97) 100%);
+	      background: linear-gradient(180deg, rgba(13, 12, 38, .02) 0%, rgba(18, 16, 51, .48) 34%, rgba(18, 18, 49, .97) 100%);
 	      color: var(--white);
 	      box-shadow: none;
 	      backdrop-filter: none;
@@ -2070,9 +2070,9 @@
 	      min-height: 0;
 	      display: grid;
 	      align-content: start;
-	      gap: 18px;
 	      overflow-y: auto;
-	      padding: 0 4px 16px;
+	      gap: 16px;
+	      padding: 0 10px 14px;
 	      overscroll-behavior: contain;
 	      scrollbar-width: none;
 	    }
@@ -2121,24 +2121,34 @@
 	      display: grid;
 	      justify-items: center;
 	      gap: 5px;
-	      margin: 0 0 14px;
+	      margin: 0 0 34px;
 	      text-align: center;
 	      text-shadow: 0 3px 13px rgba(12, 10, 36, .34);
 	    }
 
 	    .evening-moon {
+	      width: 48px;
+	      height: 48px;
+	      display: grid;
+	      place-items: center;
 	      color: #FFC86F;
 	      font-family: Georgia, "Times New Roman", serif;
-	      font-size: 43px;
-	      line-height: .84;
+	      font-size: 34px;
+	      line-height: 1;
+	      border: 1px solid rgba(255, 255, 255, .16);
+	      border-radius: 50%;
+	      background: rgba(125, 77, 183, .42);
+	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 14px 28px rgba(18, 10, 52, .18);
+	      backdrop-filter: blur(14px);
+	      -webkit-backdrop-filter: blur(14px);
 	    }
 
 	    .evening-hero-copy h3,
 	    .memo-panel h3 {
 	      margin: 0;
-	      color: var(--white);
+	      color: #FFF8FF;
 	      font-family: Georgia, "Times New Roman", serif;
-	      font-size: 34px;
+	      font-size: 32px;
 	      line-height: 1.08;
 	      font-weight: 700;
 	      letter-spacing: 0;
@@ -2146,7 +2156,7 @@
 
 	    .evening-hero-copy p {
 	      margin: 0;
-	      color: rgba(255, 255, 255, .78);
+	      color: rgba(230, 220, 239, .88);
 	      font-size: 15px;
 	      line-height: 1.25;
 	      font-weight: 610;
@@ -2159,7 +2169,7 @@
 
 	    .evening-section-title {
 	      margin: 0;
-	      color: rgba(255, 255, 255, .92);
+	      color: rgba(246, 240, 255, .94);
 	      font-size: 16px;
 	      line-height: 1.18;
 	      font-weight: 820;
@@ -2167,16 +2177,16 @@
 	    }
 
 	    .evening-mood-row {
-	      height: 76px;
+	      height: 70px;
 	      display: grid;
 	      grid-template-columns: repeat(5, 1fr);
 	      align-items: center;
 	      gap: 0;
-	      padding: 8px 12px;
-	      border: 1px solid rgba(255, 255, 255, .12);
+	      padding: 7px 12px;
+	      border: 1px solid rgba(255, 255, 255, .15);
 	      border-radius: 22px;
-	      background: rgba(29, 27, 57, .56);
-	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 14px 30px rgba(10, 9, 34, .16);
+	      background: rgba(31, 27, 58, .72);
+	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .13), 0 12px 26px rgba(10, 9, 34, .14);
 	      backdrop-filter: blur(16px);
 	      -webkit-backdrop-filter: blur(16px);
 	    }
@@ -2195,14 +2205,14 @@
 	    }
 
 	    .evening-mood span:first-child {
-	      width: 50px;
-	      height: 50px;
+	      width: 48px;
+	      height: 48px;
 	      display: grid;
 	      place-items: center;
 	      border: 1px solid transparent;
 	      border-radius: 50%;
 	      background: transparent;
-	      font-size: 29px;
+	      font-size: 30px;
 	      line-height: 1;
 	    }
 
@@ -2230,23 +2240,24 @@
 	    }
 
 	    .reflection-prompt {
-	      min-height: 72px;
+	      min-height: 64px;
 	      display: grid;
-	      grid-template-columns: 24px minmax(0, 1fr);
-	      align-items: center;
-	      gap: 8px;
-	      padding: 9px 9px;
-	      border: 1px solid rgba(255, 255, 255, .12);
+	      grid-template-rows: 20px auto;
+	      justify-items: center;
+	      align-content: center;
+	      gap: 5px;
+	      padding: 7px 7px;
+	      border: 1px solid rgba(255, 255, 255, .13);
 	      border-radius: 12px;
-	      background: rgba(31, 29, 61, .58);
-	      color: rgba(255, 255, 255, .82);
-	      font-size: 10.4px;
-	      line-height: 1.25;
-	      font-weight: 690;
-	      text-align: left;
+	      background: rgba(32, 28, 58, .74);
+	      color: rgba(224, 218, 239, .88);
+	      font-size: 10.2px;
+	      line-height: 1.18;
+	      font-weight: 760;
+	      text-align: center;
 	      white-space: normal;
 	      cursor: pointer;
-	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10), 0 10px 22px rgba(10, 9, 34, .14);
+	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .09), 0 10px 22px rgba(10, 9, 34, .11);
 	      backdrop-filter: blur(14px);
 	      -webkit-backdrop-filter: blur(14px);
 	    }
@@ -2256,26 +2267,26 @@
 	      height: 24px;
 	      display: grid;
 	      place-items: center;
-	      color: rgba(220, 213, 242, .86);
-	      font-size: 22px;
+	      color: rgba(201, 194, 226, .88);
+	      font-size: 20px;
 	      line-height: 1;
 	    }
 
 	    .reflection-prompt.active,
 	    .reflection-prompt[aria-pressed="true"] {
 	      border-color: rgba(180, 93, 247, .82);
-	      background: rgba(51, 38, 83, .64);
-	      color: var(--white);
+	      background: rgba(47, 33, 77, .82);
+	      color: #F8F3FF;
 	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 0 0 1px rgba(180, 93, 247, .24), 0 12px 24px rgba(72, 38, 143, .22);
 	    }
 
 	    .evening-reflection-panel .reflection-input {
 	      width: 100%;
-	      min-height: 168px;
+	      min-height: 124px;
 	      padding: 0;
 	      border: 0;
 	      background: transparent;
-	      color: rgba(255, 255, 255, .92);
+	      color: rgba(245, 241, 255, .90);
 	      font-size: 15px;
 	      line-height: 1.45;
 	      font-weight: 580;
@@ -2284,11 +2295,11 @@
 	    }
 
 	    .evening-reflection-panel .reflection-input::placeholder {
-	      color: rgba(226, 220, 242, .58);
+	      color: rgba(184, 176, 204, .72);
 	    }
 
 	    .reflection-response-panel {
-	      min-height: 230px;
+	      min-height: 184px;
 	      display: grid;
 	      align-content: start;
 	      gap: 11px;
@@ -2296,7 +2307,7 @@
 	      border: 1px solid rgba(255, 255, 255, .12);
 	      border-radius: 18px;
 	      background: rgba(31, 29, 61, .62);
-	      color: var(--white);
+	      color: #F8F3FF;
 	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10), 0 14px 34px rgba(8, 7, 31, .16);
 	      backdrop-filter: blur(18px);
 	      -webkit-backdrop-filter: blur(18px);
@@ -2304,7 +2315,7 @@
 
 	    .reflection-response-help {
 	      margin: 0;
-	      color: rgba(255, 255, 255, .86);
+	      color: rgba(191, 183, 209, .86);
 	      font-size: 13px;
 	      line-height: 1.36;
 	      font-weight: 760;
@@ -2313,44 +2324,81 @@
 	    .reflection-character-count {
 	      justify-self: end;
 	      align-self: end;
-	      color: rgba(226, 220, 242, .62);
+	      color: rgba(184, 176, 204, .72);
 	      font-size: 12px;
 	      line-height: 1;
 	      font-weight: 650;
 	    }
 
+	    .reflection-response-panel[data-active-reflection-prompt="gratitude"] {
+	      min-height: 0;
+	      padding: 0;
+	      border: 0;
+	      border-radius: 0;
+	      background: transparent;
+	      box-shadow: none;
+	      backdrop-filter: none;
+	      -webkit-backdrop-filter: none;
+	      gap: 9px;
+	    }
+
 	    .gratitude-list {
 	      display: grid;
-	      gap: 7px;
+	      gap: 8px;
 	    }
 
 	    .gratitude-item {
+	      min-height: 42px;
 	      display: grid;
-	      grid-template-columns: minmax(0, 1fr) 34px;
-	      align-items: end;
-	      gap: 7px;
+	      grid-template-columns: 34px minmax(0, 1fr) 24px 32px;
+	      align-items: center;
+	      gap: 8px;
+	      padding: 0 8px 0 10px;
+	      border: 1px solid rgba(255, 255, 255, .09);
+	      border-radius: 13px;
+	      background: rgba(49, 44, 76, .72);
+	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
+	      backdrop-filter: blur(12px);
+	      -webkit-backdrop-filter: blur(12px);
+	    }
+
+	    .gratitude-index {
+	      width: 26px;
+	      height: 26px;
+	      display: grid;
+	      place-items: center;
+	      border-radius: 50%;
+	      background: linear-gradient(135deg, #6F46CE, #9851DD);
+	      color: #F8F3FF;
+	      font-size: 12px;
+	      line-height: 1;
+	      font-weight: 840;
+	      box-shadow: 0 8px 14px rgba(112, 69, 205, .24);
 	    }
 
 	    .gratitude-item-field {
-	      display: grid;
-	      gap: 4px;
+	      min-width: 0;
+	      display: block;
 	    }
 
-	    .gratitude-item-field span {
-	      color: rgba(226, 220, 242, .64);
-	      font-size: 9.5px;
-	      font-weight: 760;
+	    .gratitude-drag-handle {
+	      color: rgba(190, 181, 211, .68);
+	      font-size: 18px;
+	      line-height: 1;
+	      text-align: center;
 	    }
 
 	    .gratitude-delete-button {
-	      width: 34px;
-	      min-height: 36px;
+	      width: 32px;
+	      min-height: 32px;
 	      display: grid;
 	      place-items: center;
-	      border: 1px solid rgba(255, 255, 255, .12);
-	      border-radius: 12px;
-	      background: rgba(255, 255, 255, .10);
-	      color: rgba(255, 255, 255, .76);
+	      border: 0;
+	      border-radius: 50%;
+	      background: transparent;
+	      color: rgba(202, 194, 219, .84);
+	      font-size: 23px;
+	      line-height: 1;
 	      cursor: pointer;
 	    }
 
@@ -2360,14 +2408,15 @@
 	    }
 
 	    .gratitude-add-button {
-	      min-height: 34px;
-	      justify-self: start;
+	      width: 100%;
+	      min-height: 42px;
+	      justify-self: stretch;
 	      padding: 0 12px;
-	      border: 1px solid rgba(255, 255, 255, .14);
-	      border-radius: 14px;
-	      background: rgba(255, 255, 255, .12);
-	      color: rgba(255, 255, 255, .88);
-	      font-size: 11px;
+	      border: 1px dashed rgba(168, 126, 226, .52);
+	      border-radius: 13px;
+	      background: rgba(34, 30, 58, .36);
+	      color: #B768F0;
+	      font-size: 13px;
 	      font-weight: 820;
 	      cursor: pointer;
 	    }
@@ -2392,16 +2441,16 @@
 	    }
 
 	    .reflection-media-toolbar {
-	      min-height: 72px;
+	      min-height: 46px;
 	      display: grid;
 	      grid-template-columns: 1fr 1px 1fr;
 	      align-items: center;
 	      gap: 0;
-	      padding: 0 16px;
-	      border: 1px solid rgba(255, 255, 255, .12);
-	      border-radius: 24px;
-	      background: rgba(31, 29, 61, .56);
-	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10), 0 14px 30px rgba(8, 7, 31, .14);
+	      padding: 0 12px;
+	      border: 1px solid rgba(255, 255, 255, .10);
+	      border-radius: 18px;
+	      background: rgba(39, 36, 68, .74);
+	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 12px 26px rgba(8, 7, 31, .14);
 	      backdrop-filter: blur(16px);
 	      -webkit-backdrop-filter: blur(16px);
 	    }
@@ -2418,31 +2467,31 @@
 	    }
 
 	    .reflection-media-action {
-	      min-height: 52px;
+	      min-height: 42px;
 	      display: flex;
 	      align-items: center;
 	      justify-content: center;
-	      gap: 12px;
-	      padding: 0 10px;
+	      gap: 10px;
+	      padding: 0 8px;
 	      border: 0;
-	      border-radius: 18px;
+	      border-radius: 14px;
 	      background: transparent;
-	      color: rgba(255, 255, 255, .82);
-	      font-size: 14px;
+	      color: rgba(220, 214, 234, .88);
+	      font-size: 13px;
 	      line-height: 1;
-	      font-weight: 690;
+	      font-weight: 760;
 	      cursor: pointer;
 	    }
 
 	    .reflection-media-action .icon {
-	      width: 24px;
-	      height: 24px;
+	      width: 20px;
+	      height: 20px;
 	      stroke-width: 1.9;
 	    }
 
 	    .reflection-media-divider {
 	      width: 1px;
-	      height: 30px;
+	      height: 24px;
 	      background: rgba(255, 255, 255, .12);
 	    }
 
@@ -2491,16 +2540,16 @@
 	      grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
 	      justify-content: stretch;
 	      gap: 14px;
-	      padding: 12px 4px 0;
+	      padding: 10px 10px 0;
 	      border-top: 0;
 	    }
 
 	    #evening-reflection .evening-save-actions .secondary-button,
 	    #evening-reflection .evening-save-actions .primary-button {
-	      min-height: 58px;
-	      padding: 0 16px;
-	      border-radius: 17px;
-	      font-size: 14px;
+	      min-height: 48px;
+	      padding: 0 14px;
+	      border-radius: 16px;
+	      font-size: 13px;
 	      line-height: 1;
 	      font-weight: 820;
 	    }
@@ -2508,7 +2557,7 @@
 	    #evening-reflection .evening-save-actions .secondary-button {
 	      border: 1px solid rgba(255, 255, 255, .09);
 	      background: rgba(45, 42, 78, .74);
-	      color: rgba(226, 220, 242, .68);
+	      color: rgba(199, 190, 216, .84);
 	      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 14px 28px rgba(8, 7, 31, .20);
 	      backdrop-filter: blur(12px);
 	      -webkit-backdrop-filter: blur(12px);
@@ -2522,8 +2571,8 @@
 	    }
 
 	    #evening-reflection .evening-save-actions .icon {
-	      width: 22px;
-	      height: 22px;
+	      width: 20px;
+	      height: 20px;
 	      stroke-width: 2.2;
 	    }
 
@@ -2554,9 +2603,15 @@
 	    }
 
 	    #evening-reflection .gratitude-field {
-	      border: 1px solid rgba(255, 255, 255, .12);
-	      background: rgba(255, 255, 255, .08);
-	      color: rgba(255, 255, 255, .90);
+	      min-height: 40px;
+	      padding: 0;
+	      border: 0;
+	      border-radius: 0;
+	      background: transparent;
+	      color: rgba(245, 241, 255, .90);
+	      font-size: 13px;
+	      line-height: 1.15;
+	      font-weight: 720;
 	    }
 
 	    #evening-reflection .gratitude-field::placeholder {
@@ -4272,7 +4327,7 @@
 
 	        <section class="screen-column" id="column-evening-reflection">
 	          <div class="screen-label"><span class="screen-index">12</span><strong>Esti reflexió</strong> · Wizard</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="evening-reflection" data-screen="evening-reflection" data-parent-screen="home" data-reference-screenshot="Screenshot_20260718-223635.png">
+	          <article class="phone-screen checkin-fullscreen no-nav" id="evening-reflection" data-screen="evening-reflection" data-parent-screen="home" data-reference-screenshots="Screenshot_20260718-223635.png Screenshot_20260718-225614.png">
 	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
 	            <div class="status-bar">
 	              <span>9:41</span>
@@ -4281,10 +4336,6 @@
 	            <div class="checkin-content">
 	              <section class="evening-reflection-panel" data-component="evening-reflection-panel" data-reflection-state data-active-reflection-prompt="best" aria-label="Esti reflexió">
 	                <div class="evening-scroll" data-component="evening-scroll-area">
-	                  <div class="evening-screen-actions" aria-label="Esti reflexió navigáció">
-	                    <button class="evening-overlay-action back" type="button" aria-label="Vissza" data-action="skip-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-	                    <button class="evening-overlay-action menu" type="button" aria-label="További opciók">•••</button>
-	                  </div>
 	                  <header class="evening-hero-copy">
 	                    <span class="evening-moon" aria-hidden="true">☾</span>
 	                    <h3>Esti reflexió</h3>
@@ -4303,14 +4354,14 @@
 	                  <section class="evening-section" aria-label="Ma miről szeretnél írni">
 	                    <h4 class="evening-section-title">2. Ma miről szeretnél írni?</h4>
 	                    <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
-	                      <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-pressed="true"><span class="reflection-topic-icon" aria-hidden="true">✳</span><span>Mi volt ma a legjobb?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">☁</span><span>Mi volt ma a nehéz?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">♡</span><span>Miért vagy hálás?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">▱</span><span>Nem szeretném elfelejteni...</span></button>
+	                      <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" aria-pressed="true"><span class="reflection-topic-icon" aria-hidden="true">✳</span><span>Mi volt ma<br>a legjobb?</span></button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-label="Mi volt ma a nehéz?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">☁</span><span>Mi volt ma<br>a nehéz?</span></button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-label="Miért vagy hálás?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">♡</span><span>Miért vagy<br>hálás?</span></button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-label="Nem szeretném elfelejteni..." aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">▱</span><span>Nem szeretném<br>elfelejteni...</span></button>
 	                    </div>
 	                  </section>
 	                  <section class="evening-section" aria-label="A te gondolataid">
-	                    <h4 class="evening-section-title">3. Írd le a gondolataidat</h4>
+	                    <h4 class="evening-section-title" data-reflection-section-title>3. Írd le a gondolataidat</h4>
 	                    <div class="reflection-response-panel" data-component="reflection-response-panel" data-reflection-content data-active-reflection-prompt="best">
 	                      <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
 	                      <textarea class="reflection-input" id="evening-reflection-text" data-reflection-text data-active-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" placeholder="Kezdj el írni..."></textarea>
@@ -4682,6 +4733,8 @@
         },
         gratitude: {
           question: 'Hála lista',
+          gratitudeTitle: '3. Miért vagy hálás ma?',
+          gratitudeHelp: 'Írj le legalább 3 dolgot, amiért ma hálás vagy.',
         },
       };
 
@@ -4712,6 +4765,18 @@
 
       function currentResponsePanel() {
         return document.querySelector('#evening-reflection [data-reflection-content]');
+      }
+
+      function currentReflectionSectionTitle() {
+        return document.querySelector('#evening-reflection [data-reflection-section-title]');
+      }
+
+      function setReflectionSectionTitle(prompt) {
+        const title = currentReflectionSectionTitle();
+        if (!title) return;
+        title.textContent = prompt === 'gratitude'
+          ? reflectionPromptContent.gratitude.gratitudeTitle
+          : '3. Írd le a gondolataidat';
       }
 
       function saveCurrentReflectionText() {
@@ -4774,7 +4839,7 @@
           item.setAttribute('data-gratitude-item', String(index + 1));
           const caption = item.querySelector('[data-gratitude-caption]');
           const removeButton = item.querySelector('[data-action="remove-gratitude-item"]');
-          if (caption) caption.textContent = `${index + 1}. hála`;
+          if (caption) caption.textContent = String(index + 1);
           if (removeButton) removeButton.setAttribute('aria-label', `${index + 1}. hála törlése`);
         });
       }
@@ -4806,22 +4871,30 @@
         item.className = 'gratitude-item';
         item.setAttribute('data-gratitude-item', String(index + 1));
 
+        const indexBadge = document.createElement('span');
+        indexBadge.className = 'gratitude-index';
+        indexBadge.setAttribute('data-gratitude-caption', '');
+        indexBadge.textContent = String(index + 1);
+        indexBadge.setAttribute('aria-hidden', 'true');
+
         const label = document.createElement('label');
         label.className = 'gratitude-item-field';
-
-        const caption = document.createElement('span');
-        caption.setAttribute('data-gratitude-caption', '');
-        caption.textContent = `${index + 1}. hála`;
 
         const input = document.createElement('input');
         input.className = 'gratitude-field';
         input.type = 'text';
         input.value = value;
         input.placeholder = 'Írd ide';
+        input.setAttribute('aria-label', `${index + 1}. hála`);
         input.setAttribute('data-gratitude-field', '');
         input.addEventListener('input', () => {
           syncGratitudeState(panel);
         });
+
+        const dragHandle = document.createElement('span');
+        dragHandle.className = 'gratitude-drag-handle';
+        dragHandle.setAttribute('aria-hidden', 'true');
+        dragHandle.textContent = '⋮⋮';
 
         const removeButton = document.createElement('button');
         removeButton.className = 'gratitude-delete-button';
@@ -4831,8 +4904,8 @@
         removeButton.textContent = '×';
         removeButton.addEventListener('click', () => removeGratitudeItem(item, panel));
 
-        label.append(caption, input);
-        item.append(label, removeButton);
+        label.append(input);
+        item.append(indexBadge, label, dragHandle, removeButton);
         list.append(item);
         syncGratitudeState(panel);
         if (shouldFocus) input.focus({ preventScroll: true });
@@ -4841,7 +4914,10 @@
       function renderGratitudePrompt(panel) {
         panel.textContent = '';
         panel.setAttribute('data-active-reflection-prompt', 'gratitude');
-        appendHelp(panel, 'gratitude');
+        const help = document.createElement('p');
+        help.className = 'reflection-response-help';
+        help.textContent = reflectionPromptContent.gratitude.gratitudeHelp;
+        panel.append(help);
 
         const list = document.createElement('div');
         list.className = 'gratitude-list';
@@ -4855,7 +4931,7 @@
         addButton.className = 'gratitude-add-button';
         addButton.type = 'button';
         addButton.setAttribute('data-action', 'add-gratitude-item');
-        addButton.textContent = 'Új hozzáadása';
+        addButton.textContent = '+ Új hozzáadása';
         addButton.addEventListener('click', () => addGratitudeItem(panel));
         panel.append(addButton);
       }
@@ -4869,6 +4945,7 @@
         const responsePanel = currentResponsePanel();
         if (!panel || !responsePanel) return;
         panel.setAttribute('data-active-reflection-prompt', prompt);
+        setReflectionSectionTitle(prompt);
 
         document.querySelectorAll('#evening-reflection [data-reflection-prompt]').forEach((button) => {
           const active = button.getAttribute('data-reflection-prompt') === prompt;

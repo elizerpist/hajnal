@@ -174,7 +174,19 @@ try {
     "the screenshot-style writing panel keeps the simple placeholder",
   );
   await page.locator('#evening-reflection [data-reflection-prompt="gratitude"]').click();
+  assert.equal(
+    await page.locator("#evening-reflection [data-reflection-section-title]").innerText(),
+    "3. Miért vagy hálás ma?",
+    "gratitude mode must use the source-of-truth gratitude heading",
+  );
+  assert.match(
+    await page.locator("#evening-reflection [data-reflection-content]").innerText(),
+    /Írj le legalább 3 dolgot, amiért ma hálás vagy\./,
+    "gratitude mode must show the source-of-truth helper copy",
+  );
   assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 3, "gratitude mode starts with three list items");
+  assert.equal(await page.locator("#evening-reflection .gratitude-index").count(), 3, "gratitude rows use numbered badges");
+  assert.equal(await page.locator("#evening-reflection .gratitude-drag-handle").count(), 3, "gratitude rows expose visual reorder handles");
   await page.locator('#evening-reflection [data-action="add-gratitude-item"]').click();
   assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 4, "gratitude add button grows the list inline");
   await page.locator('#evening-reflection [data-action="remove-gratitude-item"]').first().click();
