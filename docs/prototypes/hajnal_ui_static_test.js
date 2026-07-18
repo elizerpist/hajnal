@@ -284,7 +284,7 @@ const tests = {
     assert.ok(!collapsedHomeScreen.includes('class="home-body"'), 'collapsed home must not show the large opened lower card');
     assert.ok(!collapsedHomeScreen.includes('class="tasks-card"'), 'collapsed home must not show the checklist');
     assert.ok(!collapsedHomeScreen.includes('Mai feladataim'), 'collapsed home must not include checklist heading');
-    assert.match(html, /\.home-collapsed-screen \.home-metrics\s*\{[^}]*top:\s*590px/s, 'collapsed home dashboard must sit lower than the previous 552px position');
+    assert.match(html, /\.home-collapsed-screen \.home-metrics\s*\{[^}]*top:\s*614px/s, 'collapsed home dashboard must sit lower than the previous 590px position');
     const collapsedNavStart = collapsedHomeScreen.indexOf('<nav class="bottom-nav"');
     assert.ok(collapsedNavStart !== -1, 'collapsed home must render its own bottom navigation');
     const collapsedNavEnd = collapsedHomeScreen.indexOf('</nav>', collapsedNavStart);

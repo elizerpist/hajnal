@@ -161,7 +161,7 @@ try {
     };
   });
   assert.deepEqual(collapsedHomeLayout, {
-    dashboardTop: 590,
+    dashboardTop: 614,
     hasOpenedCard: false,
     navBottomGap: 0,
     navLabels: ["Kezdőlap", "Haladás", "Eszközök", "Szponzor", "Profil"],
