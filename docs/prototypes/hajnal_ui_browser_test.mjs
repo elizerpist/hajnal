@@ -22,11 +22,10 @@ const screenOrder = [
   ["notifications", "onboarding"],
   ["home", "notifications"],
   ["daily-image", "home"],
-  ["daily-checkin", "home"],
-  ["checkin-clean", "daily-checkin"],
-  ["evening-clean-reward", "daily-checkin"],
-  ["evening-reflection", "home"],
-  ["checkin-relapse", "daily-checkin"],
+  ["checkin-clean", "home"],
+  ["evening-reflection", "checkin-clean"],
+  ["reflection-saved", "evening-reflection"],
+  ["checkin-relapse", "home"],
   ["panic-root", "home"],
   ["panic-help-sheet", "panic-root"],
   ["checkin-survival-pack", "panic-root"],
@@ -48,16 +47,20 @@ const screenRows = [
   [
     "home",
     "home",
-    "home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse",
+    "home daily-image checkin-clean evening-reflection reflection-saved",
     [
       "home",
       "daily-image",
-      "daily-checkin",
       "checkin-clean",
-      "evening-clean-reward",
       "evening-reflection",
-      "checkin-relapse",
+      "reflection-saved",
     ],
+  ],
+  [
+    "relapse",
+    "checkin-relapse",
+    "checkin-relapse",
+    ["checkin-relapse"],
   ],
   [
     "panic",
@@ -143,10 +146,10 @@ try {
         const screenId = image.closest(".phone-screen")?.id;
         const allowedSplash = screenId === "splash" && image.src.endsWith("/welcome_svg.svg");
         const allowedFullscreen2 = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_fullscreen2_svg.svg");
-        const allowedHurray = ["checkin-clean", "evening-clean-reward"].includes(screenId) && image.src.endsWith("/hurray_svg.svg");
+        const allowedHurray = screenId === "checkin-clean" && image.src.endsWith("/hurray_svg.svg");
         const allowedFullscreen = [
-          "daily-checkin",
           "evening-reflection",
+          "reflection-saved",
           "checkin-relapse",
           "checkin-survival-pack",
           "checkin-breathing",
@@ -156,6 +159,23 @@ try {
       .map((image) => ({ screen: image.closest(".phone-screen")?.id, src: image.src })),
   );
   assert.deepEqual(flattenedImages, [], "phone screens must only use the approved SVG hero image, not flattened raster images");
+
+  const cleanSheet = await page.locator("#checkin-clean .reflection-choice-sheet").evaluate((sheet) => {
+    const bounds = sheet.getBoundingClientRect();
+    const screen = sheet.closest(".phone-screen").getBoundingClientRect();
+    return {
+      rounded: getComputedStyle(sheet).borderRadius,
+      bottomGap: Math.round(screen.bottom - bounds.bottom),
+      primaryText: sheet.querySelector(".sheet-primary")?.textContent?.trim(),
+      secondaryText: sheet.querySelector(".sheet-secondary")?.textContent?.trim(),
+    };
+  });
+  assert.deepEqual(cleanSheet, {
+    rounded: "32px",
+    bottomGap: 28,
+    primaryText: "Most, 2 percet rászánok",
+    secondaryText: "Később",
+  }, "screen 11 must show the source-of-truth slide-up choice sheet");
 
   await page.locator('#evening-reflection [data-reflection-prompt="hardest"]').click();
   assert.equal(
@@ -196,21 +216,34 @@ try {
   const eveningLayout = await page.locator("#evening-reflection").evaluate((screen) => {
     const scroll = screen.querySelector(".evening-scroll");
     const footer = screen.querySelector(".evening-save-actions");
-    if (!scroll || !footer) return null;
+    const secondary = screen.querySelector(".evening-save-actions .secondary-button");
+    const primary = screen.querySelector(".evening-save-actions .primary-button");
+    if (!scroll || !footer || !secondary || !primary) return null;
     const scrollBox = scroll.getBoundingClientRect();
     const footerBox = footer.getBoundingClientRect();
+    const secondaryBox = secondary.getBoundingClientRect();
+    const primaryBox = primary.getBoundingClientRect();
+    const screenBox = screen.getBoundingClientRect();
     const scrollStyle = getComputedStyle(scroll);
     return {
       scrollOverflowEnabled: scrollStyle.overflowY === "auto",
       footerAfterScroll: footerBox.top >= scrollBox.bottom,
-      footerVisible: footerBox.bottom <= screen.getBoundingClientRect().bottom,
+      footerVisible: footerBox.bottom <= screenBox.bottom,
+      footerRightAligned: Math.round(screenBox.right - footerBox.right) === 28,
+      secondaryText: secondary.textContent.trim(),
+      secondaryWidth: Math.round(secondaryBox.width),
+      primaryWidth: Math.round(primaryBox.width),
     };
   });
   assert.deepEqual(eveningLayout, {
     scrollOverflowEnabled: true,
     footerAfterScroll: true,
     footerVisible: true,
-  }, "screen 12 must scroll internally while the footer stays fixed in the panel");
+    footerRightAligned: true,
+    secondaryText: "Később folytatom",
+    secondaryWidth: 148,
+    primaryWidth: 176,
+  }, "screen 12 must scroll internally while the compact footer stays fixed and right-aligned");
 
   const panelHeightInGratitudeMode = await page.locator("#evening-reflection [data-component='evening-reflection-panel']").evaluate((panel) =>
     Math.round(panel.getBoundingClientRect().height),
@@ -227,6 +260,13 @@ try {
     [panelHeightInGratitudeMode, panelHeightInRememberMode, panelHeightInBestMode],
     [860, 860, 860],
     "screen 12 mother container height must stay fixed across prompt modes",
+  );
+
+  assert.equal(await page.locator("#reflection-saved .saved-title").innerText(), "Elmentve!", "final saved title");
+  assert.match(
+    await page.locator("#reflection-saved .saved-message").innerText(),
+    /Köszönöm,\s+hogy ma is időt szántál\s+magadra\./,
+    "final saved gratitude copy",
   );
 
   const calendarButtons = page.locator("#start-date button.calendar-day");

@@ -1786,6 +1786,10 @@
         linear-gradient(180deg, rgba(24, 23, 76, .04) 0%, rgba(24, 23, 76, .08) 44%, rgba(13, 15, 48, .58) 100%);
     }
 
+    .reflection-saved-screen::after {
+      background: linear-gradient(180deg, rgba(20, 18, 64, .10) 0%, rgba(97, 49, 118, .22) 48%, rgba(10, 20, 37, .80) 100%);
+    }
+
     .checkin-bg {
       position: absolute;
       inset: 0;
@@ -1982,6 +1986,180 @@
       margin: 126px 34px 0;
     }
 
+    .reflection-choice-sheet {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 28px;
+      z-index: 6;
+      display: grid;
+      gap: 14px;
+      padding: 29px 18px 20px;
+      border: 1px solid rgba(106, 86, 180, .14);
+      border-radius: 32px;
+      background: rgba(255, 255, 255, .96);
+      color: var(--hajnal-navy);
+      box-shadow: 0 24px 42px rgba(34, 26, 82, .18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .sheet-handle {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      width: 44px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .22);
+      transform: translateX(-50%);
+    }
+
+    .sheet-moon-badge {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8054DD, #5F35B9);
+      color: #FFE28A;
+      font-size: 31px;
+      line-height: 1;
+      box-shadow: 0 14px 28px rgba(106, 86, 180, .22);
+    }
+
+    .reflection-choice-sheet h3 {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      line-height: 1.28;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .reflection-choice-sheet p {
+      margin: 1px 0 0;
+      color: rgba(44, 46, 119, .72);
+      font-size: 14px;
+      line-height: 1.48;
+      font-weight: 650;
+    }
+
+    .sheet-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .sheet-primary {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7750D7, #5F35B9);
+      color: #FFFFFF;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 820;
+      cursor: pointer;
+      box-shadow: 0 15px 26px rgba(95, 53, 185, .25);
+      white-space: nowrap;
+    }
+
+    .sheet-secondary {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(106, 86, 180, .22);
+      border-radius: 14px;
+      background: #FFFFFF;
+      color: var(--hajnal-purple);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 820;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(44, 46, 119, .05);
+      white-space: nowrap;
+    }
+
+    .reflection-saved-content {
+      min-height: calc(var(--screen-h) - 32px);
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 166px 32px 42px;
+      text-align: center;
+      color: var(--white);
+      text-shadow: 0 3px 12px rgba(12, 12, 42, .38);
+    }
+
+    .saved-check-ring {
+      width: 106px;
+      height: 106px;
+      display: grid;
+      place-items: center;
+      border: 5px solid rgba(184, 126, 245, .82);
+      border-radius: 50%;
+      background: rgba(62, 42, 118, .30);
+      color: var(--white);
+      box-shadow: inset 0 0 26px rgba(184, 126, 245, .18), 0 18px 38px rgba(30, 18, 79, .22);
+    }
+
+    .saved-check-ring .icon {
+      width: 56px;
+      height: 56px;
+      stroke-width: 2.2;
+    }
+
+    .saved-title {
+      margin: 36px 0 0;
+      color: var(--white);
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 780;
+      letter-spacing: 0;
+    }
+
+    .saved-message {
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, .88);
+      font-size: 18px;
+      line-height: 1.42;
+      font-weight: 620;
+    }
+
+    .saved-bottom {
+      width: 100%;
+      display: grid;
+      gap: 15px;
+      margin-top: auto;
+    }
+
+    .saved-return-button {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #8054DD, #6938C1);
+      color: var(--white);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 820;
+      cursor: pointer;
+      box-shadow: 0 17px 30px rgba(64, 38, 152, .33);
+    }
+
+    .saved-auto-note {
+      margin: 0;
+      color: rgba(255, 255, 255, .66);
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      text-shadow: 0 2px 8px rgba(12, 12, 42, .34);
+    }
+
     .checkin-reward-copy h3,
     .checkin-relapse-copy h3,
     .checkin-support-copy h3,
@@ -2054,7 +2232,7 @@
 	      flex-direction: column;
 	      min-height: 0;
 	      margin: 0;
-	      padding: 70px 18px 18px;
+	      padding: 88px 18px 18px;
 	      border: 0;
 	      border-radius: 0;
 	      background: linear-gradient(180deg, rgba(13, 12, 38, .02) 0%, rgba(18, 16, 51, .48) 34%, rgba(18, 18, 49, .97) 100%);
@@ -2071,8 +2249,8 @@
 	      display: grid;
 	      align-content: start;
 	      overflow-y: auto;
-	      gap: 16px;
-	      padding: 0 10px 14px;
+	      gap: 14px;
+	      padding: 0 10px 12px;
 	      overscroll-behavior: contain;
 	      scrollbar-width: none;
 	    }
@@ -2121,7 +2299,7 @@
 	      display: grid;
 	      justify-items: center;
 	      gap: 5px;
-	      margin: 0 0 34px;
+	      margin: 0 0 26px;
 	      text-align: center;
 	      text-shadow: 0 3px 13px rgba(12, 10, 36, .34);
 	    }
@@ -2169,8 +2347,8 @@
 
 	    .evening-section-title {
 	      margin: 0;
-	      color: rgba(246, 240, 255, .94);
-	      font-size: 16px;
+	      color: rgba(226, 220, 242, .86);
+	      font-size: 15.5px;
 	      line-height: 1.18;
 	      font-weight: 820;
 	      letter-spacing: 0;
@@ -2537,21 +2715,25 @@
 
 	    #evening-reflection .evening-save-actions {
 	      flex: 0 0 auto;
-	      grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
-	      justify-content: stretch;
-	      gap: 14px;
-	      padding: 10px 10px 0;
+	      width: max-content;
+	      align-self: end;
+	      grid-template-columns: 148px 176px;
+	      justify-content: end;
+	      gap: 12px;
+	      margin-right: 10px;
+	      padding: 10px 0 0;
 	      border-top: 0;
 	    }
 
 	    #evening-reflection .evening-save-actions .secondary-button,
 	    #evening-reflection .evening-save-actions .primary-button {
 	      min-height: 48px;
-	      padding: 0 14px;
+	      padding: 0 10px;
 	      border-radius: 16px;
-	      font-size: 13px;
+	      font-size: 12.6px;
 	      line-height: 1;
 	      font-weight: 820;
+	      white-space: nowrap;
 	    }
 
 	    #evening-reflection .evening-save-actions .secondary-button {
@@ -4173,16 +4355,13 @@
         </div>
         <pre class="flow-tree" aria-label="Kezdőlap hierarchia">Kezdőlap
 	├── Napi kép (a főmenü képére tap indítja)
-	├── Check-in wizard (checkin.png alapján)
-	│   ├── Tiszta maradtam → Sikeres nap jutalom
-	│   ├── Esti check-in
-	│   │   ├── Opcionális tisztaság megerősítés
-	│   │   └── Esti reflexió inline: hála, kép memo, hang memo
-	│   └── Visszaestem
+	├── Ma tiszta maradtam → Sikeres nap jutalom + slide-up reflexió választás
+	│   └── Esti reflexió editor → Mentve záró screen
+	├── Visszaestem → Visszaesés támogatás sora
 	└── Segítség kell → Pánik mód sora</pre>
       </div>
 
-	      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse">
+	      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image checkin-clean evening-reflection reflection-saved">
         <section class="screen-column" id="column-home">
           <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
           <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
@@ -4224,7 +4403,7 @@
 	                  <label class="task-row" data-component="daily-task">
 	                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-people"></use></svg>
 	                  </label>
-	                  <button class="task-row" type="button" data-component="daily-task" data-action="open-evening-checkin" data-target-screen="evening-reflection" data-fallback-screen="daily-checkin">
+	                  <button class="task-row" type="button" data-component="daily-task" data-action="open-evening-checkin" data-target-screen="checkin-clean">
 	                    <span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-message"></use></svg>
 	                  </button>
                 </div>
@@ -4260,35 +4439,9 @@
           </article>
         </section>
 
-        <section class="screen-column" id="column-daily-checkin">
-          <div class="screen-label"><span class="screen-index">10</span><strong>CHECK-IN - ELSŐ LÉPÉS</strong> · Napi kép után</div>
-          <article class="phone-screen checkin-fullscreen no-nav" id="daily-checkin" data-screen="daily-checkin" data-parent-screen="home">
-            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="checkin-content">
-              <div class="checkin-top-actions">
-                <button class="icon-button" type="button" aria-label="Értesítések"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></button>
-                <span aria-hidden="true"></span>
-                <button class="icon-button" type="button" aria-label="Profil"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg></button>
-              </div>
-              <div class="checkin-day-block"><strong>24. nap</strong><span>a 90 napos úton</span></div>
-              <h3 class="checkin-hero-title">Hogy sikerült<br>a mai napod?</h3>
-              <div class="checkin-pager" aria-hidden="true"><span class="active"></span><span></span><span></span></div>
-              <div class="checkin-bottom-actions">
-	                <button class="checkin-action clean" type="button" data-action="mark-clean" data-target-screen="evening-clean-reward"><svg class="icon" aria-hidden="true"><path d="m6 12 4 4 8-8" /></svg>Ma tiszta maradtam</button>
-                <button class="checkin-action help" type="button" data-action="ask-support" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Segítség kell</button>
-                <button class="checkin-action text-link" type="button" data-action="mark-relapse" data-target-screen="checkin-relapse">Ma visszaestem</button>
-              </div>
-            </div>
-          </article>
-        </section>
-
         <section class="screen-column" id="column-checkin-clean">
           <div class="screen-label"><span class="screen-index">11</span><strong>SIKERES NAP - JUTALOM</strong> · Check-in child</div>
-          <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="daily-checkin" data-auto-return-target="home">
+          <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="home" data-auto-sheet-delay="2000" data-reference-screenshot="Screenshot_20260718-232534.png">
             <img class="checkin-bg" src="assets/hurray_svg.svg" alt="" loading="eager">
             <div class="status-bar">
               <span>9:41</span>
@@ -4300,92 +4453,103 @@
                 <strong>25. nap</strong>
                 <p>Folytasd így holnap is!</p>
               </section>
+              <section class="reflection-choice-sheet" aria-label="Esti reflexió választás">
+                <span class="sheet-handle" aria-hidden="true"></span>
+                <span class="sheet-moon-badge" aria-hidden="true">☾</span>
+                <h3 aria-label="Szeretnél pár percet szánni az esti reflexióra?">Szeretnél pár percet szánni<br>az esti reflexióra?</h3>
+                <p>Segít lezárni a napot<br>és tisztábban látni holnap.</p>
+                <div class="sheet-actions">
+                  <button class="sheet-primary" type="button" data-action="start-evening-reflection-now" data-target-screen="evening-reflection">Most, 2 percet rászánok</button>
+                  <button class="sheet-secondary" type="button" data-action="skip-evening-reflection" data-target-screen="home">Később</button>
+                </div>
+              </section>
             </div>
           </article>
         </section>
 
-	        <section class="screen-column" id="column-evening-clean-reward">
-	          <div class="screen-label"><span class="screen-index">11B</span><strong>SIKERES NAP - ESTI ÁG</strong> · Opcionális check-in</div>
-	          <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="evening-clean-reward" data-screen="evening-clean-reward" data-parent-screen="daily-checkin">
-	            <img class="checkin-bg" src="assets/hurray_svg.svg" alt="" loading="eager">
-	            <div class="status-bar">
-	              <span>9:41</span>
-	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-	            </div>
-	            <div class="checkin-content">
-	              <section class="checkin-reward-copy" aria-label="Sikeres nap esti visszajelzés">
-	                <h3>Megcsináltad!</h3>
-	                <strong>25. nap</strong>
-	                <p>Folytasd így holnap is!</p>
-	              </section>
-	              <div class="checkin-bottom-actions">
-	                <button class="checkin-action primary" type="button" data-action="continue-evening-reflection" data-target-screen="evening-reflection">Tovább az esti reflexióhoz</button>
-	              </div>
-	            </div>
-	          </article>
-	        </section>
+        <section class="screen-column" id="column-evening-reflection">
+          <div class="screen-label"><span class="screen-index">12</span><strong>Esti reflexió</strong> · Editor</div>
+          <article class="phone-screen checkin-fullscreen no-nav" id="evening-reflection" data-screen="evening-reflection" data-parent-screen="checkin-clean" data-reference-screenshots="Screenshot_20260718-223635.png Screenshot_20260718-225614.png">
+            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="checkin-content">
+              <section class="evening-reflection-panel" data-component="evening-reflection-panel" data-reflection-state data-active-reflection-prompt="best" aria-label="Esti reflexió">
+                <div class="evening-scroll" data-component="evening-scroll-area">
+                  <header class="evening-hero-copy">
+                    <span class="evening-moon" aria-hidden="true">☾</span>
+                    <h3>Esti reflexió</h3>
+                    <p>Pár perc csak magadnak.</p>
+                  </header>
+                  <section class="evening-section" aria-label="Hogy érzed magad">
+                    <h4 class="evening-section-title">1. Hogy érzed magad?</h4>
+                    <div class="evening-mood-row" role="group" aria-label="Hangulat választása 1-től 5-ig">
+                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="1" aria-label="Nagyon rossz" aria-pressed="false"><span aria-hidden="true">😟</span><span>Nagyon rossz</span></button>
+                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="2" aria-label="Nehéz" aria-pressed="false"><span aria-hidden="true">🙁</span><span>Nehéz</span></button>
+                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="3" aria-label="Semleges" aria-pressed="false"><span aria-hidden="true">😐</span><span>Semleges</span></button>
+                      <button class="evening-mood active" type="button" data-component="mood-score" data-mood-value="4" aria-label="Jó" aria-pressed="true"><span aria-hidden="true">🙂</span><span>Jó</span></button>
+                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="5" aria-label="Nagyon jó" aria-pressed="false"><span aria-hidden="true">😄</span><span>Nagyon jó</span></button>
+                    </div>
+                  </section>
+                  <section class="evening-section" aria-label="Ma miről szeretnél írni">
+                    <h4 class="evening-section-title">2. Ma miről szeretnél írni?</h4>
+                    <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
+                      <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" aria-pressed="true"><span class="reflection-topic-icon" aria-hidden="true">✳</span><span>Mi volt ma<br>a legjobb?</span></button>
+                      <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-label="Mi volt ma a nehéz?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">☁</span><span>Mi volt ma<br>a nehéz?</span></button>
+                      <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-label="Miért vagy hálás?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">♡</span><span>Miért vagy<br>hálás?</span></button>
+                      <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-label="Nem szeretném elfelejteni..." aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">▱</span><span>Nem szeretném<br>elfelejteni...</span></button>
+                    </div>
+                  </section>
+                  <section class="evening-section" aria-label="A te gondolataid">
+                    <h4 class="evening-section-title" data-reflection-section-title>3. Írd le a gondolataidat</h4>
+                    <div class="reflection-response-panel" data-component="reflection-response-panel" data-reflection-content data-active-reflection-prompt="best">
+                      <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
+                      <textarea class="reflection-input" id="evening-reflection-text" data-reflection-text data-active-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" placeholder="Kezdj el írni..."></textarea>
+                      <span class="reflection-character-count" data-reflection-character-count>0 karakter</span>
+                    </div>
+                  </section>
+                  <div class="reflection-media-toolbar" data-component="inline-memo-tools" aria-label="Memo eszközök">
+                    <button class="reflection-media-action" data-component="inline-media-memos" type="button" data-action="add-photo-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg><span>Fotó hozzáadása</span></button>
+                    <span class="reflection-media-divider" aria-hidden="true"></span>
+                    <button class="reflection-media-action" data-component="inline-media-memos" type="button" data-action="toggle-voice-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg><span>Hangjegyzet</span></button>
+                  </div>
+                </div>
+                <div class="evening-save-actions">
+                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg><span>Később folytatom</span></button>
+                  <button class="primary-button" type="button" data-action="save-evening-reflection" data-target-screen="reflection-saved"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg><span>Mentés</span></button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
 
-	        <section class="screen-column" id="column-evening-reflection">
-	          <div class="screen-label"><span class="screen-index">12</span><strong>Esti reflexió</strong> · Wizard</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="evening-reflection" data-screen="evening-reflection" data-parent-screen="home" data-reference-screenshots="Screenshot_20260718-223635.png Screenshot_20260718-225614.png">
-	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-	            <div class="status-bar">
-	              <span>9:41</span>
-	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-	            </div>
-	            <div class="checkin-content">
-	              <section class="evening-reflection-panel" data-component="evening-reflection-panel" data-reflection-state data-active-reflection-prompt="best" aria-label="Esti reflexió">
-	                <div class="evening-scroll" data-component="evening-scroll-area">
-	                  <header class="evening-hero-copy">
-	                    <span class="evening-moon" aria-hidden="true">☾</span>
-	                    <h3>Esti reflexió</h3>
-	                    <p>Pár perc csak magadnak.</p>
-	                  </header>
-	                  <section class="evening-section" aria-label="Hogy érzed magad">
-	                    <h4 class="evening-section-title">1. Hogy érzed magad?</h4>
-	                    <div class="evening-mood-row" role="group" aria-label="Hangulat választása 1-től 5-ig">
-	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="1" aria-label="Nagyon rossz" aria-pressed="false"><span aria-hidden="true">😟</span><span>Nagyon rossz</span></button>
-	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="2" aria-label="Nehéz" aria-pressed="false"><span aria-hidden="true">🙁</span><span>Nehéz</span></button>
-	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="3" aria-label="Semleges" aria-pressed="false"><span aria-hidden="true">😐</span><span>Semleges</span></button>
-	                      <button class="evening-mood active" type="button" data-component="mood-score" data-mood-value="4" aria-label="Jó" aria-pressed="true"><span aria-hidden="true">🙂</span><span>Jó</span></button>
-	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="5" aria-label="Nagyon jó" aria-pressed="false"><span aria-hidden="true">😄</span><span>Nagyon jó</span></button>
-	                    </div>
-	                  </section>
-	                  <section class="evening-section" aria-label="Ma miről szeretnél írni">
-	                    <h4 class="evening-section-title">2. Ma miről szeretnél írni?</h4>
-	                    <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
-	                      <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" aria-pressed="true"><span class="reflection-topic-icon" aria-hidden="true">✳</span><span>Mi volt ma<br>a legjobb?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-label="Mi volt ma a nehéz?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">☁</span><span>Mi volt ma<br>a nehéz?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-label="Miért vagy hálás?" aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">♡</span><span>Miért vagy<br>hálás?</span></button>
-	                      <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-label="Nem szeretném elfelejteni..." aria-pressed="false"><span class="reflection-topic-icon" aria-hidden="true">▱</span><span>Nem szeretném<br>elfelejteni...</span></button>
-	                    </div>
-	                  </section>
-	                  <section class="evening-section" aria-label="A te gondolataid">
-	                    <h4 class="evening-section-title" data-reflection-section-title>3. Írd le a gondolataidat</h4>
-	                    <div class="reflection-response-panel" data-component="reflection-response-panel" data-reflection-content data-active-reflection-prompt="best">
-	                      <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
-	                      <textarea class="reflection-input" id="evening-reflection-text" data-reflection-text data-active-reflection-prompt="best" aria-label="Mi volt ma a legjobb?" placeholder="Kezdj el írni..."></textarea>
-	                      <span class="reflection-character-count" data-reflection-character-count>0 karakter</span>
-	                    </div>
-	                  </section>
-	                  <div class="reflection-media-toolbar" data-component="inline-memo-tools" aria-label="Memo eszközök">
-	                    <button class="reflection-media-action" data-component="inline-media-memos" type="button" data-action="add-photo-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg><span>Fotó hozzáadása</span></button>
-	                    <span class="reflection-media-divider" aria-hidden="true"></span>
-	                    <button class="reflection-media-action" data-component="inline-media-memos" type="button" data-action="toggle-voice-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg><span>Hangjegyzet</span></button>
-	                  </div>
-	                </div>
-	                <div class="evening-save-actions">
-	                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg><span>Később folytatom</span></button>
-	                  <button class="primary-button" type="button" data-action="save-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg><span>Mentés</span></button>
-	                </div>
-	              </section>
-	            </div>
-	          </article>
-	        </section>
+        <section class="screen-column" id="column-reflection-saved">
+          <div class="screen-label"><span class="screen-index">10</span><strong>MENTVE</strong> · Flow zárása</div>
+          <article class="phone-screen checkin-fullscreen reflection-saved-screen no-nav" id="reflection-saved" data-screen="reflection-saved" data-parent-screen="evening-reflection" data-reference-screenshot="Screenshot_20260718-232635.png" data-auto-return-target="home" data-auto-return-delay="2000">
+            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="reflection-saved-content">
+              <div class="saved-check-ring" aria-hidden="true"><svg class="icon"><use href="#icon-check"></use></svg></div>
+              <h3 class="saved-title">Elmentve!</h3>
+              <p class="saved-message">Köszönöm,<br>hogy ma is időt szántál<br>magadra.</p>
+              <div class="saved-bottom">
+                <button class="saved-return-button" type="button" data-action="return-home-after-save" data-target-screen="home">Vissza a kezdőlapra</button>
+                <p class="saved-auto-note">2 mp múlva visszairányítunk.</p>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
 
+      <div class="screen-row" data-page="relapse" data-root-screen="checkin-relapse" data-row-screens="checkin-relapse">
         <section class="screen-column" id="column-checkin-relapse">
-          <div class="screen-label"><span class="screen-index">15</span><strong>MA VISSZAESTEM</strong> · Nem büntet</div>
-          <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="daily-checkin">
+          <div class="screen-label"><span class="screen-index">15</span><strong>Ma visszaestem</strong> · Nem büntet</div>
+          <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="home">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
               <span>9:41</span>
@@ -4393,7 +4557,7 @@
             </div>
             <div class="checkin-content">
               <div class="checkin-top-actions">
-                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="daily-checkin"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
               </div>
