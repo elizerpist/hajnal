@@ -20,12 +20,11 @@ const screenOrder = [
   ["recovery-goal", "onboarding"],
   ["sponsor-setup", "onboarding"],
   ["notifications", "onboarding"],
-  ["home", "notifications"],
-  ["daily-image", "home"],
+  ["home-collapsed", "notifications"],
+  ["home", "home-collapsed"],
   ["checkin-clean", "home"],
   ["evening-reflection", "checkin-clean"],
   ["reflection-saved", "evening-reflection"],
-  ["checkin-relapse", "home"],
   ["panic-root", "home"],
   ["panic-help-sheet", "panic-root"],
   ["checkin-survival-pack", "panic-root"],
@@ -36,6 +35,8 @@ const screenOrder = [
   ["panic-why-started", "panic-root"],
   ["panic-meeting-finder", "panic-root"],
   ["panic-emergency-help", "panic-root"],
+  ["checkin-relapse", "home"],
+  ["daily-image", "home"],
 ];
 const screenRows = [
   [
@@ -46,26 +47,20 @@ const screenRows = [
   ],
   [
     "home",
-    "home",
-    "home daily-image checkin-clean evening-reflection reflection-saved",
+    "home-collapsed",
+    "home-collapsed home checkin-clean evening-reflection reflection-saved",
     [
+      "home-collapsed",
       "home",
-      "daily-image",
       "checkin-clean",
       "evening-reflection",
       "reflection-saved",
     ],
   ],
   [
-    "relapse",
-    "checkin-relapse",
-    "checkin-relapse",
-    ["checkin-relapse"],
-  ],
-  [
     "panic",
     "panic-root",
-    "panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help",
+    "panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
       "panic-help-sheet",
@@ -77,7 +72,14 @@ const screenRows = [
       "panic-why-started",
       "panic-meeting-finder",
       "panic-emergency-help",
+      "checkin-relapse",
     ],
+  ],
+  [
+    "daily-image",
+    "daily-image",
+    "daily-image",
+    ["daily-image"],
   ],
 ];
 
@@ -137,15 +139,17 @@ try {
       }),
     ),
   );
-  assert.ok(rowPositions.home.top > rowPositions.splash.top + 900, "home must render in the next row");
-  assert.equal(rowPositions.home.left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
+  assert.ok(rowPositions["home-collapsed"].top > rowPositions.splash.top + 900, "home must render in the next row");
+  assert.equal(rowPositions["home-collapsed"].left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
+  assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
+  assert.ok(rowPositions["daily-image"].top > rowPositions["panic-root"].top + 900, "daily image row must render below the panic row");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {
         const screenId = image.closest(".phone-screen")?.id;
         const allowedSplash = screenId === "splash" && image.src.endsWith("/welcome_svg.svg");
-        const allowedFullscreen2 = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_fullscreen2_svg.svg");
+        const allowedFullscreen2 = ["home-collapsed", "home", "daily-image"].includes(screenId) && image.src.endsWith("/hero_fullscreen2_svg.svg");
         const allowedHurray = screenId === "checkin-clean" && image.src.endsWith("/hurray_svg.svg");
         const allowedFullscreen = [
           "evening-reflection",
@@ -232,7 +236,7 @@ try {
       footerRightAligned: Math.round(screenBox.right - footerBox.right) === 28,
       secondaryText: secondary.textContent.trim(),
       secondaryWidth: Math.round(secondaryBox.width),
-      primaryWidth: Math.round(primaryBox.width),
+    primaryWidth: Math.round(primaryBox.width),
     };
   });
   assert.deepEqual(eveningLayout, {
@@ -242,7 +246,7 @@ try {
     footerRightAligned: true,
     secondaryText: "Később folytatom",
     secondaryWidth: 148,
-    primaryWidth: 176,
+    primaryWidth: 104,
   }, "screen 12 must scroll internally while the compact footer stays fixed and right-aligned");
 
   const panelHeightInGratitudeMode = await page.locator("#evening-reflection [data-component='evening-reflection-panel']").evaluate((panel) =>

@@ -1273,6 +1273,23 @@
       -webkit-backdrop-filter: none;
     }
 
+    .home-collapsed-screen .home-metrics {
+      top: 552px;
+    }
+
+    .home-expand-hotspot {
+      position: absolute;
+      z-index: 22;
+      left: 0;
+      right: 0;
+      top: 670px;
+      bottom: 70px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
     .metric {
       padding: 15px 15px 12px;
     }
@@ -2717,7 +2734,7 @@
 	      flex: 0 0 auto;
 	      width: max-content;
 	      align-self: end;
-	      grid-template-columns: 148px 176px;
+	      grid-template-columns: 148px 104px;
 	      justify-content: end;
 	      gap: 12px;
 	      margin-right: 10px;
@@ -4338,7 +4355,7 @@
                 </label>
               </div>
               <div class="notifications-actions">
-                <button class="primary-button" type="button" data-action="enter-hajnal" data-target-screen="home">Belépek a Hajnalba</button>
+                <button class="primary-button" type="button" data-action="enter-hajnal" data-target-screen="home-collapsed">Belépek a Hajnalba</button>
               </div>
             </div>
           </article>
@@ -4354,17 +4371,51 @@
           <p>Oldal 2 · az Értesítések után nyíló Kezdőlap és child screenjei</p>
         </div>
         <pre class="flow-tree" aria-label="Kezdőlap hierarchia">Kezdőlap
-	├── Napi kép (a főmenü képére tap indítja)
+	├── Csukott card állapot
+	├── Nyitott card állapot
 	├── Ma tiszta maradtam → Sikeres nap jutalom + slide-up reflexió választás
 	│   └── Esti reflexió editor → Mentve záró screen
-	├── Visszaestem → Visszaesés támogatás sora
 	└── Segítség kell → Pánik mód sora</pre>
       </div>
 
-	      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image checkin-clean evening-reflection reflection-saved">
+	      <div class="screen-row" data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved">
+        <section class="screen-column" id="column-home-collapsed">
+          <div class="screen-label"><span class="screen-index">8A</span><strong>Kezdőlap csukott</strong> · Csak napi box</div>
+          <article class="phone-screen home-screen home-collapsed-screen" id="home-collapsed" data-screen="home-collapsed" data-parent-screen="notifications" data-state="collapsed">
+            <button class="home-illustration" type="button" aria-label="Napi kép megnyitása" data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap">
+              <img class="home-hero-image" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
+            </button>
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="home-topbar">
+              <button class="icon-button" type="button" aria-label="Gyorsbeállítások"><svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg></button>
+              <div class="home-day"><strong>24. nap</strong><span class="home-subtitle">a 90 napos úton</span><span class="home-tagline">Minden nap<br>egy lépés.</span></div>
+              <button class="icon-button" type="button" aria-label="Értesítések"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></button>
+            </header>
+
+            <div class="home-metrics soft-card" data-component="home-dashboard">
+              <div class="metric">
+                <small>Tiszta napok</small><strong>24</strong><em>nap</em>
+                <div class="segmented-progress" role="img" aria-label="24 nap a 90 napból">
+                  <span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="progress-note">a 90 napból</span>
+              </div>
+              <span class="dashboard-separator" aria-hidden="true"></span>
+              <button class="clean-today-button" type="button" data-action="mark-clean-today" data-target-screen="checkin-clean">
+                <span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8" /></svg></span>
+                <span>Ma tiszta<br>maradtam</span>
+              </button>
+            </div>
+
+            <button class="home-expand-hotspot" type="button" aria-label="Főmenü kártya kinyitása" data-action="expand-home-card" data-target-screen="home"></button>
+          </article>
+        </section>
         <section class="screen-column" id="column-home">
-          <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
-          <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
+          <div class="screen-label"><span class="screen-index">8B</span><strong>Kezdőlap nyitott</strong> · Checklist card</div>
+          <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="home-collapsed">
             <button class="home-illustration" type="button" aria-label="Napi kép megnyitása" data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap">
               <img class="home-hero-image" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
             </button>
@@ -4423,22 +4474,6 @@
             </nav>
           </article>
         </section>
-        <section class="screen-column" id="column-daily-image">
-          <div class="screen-label"><span class="screen-index">9</span><strong>Napi kép</strong> · Kezdőlap child</div>
-          <article class="phone-screen daily-image-screen no-nav" id="daily-image" data-screen="daily-image" data-parent-screen="home" data-slide-mode="fullscreen">
-            <img class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24">
-              <span aria-hidden="true"></span>
-            </div>
-            <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
-            <blockquote class="daily-image-quote">Nem kell tökéletesnek lenned.<span>Ma elég kitartanod. Minden nap egy lépés a fény felé.</span></blockquote>
-          </article>
-        </section>
-
         <section class="screen-column" id="column-checkin-clean">
           <div class="screen-label"><span class="screen-index">11</span><strong>SIKERES NAP - JUTALOM</strong> · Check-in child</div>
           <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="home" data-auto-sheet-delay="2000" data-reference-screenshot="Screenshot_20260718-232534.png">
@@ -4546,32 +4581,6 @@
         </section>
       </div>
 
-      <div class="screen-row" data-page="relapse" data-root-screen="checkin-relapse" data-row-screens="checkin-relapse">
-        <section class="screen-column" id="column-checkin-relapse">
-          <div class="screen-label"><span class="screen-index">15</span><strong>Ma visszaestem</strong> · Nem büntet</div>
-          <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="home">
-            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="checkin-content">
-              <div class="checkin-top-actions">
-                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </div>
-              <section class="checkin-relapse-copy" aria-label="Visszaesés utáni visszajelzés">
-                <h3>Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3>
-              </section>
-              <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="restart-clean-period" data-target-screen="home">Újrakezdem</button>
-                <button class="checkin-action outline" type="button" data-action="ask-support-after-relapse" data-target-screen="panic-root">Segítséget kérek</button>
-              </div>
-            </div>
-          </article>
-        </section>
-      </div>
     </section>
 
     <section class="screen-section" aria-labelledby="panic-row-title">
@@ -4589,10 +4598,11 @@
 ├── Légzőgyakorlat
 ├── Olvasd el, miért kezdted el
 ├── Keresd meg a következő meetinget
-└── Szakmai vagy sürgősségi segítség</pre>
+├── Szakmai vagy sürgősségi segítség
+└── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -4875,6 +4885,59 @@
               <p class="restart-note">A Hajnal nem helyettesít orvost, sürgősségi ellátást vagy szakmai segítséget.</p>
               <button class="primary-button" type="button" data-action="open-emergency-sheet">Segítségkérési lehetőségek</button>
             </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-checkin-relapse">
+          <div class="screen-label"><span class="screen-index">15</span><strong>Ma visszaestem</strong> · Pánik sor vége</div>
+          <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="home">
+            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="checkin-content">
+              <div class="checkin-top-actions">
+                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </div>
+              <section class="checkin-relapse-copy" aria-label="Visszaesés utáni visszajelzés">
+                <h3>Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="restart-clean-period" data-target-screen="home">Újrakezdem</button>
+                <button class="checkin-action outline" type="button" data-action="ask-support-after-relapse" data-target-screen="panic-root">Segítséget kérek</button>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+
+    <section class="screen-section" aria-labelledby="daily-image-row-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="daily-image-row-title">Napi kép</h2>
+          <p>Oldal 4 · külön sor a Pánik mód alatt</p>
+        </div>
+        <pre class="flow-tree" aria-label="Napi kép hierarchia">Napi kép (a főmenü képére tap indítja)</pre>
+      </div>
+
+      <div class="screen-row" data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image">
+        <section class="screen-column" id="column-daily-image">
+          <div class="screen-label"><span class="screen-index">9</span><strong>Napi kép</strong> · Külön sor</div>
+          <article class="phone-screen daily-image-screen no-nav" id="daily-image" data-screen="daily-image" data-parent-screen="home" data-slide-mode="fullscreen">
+            <img class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24">
+              <span aria-hidden="true"></span>
+            </div>
+            <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
+            <blockquote class="daily-image-quote">Nem kell tökéletesnek lenned.<span>Ma elég kitartanod. Minden nap egy lépés a fény felé.</span></blockquote>
           </article>
         </section>
       </div>

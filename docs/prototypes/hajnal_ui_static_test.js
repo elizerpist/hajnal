@@ -17,12 +17,11 @@ const screenOrder = [
   'recovery-goal',
   'sponsor-setup',
   'notifications',
+  'home-collapsed',
   'home',
-  'daily-image',
   'checkin-clean',
   'evening-reflection',
   'reflection-saved',
-  'checkin-relapse',
   'panic-root',
   'panic-help-sheet',
   'checkin-survival-pack',
@@ -32,7 +31,9 @@ const screenOrder = [
   'panic-backup-contact',
   'panic-why-started',
   'panic-meeting-finder',
-  'panic-emergency-help'
+  'panic-emergency-help',
+  'checkin-relapse',
+  'daily-image'
 ];
 
 function expectContains(value) {
@@ -112,7 +113,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 23, 'phone screen count');
+    expectCount(/class="phone-screen/g, 24, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -138,10 +139,10 @@ const tests = {
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 9, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 10, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
-    expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home and daily image screens must use the approved fullscreen2 SVG asset');
+    expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
     expectCount(/src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
     expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 5, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
@@ -218,7 +219,9 @@ const tests = {
   },
 
   home() {
+    expectContains('data-screen="home-collapsed"');
     expectContains('data-screen="home"');
+    const collapsedHomeScreen = screenSlice('home-collapsed');
     const homeScreen = screenSlice('home');
     const homeBodyIndex = homeScreen.indexOf('class="home-body');
     const dashboardIndex = homeScreen.indexOf('data-component="home-dashboard"');
@@ -267,6 +270,21 @@ const tests = {
     assert.ok(homeScreen.includes('class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"'), 'home hero must use the fullscreen2 SVG asset');
     assert.ok(homeScreen.includes('data-action="mark-clean-today" data-target-screen="checkin-clean"'), 'home dashboard needs the clean-day action');
     assert.ok(homeScreen.includes('data-action="open-evening-checkin" data-target-screen="checkin-clean"'), 'home checklist evening check-in must start the new clean-day sheet flow');
+    expectScreenContains('home-collapsed', [
+      'class="phone-screen home-screen home-collapsed-screen"',
+      'data-screen="home-collapsed"',
+      'data-parent-screen="notifications"',
+      'data-state="collapsed"',
+      'data-action="expand-home-card" data-target-screen="home"',
+      'data-action="mark-clean-today" data-target-screen="checkin-clean"',
+      'class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"',
+      'Tiszta napok',
+      'Ma tiszta<br>maradtam'
+    ]);
+    assert.ok(!collapsedHomeScreen.includes('class="home-body"'), 'collapsed home must not show the large opened lower card');
+    assert.ok(!collapsedHomeScreen.includes('class="tasks-card"'), 'collapsed home must not show the checklist');
+    assert.ok(!collapsedHomeScreen.includes('Mai feladataim'), 'collapsed home must not include checklist heading');
+    assert.match(html, /\.home-collapsed-screen \.home-metrics\s*\{[^}]*top:\s*552px/s, 'collapsed home dashboard must sit slightly lower than the expanded dashboard');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
@@ -281,22 +299,26 @@ const tests = {
   },
 
   homeBranch() {
+    const collapsedHomeScreen = screenSlice('home-collapsed');
+    const homeScreen = screenSlice('home');
     const dailyImageScreen = screenSlice('daily-image');
     const cleanRewardScreen = screenSlice('checkin-clean');
     const eveningReflectionScreen = screenSlice('evening-reflection');
     const savedScreen = screenSlice('reflection-saved');
     const relapseScreen = screenSlice('checkin-relapse');
     expectOrdered([
+      'data-screen="home-collapsed"',
       'data-screen="home"',
-      'data-screen="daily-image"',
       'data-screen="checkin-clean"',
       'data-screen="evening-reflection"',
       'data-screen="reflection-saved"',
-      'data-screen="checkin-relapse"',
       'data-screen="panic-root"',
       'data-screen="panic-help-sheet"',
       'data-screen="checkin-survival-pack"',
-      'data-screen="checkin-breathing"'
+      'data-screen="checkin-breathing"',
+      'data-screen="panic-emergency-help"',
+      'data-screen="checkin-relapse"',
+      'data-screen="daily-image"'
     ]);
     [
       'Napi kép',
@@ -346,6 +368,7 @@ const tests = {
     expectContains('data-action="open-daily-image" data-target-screen="daily-image"');
     expectContains('data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap"');
     expectContains('Napi kép (a főmenü képére tap indítja)');
+    expectContains('data-action="expand-home-card" data-target-screen="home"');
     expectContains('data-action="mark-clean-today" data-target-screen="checkin-clean"');
     expectContains('data-action="start-evening-reflection-now" data-target-screen="evening-reflection"');
     expectContains('data-action="skip-evening-reflection" data-target-screen="home"');
@@ -356,6 +379,9 @@ const tests = {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
     });
+    assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') !== -1, 'collapsed home must keep the clean-days dashboard');
+    assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') < collapsedHomeScreen.indexOf('data-action="expand-home-card"'), 'collapsed home dashboard must render before the invisible expand hotspot');
+    assert.ok(homeScreen.includes('class="home-body"'), 'expanded home state must remain the opened-card version');
     assert.ok(dailyImageScreen.includes('class="phone-screen daily-image-screen no-nav"'), 'daily image screen must use the fullscreen screen variant');
     assert.ok(dailyImageScreen.includes('data-slide-mode="fullscreen"'), 'daily image screen must document fullscreen slide behavior');
     assert.ok(dailyImageScreen.includes('class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg"'), 'daily image screen must use fullscreen2 as the full-screen image');
@@ -408,13 +434,13 @@ const tests = {
       'magadra.',
       'data-action="return-home-after-save" data-target-screen="home"'
     ]);
-    assert.ok(relapseScreen.includes('data-parent-screen="home"'), 'screen 15 must move to its own lower row under the home flow');
+    assert.ok(relapseScreen.includes('data-parent-screen="home"'), 'screen 15 must remain a home-triggered branch even when placed at the end of the panic row');
     assert.match(html, /\.reflection-choice-sheet\s*\{[^}]*position:\s*absolute;[^}]*left:\s*24px;[^}]*right:\s*24px;[^}]*bottom:\s*28px;[^}]*border-radius:\s*32px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.96\);[^}]*color:\s*var\(--hajnal-navy\)/s, 'screen 11 bottom sheet must match the source card placement and white design');
     assert.match(html, /\.sheet-primary\s*\{[^}]*min-height:\s*48px;[^}]*background:\s*linear-gradient\(135deg,\s*#7750D7,\s*#5F35B9\);[^}]*color:\s*#FFFFFF/s, 'bottom sheet primary action must match the screenshot purple button');
     assert.match(html, /\.sheet-secondary\s*\{[^}]*min-height:\s*48px;[^}]*background:\s*#FFFFFF;[^}]*color:\s*var\(--hajnal-purple\)/s, 'bottom sheet secondary action must match the screenshot white outline button');
     assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*overflow:\s*hidden/s, 'screen 12 must keep a fixed mother container');
     assert.match(html, /\.evening-section-title\s*\{[^}]*color:\s*rgba\(226,\s*220,\s*242,\s*\.86\)/s, 'screen 12 section titles must use the darker screenshot text color');
-    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*grid-template-columns:\s*148px 176px;[^}]*justify-content:\s*end/s, 'screen 12 footer buttons must be smaller and right-aligned');
+    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*grid-template-columns:\s*148px 104px;[^}]*justify-content:\s*end/s, 'screen 12 footer buttons must be smaller and right-aligned');
     assert.match(html, /#evening-reflection \.evening-save-actions \.secondary-button,\s*#evening-reflection \.evening-save-actions \.primary-button\s*\{[^}]*white-space:\s*nowrap/s, 'screen 12 footer labels must stay on one line');
     assert.match(html, /\.reflection-saved-screen::after\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*rgba\(20,\s*18,\s*64,\s*\.10\) 0%,\s*rgba\(97,\s*49,\s*118,\s*\.22\) 48%,\s*rgba\(10,\s*20,\s*37,\s*\.80\) 100%\)/s, 'final saved screen must use the screenshot dusk overlay');
     assert.match(html, /\.reflection-saved-content\s*\{[^}]*min-height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*padding:\s*166px 32px 42px;[^}]*text-align:\s*center/s, 'final saved content must match the source vertical placement');
@@ -436,7 +462,8 @@ const tests = {
       'data-screen="panic-backup-contact"',
       'data-screen="panic-why-started"',
       'data-screen="panic-meeting-finder"',
-      'data-screen="panic-emergency-help"'
+      'data-screen="panic-emergency-help"',
+      'data-screen="checkin-relapse"'
     ]);
     [
       'Pánik mód elemei',
@@ -459,7 +486,8 @@ const tests = {
       'Igyál vizet.',
       'Várj 10 percet.',
       'Belégzés',
-      'Meeting keresése'
+      'Meeting keresése',
+      'Ma visszaestem'
     ].forEach(expectContains);
     expectContains('data-action="open-help-sheet" data-target-screen="panic-help-sheet"');
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
@@ -484,9 +512,9 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 4, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="relapse" data-root-screen="checkin-relapse" data-row-screens="checkin-relapse"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help"');
+    expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -494,7 +522,8 @@ const tests = {
       'recovery-goal': 'onboarding',
       'sponsor-setup': 'onboarding',
       notifications: 'onboarding',
-      home: 'notifications',
+      'home-collapsed': 'notifications',
+      home: 'home-collapsed',
       'daily-image': 'home',
       'checkin-clean': 'home',
       'evening-reflection': 'checkin-clean',
