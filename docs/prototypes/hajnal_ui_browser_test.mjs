@@ -194,6 +194,23 @@ try {
     footerVisible: true,
   }, "screen 12 must scroll internally while the footer stays fixed in the panel");
 
+  const panelHeightInGratitudeMode = await page.locator("#evening-reflection [data-component='evening-reflection-panel']").evaluate((panel) =>
+    Math.round(panel.getBoundingClientRect().height),
+  );
+  await page.locator('#evening-reflection [data-reflection-prompt="remember"]').click();
+  const panelHeightInRememberMode = await page.locator("#evening-reflection [data-component='evening-reflection-panel']").evaluate((panel) =>
+    Math.round(panel.getBoundingClientRect().height),
+  );
+  await page.locator('#evening-reflection [data-reflection-prompt="best"]').click();
+  const panelHeightInBestMode = await page.locator("#evening-reflection [data-component='evening-reflection-panel']").evaluate((panel) =>
+    Math.round(panel.getBoundingClientRect().height),
+  );
+  assert.deepEqual(
+    [panelHeightInGratitudeMode, panelHeightInRememberMode, panelHeightInBestMode],
+    [804, 804, 804],
+    "screen 12 mother container height must stay fixed across prompt modes",
+  );
+
   const calendarButtons = page.locator("#start-date button.calendar-day");
   assert.equal(await calendarButtons.count(), 35, "semantic calendar date button count");
   assert.equal(await page.locator('#start-date button.calendar-day[aria-current="date"][aria-pressed="true"]').count(), 1);

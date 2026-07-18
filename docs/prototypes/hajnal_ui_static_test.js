@@ -254,6 +254,8 @@ const tests = {
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
     assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*518px/s, 'home dashboard must move 38px lower with the sheet');
     assert.match(html, /\.home-metrics\s*\{[^}]*color:\s*var\(--hajnal-navy\);[^}]*background:\s*#FFFCFB;[^}]*backdrop-filter:\s*none/s, 'home clean-days dashboard must stay solid rather than glass');
+    assert.ok(!/\.home-metrics\s*\{[^}]*box-shadow:\s*0 18px 38px rgba\(44,\s*46,\s*119,\s*\.16\)/s.test(html), 'home dashboard must not cast the old strong downward shadow over the lower card');
+    assert.match(html, /\.home-metrics\s*\{[^}]*box-shadow:\s*0 2px 8px rgba\(44,\s*46,\s*119,\s*\.04\),\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*\.68\)/s, 'home dashboard shadow must be subtle enough not to darken the top of the lower card');
     assert.match(html, /\.metric strong\s*\{[^}]*color:\s*var\(--hajnal-navy\)/s, 'clean-days number must not inherit white text');
     assert.match(html, /\.tasks-card\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s, 'home task list must be merged into the lower sheet, not a separate card');
     assert.match(html, /\.task-row\s*\{[^}]*min-height:\s*24px/s, 'home task rows must be compact enough to fit in the sheet');
@@ -416,8 +418,8 @@ const tests = {
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="photo-memo"'), 'photo memo must not navigate to a helper screen');
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="voice-memo"'), 'voice memo must not navigate to a helper screen');
     assert.ok(!/#evening-reflection \.evening-reflection-panel::before/.test(html), 'screen 12 panel must not keep an extra screen-specific backing layer');
-    assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*overflow:\s*hidden/s, 'evening reflection phone content must not scroll as a whole');
-    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.54\)/s, 'evening reflection panel must restore the original colorful pre-glass panel');
+    assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 32px\);[^}]*min-height:\s*0;[^}]*overflow:\s*hidden/s, 'evening reflection phone content must keep a fixed viewport-derived height');
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*0 0 calc\(var\(--screen-h\) - 88px\);[^}]*height:\s*calc\(var\(--screen-h\) - 88px\);[^}]*max-height:\s*calc\(var\(--screen-h\) - 88px\);[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.54\)/s, 'evening reflection panel must keep the same mother-container height across prompt modes');
     assert.match(html, /\.evening-scroll\s*\{[^}]*flex:\s*1;[^}]*overflow-y:\s*auto;[^}]*padding-bottom:\s*12px/s, 'evening reflection screen content must scroll above the floating footer');
     assert.match(html, /\.reflection-response-panel\s*\{[^}]*border-radius:\s*17px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.70\)/s, 'the section 3 content container must be a compact non-glass card');
     assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*flex:\s*0 0 auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be outside the scroll area, smaller, and right aligned');
