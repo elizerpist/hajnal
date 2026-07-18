@@ -88,11 +88,12 @@
       margin-bottom: 34px;
     }
 
-    .prototype-brand img {
+    .prototype-logo-svg {
       width: 112px;
       height: 112px;
+      display: block;
+      overflow: hidden;
       border-radius: 28px;
-      object-fit: cover;
       box-shadow: 0 14px 32px rgba(74, 53, 144, .17);
     }
 
@@ -152,6 +153,10 @@
       color: rgba(44, 46, 119, .62);
       font-size: 13px;
       font-weight: 650;
+    }
+
+    .screen-section + .screen-section {
+      margin-top: 48px;
     }
 
     .flow-tree {
@@ -495,11 +500,12 @@
       text-align: center;
     }
 
-    .splash-logo {
+    .splash-logo-svg {
       width: 102px;
       height: 102px;
+      display: block;
+      overflow: hidden;
       border-radius: 25px;
-      object-fit: cover;
       box-shadow: 0 12px 28px rgba(44, 46, 119, .16);
     }
 
@@ -1107,73 +1113,98 @@
 
     .home-screen {
       color: var(--white);
-      background: var(--hajnal-navy);
+      background: #171848;
     }
 
-    .home-hero {
-      height: 346px;
+    .home-illustration {
+      width: 100%;
+      height: 607px;
       position: absolute;
-      inset: 0 0 auto;
+      inset: 0 0 auto 0;
+      z-index: 1;
       overflow: hidden;
-      background: linear-gradient(180deg, #3A3B8A 0%, #7760B7 55%, #E89EB9 100%);
+      padding: 0;
+      border: 0;
+      background: #28265F;
+      cursor: pointer;
+    }
+
+    .home-hero-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
     }
 
     .home-screen > .status-bar {
+      position: relative;
+      z-index: 22;
       color: var(--white);
+      text-shadow: 0 2px 8px rgba(22, 20, 62, .42);
     }
 
     .home-topbar {
-      height: 76px;
-      position: relative;
-      z-index: 15;
+      height: 220px;
+      position: absolute;
+      z-index: 22;
+      top: 34px;
+      left: 0;
+      right: 0;
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) 48px;
+      grid-template-columns: 64px minmax(0, 1fr) 64px;
       align-items: start;
-      padding: 8px 14px 0;
+      padding: 0 20px;
+      pointer-events: none;
     }
 
     .home-topbar .icon-button {
+      width: 54px;
+      height: 54px;
+      pointer-events: auto;
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .15);
       color: var(--white);
+      box-shadow: 0 12px 28px rgba(24, 24, 74, .20);
+      backdrop-filter: blur(12px);
+    }
+
+    .home-topbar .icon-button:last-child {
+      justify-self: end;
     }
 
     .home-day {
-      padding-top: 3px;
+      padding-top: 38px;
       text-align: center;
+      text-shadow: 0 3px 12px rgba(22, 20, 62, .34);
     }
 
     .home-day strong {
       display: block;
-      font-size: 29px;
+      font-size: 32px;
       line-height: 1;
       font-weight: 820;
-      letter-spacing: -.03em;
+      letter-spacing: 0;
     }
 
-    .home-day span {
+    .home-subtitle {
       display: block;
-      margin-top: 6px;
+      margin-top: 7px;
       color: rgba(255, 255, 255, .84);
       font-size: 13px;
       font-weight: 650;
     }
 
-    .home-illustration {
-      width: 100%;
-      height: 250px;
-      position: absolute;
-      top: 96px;
-      left: 0;
-      z-index: 3;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .home-illustration svg {
-      width: 100%;
-      height: 100%;
+    .home-tagline {
       display: block;
+      margin-top: 18px;
+      color: rgba(255, 255, 255, .97);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: 0;
     }
 
     .home-body {
@@ -1181,37 +1212,48 @@
       z-index: 20;
       left: 0;
       right: 0;
-      top: 315px;
+      top: 548px;
       bottom: 70px;
-      padding: 66px 18px 14px;
-      border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
-      background:
-        radial-gradient(circle at 90% 0%, rgba(184, 154, 215, .11), transparent 170px),
-        linear-gradient(180deg, #FCF8F9, #F9F2F6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 62px 28px 16px;
+      border-radius: 92px 92px 0 0;
+      background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%);
       color: var(--hajnal-navy);
     }
 
-    .home-metrics {
-      min-height: 112px;
+    .home-body::before {
+      content: "";
       position: absolute;
-      left: 18px;
-      right: 18px;
-      top: -38px;
+      z-index: -1;
+      top: -28px;
+      left: -64px;
+      right: -64px;
+      height: 88px;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      background: inherit;
+    }
+
+    .home-metrics {
+      min-height: 118px;
+      position: absolute;
+      z-index: 32;
+      left: 58px;
+      right: 58px;
+      top: 480px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+      align-items: stretch;
       overflow: hidden;
       border: 1px solid rgba(106, 86, 180, .14);
-      border-radius: var(--radius-card);
-      background: rgba(255, 252, 251, .96);
-      box-shadow: 0 13px 30px rgba(44, 46, 119, .12);
+      border-radius: 24px;
+      background: rgba(255, 252, 251, .97);
+      box-shadow: 0 18px 38px rgba(44, 46, 119, .16);
     }
 
     .metric {
-      padding: 15px 16px 9px;
-    }
-
-    .metric + .metric {
-      border-left: 1px solid var(--hairline);
+      padding: 15px 15px 12px;
     }
 
     .metric small {
@@ -1225,10 +1267,10 @@
     .metric strong {
       display: inline-block;
       margin-top: 4px;
-      font-size: 27px;
+      font-size: 28px;
       line-height: 1;
       font-weight: 830;
-      letter-spacing: -.03em;
+      letter-spacing: 0;
     }
 
     .metric em {
@@ -1239,50 +1281,86 @@
       font-weight: 680;
     }
 
-    .day-state {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      min-height: 30px;
-      border-top: 1px solid var(--hairline);
-      background: rgba(184, 154, 215, .10);
-      color: var(--hajnal-purple);
-      font-size: 11px;
-      font-weight: 720;
+    .segmented-progress {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 3px;
+      margin-top: 10px;
     }
 
-    .day-state::before {
-      content: "";
-      width: 7px;
+    .segmented-progress span {
       height: 7px;
+      border-radius: 999px;
+      background: rgba(184, 154, 215, .24);
+    }
+
+    .segmented-progress .filled {
+      background: linear-gradient(90deg, #6A56B4 0%, #B89AD7 100%);
+    }
+
+    .progress-note {
+      display: block;
+      margin-top: 7px;
+      color: rgba(44, 46, 119, .50);
+      font-size: 10px;
+      font-weight: 650;
+    }
+
+    .dashboard-separator {
+      width: 1px;
+      height: 74px;
+      align-self: center;
+      background: rgba(106, 86, 180, .16);
+    }
+
+    .clean-today-button {
+      min-width: 0;
+      display: grid;
+      place-items: center;
+      gap: 8px;
+      padding: 13px 10px;
+      border: 0;
+      background: transparent;
+      color: var(--hajnal-navy);
+      font-size: 11px;
+      line-height: 1.18;
+      font-weight: 780;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .clean-check-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
       border-radius: 50%;
-      background: var(--hajnal-peach);
-      box-shadow: 0 0 0 4px rgba(254, 200, 132, .16);
+      background: linear-gradient(135deg, #6A56B4 0%, #B89AD7 100%);
+      color: var(--white);
+      box-shadow: 0 10px 20px rgba(106, 86, 180, .23);
     }
 
     .tasks-card {
       display: flex;
       flex-direction: column;
-      height: 286px;
-      padding: 14px 15px 12px;
-      border: 1px solid var(--hairline);
-      border-radius: var(--radius-card);
-      background: rgba(255, 255, 255, .72);
-      box-shadow: 0 8px 24px rgba(44, 46, 119, .045);
+      height: 126px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .tasks-heading {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .tasks-heading h4 {
       margin: 0;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
     }
 
@@ -1291,31 +1369,38 @@
       border: 0;
       background: transparent;
       color: var(--hajnal-purple);
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 650;
     }
 
     .task-list {
       display: grid;
-      gap: 1px;
+      gap: 0;
     }
 
     .task-row {
-      min-height: 36px;
+      min-height: 24px;
       display: grid;
-      grid-template-columns: 20px minmax(0, 1fr);
+      grid-template-columns: 17px minmax(0, 1fr) 20px;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       cursor: pointer;
       color: var(--hajnal-navy);
-      font-size: 11px;
-      line-height: 1.25;
+      font-size: 10.8px;
+      line-height: 1.12;
       font-weight: 620;
     }
 
+    .task-row > span:not(.task-check) {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .task-check {
-      width: 17px;
-      height: 17px;
+      width: 15px;
+      height: 15px;
       display: grid;
       place-items: center;
       border: 1.5px solid rgba(106, 86, 180, .50);
@@ -1343,39 +1428,33 @@
       opacity: 1;
     }
 
-    .home-actions {
-      display: grid;
-      gap: 8px;
-      margin-top: 11px;
+    .task-action-icon {
+      width: 17px;
+      height: 17px;
+      justify-self: end;
+      color: rgba(106, 86, 180, .62);
     }
 
-    .checkin-button,
+    .home-actions {
+      display: grid;
+      margin-top: auto;
+    }
+
     .help-button {
       width: 100%;
-      min-height: 50px;
+      min-height: 46px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       border-radius: var(--radius-button);
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .checkin-button {
-      border: 1px solid rgba(238, 89, 144, .18);
-      background: linear-gradient(135deg, #F978A4, #EF5591);
+      border: 0;
+      background: linear-gradient(160deg, #FF78A8, #E04D86);
       color: var(--white);
-      box-shadow: 0 10px 22px rgba(239, 85, 145, .18);
-    }
-
-    .help-button {
-      min-height: 43px;
-      border: 1px solid rgba(241, 142, 175, .24);
-      background: rgba(252, 228, 235, .78);
-      color: #D65382;
-      font-size: 12px;
+      box-shadow: 0 18px 38px rgba(239, 85, 145, .26);
+      font-size: 13px;
+      font-weight: 840;
+      cursor: pointer;
     }
 
     .home-screen .bottom-nav {
@@ -1385,6 +1464,979 @@
       right: 0;
       bottom: 0;
       color: var(--hajnal-navy);
+    }
+
+    .branch-screen {
+      color: var(--hajnal-navy);
+      background:
+        radial-gradient(circle at 84% 5%, rgba(184, 154, 215, .13), transparent 190px),
+        radial-gradient(circle at 12% 95%, rgba(241, 142, 175, .10), transparent 240px),
+        linear-gradient(155deg, #fdf8fa 0%, #f8f1f6 100%);
+    }
+
+    .branch-screen.dark {
+      color: var(--white);
+      background: linear-gradient(180deg, #343585 0%, #6855AD 52%, #2C2E77 100%);
+    }
+
+    .branch-screen.panic-screen {
+      color: var(--white);
+      background:
+        radial-gradient(circle at 50% 31%, rgba(241, 142, 175, .28), transparent 128px),
+        linear-gradient(180deg, #272B72 0%, #343585 44%, #26265F 100%);
+    }
+
+    .branch-screen.dark .status-bar,
+    .branch-screen.dark .screen-header h3,
+    .branch-screen.dark .screen-subtitle,
+    .branch-screen.panic-screen .status-bar,
+    .branch-screen.panic-screen .screen-header h3,
+    .branch-screen.panic-screen .screen-subtitle {
+      color: var(--white);
+    }
+
+    .branch-screen .bottom-nav {
+      position: absolute;
+      z-index: 30;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      color: var(--hajnal-navy);
+    }
+
+    .branch-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      min-height: 716px;
+      padding: 0 24px 86px;
+    }
+
+    .branch-screen.no-nav .branch-content {
+      min-height: 786px;
+      padding-bottom: 24px;
+    }
+
+    .branch-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .branch-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #4B439B 0%, #9470C0 54%, #F1A3B8 100%);
+      box-shadow: 0 14px 30px rgba(44, 46, 119, .14);
+    }
+
+    .branch-hero svg,
+    .branch-hero img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .daily-art-card {
+      height: 430px;
+      margin-top: 8px;
+      border-radius: 30px;
+    }
+
+    .daily-carousel {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      border-radius: inherit;
+    }
+
+    .daily-carousel-window {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+
+    .daily-slide {
+      position: absolute;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .16);
+      box-shadow: 0 12px 24px rgba(25, 22, 82, .18);
+    }
+
+    .daily-slide.current {
+      z-index: 2;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: inherit;
+      box-shadow: none;
+    }
+
+    .daily-slide.past {
+      width: 58px;
+      height: 82px;
+      z-index: 5;
+      left: 14px;
+      bottom: 18px;
+      opacity: .82;
+      border-radius: 15px;
+      transform-origin: left bottom;
+    }
+
+    .daily-slide.future {
+      width: 58px;
+      height: 82px;
+      z-index: 5;
+      right: 14px;
+      bottom: 18px;
+      opacity: .62;
+      border-radius: 15px;
+      transform-origin: right bottom;
+      filter: grayscale(1);
+    }
+
+    .daily-slide img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .daily-slide.future img {
+      filter: grayscale(1);
+    }
+
+    .daily-slide-label {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      background: rgba(44, 46, 119, .64);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 780;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .daily-slide.future .daily-slide-label {
+      background: rgba(42, 43, 58, .58);
+    }
+
+    .daily-carousel-nav {
+      width: 34px;
+      height: 34px;
+      position: absolute;
+      z-index: 6;
+      top: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .18);
+      color: var(--white);
+      box-shadow: 0 10px 22px rgba(20, 19, 70, .20);
+      transform: translateY(-50%);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+
+    .daily-carousel-nav.prev {
+      left: 8px;
+    }
+
+    .daily-carousel-nav.next {
+      right: 8px;
+    }
+
+    .daily-carousel-nav.next svg {
+      transform: rotate(180deg);
+    }
+
+    .daily-carousel-dots {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      z-index: 7;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .daily-carousel-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .42);
+    }
+
+    .daily-carousel-dots .active {
+      width: 18px;
+      border-radius: 999px;
+      background: var(--white);
+    }
+
+    .daily-art-message {
+      margin-top: 14px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .daily-art-message strong {
+      display: block;
+      font-size: 21px;
+      line-height: 1.25;
+      font-weight: 820;
+    }
+
+    .daily-art-message span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(44, 46, 119, .63);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 610;
+    }
+
+    .daily-art-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .task-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .task-summary div {
+      min-height: 74px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .task-summary strong {
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 830;
+    }
+
+    .task-summary span {
+      margin-top: 5px;
+      color: rgba(44, 46, 119, .56);
+      font-size: 10px;
+      font-weight: 720;
+      text-align: center;
+    }
+
+    .task-manager-card {
+      padding: 13px 15px;
+    }
+
+    .task-manager-card + .task-manager-card {
+      margin-top: 10px;
+    }
+
+    .task-manager-card .task-row {
+      min-height: 44px;
+      font-size: 12px;
+    }
+
+    .task-meta {
+      display: block;
+      margin-top: 3px;
+      color: rgba(44, 46, 119, .52);
+      font-size: 10px;
+      font-weight: 580;
+    }
+
+    .checkin-scene {
+      aspect-ratio: 1659 / 948;
+      height: auto;
+      margin: 2px 0 12px;
+      border-radius: 24px;
+      box-shadow: none;
+    }
+
+    .wizard-hero-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .decision-card {
+      display: grid;
+      gap: 11px;
+      padding: 18px;
+      color: var(--hajnal-navy);
+    }
+
+    .decision-card h4 {
+      margin: 0;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 820;
+    }
+
+    .decision-card p {
+      margin: -3px 0 5px;
+      color: rgba(44, 46, 119, .62);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.42;
+      font-weight: 590;
+    }
+
+    .decision-option {
+      min-height: 72px;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .82);
+      color: var(--hajnal-navy);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .decision-option.success {
+      background: var(--success-soft);
+    }
+
+    .decision-option.soft-danger {
+      background: rgba(252, 228, 235, .88);
+    }
+
+    .decision-face,
+    .round-badge {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(106, 86, 180, .13);
+      color: var(--hajnal-purple);
+      font-size: 20px;
+      font-weight: 820;
+    }
+
+    .decision-option strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 760;
+    }
+
+    .decision-option small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(44, 46, 119, .55);
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 570;
+    }
+
+    .success-count-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 78px;
+      gap: 12px;
+      align-items: center;
+      padding: 16px;
+      color: var(--hajnal-navy);
+    }
+
+    .success-count-card small,
+    .reflection-card small {
+      display: block;
+      color: rgba(44, 46, 119, .56);
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 650;
+    }
+
+    .success-count-card strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 840;
+    }
+
+    .plus-one {
+      min-height: 66px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-card);
+      background: var(--success-soft);
+      color: var(--success);
+      font-size: 28px;
+      font-weight: 840;
+    }
+
+    .mood-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mood-button {
+      min-height: 64px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 5px;
+      padding: 0;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .76);
+      color: var(--hajnal-navy);
+      cursor: pointer;
+    }
+
+    .mood-button span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(106, 86, 180, .14);
+      font-size: 13px;
+      font-weight: 820;
+    }
+
+    .mood-button small {
+      color: rgba(44, 46, 119, .58);
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .reflection-card {
+      padding: 15px;
+    }
+
+    .reflection-card + .reflection-card {
+      margin-top: 10px;
+    }
+
+    .reflection-scale {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      color: var(--hajnal-purple);
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .scale-track {
+      height: 6px;
+      position: relative;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .14);
+    }
+
+    .scale-track::after {
+      content: "";
+      width: 58%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--hajnal-lavender), var(--hajnal-purple));
+    }
+
+    .reflection-input {
+      width: 100%;
+      min-height: 126px;
+      margin-top: 10px;
+      resize: none;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .70);
+      color: var(--hajnal-navy);
+      padding: 13px;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 590;
+    }
+
+    .restart-note {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      border-radius: var(--radius-card);
+      background: rgba(184, 154, 215, .16);
+      color: rgba(44, 46, 119, .64);
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 590;
+    }
+
+    .support-list {
+      display: grid;
+      gap: 11px;
+      margin-top: 10px;
+    }
+
+    .support-option {
+      min-height: 86px;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .78);
+      color: var(--hajnal-navy);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .support-option strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 760;
+    }
+
+    .support-option small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(44, 46, 119, .56);
+      font-size: 11px;
+      line-height: 1.32;
+      font-weight: 570;
+    }
+
+    .panic-center {
+      display: grid;
+      justify-items: center;
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .panic-center h3 {
+      margin: 0;
+      color: var(--white);
+      font-size: 26px;
+      line-height: 1.16;
+      font-weight: 830;
+    }
+
+    .panic-center p {
+      margin: 8px 28px 0;
+      color: rgba(255, 255, 255, .78);
+      font-size: 13px;
+      line-height: 1.42;
+      font-weight: 590;
+    }
+
+    .panic-main-button {
+      width: 146px;
+      height: 146px;
+      display: grid;
+      place-items: center;
+      margin-top: 30px;
+      border: 9px solid rgba(241, 142, 175, .23);
+      border-radius: 50%;
+      background: linear-gradient(160deg, #FF78A8, #E04D86);
+      color: var(--white);
+      box-shadow: 0 18px 38px rgba(239, 85, 145, .26);
+      font-size: 20px;
+      line-height: 1.12;
+      font-weight: 840;
+      cursor: pointer;
+    }
+
+    .panic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 28px;
+      padding: 0 18px;
+    }
+
+    .panic-grid button {
+      min-height: 92px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 8px;
+      padding: 9px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .10);
+      color: var(--white);
+      font-size: 10px;
+      line-height: 1.22;
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    .panic-grid .icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .panic-detail-content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      min-height: 786px;
+      padding: 0 24px 24px;
+    }
+
+    .panic-detail-intro {
+      margin: 5px 12px 16px;
+      color: rgba(255, 255, 255, .76);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 590;
+    }
+
+    .panic-option-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .panic-option-card {
+      min-height: 72px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 20px;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 13px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .11);
+      color: var(--white);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .panic-option-card.light {
+      border-color: var(--hairline);
+      background: rgba(255, 255, 255, .78);
+      color: var(--hajnal-navy);
+    }
+
+    .panic-option-card strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.22;
+      font-weight: 780;
+    }
+
+    .panic-option-card small {
+      display: block;
+      margin-top: 3px;
+      color: currentColor;
+      opacity: .68;
+      font-size: 10px;
+      line-height: 1.3;
+      font-weight: 570;
+    }
+
+    .panic-option-card .row-icon {
+      background: rgba(255, 255, 255, .16);
+      box-shadow: none;
+    }
+
+    .panic-option-card.light .row-icon {
+      background: linear-gradient(145deg, #A987D4, #6B59BE);
+    }
+
+    .panic-sheet-card {
+      margin-top: auto;
+      padding: 12px 14px 16px;
+      border-radius: 24px 24px 20px 20px;
+      color: var(--hajnal-navy);
+    }
+
+    .panic-sheet-handle {
+      width: 46px;
+      height: 5px;
+      margin: 0 auto 12px;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .18);
+    }
+
+    .panic-sheet-card h4,
+    .panic-panel-card h4 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+      font-weight: 820;
+      text-align: center;
+    }
+
+    .panic-sheet-card p,
+    .panic-panel-card p {
+      margin: 6px 8px 13px;
+      color: rgba(44, 46, 119, .62);
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 590;
+    }
+
+    .panic-panel-card {
+      padding: 16px;
+    }
+
+    .panic-contact-card {
+      display: grid;
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 13px;
+      align-items: center;
+      padding: 14px;
+      color: var(--hajnal-navy);
+    }
+
+    .panic-avatar {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 21px;
+      background: linear-gradient(150deg, #B89AD7, #F18EAF);
+      color: var(--white);
+    }
+
+    .panic-contact-card strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 820;
+    }
+
+    .panic-contact-card small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 11px;
+      line-height: 1.35;
+      font-weight: 590;
+    }
+
+    .panic-message-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .panic-message-list button {
+      min-height: 68px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 22px;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .76);
+      color: var(--hajnal-navy);
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .survival-ring {
+      width: 190px;
+      height: 190px;
+      display: grid;
+      place-items: center;
+      align-self: center;
+      margin: 8px 0 16px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #FFF8EA 0 42%, transparent 43%),
+        conic-gradient(var(--hajnal-pink) 0 14%, rgba(184, 154, 215, .25) 14% 100%);
+      box-shadow: 0 18px 36px rgba(44, 46, 119, .11);
+      color: var(--hajnal-navy);
+      text-align: center;
+    }
+
+    .survival-ring strong {
+      display: block;
+      font-size: 24px;
+      font-weight: 840;
+    }
+
+    .survival-ring span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .survival-steps {
+      display: grid;
+      gap: 7px;
+      counter-reset: survival;
+    }
+
+    .survival-steps li {
+      min-height: 38px;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-compact);
+      background: rgba(255, 255, 255, .76);
+      color: var(--hajnal-navy);
+      font-size: 11px;
+      font-weight: 690;
+      list-style: none;
+    }
+
+    .survival-steps li::before {
+      counter-increment: survival;
+      content: counter(survival);
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(106, 86, 180, .13);
+      color: var(--hajnal-purple);
+      font-size: 11px;
+      font-weight: 820;
+    }
+
+    .breath-orb {
+      width: 222px;
+      height: 222px;
+      display: grid;
+      place-items: center;
+      align-self: center;
+      margin: 20px 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .82) 0 34%, rgba(254, 200, 132, .62) 35% 49%, rgba(241, 142, 175, .48) 50% 68%, rgba(106, 86, 180, .14) 69% 100%);
+      box-shadow: 0 22px 48px rgba(106, 86, 180, .16);
+      text-align: center;
+    }
+
+    .breath-orb strong {
+      display: block;
+      font-size: 26px;
+      font-weight: 840;
+    }
+
+    .breath-orb span {
+      display: block;
+      margin-top: 6px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 12px;
+      font-weight: 680;
+    }
+
+    .why-card {
+      min-height: 252px;
+      display: grid;
+      align-content: center;
+      gap: 16px;
+      padding: 26px 24px;
+      text-align: center;
+      color: var(--hajnal-navy);
+    }
+
+    .why-card blockquote {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-size: 25px;
+      line-height: 1.22;
+      font-weight: 820;
+    }
+
+    .why-card p {
+      margin: 0;
+      color: rgba(44, 46, 119, .62);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 590;
+    }
+
+    .meeting-card,
+    .emergency-card {
+      padding: 15px;
+      color: var(--hajnal-navy);
+    }
+
+    .meeting-row,
+    .emergency-row {
+      min-height: 64px;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 0;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .meeting-row:first-child,
+    .emergency-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .meeting-row strong,
+    .emergency-row strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.25;
+      font-weight: 760;
+    }
+
+    .meeting-row small,
+    .emergency-row small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(44, 46, 119, .56);
+      font-size: 10px;
+      line-height: 1.3;
+      font-weight: 570;
+    }
+
+    .distance-chip {
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .12);
+      color: var(--hajnal-purple);
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
     @media (max-width: 760px) {
@@ -1397,7 +2449,7 @@
         gap: 14px;
       }
 
-      .prototype-brand img {
+      .prototype-logo-svg {
         width: 84px;
         height: 84px;
         border-radius: 22px;
@@ -1417,6 +2469,199 @@
 </head>
 <body>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <symbol id="hajnal-logo-symbol" viewBox="0 0 1254 1254" data-source-reference="docs/references/source-of-truth/logo_svg.svg">
+      <path
+           fill="#1d1e53"
+           d="m 108.501,260.95 c 21.971,-69.552 80.806,-128.27 148.905,-153.279 21.435,-7.9827 43.867,-12.9786 66.663,-14.847 34.631,-2.5802 79.664,-1.0366 115.189,-1.0326 l 205.475,0.0011 180.31,-0.0255 c 32.455,-0.0224 77.351,-1.3605 108.35,1.652 27.002,2.768 53.356,10.011 77.977,21.432 58.03,26.98 106.53,78.393 128.56,138.544 16.45,40.559 15.47,89.307 15.47,132.623 l -0.1,71.525 c 0.04,40.071 0.57,81.588 0.06,121.499 -0.31,52.748 -0.34,105.498 -0.09,158.246 -0.53,15.569 -0.26,32.315 -0.27,47.965 l 0.02,73.196 c 0.23,53.33 2.83,100.952 -20.31,150.731 -5.36,11.52 -9.87,20.95 -17.16,31.63 -35.49,56.37 -92.01,96.24 -157.018,110.76 -29.923,6.73 -54.807,5.99 -85.223,6.05 l -69.612,0.1 H 586.46 l -164.203,-0.15 c -34.712,0.06 -79.855,1.75 -113.391,-2.86 -34.859,-5.01 -68.249,-17.4 -97.941,-36.34 -29.923,-19.02 -55.468,-44.18 -74.946,-73.81 -23.409,-35.03 -37.0192,-75.691 -39.4191,-117.756 -1.2776,-20.621 -0.299,-46.301 -0.4833,-67.364 -0.347,-39.649 0.5888,-79.354 -0.5444,-119.04 -0.127,-8.666 0.3675,-17.672 0.3656,-26.459 l -0.1106,-74.759 c 0.0181,-20.051 -0.9813,-47.195 0.133,-66.498 L 96.0725,473.528 96.06,385.107 C 96.0564,336.29 93.4448,307.848 108.501,260.95 Z"
+           id="path1"
+           style="display:inline" />
+        <defs
+           id="defs2">
+          <linearGradient
+             id="gradient_0"
+             gradientUnits="userSpaceOnUse"
+             x1="625.65942"
+             y1="459.62711"
+             x2="624.75751"
+             y2="259.73935">
+            <stop
+               offset="0"
+               stop-color="#E180A6"
+               id="stop1" />
+            <stop
+               offset="1"
+               stop-color="#9960B5"
+               id="stop2" />
+          </linearGradient>
+        </defs>
+        <defs
+           id="defs4">
+          <linearGradient
+             id="gradient_1"
+             gradientUnits="userSpaceOnUse"
+             x1="624.5603"
+             y1="262.71313"
+             x2="624.12018"
+             y2="91.740288">
+            <stop
+               offset="0"
+               stop-color="#9960B7"
+               id="stop3" />
+            <stop
+               offset="1"
+               stop-color="#5A4ABA"
+               id="stop4" />
+          </linearGradient>
+        </defs>
+        <defs
+           id="defs6">
+          <linearGradient
+             id="gradient_2"
+             gradientUnits="userSpaceOnUse"
+             x1="625.99298"
+             y1="702.09033"
+             x2="624.6048"
+             y2="387.51028">
+            <stop
+               offset="0"
+               stop-color="#FFB381"
+               id="stop5" />
+            <stop
+               offset="1"
+               stop-color="#DB7AA3"
+               id="stop6" />
+          </linearGradient>
+        </defs>
+        <defs
+           id="defs_sun_bg">
+          <linearGradient
+             id="sun_bg_gradient"
+             gradientUnits="userSpaceOnUse"
+             x1="625"
+             y1="92"
+             x2="625"
+             y2="703">
+            <stop
+               offset="0"
+               stop-color="#5A4ABA"
+               id="sun_bg_stop_0" />
+            <stop
+               offset="0.26"
+               stop-color="#9960B7"
+               id="sun_bg_stop_1" />
+            <stop
+               offset="0.48"
+               stop-color="#C373AD"
+               id="sun_bg_stop_2" />
+            <stop
+               offset="0.68"
+               stop-color="#E6869A"
+               id="sun_bg_stop_3" />
+            <stop
+               offset="1"
+               stop-color="#FFB381"
+               id="sun_bg_stop_4" />
+          </linearGradient>
+        </defs>
+        <path
+           id="path6"
+           fill="url(#sun_bg_gradient)"
+           style="display:inline"
+           d="m 625.0986,388.002 c 236.67035,1.96507 192.2711,52.61226 530.4054,67.97701 0.04,40.071 0.366,83.15199 -0.144,123.06299 -15.95,0.625 -36.71,5.142 -52.32,8.547 -88.93,19.394 -175.958,65.556 -251.264,116.337 -32.058,20.838 -61.263,39.616 -94.294,58.895 -0.167,22.587 -7.019,51.99 -25.777,66.724 C 675.043,791.152 577.673,792.537 520.579,829.48 501.292,811.844 496.888,790.111 494.753,765.484 461.066,746.4 428.343,725.665 396.703,703.353 377.563,691.307 358.78,678.345 339.702,666.539 271.997,624.638 199.16,590.09 120.209,576.323 c -7.58,-1.322 -15.878,-1.927 -23.3024,-3.434 l -0.9864,-0.205 0.1523,-99.156 c 0,0 -0.241517,-15.23565 -0.01096,-34.99151 C 452.71558,430.33352 421.72682,387.24567 625.0986,388.002 Z M 108.501,260.95 c 21.971,-69.552 80.806,-128.27 148.905,-153.279 21.435,-7.9827 43.867,-12.9786 66.663,-14.847 34.631,-2.5802 79.664,-1.0366 115.189,-1.0326 l 205.475,0.0011 180.31,-0.0255 c 32.455,-0.0224 77.351,-1.3605 108.35,1.652 27.002,2.768 53.356,10.011 77.977,21.432 58.03,26.98 106.53,78.393 128.56,138.544 0.23,3.126 0.03,3.848 -0.61,6.948 l 0.42,0.758 c -19.35,-3.112 -42.09,-1.388 -62.15,-1.295 l -115.266,0.734 -428.154,1.227 -243.669,1.237 -114.026,0.624 c -10.861,0.024 -60.491,1.404 -67.273,-1.466 z m 0,0 c 21.971,-69.552 80.806,-128.27 148.905,-153.279 21.435,-7.9827 43.867,-12.9786 66.663,-14.847 34.631,-2.5802 79.664,-1.0366 115.189,-1.0326 l 205.475,0.0011 180.31,-0.0255 c 32.455,-0.0224 77.351,-1.3605 108.35,1.652 27.002,2.768 53.356,10.011 77.977,21.432 58.03,26.98 106.53,78.393 128.56,138.544 16.45,40.559 15.47,89.307 15.47,132.623 l -0.1,70.56334 C 884.25993,457.29799 869.99604,394.49219 625.5503,389.265 345.98295,407.20479 384.97587,441.76326 96.498883,443.17378 95.334487,449.75025 96.06,385.107 96.06,385.107 96.0564,336.29 93.4448,307.848 108.501,260.95 Z" />
+        <path
+           fill="#fee0a6"
+           d="m 396.703,703.353 c 0.726,-15.91 1.411,-28.506 4.305,-44.201 8.843,-47.319 32.849,-90.473 68.391,-122.94 45.892,-41.045 106.157,-62.27 167.642,-59.043 60.8,2.931 117.962,29.83 158.975,74.809 40.489,44.705 53.138,93.159 55.76,151.948 -32.058,20.838 -61.263,39.616 -94.294,58.895 -0.167,22.587 -7.019,51.99 -25.777,66.724 -56.662,-38.393 -154.032,-37.008 -211.126,-0.065 -19.287,-17.636 -23.691,-39.369 -25.826,-63.996 -33.687,-19.084 -66.41,-39.819 -98.05,-62.131 z"
+           id="path7"
+           style="display:inline" />
+        <path
+           fill="#FDFCFC"
+           d="M561.426 655.769C592.176 638.413 628.605 634.125 662.544 643.867C673.043 646.823 681.666 650.564 691.24 655.705C715.845 672.423 731.915 687.232 745.058 714.646C751.832 730.082 757.202 745.781 757.482 762.821C757.315 785.408 750.463 814.811 731.705 829.545C675.043 791.152 577.673 792.537 520.579 829.48C501.292 811.844 496.888 790.111 494.753 765.484C496.373 747.564 499.081 730.83 507.502 714.608C523.789 685.048 533.613 674.548 561.426 655.769Z"
+           id="path8" />
+        <path
+           fill="#1D1E53"
+           d="M507.502 714.608C494.446 709.694 484.56 702.849 478.566 689.751C473.492 678.629 473.079 665.939 477.418 654.511C481.604 643.278 490.146 634.21 501.109 629.362C511.985 624.543 524.336 624.276 535.41 628.62C548.209 633.684 556.127 643.424 561.426 655.769C533.613 674.548 523.789 685.048 507.502 714.608Z"
+           id="path9" />
+        <path
+           fill="#1D1E53"
+           d="M691.24 655.705C697.355 642.801 705.319 632.831 719.234 627.859C730.159 624.073 742.142 624.798 752.531 629.873C763.331 634.95 771.658 644.125 775.668 655.365C779.708 667.044 778.905 679.855 773.439 690.94C767.505 703 757.482 710.246 745.058 714.646C731.915 687.232 715.845 672.423 691.24 655.705Z"
+           id="path10" />
+        <defs
+           id="defs11">
+          <linearGradient
+             id="gradient_3"
+             gradientUnits="userSpaceOnUse"
+             x1="88.609039"
+             y1="934.33551"
+             x2="468.55316"
+             y2="789.51324">
+            <stop
+               offset="0"
+               stop-color="#25266C"
+               id="stop10" />
+            <stop
+               offset="1"
+               stop-color="#503892"
+               id="stop11" />
+          </linearGradient>
+        </defs>
+        <path
+           fill="url(#gradient_3)"
+           d="M95.9202 572.684L96.9066 572.889C104.331 574.396 112.629 575.001 120.209 576.323C199.16 590.09 271.997 624.638 339.702 666.539C358.78 678.345 377.563 691.307 396.703 703.353C428.343 725.665 461.066 746.4 494.753 765.484C496.888 790.111 501.292 811.844 520.579 829.48C511.068 837.142 502.69 845.94 496.169 856.312C486.958 871.346 479.761 885.353 474.863 902.551C473.054 908.903 472.16 916.175 470.276 922.414C464.358 920.264 459.436 918.432 453.043 918.36C439.201 918.206 427.784 929.045 423.846 941.747C418.009 960.575 423.827 978.782 431.701 995.92C410.017 994.1 389.486 992.411 367.696 992.812C302.674 994.008 237.805 1003.72 176.61 1026.27C167.758 1029.53 142.645 1038.88 135.979 1044.56C112.57 1009.53 98.9598 968.869 96.5599 926.804C95.2823 906.183 96.2609 880.503 96.0766 859.44C95.7296 819.791 96.6654 780.086 95.5322 740.4C95.4052 731.734 95.8997 722.728 95.8978 713.941L95.7872 639.182C95.8053 619.131 94.8059 591.987 95.9202 572.684Z"
+           id="path11" />
+        <path
+           fill="#ad65af"
+           d="m 95.9202,572.684 0.9864,0.205 c 7.4244,1.507 15.7224,2.112 23.3024,3.434 78.951,13.767 151.788,48.315 219.493,90.216 19.078,11.806 37.861,24.768 57.001,36.814 31.64,22.312 64.363,43.047 98.05,62.131 2.135,24.627 6.539,46.36 25.826,63.996 -9.511,7.662 -17.889,16.46 -24.41,26.832 C 466.73,843.622 436.834,828.423 407.391,815.201 306.628,769.953 207.551,733.36 95.5322,740.4 c -0.127,-8.666 0.3675,-17.672 0.3656,-26.459 l -0.1106,-74.759 c 0.0181,-20.051 -0.9813,-47.195 0.133,-66.498 z"
+           id="path12"
+           style="display:inline" />
+        <defs
+           id="defs13">
+          <linearGradient
+             id="gradient_4"
+             gradientUnits="userSpaceOnUse"
+             x1="1161.3248"
+             y1="911.68176"
+             x2="768.41553"
+             y2="812.03674">
+            <stop
+               offset="0"
+               stop-color="#282870"
+               id="stop12" />
+            <stop
+               offset="1"
+               stop-color="#4F3792"
+               id="stop13" />
+          </linearGradient>
+        </defs>
+        <path
+           fill="url(#gradient_4)"
+           d="M851.776 703.926C927.082 653.145 1014.11 606.983 1103.04 587.589C1118.65 584.184 1139.41 579.667 1155.36 579.042C1155.05 631.79 1155.02 684.54 1155.27 737.288C1154.74 752.857 1155.01 769.603 1155 785.253L1155.02 858.449C1155.25 911.779 1157.85 959.401 1134.71 1009.18C1129.35 1020.7 1124.84 1030.13 1117.55 1040.81C1112.75 1035.94 1096.41 1030.23 1089.58 1027.68C1027.83 1005.08 962.686 993.169 896.937 992.445C888.365 992.414 876.363 992.554 868.25 992.745C861.276 992.91 824.255 996.75 820.833 995.669C821.907 993.569 822.94 991.447 823.931 989.306C838.906 956.202 829.538 903.236 782.458 922.792C780.404 917.135 779.089 907.184 777.284 900.944C772.193 883.345 764.959 870.363 755.733 854.99C747.121 843.948 742.627 838.539 731.705 829.545C750.463 814.811 757.315 785.408 757.482 762.821C790.513 743.542 819.718 724.764 851.776 703.926Z"
+           id="path13" />
+        <path
+           fill="#AD65AF"
+           d="M851.776 703.926C927.082 653.145 1014.11 606.983 1103.04 587.589C1118.65 584.184 1139.41 579.667 1155.36 579.042C1155.05 631.79 1155.02 684.54 1155.27 737.288L1154.79 739.916C1152.82 740.22 1153.8 740.09 1152.01 739.95C1130.24 738.247 1107.73 739.27 1086.1 741.501C968.882 753.59 860.783 804.688 755.733 854.99C747.121 843.948 742.627 838.539 731.705 829.545C750.463 814.811 757.315 785.408 757.482 762.821C790.513 743.542 819.718 724.764 851.776 703.926Z"
+           id="path14" />
+        <path
+           fill="#181940"
+           d="M431.701 995.92C423.827 978.782 418.009 960.575 423.846 941.747C427.784 929.045 439.201 918.206 453.043 918.36C459.436 918.432 464.358 920.264 470.276 922.414C467.441 957.132 470.156 974.412 487.167 1004.39C468.078 1001.07 450.967 998.211 431.701 995.92Z"
+           id="path15" />
+        <path
+           fill="#181940"
+           d="M782.458 922.792C829.538 903.236 838.906 956.202 823.931 989.306C822.94 991.447 821.907 993.569 820.833 995.669C818.703 996.32 805.77 997.953 802.904 998.383C790.598 1000.22 778.315 1002.2 766.058 1004.34C781.791 974.902 786.288 955.93 782.458 922.792Z"
+           id="path16" />
+    </symbol>
+    <symbol id="character-panda-front" viewBox="0 0 96 126">
+      <ellipse cx="48" cy="118" rx="35" ry="7" fill="#25265F" opacity=".17" />
+      <circle cx="28" cy="24" r="13" fill="#20245E" />
+      <circle cx="68" cy="24" r="13" fill="#20245E" />
+      <ellipse cx="48" cy="52" rx="38" ry="36" fill="#FFF0E7" />
+      <ellipse cx="48" cy="88" rx="40" ry="36" fill="#20245E" />
+      <ellipse cx="34" cy="49" rx="11" ry="15" fill="#20245E" transform="rotate(18 34 49)" />
+      <ellipse cx="62" cy="49" rx="11" ry="15" fill="#20245E" transform="rotate(-18 62 49)" />
+      <circle cx="38" cy="47" r="3" fill="#fff" />
+      <circle cx="58" cy="47" r="3" fill="#fff" />
+      <ellipse cx="48" cy="60" rx="5" ry="3.5" fill="#20245E" />
+      <path d="M42 68q6 5 12 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="2" />
+    </symbol>
     <symbol id="character-llama" viewBox="0 0 112 180">
       <ellipse cx="55" cy="171" rx="47" ry="8" fill="#25265F" opacity=".17" />
       <circle cx="13" cy="113" r="10" fill="#F6E5DE" />
@@ -1471,24 +2716,48 @@
       <circle cx="12" cy="8" r="4" />
       <path d="M4 21c.5-5 3-7 8-7s7.5 2 8 7" />
     </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path d="M8 5 5 8c1.2 5.8 5.2 9.8 11 11l3-3-4-3-2 2c-1.8-.8-3.2-2.2-4-4l2-2z" />
+    </symbol>
+    <symbol id="icon-message" viewBox="0 0 24 24">
+      <path d="M5 6h14v10H9l-4 4z" />
+      <path d="M8 10h8M8 13h5" />
+    </symbol>
+    <symbol id="icon-breath" viewBox="0 0 24 24">
+      <path d="M4 9c4 0 4-3 8-3 3 0 4 2 4 4 0 4-5 4-5 1" />
+      <path d="M3 15c5 0 6-3 10-3 4 0 6 2 6 5" />
+    </symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M8 3v4M16 3v4M4 10h16" />
+    </symbol>
+    <symbol id="icon-share" viewBox="0 0 24 24">
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4" />
+    </symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24">
+      <path d="M12 20s-7-4.4-9-9c-1.4-3.2.6-6 3.6-6 1.8 0 3.2 1 4.1 2.4C11.6 6 13 5 14.8 5c3 0 5 2.8 3.6 6-2 4.6-6.4 9-6.4 9z" />
+    </symbol>
   </svg>
 
   <main class="prototype-page">
-    <header class="prototype-brand" data-source-reference="docs/references/source-of-truth/logo.png">
-      <img src="../references/source-of-truth/logo.png" alt="Hajnal alkalmazásikon">
+    <header class="prototype-brand" data-source-reference="docs/references/source-of-truth/logo_svg.svg">
+      <svg class="prototype-logo-svg" role="img" aria-label="Hajnal alkalmazásikon"><use href="#hajnal-logo-symbol"></use></svg>
       <div>
         <p class="prototype-kicker">Hajnal · első prototípusoldal</p>
         <h1>Hajnal</h1>
         <p class="prototype-motto">Csak a mai nap.</p>
-        <p class="prototype-description">A belépési folyamat teljes ága egy sorban: nyolc, később interaktívvá tehető webkomponens, a specifikáció szerinti logikával és a hét referencia-PNG kötelező vizuális rendszerével.</p>
+        <p class="prototype-description">A belépési folyamat első sora hét, később interaktívvá tehető webkomponensből áll; alatta külön sorban indul a Kezdőlap teljes első ága. A logika a specifikációt, a vizuális rendszer a hét referencia-PNG-t követi.</p>
       </div>
     </header>
 
-    <section aria-labelledby="entry-flow-title">
+    <section class="screen-section" aria-labelledby="entry-flow-title">
       <div class="flow-heading">
         <div>
-          <h2 id="entry-flow-title">Splash és child screenjei</h2>
-          <p>Oldal 1 · belépés, beállítás és az első Kezdőlap-állapot</p>
+          <h2 id="entry-flow-title">Splash és onboarding child screenjei</h2>
+          <p>Oldal 1 · belépés és beállítás, a Kezdőlap nélkül</p>
         </div>
         <pre class="flow-tree" aria-label="Navigációs hierarchia">Splash
 └── Onboarding
@@ -1500,7 +2769,7 @@
         └── Kezdőlap</pre>
       </div>
 
-      <div class="screen-row" data-page="entry" data-root-screen="splash">
+      <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications">
         <section class="screen-column" id="column-splash">
           <div class="screen-label"><span class="screen-index">1</span><strong>Splash</strong><span class="screen-route-note">Automatikus · 2–3 mp</span></div>
           <article class="phone-screen screen-splash" id="splash" data-screen="splash" data-transition-delay="2000-3000" data-first-use-target="onboarding" data-returning-target="home">
@@ -1513,7 +2782,7 @@
               </span>
             </div>
             <div class="splash-brand-lockup">
-              <img class="splash-logo" src="../references/source-of-truth/logo.png" alt="Hajnal logó">
+              <svg class="splash-logo-svg" role="img" aria-label="Hajnal logó"><use href="#hajnal-logo-symbol"></use></svg>
               <h3>Hajnal</h3>
               <p>Csak a mai nap.</p>
             </div>
@@ -1870,81 +3139,80 @@
           </article>
         </section>
 
+      </div>
+    </section>
+
+    <section class="screen-section" aria-labelledby="home-row-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="home-row-title">Kezdőlap</h2>
+          <p>Oldal 2 · az Értesítések után nyíló Kezdőlap és child screenjei</p>
+        </div>
+        <pre class="flow-tree" aria-label="Kezdőlap hierarchia">Kezdőlap
+├── Napi kép (a főmenü képére tap indítja)
+├── Esti check-in wizard
+│   ├── Tiszta maradtam
+│   │   └── Esti reflexió
+│   └── Visszaestem
+│       ├── Újrakezdés
+│       └── Segítségkérés
+├── Mai feladatok
+└── Pánik mód</pre>
+      </div>
+
+      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-reflection checkin-relapse restart-period support-next-step daily-tasks panic-mode">
         <section class="screen-column" id="column-home">
           <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
           <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
-            <div class="home-hero" aria-hidden="true"></div>
+            <button class="home-illustration" type="button" aria-label="Napi kép megnyitása" data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap">
+              <img class="home-hero-image" src="assets/hero_xl_svg.svg" alt="" loading="eager">
+            </button>
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="home-topbar">
               <button class="icon-button" type="button" aria-label="Gyorsbeállítások"><svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg></button>
-              <div class="home-day"><strong>24. nap</strong><span>Csak a mai nap.</span></div>
+              <div class="home-day"><strong>24. nap</strong><span class="home-subtitle">a 90 napos úton</span><span class="home-tagline">Minden nap<br>egy lépés.</span></div>
               <button class="icon-button" type="button" aria-label="Értesítések"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></button>
             </header>
-            <button class="home-illustration" type="button" aria-label="Napi kép megnyitása" data-action="open-daily-image">
-              <svg viewBox="0 0 412 250" aria-hidden="true">
-                <defs>
-                  <linearGradient id="home-sky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stop-color="#4B439B" />
-                    <stop offset=".58" stop-color="#9270C1" />
-                    <stop offset="1" stop-color="#E99EB9" />
-                  </linearGradient>
-                </defs>
-                <rect width="412" height="250" fill="url(#home-sky)" />
-                <circle cx="75" cy="79" r="29" fill="#FEC884" opacity=".48" />
-                <circle cx="354" cy="42" r="18" fill="#FFF5DF" />
-                <circle cx="361" cy="35" r="18" fill="#54489F" />
-                <path d="M0 130c55-34 96 21 149 29 57 8 104-47 166-29 37 11 62 1 97-17v137H0z" fill="#A276C1" />
-                <path d="M0 169c56-25 108 10 164 33 53 21 88-22 142-33 37-7 66 4 106 24v57H0z" fill="#5C4BA0" />
-                <g fill="#403D8A" opacity=".8">
-                  <path d="m23 176 12-38 12 38h-7l10 28H20l9-28z" />
-                  <path d="m376 169 13-43 13 43h-8l11 30h-33l10-30z" />
-                </g>
-                <g transform="translate(184 66)">
-                  <circle cx="17" cy="25" r="10" fill="#20245E" /><circle cx="51" cy="25" r="10" fill="#20245E" />
-                  <ellipse cx="34" cy="48" rx="28" ry="26" fill="#FFF0E7" />
-                  <ellipse cx="34" cy="86" rx="35" ry="42" fill="#20245E" />
-                  <ellipse cx="23" cy="46" rx="8" ry="11" fill="#20245E" /><ellipse cx="45" cy="46" rx="8" ry="11" fill="#20245E" />
-                  <circle cx="25" cy="45" r="2.4" fill="#fff" /><circle cx="43" cy="45" r="2.4" fill="#fff" />
-                  <path d="M30 57q4 3 8 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="1.7" />
-                </g>
-                <use href="#character-llama" x="271" y="8" width="112" height="180" />
-              </svg>
-            </button>
+
+            <div class="home-metrics soft-card" data-component="home-dashboard">
+              <div class="metric">
+                <small>Tiszta napok</small><strong>24</strong><em>nap</em>
+                <div class="segmented-progress" role="img" aria-label="24 nap a 90 napból">
+                  <span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="progress-note">a 90 napból</span>
+              </div>
+              <span class="dashboard-separator" aria-hidden="true"></span>
+              <button class="clean-today-button" type="button" data-action="mark-clean-today" data-target-screen="checkin-clean">
+                <span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8" /></svg></span>
+                <span>Ma tiszta<br>maradtam</span>
+              </button>
+            </div>
 
             <section class="home-body" aria-label="Mai áttekintés">
-              <div class="home-metrics soft-card">
-                <div class="metric"><small>Jelenlegi sorozat</small><strong>24</strong><em>nap</em></div>
-                <div class="metric"><small>Összes tiszta nap</small><strong>37</strong><em>nap</em></div>
-                <div class="day-state">Ma még nincs lezárva</div>
-              </div>
-
               <section class="tasks-card">
-                <div class="tasks-heading"><h4>Mai feladataim</h4><button type="button" data-action="edit-tasks">Szerkesztés</button></div>
+                <div class="tasks-heading"><h4>Mai feladataim</h4><button type="button" data-action="edit-tasks" data-target-screen="daily-tasks">Szerkesztés</button></div>
                 <div class="task-list">
                   <label class="task-row" data-component="daily-task">
-                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span>
+                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-phone"></use></svg>
                   </label>
                   <label class="task-row" data-component="daily-task">
-                    <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 10 percet</span>
+                    <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 10 percet</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-message"></use></svg>
                   </label>
                   <label class="task-row" data-component="daily-task">
-                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span>
+                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-people"></use></svg>
                   </label>
                   <label class="task-row" data-component="daily-task">
-                    <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 3 dolgot, amiért hálás vagy</span>
-                  </label>
-                  <label class="task-row" data-component="daily-task">
-                    <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Töltsd ki az esti check-int</span>
+                    <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 3 dolgot, amiért hálás vagy</span><svg class="icon task-action-icon" aria-hidden="true"><use href="#icon-heart"></use></svg>
                   </label>
                 </div>
               </section>
 
               <div class="home-actions">
-                <button class="checkin-button" type="button" data-action="daily-checkin"><span aria-hidden="true">♡</span>Napi check-in</button>
-                <button class="help-button" type="button" data-action="open-panic"><span aria-hidden="true">◉</span>Segítség kell</button>
+                <button class="help-button" type="button" data-action="open-panic" data-target-screen="panic-mode"><span aria-hidden="true">◉</span>Segítség kell</button>
               </div>
             </section>
 
@@ -1955,6 +3223,650 @@
               <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
               <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
             </nav>
+          </article>
+        </section>
+        <section class="screen-column" id="column-daily-image">
+          <div class="screen-label"><span class="screen-index">9</span><strong>Napi kép</strong> · Kezdőlap child</div>
+          <article class="phone-screen branch-screen dark" id="daily-image" data-screen="daily-image" data-parent-screen="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Napi kép</h3><p class="screen-subtitle">24. nap · feloldva ma</p></div>
+              <button class="icon-button" type="button" aria-label="Megosztás"><svg class="icon" aria-hidden="true"><use href="#icon-share"></use></svg></button>
+            </header>
+            <div class="branch-content">
+              <div class="branch-hero daily-art-card">
+                <div class="daily-carousel" data-component="daily-image-carousel" aria-label="Napi kép carousel">
+                  <button class="daily-carousel-nav prev" type="button" aria-label="Előző napi kép" data-action="previous-daily-image" data-carousel-target="daily-image-carousel"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                  <div class="daily-carousel-window">
+                    <article class="daily-slide past" data-carousel-slide="past" aria-label="23. nap, feloldott napi kép">
+                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
+                      <span class="daily-slide-label">23. nap</span>
+                    </article>
+                    <article class="daily-slide current" data-carousel-slide="current" aria-current="true" aria-label="24. nap, mai napi kép">
+                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
+                      <span class="daily-slide-label">24. nap · ma</span>
+                    </article>
+                    <article class="daily-slide future" data-carousel-slide="future" aria-label="25. nap, még zárolt jövőbeli kép">
+                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
+                      <span class="daily-slide-label">25. nap · később</span>
+                    </article>
+                  </div>
+                  <button class="daily-carousel-nav next" type="button" aria-label="Következő napi kép" data-action="next-daily-image" data-carousel-target="daily-image-carousel"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                  <div class="daily-carousel-dots" aria-hidden="true"><span></span><span class="active"></span><span></span></div>
+                </div>
+              </div>
+              <div class="daily-art-message soft-card">
+                <strong>Nem kell tökéletesnek lenned.</strong>
+                <span>Ma elég kitartanod. Minden nap egy lépés a fény felé.</span>
+              </div>
+              <div class="daily-art-actions">
+                <button class="secondary-button" type="button" data-action="save-daily-image">Mentés</button>
+                <button class="primary-button" type="button" data-action="share-daily-image">Megosztás</button>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-daily-checkin">
+          <div class="screen-label"><span class="screen-index">11</span><strong>Esti check-in</strong> · Kezdőlap child</div>
+          <article class="phone-screen branch-screen dark no-nav" id="daily-checkin" data-screen="daily-checkin" data-parent-screen="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Esti check-in</h3><p class="screen-subtitle">Minden nap számít.</p></div>
+              <button class="icon-button" type="button" aria-label="Értesítések"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></button>
+            </header>
+            <div class="branch-content">
+              <div class="branch-hero checkin-scene">
+                <img class="wizard-hero-image" src="assets/hero_m_svg.svg" alt="" loading="eager">
+              </div>
+              <section class="decision-card soft-card">
+                <h4>Hogy sikerült a mai napod?</h4>
+                <p>Te döntesz. Mi veled maradunk.</p>
+                <button class="decision-option success" type="button" data-action="mark-clean" data-target-screen="checkin-clean">
+                  <span class="decision-face" aria-hidden="true">✓</span><span><strong>Igen, ma tiszta maradtam</strong><small>A számláló csak a te döntésedre zár.</small></span>
+                </button>
+                <button class="decision-option soft-danger" type="button" data-action="mark-relapse" data-target-screen="checkin-relapse">
+                  <span class="decision-face" aria-hidden="true">!</span><span><strong>Ma visszaestem</strong><small>Nem büntetés, hanem következő lépés.</small></span>
+                </button>
+                <button class="secondary-button" type="button" data-action="skip-checkin" data-target-screen="home">Most nem szeretnék válaszolni</button>
+              </section>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-checkin-clean">
+          <div class="screen-label"><span class="screen-index">12</span><strong>Tiszta maradtam</strong> · Check-in child</div>
+          <article class="phone-screen branch-screen dark no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="daily-checkin">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="daily-checkin"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Megcsináltad a mai napot!</h3><p class="screen-subtitle">Holnap újra csak egy nap következik.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="branch-content">
+              <div class="branch-hero checkin-scene">
+                <img class="wizard-hero-image" src="assets/hero_m_svg.svg" alt="" loading="eager">
+              </div>
+              <section class="success-count-card soft-card">
+                <div><small>Tiszta napjaid száma</small><strong>25 nap</strong><small>Következő napi kép feloldva.</small></div>
+                <div class="plus-one">+1</div>
+              </section>
+              <section class="reflection-card soft-card">
+                <small>Hogy érzed most magad?</small>
+                <div class="mood-row" role="group" aria-label="Hangulat gyorsválasztó">
+                  <button class="mood-button" type="button"><span>1</span><small>Nagyon rossz</small></button>
+                  <button class="mood-button" type="button"><span>2</span><small>Rossz</small></button>
+                  <button class="mood-button" type="button"><span>3</span><small>Közepes</small></button>
+                  <button class="mood-button" type="button"><span>4</span><small>Jó</small></button>
+                  <button class="mood-button" type="button"><span>5</span><small>Nagyon jó</small></button>
+                </div>
+              </section>
+              <button class="primary-button" type="button" data-action="finish-clean-day" data-target-screen="evening-reflection">Tovább</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-reflection">
+          <div class="screen-label"><span class="screen-index">13</span><strong>Esti reflexió</strong> · Tiszta maradtam child</div>
+          <article class="phone-screen branch-screen" id="evening-reflection" data-screen="evening-reflection" data-parent-screen="checkin-clean">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="checkin-clean"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Esti reflexió</h3><p class="screen-subtitle">Nem kötelező. Csak ami ma belefér.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="branch-content">
+              <section class="reflection-card soft-card">
+                <small>Milyen volt a hangulatod?</small>
+                <div class="mood-row" role="group" aria-label="Hangulat választása">
+                  <button class="mood-button" type="button"><span>1</span><small>rossz</small></button>
+                  <button class="mood-button" type="button"><span>2</span><small>nehéz</small></button>
+                  <button class="mood-button" type="button"><span>3</span><small>oké</small></button>
+                  <button class="mood-button" type="button"><span>4</span><small>jó</small></button>
+                  <button class="mood-button" type="button"><span>5</span><small>erős</small></button>
+                </div>
+              </section>
+              <section class="reflection-card soft-card">
+                <small>Mennyire volt erős a sóvárgásod?</small>
+                <div class="reflection-scale"><span>0</span><span class="scale-track" aria-hidden="true"></span><span>10</span></div>
+              </section>
+              <section class="reflection-card soft-card">
+                <label for="reflection-help"><small>Mi segített ma?</small></label>
+                <textarea class="reflection-input" id="reflection-help" placeholder="Írd le röviden, ami megtartott."></textarea>
+              </section>
+              <div class="daily-art-actions">
+                <button class="secondary-button" type="button" data-action="skip-reflection" data-target-screen="home">Kihagyás</button>
+                <button class="primary-button" type="button" data-action="save-reflection" data-target-screen="home">Mentés</button>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-checkin-relapse">
+          <div class="screen-label"><span class="screen-index">14</span><strong>Visszaestem</strong> · Check-in child</div>
+          <article class="phone-screen branch-screen no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="daily-checkin">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="daily-checkin"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Őszinteség bátorság.</h3><p class="screen-subtitle">Köszönjük, hogy őszinte voltál.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="branch-content">
+              <div class="branch-hero checkin-scene">
+                <img class="wizard-hero-image" src="assets/hero_m_svg.svg" alt="" loading="eager">
+              </div>
+              <section class="decision-card soft-card">
+                <h4>Egy visszaesés nem törli el azt, amit eddig felépítettél.</h4>
+                <p>Szeretnéd most újraindítani a számlálódat?</p>
+                <button class="primary-button" type="button" data-action="restart-now" data-target-screen="restart-period">Igen, újrakezdem</button>
+                <button class="secondary-button" type="button" data-action="decide-later" data-target-screen="home">Később döntök</button>
+                <button class="quiet-link" type="button" data-action="ask-support" data-target-screen="support-next-step">Segítséget kérek most</button>
+              </section>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-restart-period">
+          <div class="screen-label"><span class="screen-index">15</span><strong>Újrakezdés</strong> · Visszaestem child</div>
+          <article class="phone-screen branch-screen" id="restart-period" data-screen="restart-period" data-parent-screen="checkin-relapse">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="checkin-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Újrakezdés</h3><p class="screen-subtitle">Mikor induljon az új tiszta időszakod?</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="branch-content">
+              <div class="branch-hero checkin-scene">
+                <img class="wizard-hero-image" src="assets/hero_m_svg.svg" alt="" loading="eager">
+              </div>
+              <fieldset class="sponsor-choices">
+                <legend class="visually-hidden">Új tiszta időszak kezdete</legend>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="restart-date" checked><span class="choice-symbol"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span class="choice-copy"><strong>Most</strong><small>Új időszak kezdete: ma</small></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="restart-date"><span class="choice-symbol"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span class="choice-copy"><strong>Holnap</strong><small>Új időszak kezdete: holnap</small></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="restart-date"><span class="choice-symbol"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span class="choice-copy"><strong>Másik dátum</strong><small>Dátum kiválasztása</small></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+              </fieldset>
+              <p class="restart-note">A korábbi tiszta napjaid megmaradnak a statisztikáidban.</p>
+              <button class="primary-button" type="button" data-action="confirm-restart" data-target-screen="support-next-step">Újraindítás megerősítése</button>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-support-next-step">
+          <div class="screen-label"><span class="screen-index">16</span><strong>Segítségkérés</strong> · Visszaestem child</div>
+          <article class="phone-screen branch-screen" id="support-next-step" data-screen="support-next-step" data-parent-screen="checkin-relapse">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="checkin-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Támogatásra van szükséged?</h3><p class="screen-subtitle">Nem vagy egyedül. Kérj segítséget.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="branch-content">
+              <div class="support-list" aria-label="Támogató következő lépések">
+                <button class="support-option" type="button" data-action="call-sponsor">
+                  <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Hívd fel a szponzorod</strong><small>Közvetlen kapcsolódás, ha most beszélnél valakivel.</small></span><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg>
+                </button>
+                <button class="support-option" type="button" data-action="write-what-happened">
+                  <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Írd le, mi történt</strong><small>Rövid, privát jegyzet, ítélkezés nélkül.</small></span><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg>
+                </button>
+                <button class="support-option" type="button" data-action="start-survival" data-target-screen="panic-mode">
+                  <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg></span><span><strong>Indíts egy 10 perces túlélőgyakorlatot</strong><small>Lassú, vezetett következő lépések.</small></span><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg>
+                </button>
+              </div>
+              <button class="secondary-button" type="button" data-action="back-home" data-target-screen="home">Vissza a Kezdőlapra</button>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-daily-tasks">
+          <div class="screen-label"><span class="screen-index">10</span><strong>Mai feladatok</strong> · Kezdőlap child</div>
+          <article class="phone-screen branch-screen" id="daily-tasks" data-screen="daily-tasks" data-parent-screen="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Mai feladataim</h3><p class="screen-subtitle">Legfeljebb öt apró megtartó lépés.</p></div>
+              <button class="icon-button" type="button" aria-label="Feladat hozzáadása" data-action="add-task">+</button>
+            </header>
+            <div class="branch-content">
+              <div class="task-summary">
+                <div><strong>5</strong><span>mai feladat</span></div>
+                <div><strong>2</strong><span>kész</span></div>
+                <div><strong>21:00</strong><span>check-in</span></div>
+              </div>
+              <section class="task-manager-card soft-card" aria-label="Mai feladatlista">
+                <label class="task-row" data-component="daily-task-detail">
+                  <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod<span class="task-meta">Kapcsolódás · 2 perc</span></span>
+                </label>
+                <label class="task-row" data-component="daily-task-detail">
+                  <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 10 percet<span class="task-meta">Napló · már elkezdve</span></span>
+                </label>
+                <label class="task-row" data-component="daily-task-detail">
+                  <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre<span class="task-meta">Emlékeztető · 18:30</span></span>
+                </label>
+                <label class="task-row" data-component="daily-task-detail">
+                  <input class="native-control task-input" type="checkbox" checked><span class="task-check" aria-hidden="true"></span><span>Írj 3 dolgot, amiért hálás vagy<span class="task-meta">Hála lista · 2/3</span></span>
+                </label>
+                <label class="task-row" data-component="daily-task-detail">
+                  <input class="native-control task-input" type="checkbox"><span class="task-check" aria-hidden="true"></span><span>Töltsd ki az esti check-int<span class="task-meta">Ma este · nem automatikus</span></span>
+                </label>
+              </section>
+              <section class="task-manager-card soft-card">
+                <div class="tasks-heading"><h4>Holnapra ajánlott</h4><button type="button" data-action="edit-suggestions">Szerkesztés</button></div>
+                <p class="screen-subtitle">A lista rövid marad, hogy ne legyen nyomasztó.</p>
+              </section>
+              <button class="primary-button" type="button" data-action="open-checkin" data-target-screen="daily-checkin">Napi check-in</button>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-mode">
+          <div class="screen-label"><span class="screen-index">17</span><strong>Pánik mód</strong> · Kezdőlap child</div>
+          <article class="phone-screen branch-screen panic-screen" id="panic-mode" data-screen="panic-mode" data-parent-screen="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Pánik mód</h3></div>
+              <button class="icon-button" type="button" aria-label="Bezárás" data-target-screen="home">×</button>
+            </header>
+            <div class="panic-center">
+              <h3>Nem vagy egyedül.</h3>
+              <p>Most csak a következő néhány perc számít.</p>
+              <button class="panic-main-button" type="button" data-action="open-help-sheet">Segítség<br>kell most</button>
+            </div>
+            <div class="panic-grid" aria-label="Gyors segítség opciók">
+              <button type="button" data-action="call-sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
+              <button type="button" data-action="send-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg>Küldj segítő üzenetet</button>
+              <button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
+              <button type="button" data-action="breathing"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>Légzőgyakorlat</button>
+              <button type="button" data-action="why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Miért kezdtem el</button>
+              <button type="button" data-action="emergency-help"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg>Sürgősségi segítség</button>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+
+    <section class="screen-section" aria-labelledby="panic-row-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="panic-row-title">Pánik mód elemei</h2>
+          <p>Oldal 3 · a Segítség kell gomb és minden pánik opció részletezve</p>
+        </div>
+        <pre class="flow-tree" aria-label="Pánik mód hierarchia">Pánik mód
+├── Segítség kell panel
+├── Hívd a szponzorod
+├── Küldj segítségkérő üzenetet
+├── Hívd a tartalék kapcsolattartót
+├── 15 perces túlélőcsomag
+├── Légzőgyakorlat
+├── Olvasd el, miért kezdted el
+├── Keresd meg a következő meetinget
+└── Szakmai vagy sürgősségi segítség</pre>
+      </div>
+
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help">
+        <section class="screen-column" id="column-panic-root">
+          <div class="screen-label"><span class="screen-index">18</span><strong>Pánik mód</strong> · részletsor root</div>
+          <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="panic-mode">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-mode"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Pánik mód</h3><p class="screen-subtitle">Egy érintés, de nincs automatikus hívás.</p></div>
+              <button class="icon-button" type="button" aria-label="Bezárás" data-target-screen="home">×</button>
+            </header>
+            <div class="panic-detail-content">
+              <div class="panic-center">
+                <h3>Nem vagy egyedül.</h3>
+                <p>Most csak a következő néhány perc számít.</p>
+                <button class="panic-main-button" type="button" data-action="open-help-sheet" data-target-screen="panic-help-sheet">Segítség<br>kell</button>
+              </div>
+              <p class="panic-detail-intro">A fő gomb először választópanelt nyit. Alatta minden gyors opció külön, nyugodt lépésként indul.</p>
+              <div class="panic-grid" aria-label="Pánik mód gyors opciók">
+                <button type="button" data-action="call-sponsor" data-target-screen="panic-sponsor-call"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
+                <button type="button" data-action="send-help-message" data-target-screen="panic-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg>Küldj segítségkérő üzenetet</button>
+                <button type="button" data-action="call-backup-contact" data-target-screen="panic-backup-contact"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
+                <button type="button" data-action="start-survival-pack" data-target-screen="panic-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
+                <button type="button" data-action="breathing" data-target-screen="panic-breathing"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>Légzőgyakorlat</button>
+                <button type="button" data-action="why-started" data-target-screen="panic-why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Olvasd el, miért kezdted el</button>
+                <button type="button" data-action="meeting-finder" data-target-screen="panic-meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Keresd meg a következő meetinget</button>
+                <button type="button" data-action="emergency-help" data-target-screen="panic-emergency-help"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg>Szakmai vagy sürgősségi segítség</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-help-sheet">
+          <div class="screen-label"><span class="screen-index">19</span><strong>Segítség kell panel</strong> · Pánik child</div>
+          <article class="phone-screen branch-screen panic-screen" id="panic-help-sheet" data-screen="panic-help-sheet" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Segítség kell</h3><p class="screen-subtitle">Válassz. Semmi nem indul automatikusan.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <div class="panic-center">
+                <button class="panic-main-button" type="button" data-action="confirm-help-choice">Segítség<br>kell</button>
+              </div>
+              <section class="panic-sheet-card soft-card" aria-label="Segítség kell választópanel">
+                <div class="panic-sheet-handle" aria-hidden="true"></div>
+                <h4>Mit indítsunk el?</h4>
+                <p>Ez a panel csökkenti a téves hívás veszélyét.</p>
+                <div class="panic-option-list">
+                  <button class="panic-option-card light" type="button" data-action="call-sponsor" data-target-screen="panic-sponsor-call"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Szponzor hívása</strong><small>Kata · +36 30 123 4567</small></span><span aria-hidden="true">›</span></button>
+                  <button class="panic-option-card light" type="button" data-action="call-helper" data-target-screen="panic-backup-contact"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></span><span><strong>Segítő személy hívása</strong><small>Anya · tartalék kapcsolat</small></span><span aria-hidden="true">›</span></button>
+                  <button class="panic-option-card light" type="button" data-action="send-prewritten-message" data-target-screen="panic-help-message"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Előre megírt üzenet</strong><small>Nehéz helyzetben vagyok.</small></span><span aria-hidden="true">›</span></button>
+                  <button class="panic-option-card light" type="button" data-action="emergency-help" data-target-screen="panic-emergency-help"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></span><span><strong>Sürgősségi segítség</strong><small>Krízis vagy közvetlen veszély esetére.</small></span><span aria-hidden="true">›</span></button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-sponsor-call">
+          <div class="screen-label"><span class="screen-index">20</span><strong>Szponzor hívása</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-sponsor-call" data-screen="panic-sponsor-call" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Hívd a szponzorod</h3><p class="screen-subtitle">Egy megerősítés után indulhat a hívás.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <section class="panic-contact-card soft-card">
+                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></div>
+                <div><strong>Kata</strong><small>Szponzorod · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></div>
+              </section>
+              <section class="panic-panel-card soft-card">
+                <h4>Mit mondhatok?</h4>
+                <p>Rövid mondatok, ha nehéz megszólalni.</p>
+                <div class="panic-message-list">
+                  <button type="button">Most erős sóvárgásom van, fel tudsz hívni?<span aria-hidden="true">›</span></button>
+                  <button type="button">Nem kell megoldanod, csak maradj velem pár percig.<span aria-hidden="true">›</span></button>
+                  <button type="button">Elindítok egy túlélőcsomagot, közben jó lenne kapcsolódni.<span aria-hidden="true">›</span></button>
+                </div>
+              </section>
+              <button class="primary-button" type="button" data-action="confirm-sponsor-call">Hívás megerősítése</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-help-message">
+          <div class="screen-label"><span class="screen-index">21</span><strong>Segítségkérő üzenet</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Gyors üzenetek</h3><p class="screen-subtitle">Válassz egyet, majd küldd el.</p></div>
+              <button class="icon-button" type="button" aria-label="Szerkesztés">✎</button>
+            </header>
+            <div class="panic-detail-content">
+              <div class="panic-message-list">
+                <button type="button" data-action="message-template">Nehéz helyzetben vagyok. Fel tudnál hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                <button type="button" data-action="message-template">Erős sóvárgásom van. Szükségem van a támogatásodra.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                <button type="button" data-action="message-template">Ma még nem beszéltünk. Mikor lennél elérhető?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                <button type="button" data-action="message-template">Csak szerettem volna jelentkezni. Hálás vagyok a támogatásodért.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+              </div>
+              <button class="secondary-button" type="button" data-action="custom-help-message">Egyéni üzenet írása</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-backup-contact">
+          <div class="screen-label"><span class="screen-index">22</span><strong>Tartalék kapcsolat</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-backup-contact" data-screen="panic-backup-contact" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Tartalék kapcsolattartó</h3><p class="screen-subtitle">Ha a szponzor most nem elérhető.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <section class="panic-contact-card soft-card">
+                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div>
+                <div><strong>Anya</strong><small>Tartalék kapcsolat · előre engedélyezett<br>+36 30 987 6543</small></div>
+              </section>
+              <section class="panic-panel-card soft-card">
+                <h4>Biztonságos megerősítés</h4>
+                <p>A hívás itt sem indul automatikusan. A felhasználó dönt.</p>
+                <div class="support-list">
+                  <button class="support-option" type="button"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span><span aria-hidden="true">›</span></button>
+                  <button class="support-option" type="button"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Üzenet küldése</strong><small>Rövid segítségkérő szöveggel.</small></span><span aria-hidden="true">›</span></button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-survival-pack">
+          <div class="screen-label"><span class="screen-index">23</span><strong>15 perces túlélőcsomag</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-survival-pack" data-screen="panic-survival-pack" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>15 perces túlélőcsomag</h3><p class="screen-subtitle">Nyugodt kör jelzi az időt.</p></div>
+              <span class="screen-route-note">1 / 7</span>
+            </header>
+            <div class="panic-detail-content">
+              <div class="survival-ring"><div><strong>02:00</strong><span>Állj meg.</span></div></div>
+              <ol class="survival-steps">
+                <li>Állj meg. Nézz körül. Biztonságban vagy most?</li>
+                <li>Vegyél öt lassú levegőt.</li>
+                <li>Igyál vizet.</li>
+                <li>Menj másik helyre.</li>
+                <li>Hívj fel valakit.</li>
+                <li>Várj 10 percet.</li>
+                <li>Értékeld újra a sóvárgást.</li>
+              </ol>
+              <button class="primary-button" type="button" data-action="next-survival-step">Tovább</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-breathing">
+          <div class="screen-label"><span class="screen-index">24</span><strong>Légzőgyakorlat</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-breathing" data-screen="panic-breathing" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Légzőgyakorlat</h3><p class="screen-subtitle">Lassan növekvő és csökkenő nap.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <div class="breath-orb"><div><strong>Belégzés</strong><span>4 másodperc</span></div></div>
+              <section class="panic-panel-card soft-card">
+                <h4>Most csak a levegő.</h4>
+                <p>Belégzés · tartsd · kilégzés. Válassz rövid, nem teljesítményalapú gyakorlatot.</p>
+                <div class="daily-art-actions">
+                  <button class="secondary-button" type="button">1 perc</button>
+                  <button class="secondary-button" type="button">3 perc</button>
+                </div>
+              </section>
+              <button class="primary-button" type="button" data-action="start-breathing">Gyakorlat indítása</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-why-started">
+          <div class="screen-label"><span class="screen-index">25</span><strong>Miért kezdtem el</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-why-started" data-screen="panic-why-started" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Miért kezdtem el?</h3><p class="screen-subtitle">Emlékeztető a saját szavaiddal.</p></div>
+              <button class="icon-button" type="button" aria-label="Szerkesztés">✎</button>
+            </header>
+            <div class="panic-detail-content">
+              <section class="why-card soft-card">
+                <blockquote>“Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.”</blockquote>
+                <p>Ez a személyes motiváció megjeleníthető Pánik módban.</p>
+              </section>
+              <section class="panic-panel-card soft-card">
+                <h4>Fontos emberek</h4>
+                <p>Kata · Anya · a keddi meeting csoport</p>
+              </section>
+              <button class="primary-button" type="button" data-action="play-why-reminder">Emlékeztess, miért kezdtem el</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-meeting-finder">
+          <div class="screen-label"><span class="screen-index">26</span><strong>Meeting kereső</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-meeting-finder" data-screen="panic-meeting-finder" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Következő meeting</h3><p class="screen-subtitle">Találj közeli vagy online gyűlést.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <section class="meeting-card soft-card">
+                <div class="meeting-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Ma 18:30 · Belvárosi csoport</strong><small>Közösségi ház · nyitott meeting</small></span><span class="distance-chip">1.2 km</span></div>
+                <div class="meeting-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Ma 20:00 · Online gyűlés</strong><small>Zoom link hozzáadva</small></span><span class="distance-chip">online</span></div>
+                <div class="meeting-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></span><span><strong>Holnap 07:30 · Reggeli kör</strong><small>Csendes, rövid gyűlés</small></span><span class="distance-chip">3.4 km</span></div>
+              </section>
+              <button class="primary-button" type="button" data-action="open-meeting-map">Meeting keresése</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-panic-emergency-help">
+          <div class="screen-label"><span class="screen-index">27</span><strong>Szakmai segítség</strong> · gyors opció</div>
+          <article class="phone-screen branch-screen" id="panic-emergency-help" data-screen="panic-emergency-help" data-parent-screen="panic-root">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Sürgősségi segítség</h3><p class="screen-subtitle">Krízis vagy közvetlen veszély esetére.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="panic-detail-content">
+              <section class="emergency-card soft-card">
+                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></span><span><strong>Azonnali veszély</strong><small>Hívd a helyi sürgősségi számot.</small></span><button class="secondary-button" type="button">Hívás</button></div>
+                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Addiktológiai segítség</strong><small>Szakmai kapcsolatok és ügyeletek.</small></span><button class="secondary-button" type="button">Lista</button></div>
+                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Krízis üzenet</strong><small>Előre megírt segítségkérés.</small></span><button class="secondary-button" type="button">Küldés</button></div>
+              </section>
+              <p class="restart-note">A Hajnal nem helyettesít orvost, sürgősségi ellátást vagy szakmai segítséget.</p>
+              <button class="primary-button" type="button" data-action="open-emergency-sheet">Segítségkérési lehetőségek</button>
+            </div>
           </article>
         </section>
       </div>

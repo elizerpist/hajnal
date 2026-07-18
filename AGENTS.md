@@ -50,7 +50,7 @@ Until the user explicitly authorizes Flutter implementation, the project contain
 
 ## Current first-page structure
 
-The first prototype row follows this exact specification hierarchy and display order:
+The first prototype page follows this exact specification hierarchy and display order:
 
 ```text
 Splash
@@ -63,4 +63,8 @@ Splash
         └── Kezdőlap
 ```
 
-This row contains eight separate `412px × 892px` web-component screens: Splash, Onboarding, Tájékoztatás, Kezdődátum, Felépülési cél, Szponzor hozzáadása, Értesítések, and Kezdőlap.
+The first screen row contains seven separate `412px × 892px` web-component screens: Splash, Onboarding, Tájékoztatás, Kezdődátum, Felépülési cél, Szponzor hozzáadása, and Értesítések.
+
+The second screen row starts with Kezdőlap. It still declares `data-parent-screen="notifications"` because the specification's onboarding flow routes there after Értesítések, but it is no longer rendered in the same row as the onboarding children. The second row then renders the documented Kezdőlap branch in this order: Kezdőlap, Napi kép, Mai feladatok, Esti check-in, Tiszta maradtam, Esti reflexió, Visszaestem, Újrakezdés, Segítségkérés, and Pánik mód.
+
+The third screen row expands Pánik mód into its complete documented action set: Pánik mód, Segítség kell panel, Szponzor hívása, Segítségkérő üzenet, Tartalék kapcsolat, 15 perces túlélőcsomag, Légzőgyakorlat, Miért kezdtem el, Meeting kereső, and Sürgősségi segítség.
