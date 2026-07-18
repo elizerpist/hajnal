@@ -122,12 +122,15 @@ const tests = {
     );
     ['.soft-card', '.choice-row', '.primary-button', '.secondary-button', '.toggle-row']
       .forEach(expectForbiddenPillAbsent);
-    expectContains('assets/hero_xl_svg.svg');
+    expectContains('assets/hero_fullscreen2_svg.svg');
     expectContains('assets/hero_fullscreen_svg.svg');
+    expectContains('assets/hurray_svg.svg');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 16, 'only the approved SVG hero, carousel, and wizard images may use img tags');
-    expectCount(/src="assets\/hero_xl_svg\.svg"/g, 4, 'home and daily carousel image tags must use the approved XL SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 12, 'check-in wizard image tags must use the approved fullscreen SVG asset');
+    expectCount(/<img\b/g, 14, 'only the approved SVG hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
+    expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home and daily image screens must use the approved fullscreen2 SVG asset');
+    expectCount(/src="assets\/hurray_svg\.svg"/g, 2, 'hurray reward screens must use the approved hurray SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 10, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -221,6 +224,7 @@ const tests = {
     assert.ok(tasksIndex !== -1 && helpIndex !== -1 && tasksIndex < helpIndex, 'home checklist must render above the help button');
     assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*607px/s, 'home hero must be 68% of the 892px screen height');
     assert.match(html, /\.home-body\s*\{[^}]*top:\s*548px/s, 'home sheet must overlap the lower edge of the hero');
+    assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*42px 42px 0 0/s, 'home lower sheet must use the smaller requested top corner radius');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
     assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*480px/s, 'home dashboard must be a top floating layer');
     assert.match(html, /\.tasks-card\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s, 'home task list must be merged into the lower sheet, not a separate card');
@@ -229,6 +233,7 @@ const tests = {
     assert.match(html, /\.help-button\s*\{[^}]*border:\s*0;[^}]*background:\s*linear-gradient\(160deg,\s*#FF78A8,\s*#E04D86\);[^}]*box-shadow:\s*0 18px 38px rgba\(239,\s*85,\s*145,\s*\.26\)/s, 'home help button must reuse the panic button fill and glow without the distracting inner container ring');
     assert.ok(homeScreen.includes('class="segmented-progress"'), 'home dashboard needs a segmented progress bar');
     assert.ok(homeScreen.includes('class="dashboard-separator"'), 'home dashboard needs the center separator');
+    assert.ok(homeScreen.includes('class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"'), 'home hero must use the fullscreen2 SVG asset');
     assert.ok(homeScreen.includes('data-action="mark-clean-today" data-target-screen="checkin-clean"'), 'home dashboard needs the clean-day action');
     assert.ok(homeScreen.includes('data-action="open-evening-checkin" data-target-screen="evening-reflection" data-fallback-screen="daily-checkin"'), 'home checklist needs an evening check-in wizard entry with both clean-state routes');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
@@ -313,20 +318,28 @@ const tests = {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
     });
-    assert.ok(dailyImageScreen.includes('data-component="daily-image-carousel"'), 'daily image screen needs carousel structure');
-    assert.ok(dailyImageScreen.includes('data-action="previous-daily-image"'), 'daily image carousel needs previous navigation');
-    assert.ok(dailyImageScreen.includes('data-action="next-daily-image"'), 'daily image carousel needs next navigation');
-    assert.ok(dailyImageScreen.includes('data-carousel-slide="past"'), 'daily image carousel needs a visible past slide');
-    assert.ok(dailyImageScreen.includes('data-carousel-slide="current"'), 'daily image carousel needs the current slide');
-    assert.ok(dailyImageScreen.includes('data-carousel-slide="future"'), 'daily image carousel needs a future slide');
-    assert.match(html, /\.daily-carousel\s*\{[^}]*padding:\s*0;[^}]*border-radius:\s*inherit/s, 'daily image carousel must let the active image fill the rounded container');
-    assert.match(html, /\.daily-slide\.current\s*\{[^}]*top:\s*0;[^}]*right:\s*0;[^}]*bottom:\s*0;[^}]*left:\s*0;[^}]*border-radius:\s*inherit/s, 'current daily image slide must be full-bleed');
-    assert.match(html, /\.daily-slide img\s*\{[^}]*object-fit:\s*cover/s, 'daily carousel images must cover the rounded container');
-    assert.match(html, /\.daily-slide\.future\s*\{[^}]*filter:\s*grayscale\(1\)/s, 'future daily image slide must be gray');
-    ['daily-checkin', 'checkin-clean', 'evening-clean-reward', 'evening-reflection', 'gratitude-add', 'photo-memo', 'voice-memo', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
+    assert.ok(dailyImageScreen.includes('class="phone-screen daily-image-screen no-nav"'), 'daily image screen must use the fullscreen screen variant');
+    assert.ok(dailyImageScreen.includes('data-slide-mode="fullscreen"'), 'daily image screen must document fullscreen slide behavior');
+    assert.ok(dailyImageScreen.includes('class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg"'), 'daily image screen must use fullscreen2 as the full-screen image');
+    assert.ok(dailyImageScreen.includes('class="daily-image-progress" role="progressbar"'), 'daily image screen needs a semantic progress bar');
+    assert.ok(dailyImageScreen.includes('aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"'), 'daily image progress must expose the 90-day position');
+    assert.ok(dailyImageScreen.includes('24. nap'), 'daily image screen needs the day label under the progress bar');
+    assert.ok(dailyImageScreen.includes('a 90 napos úton'), 'daily image screen needs the 90-day subtitle under the progress bar');
+    assert.ok(dailyImageScreen.includes('daily-image-quote'), 'daily image screen needs the quote overlay near the image bottom');
+    assert.ok(!dailyImageScreen.includes('data-component="daily-image-carousel"'), 'daily image screen must remove the carousel component');
+    assert.ok(!dailyImageScreen.includes('daily-carousel-nav'), 'daily image screen must remove carousel navigation buttons');
+    assert.ok(!dailyImageScreen.includes('data-carousel-slide="past"'), 'daily image screen must remove neighboring past preview');
+    assert.ok(!dailyImageScreen.includes('data-carousel-slide="future"'), 'daily image screen must remove neighboring future preview');
+    assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
+    assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
+    assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
+    ['daily-checkin', 'evening-reflection', 'gratitude-add', 'photo-memo', 'voice-memo', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
+    ['checkin-clean', 'evening-clean-reward']
+      .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hurray_svg.svg"'), `${id} must use the hurray fullscreen image`));
     assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
     assert.match(html, /\.checkin-bg\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*object-fit:\s*cover/s, 'fullscreen check-in hero image must cover the whole phone viewport');
+    assert.match(html, /\.hurray-screen \.checkin-reward-copy\s*\{[^}]*margin:\s*126px 34px 0/s, 'hurray reward text must move up near the screen 10 title height');
     assert.match(html, /\.checkin-bottom-actions\s*\{[^}]*margin-top:\s*auto/s, 'check-in CTAs must stay anchored near the bottom like the source PNG');
     const cleanRewardScreen = screenSlice('checkin-clean');
     assert.ok(cleanRewardScreen.includes('data-auto-return-target="home"'), 'screen 11 must auto-return to the main menu');
@@ -349,6 +362,7 @@ const tests = {
       'placeholder="Írd ide bármit..."',
       'data-action="save-evening-reflection" data-target-screen="home"'
     ]);
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*margin:\s*8px 18px 0;[^}]*background:\s*rgba\(255,255,255,\.54\);[^}]*backdrop-filter:\s*blur\(26px\) saturate\(1\.18\)/s, 'evening reflection panel must reach the bottom as a stronger glassmorphism container');
     expectScreenContains('gratitude-add', [
       'data-parent-screen="evening-reflection"',
       'id="gratitude-line-1"',

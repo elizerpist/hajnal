@@ -159,11 +159,10 @@ try {
     images
       .filter((image) => {
         const screenId = image.closest(".phone-screen")?.id;
-        const allowedXl = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_xl_svg.svg");
+        const allowedFullscreen2 = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_fullscreen2_svg.svg");
+        const allowedHurray = ["checkin-clean", "evening-clean-reward"].includes(screenId) && image.src.endsWith("/hurray_svg.svg");
         const allowedFullscreen = [
           "daily-checkin",
-          "checkin-clean",
-          "evening-clean-reward",
           "evening-reflection",
           "gratitude-add",
           "photo-memo",
@@ -174,7 +173,7 @@ try {
           "checkin-breathing",
           "checkin-motivation",
         ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
-        return !(allowedXl || allowedFullscreen);
+        return !(allowedFullscreen2 || allowedHurray || allowedFullscreen);
       })
       .map((image) => ({ screen: image.closest(".phone-screen")?.id, src: image.src })),
   );

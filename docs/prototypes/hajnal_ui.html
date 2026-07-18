@@ -1228,7 +1228,7 @@
       flex-direction: column;
       overflow: hidden;
       padding: 62px 28px 16px;
-      border-radius: 92px 92px 0 0;
+      border-radius: 42px 42px 0 0;
       background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%);
       color: var(--hajnal-navy);
     }
@@ -1237,11 +1237,11 @@
       content: "";
       position: absolute;
       z-index: -1;
-      top: -28px;
-      left: -64px;
-      right: -64px;
-      height: 88px;
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      top: -14px;
+      left: -18px;
+      right: -18px;
+      height: 42px;
+      border-radius: 42px 42px 0 0;
       background: inherit;
     }
 
@@ -1556,179 +1556,121 @@
       display: block;
     }
 
-    .daily-art-card {
-      height: 430px;
-      margin-top: 8px;
-      border-radius: 30px;
+    .daily-image-screen {
+      color: var(--white);
+      background: #171848;
+      isolation: isolate;
     }
 
-    .daily-carousel {
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      padding: 0;
-      border-radius: inherit;
-    }
-
-    .daily-carousel-window {
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      border-radius: inherit;
-    }
-
-    .daily-slide {
+    .daily-image-screen::after {
+      content: "";
       position: absolute;
-      overflow: hidden;
-      background: rgba(255, 255, 255, .16);
-      box-shadow: 0 12px 24px rgba(25, 22, 82, .18);
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(22, 21, 72, .18) 0%, rgba(22, 21, 72, .04) 44%, rgba(14, 16, 50, .72) 100%);
+      pointer-events: none;
     }
 
-    .daily-slide.current {
-      z-index: 2;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: inherit;
-      box-shadow: none;
-    }
-
-    .daily-slide.past {
-      width: 58px;
-      height: 82px;
-      z-index: 5;
-      left: 14px;
-      bottom: 18px;
-      opacity: .82;
-      border-radius: 15px;
-      transform-origin: left bottom;
-    }
-
-    .daily-slide.future {
-      width: 58px;
-      height: 82px;
-      z-index: 5;
-      right: 14px;
-      bottom: 18px;
-      opacity: .62;
-      border-radius: 15px;
-      transform-origin: right bottom;
-      filter: grayscale(1);
-    }
-
-    .daily-slide img {
+    .daily-fullscreen-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      object-position: center center;
+      object-position: center top;
     }
 
-    .daily-slide.future img {
-      filter: grayscale(1);
-    }
-
-    .daily-slide-label {
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      padding: 6px 8px;
-      border-radius: 12px;
-      background: rgba(44, 46, 119, .64);
+    .daily-image-screen > .status-bar {
+      position: relative;
+      z-index: 3;
       color: var(--white);
-      font-size: 10px;
-      font-weight: 780;
-      text-align: center;
-      backdrop-filter: blur(8px);
+      text-shadow: 0 2px 8px rgba(14, 14, 47, .36);
     }
 
-    .daily-slide.future .daily-slide-label {
-      background: rgba(42, 43, 58, .58);
-    }
-
-    .daily-carousel-nav {
-      width: 34px;
-      height: 34px;
+    .daily-image-progress {
+      height: 4px;
       position: absolute;
-      z-index: 6;
-      top: 50%;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, .35);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .18);
-      color: var(--white);
-      box-shadow: 0 10px 22px rgba(20, 19, 70, .20);
-      transform: translateY(-50%);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
+      z-index: 3;
+      top: 58px;
+      left: 26px;
+      right: 26px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .30);
     }
 
-    .daily-carousel-nav.prev {
-      left: 8px;
+    .daily-image-progress span {
+      width: 26.666%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: var(--white);
+      box-shadow: 0 0 14px rgba(255, 255, 255, .55);
     }
 
-    .daily-carousel-nav.next {
-      right: 8px;
-    }
-
-    .daily-carousel-nav.next svg {
-      transform: rotate(180deg);
-    }
-
-    .daily-carousel-dots {
+    .daily-image-day {
       position: absolute;
+      z-index: 3;
+      top: 74px;
       left: 0;
       right: 0;
-      bottom: 10px;
-      z-index: 7;
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-    }
-
-    .daily-carousel-dots span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .42);
-    }
-
-    .daily-carousel-dots .active {
-      width: 18px;
-      border-radius: 999px;
-      background: var(--white);
-    }
-
-    .daily-art-message {
-      margin-top: 14px;
-      padding: 18px;
       text-align: center;
+      text-shadow: 0 3px 12px rgba(15, 15, 52, .32);
     }
 
-    .daily-art-message strong {
+    .daily-image-day strong {
       display: block;
-      font-size: 21px;
-      line-height: 1.25;
+      color: var(--white);
+      font-size: 20px;
+      line-height: 1;
       font-weight: 820;
+      letter-spacing: 0;
     }
 
-    .daily-art-message span {
+    .daily-image-day span {
       display: block;
       margin-top: 7px;
-      color: rgba(44, 46, 119, .63);
-      font-size: 13px;
-      line-height: 1.45;
-      font-weight: 610;
+      color: rgba(255, 255, 255, .86);
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 640;
     }
 
-    .daily-art-actions {
+    .daily-image-quote {
+      position: absolute;
+      z-index: 3;
+      left: 30px;
+      right: 30px;
+      bottom: 78px;
+      margin: 0;
+      color: var(--white);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-align: center;
+      text-shadow: 0 3px 14px rgba(12, 13, 42, .45);
+    }
+
+    .daily-image-quote span {
+      display: block;
+      margin-top: 10px;
+      font-family: var(--font-body);
+      color: rgba(255, 255, 255, .88);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .breathing-duration-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: auto;
+      margin-top: 12px;
     }
 
     .task-summary {
@@ -1825,6 +1767,11 @@
     .checkin-fullscreen.practice-state::after {
       background:
         linear-gradient(180deg, rgba(81, 55, 160, .18) 0%, rgba(170, 95, 170, .24) 44%, rgba(241, 142, 175, .50) 100%);
+    }
+
+    .hurray-screen::after {
+      background:
+        linear-gradient(180deg, rgba(24, 23, 76, .04) 0%, rgba(24, 23, 76, .08) 44%, rgba(13, 15, 48, .58) 100%);
     }
 
     .checkin-bg {
@@ -2019,6 +1966,10 @@
       text-shadow: 0 3px 12px rgba(15, 15, 52, .34);
     }
 
+    .hurray-screen .checkin-reward-copy {
+      margin: 126px 34px 0;
+    }
+
     .checkin-reward-copy h3,
     .checkin-relapse-copy h3,
     .checkin-support-copy h3,
@@ -2070,6 +2021,20 @@
 	      color: var(--hajnal-navy);
 	      box-shadow: 0 18px 36px rgba(35, 24, 84, .18);
 	      backdrop-filter: blur(16px);
+	      -webkit-backdrop-filter: blur(16px);
+	    }
+
+	    #evening-reflection .evening-reflection-panel {
+	      flex: 1;
+	      align-content: start;
+	      margin: 8px 18px 0;
+	      padding: 17px 16px 16px;
+	      border-radius: 24px 24px 0 0;
+	      border-color: rgba(255, 255, 255, .72);
+	      background: rgba(255,255,255,.54);
+	      box-shadow: 0 24px 46px rgba(20, 17, 62, .22), inset 0 1px 0 rgba(255, 255, 255, .58);
+	      backdrop-filter: blur(26px) saturate(1.18);
+	      -webkit-backdrop-filter: blur(26px) saturate(1.18);
 	    }
 
 	    .evening-panel-top {
@@ -3844,7 +3809,7 @@
           <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
           <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
             <button class="home-illustration" type="button" aria-label="Napi kép megnyitása" data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap">
-              <img class="home-hero-image" src="assets/hero_xl_svg.svg" alt="" loading="eager">
+              <img class="home-hero-image" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
             </button>
             <div class="status-bar">
               <span>9:41</span>
@@ -3903,54 +3868,17 @@
         </section>
         <section class="screen-column" id="column-daily-image">
           <div class="screen-label"><span class="screen-index">9</span><strong>Napi kép</strong> · Kezdőlap child</div>
-          <article class="phone-screen branch-screen dark" id="daily-image" data-screen="daily-image" data-parent-screen="home">
+          <article class="phone-screen daily-image-screen no-nav" id="daily-image" data-screen="daily-image" data-parent-screen="home" data-slide-mode="fullscreen">
+            <img class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg" alt="" loading="eager">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Napi kép</h3><p class="screen-subtitle">24. nap · feloldva ma</p></div>
-              <button class="icon-button" type="button" aria-label="Megosztás"><svg class="icon" aria-hidden="true"><use href="#icon-share"></use></svg></button>
-            </header>
-            <div class="branch-content">
-              <div class="branch-hero daily-art-card">
-                <div class="daily-carousel" data-component="daily-image-carousel" aria-label="Napi kép carousel">
-                  <button class="daily-carousel-nav prev" type="button" aria-label="Előző napi kép" data-action="previous-daily-image" data-carousel-target="daily-image-carousel"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-                  <div class="daily-carousel-window">
-                    <article class="daily-slide past" data-carousel-slide="past" aria-label="23. nap, feloldott napi kép">
-                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
-                      <span class="daily-slide-label">23. nap</span>
-                    </article>
-                    <article class="daily-slide current" data-carousel-slide="current" aria-current="true" aria-label="24. nap, mai napi kép">
-                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
-                      <span class="daily-slide-label">24. nap · ma</span>
-                    </article>
-                    <article class="daily-slide future" data-carousel-slide="future" aria-label="25. nap, még zárolt jövőbeli kép">
-                      <img src="assets/hero_xl_svg.svg" alt="" loading="eager">
-                      <span class="daily-slide-label">25. nap · később</span>
-                    </article>
-                  </div>
-                  <button class="daily-carousel-nav next" type="button" aria-label="Következő napi kép" data-action="next-daily-image" data-carousel-target="daily-image-carousel"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-                  <div class="daily-carousel-dots" aria-hidden="true"><span></span><span class="active"></span><span></span></div>
-                </div>
-              </div>
-              <div class="daily-art-message soft-card">
-                <strong>Nem kell tökéletesnek lenned.</strong>
-                <span>Ma elég kitartanod. Minden nap egy lépés a fény felé.</span>
-              </div>
-              <div class="daily-art-actions">
-                <button class="secondary-button" type="button" data-action="save-daily-image">Mentés</button>
-                <button class="primary-button" type="button" data-action="share-daily-image">Megosztás</button>
-              </div>
+            <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24">
+              <span aria-hidden="true"></span>
             </div>
-            <nav class="bottom-nav" aria-label="Fő navigáció">
-              <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
-              <button type="button" data-target-screen="progress"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
-              <button type="button" data-target-screen="tools"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Eszközök</span></button>
-              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
-              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
-            </nav>
+            <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
+            <blockquote class="daily-image-quote">Nem kell tökéletesnek lenned.<span>Ma elég kitartanod. Minden nap egy lépés a fény felé.</span></blockquote>
           </article>
         </section>
 
@@ -3982,8 +3910,8 @@
 
         <section class="screen-column" id="column-checkin-clean">
           <div class="screen-label"><span class="screen-index">11</span><strong>SIKERES NAP - JUTALOM</strong> · Check-in child</div>
-          <article class="phone-screen checkin-fullscreen no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="daily-checkin" data-auto-return-target="home">
-            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+          <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="checkin-clean" data-screen="checkin-clean" data-parent-screen="daily-checkin" data-auto-return-target="home">
+            <img class="checkin-bg" src="assets/hurray_svg.svg" alt="" loading="eager">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
@@ -4000,8 +3928,8 @@
 
 	        <section class="screen-column" id="column-evening-clean-reward">
 	          <div class="screen-label"><span class="screen-index">11B</span><strong>SIKERES NAP - ESTI ÁG</strong> · Opcionális check-in</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="evening-clean-reward" data-screen="evening-clean-reward" data-parent-screen="daily-checkin">
-	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+	          <article class="phone-screen checkin-fullscreen hurray-screen no-nav" id="evening-clean-reward" data-screen="evening-clean-reward" data-parent-screen="daily-checkin">
+	            <img class="checkin-bg" src="assets/hurray_svg.svg" alt="" loading="eager">
 	            <div class="status-bar">
 	              <span>9:41</span>
 	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
@@ -4601,7 +4529,7 @@
               <section class="panic-panel-card soft-card">
                 <h4>Most csak a levegő.</h4>
                 <p>Belégzés · tartsd · kilégzés. Válassz rövid, nem teljesítményalapú gyakorlatot.</p>
-                <div class="daily-art-actions">
+                <div class="breathing-duration-actions">
                   <button class="secondary-button" type="button">1 perc</button>
                   <button class="secondary-button" type="button">3 perc</button>
                 </div>
