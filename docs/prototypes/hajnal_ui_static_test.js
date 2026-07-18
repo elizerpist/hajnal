@@ -21,8 +21,10 @@ const screenOrder = [
   'checkin-clean',
   'checkin-mood',
   'checkin-craving',
+  'checkin-note',
   'checkin-relapse',
   'support-next-step',
+  'support-note',
   'checkin-survival-pack',
   'checkin-breathing',
   'checkin-motivation',
@@ -99,7 +101,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 30, 'phone screen count');
+    expectCount(/class="phone-screen/g, 32, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -118,9 +120,9 @@ const tests = {
     expectContains('assets/hero_xl_svg.svg');
     expectContains('assets/hero_fullscreen_svg.svg');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 13, 'only the approved SVG hero, carousel, and wizard images may use img tags');
+    expectCount(/<img\b/g, 15, 'only the approved SVG hero, carousel, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 4, 'home and daily carousel image tags must use the approved XL SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 9, 'check-in wizard image tags must use the approved fullscreen SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 11, 'check-in wizard image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -242,8 +244,10 @@ const tests = {
       'data-screen="checkin-clean"',
       'data-screen="checkin-mood"',
       'data-screen="checkin-craving"',
+      'data-screen="checkin-note"',
       'data-screen="checkin-relapse"',
       'data-screen="support-next-step"',
+      'data-screen="support-note"',
       'data-screen="checkin-survival-pack"',
       'data-screen="checkin-breathing"',
       'data-screen="checkin-motivation"',
@@ -262,11 +266,16 @@ const tests = {
       'Most hogy érzed',
       'magad?',
       'Volt ma sóvárgás?',
+      'Esti jegyzet',
+      'Mi segített ma?',
+      'Írd le röviden, ami megtartott.',
       'Ma visszaestem',
       'Köszönjük,',
       'hogy őszinte voltál.',
       'Itt vagyunk',
       'neked.',
+      'Írd le, mi történt',
+      'Rövid, privát jegyzet',
       '15 perces túlélő csomag',
       'Légzőgyakorlat',
       'Motivációs üzenetek',
@@ -279,6 +288,10 @@ const tests = {
     expectContains('Napi kép (a főmenü képére tap indítja)');
     expectContains('data-action="mark-clean-today" data-target-screen="checkin-clean"');
     expectContains('data-action="open-panic" data-target-screen="panic-mode"');
+    expectContains('data-action="save-craving" data-target-screen="checkin-note"');
+    expectContains('data-action="save-checkin-note" data-target-screen="home"');
+    expectContains('data-action="message-sponsor" data-target-screen="support-note"');
+    expectContains('data-action="save-support-note" data-target-screen="support-next-step"');
     assert.ok(dailyImageScreen.includes('data-component="daily-image-carousel"'), 'daily image screen needs carousel structure');
     assert.ok(dailyImageScreen.includes('data-action="previous-daily-image"'), 'daily image carousel needs previous navigation');
     assert.ok(dailyImageScreen.includes('data-action="next-daily-image"'), 'daily image carousel needs next navigation');
@@ -289,13 +302,24 @@ const tests = {
     assert.match(html, /\.daily-slide\.current\s*\{[^}]*top:\s*0;[^}]*right:\s*0;[^}]*bottom:\s*0;[^}]*left:\s*0;[^}]*border-radius:\s*inherit/s, 'current daily image slide must be full-bleed');
     assert.match(html, /\.daily-slide img\s*\{[^}]*object-fit:\s*cover/s, 'daily carousel images must cover the rounded container');
     assert.match(html, /\.daily-slide\.future\s*\{[^}]*filter:\s*grayscale\(1\)/s, 'future daily image slide must be gray');
-    ['daily-checkin', 'checkin-clean', 'checkin-mood', 'checkin-craving', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
+    ['daily-checkin', 'checkin-clean', 'checkin-mood', 'checkin-craving', 'checkin-note', 'checkin-relapse', 'support-next-step', 'support-note', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
     assert.match(html, /\.checkin-bg\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*object-fit:\s*cover/s, 'fullscreen check-in hero image must cover the whole phone viewport');
     assert.match(html, /\.checkin-bottom-actions\s*\{[^}]*margin-top:\s*auto/s, 'check-in CTAs must stay anchored near the bottom like the source PNG');
     expectCount(/data-component="daily-task-detail"/g, 5, 'daily task detail count');
     expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
+    expectCount(/<textarea\b/g, 2, 'writable note textarea count');
+    expectScreenContains('checkin-note', [
+      'id="checkin-note-text"',
+      'for="checkin-note-text"',
+      'placeholder="Írd le röviden, ami megtartott."'
+    ]);
+    expectScreenContains('support-note', [
+      'id="support-note-text"',
+      'for="support-note-text"',
+      'placeholder="Írd le röviden, mi történt."'
+    ]);
   },
 
   panicBranch() {
@@ -356,7 +380,7 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 3, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
+    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-note checkin-relapse support-next-step support-note checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help"');
     const parents = {
       onboarding: 'splash',
@@ -372,8 +396,10 @@ const tests = {
       'checkin-clean': 'daily-checkin',
       'checkin-mood': 'checkin-clean',
       'checkin-craving': 'checkin-mood',
+      'checkin-note': 'checkin-craving',
       'checkin-relapse': 'daily-checkin',
       'support-next-step': 'checkin-relapse',
+      'support-note': 'support-next-step',
       'checkin-survival-pack': 'support-next-step',
       'checkin-breathing': 'support-next-step',
       'checkin-motivation': 'support-next-step',

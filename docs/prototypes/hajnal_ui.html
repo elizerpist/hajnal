@@ -2115,6 +2115,54 @@
       text-align: center;
     }
 
+    .checkin-note-panel {
+      display: grid;
+      gap: 13px;
+      margin: auto 28px 25px;
+      padding: 18px;
+      color: var(--hajnal-navy);
+      background: rgba(255, 255, 255, .78);
+      backdrop-filter: blur(14px);
+    }
+
+    .checkin-note-panel h3 {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .checkin-note-panel p {
+      margin: -4px 8px 0;
+      color: rgba(44, 46, 119, .62);
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 590;
+      text-align: center;
+    }
+
+    .checkin-note-panel label small {
+      display: block;
+      color: rgba(44, 46, 119, .62);
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .checkin-note-panel .reflection-input {
+      min-height: 188px;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, .86);
+    }
+
+    .checkin-note-panel .daily-art-actions {
+      margin-top: 0;
+    }
+
     .checkin-relapse-copy {
       margin: 80px 45px auto;
       text-align: center;
@@ -3641,8 +3689,10 @@
 │   ├── Tiszta maradtam → Sikeres nap jutalom
 │   │   ├── Hangulat reflexió
 │   │   └── Sóvárgás reflexió
+│   │       └── Esti jegyzet
 │   └── Visszaestem
 │       └── Segítségkérés
+│           ├── Jegyzet arról, mi történt
 │           ├── 15 perces túlélő csomag
 │           ├── Légzőgyakorlat
 │           └── Motivációs üzenetek
@@ -3650,7 +3700,7 @@
 └── Pánik mód</pre>
       </div>
 
-      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode">
+      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-note checkin-relapse support-next-step support-note checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode">
         <section class="screen-column" id="column-home">
           <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
           <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
@@ -3870,15 +3920,43 @@
                 </div>
               </div>
               <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="save-craving" data-target-screen="home">Kész</button>
+                <button class="checkin-action primary" type="button" data-action="save-craving" data-target-screen="checkin-note">Kész</button>
                 <button class="checkin-action text-link" type="button" data-action="skip-craving" data-target-screen="home">Kihagyom</button>
               </div>
             </div>
           </article>
         </section>
 
+        <section class="screen-column" id="column-checkin-note">
+          <div class="screen-label"><span class="screen-index">14</span><strong>Esti jegyzet</strong> · Opcionális írás</div>
+          <article class="phone-screen checkin-fullscreen no-nav" id="checkin-note" data-screen="checkin-note" data-parent-screen="checkin-craving">
+            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="checkin-content">
+              <div class="checkin-top-actions">
+                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="checkin-craving"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </div>
+              <section class="checkin-note-panel soft-card" aria-label="Esti jegyzet">
+                <h3>Esti jegyzet</h3>
+                <p>Nem kötelező. Csak ami ma belefér.</p>
+                <label for="checkin-note-text"><small>Mi segített ma?</small></label>
+                <textarea class="reflection-input" id="checkin-note-text" placeholder="Írd le röviden, ami megtartott."></textarea>
+                <div class="daily-art-actions">
+                  <button class="secondary-button" type="button" data-action="skip-checkin-note" data-target-screen="home">Kihagyás</button>
+                  <button class="primary-button" type="button" data-action="save-checkin-note" data-target-screen="home">Mentés</button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
+
         <section class="screen-column" id="column-checkin-relapse">
-          <div class="screen-label"><span class="screen-index">14</span><strong>MA VISSZAESTEM</strong> · Nem büntet</div>
+          <div class="screen-label"><span class="screen-index">15</span><strong>MA VISSZAESTEM</strong> · Nem büntet</div>
           <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="daily-checkin">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
@@ -3903,7 +3981,7 @@
         </section>
 
         <section class="screen-column" id="column-support-next-step">
-          <div class="screen-label"><span class="screen-index">15</span><strong>SEGÍTSÉG KELL</strong> · Azonnali támogatás</div>
+          <div class="screen-label"><span class="screen-index">16</span><strong>SEGÍTSÉG KELL</strong> · Azonnali támogatás</div>
           <article class="phone-screen checkin-fullscreen support-state no-nav" id="support-next-step" data-screen="support-next-step" data-parent-screen="checkin-relapse">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
@@ -3922,7 +4000,7 @@
               </section>
               <div class="checkin-support-list" aria-label="Támogató következő lépések">
                 <button class="support-option" type="button" data-component="checkin-support-option" data-action="call-sponsor"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Hívd a szponzorod</strong><small>Azonnali beszélgetés.</small></span><span aria-hidden="true">›</span></button>
-                <button class="support-option" type="button" data-component="checkin-support-option" data-action="message-sponsor"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Üzenet a szponzorodnak</strong><small>Előre megírt segítségkérés.</small></span><span aria-hidden="true">›</span></button>
+                <button class="support-option" type="button" data-component="checkin-support-option" data-action="message-sponsor" data-target-screen="support-note"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Üzenet a szponzorodnak</strong><small>Írd le, mi történt.</small></span><span aria-hidden="true">›</span></button>
                 <button class="support-option" type="button" data-component="checkin-support-option" data-action="open-checkin-survival" data-target-screen="checkin-survival-pack"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg></span><span><strong>15 perces túlélő csomag</strong><small>Lassú, vezetett lépések.</small></span><span aria-hidden="true">›</span></button>
                 <button class="support-option" type="button" data-component="checkin-support-option" data-action="open-checkin-breathing" data-target-screen="checkin-breathing"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg></span><span><strong>Légzőgyakorlat</strong><small>4-7-8 légzés.</small></span><span aria-hidden="true">›</span></button>
                 <button class="support-option" type="button" data-component="checkin-support-option" data-action="open-checkin-motivation" data-target-screen="checkin-motivation"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Motivációs üzenetek</strong><small>Rövid emlékeztető.</small></span><span aria-hidden="true">›</span></button>
@@ -3931,8 +4009,36 @@
           </article>
         </section>
 
+        <section class="screen-column" id="column-support-note">
+          <div class="screen-label"><span class="screen-index">17</span><strong>Írd le, mi történt</strong> · Segítség child</div>
+          <article class="phone-screen checkin-fullscreen support-state no-nav" id="support-note" data-screen="support-note" data-parent-screen="support-next-step">
+            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="checkin-content">
+              <div class="checkin-top-actions">
+                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="support-next-step"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </div>
+              <section class="checkin-note-panel soft-card" aria-label="Segítségkérő jegyzet">
+                <h3>Írd le, mi történt</h3>
+                <p>Rövid, privát jegyzet. Ebből később üzenetet is készíthetsz.</p>
+                <label for="support-note-text"><small>Rövid, privát jegyzet</small></label>
+                <textarea class="reflection-input" id="support-note-text" placeholder="Írd le röviden, mi történt."></textarea>
+                <div class="daily-art-actions">
+                  <button class="secondary-button" type="button" data-action="skip-support-note" data-target-screen="support-next-step">Kihagyás</button>
+                  <button class="primary-button" type="button" data-action="save-support-note" data-target-screen="support-next-step">Mentés</button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
+
         <section class="screen-column" id="column-checkin-survival-pack">
-          <div class="screen-label"><span class="screen-index">16</span><strong>15 PERCES TÚLÉLŐ CSOMAG</strong> · Segítség child</div>
+          <div class="screen-label"><span class="screen-index">18</span><strong>15 PERCES TÚLÉLŐ CSOMAG</strong> · Segítség child</div>
           <article class="phone-screen checkin-fullscreen practice-state no-nav" id="checkin-survival-pack" data-screen="checkin-survival-pack" data-parent-screen="support-next-step">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
@@ -3961,7 +4067,7 @@
         </section>
 
         <section class="screen-column" id="column-checkin-breathing">
-          <div class="screen-label"><span class="screen-index">17</span><strong>LÉGZŐGYAKORLAT</strong> · 4-7-8 légzés</div>
+          <div class="screen-label"><span class="screen-index">19</span><strong>LÉGZŐGYAKORLAT</strong> · 4-7-8 légzés</div>
           <article class="phone-screen checkin-fullscreen practice-state no-nav" id="checkin-breathing" data-screen="checkin-breathing" data-parent-screen="support-next-step">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
@@ -3990,7 +4096,7 @@
         </section>
 
         <section class="screen-column" id="column-checkin-motivation">
-          <div class="screen-label"><span class="screen-index">18</span><strong>MOTIVÁCIÓS ÜZENETEK</strong> · Segítség child</div>
+          <div class="screen-label"><span class="screen-index">20</span><strong>MOTIVÁCIÓS ÜZENETEK</strong> · Segítség child</div>
           <article class="phone-screen checkin-fullscreen practice-state no-nav" id="checkin-motivation" data-screen="checkin-motivation" data-parent-screen="support-next-step">
             <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
             <div class="status-bar">
@@ -4019,7 +4125,7 @@
         </section>
 
         <section class="screen-column" id="column-daily-tasks">
-          <div class="screen-label"><span class="screen-index">19</span><strong>Mai feladatok</strong> · Kezdőlap child</div>
+          <div class="screen-label"><span class="screen-index">21</span><strong>Mai feladatok</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen" id="daily-tasks" data-screen="daily-tasks" data-parent-screen="home">
             <div class="status-bar">
               <span>9:41</span>
@@ -4070,7 +4176,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-mode">
-          <div class="screen-label"><span class="screen-index">17</span><strong>Pánik mód</strong> · Kezdőlap child</div>
+          <div class="screen-label"><span class="screen-index">22</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-mode" data-screen="panic-mode" data-parent-screen="home">
             <div class="status-bar">
               <span>9:41</span>
@@ -4119,7 +4225,7 @@
 
       <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help">
         <section class="screen-column" id="column-panic-root">
-          <div class="screen-label"><span class="screen-index">18</span><strong>Pánik mód</strong> · részletsor root</div>
+          <div class="screen-label"><span class="screen-index">23</span><strong>Pánik mód</strong> · részletsor root</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="panic-mode">
             <div class="status-bar">
               <span>9:41</span>
@@ -4152,7 +4258,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-help-sheet">
-          <div class="screen-label"><span class="screen-index">19</span><strong>Segítség kell panel</strong> · Pánik child</div>
+          <div class="screen-label"><span class="screen-index">24</span><strong>Segítség kell panel</strong> · Pánik child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-help-sheet" data-screen="panic-help-sheet" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4183,7 +4289,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-sponsor-call">
-          <div class="screen-label"><span class="screen-index">20</span><strong>Szponzor hívása</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">25</span><strong>Szponzor hívása</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-sponsor-call" data-screen="panic-sponsor-call" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4214,7 +4320,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-help-message">
-          <div class="screen-label"><span class="screen-index">21</span><strong>Segítségkérő üzenet</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">26</span><strong>Segítségkérő üzenet</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4238,7 +4344,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-backup-contact">
-          <div class="screen-label"><span class="screen-index">22</span><strong>Tartalék kapcsolat</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">27</span><strong>Tartalék kapcsolat</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-backup-contact" data-screen="panic-backup-contact" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4267,7 +4373,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-survival-pack">
-          <div class="screen-label"><span class="screen-index">23</span><strong>15 perces túlélőcsomag</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">28</span><strong>15 perces túlélőcsomag</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-survival-pack" data-screen="panic-survival-pack" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4295,7 +4401,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-breathing">
-          <div class="screen-label"><span class="screen-index">24</span><strong>Légzőgyakorlat</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">29</span><strong>Légzőgyakorlat</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-breathing" data-screen="panic-breathing" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4322,7 +4428,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-why-started">
-          <div class="screen-label"><span class="screen-index">25</span><strong>Miért kezdtem el</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">30</span><strong>Miért kezdtem el</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-why-started" data-screen="panic-why-started" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4348,7 +4454,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-meeting-finder">
-          <div class="screen-label"><span class="screen-index">26</span><strong>Meeting kereső</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">31</span><strong>Meeting kereső</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-meeting-finder" data-screen="panic-meeting-finder" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
@@ -4371,7 +4477,7 @@
         </section>
 
         <section class="screen-column" id="column-panic-emergency-help">
-          <div class="screen-label"><span class="screen-index">27</span><strong>Szakmai segítség</strong> · gyors opció</div>
+          <div class="screen-label"><span class="screen-index">32</span><strong>Szakmai segítség</strong> · gyors opció</div>
           <article class="phone-screen branch-screen" id="panic-emergency-help" data-screen="panic-emergency-help" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
