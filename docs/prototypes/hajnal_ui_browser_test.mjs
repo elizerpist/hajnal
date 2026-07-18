@@ -24,10 +24,13 @@ const screenOrder = [
   ["daily-image", "home"],
   ["daily-checkin", "home"],
   ["checkin-clean", "daily-checkin"],
-  ["evening-reflection", "checkin-clean"],
+  ["checkin-mood", "checkin-clean"],
+  ["checkin-craving", "checkin-mood"],
   ["checkin-relapse", "daily-checkin"],
-  ["restart-period", "checkin-relapse"],
   ["support-next-step", "checkin-relapse"],
+  ["checkin-survival-pack", "support-next-step"],
+  ["checkin-breathing", "support-next-step"],
+  ["checkin-motivation", "support-next-step"],
   ["daily-tasks", "home"],
   ["panic-mode", "home"],
   ["panic-root", "panic-mode"],
@@ -51,16 +54,19 @@ const screenRows = [
   [
     "home",
     "home",
-    "home daily-image daily-checkin checkin-clean evening-reflection checkin-relapse restart-period support-next-step daily-tasks panic-mode",
+    "home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode",
     [
       "home",
       "daily-image",
       "daily-checkin",
       "checkin-clean",
-      "evening-reflection",
+      "checkin-mood",
+      "checkin-craving",
       "checkin-relapse",
-      "restart-period",
       "support-next-step",
+      "checkin-survival-pack",
+      "checkin-breathing",
+      "checkin-motivation",
       "daily-tasks",
       "panic-mode",
     ],
@@ -148,8 +154,18 @@ try {
       .filter((image) => {
         const screenId = image.closest(".phone-screen")?.id;
         const allowedXl = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_xl_svg.svg");
-        const allowedM = ["daily-checkin", "checkin-clean", "checkin-relapse", "restart-period"].includes(screenId) && image.src.endsWith("/hero_m_svg.svg");
-        return !(allowedXl || allowedM);
+        const allowedFullscreen = [
+          "daily-checkin",
+          "checkin-clean",
+          "checkin-mood",
+          "checkin-craving",
+          "checkin-relapse",
+          "support-next-step",
+          "checkin-survival-pack",
+          "checkin-breathing",
+          "checkin-motivation",
+        ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
+        return !(allowedXl || allowedFullscreen);
       })
       .map((image) => ({ screen: image.closest(".phone-screen")?.id, src: image.src })),
   );

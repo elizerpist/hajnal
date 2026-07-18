@@ -19,10 +19,13 @@ const screenOrder = [
   'daily-image',
   'daily-checkin',
   'checkin-clean',
-  'evening-reflection',
+  'checkin-mood',
+  'checkin-craving',
   'checkin-relapse',
-  'restart-period',
   'support-next-step',
+  'checkin-survival-pack',
+  'checkin-breathing',
+  'checkin-motivation',
   'daily-tasks',
   'panic-mode',
   'panic-root',
@@ -96,7 +99,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 27, 'phone screen count');
+    expectCount(/class="phone-screen/g, 30, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -113,11 +116,12 @@ const tests = {
     ['.soft-card', '.choice-row', '.primary-button', '.secondary-button', '.toggle-row']
       .forEach(expectForbiddenPillAbsent);
     expectContains('assets/hero_xl_svg.svg');
-    expectContains('assets/hero_m_svg.svg');
+    expectContains('assets/hero_fullscreen_svg.svg');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 8, 'only the approved SVG hero, carousel, and wizard images may use img tags');
+    expectCount(/<img\b/g, 13, 'only the approved SVG hero, carousel, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 4, 'home and daily carousel image tags must use the approved XL SVG asset');
-    expectCount(/src="assets\/hero_m_svg\.svg"/g, 4, 'wizard image tags must use the approved M SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 9, 'check-in wizard image tags must use the approved fullscreen SVG asset');
+    expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
 
@@ -236,24 +240,37 @@ const tests = {
       'data-screen="daily-image"',
       'data-screen="daily-checkin"',
       'data-screen="checkin-clean"',
-      'data-screen="evening-reflection"',
+      'data-screen="checkin-mood"',
+      'data-screen="checkin-craving"',
       'data-screen="checkin-relapse"',
-      'data-screen="restart-period"',
       'data-screen="support-next-step"',
+      'data-screen="checkin-survival-pack"',
+      'data-screen="checkin-breathing"',
+      'data-screen="checkin-motivation"',
       'data-screen="daily-tasks"',
       'data-screen="panic-mode"'
     ]);
     [
       'Napi kép',
       'Mai feladataim',
-      'Hogy sikerült a mai napod?',
-      'Igen, ma tiszta maradtam',
-      'Megcsináltad a mai napot!',
-      'Esti reflexió',
+      'CHECK-IN - ELSŐ LÉPÉS',
+      'Hogy sikerült',
+      'a mai napod?',
+      'Ma tiszta maradtam',
+      'Megcsináltad!',
+      '25. nap',
+      'Most hogy érzed',
+      'magad?',
+      'Volt ma sóvárgás?',
       'Ma visszaestem',
-      'Őszinteség bátorság.',
-      'Újrakezdés',
-      'Támogatásra van szükséged?',
+      'Köszönjük,',
+      'hogy őszinte voltál.',
+      'Itt vagyunk',
+      'neked.',
+      '15 perces túlélő csomag',
+      'Légzőgyakorlat',
+      'Motivációs üzenetek',
+      'Nem kell tökéletesnek lenned',
       'Pánik mód',
       'Nem vagy egyedül.'
     ].forEach(expectContains);
@@ -272,12 +289,13 @@ const tests = {
     assert.match(html, /\.daily-slide\.current\s*\{[^}]*top:\s*0;[^}]*right:\s*0;[^}]*bottom:\s*0;[^}]*left:\s*0;[^}]*border-radius:\s*inherit/s, 'current daily image slide must be full-bleed');
     assert.match(html, /\.daily-slide img\s*\{[^}]*object-fit:\s*cover/s, 'daily carousel images must cover the rounded container');
     assert.match(html, /\.daily-slide\.future\s*\{[^}]*filter:\s*grayscale\(1\)/s, 'future daily image slide must be gray');
-    ['daily-checkin', 'checkin-clean', 'checkin-relapse', 'restart-period']
-      .forEach((id) => assert.ok(screenSlice(id).includes('class="wizard-hero-image" src="assets/hero_m_svg.svg"'), `${id} must use the M hero image`));
-    assert.match(html, /\.checkin-scene\s*\{[^}]*aspect-ratio:\s*1659 \/ 948;[^}]*height:\s*auto;[^}]*border-radius:\s*24px/s, 'wizard hero container must match the M image aspect ratio and remain card-shaped');
-    assert.match(html, /\.wizard-hero-image\s*\{[^}]*object-fit:\s*cover/s, 'wizard hero image must fill the card without distortion');
+    ['daily-checkin', 'checkin-clean', 'checkin-mood', 'checkin-craving', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
+      .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
+    assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
+    assert.match(html, /\.checkin-bg\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*object-fit:\s*cover/s, 'fullscreen check-in hero image must cover the whole phone viewport');
+    assert.match(html, /\.checkin-bottom-actions\s*\{[^}]*margin-top:\s*auto/s, 'check-in CTAs must stay anchored near the bottom like the source PNG');
     expectCount(/data-component="daily-task-detail"/g, 5, 'daily task detail count');
-    expectCount(/name="restart-date"/g, 3, 'restart date choice count');
+    expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
   },
 
   panicBranch() {
@@ -338,7 +356,7 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 3, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-reflection checkin-relapse restart-period support-next-step daily-tasks panic-mode"');
+    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean checkin-mood checkin-craving checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help"');
     const parents = {
       onboarding: 'splash',
@@ -352,10 +370,13 @@ const tests = {
       'daily-tasks': 'home',
       'daily-checkin': 'home',
       'checkin-clean': 'daily-checkin',
-      'evening-reflection': 'checkin-clean',
+      'checkin-mood': 'checkin-clean',
+      'checkin-craving': 'checkin-mood',
       'checkin-relapse': 'daily-checkin',
-      'restart-period': 'checkin-relapse',
       'support-next-step': 'checkin-relapse',
+      'checkin-survival-pack': 'support-next-step',
+      'checkin-breathing': 'support-next-step',
+      'checkin-motivation': 'support-next-step',
       'panic-mode': 'home',
       'panic-root': 'panic-mode',
       'panic-help-sheet': 'panic-root',
@@ -383,7 +404,9 @@ const tests = {
   }
 };
 
-const selected = group === 'all' ? Object.keys(tests) : [group];
+const selected = group === 'all'
+  ? Object.keys(tests).filter((name) => name !== 'visualEvidence' || process.env.HAJNAL_CHECK_VISUAL_EVIDENCE === '1')
+  : [group];
 
 selected.forEach((name) => {
   assert.ok(tests[name], `Unknown test group: ${name}`);
