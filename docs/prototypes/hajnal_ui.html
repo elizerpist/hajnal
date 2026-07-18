@@ -455,6 +455,406 @@
       white-space: nowrap;
     }
 
+    .light-screen {
+      background:
+        radial-gradient(circle at 88% 7%, rgba(184, 154, 215, .12), transparent 190px),
+        radial-gradient(circle at 8% 94%, rgba(241, 142, 175, .10), transparent 230px),
+        linear-gradient(155deg, #fdf8fa 0%, #f8f1f6 100%);
+    }
+
+    .screen-splash {
+      color: var(--hajnal-navy);
+      background:
+        radial-gradient(circle at 17% 8%, rgba(255, 255, 255, .72) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 13%, rgba(255, 255, 255, .66) 0 1px, transparent 2px),
+        radial-gradient(circle at 64% 25%, rgba(255, 255, 255, .62) 0 1px, transparent 2px),
+        linear-gradient(180deg, #D8C8EC 0%, #F6D5DF 41%, #F7C0CB 58%, #8A6ABB 100%);
+    }
+
+    .splash-brand-lockup {
+      position: relative;
+      z-index: 8;
+      display: grid;
+      justify-items: center;
+      padding-top: 56px;
+      text-align: center;
+    }
+
+    .splash-logo {
+      width: 102px;
+      height: 102px;
+      border-radius: 25px;
+      object-fit: cover;
+      box-shadow: 0 12px 28px rgba(44, 46, 119, .16);
+    }
+
+    .splash-brand-lockup h3 {
+      margin: 23px 0 0;
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 820;
+      letter-spacing: -.045em;
+    }
+
+    .splash-brand-lockup p {
+      margin: 12px 0 0;
+      color: #EA6F9B;
+      font-size: 18px;
+      font-weight: 780;
+    }
+
+    .splash-landscape {
+      width: 100%;
+      height: 430px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    .splash-route-note {
+      position: absolute;
+      z-index: 9;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, .78);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      white-space: nowrap;
+    }
+
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .welcome-heading {
+      margin: 22px 0 14px;
+      text-align: center;
+      font-size: 23px;
+      font-weight: 820;
+      letter-spacing: -.02em;
+    }
+
+    .welcome-arch {
+      width: 316px;
+      height: 382px;
+      align-self: center;
+      overflow: hidden;
+      border-radius: 158px 158px 20px 20px;
+      box-shadow: 0 14px 32px rgba(44, 46, 119, .12);
+    }
+
+    .welcome-message {
+      margin: 20px 34px 0;
+      text-align: center;
+    }
+
+    .welcome-message strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 760;
+    }
+
+    .welcome-message span {
+      display: block;
+      margin-top: 3px;
+      color: var(--hajnal-pink);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .welcome-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 15px;
+    }
+
+    .welcome-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(106, 86, 180, .24);
+    }
+
+    .welcome-dots span:first-child {
+      width: 18px;
+      border-radius: 999px;
+      background: var(--hajnal-purple);
+    }
+
+    .welcome-actions {
+      display: grid;
+      gap: 10px;
+      margin: auto 24px 24px;
+    }
+
+    .welcome-actions button {
+      width: 100%;
+    }
+
+    .information-content {
+      display: flex;
+      flex-direction: column;
+      min-height: 772px;
+      padding: 4px 24px 24px;
+    }
+
+    .info-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .info-card {
+      min-height: 100px;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      padding: 15px 16px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .76);
+      box-shadow: 0 9px 24px rgba(44, 46, 119, .055);
+    }
+
+    .info-icon,
+    .row-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #A987D4, #6B59BE);
+      color: var(--white);
+      box-shadow: 0 7px 16px rgba(106, 86, 180, .16);
+    }
+
+    .info-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.42;
+      font-weight: 660;
+    }
+
+    .info-card small {
+      display: block;
+      margin-top: 5px;
+      color: rgba(44, 46, 119, .62);
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 560;
+    }
+
+    .consent-row {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 0 4px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .native-control {
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .checkbox-visual,
+    .radio-visual {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(106, 86, 180, .30);
+      background: rgba(255, 255, 255, .74);
+    }
+
+    .checkbox-visual {
+      border-radius: 6px;
+    }
+
+    .radio-visual {
+      border-radius: 50%;
+    }
+
+    .checkbox-visual::after,
+    .radio-visual::after {
+      content: "";
+      opacity: 0;
+      transform: scale(.5);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+
+    .checkbox-visual::after {
+      width: 10px;
+      height: 6px;
+      margin-top: -2px;
+      border-left: 2px solid var(--white);
+      border-bottom: 2px solid var(--white);
+      transform: rotate(-45deg) scale(.5);
+    }
+
+    .radio-visual::after {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+
+    .native-control:checked ~ .checkbox-visual,
+    .native-control:checked ~ .radio-visual {
+      border-color: var(--hajnal-purple);
+      background: var(--hajnal-purple);
+    }
+
+    .native-control:checked ~ .checkbox-visual::after,
+    .native-control:checked ~ .radio-visual::after {
+      opacity: 1;
+      transform: rotate(-45deg) scale(1);
+    }
+
+    .native-control:checked ~ .radio-visual::after {
+      transform: scale(1);
+    }
+
+    .choice-row:has(.native-control:checked) {
+      border-color: rgba(106, 86, 180, .34);
+      background: rgba(252, 248, 253, .96);
+      box-shadow: 0 8px 20px rgba(106, 86, 180, .09);
+    }
+
+    .information-content .primary-button {
+      width: 100%;
+      margin-top: auto;
+    }
+
+    .date-screen-content {
+      display: flex;
+      flex-direction: column;
+      min-height: 764px;
+      padding: 0 24px 22px;
+    }
+
+    .calendar-card {
+      padding: 17px 18px 18px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-sheet);
+      background: rgba(255, 255, 255, .75);
+      box-shadow: 0 12px 28px rgba(44, 46, 119, .06);
+    }
+
+    .calendar-titlebar {
+      display: grid;
+      grid-template-columns: 34px 1fr 34px;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 780;
+      text-align: center;
+    }
+
+    .calendar-titlebar button {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px 5px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 660;
+    }
+
+    .calendar-grid .weekday {
+      color: rgba(44, 46, 119, .55);
+      font-size: 10px;
+      font-weight: 780;
+    }
+
+    .calendar-day {
+      width: 29px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      justify-self: center;
+      border-radius: 50%;
+    }
+
+    .calendar-day.muted {
+      color: rgba(44, 46, 119, .28);
+    }
+
+    .calendar-day.selected {
+      background: var(--hajnal-purple);
+      color: var(--white);
+      box-shadow: 0 6px 13px rgba(106, 86, 180, .20);
+    }
+
+    .date-choices {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .date-choice {
+      min-height: 54px;
+      grid-template-columns: minmax(0, 1fr) 24px;
+      padding: 8px 14px 8px 16px;
+      cursor: pointer;
+    }
+
+    .date-choice-copy strong,
+    .choice-copy strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.15;
+      font-weight: 760;
+    }
+
+    .date-choice-copy small,
+    .choice-copy small {
+      display: block;
+      margin-top: 3px;
+      color: rgba(44, 46, 119, .56);
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 570;
+    }
+
+    .date-note {
+      margin: 12px 8px 0;
+      color: rgba(44, 46, 119, .60);
+      font-size: 11px;
+      line-height: 1.42;
+      text-align: center;
+      font-weight: 580;
+    }
+
+    .date-screen-content .primary-button {
+      width: 100%;
+      margin-top: auto;
+    }
+
     @media (max-width: 760px) {
       .prototype-page {
         padding: 24px 18px 64px;
@@ -551,29 +951,210 @@
       <div class="screen-row" data-page="entry" data-root-screen="splash">
         <section class="screen-column" id="column-splash">
           <div class="screen-label"><span class="screen-index">1</span><strong>Splash</strong></div>
-          <article class="phone-screen" id="splash" data-screen="splash">
-            <div class="screen-placeholder"><span>Splash komponens</span></div>
+          <article class="phone-screen screen-splash" id="splash" data-screen="splash" data-transition-delay="2000-3000" data-first-use-target="onboarding" data-returning-target="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true">
+                <svg><use href="#icon-signal"></use></svg>
+                <svg><use href="#icon-wifi"></use></svg>
+                <svg><use href="#icon-battery"></use></svg>
+              </span>
+            </div>
+            <div class="splash-brand-lockup">
+              <img class="splash-logo" src="../references/source-of-truth/logo.png" alt="Hajnal logó">
+              <h3>Hajnal</h3>
+              <p>Csak a mai nap.</p>
+            </div>
+            <svg class="splash-landscape" viewBox="0 0 412 430" aria-hidden="true">
+              <defs>
+                <linearGradient id="splash-sun" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#FFF1C5" />
+                  <stop offset="1" stop-color="#FEC884" />
+                </linearGradient>
+                <linearGradient id="splash-ground" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#55439B" />
+                  <stop offset="1" stop-color="#302E78" />
+                </linearGradient>
+              </defs>
+              <circle cx="205" cy="120" r="76" fill="url(#splash-sun)" opacity=".94" />
+              <path d="M0 148C62 125 99 165 153 191c52 25 95 13 143-10 43-21 74-40 116-31v132H0z" fill="#B47CC2" />
+              <path d="M0 196c64-30 116 8 174 42 50 29 91 17 134-8 39-23 70-36 104-24v142H0z" fill="#7657AD" />
+              <path d="M0 261c74-27 127 8 198 45 62-34 139-69 214-37v161H0z" fill="url(#splash-ground)" />
+              <g fill="#3B377F" opacity=".85">
+                <path d="m28 246 15-45 15 45h-9l12 31H25l11-31z" />
+                <path d="m350 244 17-53 17 53h-10l13 34h-41l13-34z" />
+              </g>
+              <g transform="translate(118 221)">
+                <circle cx="31" cy="32" r="14" fill="#25265F" />
+                <circle cx="75" cy="32" r="14" fill="#25265F" />
+                <ellipse cx="53" cy="61" rx="39" ry="35" fill="#FFF1E8" />
+                <ellipse cx="53" cy="117" rx="48" ry="61" fill="#25265F" />
+                <ellipse cx="7" cy="123" rx="12" ry="27" fill="#25265F" />
+                <ellipse cx="99" cy="123" rx="12" ry="27" fill="#25265F" />
+              </g>
+              <g transform="translate(250 188)">
+                <ellipse cx="49" cy="151" rx="46" ry="18" fill="rgba(37,38,95,.22)" />
+                <ellipse cx="40" cy="107" rx="35" ry="64" fill="#F6E5DE" />
+                <rect x="30" y="36" width="26" height="79" rx="13" fill="#F6E5DE" />
+                <ellipse cx="43" cy="34" rx="25" ry="27" fill="#F6E5DE" />
+                <path d="M27 16 31-9c1-7 9-7 11 0l2 24M47 14 54-10c2-7 10-5 10 2l-3 28" fill="#F6E5DE" />
+                <circle cx="35" cy="33" r="2" fill="#2C2E77" />
+                <path d="M49 40c5 4 9 3 12-1" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="2" />
+              </g>
+            </svg>
+            <span class="splash-route-note">Automatikus továbblépés · 2–3 mp</span>
           </article>
         </section>
 
         <section class="screen-column" id="column-onboarding">
           <div class="screen-label"><span class="screen-index">2</span><strong>Onboarding</strong> · Splash child</div>
-          <article class="phone-screen" id="onboarding" data-screen="onboarding" data-parent-screen="splash">
-            <div class="screen-placeholder"><span>Onboarding komponens</span></div>
+          <article class="phone-screen light-screen welcome-screen" id="onboarding" data-screen="onboarding" data-parent-screen="splash">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true">
+                <svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg>
+              </span>
+            </div>
+            <h3 class="welcome-heading">Üdv a Hajnalban!</h3>
+            <div class="welcome-arch scene">
+              <svg viewBox="0 0 316 382" aria-hidden="true">
+                <defs>
+                  <linearGradient id="welcome-sky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#30347E" />
+                    <stop offset=".52" stop-color="#7D62B7" />
+                    <stop offset="1" stop-color="#D69ACB" />
+                  </linearGradient>
+                </defs>
+                <rect width="316" height="382" fill="url(#welcome-sky)" />
+                <circle cx="87" cy="83" r="25" fill="#FFF7E9" />
+                <circle cx="98" cy="74" r="25" fill="#4D4798" />
+                <g fill="#fff" opacity=".78">
+                  <circle cx="51" cy="116" r="1.5" /><circle cx="249" cy="88" r="1.3" /><circle cx="269" cy="134" r="1.5" /><circle cx="126" cy="48" r="1.1" />
+                </g>
+                <path d="M0 206c52-27 94 19 145 31 55 14 101-43 171-24v169H0z" fill="#8E68BF" />
+                <path d="M0 260c63-25 99 28 157 36 48 7 92-35 159-27v113H0z" fill="#51479B" />
+                <g fill="#34377F">
+                  <path d="m23 271 16-54 16 54h-9l13 36H19l12-36z" />
+                  <path d="m278 265 15-49 15 49h-8l12 33h-36l11-33z" />
+                </g>
+                <g transform="translate(55 231)">
+                  <circle cx="20" cy="27" r="12" fill="#22265F" /><circle cx="60" cy="27" r="12" fill="#22265F" />
+                  <ellipse cx="40" cy="53" rx="34" ry="31" fill="#FFF0E7" />
+                  <ellipse cx="40" cy="94" rx="42" ry="48" fill="#22265F" />
+                  <ellipse cx="25" cy="51" rx="11" ry="15" fill="#22265F" transform="rotate(20 25 51)" />
+                  <ellipse cx="55" cy="51" rx="11" ry="15" fill="#22265F" transform="rotate(-20 55 51)" />
+                  <circle cx="28" cy="51" r="3" fill="#fff" /><circle cx="52" cy="51" r="3" fill="#fff" />
+                  <path d="M35 64q5 4 10 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="2" />
+                </g>
+                <g transform="translate(174 186)">
+                  <ellipse cx="55" cy="166" rx="50" ry="16" fill="rgba(32,38,95,.22)" />
+                  <ellipse cx="46" cy="119" rx="39" ry="67" fill="#F6E6DF" />
+                  <rect x="35" y="38" width="28" height="93" rx="14" fill="#F6E6DF" />
+                  <ellipse cx="49" cy="38" rx="27" ry="29" fill="#F6E6DF" />
+                  <path d="M33 20 37-8c1-7 10-7 11 1l2 25M54 17 62-9c2-7 10-4 10 3l-5 28" fill="#F6E6DF" />
+                  <ellipse cx="39" cy="38" rx="3" ry="4" fill="#2C2E77" /><ellipse cx="57" cy="38" rx="3" ry="4" fill="#2C2E77" />
+                  <path d="M45 49q5 4 10 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="2" />
+                </g>
+              </svg>
+            </div>
+            <div class="welcome-message">
+              <strong>Nem kell 90 napot egyszerre végigcsinálnod.</strong>
+              <span>Csak a mait.</span>
+            </div>
+            <div class="welcome-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="welcome-actions">
+              <button class="primary-button" type="button" data-action="start-onboarding" data-target-screen="information">Kezdjük el</button>
+              <button class="secondary-button" type="button" data-action="sign-in">Már van fiókom</button>
+            </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-information">
           <div class="screen-label"><span class="screen-index">3</span><strong>Tájékoztatás</strong> · Onboarding child</div>
-          <article class="phone-screen" id="information" data-screen="information" data-parent-screen="onboarding">
-            <div class="screen-placeholder"><span>Tájékoztatás komponens</span></div>
+          <article class="phone-screen light-screen" id="information" data-screen="information" data-parent-screen="onboarding">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="onboarding"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Fontos tudnivalók</h3><p class="screen-subtitle">Biztonság és adatvédelem, érthetően.</p></div>
+              <span></span>
+            </header>
+            <div class="information-content">
+              <div class="info-stack">
+                <article class="info-card">
+                  <span class="info-icon" aria-hidden="true"><svg class="icon"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg></span>
+                  <div><p>Az app támogat, de nem helyettesít szakmai segítséget.</p><small>Nem kezelési vagy sürgősségi eszköz.</small></div>
+                </article>
+                <article class="info-card">
+                  <span class="info-icon" aria-hidden="true"><svg class="icon"><path d="M12 3 20 6v5c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V6z" /><path d="M12 8v5M12 17h.01" /></svg></span>
+                  <div><p>Sürgős veszélyben kérj azonnali segítséget.</p><small>Fordulj helyi sürgősségi vagy szakmai ellátáshoz.</small></div>
+                </article>
+                <article class="info-card">
+                  <span class="info-icon" aria-hidden="true"><svg class="icon"><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" /></svg></span>
+                  <div><p>Az adataid érzékeny személyes adatok lehetnek.</p><small>Helyi titkosítás és PIN-kód is beállítható.</small></div>
+                </article>
+              </div>
+              <label class="consent-row" for="privacy-consent">
+                <input class="native-control" id="privacy-consent" type="checkbox" data-action="accept-information">
+                <span class="checkbox-visual" aria-hidden="true"></span>
+                <span>Elolvastam és elfogadom.</span>
+              </label>
+              <button class="primary-button" type="button" data-action="continue-information" data-requires="privacy-consent" data-target-screen="start-date">Tovább</button>
+            </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-start-date">
           <div class="screen-label"><span class="screen-index">4</span><strong>Kezdődátum</strong> · Onboarding child</div>
-          <article class="phone-screen" id="start-date" data-screen="start-date" data-parent-screen="onboarding">
-            <div class="screen-placeholder"><span>Kezdődátum komponens</span></div>
+          <article class="phone-screen light-screen" id="start-date" data-screen="start-date" data-parent-screen="onboarding">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="information"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Mikor kezdődött a jelenlegi tiszta időszakod?</h3></div>
+              <span></span>
+            </header>
+            <div class="date-screen-content">
+              <section class="calendar-card" aria-label="Dátum kiválasztása">
+                <div class="calendar-titlebar">
+                  <button type="button" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+                  <strong>Július 2026</strong>
+                  <button type="button" aria-label="Következő hónap"><svg class="icon" aria-hidden="true" style="transform:rotate(180deg)"><use href="#icon-back"></use></svg></button>
+                </div>
+                <div class="calendar-grid" aria-hidden="true">
+                  <span class="weekday">H</span><span class="weekday">K</span><span class="weekday">Sze</span><span class="weekday">Cs</span><span class="weekday">P</span><span class="weekday">Szo</span><span class="weekday">V</span>
+                  <span class="calendar-day muted">29</span><span class="calendar-day muted">30</span><span class="calendar-day">1</span><span class="calendar-day">2</span><span class="calendar-day">3</span><span class="calendar-day">4</span><span class="calendar-day">5</span>
+                  <span class="calendar-day">6</span><span class="calendar-day">7</span><span class="calendar-day">8</span><span class="calendar-day">9</span><span class="calendar-day">10</span><span class="calendar-day">11</span><span class="calendar-day">12</span>
+                  <span class="calendar-day">13</span><span class="calendar-day">14</span><span class="calendar-day">15</span><span class="calendar-day">16</span><span class="calendar-day">17</span><span class="calendar-day selected">18</span><span class="calendar-day">19</span>
+                  <span class="calendar-day">20</span><span class="calendar-day">21</span><span class="calendar-day">22</span><span class="calendar-day">23</span><span class="calendar-day">24</span><span class="calendar-day">25</span><span class="calendar-day">26</span>
+                  <span class="calendar-day">27</span><span class="calendar-day">28</span><span class="calendar-day">29</span><span class="calendar-day">30</span><span class="calendar-day">31</span><span class="calendar-day muted">1</span><span class="calendar-day muted">2</span>
+                </div>
+              </section>
+              <fieldset class="date-choices" style="border:0;padding:0;margin-inline:0">
+                <legend class="visually-hidden">Kezdődátum gyors kiválasztása</legend>
+                <label class="choice-row date-choice">
+                  <input class="native-control" type="radio" name="start-date" value="today" checked>
+                  <span class="date-choice-copy"><strong>Ma</strong><small>Az időszak kezdete: július 18.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row date-choice">
+                  <input class="native-control" type="radio" name="start-date" value="yesterday">
+                  <span class="date-choice-copy"><strong>Tegnap</strong><small>Az időszak kezdete: július 17.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row date-choice">
+                  <input class="native-control" type="radio" name="start-date" value="custom">
+                  <span class="date-choice-copy"><strong>Dátum kiválasztása</strong><small>Válassz a fenti naptárból.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+              </fieldset>
+              <p class="date-note">A nap csak az esti check-in után válik megerősített tiszta nappá.</p>
+              <button class="primary-button" type="button" data-action="save-start-date" data-target-screen="recovery-goal">Tovább</button>
+            </div>
           </article>
         </section>
 
