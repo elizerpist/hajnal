@@ -4,9 +4,23 @@ Verification date: 2026-07-18.
 
 ## Rendering method
 
-The prototype was served over local HTTP and rendered with Chromium 140 through a temporary Playwright installation outside the project. The temporary browser dependency is not part of the Hajnal repository.
+The prototype was rendered with Chromium 140 through a temporary Playwright installation outside the project. The temporary browser dependency is not part of the Hajnal repository.
 
-Android's system `screencap` command was unavailable to the Termux application UID (`SurfaceFlinger` permission denial), so the Chromium element screenshots below are the canonical browser-render evidence.
+Android's system `screencap` command was unavailable to the Termux application UID (`SurfaceFlinger` permission denial), so the integer-clipped Chromium screenshots below are the canonical browser-render evidence.
+
+The committed `../hajnal_ui_browser_test.mjs` script checks screen order and parentage, semantic calendar buttons, control names, visible focus indicators, computed geometry, overflow, and PNG dimensions before updating the evidence images.
+
+Example isolated setup, without adding dependencies to the Hajnal project:
+
+```sh
+HAJNAL_VERIFY_DIR="$(mktemp -d)"
+npm install --prefix "$HAJNAL_VERIFY_DIR/node" playwright@1.55.0
+PLAYWRIGHT_BROWSERS_PATH="$HAJNAL_VERIFY_DIR/browsers" \
+  "$HAJNAL_VERIFY_DIR/node/node_modules/.bin/playwright" install chromium
+PLAYWRIGHT_BROWSERS_PATH="$HAJNAL_VERIFY_DIR/browsers" \
+HAJNAL_PLAYWRIGHT_MODULE="file://$HAJNAL_VERIFY_DIR/node/node_modules/playwright/index.mjs" \
+  node docs/prototypes/hajnal_ui_browser_test.mjs
+```
 
 ## Geometry result
 
@@ -23,7 +37,7 @@ Chromium measured every `.phone-screen` element directly:
 | Értesítések | 412 px | 892 px | 34 px | none |
 | Kezdőlap | 412 px | 892 px | 34 px | none |
 
-For every screen, `scrollHeight === clientHeight` and `scrollWidth === clientWidth` after accounting for the 1 px phone border.
+For every screen, `scrollHeight === clientHeight` and `scrollWidth === clientWidth` after accounting for the 1 px phone border. Every committed individual PNG is independently asserted to be exactly `412 × 892px`.
 
 ## Visual comparison result
 
@@ -35,6 +49,7 @@ The eight component screenshots were compared directly with `onboarding.png`, `d
 - The three scenic screens use flat geometric layers and a recognizable panda/llama pair without texture.
 - The Home screen keeps the scenic hero, two-part metrics card, five tasks, check-in/support actions, and the five-destination bottom navigation within the viewport.
 - The full-page overview confirms the required root/child ordering and the icon-plus-description header above the row.
+- The Splash transition annotation stays in the external prototype label rather than appearing inside product UI.
 
 ## Evidence
 
