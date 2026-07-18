@@ -153,6 +153,7 @@ try {
     images
       .filter((image) => {
         const screenId = image.closest(".phone-screen")?.id;
+        const allowedSplash = screenId === "splash" && image.src.endsWith("/welcome_svg.svg");
         const allowedFullscreen2 = (screenId === "home" || screenId === "daily-image") && image.src.endsWith("/hero_fullscreen2_svg.svg");
         const allowedHurray = ["checkin-clean", "evening-clean-reward"].includes(screenId) && image.src.endsWith("/hurray_svg.svg");
         const allowedFullscreen = [
@@ -164,11 +165,27 @@ try {
           "checkin-breathing",
           "checkin-motivation",
         ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
-        return !(allowedFullscreen2 || allowedHurray || allowedFullscreen);
+        return !(allowedSplash || allowedFullscreen2 || allowedHurray || allowedFullscreen);
       })
       .map((image) => ({ screen: image.closest(".phone-screen")?.id, src: image.src })),
   );
   assert.deepEqual(flattenedImages, [], "phone screens must only use the approved SVG hero image, not flattened raster images");
+
+  await page.locator('#evening-reflection [data-reflection-prompt="hardest"]').click();
+  assert.equal(
+    await page.locator("#evening-reflection [data-active-reflection-prompt]").getAttribute("data-active-reflection-prompt"),
+    "hardest",
+    "hardest prompt must become active",
+  );
+  assert.match(
+    await page.locator("#evening-reflection [data-reflection-content]").innerText(),
+    /Mi volt benne a legnehezebb/,
+    "section 3 content must change for the selected prompt",
+  );
+  await page.locator('#evening-reflection [data-reflection-prompt="gratitude"]').click();
+  assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 3, "gratitude mode starts with three list items");
+  await page.locator('#evening-reflection [data-action="add-gratitude-item"]').click();
+  assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 4, "gratitude add button grows the list inline");
 
   const calendarButtons = page.locator("#start-date button.calendar-day");
   assert.equal(await calendarButtons.count(), 35, "semantic calendar date button count");

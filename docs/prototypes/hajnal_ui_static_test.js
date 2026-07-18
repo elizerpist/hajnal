@@ -2,10 +2,12 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const assert = require('node:assert/strict');
 
 const htmlPath = path.join(__dirname, 'hajnal_ui.html');
 const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf8') : '';
+const sourceAssetDirectory = '/storage/emulated/0/hajnal';
 const group = process.argv[2] || 'all';
 const screenOrder = [
   'splash',
@@ -90,6 +92,20 @@ function pngSize(filename) {
   };
 }
 
+function fileSha256(filename) {
+  return crypto.createHash('sha256').update(fs.readFileSync(filename)).digest('hex');
+}
+
+function expectCopiedAsset(filename) {
+  const sourcePath = path.join(sourceAssetDirectory, filename);
+  const referencePath = path.join(__dirname, '..', 'references', 'source-of-truth', filename);
+  const prototypePath = path.join(__dirname, 'assets', filename);
+  assert.ok(fs.existsSync(referencePath), `${filename} must be copied into source-of-truth references`);
+  assert.ok(fs.existsSync(prototypePath), `${filename} must be copied into prototype assets`);
+  assert.equal(fileSha256(referencePath), fileSha256(sourcePath), `${filename} source-of-truth hash`);
+  assert.equal(fileSha256(prototypePath), fileSha256(sourcePath), `${filename} prototype asset hash`);
+}
+
 function expectForbiddenPillAbsent(selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const rule = new RegExp(`${escaped}\\s*\\{[^}]*border-radius:\\s*(?:999px|9999px|50%)`, 's');
@@ -122,9 +138,13 @@ const tests = {
     expectContains('assets/hero_fullscreen2_svg.svg');
     expectContains('assets/hero_fullscreen_svg.svg');
     expectContains('assets/hurray_svg.svg');
+    expectContains('assets/welcome_svg.svg');
+    expectCopiedAsset('welcome_svg.svg');
+    expectContains('id="hajnal-liquid-glass-warp"');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 11, 'only the approved SVG hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 12, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
+    expectCount(/src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
     expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home and daily image screens must use the approved fullscreen2 SVG asset');
     expectCount(/src="assets\/hurray_svg\.svg"/g, 2, 'hurray reward screens must use the approved hurray SVG asset');
     expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 7, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
@@ -156,7 +176,13 @@ const tests = {
     expectContains('data-returning-target="home"');
     expectContains('type="checkbox"');
     expectCount(/name="start-date"/g, 3, 'start-date choice count');
-    expectScreenContains('splash', ['Csak a mai nap.', 'data-transition-delay="2000-3000"']);
+    expectScreenContains('splash', [
+      'Csak a mai nap.',
+      'data-transition-delay="2000-3000"',
+      'class="splash-bg" src="assets/welcome_svg.svg"',
+      'data-background-source="welcome_svg.svg"'
+    ]);
+    assert.ok(!screenSlice('splash').includes('class="splash-landscape"'), 'Splash must not keep the old inline landscape SVG over the welcome background');
     assert.ok(!/<button\b/.test(screenSlice('splash')), 'Splash must not contain a CTA');
     expectScreenContains('onboarding', ['Kezdjük el', 'Már van fiókom']);
     expectScreenContains('information', ['Elolvastam és elfogadom.', 'continue-information']);
@@ -198,7 +224,7 @@ const tests = {
   home() {
     expectContains('data-screen="home"');
     const homeScreen = screenSlice('home');
-    const homeBodyIndex = homeScreen.indexOf('<section class="home-body"');
+    const homeBodyIndex = homeScreen.indexOf('class="home-body');
     const dashboardIndex = homeScreen.indexOf('data-component="home-dashboard"');
     const tasksIndex = homeScreen.indexOf('<section class="tasks-card"');
     const helpIndex = homeScreen.indexOf('<div class="home-actions"');
@@ -223,8 +249,14 @@ const tests = {
     assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 70px\);[^}]*background:\s*transparent/s, 'home hero image must extend behind the full glass card area down to the bottom nav');
     assert.match(html, /\.home-body\s*\{[^}]*top:\s*586px/s, 'home sheet must move 38px lower after the latest screenshot feedback');
     assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*92px 92px 0 0/s, 'home lower sheet must restore the larger rounded top radius');
-    assert.match(html, /\.home-body\s*\{[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.68\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower card must use glassmorphism');
-    assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.68\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower sheet curved top must be glassmorphism too');
+    assert.ok(homeScreen.includes('class="home-body liquid-glass-surface"'), 'home sheet must use the shared liquid glass surface class');
+    assert.ok(homeScreen.includes('data-liquid-glass="home-sheet"'), 'home sheet must expose a liquid glass marker');
+    assert.match(html, /\.home-body\s*\{[^}]*--home-card-top:\s*586px/s, 'home liquid glass card must expose its vertical offset for backdrop alignment');
+    assert.match(html, /\.home-body\s*\{[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.18\)/s, 'home lower card must use a light liquid glass base without a dark fill');
+    assert.match(html, /\.home-body\s*\{[^}]*isolation:\s*isolate;[^}]*overflow:\s*visible/s, 'home lower card must isolate glass layers while allowing the curved top to protrude');
+    assert.match(html, /\.home-body\s*\{[^}]*backdrop-filter:\s*blur\(30px\) saturate\(1\.38\) brightness\(1\.12\)/s, 'home lower card must use strong blur, saturation, and brightness like liquid glass');
+    assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0;[^}]*background-image:[^}]*url\("assets\/hero_fullscreen2_svg\.svg"\);[^}]*filter:\s*url\(#hajnal-liquid-glass-warp\) blur\(8px\) saturate\(1\.45\) brightness\(1\.22\)/s, 'home lower sheet curved top must clone and distort the hero image as liquid glass');
+    assert.match(html, /\.home-body::after\s*\{[^}]*inset:\s*0;[^}]*border-radius:\s*inherit;[^}]*background-image:[^}]*url\("assets\/hero_fullscreen2_svg\.svg"\);[^}]*filter:\s*url\(#hajnal-liquid-glass-warp\) blur\(8px\) saturate\(1\.45\) brightness\(1\.22\)/s, 'home lower card body must clone and distort the hero image as liquid glass');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
     assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*518px/s, 'home dashboard must move 38px lower with the sheet');
     assert.match(html, /\.home-metrics\s*\{[^}]*color:\s*var\(--hajnal-navy\);[^}]*background:\s*#FFFCFB;[^}]*backdrop-filter:\s*none/s, 'home clean-days dashboard must stay solid rather than glass');
@@ -285,13 +317,13 @@ const tests = {
       'Mi volt ma a legnehezebb?',
       'Miért vagy hálás?',
       'Van valami, amit nem szeretnél elfelejteni?',
-      'Írd ide bármit...',
-      'Hála',
+      'Írd le a nap legjobb pillanatát.',
+      'Hála lista',
+      'Új hozzáadása',
       'Fotó',
       'Hangjegyzet',
       'Kép memo',
       'Hang memo',
-      'Képaláírás',
       'Ma visszaestem',
       'Köszönjük,',
       'hogy őszinte voltál.',
@@ -312,14 +344,15 @@ const tests = {
     expectContains('data-action="continue-evening-reflection" data-target-screen="evening-reflection"');
     expectContains('data-action="open-panic" data-target-screen="panic-mode"');
     expectContains('data-action="save-evening-reflection" data-target-screen="home"');
-    expectContains('data-component="inline-gratitude"');
-    expectContains('id="inline-gratitude-1"');
-    expectContains('id="inline-gratitude-2"');
-    expectContains('id="inline-gratitude-3"');
+    expectContains('data-component="reflection-response-panel"');
+    expectContains('data-reflection-content');
+    expectContains('data-gratitude-list');
+    expectContains('add-gratitude-item');
     expectContains('data-action="add-photo-memo-inline"');
-    expectContains('id="inline-photo-caption"');
     expectContains('data-action="toggle-voice-memo-inline"');
-    expectContains('id="inline-voice-note"');
+    expectAbsent('data-component="inline-gratitude"');
+    expectAbsent('id="inline-photo-caption"');
+    expectAbsent('id="inline-voice-note"');
     ['checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo'].forEach((id) => {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
@@ -365,22 +398,37 @@ const tests = {
       'data-component="reflection-selector"',
       'aria-pressed="true"',
       'id="evening-reflection-text"',
-      'placeholder="Írd ide bármit..."',
+      'placeholder="Írd le a nap legjobb pillanatát."',
       'data-action="save-evening-reflection" data-target-screen="home"'
     ]);
     assert.ok(!eveningReflectionScreen.includes('class="checkin-top-actions"'), 'evening reflection screen must remove top x/check controls');
     assert.ok(!eveningReflectionScreen.includes('class="quiet-link"'), 'evening reflection panel must remove the top save link');
     assert.equal((eveningReflectionScreen.match(/class="reflection-prompt/g) || []).length, 4, 'evening reflection selector must have four cards');
     assert.ok(eveningReflectionScreen.includes('data-reflection-prompt="gratitude"'), 'gratitude must be part of the reflection selector cards');
-    assert.ok(eveningReflectionScreen.includes('data-component="inline-gratitude"'), 'gratitude fields must be inline inside evening reflection');
-    assert.ok(eveningReflectionScreen.includes('id="inline-photo-caption"'), 'photo memo caption must be inline inside evening reflection');
-    assert.ok(eveningReflectionScreen.includes('id="inline-voice-note"'), 'voice memo note must be inline inside evening reflection');
+    assert.ok(eveningReflectionScreen.includes('class="evening-scroll" data-component="evening-scroll-area"'), 'evening reflection content must live in a scroll area');
+    assert.ok(eveningReflectionScreen.indexOf('class="evening-scroll"') < eveningReflectionScreen.indexOf('class="evening-save-actions"'), 'evening footer actions must stay outside the scroll area');
+    assert.ok(eveningReflectionScreen.includes('data-component="reflection-response-panel"'), 'the dynamic reflection response container must exist');
+    assert.ok(eveningReflectionScreen.includes('data-reflection-content'), 'the dynamic reflection response container must be script-addressable');
+    expectContains("list.setAttribute('data-gratitude-list', '')");
+    expectContains('addButton.setAttribute(\'data-action\', \'add-gratitude-item\')');
+    assert.ok(eveningReflectionScreen.includes('data-component="inline-media-memos"'), 'photo and voice memo controls must remain in section 4');
+    assert.ok(eveningReflectionScreen.includes('data-action="add-photo-memo-inline"'), 'photo memo control must remain inline inside evening reflection');
+    assert.ok(eveningReflectionScreen.includes('data-action="toggle-voice-memo-inline"'), 'voice memo control must remain inline inside evening reflection');
+    assert.ok(!eveningReflectionScreen.includes('data-component="inline-gratitude"'), 'section 4 must not keep the old gratitude box');
+    assert.ok(!eveningReflectionScreen.includes('id="inline-photo-caption"'), 'section 4 photo memo must not keep a note field underneath');
+    assert.ok(!eveningReflectionScreen.includes('id="inline-voice-note"'), 'section 4 voice memo must not keep a note field underneath');
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="gratitude-add"'), 'gratitude must not navigate to a helper screen');
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="photo-memo"'), 'photo memo must not navigate to a helper screen');
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="voice-memo"'), 'voice memo must not navigate to a helper screen');
-    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,255,255,\.54\);[^}]*backdrop-filter:\s*blur\(26px\) saturate\(1\.18\)/s, 'evening reflection panel must be padded from the bottom as a stronger glassmorphism container');
-    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*margin-top:\s*auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be smaller and right aligned at the panel bottom');
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,255,255,\.18\);[^}]*backdrop-filter:\s*blur\(30px\) saturate\(1\.38\) brightness\(1\.12\)/s, 'evening reflection panel must use the stronger liquid glass treatment');
+    assert.match(html, /\.evening-scroll\s*\{[^}]*flex:\s*1;[^}]*overflow-y:\s*auto;[^}]*padding-bottom:\s*12px/s, 'evening reflection screen content must scroll above the floating footer');
+    assert.match(html, /\.reflection-response-panel\s*\{[^}]*border:\s*1px solid rgba\(255,\s*255,\s*255,\s*\.58\);[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.34\);[^}]*backdrop-filter:\s*blur\(18px\) saturate\(1\.22\)/s, 'the section 3 content container must be liquid glass');
+    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*flex:\s*0 0 auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be outside the scroll area, smaller, and right aligned');
     assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*42px/s, 'evening reflection bottom buttons must be smaller');
+    expectContains('const reflectionPromptContent = {');
+    expectContains('function setActiveReflectionPrompt');
+    expectContains('function addGratitudeItem');
+    expectContains('data-active-reflection-prompt');
     expectCount(/data-component="daily-task-detail"/g, 3, 'daily task detail count');
     expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
     expectCount(/<textarea\b/g, 1, 'writable memo textarea count');

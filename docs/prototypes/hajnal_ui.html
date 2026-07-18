@@ -492,13 +492,32 @@
         linear-gradient(155deg, #fdf8fa 0%, #f8f1f6 100%);
     }
 
+    .liquid-glass-surface {
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, .62);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .66),
+        inset 0 -1px 0 rgba(120, 103, 186, .12),
+        0 18px 42px rgba(31, 24, 84, .16);
+      -webkit-backdrop-filter: blur(18px) saturate(1.22);
+      backdrop-filter: blur(18px) saturate(1.22);
+    }
+
     .screen-splash {
       color: var(--hajnal-navy);
-      background:
-        radial-gradient(circle at 17% 8%, rgba(255, 255, 255, .72) 0 1px, transparent 2px),
-        radial-gradient(circle at 78% 13%, rgba(255, 255, 255, .66) 0 1px, transparent 2px),
-        radial-gradient(circle at 64% 25%, rgba(255, 255, 255, .62) 0 1px, transparent 2px),
-        linear-gradient(180deg, #D8C8EC 0%, #F6D5DF 41%, #F7C0CB 58%, #8A6ABB 100%);
+      background: #B084EE;
+    }
+
+    .splash-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center center;
+      pointer-events: none;
     }
 
     .splash-brand-lockup {
@@ -1218,6 +1237,8 @@
     }
 
     .home-body {
+      --home-card-top: 586px;
+      --home-card-curve-top: 28px;
       position: absolute;
       z-index: 20;
       left: 0;
@@ -1226,21 +1247,25 @@
       bottom: 70px;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      isolation: isolate;
+      overflow: visible;
       padding: 62px 28px 16px;
       border-radius: 92px 92px 0 0;
       border: 1px solid rgba(255, 255, 255, .66);
-      background: rgba(255, 255, 255, .68);
+      background: rgba(255,255,255,.18);
       color: var(--hajnal-navy);
-      box-shadow: 0 -18px 46px rgba(39, 31, 88, .12), inset 0 1px 0 rgba(255, 255, 255, .62);
-      backdrop-filter: blur(22px) saturate(1.12);
-      -webkit-backdrop-filter: blur(22px) saturate(1.12);
+      box-shadow:
+        0 -18px 46px rgba(39, 31, 88, .12),
+        inset 0 1px 0 rgba(255, 255, 255, .72),
+        inset 0 -1px 0 rgba(90, 72, 150, .10);
+      backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
+      -webkit-backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
     }
 
     .home-body::before {
       content: "";
       position: absolute;
-      z-index: -1;
+      z-index: 0;
       top: -28px;
       left: -64px;
       right: -64px;
@@ -1248,10 +1273,47 @@
       border-radius: 50% 50% 0 0 / 100% 100% 0 0;
       border: 1px solid rgba(255, 255, 255, .66);
       border-bottom: 0;
-      background: rgba(255, 255, 255, .68);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .62);
-      backdrop-filter: blur(22px) saturate(1.12);
-      -webkit-backdrop-filter: blur(22px) saturate(1.12);
+      background-image:
+        radial-gradient(circle at 30% 12%, rgba(255,255,255,.66), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,.56), rgba(255,255,255,.20)),
+        url("assets/hero_fullscreen2_svg.svg");
+      background-size: auto, auto, 412px calc(var(--screen-h) - 70px);
+      background-position: center, center, center calc(-1 * (var(--home-card-top) - var(--home-card-curve-top)));
+      background-repeat: no-repeat;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .72),
+        inset 0 -8px 18px rgba(255, 255, 255, .20);
+      filter: url(#hajnal-liquid-glass-warp) blur(8px) saturate(1.45) brightness(1.22);
+      backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
+      -webkit-backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
+      pointer-events: none;
+    }
+
+    .home-body::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      border-radius: inherit;
+      background-image:
+        radial-gradient(circle at 24% 0%, rgba(255,255,255,.72), transparent 36%),
+        radial-gradient(circle at 76% 100%, rgba(255,255,255,.30), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.24)),
+        url("assets/hero_fullscreen2_svg.svg");
+      background-size: auto, auto, auto, 412px calc(var(--screen-h) - 70px);
+      background-position: center, center, center, center calc(-1 * var(--home-card-top));
+      background-repeat: no-repeat;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .78),
+        inset 0 -1px 0 rgba(80, 65, 142, .12);
+      filter: url(#hajnal-liquid-glass-warp) blur(8px) saturate(1.45) brightness(1.22);
+      opacity: .94;
+      pointer-events: none;
+    }
+
+    .home-body > * {
+      position: relative;
+      z-index: 2;
     }
 
     .home-metrics {
@@ -2045,10 +2107,51 @@
 	      padding: 17px 16px 16px;
 	      border-radius: 24px;
 	      border-color: rgba(255, 255, 255, .72);
-	      background: rgba(255,255,255,.54);
-	      box-shadow: 0 24px 46px rgba(20, 17, 62, .22), inset 0 1px 0 rgba(255, 255, 255, .58);
-	      backdrop-filter: blur(26px) saturate(1.18);
-	      -webkit-backdrop-filter: blur(26px) saturate(1.18);
+	      background: rgba(255,255,255,.18);
+	      box-shadow:
+	        0 24px 46px rgba(20, 17, 62, .22),
+	        inset 0 1px 0 rgba(255, 255, 255, .72),
+	        inset 0 -1px 0 rgba(90, 72, 150, .10);
+	      backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
+	      -webkit-backdrop-filter: blur(30px) saturate(1.38) brightness(1.12);
+	      overflow: hidden;
+	    }
+
+	    #evening-reflection .evening-reflection-panel::before {
+	      content: "";
+	      position: absolute;
+	      inset: 0;
+	      z-index: 0;
+	      border-radius: inherit;
+	      background:
+	        radial-gradient(circle at 22% 0%, rgba(255,255,255,.70), transparent 34%),
+	        radial-gradient(circle at 82% 100%, rgba(255,255,255,.24), transparent 42%),
+	        linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.18));
+	      box-shadow:
+	        inset 0 1px 0 rgba(255,255,255,.72),
+	        inset 0 -1px 0 rgba(85,72,150,.12);
+	      pointer-events: none;
+	    }
+
+	    #evening-reflection .evening-reflection-panel > * {
+	      position: relative;
+	      z-index: 1;
+	    }
+
+	    .evening-scroll {
+	      flex: 1;
+	      min-height: 0;
+	      display: grid;
+	      align-content: start;
+	      gap: 12px;
+	      overflow-y: auto;
+	      padding-bottom: 12px;
+	      overscroll-behavior: contain;
+	      scrollbar-width: none;
+	    }
+
+	    .evening-scroll::-webkit-scrollbar {
+	      display: none;
 	    }
 
 	    .evening-panel-top {
@@ -2169,26 +2272,68 @@
 	    }
 
 	    .evening-reflection-panel .reflection-input {
-	      min-height: 82px;
+	      min-height: 112px;
 	      margin-top: 0;
-	      background: rgba(255, 255, 255, .76);
+	      background: rgba(255, 255, 255, .50);
+	      resize: none;
+	      overflow: hidden;
+	    }
+
+	    .reflection-response-panel {
+	      display: grid;
+	      gap: 9px;
+	      padding: 12px;
+	      border: 1px solid rgba(255, 255, 255, .58);
+	      border-radius: 17px;
+	      background: rgba(255, 255, 255, .34);
+	      box-shadow:
+	        inset 0 1px 0 rgba(255,255,255,.58),
+	        0 10px 22px rgba(42, 34, 97, .10);
+	      backdrop-filter: blur(18px) saturate(1.22);
+	      -webkit-backdrop-filter: blur(18px) saturate(1.22);
+	    }
+
+	    .reflection-response-help {
+	      margin: 0;
+	      color: rgba(44, 46, 119, .64);
+	      font-size: 11px;
+	      line-height: 1.36;
+	      font-weight: 650;
+	    }
+
+	    .gratitude-list {
+	      display: grid;
+	      gap: 7px;
+	    }
+
+	    .gratitude-item {
+	      display: grid;
+	      gap: 4px;
+	    }
+
+	    .gratitude-item span {
+	      color: rgba(44, 46, 119, .60);
+	      font-size: 9.5px;
+	      font-weight: 760;
+	    }
+
+	    .gratitude-add-button {
+	      min-height: 34px;
+	      justify-self: start;
+	      padding: 0 12px;
+	      border: 1px solid rgba(106, 86, 180, .14);
+	      border-radius: 14px;
+	      background: rgba(255, 255, 255, .52);
+	      color: var(--hajnal-purple);
+	      font-size: 11px;
+	      font-weight: 820;
+	      cursor: pointer;
 	    }
 
 	    .reflection-inline-grid {
 	      display: grid;
-	      grid-template-columns: 1fr 1fr;
+	      grid-template-columns: repeat(2, 1fr);
 	      gap: 8px;
-	    }
-
-	    .inline-gratitude,
-	    .inline-media-stack {
-	      min-width: 0;
-	      display: grid;
-	      gap: 6px;
-	      padding: 10px;
-	      border: 1px solid rgba(106, 86, 180, .14);
-	      border-radius: 14px;
-	      background: rgba(255, 255, 255, .58);
 	    }
 
 	    .inline-block-title {
@@ -2199,7 +2344,38 @@
 	      font-weight: 820;
 	    }
 
-	    .inline-gratitude .gratitude-field,
+	    .gratitude-field {
+	      min-height: 36px;
+	      padding: 8px 10px;
+	    }
+
+	    .reflection-media-row {
+	      display: grid;
+	      grid-template-columns: repeat(2, 1fr);
+	      gap: 8px;
+	    }
+
+	    .media-memo-card {
+	      min-width: 0;
+	      display: grid;
+	      gap: 7px;
+	      padding: 10px;
+	      border: 1px solid rgba(255, 255, 255, .50);
+	      border-radius: 16px;
+	      background: rgba(255, 255, 255, .30);
+	      box-shadow:
+	        inset 0 1px 0 rgba(255,255,255,.54),
+	        0 8px 18px rgba(42, 34, 97, .09);
+	      backdrop-filter: blur(14px) saturate(1.18);
+	      -webkit-backdrop-filter: blur(14px) saturate(1.18);
+	    }
+
+	    .media-memo-card small {
+	      color: rgba(44, 46, 119, .56);
+	      font-size: 9.5px;
+	      font-weight: 720;
+	    }
+
 	    .inline-mini-field input {
 	      min-height: 28px;
 	      padding: 0 9px;
@@ -2281,10 +2457,12 @@
 	    }
 
 	    #evening-reflection .evening-save-actions {
-	      margin-top: auto;
+	      flex: 0 0 auto;
 	      grid-template-columns: 104px 104px;
 	      justify-content: end;
 	      gap: 8px;
+	      padding-top: 10px;
+	      border-top: 1px solid rgba(255, 255, 255, .34);
 	    }
 
 	    #evening-reflection .evening-save-actions .secondary-button,
@@ -3201,6 +3379,10 @@
 </head>
 <body>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <filter id="hajnal-liquid-glass-warp" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.032" numOctaves="2" seed="8" result="glass-noise" />
+      <feDisplacementMap in="SourceGraphic" in2="glass-noise" scale="7" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
     <symbol id="hajnal-logo-symbol" viewBox="0 0 1254 1254" data-source-reference="docs/references/source-of-truth/logo_svg.svg">
       <path
            fill="#1d1e53"
@@ -3515,7 +3697,8 @@
       <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications">
         <section class="screen-column" id="column-splash">
           <div class="screen-label"><span class="screen-index">1</span><strong>Splash</strong><span class="screen-route-note">Automatikus · 2–3 mp</span></div>
-          <article class="phone-screen screen-splash" id="splash" data-screen="splash" data-transition-delay="2000-3000" data-first-use-target="onboarding" data-returning-target="home">
+          <article class="phone-screen screen-splash" id="splash" data-screen="splash" data-transition-delay="2000-3000" data-first-use-target="onboarding" data-returning-target="home" data-background-source="welcome_svg.svg">
+            <img class="splash-bg" src="assets/welcome_svg.svg" alt="" loading="eager">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true">
@@ -3529,35 +3712,6 @@
               <h3>Hajnal</h3>
               <p>Csak a mai nap.</p>
             </div>
-            <svg class="splash-landscape" viewBox="0 0 412 430" aria-hidden="true">
-              <defs>
-                <linearGradient id="splash-sun" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#FFF1C5" />
-                  <stop offset="1" stop-color="#FEC884" />
-                </linearGradient>
-                <linearGradient id="splash-ground" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#55439B" />
-                  <stop offset="1" stop-color="#302E78" />
-                </linearGradient>
-              </defs>
-              <circle cx="205" cy="120" r="76" fill="url(#splash-sun)" opacity=".94" />
-              <path d="M0 148C62 125 99 165 153 191c52 25 95 13 143-10 43-21 74-40 116-31v132H0z" fill="#B47CC2" />
-              <path d="M0 196c64-30 116 8 174 42 50 29 91 17 134-8 39-23 70-36 104-24v142H0z" fill="#7657AD" />
-              <path d="M0 261c74-27 127 8 198 45 62-34 139-69 214-37v161H0z" fill="url(#splash-ground)" />
-              <g fill="#3B377F" opacity=".85">
-                <path d="m28 246 15-45 15 45h-9l12 31H25l11-31z" />
-                <path d="m350 244 17-53 17 53h-10l13 34h-41l13-34z" />
-              </g>
-              <g transform="translate(118 221)">
-                <circle cx="31" cy="32" r="14" fill="#25265F" />
-                <circle cx="75" cy="32" r="14" fill="#25265F" />
-                <ellipse cx="53" cy="61" rx="39" ry="35" fill="#FFF1E8" />
-                <ellipse cx="53" cy="117" rx="48" ry="61" fill="#25265F" />
-                <ellipse cx="7" cy="123" rx="12" ry="27" fill="#25265F" />
-                <ellipse cx="99" cy="123" rx="12" ry="27" fill="#25265F" />
-              </g>
-              <use href="#character-llama" x="242" y="177" width="112" height="180" />
-            </svg>
           </article>
         </section>
 
@@ -3939,7 +4093,7 @@
               </button>
             </div>
 
-            <section class="home-body" aria-label="Mai áttekintés">
+            <section class="home-body liquid-glass-surface" data-liquid-glass="home-sheet" aria-label="Mai áttekintés">
               <section class="tasks-card">
                 <div class="tasks-heading"><h4>Mai feladataim</h4><button type="button" data-action="edit-tasks" data-target-screen="daily-tasks">Szerkesztés</button></div>
                 <div class="task-list">
@@ -4059,54 +4213,52 @@
 	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
 	            </div>
 	            <div class="checkin-content">
-	              <section class="evening-reflection-panel" data-component="evening-reflection-panel" aria-label="Esti reflexió">
-	                <div class="evening-panel-top">
-	                  <h3>Esti reflexió</h3>
+	              <section class="evening-reflection-panel liquid-glass-surface" data-component="evening-reflection-panel" data-reflection-state data-active-reflection-prompt="best" aria-label="Esti reflexió">
+	                <div class="evening-scroll" data-component="evening-scroll-area">
+	                  <div class="evening-panel-top">
+	                    <h3>Esti reflexió</h3>
+	                  </div>
+	                  <section class="evening-section" aria-label="Hangulatom most">
+	                    <h4 class="evening-section-title">1. Hangulatom most</h4>
+	                    <div class="evening-mood-row" role="group" aria-label="Hangulat választása 1-től 5-ig">
+	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="1" aria-label="Nagyon rossz" aria-pressed="false"><span aria-hidden="true">😠</span><span>Rossz</span></button>
+	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="2" aria-label="Nehéz" aria-pressed="false"><span aria-hidden="true">😟</span><span>Nehéz</span></button>
+	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="3" aria-label="Semleges" aria-pressed="false"><span aria-hidden="true">😐</span><span>Semleges</span></button>
+	                      <button class="evening-mood active" type="button" data-component="mood-score" data-mood-value="4" aria-label="Jó" aria-pressed="true"><span aria-hidden="true">🙂</span><span>Jó</span></button>
+	                      <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="5" aria-label="Nagyon jó" aria-pressed="false"><span aria-hidden="true">😄</span><span>Nagyon jó</span></button>
+	                    </div>
+	                  </section>
+	                  <section class="evening-section" aria-label="Miről szeretnél írni">
+	                    <h4 class="evening-section-title">2. Miről szeretnél írni?</h4>
+	                    <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
+	                      <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-pressed="true"><span aria-hidden="true">☀</span>Mi volt ma a legjobb?</button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-pressed="false"><span aria-hidden="true">☔</span>Mi volt ma a legnehezebb?</button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-pressed="false"><span aria-hidden="true">♡</span>Miért vagy hálás?</button>
+	                      <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-pressed="false"><span aria-hidden="true">✓</span>Van valami, amit nem szeretnél elfelejteni?</button>
+	                    </div>
+	                  </section>
+	                  <section class="evening-section" aria-label="A te gondolataid">
+	                    <h4 class="evening-section-title">3. A te gondolataid</h4>
+	                    <div class="reflection-response-panel liquid-glass-surface" data-component="reflection-response-panel" data-reflection-content data-active-reflection-prompt="best">
+	                      <p class="reflection-response-help">Mi volt benne a legjobb?</p>
+	                      <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
+	                      <textarea class="reflection-input" id="evening-reflection-text" data-reflection-text data-active-reflection-prompt="best" placeholder="Írd le a nap legjobb pillanatát."></textarea>
+	                    </div>
+	                  </section>
+	                  <section class="evening-section" aria-label="Inline memo mezők">
+	                    <h4 class="evening-section-title">4. Kiegészítők</h4>
+	                    <div class="reflection-media-row" data-component="inline-memo-tools">
+	                      <section class="media-memo-card" data-component="inline-media-memos" aria-label="Kép memo inline">
+	                        <h5 class="inline-block-title">Kép memo</h5>
+	                        <button class="inline-media-button" type="button" data-action="add-photo-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg><span>Fotó</span></button>
+	                      </section>
+	                      <section class="media-memo-card" data-component="inline-media-memos" aria-label="Hang memo inline">
+	                        <h5 class="inline-block-title">Hang memo</h5>
+	                        <button class="inline-media-button" type="button" data-action="toggle-voice-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg><span>Hangjegyzet</span><small>00:00</small></button>
+	                      </section>
+	                    </div>
+	                  </section>
 	                </div>
-	                <section class="evening-section" aria-label="Hangulatom most">
-	                  <h4 class="evening-section-title">1. Hangulatom most</h4>
-	                  <div class="evening-mood-row" role="group" aria-label="Hangulat választása 1-től 5-ig">
-	                    <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="1" aria-label="Nagyon rossz" aria-pressed="false"><span aria-hidden="true">😠</span><span>Rossz</span></button>
-	                    <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="2" aria-label="Nehéz" aria-pressed="false"><span aria-hidden="true">😟</span><span>Nehéz</span></button>
-	                    <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="3" aria-label="Semleges" aria-pressed="false"><span aria-hidden="true">😐</span><span>Semleges</span></button>
-	                    <button class="evening-mood active" type="button" data-component="mood-score" data-mood-value="4" aria-label="Jó" aria-pressed="true"><span aria-hidden="true">🙂</span><span>Jó</span></button>
-	                    <button class="evening-mood" type="button" data-component="mood-score" data-mood-value="5" aria-label="Nagyon jó" aria-pressed="false"><span aria-hidden="true">😄</span><span>Nagyon jó</span></button>
-	                  </div>
-	                </section>
-	                <section class="evening-section" aria-label="Miről szeretnél írni">
-	                  <h4 class="evening-section-title">2. Miről szeretnél írni?</h4>
-	                  <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
-	                    <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-pressed="true"><span aria-hidden="true">☀</span>Mi volt ma a legjobb?</button>
-	                    <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-pressed="false"><span aria-hidden="true">☔</span>Mi volt ma a legnehezebb?</button>
-	                    <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-pressed="false"><span aria-hidden="true">♡</span>Miért vagy hálás?</button>
-	                    <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-pressed="false"><span aria-hidden="true">✓</span>Van valami, amit nem szeretnél elfelejteni?</button>
-	                  </div>
-	                </section>
-	                <section class="evening-section" aria-label="A te gondolataid">
-	                  <h4 class="evening-section-title">3. A te gondolataid</h4>
-	                  <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
-	                  <textarea class="reflection-input" id="evening-reflection-text" data-active-reflection-prompt="best" placeholder="Írd ide bármit..."></textarea>
-	                </section>
-	                <section class="evening-section" aria-label="Inline memo mezők">
-	                  <h4 class="evening-section-title">4. Kiegészítők</h4>
-	                  <div class="reflection-inline-grid" data-component="inline-memo-tools">
-	                    <section class="inline-gratitude" data-component="inline-gratitude" aria-label="Hála inline">
-	                      <h5 class="inline-block-title">Hála</h5>
-	                      <label for="inline-gratitude-1" class="sr-only">Első hála sor</label>
-	                      <input class="gratitude-field" id="inline-gratitude-1" type="text" placeholder="1. hála">
-	                      <label for="inline-gratitude-2" class="sr-only">Második hála sor</label>
-	                      <input class="gratitude-field" id="inline-gratitude-2" type="text" placeholder="2. hála">
-	                      <label for="inline-gratitude-3" class="sr-only">Harmadik hála sor</label>
-	                      <input class="gratitude-field" id="inline-gratitude-3" type="text" placeholder="3. hála">
-	                    </section>
-	                    <section class="inline-media-stack" data-component="inline-media-memos" aria-label="Kép és hang memo inline">
-	                      <button class="inline-media-button" type="button" data-action="add-photo-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg><span>Fotó</span></button>
-	                      <label class="inline-mini-field" for="inline-photo-caption"><span>Kép memo · Képaláírás</span><input id="inline-photo-caption" type="text" placeholder="Miért fontos?"></label>
-	                      <button class="inline-media-button" type="button" data-action="toggle-voice-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg><span>Hangjegyzet</span><small>00:00</small></button>
-	                      <label class="inline-mini-field" for="inline-voice-note"><span>Hang memo</span><input id="inline-voice-note" type="text" placeholder="Rövid jegyzet"></label>
-	                    </section>
-	                  </div>
-	                </section>
 	                <div class="evening-save-actions">
 	                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home">Kihagyás</button>
 	                  <button class="primary-button" type="button" data-action="save-evening-reflection" data-target-screen="home">Kész</button>
@@ -4629,5 +4781,182 @@
       </div>
     </section>
   </main>
+  <script>
+    (() => {
+      const reflectionPromptContent = {
+        best: {
+          question: 'Mi volt benne a legjobb?',
+          placeholder: 'Írd le a nap legjobb pillanatát.',
+        },
+        hardest: {
+          question: 'Mi volt benne a legnehezebb?',
+          placeholder: 'Írd le röviden, mi volt nehéz ma.',
+        },
+        remember: {
+          question: 'Mit nem szeretnél elfelejteni?',
+          placeholder: 'Írd le azt a mondatot, amit holnap is látni szeretnél.',
+        },
+        gratitude: {
+          question: 'Hála lista',
+        },
+      };
+
+      const reflectionState = {
+        active: 'best',
+        notes: {
+          best: '',
+          hardest: '',
+          remember: '',
+        },
+        gratitude: ['A mai tiszta döntésért', 'Egy őszinte beszélgetésért', 'Hogy időben megálltam'],
+      };
+
+      function autoResizeTextarea(textarea) {
+        if (!textarea) return;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+
+      function currentReflectionPanel() {
+        return document.querySelector('#evening-reflection [data-component="evening-reflection-panel"]');
+      }
+
+      function currentResponsePanel() {
+        return document.querySelector('#evening-reflection [data-reflection-content]');
+      }
+
+      function saveCurrentReflectionText() {
+        const textarea = document.querySelector('#evening-reflection [data-reflection-text]');
+        const prompt = textarea?.getAttribute('data-active-reflection-prompt');
+        if (textarea && prompt && Object.prototype.hasOwnProperty.call(reflectionState.notes, prompt)) {
+          reflectionState.notes[prompt] = textarea.value;
+        }
+      }
+
+      function appendHelp(panel, prompt) {
+        const help = document.createElement('p');
+        help.className = 'reflection-response-help';
+        help.textContent = reflectionPromptContent[prompt].question;
+        panel.append(help);
+      }
+
+      function renderTextPrompt(panel, prompt) {
+        panel.textContent = '';
+        panel.setAttribute('data-active-reflection-prompt', prompt);
+        appendHelp(panel, prompt);
+
+        const label = document.createElement('label');
+        label.className = 'sr-only';
+        label.htmlFor = 'evening-reflection-text';
+        label.textContent = 'Esti reflexió jegyzet';
+
+        const textarea = document.createElement('textarea');
+        textarea.className = 'reflection-input';
+        textarea.id = 'evening-reflection-text';
+        textarea.setAttribute('data-reflection-text', '');
+        textarea.setAttribute('data-active-reflection-prompt', prompt);
+        textarea.placeholder = reflectionPromptContent[prompt].placeholder;
+        textarea.value = reflectionState.notes[prompt] || '';
+        textarea.addEventListener('input', () => {
+          reflectionState.notes[prompt] = textarea.value;
+          autoResizeTextarea(textarea);
+        });
+
+        panel.append(label, textarea);
+        requestAnimationFrame(() => autoResizeTextarea(textarea));
+      }
+
+      function addGratitudeItem(panel = currentResponsePanel(), value = '') {
+        const list = panel?.querySelector('[data-gratitude-list]');
+        if (!list) return;
+        const index = list.querySelectorAll('[data-gratitude-item]').length;
+        if (index >= reflectionState.gratitude.length) {
+          reflectionState.gratitude.push(value);
+        }
+
+        const label = document.createElement('label');
+        label.className = 'gratitude-item';
+        label.setAttribute('data-gratitude-item', String(index + 1));
+
+        const caption = document.createElement('span');
+        caption.textContent = `${index + 1}. hála`;
+
+        const input = document.createElement('input');
+        input.className = 'gratitude-field';
+        input.type = 'text';
+        input.value = value;
+        input.placeholder = 'Írd ide';
+        input.addEventListener('input', () => {
+          reflectionState.gratitude[index] = input.value;
+        });
+
+        label.append(caption, input);
+        list.append(label);
+        input.focus({ preventScroll: true });
+      }
+
+      function renderGratitudePrompt(panel) {
+        panel.textContent = '';
+        panel.setAttribute('data-active-reflection-prompt', 'gratitude');
+        appendHelp(panel, 'gratitude');
+
+        const list = document.createElement('div');
+        list.className = 'gratitude-list';
+        list.setAttribute('data-gratitude-list', '');
+        panel.append(list);
+
+        const values = reflectionState.gratitude.length ? reflectionState.gratitude : [''];
+        values.forEach((value) => addGratitudeItem(panel, value));
+
+        const addButton = document.createElement('button');
+        addButton.className = 'gratitude-add-button';
+        addButton.type = 'button';
+        addButton.setAttribute('data-action', 'add-gratitude-item');
+        addButton.textContent = 'Új hozzáadása';
+        addButton.addEventListener('click', () => addGratitudeItem(panel));
+        panel.append(addButton);
+      }
+
+      function setActiveReflectionPrompt(prompt) {
+        if (!reflectionPromptContent[prompt]) return;
+        saveCurrentReflectionText();
+        reflectionState.active = prompt;
+
+        const panel = currentReflectionPanel();
+        const responsePanel = currentResponsePanel();
+        if (!panel || !responsePanel) return;
+        panel.setAttribute('data-active-reflection-prompt', prompt);
+
+        document.querySelectorAll('#evening-reflection [data-reflection-prompt]').forEach((button) => {
+          const active = button.getAttribute('data-reflection-prompt') === prompt;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+
+        if (prompt === 'gratitude') {
+          renderGratitudePrompt(responsePanel);
+        } else {
+          renderTextPrompt(responsePanel, prompt);
+        }
+      }
+
+      document.querySelectorAll('#evening-reflection [data-reflection-prompt]').forEach((button) => {
+        button.addEventListener('click', () => setActiveReflectionPrompt(button.getAttribute('data-reflection-prompt')));
+      });
+
+      document.querySelectorAll('#evening-reflection [data-component="mood-score"]').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('#evening-reflection [data-component="mood-score"]').forEach((candidate) => {
+            const active = candidate === button;
+            candidate.classList.toggle('active', active);
+            candidate.setAttribute('aria-pressed', String(active));
+          });
+        });
+      });
+
+      window.hajnalReflection = { setActiveReflectionPrompt, addGratitudeItem };
+      setActiveReflectionPrompt('best');
+    })();
+  </script>
 </body>
 </html>
