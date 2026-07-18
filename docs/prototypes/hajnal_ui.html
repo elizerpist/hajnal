@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hajnal · UI prototípus</title>
+  <style>
+    :root {
+      --screen-w: 412px;
+      --screen-h: 892px;
+      --phone-radius: 34px;
+      --hajnal-navy: #2C2E77;
+      --hajnal-purple: #6A56B4;
+      --hajnal-lavender: #B89AD7;
+      --hajnal-pink: #F18EAF;
+      --hajnal-peach: #FEC884;
+      --hajnal-cream: #FCF0F0;
+      --page-blush: #FDF5F8;
+      --screen-blush: #F9F3F7;
+      --card: #FEFBFA;
+      --white: #FFFFFF;
+      --success: #67A77A;
+      --success-soft: #E7F2E4;
+      --pink-soft: #FCE4EB;
+      --muted: #8F8BB0;
+      --hairline: rgba(106, 86, 180, .13);
+      --hairline-strong: rgba(106, 86, 180, .22);
+      --shadow-soft: 0 14px 36px rgba(44, 46, 119, .10);
+      --shadow-phone: 0 24px 64px rgba(44, 46, 119, .18);
+      --radius-sheet: 22px;
+      --radius-card: 16px;
+      --radius-compact: 13px;
+      --radius-button: 17px;
+      --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: light;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      overflow-x: auto;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem),
+        radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem),
+        #fffdfd;
+      color: var(--hajnal-navy);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    .prototype-page {
+      min-width: max-content;
+      padding: 48px 48px 88px;
+    }
+
+    .prototype-brand {
+      width: min(980px, calc(100vw - 96px));
+      min-width: 720px;
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 34px;
+    }
+
+    .prototype-brand img {
+      width: 112px;
+      height: 112px;
+      border-radius: 28px;
+      object-fit: cover;
+      box-shadow: 0 14px 32px rgba(74, 53, 144, .17);
+    }
+
+    .prototype-kicker {
+      margin: 0 0 5px;
+      color: var(--hajnal-purple);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .prototype-brand h1 {
+      margin: 0;
+      font-size: 46px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -.035em;
+    }
+
+    .prototype-motto {
+      margin: 8px 0 0;
+      color: var(--hajnal-pink);
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 750;
+    }
+
+    .prototype-description {
+      margin: 12px 0 0;
+      max-width: 760px;
+      color: rgba(44, 46, 119, .70);
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 560;
+    }
+
+    .flow-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 28px;
+      width: min(1220px, calc(100vw - 96px));
+      min-width: 900px;
+      margin-bottom: 20px;
+    }
+
+    .flow-heading h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+
+    .flow-heading p {
+      margin: 6px 0 0;
+      color: rgba(44, 46, 119, .62);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .flow-tree {
+      margin: 0;
+      padding: 10px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-compact);
+      background: rgba(255, 255, 255, .72);
+      color: var(--hajnal-purple);
+      font: 700 12px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: pre;
+    }
+
+    .screen-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 34px;
+    }
+
+    .screen-column {
+      width: var(--screen-w);
+      flex: 0 0 var(--screen-w);
+      scroll-margin: 20px;
+    }
+
+    .screen-label {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 3px;
+      color: rgba(44, 46, 119, .72);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+    }
+
+    .screen-label strong {
+      color: var(--hajnal-navy);
+    }
+
+    .screen-index {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 24px;
+      border-radius: 50%;
+      background: var(--hajnal-purple);
+      color: var(--white);
+      font-size: 11px;
+    }
+
+    .phone-screen {
+      width: var(--screen-w);
+      height: var(--screen-h);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      border: 1px solid var(--hairline-strong);
+      border-radius: var(--phone-radius);
+      background: var(--screen-blush);
+      box-shadow: var(--shadow-phone);
+    }
+
+    .phone-screen:target {
+      outline: 4px solid rgba(106, 86, 180, .28);
+      outline-offset: 6px;
+    }
+
+    .screen-placeholder {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      background: linear-gradient(150deg, var(--page-blush), var(--hajnal-cream));
+      text-align: center;
+    }
+
+    .screen-placeholder span {
+      color: rgba(44, 46, 119, .55);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status-bar {
+      height: 32px;
+      position: relative;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 22px 0;
+      color: currentColor;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    .system-icons {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .system-icons svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.8;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 42px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .screen-header {
+      min-height: 74px;
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: start;
+      padding: 14px 18px 8px;
+    }
+
+    .screen-header-copy {
+      padding-top: 4px;
+      text-align: center;
+    }
+
+    .screen-header h3,
+    .screen-title {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-size: 21px;
+      line-height: 1.22;
+      font-weight: 820;
+      letter-spacing: -.02em;
+    }
+
+    .screen-subtitle {
+      margin: 5px 0 0;
+      color: rgba(44, 46, 119, .68);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 570;
+    }
+
+    .screen-content {
+      position: relative;
+      z-index: 5;
+      padding: 0 24px 24px;
+    }
+
+    .soft-card {
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .76);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .choice-row {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 0 7px 18px rgba(44, 46, 119, .045);
+    }
+
+    .primary-button,
+    .secondary-button {
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 22px;
+      border-radius: var(--radius-button);
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary-button {
+      border: 1px solid rgba(83, 70, 174, .24);
+      background: linear-gradient(135deg, #6253BC, var(--hajnal-purple));
+      color: var(--white);
+      box-shadow: 0 12px 24px rgba(83, 70, 174, .18);
+    }
+
+    .secondary-button {
+      border: 1px solid var(--hairline-strong);
+      background: rgba(255, 255, 255, .58);
+      color: var(--hajnal-navy);
+    }
+
+    .toggle-row {
+      min-height: 66px;
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 11px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .74);
+    }
+
+    .switch {
+      width: 44px;
+      height: 25px;
+      position: relative;
+      border-radius: 999px;
+      background: rgba(143, 139, 176, .26);
+    }
+
+    .switch::after {
+      content: "";
+      width: 19px;
+      height: 19px;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 2px 6px rgba(44, 46, 119, .18);
+    }
+
+    .scene {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #5548A5 0%, #9B73C0 48%, #F1A8BA 100%);
+    }
+
+    .scene svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .bottom-nav {
+      height: 70px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border-top: 1px solid var(--hairline);
+      background: rgba(255, 252, 252, .95);
+    }
+
+    .bottom-nav button {
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 4px;
+      padding: 5px 2px 7px;
+      border: 0;
+      background: transparent;
+      color: rgba(44, 46, 119, .46);
+      font-size: 9px;
+      font-weight: 750;
+    }
+
+    .bottom-nav button[aria-current="page"] {
+      color: var(--hajnal-purple);
+    }
+
+    .bottom-nav .icon {
+      width: 21px;
+      height: 21px;
+    }
+
+    .visually-hidden {
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 760px) {
+      .prototype-page {
+        padding: 24px 18px 64px;
+      }
+
+      .prototype-brand {
+        width: 700px;
+        grid-template-columns: 84px 1fr;
+        gap: 20px;
+      }
+
+      .prototype-brand img {
+        width: 84px;
+        height: 84px;
+        border-radius: 22px;
+      }
+
+      .prototype-brand h1 {
+        font-size: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <symbol id="icon-signal" viewBox="0 0 24 24">
+      <path d="M4 18v-2M8 18v-5M12 18v-8M16 18V7" />
+    </symbol>
+    <symbol id="icon-wifi" viewBox="0 0 24 24">
+      <path d="M4 9c4.7-4 11.3-4 16 0M7.5 12.5c2.6-2.2 6.4-2.2 9 0M11 16a1.4 1.4 0 1 1 2 0" />
+    </symbol>
+    <symbol id="icon-battery" viewBox="0 0 24 24">
+      <rect x="3" y="7" width="16" height="10" rx="2" />
+      <path d="M21 10v4M6 10h9v4H6z" />
+    </symbol>
+    <symbol id="icon-back" viewBox="0 0 24 24">
+      <path d="m15 18-6-6 6-6" />
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24">
+      <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7M10 20h4" />
+    </symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24">
+      <path d="M4 7h16M4 12h16M4 17h11" />
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24">
+      <path d="m3 11 9-8 9 8v9h-6v-6H9v6H3z" />
+    </symbol>
+    <symbol id="icon-progress" viewBox="0 0 24 24">
+      <path d="M4 19V9M10 19V5M16 19v-7M3 8l6-5 5 4 7-5" />
+    </symbol>
+    <symbol id="icon-tools" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="6" height="6" rx="1" />
+      <rect x="14" y="4" width="6" height="6" rx="1" />
+      <rect x="4" y="14" width="6" height="6" rx="1" />
+      <rect x="14" y="14" width="6" height="6" rx="1" />
+    </symbol>
+    <symbol id="icon-people" viewBox="0 0 24 24">
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M3 20c.3-4 2.2-6 6-6s5.7 2 6 6M15 15c3.5 0 5.4 1.7 5.8 5" />
+    </symbol>
+    <symbol id="icon-profile" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c.5-5 3-7 8-7s7.5 2 8 7" />
+    </symbol>
+  </svg>
+
+  <main class="prototype-page">
+    <header class="prototype-brand" data-source-reference="docs/references/source-of-truth/logo.png">
+      <img src="../references/source-of-truth/logo.png" alt="Hajnal alkalmazásikon">
+      <div>
+        <p class="prototype-kicker">Hajnal · első prototípusoldal</p>
+        <h1>Hajnal</h1>
+        <p class="prototype-motto">Csak a mai nap.</p>
+        <p class="prototype-description">A belépési folyamat teljes ága egy sorban: nyolc, később interaktívvá tehető webkomponens, a specifikáció szerinti logikával és a hét referencia-PNG kötelező vizuális rendszerével.</p>
+      </div>
+    </header>
+
+    <section aria-labelledby="entry-flow-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="entry-flow-title">Splash és child screenjei</h2>
+          <p>Oldal 1 · belépés, beállítás és az első Kezdőlap-állapot</p>
+        </div>
+        <pre class="flow-tree" aria-label="Navigációs hierarchia">Splash → Onboarding → [Tájékoztatás · Kezdődátum · Cél · Szponzor · Értesítések] → Kezdőlap</pre>
+      </div>
+
+      <div class="screen-row" data-page="entry" data-root-screen="splash">
+        <section class="screen-column" id="column-splash">
+          <div class="screen-label"><span class="screen-index">1</span><strong>Splash</strong></div>
+          <article class="phone-screen" id="splash" data-screen="splash">
+            <div class="screen-placeholder"><span>Splash komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-onboarding">
+          <div class="screen-label"><span class="screen-index">2</span><strong>Onboarding</strong> · Splash child</div>
+          <article class="phone-screen" id="onboarding" data-screen="onboarding" data-parent-screen="splash">
+            <div class="screen-placeholder"><span>Onboarding komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-information">
+          <div class="screen-label"><span class="screen-index">3</span><strong>Tájékoztatás</strong> · Onboarding child</div>
+          <article class="phone-screen" id="information" data-screen="information" data-parent-screen="onboarding">
+            <div class="screen-placeholder"><span>Tájékoztatás komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-start-date">
+          <div class="screen-label"><span class="screen-index">4</span><strong>Kezdődátum</strong> · Onboarding child</div>
+          <article class="phone-screen" id="start-date" data-screen="start-date" data-parent-screen="onboarding">
+            <div class="screen-placeholder"><span>Kezdődátum komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-recovery-goal">
+          <div class="screen-label"><span class="screen-index">5</span><strong>Felépülési cél</strong> · Onboarding child</div>
+          <article class="phone-screen" id="recovery-goal" data-screen="recovery-goal" data-parent-screen="onboarding">
+            <div class="screen-placeholder"><span>Felépülési cél komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-sponsor-setup">
+          <div class="screen-label"><span class="screen-index">6</span><strong>Szponzor hozzáadása</strong> · Onboarding child</div>
+          <article class="phone-screen" id="sponsor-setup" data-screen="sponsor-setup" data-parent-screen="onboarding">
+            <div class="screen-placeholder"><span>Szponzor hozzáadása komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-notifications">
+          <div class="screen-label"><span class="screen-index">7</span><strong>Értesítések</strong> · Onboarding child</div>
+          <article class="phone-screen" id="notifications" data-screen="notifications" data-parent-screen="onboarding">
+            <div class="screen-placeholder"><span>Értesítések komponens</span></div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-home">
+          <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
+          <article class="phone-screen" id="home" data-screen="home" data-parent-screen="notifications">
+            <div class="screen-placeholder"><span>Kezdőlap komponens</span></div>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
