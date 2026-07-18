@@ -27,19 +27,13 @@ const screenOrder = [
   ["evening-clean-reward", "daily-checkin"],
   ["evening-reflection", "home"],
   ["checkin-relapse", "daily-checkin"],
-  ["support-next-step", "checkin-relapse"],
-  ["checkin-survival-pack", "support-next-step"],
-  ["checkin-breathing", "support-next-step"],
-  ["checkin-motivation", "support-next-step"],
-  ["daily-tasks", "home"],
-  ["panic-mode", "home"],
-  ["panic-root", "panic-mode"],
+  ["panic-root", "home"],
   ["panic-help-sheet", "panic-root"],
+  ["checkin-survival-pack", "panic-root"],
+  ["checkin-breathing", "panic-root"],
   ["panic-sponsor-call", "panic-root"],
   ["panic-help-message", "panic-root"],
   ["panic-backup-contact", "panic-root"],
-  ["panic-survival-pack", "panic-root"],
-  ["panic-breathing", "panic-root"],
   ["panic-why-started", "panic-root"],
   ["panic-meeting-finder", "panic-root"],
   ["panic-emergency-help", "panic-root"],
@@ -54,7 +48,7 @@ const screenRows = [
   [
     "home",
     "home",
-    "home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode",
+    "home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse",
     [
       "home",
       "daily-image",
@@ -63,26 +57,20 @@ const screenRows = [
       "evening-clean-reward",
       "evening-reflection",
       "checkin-relapse",
-      "support-next-step",
-      "checkin-survival-pack",
-      "checkin-breathing",
-      "checkin-motivation",
-      "daily-tasks",
-      "panic-mode",
     ],
   ],
   [
     "panic",
     "panic-root",
-    "panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help",
+    "panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help",
     [
       "panic-root",
       "panic-help-sheet",
+      "checkin-survival-pack",
+      "checkin-breathing",
       "panic-sponsor-call",
       "panic-help-message",
       "panic-backup-contact",
-      "panic-survival-pack",
-      "panic-breathing",
       "panic-why-started",
       "panic-meeting-finder",
       "panic-emergency-help",
@@ -160,10 +148,8 @@ try {
           "daily-checkin",
           "evening-reflection",
           "checkin-relapse",
-          "support-next-step",
           "checkin-survival-pack",
           "checkin-breathing",
-          "checkin-motivation",
         ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
         return !(allowedSplash || allowedFullscreen2 || allowedHurray || allowedFullscreen);
       })
@@ -186,6 +172,27 @@ try {
   assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 3, "gratitude mode starts with three list items");
   await page.locator('#evening-reflection [data-action="add-gratitude-item"]').click();
   assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 4, "gratitude add button grows the list inline");
+  await page.locator('#evening-reflection [data-action="remove-gratitude-item"]').first().click();
+  assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 3, "gratitude delete button removes a list item inline");
+  assert.equal(await page.locator("#evening-reflection [data-action='remove-gratitude-item']").count(), 3, "remaining gratitude rows keep delete controls");
+
+  const eveningLayout = await page.locator("#evening-reflection").evaluate((screen) => {
+    const scroll = screen.querySelector(".evening-scroll");
+    const footer = screen.querySelector(".evening-save-actions");
+    if (!scroll || !footer) return null;
+    const scrollBox = scroll.getBoundingClientRect();
+    const footerBox = footer.getBoundingClientRect();
+    return {
+      scrollOverflow: scroll.scrollHeight > scroll.clientHeight,
+      footerAfterScroll: footerBox.top >= scrollBox.bottom,
+      footerVisible: footerBox.bottom <= screen.getBoundingClientRect().bottom,
+    };
+  });
+  assert.deepEqual(eveningLayout, {
+    scrollOverflow: true,
+    footerAfterScroll: true,
+    footerVisible: true,
+  }, "screen 12 must scroll internally while the footer stays fixed in the panel");
 
   const calendarButtons = page.locator("#start-date button.calendar-day");
   assert.equal(await calendarButtons.count(), 35, "semantic calendar date button count");

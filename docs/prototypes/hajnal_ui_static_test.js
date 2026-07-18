@@ -24,19 +24,13 @@ const screenOrder = [
   'evening-clean-reward',
   'evening-reflection',
   'checkin-relapse',
-  'support-next-step',
-  'checkin-survival-pack',
-  'checkin-breathing',
-  'checkin-motivation',
-  'daily-tasks',
-  'panic-mode',
   'panic-root',
   'panic-help-sheet',
+  'checkin-survival-pack',
+  'checkin-breathing',
   'panic-sponsor-call',
   'panic-help-message',
   'panic-backup-contact',
-  'panic-survival-pack',
-  'panic-breathing',
   'panic-why-started',
   'panic-meeting-finder',
   'panic-emergency-help'
@@ -119,7 +113,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 30, 'phone screen count');
+    expectCount(/class="phone-screen/g, 24, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -140,20 +134,17 @@ const tests = {
     expectContains('assets/hurray_svg.svg');
     expectContains('assets/welcome_svg.svg');
     expectCopiedAsset('welcome_svg.svg');
-    expectContains('.glass-card');
+    expectAbsent('.glass-card');
     expectAbsent('id="hajnal-liquid-glass-warp"');
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
-    assert.match(html, /\.glass-card\s*\{[^}]*width:\s*240px;[^}]*height:\s*360px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*0\.22\);[^}]*backdrop-filter:\s*blur\(18px\) saturate\(1\.24\);[^}]*-webkit-backdrop-filter:\s*blur\(18px\) saturate\(1\.24\);[^}]*border-radius:\s*20px;[^}]*border:\s*1px solid rgba\(255,\s*255,\s*255,\s*0\.24\);[^}]*box-shadow:[^}]*0 8px 28px rgba\(0,\s*0,\s*0,\s*0\.08\),[^}]*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.42\),[^}]*inset 0 -1px 0 rgba\(255,\s*255,\s*255,\s*0\.08\),[^}]*inset 0 0 24px 8px rgba\(255,\s*255,\s*255,\s*0\.14\);[^}]*position:\s*relative;[^}]*overflow:\s*hidden/s, 'shared .glass-card must be refined to read as transparent glass, not a white card');
-    assert.match(html, /\.glass-card::before\s*\{[^}]*content:\s*'';[^}]*position:\s*absolute;[^}]*top:\s*0;[^}]*left:\s*0;[^}]*right:\s*0;[^}]*height:\s*1px;[^}]*background:\s*linear-gradient\([^}]*90deg,[^}]*transparent,[^}]*rgba\(255,\s*255,\s*255,\s*0\.55\),[^}]*transparent[^}]*\)/s, 'shared .glass-card top highlight must be subtle after the white-card feedback');
-    assert.match(html, /\.glass-card::after\s*\{[^}]*content:\s*'';[^}]*position:\s*absolute;[^}]*top:\s*0;[^}]*left:\s*0;[^}]*width:\s*1px;[^}]*height:\s*100%;[^}]*background:\s*linear-gradient\([^}]*180deg,[^}]*rgba\(255,\s*255,\s*255,\s*0\.5\),[^}]*transparent,[^}]*rgba\(255,\s*255,\s*255,\s*0\.18\)[^}]*\)/s, 'shared .glass-card side highlight must be subtle after the white-card feedback');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 12, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 10, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
     expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home and daily image screens must use the approved fullscreen2 SVG asset');
     expectCount(/src="assets\/hurray_svg\.svg"/g, 2, 'hurray reward screens must use the approved hurray SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 7, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 5, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -251,12 +242,13 @@ const tests = {
     assert.ok(!homeScreen.includes('home-sheet-handle'), 'home lower sheet must not include a separate handle');
     assert.ok(dashboardIndex !== -1 && homeBodyIndex !== -1 && dashboardIndex < homeBodyIndex, 'home dashboard must float outside and above the lower sheet');
     assert.ok(tasksIndex !== -1 && helpIndex !== -1 && tasksIndex < helpIndex, 'home checklist must render above the help button');
-    assert.match(html, /\.home-screen\s*\{[^}]*background:\s*#F9F3F7/s, 'home screen must not expose a dark fallback container behind the glass card');
-    assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 70px\);[^}]*background:\s*transparent/s, 'home hero image must extend behind the full glass card area down to the bottom nav');
+    assert.match(html, /\.home-screen\s*\{[^}]*background:\s*#F9F3F7/s, 'home screen must not expose a dark fallback container behind the lower card');
+    assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 70px\);[^}]*background:\s*transparent/s, 'home hero image must extend behind the lower card area down to the bottom nav');
     assert.match(html, /\.home-body\s*\{[^}]*top:\s*586px/s, 'home sheet must move 38px lower after the latest screenshot feedback');
-    assert.ok(homeScreen.includes('class="home-body glass-card"'), 'home sheet must use the user-provided .glass-card class');
-    assert.ok(homeScreen.includes('data-glass-card="home-sheet"'), 'home sheet must expose the glass-card marker');
-    assert.match(html, /\.home-body\.glass-card\s*\{[^}]*width:\s*auto;[^}]*height:\s*auto;[^}]*border-radius:\s*92px 92px 0 0/s, 'home sheet may override glass-card dimensions/radius for the screen-8 bottom container');
+    assert.ok(homeScreen.includes('class="home-body"'), 'home sheet must use the original non-glass class');
+    assert.ok(!homeScreen.includes('data-glass-card="home-sheet"'), 'home sheet must drop the glass marker');
+    assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*92px 92px 0 0;[^}]*background:\s*linear-gradient\(180deg,\s*#FFFBFD 0%,\s*#F9F2F6 100%\);[^}]*color:\s*var\(--hajnal-navy\)/s, 'home sheet must restore the pre-glass colorful lower card');
+    assert.match(html, /\.home-body::before\s*\{[^}]*background:\s*inherit/s, 'home sheet curve must use the same pre-glass background as the body');
     assert.ok(!/\.home-body::before\s*\{[^}]*url\("assets\/hero_fullscreen2_svg\.svg"\)/s.test(html), 'home sheet must not keep the extra hero-clone backing layer behind the card');
     assert.ok(!/\.home-body::after\s*\{[^}]*url\("assets\/hero_fullscreen2_svg\.svg"\)/s.test(html), 'home sheet must not keep the extra hero-clone overlay layer');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
@@ -267,6 +259,8 @@ const tests = {
     assert.match(html, /\.task-row\s*\{[^}]*min-height:\s*24px/s, 'home task rows must be compact enough to fit in the sheet');
     assert.match(html, /\.home-actions\s*\{[^}]*margin-top:\s*auto/s, 'home help button must sit at the bottom of the sheet');
     assert.match(html, /\.help-button\s*\{[^}]*border:\s*0;[^}]*background:\s*linear-gradient\(160deg,\s*#FF78A8,\s*#E04D86\);[^}]*box-shadow:\s*0 18px 38px rgba\(239,\s*85,\s*145,\s*\.26\)/s, 'home help button must reuse the panic button fill and glow without the distracting inner container ring');
+    assert.ok(homeScreen.includes('<svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Segítség kell'), 'home help button must show a heart icon instead of the bullet marker');
+    assert.ok(!homeScreen.includes('>◉</span>Segítség kell'), 'home help button must not keep the old dot marker');
     assert.ok(homeScreen.includes('class="segmented-progress"'), 'home dashboard needs a segmented progress bar');
     assert.ok(homeScreen.includes('class="dashboard-separator"'), 'home dashboard needs the center separator');
     assert.ok(homeScreen.includes('class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"'), 'home hero must use the fullscreen2 SVG asset');
@@ -296,12 +290,10 @@ const tests = {
       'data-screen="evening-clean-reward"',
       'data-screen="evening-reflection"',
       'data-screen="checkin-relapse"',
-      'data-screen="support-next-step"',
+      'data-screen="panic-root"',
+      'data-screen="panic-help-sheet"',
       'data-screen="checkin-survival-pack"',
-      'data-screen="checkin-breathing"',
-      'data-screen="checkin-motivation"',
-      'data-screen="daily-tasks"',
-      'data-screen="panic-mode"'
+      'data-screen="checkin-breathing"'
     ]);
     [
       'Napi kép',
@@ -329,11 +321,8 @@ const tests = {
       'Ma visszaestem',
       'Köszönjük,',
       'hogy őszinte voltál.',
-      'Itt vagyunk',
-      'neked.',
       '15 perces túlélő csomag',
       'Légzőgyakorlat',
-      'Motivációs üzenetek',
       'Nem kell tökéletesnek lenned',
       'Pánik mód',
       'Nem vagy egyedül.'
@@ -344,7 +333,7 @@ const tests = {
     expectContains('data-action="mark-clean-today" data-target-screen="checkin-clean"');
     expectContains('data-action="mark-clean" data-target-screen="evening-clean-reward"');
     expectContains('data-action="continue-evening-reflection" data-target-screen="evening-reflection"');
-    expectContains('data-action="open-panic" data-target-screen="panic-mode"');
+    expectContains('data-action="open-panic" data-target-screen="panic-root"');
     expectContains('data-action="save-evening-reflection" data-target-screen="home"');
     expectContains('data-component="reflection-response-panel"');
     expectContains('data-reflection-content');
@@ -355,7 +344,7 @@ const tests = {
     expectAbsent('data-component="inline-gratitude"');
     expectAbsent('id="inline-photo-caption"');
     expectAbsent('id="inline-voice-note"');
-    ['checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo'].forEach((id) => {
+    ['checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo', 'support-next-step', 'checkin-motivation', 'daily-tasks', 'panic-mode', 'panic-survival-pack', 'panic-breathing'].forEach((id) => {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
     });
@@ -374,7 +363,7 @@ const tests = {
     assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
     assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
     assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
-    ['daily-checkin', 'evening-reflection', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
+    ['daily-checkin', 'evening-reflection', 'checkin-relapse', 'checkin-survival-pack', 'checkin-breathing']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     ['checkin-clean', 'evening-clean-reward']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hurray_svg.svg"'), `${id} must use the hurray fullscreen image`));
@@ -409,12 +398,14 @@ const tests = {
     assert.ok(eveningReflectionScreen.includes('data-reflection-prompt="gratitude"'), 'gratitude must be part of the reflection selector cards');
     assert.ok(eveningReflectionScreen.includes('class="evening-scroll" data-component="evening-scroll-area"'), 'evening reflection content must live in a scroll area');
     assert.ok(eveningReflectionScreen.indexOf('class="evening-scroll"') < eveningReflectionScreen.indexOf('class="evening-save-actions"'), 'evening footer actions must stay outside the scroll area');
-    assert.ok(eveningReflectionScreen.includes('class="evening-reflection-panel glass-card"'), 'screen 12 outer container must use the user-provided .glass-card class');
+    assert.ok(eveningReflectionScreen.includes('class="evening-reflection-panel"'), 'screen 12 outer container must use the original non-glass card class');
     assert.ok(eveningReflectionScreen.includes('data-component="reflection-response-panel"'), 'the dynamic reflection response container must exist');
-    assert.ok(eveningReflectionScreen.includes('class="reflection-response-panel glass-card"'), 'the section 3 content container must use the user-provided .glass-card class');
+    assert.ok(eveningReflectionScreen.includes('class="reflection-response-panel"'), 'the section 3 content container must use the original non-glass card class');
     assert.ok(eveningReflectionScreen.includes('data-reflection-content'), 'the dynamic reflection response container must be script-addressable');
     expectContains("list.setAttribute('data-gratitude-list', '')");
     expectContains('addButton.setAttribute(\'data-action\', \'add-gratitude-item\')');
+    expectContains('removeButton.setAttribute(\'data-action\', \'remove-gratitude-item\')');
+    expectContains('function removeGratitudeItem');
     assert.ok(eveningReflectionScreen.includes('data-component="inline-media-memos"'), 'photo and voice memo controls must remain in section 4');
     assert.ok(eveningReflectionScreen.includes('data-action="add-photo-memo-inline"'), 'photo memo control must remain inline inside evening reflection');
     assert.ok(eveningReflectionScreen.includes('data-action="toggle-voice-memo-inline"'), 'voice memo control must remain inline inside evening reflection');
@@ -425,17 +416,18 @@ const tests = {
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="photo-memo"'), 'photo memo must not navigate to a helper screen');
     assert.ok(!eveningReflectionScreen.includes('data-target-screen="voice-memo"'), 'voice memo must not navigate to a helper screen');
     assert.ok(!/#evening-reflection \.evening-reflection-panel::before/.test(html), 'screen 12 panel must not keep an extra screen-specific backing layer');
-    assert.match(html, /#evening-reflection \.evening-reflection-panel\.glass-card\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*width:\s*auto;[^}]*height:\s*auto/s, 'evening reflection panel must use .glass-card with only layout overrides');
+    assert.match(html, /#evening-reflection \.checkin-content\s*\{[^}]*overflow:\s*hidden/s, 'evening reflection phone content must not scroll as a whole');
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.54\)/s, 'evening reflection panel must restore the original colorful pre-glass panel');
     assert.match(html, /\.evening-scroll\s*\{[^}]*flex:\s*1;[^}]*overflow-y:\s*auto;[^}]*padding-bottom:\s*12px/s, 'evening reflection screen content must scroll above the floating footer');
-    assert.match(html, /\.reflection-response-panel\.glass-card\s*\{[^}]*width:\s*auto;[^}]*height:\s*auto;[^}]*border-radius:\s*17px/s, 'the section 3 content container must use .glass-card with compact layout overrides');
+    assert.match(html, /\.reflection-response-panel\s*\{[^}]*border-radius:\s*17px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.70\)/s, 'the section 3 content container must be a compact non-glass card');
     assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*flex:\s*0 0 auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be outside the scroll area, smaller, and right aligned');
     assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*42px/s, 'evening reflection bottom buttons must be smaller');
     expectContains('const reflectionPromptContent = {');
     expectContains('function setActiveReflectionPrompt');
     expectContains('function addGratitudeItem');
     expectContains('data-active-reflection-prompt');
-    expectCount(/data-component="daily-task-detail"/g, 3, 'daily task detail count');
-    expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
+    expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
+    expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
     expectCount(/<textarea\b/g, 1, 'writable memo textarea count');
   },
 
@@ -443,11 +435,11 @@ const tests = {
     expectOrdered([
       'data-screen="panic-root"',
       'data-screen="panic-help-sheet"',
+      'data-screen="checkin-survival-pack"',
+      'data-screen="checkin-breathing"',
       'data-screen="panic-sponsor-call"',
       'data-screen="panic-help-message"',
       'data-screen="panic-backup-contact"',
-      'data-screen="panic-survival-pack"',
-      'data-screen="panic-breathing"',
       'data-screen="panic-why-started"',
       'data-screen="panic-meeting-finder"',
       'data-screen="panic-emergency-help"'
@@ -476,7 +468,8 @@ const tests = {
       'Meeting keresése'
     ].forEach(expectContains);
     expectContains('data-action="open-help-sheet" data-target-screen="panic-help-sheet"');
-    expectContains('data-action="start-survival-pack" data-target-screen="panic-survival-pack"');
+    expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
+    expectContains('data-action="breathing" data-target-screen="checkin-breathing"');
     expectContains('data-action="meeting-finder" data-target-screen="panic-meeting-finder"');
     expectCount(/class="screen-row/g, 3, 'screen row count');
   },
@@ -497,8 +490,8 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 3, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help"');
+    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -508,24 +501,18 @@ const tests = {
       notifications: 'onboarding',
       home: 'notifications',
       'daily-image': 'home',
-      'daily-tasks': 'home',
       'daily-checkin': 'home',
       'checkin-clean': 'daily-checkin',
       'evening-clean-reward': 'daily-checkin',
       'evening-reflection': 'home',
       'checkin-relapse': 'daily-checkin',
-      'support-next-step': 'checkin-relapse',
-      'checkin-survival-pack': 'support-next-step',
-      'checkin-breathing': 'support-next-step',
-      'checkin-motivation': 'support-next-step',
-      'panic-mode': 'home',
-      'panic-root': 'panic-mode',
+      'panic-root': 'home',
       'panic-help-sheet': 'panic-root',
+      'checkin-survival-pack': 'panic-root',
+      'checkin-breathing': 'panic-root',
       'panic-sponsor-call': 'panic-root',
       'panic-help-message': 'panic-root',
       'panic-backup-contact': 'panic-root',
-      'panic-survival-pack': 'panic-root',
-      'panic-breathing': 'panic-root',
       'panic-why-started': 'panic-root',
       'panic-meeting-finder': 'panic-root',
       'panic-emergency-help': 'panic-root'
