@@ -22,6 +22,8 @@ HAJNAL_PLAYWRIGHT_MODULE="file://$HAJNAL_VERIFY_DIR/node/node_modules/playwright
   node docs/prototypes/hajnal_ui_browser_test.mjs
 ```
 
+The command above is read-only for committed evidence and renders into an automatically removed temporary directory. To intentionally refresh the nine committed images after an approved UI change, add `HAJNAL_UPDATE_EVIDENCE=1` to the final command.
+
 ## Geometry result
 
 Chromium measured every `.phone-screen` element directly:

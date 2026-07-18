@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -9,6 +10,8 @@ const { chromium } = await import(moduleName);
 const prototypeDirectory = path.dirname(fileURLToPath(import.meta.url));
 const htmlPath = path.join(prototypeDirectory, "hajnal_ui.html");
 const evidenceDirectory = path.join(prototypeDirectory, "verification");
+const updateEvidence = process.env.HAJNAL_UPDATE_EVIDENCE === "1";
+const scratchDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "hajnal-browser-test-"));
 const screenOrder = [
   ["splash", null],
   ["onboarding", "splash"],
@@ -128,7 +131,10 @@ try {
     assert.equal(metrics.scrollHeight, metrics.clientHeight, `${id} vertical overflow`);
     assert.equal(metrics.scrollWidth, metrics.clientWidth, `${id} horizontal overflow`);
 
-    const evidencePath = path.join(evidenceDirectory, `${id}.png`);
+    const evidencePath = path.join(
+      updateEvidence ? evidenceDirectory : scratchDirectory,
+      `${id}.png`,
+    );
     await page.screenshot({
       path: evidencePath,
       clip: {
@@ -143,12 +149,15 @@ try {
     process.stdout.write(`PASS browser ${id} 412x892 no-overflow\n`);
   }
 
-  await page.setViewportSize({ width: 3900, height: 900 });
-  await page.screenshot({
-    path: path.join(evidenceDirectory, "first-page-overview.png"),
-    fullPage: true,
-    animations: "disabled",
-  });
+  if (updateEvidence) {
+    await page.setViewportSize({ width: 3900, height: 900 });
+    await page.screenshot({
+      path: path.join(evidenceDirectory, "first-page-overview.png"),
+      fullPage: true,
+      animations: "disabled",
+    });
+  }
 } finally {
   await browser.close();
+  fs.rmSync(scratchDirectory, { recursive: true, force: true });
 }
