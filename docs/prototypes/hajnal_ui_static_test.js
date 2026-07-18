@@ -225,9 +225,12 @@ const tests = {
     assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*607px/s, 'home hero must be 68% of the 892px screen height');
     assert.match(html, /\.home-body\s*\{[^}]*top:\s*586px/s, 'home sheet must move 38px lower after the latest screenshot feedback');
     assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*92px 92px 0 0/s, 'home lower sheet must restore the larger rounded top radius');
+    assert.match(html, /\.home-body\s*\{[^}]*background:\s*rgba\(255,\s*251,\s*253,\s*\.64\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower card must use glassmorphism');
     assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0/s, 'home lower sheet must restore the large curved top pseudo-element');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
     assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*518px/s, 'home dashboard must move 38px lower with the sheet');
+    assert.match(html, /\.home-metrics\s*\{[^}]*color:\s*var\(--hajnal-navy\);[^}]*background:\s*#FFFCFB;[^}]*backdrop-filter:\s*none/s, 'home clean-days dashboard must stay solid rather than glass');
+    assert.match(html, /\.metric strong\s*\{[^}]*color:\s*var\(--hajnal-navy\)/s, 'clean-days number must not inherit white text');
     assert.match(html, /\.tasks-card\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s, 'home task list must be merged into the lower sheet, not a separate card');
     assert.match(html, /\.task-row\s*\{[^}]*min-height:\s*24px/s, 'home task rows must be compact enough to fit in the sheet');
     assert.match(html, /\.home-actions\s*\{[^}]*margin-top:\s*auto/s, 'home help button must sit at the bottom of the sheet');
@@ -252,6 +255,7 @@ const tests = {
 
   homeBranch() {
     const dailyImageScreen = screenSlice('daily-image');
+    const eveningReflectionScreen = screenSlice('evening-reflection');
     expectOrdered([
       'data-screen="home"',
       'data-screen="daily-image"',
@@ -284,6 +288,7 @@ const tests = {
       'Hangulatom most',
       'Mi volt ma a legjobb?',
       'Mi volt ma a legnehezebb?',
+      'Miért vagy hálás?',
       'Van valami, amit nem szeretnél elfelejteni?',
       'Írd ide bármit...',
       'Hála hozzáadása',
@@ -363,7 +368,15 @@ const tests = {
       'placeholder="Írd ide bármit..."',
       'data-action="save-evening-reflection" data-target-screen="home"'
     ]);
-    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*margin:\s*8px 18px 0;[^}]*background:\s*rgba\(255,255,255,\.54\);[^}]*backdrop-filter:\s*blur\(26px\) saturate\(1\.18\)/s, 'evening reflection panel must reach the bottom as a stronger glassmorphism container');
+    assert.ok(!eveningReflectionScreen.includes('class="checkin-top-actions"'), 'evening reflection screen must remove top x/check controls');
+    assert.ok(!eveningReflectionScreen.includes('class="quiet-link"'), 'evening reflection panel must remove the top save link');
+    assert.equal((eveningReflectionScreen.match(/class="reflection-prompt/g) || []).length, 4, 'evening reflection selector must have four cards');
+    assert.ok(eveningReflectionScreen.includes('data-reflection-prompt="gratitude"'), 'gratitude must be part of the reflection selector cards');
+    assert.ok(!eveningReflectionScreen.includes('<button class="memo-action" type="button" data-action="open-gratitude-add"'), 'gratitude must not remain in the lower memo-action row');
+    assert.equal((eveningReflectionScreen.match(/class="memo-action"/g) || []).length, 2, 'evening reflection lower memo row must only contain photo and voice memo');
+    assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,255,255,\.54\);[^}]*backdrop-filter:\s*blur\(26px\) saturate\(1\.18\)/s, 'evening reflection panel must be padded from the bottom as a stronger glassmorphism container');
+    assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*margin-top:\s*auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be smaller and right aligned at the panel bottom');
+    assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*42px/s, 'evening reflection bottom buttons must be smaller');
     expectScreenContains('gratitude-add', [
       'data-parent-screen="evening-reflection"',
       'id="gratitude-line-1"',

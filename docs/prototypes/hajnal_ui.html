@@ -1229,8 +1229,12 @@
       overflow: hidden;
       padding: 62px 28px 16px;
       border-radius: 92px 92px 0 0;
-      background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%);
+      border: 1px solid rgba(255, 255, 255, .66);
+      background: rgba(255, 251, 253, .64);
       color: var(--hajnal-navy);
+      box-shadow: 0 -18px 46px rgba(39, 31, 88, .12), inset 0 1px 0 rgba(255, 255, 255, .62);
+      backdrop-filter: blur(22px) saturate(1.12);
+      -webkit-backdrop-filter: blur(22px) saturate(1.12);
     }
 
     .home-body::before {
@@ -1258,8 +1262,11 @@
       overflow: hidden;
       border: 1px solid rgba(106, 86, 180, .14);
       border-radius: 24px;
-      background: rgba(255, 252, 251, .97);
+      color: var(--hajnal-navy);
+      background: #FFFCFB;
       box-shadow: 0 18px 38px rgba(44, 46, 119, .16);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     .metric {
@@ -1277,6 +1284,7 @@
     .metric strong {
       display: inline-block;
       margin-top: 4px;
+      color: var(--hajnal-navy);
       font-size: 28px;
       line-height: 1;
       font-weight: 830;
@@ -2026,10 +2034,11 @@
 
 	    #evening-reflection .evening-reflection-panel {
 	      flex: 1;
-	      align-content: start;
-	      margin: 8px 18px 0;
+	      display: flex;
+	      flex-direction: column;
+	      margin: 32px 18px 24px;
 	      padding: 17px 16px 16px;
-	      border-radius: 24px 24px 0 0;
+	      border-radius: 24px;
 	      border-color: rgba(255, 255, 255, .72);
 	      background: rgba(255,255,255,.54);
 	      box-shadow: 0 24px 46px rgba(20, 17, 62, .22), inset 0 1px 0 rgba(255, 255, 255, .58);
@@ -2120,22 +2129,22 @@
 
 	    .reflection-selector {
 	      display: grid;
-	      grid-template-columns: repeat(3, 1fr);
+	      grid-template-columns: repeat(2, 1fr);
 	      gap: 8px;
 	    }
 
 	    .reflection-prompt {
-	      min-height: 96px;
+	      min-height: 76px;
 	      display: grid;
 	      align-content: start;
-	      gap: 6px;
-	      padding: 10px;
+	      gap: 5px;
+	      padding: 9px 10px;
 	      border: 1px solid rgba(106, 86, 180, .14);
 	      border-radius: 14px;
 	      background: rgba(255, 255, 255, .74);
 	      color: var(--hajnal-navy);
-	      font-size: 11px;
-	      line-height: 1.24;
+	      font-size: 10.6px;
+	      line-height: 1.18;
 	      font-weight: 760;
 	      text-align: left;
 	      cursor: pointer;
@@ -2143,7 +2152,7 @@
 
 	    .reflection-prompt span {
 	      display: block;
-	      font-size: 24px;
+	      font-size: 21px;
 	      line-height: 1;
 	    }
 
@@ -2162,7 +2171,7 @@
 
 	    .evening-memo-actions {
 	      display: grid;
-	      grid-template-columns: repeat(3, 1fr);
+	      grid-template-columns: repeat(2, 1fr);
 	      gap: 8px;
 	    }
 
@@ -2187,6 +2196,21 @@
 	      display: grid;
 	      grid-template-columns: 1fr 1fr;
 	      gap: 10px;
+	    }
+
+	    #evening-reflection .evening-save-actions {
+	      margin-top: auto;
+	      grid-template-columns: 104px 104px;
+	      justify-content: end;
+	      gap: 8px;
+	    }
+
+	    #evening-reflection .evening-save-actions .secondary-button,
+	    #evening-reflection .evening-save-actions .primary-button {
+	      min-height: 42px;
+	      padding: 0 14px;
+	      border-radius: 14px;
+	      font-size: 13px;
 	    }
 
 	    .memo-panel {
@@ -3956,15 +3980,9 @@
 	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
 	            </div>
 	            <div class="checkin-content">
-	              <div class="checkin-top-actions">
-	                <button class="icon-button" type="button" aria-label="Bezárás" data-target-screen="home">×</button>
-	                <span aria-hidden="true"></span>
-	                <button class="icon-button" type="button" aria-label="Mentés" data-action="save-evening-reflection" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></button>
-	              </div>
 	              <section class="evening-reflection-panel" data-component="evening-reflection-panel" aria-label="Esti reflexió">
 	                <div class="evening-panel-top">
 	                  <h3>Esti reflexió</h3>
-	                  <button class="quiet-link" type="button" data-action="save-evening-reflection" data-target-screen="home">Mentés</button>
 	                </div>
 	                <section class="evening-section" aria-label="Hangulatom most">
 	                  <h4 class="evening-section-title">1. Hangulatom most</h4>
@@ -3981,6 +3999,7 @@
 	                  <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
 	                    <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-pressed="true"><span aria-hidden="true">☀</span>Mi volt ma a legjobb?</button>
 	                    <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-pressed="false"><span aria-hidden="true">☔</span>Mi volt ma a legnehezebb?</button>
+	                    <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" data-action="open-gratitude-add" data-target-screen="gratitude-add" aria-pressed="false"><span aria-hidden="true">♡</span>Miért vagy hálás?</button>
 	                    <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-pressed="false"><span aria-hidden="true">✓</span>Van valami, amit nem szeretnél elfelejteni?</button>
 	                  </div>
 	                </section>
@@ -3990,7 +4009,6 @@
 	                  <textarea class="reflection-input" id="evening-reflection-text" data-active-reflection-prompt="best" placeholder="Írd ide bármit..."></textarea>
 	                </section>
 	                <div class="evening-memo-actions" aria-label="Memo hozzáadása">
-	                  <button class="memo-action" type="button" data-action="open-gratitude-add" data-target-screen="gratitude-add">+ Hála hozzáadása</button>
 	                  <button class="memo-action" type="button" data-action="open-photo-memo" data-target-screen="photo-memo"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg>Fotó</button>
 	                  <button class="memo-action" type="button" data-action="open-voice-memo" data-target-screen="voice-memo"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg>Hangjegyzet</button>
 	                </div>
