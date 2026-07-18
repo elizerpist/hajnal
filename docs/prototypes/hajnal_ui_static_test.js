@@ -307,6 +307,11 @@ const tests = {
     assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
     assert.match(html, /\.checkin-bg\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*object-fit:\s*cover/s, 'fullscreen check-in hero image must cover the whole phone viewport');
     assert.match(html, /\.checkin-bottom-actions\s*\{[^}]*margin-top:\s*auto/s, 'check-in CTAs must stay anchored near the bottom like the source PNG');
+    const cleanRewardScreen = screenSlice('checkin-clean');
+    assert.ok(cleanRewardScreen.includes('data-auto-return-target="home"'), 'screen 11 must auto-return to the main menu');
+    assert.ok(!cleanRewardScreen.includes('data-action="continue-clean-reward"'), 'screen 11 must not expose a continue reward action');
+    assert.ok(!cleanRewardScreen.includes('data-target-screen="checkin-mood"'), 'screen 11 must not send users to the next check-in screen');
+    assert.ok(!cleanRewardScreen.includes('>Tovább</button>'), 'screen 11 must not show a Tovább button');
     expectCount(/data-component="daily-task-detail"/g, 5, 'daily task detail count');
     expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
     expectCount(/<textarea\b/g, 2, 'writable note textarea count');
