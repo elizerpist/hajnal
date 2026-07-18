@@ -1123,19 +1123,19 @@
 
     .home-screen {
       color: var(--white);
-      background: #171848;
+      background: #F9F3F7;
     }
 
     .home-illustration {
       width: 100%;
-      height: 607px;
+      height: calc(var(--screen-h) - 70px);
       position: absolute;
       inset: 0 0 auto 0;
       z-index: 1;
       overflow: hidden;
       padding: 0;
       border: 0;
-      background: #28265F;
+      background: transparent;
       cursor: pointer;
     }
 
@@ -1230,7 +1230,7 @@
       padding: 62px 28px 16px;
       border-radius: 92px 92px 0 0;
       border: 1px solid rgba(255, 255, 255, .66);
-      background: rgba(255, 251, 253, .64);
+      background: rgba(255, 255, 255, .68);
       color: var(--hajnal-navy);
       box-shadow: 0 -18px 46px rgba(39, 31, 88, .12), inset 0 1px 0 rgba(255, 255, 255, .62);
       backdrop-filter: blur(22px) saturate(1.12);
@@ -1246,7 +1246,12 @@
       right: -64px;
       height: 88px;
       border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      background: inherit;
+      border: 1px solid rgba(255, 255, 255, .66);
+      border-bottom: 0;
+      background: rgba(255, 255, 255, .68);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .62);
+      backdrop-filter: blur(22px) saturate(1.12);
+      -webkit-backdrop-filter: blur(22px) saturate(1.12);
     }
 
     .home-metrics {
@@ -2164,9 +2169,86 @@
 	    }
 
 	    .evening-reflection-panel .reflection-input {
-	      min-height: 132px;
+	      min-height: 82px;
 	      margin-top: 0;
 	      background: rgba(255, 255, 255, .76);
+	    }
+
+	    .reflection-inline-grid {
+	      display: grid;
+	      grid-template-columns: 1fr 1fr;
+	      gap: 8px;
+	    }
+
+	    .inline-gratitude,
+	    .inline-media-stack {
+	      min-width: 0;
+	      display: grid;
+	      gap: 6px;
+	      padding: 10px;
+	      border: 1px solid rgba(106, 86, 180, .14);
+	      border-radius: 14px;
+	      background: rgba(255, 255, 255, .58);
+	    }
+
+	    .inline-block-title {
+	      margin: 0;
+	      color: rgba(44, 46, 119, .84);
+	      font-size: 11px;
+	      line-height: 1.1;
+	      font-weight: 820;
+	    }
+
+	    .inline-gratitude .gratitude-field,
+	    .inline-mini-field input {
+	      min-height: 28px;
+	      padding: 0 9px;
+	      border: 1px solid rgba(106, 86, 180, .13);
+	      border-radius: 10px;
+	      background: rgba(255, 255, 255, .74);
+	      color: var(--hajnal-navy);
+	      font-size: 10.5px;
+	      font-weight: 650;
+	    }
+
+	    .inline-media-button {
+	      min-height: 30px;
+	      display: flex;
+	      align-items: center;
+	      justify-content: space-between;
+	      gap: 7px;
+	      padding: 0 9px;
+	      border: 1px solid rgba(106, 86, 180, .14);
+	      border-radius: 10px;
+	      background: rgba(255, 255, 255, .72);
+	      color: var(--hajnal-purple);
+	      font-size: 10.5px;
+	      line-height: 1;
+	      font-weight: 800;
+	      cursor: pointer;
+	    }
+
+	    .inline-media-button .icon {
+	      width: 16px;
+	      height: 16px;
+	    }
+
+	    .inline-media-button small {
+	      margin-left: auto;
+	      color: rgba(44, 46, 119, .54);
+	      font-size: 10px;
+	      font-weight: 760;
+	    }
+
+	    .inline-mini-field {
+	      display: grid;
+	      gap: 4px;
+	    }
+
+	    .inline-mini-field span {
+	      color: rgba(44, 46, 119, .68);
+	      font-size: 9.5px;
+	      font-weight: 760;
 	    }
 
 	    .evening-memo-actions {
@@ -3815,10 +3897,7 @@
 	│   ├── Tiszta maradtam → Sikeres nap jutalom
 	│   ├── Esti check-in
 	│   │   ├── Opcionális tisztaság megerősítés
-	│   │   ├── Esti reflexió
-	│   │   ├── Hála hozzáadása
-	│   │   ├── Kép memo
-	│   │   └── Hang memo
+	│   │   └── Esti reflexió inline: hála, kép memo, hang memo
 	│   └── Visszaestem
 	│       └── Segítségkérés
 	│           ├── 15 perces túlélő csomag
@@ -3828,7 +3907,7 @@
 	└── Pánik mód</pre>
       </div>
 
-	      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection gratitude-add photo-memo voice-memo checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode">
+	      <div class="screen-row" data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode">
         <section class="screen-column" id="column-home">
           <div class="screen-label"><span class="screen-index">8</span><strong>Kezdőlap</strong> · Értesítések child</div>
           <article class="phone-screen home-screen" id="home" data-screen="home" data-parent-screen="notifications">
@@ -3999,7 +4078,7 @@
 	                  <div class="reflection-selector" data-component="reflection-selector" role="group" aria-label="Esti reflexió témaválasztó">
 	                    <button class="reflection-prompt active" type="button" data-reflection-prompt="best" aria-pressed="true"><span aria-hidden="true">☀</span>Mi volt ma a legjobb?</button>
 	                    <button class="reflection-prompt" type="button" data-reflection-prompt="hardest" aria-pressed="false"><span aria-hidden="true">☔</span>Mi volt ma a legnehezebb?</button>
-	                    <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" data-action="open-gratitude-add" data-target-screen="gratitude-add" aria-pressed="false"><span aria-hidden="true">♡</span>Miért vagy hálás?</button>
+	                    <button class="reflection-prompt" type="button" data-reflection-prompt="gratitude" aria-pressed="false"><span aria-hidden="true">♡</span>Miért vagy hálás?</button>
 	                    <button class="reflection-prompt" type="button" data-reflection-prompt="remember" aria-pressed="false"><span aria-hidden="true">✓</span>Van valami, amit nem szeretnél elfelejteni?</button>
 	                  </div>
 	                </section>
@@ -4008,111 +4087,29 @@
 	                  <label for="evening-reflection-text" class="sr-only">Esti reflexió jegyzet</label>
 	                  <textarea class="reflection-input" id="evening-reflection-text" data-active-reflection-prompt="best" placeholder="Írd ide bármit..."></textarea>
 	                </section>
-	                <div class="evening-memo-actions" aria-label="Memo hozzáadása">
-	                  <button class="memo-action" type="button" data-action="open-photo-memo" data-target-screen="photo-memo"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg>Fotó</button>
-	                  <button class="memo-action" type="button" data-action="open-voice-memo" data-target-screen="voice-memo"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg>Hangjegyzet</button>
-	                </div>
+	                <section class="evening-section" aria-label="Inline memo mezők">
+	                  <h4 class="evening-section-title">4. Kiegészítők</h4>
+	                  <div class="reflection-inline-grid" data-component="inline-memo-tools">
+	                    <section class="inline-gratitude" data-component="inline-gratitude" aria-label="Hála inline">
+	                      <h5 class="inline-block-title">Hála</h5>
+	                      <label for="inline-gratitude-1" class="sr-only">Első hála sor</label>
+	                      <input class="gratitude-field" id="inline-gratitude-1" type="text" placeholder="1. hála">
+	                      <label for="inline-gratitude-2" class="sr-only">Második hála sor</label>
+	                      <input class="gratitude-field" id="inline-gratitude-2" type="text" placeholder="2. hála">
+	                      <label for="inline-gratitude-3" class="sr-only">Harmadik hála sor</label>
+	                      <input class="gratitude-field" id="inline-gratitude-3" type="text" placeholder="3. hála">
+	                    </section>
+	                    <section class="inline-media-stack" data-component="inline-media-memos" aria-label="Kép és hang memo inline">
+	                      <button class="inline-media-button" type="button" data-action="add-photo-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg><span>Fotó</span></button>
+	                      <label class="inline-mini-field" for="inline-photo-caption"><span>Kép memo · Képaláírás</span><input id="inline-photo-caption" type="text" placeholder="Miért fontos?"></label>
+	                      <button class="inline-media-button" type="button" data-action="toggle-voice-memo-inline"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg><span>Hangjegyzet</span><small>00:00</small></button>
+	                      <label class="inline-mini-field" for="inline-voice-note"><span>Hang memo</span><input id="inline-voice-note" type="text" placeholder="Rövid jegyzet"></label>
+	                    </section>
+	                  </div>
+	                </section>
 	                <div class="evening-save-actions">
 	                  <button class="secondary-button" type="button" data-action="skip-evening-reflection" data-target-screen="home">Kihagyás</button>
 	                  <button class="primary-button" type="button" data-action="save-evening-reflection" data-target-screen="home">Kész</button>
-	                </div>
-	              </section>
-	            </div>
-	          </article>
-	        </section>
-
-	        <section class="screen-column" id="column-gratitude-add">
-	          <div class="screen-label"><span class="screen-index">12A</span><strong>+ Hála hozzáadása</strong> · Esti reflexió child</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="gratitude-add" data-screen="gratitude-add" data-parent-screen="evening-reflection">
-	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-	            <div class="status-bar">
-	              <span>9:41</span>
-	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-	            </div>
-	            <div class="checkin-content">
-	              <div class="checkin-top-actions">
-	                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-	                <span aria-hidden="true"></span>
-	                <button class="icon-button" type="button" aria-label="Kész" data-action="save-gratitude" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></button>
-	              </div>
-	              <section class="memo-panel soft-card" aria-label="Hála hozzáadása">
-	                <h3>Miért vagy hálás?</h3>
-	                <p>Írj 1-3 dolgot.</p>
-	                <div class="gratitude-fields">
-	                  <label for="gratitude-line-1" class="sr-only">Első hála sor</label>
-	                  <input class="gratitude-field" id="gratitude-line-1" type="text" placeholder="Írd ide...">
-	                  <label for="gratitude-line-2" class="sr-only">Második hála sor</label>
-	                  <input class="gratitude-field" id="gratitude-line-2" type="text" placeholder="Írd ide...">
-	                  <label for="gratitude-line-3" class="sr-only">Harmadik hála sor</label>
-	                  <input class="gratitude-field" id="gratitude-line-3" type="text" placeholder="Írd ide...">
-	                </div>
-	                <div class="memo-actions">
-	                  <button class="secondary-button" type="button" data-target-screen="evening-reflection">Mégsem</button>
-	                  <button class="primary-button" type="button" data-action="save-gratitude" data-target-screen="evening-reflection">Kész</button>
-	                </div>
-	              </section>
-	            </div>
-	          </article>
-	        </section>
-
-	        <section class="screen-column" id="column-photo-memo">
-	          <div class="screen-label"><span class="screen-index">12B</span><strong>Kép memo</strong> · Esti reflexió child</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="photo-memo" data-screen="photo-memo" data-parent-screen="evening-reflection">
-	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-	            <div class="status-bar">
-	              <span>9:41</span>
-	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-	            </div>
-	            <div class="checkin-content">
-	              <div class="checkin-top-actions">
-	                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-	                <span aria-hidden="true"></span>
-	                <button class="icon-button" type="button" aria-label="Kész" data-action="save-photo-memo" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></button>
-	              </div>
-	              <section class="memo-panel soft-card" aria-label="Kép memo">
-	                <h3>Kép memo</h3>
-	                <div class="photo-dropzone" data-component="photo-memo-dropzone">
-	                  <svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg>
-	                  <strong>Fotó hozzáadása</strong>
-	                  <span>Kamera vagy galéria későbbi bekötéshez.</span>
-	                </div>
-	                <label for="photo-memo-caption"><small>Képaláírás</small></label>
-	                <textarea class="reflection-input" id="photo-memo-caption" placeholder="Miért fontos ez a kép ma?"></textarea>
-	                <div class="memo-actions">
-	                  <button class="secondary-button" type="button" data-target-screen="evening-reflection">Mégsem</button>
-	                  <button class="primary-button" type="button" data-action="save-photo-memo" data-target-screen="evening-reflection">Kész</button>
-	                </div>
-	              </section>
-	            </div>
-	          </article>
-	        </section>
-
-	        <section class="screen-column" id="column-voice-memo">
-	          <div class="screen-label"><span class="screen-index">12C</span><strong>Hang memo</strong> · Esti reflexió child</div>
-	          <article class="phone-screen checkin-fullscreen no-nav" id="voice-memo" data-screen="voice-memo" data-parent-screen="evening-reflection">
-	            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-	            <div class="status-bar">
-	              <span>9:41</span>
-	              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-	            </div>
-	            <div class="checkin-content">
-	              <div class="checkin-top-actions">
-	                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-	                <span aria-hidden="true"></span>
-	                <button class="icon-button" type="button" aria-label="Kész" data-action="save-voice-memo" data-target-screen="evening-reflection"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></button>
-	              </div>
-	              <section class="memo-panel soft-card" aria-label="Hang memo">
-	                <h3>Hang memo</h3>
-	                <div class="voice-recorder" data-component="voice-recorder">
-	                  <button class="record-button" type="button" aria-label="Hangfelvétel indítása" data-action="toggle-voice-recording"><svg class="icon" aria-hidden="true"><use href="#icon-mic"></use></svg></button>
-	                  <strong>00:00</strong>
-	                  <span>Rövid hangjegyzet az esti reflexióhoz.</span>
-	                </div>
-	                <label for="voice-memo-note"><small>Átirat vagy jegyzet</small></label>
-	                <textarea class="reflection-input" id="voice-memo-note" placeholder="A hangjegyzet rövid kivonata..."></textarea>
-	                <div class="memo-actions">
-	                  <button class="secondary-button" type="button" data-target-screen="evening-reflection">Mégsem</button>
-	                  <button class="primary-button" type="button" data-action="save-voice-memo" data-target-screen="evening-reflection">Kész</button>
 	                </div>
 	              </section>
 	            </div>

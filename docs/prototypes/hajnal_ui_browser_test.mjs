@@ -26,9 +26,6 @@ const screenOrder = [
   ["checkin-clean", "daily-checkin"],
   ["evening-clean-reward", "daily-checkin"],
   ["evening-reflection", "home"],
-  ["gratitude-add", "evening-reflection"],
-  ["photo-memo", "evening-reflection"],
-  ["voice-memo", "evening-reflection"],
   ["checkin-relapse", "daily-checkin"],
   ["support-next-step", "checkin-relapse"],
   ["checkin-survival-pack", "support-next-step"],
@@ -57,7 +54,7 @@ const screenRows = [
   [
     "home",
     "home",
-    "home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection gratitude-add photo-memo voice-memo checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode",
+    "home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode",
     [
       "home",
       "daily-image",
@@ -65,9 +62,6 @@ const screenRows = [
       "checkin-clean",
       "evening-clean-reward",
       "evening-reflection",
-      "gratitude-add",
-      "photo-memo",
-      "voice-memo",
       "checkin-relapse",
       "support-next-step",
       "checkin-survival-pack",
@@ -164,9 +158,6 @@ try {
         const allowedFullscreen = [
           "daily-checkin",
           "evening-reflection",
-          "gratitude-add",
-          "photo-memo",
-          "voice-memo",
           "checkin-relapse",
           "support-next-step",
           "checkin-survival-pack",

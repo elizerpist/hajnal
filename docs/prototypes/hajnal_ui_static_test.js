@@ -21,9 +21,6 @@ const screenOrder = [
   'checkin-clean',
   'evening-clean-reward',
   'evening-reflection',
-  'gratitude-add',
-  'photo-memo',
-  'voice-memo',
   'checkin-relapse',
   'support-next-step',
   'checkin-survival-pack',
@@ -106,7 +103,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 33, 'phone screen count');
+    expectCount(/class="phone-screen/g, 30, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -126,11 +123,11 @@ const tests = {
     expectContains('assets/hero_fullscreen_svg.svg');
     expectContains('assets/hurray_svg.svg');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 14, 'only the approved SVG hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 11, 'only the approved SVG hero, daily, hurray, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home and daily image screens must use the approved fullscreen2 SVG asset');
     expectCount(/src="assets\/hurray_svg\.svg"/g, 2, 'hurray reward screens must use the approved hurray SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 10, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 7, 'regular check-in wizard image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -222,11 +219,12 @@ const tests = {
     assert.ok(!homeScreen.includes('home-sheet-handle'), 'home lower sheet must not include a separate handle');
     assert.ok(dashboardIndex !== -1 && homeBodyIndex !== -1 && dashboardIndex < homeBodyIndex, 'home dashboard must float outside and above the lower sheet');
     assert.ok(tasksIndex !== -1 && helpIndex !== -1 && tasksIndex < helpIndex, 'home checklist must render above the help button');
-    assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*607px/s, 'home hero must be 68% of the 892px screen height');
+    assert.match(html, /\.home-screen\s*\{[^}]*background:\s*#F9F3F7/s, 'home screen must not expose a dark fallback container behind the glass card');
+    assert.match(html, /\.home-illustration\s*\{[^}]*height:\s*calc\(var\(--screen-h\) - 70px\);[^}]*background:\s*transparent/s, 'home hero image must extend behind the full glass card area down to the bottom nav');
     assert.match(html, /\.home-body\s*\{[^}]*top:\s*586px/s, 'home sheet must move 38px lower after the latest screenshot feedback');
     assert.match(html, /\.home-body\s*\{[^}]*border-radius:\s*92px 92px 0 0/s, 'home lower sheet must restore the larger rounded top radius');
-    assert.match(html, /\.home-body\s*\{[^}]*background:\s*rgba\(255,\s*251,\s*253,\s*\.64\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower card must use glassmorphism');
-    assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0/s, 'home lower sheet must restore the large curved top pseudo-element');
+    assert.match(html, /\.home-body\s*\{[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.68\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower card must use glassmorphism');
+    assert.match(html, /\.home-body::before\s*\{[^}]*top:\s*-28px;[^}]*left:\s*-64px;[^}]*right:\s*-64px;[^}]*height:\s*88px;[^}]*border-radius:\s*50% 50% 0 0 \/ 100% 100% 0 0;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.68\);[^}]*backdrop-filter:\s*blur\(22px\) saturate\(1\.12\)/s, 'home lower sheet curved top must be glassmorphism too');
     assert.match(html, /\.home-body\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s, 'home sheet must allow the help button to sit at the bottom');
     assert.match(html, /\.home-metrics\s*\{[^}]*z-index:\s*32;[^}]*top:\s*518px/s, 'home dashboard must move 38px lower with the sheet');
     assert.match(html, /\.home-metrics\s*\{[^}]*color:\s*var\(--hajnal-navy\);[^}]*background:\s*#FFFCFB;[^}]*backdrop-filter:\s*none/s, 'home clean-days dashboard must stay solid rather than glass');
@@ -263,9 +261,6 @@ const tests = {
       'data-screen="checkin-clean"',
       'data-screen="evening-clean-reward"',
       'data-screen="evening-reflection"',
-      'data-screen="gratitude-add"',
-      'data-screen="photo-memo"',
-      'data-screen="voice-memo"',
       'data-screen="checkin-relapse"',
       'data-screen="support-next-step"',
       'data-screen="checkin-survival-pack"',
@@ -291,12 +286,12 @@ const tests = {
       'Miért vagy hálás?',
       'Van valami, amit nem szeretnél elfelejteni?',
       'Írd ide bármit...',
-      'Hála hozzáadása',
+      'Hála',
       'Fotó',
       'Hangjegyzet',
-      'Miért vagy hálás?',
       'Kép memo',
       'Hang memo',
+      'Képaláírás',
       'Ma visszaestem',
       'Köszönjük,',
       'hogy őszinte voltál.',
@@ -317,10 +312,15 @@ const tests = {
     expectContains('data-action="continue-evening-reflection" data-target-screen="evening-reflection"');
     expectContains('data-action="open-panic" data-target-screen="panic-mode"');
     expectContains('data-action="save-evening-reflection" data-target-screen="home"');
-    expectContains('data-action="open-gratitude-add" data-target-screen="gratitude-add"');
-    expectContains('data-action="open-photo-memo" data-target-screen="photo-memo"');
-    expectContains('data-action="open-voice-memo" data-target-screen="voice-memo"');
-    ['checkin-mood', 'checkin-craving', 'checkin-note', 'support-note'].forEach((id) => {
+    expectContains('data-component="inline-gratitude"');
+    expectContains('id="inline-gratitude-1"');
+    expectContains('id="inline-gratitude-2"');
+    expectContains('id="inline-gratitude-3"');
+    expectContains('data-action="add-photo-memo-inline"');
+    expectContains('id="inline-photo-caption"');
+    expectContains('data-action="toggle-voice-memo-inline"');
+    expectContains('id="inline-voice-note"');
+    ['checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo'].forEach((id) => {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
     });
@@ -339,7 +339,7 @@ const tests = {
     assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
     assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
     assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
-    ['daily-checkin', 'evening-reflection', 'gratitude-add', 'photo-memo', 'voice-memo', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
+    ['daily-checkin', 'evening-reflection', 'checkin-relapse', 'support-next-step', 'checkin-survival-pack', 'checkin-breathing', 'checkin-motivation']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     ['checkin-clean', 'evening-clean-reward']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hurray_svg.svg"'), `${id} must use the hurray fullscreen image`));
@@ -372,33 +372,18 @@ const tests = {
     assert.ok(!eveningReflectionScreen.includes('class="quiet-link"'), 'evening reflection panel must remove the top save link');
     assert.equal((eveningReflectionScreen.match(/class="reflection-prompt/g) || []).length, 4, 'evening reflection selector must have four cards');
     assert.ok(eveningReflectionScreen.includes('data-reflection-prompt="gratitude"'), 'gratitude must be part of the reflection selector cards');
-    assert.ok(!eveningReflectionScreen.includes('<button class="memo-action" type="button" data-action="open-gratitude-add"'), 'gratitude must not remain in the lower memo-action row');
-    assert.equal((eveningReflectionScreen.match(/class="memo-action"/g) || []).length, 2, 'evening reflection lower memo row must only contain photo and voice memo');
+    assert.ok(eveningReflectionScreen.includes('data-component="inline-gratitude"'), 'gratitude fields must be inline inside evening reflection');
+    assert.ok(eveningReflectionScreen.includes('id="inline-photo-caption"'), 'photo memo caption must be inline inside evening reflection');
+    assert.ok(eveningReflectionScreen.includes('id="inline-voice-note"'), 'voice memo note must be inline inside evening reflection');
+    assert.ok(!eveningReflectionScreen.includes('data-target-screen="gratitude-add"'), 'gratitude must not navigate to a helper screen');
+    assert.ok(!eveningReflectionScreen.includes('data-target-screen="photo-memo"'), 'photo memo must not navigate to a helper screen');
+    assert.ok(!eveningReflectionScreen.includes('data-target-screen="voice-memo"'), 'voice memo must not navigate to a helper screen');
     assert.match(html, /#evening-reflection \.evening-reflection-panel\s*\{[^}]*flex:\s*1;[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*margin:\s*32px 18px 24px;[^}]*background:\s*rgba\(255,255,255,\.54\);[^}]*backdrop-filter:\s*blur\(26px\) saturate\(1\.18\)/s, 'evening reflection panel must be padded from the bottom as a stronger glassmorphism container');
     assert.match(html, /#evening-reflection \.evening-save-actions\s*\{[^}]*margin-top:\s*auto;[^}]*grid-template-columns:\s*104px 104px;[^}]*justify-content:\s*end/s, 'evening reflection bottom actions must be smaller and right aligned at the panel bottom');
     assert.match(html, /#evening-reflection \.evening-save-actions \.(?:secondary-button|primary-button),\s*#evening-reflection \.evening-save-actions \.(?:primary-button|secondary-button)\s*\{[^}]*min-height:\s*42px/s, 'evening reflection bottom buttons must be smaller');
-    expectScreenContains('gratitude-add', [
-      'data-parent-screen="evening-reflection"',
-      'id="gratitude-line-1"',
-      'id="gratitude-line-2"',
-      'id="gratitude-line-3"',
-      'data-action="save-gratitude" data-target-screen="evening-reflection"'
-    ]);
-    expectScreenContains('photo-memo', [
-      'data-parent-screen="evening-reflection"',
-      'data-component="photo-memo-dropzone"',
-      'id="photo-memo-caption"',
-      'data-action="save-photo-memo" data-target-screen="evening-reflection"'
-    ]);
-    expectScreenContains('voice-memo', [
-      'data-parent-screen="evening-reflection"',
-      'data-component="voice-recorder"',
-      'id="voice-memo-note"',
-      'data-action="save-voice-memo" data-target-screen="evening-reflection"'
-    ]);
     expectCount(/data-component="daily-task-detail"/g, 3, 'daily task detail count');
     expectCount(/data-component="checkin-support-option"/g, 5, 'check-in support menu option count');
-    expectCount(/<textarea\b/g, 3, 'writable memo textarea count');
+    expectCount(/<textarea\b/g, 1, 'writable memo textarea count');
   },
 
   panicBranch() {
@@ -459,7 +444,7 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 3, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection gratitude-add photo-memo voice-memo checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
+    expectContains('data-page="home" data-root-screen="home" data-row-screens="home daily-image daily-checkin checkin-clean evening-clean-reward evening-reflection checkin-relapse support-next-step checkin-survival-pack checkin-breathing checkin-motivation daily-tasks panic-mode"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet panic-sponsor-call panic-help-message panic-backup-contact panic-survival-pack panic-breathing panic-why-started panic-meeting-finder panic-emergency-help"');
     const parents = {
       onboarding: 'splash',
@@ -475,9 +460,6 @@ const tests = {
       'checkin-clean': 'daily-checkin',
       'evening-clean-reward': 'daily-checkin',
       'evening-reflection': 'home',
-      'gratitude-add': 'evening-reflection',
-      'photo-memo': 'evening-reflection',
-      'voice-memo': 'evening-reflection',
       'checkin-relapse': 'daily-checkin',
       'support-next-step': 'checkin-relapse',
       'checkin-survival-pack': 'support-next-step',
