@@ -855,6 +855,212 @@
       margin-top: auto;
     }
 
+    .goal-content,
+    .sponsor-content,
+    .notifications-content {
+      display: flex;
+      flex-direction: column;
+      min-height: 764px;
+      padding: 0 24px 22px;
+    }
+
+    .goal-options {
+      display: grid;
+      gap: 8px;
+      margin: 4px 0 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .goal-choice {
+      min-height: 59px;
+      grid-template-columns: 38px minmax(0, 1fr) 24px;
+      padding: 7px 14px 7px 13px;
+      cursor: pointer;
+    }
+
+    .choice-symbol {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(184, 154, 215, .20);
+      color: var(--hajnal-purple);
+    }
+
+    .choice-symbol .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .goal-choice .choice-copy strong {
+      font-size: 13px;
+    }
+
+    .goal-actions,
+    .sponsor-actions,
+    .notifications-actions {
+      display: grid;
+      gap: 9px;
+      margin-top: auto;
+    }
+
+    .goal-actions button,
+    .sponsor-actions button,
+    .notifications-actions button {
+      width: 100%;
+    }
+
+    .quiet-link {
+      min-height: 38px;
+      border: 0;
+      background: transparent;
+      color: rgba(44, 46, 119, .66);
+      font-size: 13px;
+      font-weight: 680;
+      cursor: pointer;
+    }
+
+    .sponsor-choices {
+      display: grid;
+      gap: 10px;
+      margin: 3px 0 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .sponsor-choice {
+      min-height: 68px;
+      grid-template-columns: 42px minmax(0, 1fr) 24px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .sponsor-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 13px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .66);
+    }
+
+    .compact-field {
+      min-width: 0;
+      min-height: 50px;
+      display: grid;
+      align-content: center;
+      padding: 7px 10px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-compact);
+      background: rgba(255, 255, 255, .78);
+    }
+
+    .compact-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .compact-field span,
+    .compact-field label {
+      color: rgba(44, 46, 119, .55);
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 760;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .compact-field input,
+    .compact-field button {
+      min-width: 0;
+      width: 100%;
+      margin-top: 4px;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--hajnal-navy);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 680;
+      text-align: left;
+    }
+
+    .sponsor-note {
+      margin: 10px 4px 0;
+      color: rgba(44, 46, 119, .56);
+      font-size: 10px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 570;
+    }
+
+    .notifications-intro {
+      margin: 0 15px 16px;
+      color: rgba(44, 46, 119, .64);
+      font-size: 12px;
+      line-height: 1.42;
+      text-align: center;
+      font-weight: 570;
+    }
+
+    .notification-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .notification-setting {
+      min-height: 72px;
+      padding: 9px 13px;
+      cursor: pointer;
+    }
+
+    .notification-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(184, 154, 215, .18);
+      color: var(--hajnal-purple);
+    }
+
+    .notification-icon .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .notification-copy strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .notification-copy small {
+      display: block;
+      margin-top: 3px;
+      color: var(--hajnal-purple);
+      font-size: 11px;
+      font-weight: 630;
+    }
+
+    .toggle-input:checked ~ .switch {
+      background: linear-gradient(135deg, #6253BC, var(--hajnal-purple));
+      box-shadow: 0 5px 13px rgba(106, 86, 180, .18);
+    }
+
+    .toggle-input:checked ~ .switch::after {
+      transform: translateX(19px);
+    }
+
+    .notifications-actions {
+      margin-top: auto;
+    }
+
     @media (max-width: 760px) {
       .prototype-page {
         padding: 24px 18px 64px;
@@ -1160,22 +1366,178 @@
 
         <section class="screen-column" id="column-recovery-goal">
           <div class="screen-label"><span class="screen-index">5</span><strong>Felépülési cél</strong> · Onboarding child</div>
-          <article class="phone-screen" id="recovery-goal" data-screen="recovery-goal" data-parent-screen="onboarding">
-            <div class="screen-placeholder"><span>Felépülési cél komponens</span></div>
+          <article class="phone-screen light-screen" id="recovery-goal" data-screen="recovery-goal" data-parent-screen="onboarding">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="start-date"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Mi a felépülési célod?</h3><p class="screen-subtitle">Ez a lépés teljesen opcionális.</p></div>
+              <span></span>
+            </header>
+            <div class="goal-content">
+              <fieldset class="goal-options">
+                <legend class="visually-hidden">Felépülési cél kiválasztása</legend>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="alcohol">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><path d="M12 3s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z" /></svg></span>
+                  <span class="choice-copy"><strong>Alkohol</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="drugs">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><path d="M12 21V8M12 15c-5 0-7-3-7-7 5 0 7 3 7 7zM12 12c5 0 7-3 7-7-5 0-7 3-7 7z" /></svg></span>
+                  <span class="choice-copy"><strong>Kábítószer</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="medicine">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><path d="m7 17 10-10a4 4 0 1 1 0 6L13 17a4 4 0 0 1-6 0zM10 10l4 4" /></svg></span>
+                  <span class="choice-copy"><strong>Gyógyszer</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="gambling">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><rect x="4" y="4" width="16" height="16" rx="4" /><circle cx="9" cy="9" r="1" /><circle cx="15" cy="9" r="1" /><circle cx="9" cy="15" r="1" /><circle cx="15" cy="15" r="1" /></svg></span>
+                  <span class="choice-copy"><strong>Szerencsejáték</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="behavioral">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><path d="M9 4a3 3 0 0 0-3 3v2a3 3 0 0 0-2 3 3 3 0 0 0 3 3v1a3 3 0 0 0 5 2V6a3 3 0 0 0-3-2zM15 4a3 3 0 0 1 3 3v2a3 3 0 0 1 2 3 3 3 0 0 1-3 3v1a3 3 0 0 1-5 2" /></svg></span>
+                  <span class="choice-copy"><strong>Viselkedési függőség</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="private">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><path d="M3 3l18 18M10.6 10.6A2 2 0 0 0 13.4 13.4M9.8 5.2A10.5 10.5 0 0 1 21 12a11 11 0 0 1-2.1 3.2M6.2 6.2A11.3 11.3 0 0 0 3 12s3.5 6 9 6c1 0 2-.2 2.8-.5" /></svg></span>
+                  <span class="choice-copy"><strong>Nem szeretném megadni</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row goal-choice">
+                  <input class="native-control" type="radio" name="recovery-goal" value="other">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg></span>
+                  <span class="choice-copy"><strong>Egyéb</strong></span><span class="radio-visual" aria-hidden="true"></span>
+                </label>
+              </fieldset>
+              <div class="goal-actions">
+                <button class="primary-button" type="button" data-action="save-recovery-goal" data-target-screen="sponsor-setup">Tovább</button>
+                <button class="quiet-link" type="button" data-action="skip-recovery-goal" data-target-screen="sponsor-setup">Kihagyom most</button>
+              </div>
+            </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-sponsor-setup">
           <div class="screen-label"><span class="screen-index">6</span><strong>Szponzor hozzáadása</strong> · Onboarding child</div>
-          <article class="phone-screen" id="sponsor-setup" data-screen="sponsor-setup" data-parent-screen="onboarding">
-            <div class="screen-placeholder"><span>Szponzor hozzáadása komponens</span></div>
+          <article class="phone-screen light-screen" id="sponsor-setup" data-screen="sponsor-setup" data-parent-screen="onboarding">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="recovery-goal"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Van szponzorod vagy segítő személyed?</h3></div>
+              <span></span>
+            </header>
+            <div class="sponsor-content">
+              <fieldset class="sponsor-choices">
+                <legend class="visually-hidden">Segítő kapcsolat kiválasztása</legend>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="sponsor-choice" value="add" checked>
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-people"></use></svg></span>
+                  <span class="choice-copy"><strong>Igen, hozzáadom</strong><small>A kapcsolat adatait most adom meg.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="sponsor-choice" value="later">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><circle cx="12" cy="12" r="9" /><path d="M12 7v6l4 2" /></svg></span>
+                  <span class="choice-copy"><strong>Később</strong><small>A Profilból bármikor visszatérhetsz.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+                <label class="choice-row sponsor-choice">
+                  <input class="native-control" type="radio" name="sponsor-choice" value="none">
+                  <span class="choice-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-profile"></use></svg></span>
+                  <span class="choice-copy"><strong>Nincs még</strong><small>Az app ettől teljesen használható marad.</small></span>
+                  <span class="radio-visual" aria-hidden="true"></span>
+                </label>
+              </fieldset>
+
+              <div class="sponsor-preview" data-state="expanded" aria-label="Szponzor adatainak előnézete">
+                <div class="compact-field">
+                  <label for="sponsor-name">Név</label>
+                  <input id="sponsor-name" type="text" value="Kata" aria-label="Szponzor neve">
+                </div>
+                <div class="compact-field">
+                  <label for="sponsor-phone">Telefonszám</label>
+                  <input id="sponsor-phone" type="tel" value="+36 30 123 4567" aria-label="Szponzor telefonszáma">
+                </div>
+                <div class="compact-field">
+                  <span>Üzenetküldési mód</span>
+                  <button type="button" data-action="choose-message-method">SMS és chat</button>
+                </div>
+                <div class="compact-field">
+                  <span>Mikor érdemes hívni?</span>
+                  <button type="button" data-action="choose-call-time">18:00 után</button>
+                </div>
+                <div class="compact-field full">
+                  <span>Tartalék segítő személy</span>
+                  <button type="button" data-action="add-backup-contact">+ Kapcsolat hozzáadása</button>
+                </div>
+              </div>
+              <p class="sponsor-note">A kapcsolat adatai helyben, bizalmasan kezelhetők.</p>
+              <div class="sponsor-actions">
+                <button class="primary-button" type="button" data-action="save-sponsor" data-target-screen="notifications">Tovább</button>
+              </div>
+            </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-notifications">
           <div class="screen-label"><span class="screen-index">7</span><strong>Értesítések</strong> · Onboarding child</div>
-          <article class="phone-screen" id="notifications" data-screen="notifications" data-parent-screen="onboarding">
-            <div class="screen-placeholder"><span>Értesítések komponens</span></div>
+          <article class="phone-screen light-screen" id="notifications" data-screen="notifications" data-parent-screen="onboarding">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="sponsor-setup"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Értesítések beállítása</h3></div>
+              <span></span>
+            </header>
+            <div class="notifications-content">
+              <p class="notifications-intro">Segítünk, hogy ne maradj le a fontos, megtartó pillanatokról. Minden később módosítható.</p>
+              <div class="notification-list">
+                <label class="toggle-row notification-setting" data-component="toggle-row">
+                  <span class="notification-icon" aria-hidden="true"><svg class="icon"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg></span>
+                  <span class="notification-copy"><strong>Reggeli emlékeztető</strong><small>08:00</small></span>
+                  <input class="native-control toggle-input" type="checkbox" checked aria-label="Reggeli emlékeztető bekapcsolása">
+                  <span class="switch" aria-hidden="true"></span>
+                </label>
+                <label class="toggle-row notification-setting" data-component="toggle-row">
+                  <span class="notification-icon" aria-hidden="true"><svg class="icon"><path d="M19 15a8 8 0 1 1-10-10 7 7 0 0 0 10 10z" /></svg></span>
+                  <span class="notification-copy"><strong>Esti check-in</strong><small>21:00</small></span>
+                  <input class="native-control toggle-input" type="checkbox" checked aria-label="Esti check-in emlékeztető bekapcsolása">
+                  <span class="switch" aria-hidden="true"></span>
+                </label>
+                <label class="toggle-row notification-setting" data-component="toggle-row">
+                  <span class="notification-icon" aria-hidden="true"><svg class="icon"><path d="M6 3h4l2 5-3 2a15 15 0 0 0 5 5l2-3 5 2v4c0 2-2 3-4 3A17 17 0 0 1 3 7c0-2 1-4 3-4z" /></svg></span>
+                  <span class="notification-copy"><strong>Szponzorhívás emlékeztetője</strong><small>20:00</small></span>
+                  <input class="native-control toggle-input" type="checkbox" checked aria-label="Szponzorhívás emlékeztető bekapcsolása">
+                  <span class="switch" aria-hidden="true"></span>
+                </label>
+                <label class="toggle-row notification-setting" data-component="toggle-row">
+                  <span class="notification-icon" aria-hidden="true"><svg class="icon"><path d="m4 20 4-1 11-11-3-3L5 16zM13 6l3 3" /></svg></span>
+                  <span class="notification-copy"><strong>Napi írás emlékeztetője</strong><small>19:00</small></span>
+                  <input class="native-control toggle-input" type="checkbox" checked aria-label="Napi írás emlékeztető bekapcsolása">
+                  <span class="switch" aria-hidden="true"></span>
+                </label>
+                <label class="toggle-row notification-setting" data-component="toggle-row">
+                  <span class="notification-icon" aria-hidden="true"><svg class="icon"><use href="#icon-people"></use></svg></span>
+                  <span class="notification-copy"><strong>Meeting emlékeztetője</strong><small>A naptár alapján</small></span>
+                  <input class="native-control toggle-input" type="checkbox" checked aria-label="Meeting emlékeztető bekapcsolása">
+                  <span class="switch" aria-hidden="true"></span>
+                </label>
+              </div>
+              <div class="notifications-actions">
+                <button class="primary-button" type="button" data-action="enter-hajnal" data-target-screen="home">Belépek a Hajnalba</button>
+              </div>
+            </div>
           </article>
         </section>
 
