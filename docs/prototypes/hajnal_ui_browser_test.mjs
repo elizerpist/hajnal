@@ -163,10 +163,15 @@ try {
     "hardest",
     "hardest prompt must become active",
   );
-  assert.match(
-    await page.locator("#evening-reflection [data-reflection-content]").innerText(),
-    /Mi volt benne a legnehezebb/,
-    "section 3 content must change for the selected prompt",
+  assert.equal(
+    await page.locator("#evening-reflection [data-reflection-content]").getAttribute("data-active-reflection-prompt"),
+    "hardest",
+    "section 3 content must switch to the selected prompt",
+  );
+  assert.equal(
+    await page.locator("#evening-reflection [data-reflection-text]").getAttribute("placeholder"),
+    "Kezdj el írni...",
+    "the screenshot-style writing panel keeps the simple placeholder",
   );
   await page.locator('#evening-reflection [data-reflection-prompt="gratitude"]').click();
   assert.equal(await page.locator("#evening-reflection [data-gratitude-item]").count(), 3, "gratitude mode starts with three list items");
@@ -182,14 +187,15 @@ try {
     if (!scroll || !footer) return null;
     const scrollBox = scroll.getBoundingClientRect();
     const footerBox = footer.getBoundingClientRect();
+    const scrollStyle = getComputedStyle(scroll);
     return {
-      scrollOverflow: scroll.scrollHeight > scroll.clientHeight,
+      scrollOverflowEnabled: scrollStyle.overflowY === "auto",
       footerAfterScroll: footerBox.top >= scrollBox.bottom,
       footerVisible: footerBox.bottom <= screen.getBoundingClientRect().bottom,
     };
   });
   assert.deepEqual(eveningLayout, {
-    scrollOverflow: true,
+    scrollOverflowEnabled: true,
     footerAfterScroll: true,
     footerVisible: true,
   }, "screen 12 must scroll internally while the footer stays fixed in the panel");
@@ -207,7 +213,7 @@ try {
   );
   assert.deepEqual(
     [panelHeightInGratitudeMode, panelHeightInRememberMode, panelHeightInBestMode],
-    [804, 804, 804],
+    [860, 860, 860],
     "screen 12 mother container height must stay fixed across prompt modes",
   );
 
