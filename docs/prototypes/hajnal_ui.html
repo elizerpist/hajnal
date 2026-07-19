@@ -492,6 +492,72 @@
         linear-gradient(155deg, #fdf8fa 0%, #f8f1f6 100%);
     }
 
+    .svg-lighting-lab-screen {
+      color: var(--white);
+      background: #10143d;
+    }
+
+    .welcome-svg-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      background: #10143d;
+    }
+
+    .welcome-svg-stage svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .lighting-slider-panel {
+      position: absolute;
+      z-index: 8;
+      left: 22px;
+      right: 22px;
+      bottom: 24px;
+      display: grid;
+      gap: 9px;
+      padding: 12px 14px 13px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 18px;
+      background: rgba(16, 14, 48, .56);
+      box-shadow: 0 18px 42px rgba(8, 8, 34, .24), inset 0 1px 0 rgba(255, 255, 255, .10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .lighting-slider-meta,
+    .lighting-slider-scale {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 780;
+      color: rgba(255, 255, 255, .74);
+    }
+
+    .lighting-slider-meta strong {
+      color: var(--white);
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 850;
+    }
+
+    .lighting-slider-scale {
+      font-size: 10px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .lighting-slider {
+      width: 100%;
+      accent-color: #FEC884;
+      cursor: pointer;
+    }
+
     .screen-splash {
       color: var(--hajnal-navy);
       background: #B084EE;
@@ -3999,7 +4065,7 @@
         <p class="prototype-kicker">Hajnal · első prototípusoldal</p>
         <h1>Hajnal</h1>
         <p class="prototype-motto">Csak a mai nap.</p>
-        <p class="prototype-description">A belépési folyamat első sora hét, később interaktívvá tehető webkomponensből áll; alatta külön sorban indul a Kezdőlap teljes első ága. A logika a specifikációt, a vizuális rendszer a hét referencia-PNG-t követi.</p>
+        <p class="prototype-description">A belépési folyamat első sora egy SVG fényprofil-laborral indul, utána következnek az app képernyői; alatta külön sorban indul a Kezdőlap teljes első ága. A logika a specifikációt, a vizuális rendszer a jóváhagyott referencia képernyőket követi.</p>
       </div>
     </header>
 
@@ -4009,17 +4075,32 @@
           <h2 id="entry-flow-title">Splash és onboarding child screenjei</h2>
           <p>Oldal 1 · belépés és beállítás, a Kezdőlap nélkül</p>
         </div>
-        <pre class="flow-tree" aria-label="Navigációs hierarchia">Splash
-└── Onboarding
-    ├── Tájékoztatás
-    ├── Kezdődátum
-    ├── Felépülési cél
-    ├── Szponzor hozzáadása
-    └── Értesítések
-        └── Kezdőlap</pre>
+        <pre class="flow-tree" aria-label="Navigációs hierarchia">SVG fényprofil labor
+└── Splash
+    └── Onboarding
+        ├── Tájékoztatás
+        ├── Kezdődátum
+        ├── Felépülési cél
+        ├── Szponzor hozzáadása
+        └── Értesítések
+            └── Kezdőlap</pre>
       </div>
 
-      <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications">
+      <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications">
+        <section class="screen-column" id="column-welcome-lighting-lab">
+          <div class="screen-label"><span class="screen-index">SVG</span><strong>Fényprofil</strong> · Welcome asset</div>
+          <article class="phone-screen svg-lighting-lab-screen" id="welcome-lighting-lab" data-screen="welcome-lighting-lab" data-source-screen="splash" data-svg-source="assets/welcome_svg.svg" data-lighting-engine="bucketed-path-profiles" data-primary-sky-gradient="gradient_0" data-path-count="116" data-gradient-count="14" data-stop-count="28">
+            <div class="welcome-svg-stage" data-component="welcome-svg-stage" aria-label="Welcome SVG fényprofil előnézet"></div>
+            <div class="lighting-slider-panel">
+              <div class="lighting-slider-meta">
+                <strong data-lighting-profile-name>Lila hajnal</strong>
+                <span data-lighting-progress>38. nap</span>
+              </div>
+              <input class="lighting-slider" type="range" min="0" max="1" step="0.001" value="0.42" aria-label="Éjszaka-nappal fényprofil" data-lighting-slider>
+              <div class="lighting-slider-scale" aria-hidden="true"><span>Éjszaka</span><span>Nappal</span></div>
+            </div>
+          </article>
+        </section>
         <section class="screen-column" id="column-splash">
           <div class="screen-label"><span class="screen-index">1</span><strong>Splash</strong><span class="screen-route-note">Automatikus · 2–3 mp</span></div>
           <article class="phone-screen screen-splash" id="splash" data-screen="splash" data-transition-delay="2000-3000" data-first-use-target="onboarding" data-returning-target="home" data-background-source="welcome_svg.svg">
@@ -4951,6 +5032,373 @@
     </section>
   </main>
   <script>
+    (() => {
+      const lab = document.querySelector('#welcome-lighting-lab');
+      if (!lab) return;
+
+      const svgSource = lab.dataset.svgSource;
+      const stage = lab.querySelector('[data-component="welcome-svg-stage"]');
+      const slider = lab.querySelector('[data-lighting-slider]');
+      const profileName = lab.querySelector('[data-lighting-profile-name]');
+      const progressLabel = lab.querySelector('[data-lighting-progress]');
+
+      const hajnalLightingProfiles = [
+        {
+          id: 'deep-night',
+          label: 'Mély éjszaka',
+          at: 0,
+          profile: {
+            skyTop: '#081139',
+            skyMiddle: '#17265F',
+            skyHorizon: '#4A3A88',
+            distantMountainFill: '#20245A',
+            nearMountainFill: '#151A4C',
+            groundFill: '#0D1238',
+            waterFill: '#18255A',
+            shadowColor: '#070A24',
+            highlightColor: '#8E86C8',
+            atmosphericGlow: '#2C3478',
+            sunColor: '#EDE4C7',
+            moonOpacity: 0.96,
+            starsOpacity: 0.9,
+          },
+        },
+        {
+          id: 'moonlit-night',
+          label: 'Holdfényes éjszaka',
+          at: 0.14,
+          profile: {
+            skyTop: '#111B4D',
+            skyMiddle: '#263571',
+            skyHorizon: '#6753A0',
+            distantMountainFill: '#31316F',
+            nearMountainFill: '#25255F',
+            groundFill: '#151A45',
+            waterFill: '#26366D',
+            shadowColor: '#0E1231',
+            highlightColor: '#A9A2DA',
+            atmosphericGlow: '#4B4D95',
+            sunColor: '#F2E8CF',
+            moonOpacity: 0.92,
+            starsOpacity: 0.78,
+          },
+        },
+        {
+          id: 'blue-hour',
+          label: 'Kék óra',
+          at: 0.28,
+          profile: {
+            skyTop: '#193C73',
+            skyMiddle: '#3865A0',
+            skyHorizon: '#7E83BE',
+            distantMountainFill: '#465D94',
+            nearMountainFill: '#354177',
+            groundFill: '#1B254F',
+            waterFill: '#3A6590',
+            shadowColor: '#111936',
+            highlightColor: '#B7BDD9',
+            atmosphericGlow: '#6F85B8',
+            sunColor: '#F4EED9',
+            moonOpacity: 0.62,
+            starsOpacity: 0.46,
+          },
+        },
+        {
+          id: 'violet-dawn',
+          label: 'Lila hajnal',
+          at: 0.42,
+          profile: {
+            skyTop: '#343477',
+            skyMiddle: '#6A55A8',
+            skyHorizon: '#D99AC9',
+            distantMountainFill: '#7857A6',
+            nearMountainFill: '#5A4091',
+            groundFill: '#332A6E',
+            waterFill: '#8365B4',
+            shadowColor: '#23184D',
+            highlightColor: '#F1B0C8',
+            atmosphericGlow: '#B889CF',
+            sunColor: '#F8E3C2',
+            moonOpacity: 0.32,
+            starsOpacity: 0.22,
+          },
+        },
+        {
+          id: 'rose-dawn',
+          label: 'Rózsaszín hajnal',
+          at: 0.56,
+          profile: {
+            skyTop: '#5B4C9F',
+            skyMiddle: '#B076C1',
+            skyHorizon: '#F4A6C0',
+            distantMountainFill: '#9A67AA',
+            nearMountainFill: '#6F3D87',
+            groundFill: '#3A225F',
+            waterFill: '#C186B8',
+            shadowColor: '#2A1645',
+            highlightColor: '#FFC2BC',
+            atmosphericGlow: '#E49AC1',
+            sunColor: '#FFE1AF',
+            moonOpacity: 0.14,
+            starsOpacity: 0.08,
+          },
+        },
+        {
+          id: 'orange-sunrise',
+          label: 'Narancs napkelte',
+          at: 0.7,
+          profile: {
+            skyTop: '#7857A2',
+            skyMiddle: '#D9829F',
+            skyHorizon: '#FFC06C',
+            distantMountainFill: '#A66A98',
+            nearMountainFill: '#6D3F6C',
+            groundFill: '#352449',
+            waterFill: '#E89E82',
+            shadowColor: '#241536',
+            highlightColor: '#FFD18A',
+            atmosphericGlow: '#F0A982',
+            sunColor: '#FFD36E',
+            moonOpacity: 0,
+            starsOpacity: 0,
+          },
+        },
+        {
+          id: 'golden-hour',
+          label: 'Aranyóra',
+          at: 0.84,
+          profile: {
+            skyTop: '#8065A8',
+            skyMiddle: '#E9A46E',
+            skyHorizon: '#FFD77B',
+            distantMountainFill: '#A77A8F',
+            nearMountainFill: '#5D355B',
+            groundFill: '#2E2440',
+            waterFill: '#F0B66C',
+            shadowColor: '#23162E',
+            highlightColor: '#FFE09A',
+            atmosphericGlow: '#F5C27A',
+            sunColor: '#FFE179',
+            moonOpacity: 0,
+            starsOpacity: 0,
+          },
+        },
+        {
+          id: 'bright-morning',
+          label: 'Világos reggel',
+          at: 1,
+          profile: {
+            skyTop: '#82BCE2',
+            skyMiddle: '#B8D9EF',
+            skyHorizon: '#FFE5A8',
+            distantMountainFill: '#96A4BC',
+            nearMountainFill: '#65738E',
+            groundFill: '#53607A',
+            waterFill: '#A9D2E5',
+            shadowColor: '#3A435C',
+            highlightColor: '#FFF0BC',
+            atmosphericGlow: '#D8E6D7',
+            sunColor: '#FFE892',
+            moonOpacity: 0,
+            starsOpacity: 0,
+          },
+        },
+      ];
+
+      const welcomeLightingColorBuckets = {
+        '#FFBAB1': 'skyHorizon',
+        '#B084EE': 'skyTop',
+        '#0F1754': 'shadowColor',
+        '#3C2A89': 'nearMountainFill',
+        '#46309C': 'nearMountainFill',
+        '#A67CDE': 'atmosphericGlow',
+        '#C075C9': 'distantMountainFill',
+        '#FEE2B6': 'sunColor',
+        '#312783': 'groundFill',
+        '#8955C8': 'nearMountainFill',
+        '#6E46BC': 'nearMountainFill',
+        '#633789': 'shadowColor',
+        '#D885C6': 'highlightColor',
+        '#AF70CF': 'distantMountainFill',
+        '#DD86BF': 'highlightColor',
+        '#A163CA': 'distantMountainFill',
+        '#F9CABC': 'highlightColor',
+        '#8D66CA': 'distantMountainFill',
+        '#AF82D2': 'atmosphericGlow',
+        '#8350C8': 'nearMountainFill',
+        '#A568D1': 'atmosphericGlow',
+        '#CF7FC8': 'highlightColor',
+        '#B071D2': 'distantMountainFill',
+        '#7D4EC4': 'nearMountainFill',
+        '#A76CD2': 'atmosphericGlow',
+        '#FDE3E1': 'sunColor',
+        '#F097B5': 'highlightColor',
+        '#FFB7A8': 'highlightColor',
+        '#F495B6': 'highlightColor',
+        '#F8ADCE': 'atmosphericGlow',
+        '#CB94E3': 'atmosphericGlow',
+        '#1A1A5C': 'shadowColor',
+        '#C87ECE': 'highlightColor',
+        '#B169C6': 'distantMountainFill',
+        '#7050BD': 'nearMountainFill',
+        '#936ACC': 'atmosphericGlow',
+        '#734CC7': 'nearMountainFill',
+        '#6841B6': 'nearMountainFill',
+        '#382B8F': 'groundFill',
+        '#864383': 'shadowColor',
+        '#E18AC1': 'highlightColor',
+      };
+
+      function clamp(value, min = 0, max = 1) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function hexToRgb(hex) {
+        const normalized = hex.replace('#', '');
+        return {
+          r: parseInt(normalized.slice(0, 2), 16),
+          g: parseInt(normalized.slice(2, 4), 16),
+          b: parseInt(normalized.slice(4, 6), 16),
+        };
+      }
+
+      function rgbToHex({ r, g, b }) {
+        return `#${[r, g, b].map((channel) => Math.round(channel).toString(16).padStart(2, '0')).join('')}`.toUpperCase();
+      }
+
+      function mixHex(startHex, endHex, amount) {
+        const start = hexToRgb(startHex);
+        const end = hexToRgb(endHex);
+        return rgbToHex({
+          r: start.r + (end.r - start.r) * amount,
+          g: start.g + (end.g - start.g) * amount,
+          b: start.b + (end.b - start.b) * amount,
+        });
+      }
+
+      function chooseLightingSegment(progress) {
+        const clamped = clamp(progress);
+        for (let index = 0; index < hajnalLightingProfiles.length - 1; index += 1) {
+          const start = hajnalLightingProfiles[index];
+          const end = hajnalLightingProfiles[index + 1];
+          if (clamped <= end.at) {
+            const segmentProgress = (clamped - start.at) / (end.at - start.at);
+            return { start, end, segmentProgress: clamp(segmentProgress) };
+          }
+        }
+        const last = hajnalLightingProfiles[hajnalLightingProfiles.length - 1];
+        return { start: last, end: last, segmentProgress: 1 };
+      }
+
+      function interpolateLightingProfile(startProfile, endProfile, segmentProgress) {
+        return Object.fromEntries(Object.keys(startProfile).map((key) => {
+          const startValue = startProfile[key];
+          const endValue = endProfile[key];
+          if (typeof startValue === 'number') {
+            return [key, startValue + (endValue - startValue) * segmentProgress];
+          }
+          return [key, mixHex(startValue, endValue, segmentProgress)];
+        }));
+      }
+
+      function collectRecolorTargets(svg) {
+        return Array.from(svg.querySelectorAll('[fill], stop')).map((element) => {
+          const isStop = element.tagName.toLowerCase() === 'stop';
+          const attribute = isStop ? 'stop-color' : 'fill';
+          const original = element.getAttribute(attribute)?.toUpperCase();
+          const bucket = welcomeLightingColorBuckets[original];
+          return bucket ? { element, attribute, bucket } : null;
+        }).filter(Boolean);
+      }
+
+      function normalizePrimarySkyGradient(svg, profile) {
+        const primarySkyGradient = svg.querySelector(`#${lab.dataset.primarySkyGradient}`);
+        if (!primarySkyGradient) return null;
+
+        const stops = Array.from(primarySkyGradient.querySelectorAll('stop'));
+        const horizonStop = stops[0] || document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        const topStop = stops[stops.length - 1] || document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        let middleStop = primarySkyGradient.querySelector('[data-primary-sky-middle]');
+
+        if (!middleStop) {
+          middleStop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+          middleStop.setAttribute('data-primary-sky-middle', '');
+          primarySkyGradient.insertBefore(middleStop, topStop);
+        }
+
+        if (!horizonStop.parentNode) primarySkyGradient.insertBefore(horizonStop, middleStop);
+        if (!topStop.parentNode) primarySkyGradient.append(topStop);
+        setPrimarySkyStops(primarySkyGradient, profile);
+        return primarySkyGradient;
+      }
+
+      function setPrimarySkyStops(primarySkyGradient, profile) {
+        const stops = primarySkyGradient.querySelectorAll('stop');
+        const [horizonStop, middleStop, topStop] = stops;
+        if (!horizonStop || !middleStop || !topStop) return;
+        horizonStop.setAttribute('offset', '0');
+        horizonStop.setAttribute('stop-color', profile.skyHorizon);
+        middleStop.setAttribute('offset', '.52');
+        middleStop.setAttribute('stop-color', profile.skyMiddle);
+        topStop.setAttribute('offset', '1');
+        topStop.setAttribute('stop-color', profile.skyTop);
+      }
+
+      function activeLightingName(segment) {
+        return segment.segmentProgress >= 0.5 ? segment.end.label : segment.start.label;
+      }
+
+      function applyLightingProfile(progress = Number(slider?.value || 0)) {
+        if (!stage._recolorTargets) return;
+        const segment = chooseLightingSegment(progress);
+        const { start, end, segmentProgress } = segment;
+        const profile = interpolateLightingProfile(start.profile, end.profile, segmentProgress);
+        if (stage._primarySkyGradient) {
+          setPrimarySkyStops(stage._primarySkyGradient, profile);
+        }
+        stage._recolorTargets.forEach(({ element, attribute, bucket }) => {
+          element.setAttribute(attribute, profile[bucket]);
+          if (bucket === 'sunColor') {
+            element.style.opacity = String(profile.moonOpacity);
+          } else {
+            element.style.removeProperty('opacity');
+          }
+        });
+        if (profileName) profileName.textContent = activeLightingName(segment);
+        if (progressLabel) progressLabel.textContent = `${Math.max(1, Math.round(clamp(progress) * 90))}. nap`;
+        lab.style.setProperty('--stars-opacity', String(profile.starsOpacity));
+      }
+
+      const ready = fetch(svgSource)
+        .then((response) => {
+          if (!response.ok) throw new Error(`Cannot load ${svgSource}`);
+          return response.text();
+        })
+        .then((svgText) => {
+          stage.innerHTML = svgText.replace(/<\?xml[^>]*>\s*/i, '');
+          const svg = stage.querySelector('svg');
+          if (!svg) return;
+          svg.removeAttribute('width');
+          svg.removeAttribute('height');
+          svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+          svg.setAttribute('aria-hidden', 'true');
+          stage._primarySkyGradient = normalizePrimarySkyGradient(svg, hajnalLightingProfiles[0].profile);
+          stage._recolorTargets = collectRecolorTargets(svg);
+          applyLightingProfile(Number(slider.value));
+        });
+
+      slider?.addEventListener('input', () => applyLightingProfile(Number(slider.value)));
+      window.hajnalWelcomeLighting = {
+        ready,
+        profiles: hajnalLightingProfiles,
+        chooseLightingSegment,
+        interpolateLightingProfile,
+        normalizePrimarySkyGradient,
+        setPrimarySkyStops,
+        applyLightingProfile,
+      };
+    })();
+
     (() => {
       const reflectionPromptContent = {
         best: {

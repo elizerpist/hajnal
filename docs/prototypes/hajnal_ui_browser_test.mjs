@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import http from "node:http";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const moduleName = process.env.HAJNAL_PLAYWRIGHT_MODULE || "playwright";
 const { chromium } = await import(moduleName);
@@ -13,6 +14,7 @@ const evidenceDirectory = path.join(prototypeDirectory, "verification");
 const updateEvidence = process.env.HAJNAL_UPDATE_EVIDENCE === "1";
 const scratchDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "hajnal-browser-test-"));
 const screenOrder = [
+  ["welcome-lighting-lab", null],
   ["splash", null],
   ["onboarding", "splash"],
   ["information", "onboarding"],
@@ -42,8 +44,8 @@ const screenRows = [
   [
     "entry",
     "splash",
-    "splash onboarding information start-date recovery-goal sponsor-setup notifications",
-    ["splash", "onboarding", "information", "start-date", "recovery-goal", "sponsor-setup", "notifications"],
+    "welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications",
+    ["welcome-lighting-lab", "splash", "onboarding", "information", "start-date", "recovery-goal", "sponsor-setup", "notifications"],
   ],
   [
     "home",
@@ -92,6 +94,44 @@ function pngSize(filename) {
   };
 }
 
+function contentTypeFor(filename) {
+  if (filename.endsWith(".html")) return "text/html; charset=utf-8";
+  if (filename.endsWith(".svg")) return "image/svg+xml; charset=utf-8";
+  if (filename.endsWith(".js")) return "text/javascript; charset=utf-8";
+  if (filename.endsWith(".css")) return "text/css; charset=utf-8";
+  return "application/octet-stream";
+}
+
+async function createStaticServer(rootDirectory) {
+  const server = http.createServer((request, response) => {
+    const requestPath = decodeURIComponent(new URL(request.url || "/", "http://127.0.0.1").pathname);
+    const resolved = path.resolve(rootDirectory, `.${requestPath}`);
+    if (!resolved.startsWith(rootDirectory)) {
+      response.writeHead(403);
+      response.end("Forbidden");
+      return;
+    }
+
+    const target = fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()
+      ? path.join(resolved, "index.html")
+      : resolved;
+
+    fs.readFile(target, (error, data) => {
+      if (error) {
+        response.writeHead(404);
+        response.end("Not found");
+        return;
+      }
+      response.writeHead(200, { "Content-Type": contentTypeFor(target) });
+      response.end(data);
+    });
+  });
+
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const { port } = server.address();
+  return { server, baseUrl: `http://127.0.0.1:${port}` };
+}
+
 async function alignScreenForIntegerClip(screen) {
   await screen.scrollIntoViewIfNeeded();
   await screen.evaluate((element) => {
@@ -102,6 +142,7 @@ async function alignScreenForIntegerClip(screen) {
 }
 
 fs.mkdirSync(evidenceDirectory, { recursive: true });
+const staticServer = await createStaticServer(prototypeDirectory);
 
 const browser = await chromium.launch({
   headless: true,
@@ -114,7 +155,7 @@ try {
     deviceScaleFactor: 1,
   });
 
-  await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "networkidle" });
+  await page.goto(`${staticServer.baseUrl}/${path.basename(htmlPath)}`, { waitUntil: "networkidle" });
 
   const renderedOrder = await page.locator(".phone-screen").evaluateAll((screens) =>
     screens.map((screen) => screen.dataset.screen),
@@ -130,6 +171,59 @@ try {
     ]),
   );
   assert.deepEqual(renderedRows, screenRows, "screen row layout");
+
+  const lightingLab = await page.locator("#welcome-lighting-lab").evaluate(async (screen) => {
+    await window.hajnalWelcomeLighting?.ready;
+    const slider = screen.querySelector("[data-lighting-slider]");
+    const profileLabel = screen.querySelector("[data-lighting-profile-name]");
+    const svg = screen.querySelector("[data-component='welcome-svg-stage'] svg");
+    const primarySkyStops = Array.from(svg?.querySelectorAll("#gradient_0 stop") || [])
+      .map((stop) => `${stop.getAttribute("offset")}:${stop.getAttribute("stop-color")}`);
+    const firstDirectFill = Array.from(svg?.querySelectorAll("[fill]") || [])
+      .find((element) => /^#[0-9a-f]{6}$/i.test(element.getAttribute("fill") || ""));
+    return {
+      source: screen.dataset.svgSource,
+      engine: screen.dataset.lightingEngine,
+      primarySkyGradient: screen.dataset.primarySkyGradient,
+      hasSvg: Boolean(svg),
+      sliderMin: slider?.getAttribute("min"),
+      sliderMax: slider?.getAttribute("max"),
+      sliderStep: slider?.getAttribute("step"),
+      profileLabel: profileLabel?.textContent?.trim(),
+      primarySkyStops,
+      firstDirectFill: firstDirectFill?.getAttribute("fill"),
+    };
+  });
+  assert.deepEqual(lightingLab, {
+    source: "assets/welcome_svg.svg",
+    engine: "bucketed-path-profiles",
+    primarySkyGradient: "gradient_0",
+    hasSvg: true,
+    sliderMin: "0",
+    sliderMax: "1",
+    sliderStep: "0.001",
+    profileLabel: "Lila hajnal",
+    primarySkyStops: ["0:#D99AC9", ".52:#6A55A8", "1:#343477"],
+    firstDirectFill: "#5A4091",
+  }, "lighting lab must load the real welcome SVG and apply an art-directed starting profile");
+
+  const goldenHour = await page.locator("#welcome-lighting-lab").evaluate((screen) => {
+    const slider = screen.querySelector("[data-lighting-slider]");
+    slider.value = "0.84";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+    const svg = screen.querySelector("[data-component='welcome-svg-stage'] svg");
+    return {
+      label: screen.querySelector("[data-lighting-profile-name]")?.textContent?.trim(),
+      primarySkyStops: Array.from(svg?.querySelectorAll("#gradient_0 stop") || [])
+        .map((stop) => `${stop.getAttribute("offset")}:${stop.getAttribute("stop-color")}`),
+      progress: screen.querySelector("[data-lighting-progress]")?.textContent?.trim(),
+    };
+  });
+  assert.deepEqual(goldenHour, {
+    label: "Aranyóra",
+    primarySkyStops: ["0:#FFD77B", ".52:#E9A46E", "1:#8065A8"],
+    progress: "76. nap",
+  }, "lighting slider must move through the explicit golden-hour keyframe, not a direct night-day mix");
 
   const rowPositions = await page.locator(".phone-screen").evaluateAll((screens) =>
     Object.fromEntries(
@@ -398,5 +492,6 @@ try {
   }
 } finally {
   await browser.close();
+  staticServer.server.close();
   fs.rmSync(scratchDirectory, { recursive: true, force: true });
 }

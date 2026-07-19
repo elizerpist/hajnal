@@ -10,6 +10,7 @@ const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf8') : '';
 const sourceAssetDirectory = '/storage/emulated/0/hajnal';
 const group = process.argv[2] || 'all';
 const screenOrder = [
+  'welcome-lighting-lab',
   'splash',
   'onboarding',
   'information',
@@ -113,7 +114,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 24, 'phone screen count');
+    expectCount(/class="phone-screen/g, 25, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -151,6 +152,7 @@ const tests = {
 
   entry() {
     expectOrdered([
+      'data-screen="welcome-lighting-lab"',
       'data-screen="splash"',
       'data-screen="onboarding"',
       'data-screen="information"',
@@ -173,6 +175,52 @@ const tests = {
     expectContains('data-returning-target="home"');
     expectContains('type="checkbox"');
     expectCount(/name="start-date"/g, 3, 'start-date choice count');
+    expectScreenContains('welcome-lighting-lab', [
+      'class="phone-screen svg-lighting-lab-screen"',
+      'data-screen="welcome-lighting-lab"',
+      'data-source-screen="splash"',
+      'data-svg-source="assets/welcome_svg.svg"',
+      'data-lighting-engine="bucketed-path-profiles"',
+      'data-primary-sky-gradient="gradient_0"',
+      'data-path-count="116"',
+      'data-gradient-count="14"',
+      'data-stop-count="28"',
+      'data-component="welcome-svg-stage"',
+      'type="range"',
+      'data-lighting-slider',
+      'aria-label="Éjszaka-nappal fényprofil"',
+      'data-lighting-profile-name'
+    ]);
+    assert.ok(!screenSlice('welcome-lighting-lab').includes('<img'), 'lighting lab must not add another img tag for the welcome SVG');
+    [
+      'deep-night',
+      'moonlit-night',
+      'blue-hour',
+      'violet-dawn',
+      'rose-dawn',
+      'orange-sunrise',
+      'golden-hour',
+      'bright-morning'
+    ].forEach(expectContains);
+    [
+      'skyTop',
+      'skyMiddle',
+      'distantMountainFill',
+      'nearMountainFill',
+      'groundFill',
+      'waterFill',
+      'shadowColor',
+      'highlightColor',
+      'atmosphericGlow',
+      'sunColor',
+      'moonOpacity',
+      'starsOpacity'
+    ].forEach(expectContains);
+    expectContains('fetch(svgSource)');
+    expectContains('chooseLightingSegment(progress)');
+    expectContains('interpolateLightingProfile(start.profile, end.profile, segmentProgress)');
+    expectContains('normalizePrimarySkyGradient(svg, profile)');
+    expectContains('setPrimarySkyStops(primarySkyGradient, profile)');
     expectScreenContains('splash', [
       'Csak a mai nap.',
       'data-transition-delay="2000-3000"',
@@ -520,7 +568,7 @@ const tests = {
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 4, 'screen row count');
-    expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding information start-date recovery-goal sponsor-setup notifications"');
+    expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
