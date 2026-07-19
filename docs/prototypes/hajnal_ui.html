@@ -2326,115 +2326,6 @@
       background: linear-gradient(90deg, #6A56B4, #F18EAF);
     }
 
-    .statistics-calendar-dots {
-      display: grid;
-      grid-template-columns: repeat(14, 1fr);
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-
-    .statistics-calendar-dots span {
-      height: 19px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: rgba(84, 178, 120, .24);
-      color: #287549;
-      font-size: 8.5px;
-      font-weight: 820;
-    }
-
-    .statistics-calendar-dots .current {
-      background: var(--hajnal-purple);
-      color: var(--white);
-      box-shadow: 0 0 0 3px rgba(106, 86, 180, .13);
-    }
-
-    .statistics-inline-action {
-      width: 100%;
-      min-height: 42px;
-      display: grid;
-      grid-template-columns: 34px minmax(0, 1fr) 16px;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border: 0;
-      border-radius: 12px;
-      background: rgba(106, 86, 180, .10);
-      color: var(--hajnal-navy);
-      font-size: 11px;
-      font-weight: 780;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .statistics-inline-action .icon {
-      color: var(--hajnal-purple);
-    }
-
-    .statistics-next-milestone {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .statistics-next-milestone strong {
-      display: block;
-      color: var(--hajnal-navy);
-      font-size: 20px;
-      line-height: 1;
-      font-weight: 860;
-    }
-
-    .statistics-next-milestone span {
-      display: block;
-      margin-top: 5px;
-      color: rgba(44, 46, 119, .58);
-      font-size: 11px;
-      line-height: 1.35;
-      font-weight: 650;
-    }
-
-    .statistics-next-milestone button {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border: 0;
-      border-radius: 50%;
-      background: var(--hajnal-purple);
-      color: var(--white);
-      cursor: pointer;
-    }
-
-    .statistics-insights {
-      display: grid;
-      gap: 8px;
-    }
-
-    .statistics-insight-card {
-      min-height: 58px;
-      display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-    }
-
-    .statistics-insight-card .row-icon {
-      width: 34px;
-      height: 34px;
-    }
-
-    .statistics-insight-card strong {
-      display: block;
-      color: var(--hajnal-navy);
-      font-size: 12px;
-      line-height: 1.2;
-      font-weight: 820;
-    }
-
     .home-statistics-screen .bottom-nav {
       position: absolute;
       z-index: 30;
@@ -6958,27 +6849,7 @@
                   <div class="statistics-task-row"><span>Esti check-in</span><span class="statistics-task-track"><span style="--bar: 82%"></span></span><strong>82%</strong></div>
                   <div class="statistics-task-row"><span>Hála lista</span><span class="statistics-task-track"><span style="--bar: 64%"></span></span><strong>64%</strong></div>
                   <div class="statistics-task-row"><span>12 lépés</span><span class="statistics-task-track"><span style="--bar: 48%"></span></span><strong>48%</strong></div>
-                  <div class="statistics-task-row"><span>Szponzor hívás</span><span class="statistics-task-track"><span style="--bar: 71%"></span></span><strong>71%</strong></div>
                 </div>
-              </section>
-
-              <section class="statistics-panel" data-component="statistics-calendar-preview">
-                <div class="statistics-panel-title"><h4>Naptár preview</h4><small>utolsó 14 nap</small></div>
-                <div class="statistics-calendar-dots" aria-label="Utolsó 14 nap">
-                  <span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span class="current">24</span>
-                </div>
-                <button class="statistics-inline-action" type="button" data-action="open-statistics-calendar" data-target-screen="progress-calendar"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg><span>Részletes naptár megnyitása</span><span aria-hidden="true">›</span></button>
-              </section>
-
-              <section class="statistics-panel statistics-next-milestone" data-component="statistics-next-milestone">
-                <div><strong>30 nap · Egy hónap</strong><span>Következő mérföldkő, 6 tiszta nap múlva.</span></div>
-                <button type="button" aria-label="Mérföldkövek megnyitása" data-action="open-statistics-milestones" data-target-screen="progress-milestones"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg></button>
-              </section>
-
-              <section class="statistics-insights" data-component="statistics-insights" aria-label="Statisztika insightok">
-                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Legstabilabb nap</strong><span>Kedd és csütörtök hozta a legtöbb teljes check-int.</span></span></div>
-                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Nehéz idősáv</strong><span>Este 20:00 után több a sóvárgásjelzés.</span></span></div>
-                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Támogatás használata</strong><span>4 alkalommal kapcsolódtál szponzorhoz vagy meetinghez.</span></span></div>
               </section>
             </main>
             <nav class="bottom-nav" aria-label="Fő navigáció">

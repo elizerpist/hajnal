@@ -342,9 +342,15 @@ try {
     periodLabels: Array.from(screen.querySelectorAll("[data-component='statistics-period-selector'] button")).map((button) => button.textContent.trim()),
     hasTrend: Boolean(screen.querySelector("[data-component='statistics-trend-chart']")),
     taskLabels: Array.from(screen.querySelectorAll(".statistics-task-row > span:first-child")).map((row) => row.textContent.trim()),
-    calendarTarget: screen.querySelector("[data-action='open-statistics-calendar']")?.dataset.targetScreen,
-    milestoneTarget: screen.querySelector("[data-action='open-statistics-milestones']")?.dataset.targetScreen,
-    insights: screen.querySelectorAll("[data-component='statistics-insights'] .statistics-insight-card").length,
+    forbiddenBlocks: [
+      "[data-component='statistics-calendar-preview']",
+      "[data-action='open-statistics-calendar']",
+      "[data-component='statistics-next-milestone']",
+      "[data-action='open-statistics-milestones']",
+      "[data-component='statistics-insights']",
+    ].map((selector) => screen.querySelectorAll(selector).length),
+    forbiddenText: ["Szponzor hívás", "Naptár preview", "30 nap · Egy hónap", "Legstabilabb nap", "Nehéz idősáv", "Támogatás használata"]
+      .filter((text) => screen.textContent.includes(text)),
   }));
   assert.deepEqual(homeStatistics, {
     parent: "home",
@@ -359,10 +365,9 @@ try {
     ],
     periodLabels: ["7 nap", "30 nap", "90 nap"],
     hasTrend: true,
-    taskLabels: ["Esti check-in", "Hála lista", "12 lépés", "Szponzor hívás"],
-    calendarTarget: "progress-calendar",
-    milestoneTarget: "progress-milestones",
-    insights: 3,
+    taskLabels: ["Esti check-in", "Hála lista", "12 lépés"],
+    forbiddenBlocks: [0, 0, 0, 0, 0],
+    forbiddenText: [],
   }, "home statistics must collect all stats-related dashboard content");
 
   assert.equal(await page.locator("[data-component='daily-project-assets'] [data-asset-src]").count(), 0, "daily image asset catalog must remain deleted");

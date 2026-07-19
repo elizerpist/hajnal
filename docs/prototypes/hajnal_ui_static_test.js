@@ -482,15 +482,25 @@ const tests = {
       'data-component="statistics-task-bars"',
       'Esti check-in',
       'Hála lista',
-      '12 lépés',
+      '12 lépés'
+    ]);
+    [
       'Szponzor hívás',
       'data-component="statistics-calendar-preview"',
       'data-action="open-statistics-calendar" data-target-screen="progress-calendar"',
+      'Naptár preview',
+      'utolsó 14 nap',
       'data-component="statistics-next-milestone"',
       'data-action="open-statistics-milestones" data-target-screen="progress-milestones"',
-      'data-component="statistics-insights"'
-    ]);
+      '30 nap · Egy hónap',
+      'Következő mérföldkő, 6 tiszta nap múlva.',
+      'data-component="statistics-insights"',
+      'Legstabilabb nap',
+      'Nehéz idősáv',
+      'Támogatás használata'
+    ].forEach((value) => assert.ok(!homeStatisticsScreen.includes(value), `home statistics must remove ${value}`));
     assert.ok(homeStatisticsScreen.includes('aria-current="page" data-target-screen="home-statistics"'), 'statistics screen bottom nav must keep Kezdőlap active on the current statistics view');
+    assert.equal((homeStatisticsScreen.match(/class="statistics-task-row"/g) || []).length, 3, 'home statistics habits must keep exactly three rows');
     assert.match(html, /\.home-statistics-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC 0%,\s*#F8EEF7 100%\)/s, 'statistics screen must match the warm home/progress palette');
     assert.match(html, /\.statistics-content\s*\{[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 18px 92px/s, 'statistics content must be scrollable above the fixed footer nav');
     assert.match(html, /\.statistics-ring\s*\{[^}]*conic-gradient\(from -90deg,\s*#6A56B4 0 26\.666%,\s*rgba\(106,\s*86,\s*180,\s*\.13\) 26\.666% 100%\)/s, 'statistics clean-day ring must visualize the 24/90 progress');
@@ -544,7 +554,6 @@ const tests = {
       'Jelenlegi sorozat',
       'Check-in arány',
       'Összes tiszta nap',
-      'Következő mérföldkő',
       'Mai feladataim',
       'Ma tiszta maradtam',
       'Megcsináltad!',
