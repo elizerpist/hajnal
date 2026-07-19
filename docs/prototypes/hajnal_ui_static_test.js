@@ -437,30 +437,55 @@ const tests = {
       'class="phone-screen home-statistics-screen"',
       'data-screen="home-statistics"',
       'data-parent-screen="home"',
-      'data-component="clean-day-statistics-hub"',
+      'data-reference-screenshot="Screenshot_20260720-013331.png"',
+      'data-component="sobriety-batch-statistics"',
       'Statisztikák',
-      'A tiszta napjaid képe',
+      'Válaszd ki az időszakodat',
       'data-action="return-home-from-statistics" data-target-screen="home"',
-      'data-component="statistics-clean-progress"',
-      'aria-label="24 nap a 90 napos úton"',
+      'data-action="open-statistics-info"',
+      'data-component="sobriety-batch-carousel"',
+      'data-component="sobriety-batch-card"',
+      'data-batch-id="2024-05"',
+      'data-batch-days="8"',
+      'data-batch-id="2024-08"',
+      'data-batch-days="37"',
+      'data-batch-id="2025-01"',
+      'data-batch-days="89"',
+      'data-batch-id="2025-06"',
+      'data-batch-days="4"',
+      'data-batch-id="current"',
+      'data-batch-state="current"',
+      'aria-current="true"',
+      'Jelenleg',
+      'Aktuális időszak',
+      'data-component="selected-sobriety-batch"',
+      'Jelenlegi időszak',
+      '2026. május 1. - jelenleg',
+      'aria-label="24 nap a jelenlegi józan időszakban"',
       '24 nap',
-      '27% kész',
-      'Jelenlegi sorozat',
-      'Leghosszabb sorozat',
+      '24 nap tiszta',
+      'Leghosszabb időszak',
+      '89 nap',
       'Összes tiszta nap',
+      '162 nap',
+      'Átlagos hangulat',
+      '3.8 / 5',
       'Check-in arány',
-      'data-component="statistics-period-selector"',
-      '7 nap',
-      '30 nap',
-      '90 nap',
-      'data-component="statistics-trend-chart"',
-      'data-component="statistics-task-bars"',
-      'Esti check-in',
-      'Hála lista',
-      '12 lépés',
-      'NA részvétel'
+      '82%',
+      'NA részvétel',
+      '12',
+      'Szponzorral beszélgetések',
+      '8'
     ]);
     [
+      'data-component="statistics-period-selector"',
+      'data-component="statistics-trend-chart"',
+      'data-component="statistics-task-bars"',
+      'class="statistics-task-row"',
+      'Szokások teljesülése',
+      'Esti check-in',
+      'Hála lista',
+      '<span>12 lépés</span>',
       'Szponzor hívás',
       'data-component="statistics-calendar-preview"',
       'data-action="open-statistics-calendar" data-target-screen="progress-calendar"',
@@ -475,17 +500,32 @@ const tests = {
       'Nehéz idősáv',
       'Támogatás használata'
     ].forEach((value) => assert.ok(!homeStatisticsScreen.includes(value), `home statistics must remove ${value}`));
-    assert.ok(homeStatisticsScreen.includes('aria-current="page" data-target-screen="home-statistics"'), 'statistics screen bottom nav must keep Kezdőlap active on the current statistics view');
-    expectOrdered([
-      '<div class="statistics-task-row"><span>Esti check-in</span>',
-      '<div class="statistics-task-row"><span>Hála lista</span>',
-      '<div class="statistics-task-row"><span>12 lépés</span>',
-      '<div class="statistics-task-row"><span>NA részvétel</span>'
-    ]);
-    assert.equal((homeStatisticsScreen.match(/class="statistics-task-row"/g) || []).length, 4, 'home statistics habits must keep exactly four rows including NA participation');
+    [
+      'data-batch-id="2024-05"',
+      'data-batch-id="2024-08"',
+      'data-batch-id="2025-01"',
+      'data-batch-id="2025-06"',
+      'data-batch-id="current"',
+      'data-component="selected-sobriety-batch"',
+      'data-stat-card="longest-period"',
+      'data-stat-card="total-clean-days"',
+      'data-stat-card="average-mood"',
+      'data-stat-card="checkin-rate"',
+      'data-stat-card="na-participation"',
+      'data-stat-card="sponsor-conversations"'
+    ].reduce((cursor, needle) => {
+      const next = homeStatisticsScreen.indexOf(needle, cursor + 1);
+      assert.ok(next > cursor, `home statistics order missing ${needle}`);
+      return next;
+    }, -1);
+    assert.equal((homeStatisticsScreen.match(/data-component="sobriety-batch-card"/g) || []).length, 5, 'home statistics must expose five sobriety batch cards');
+    assert.equal((homeStatisticsScreen.match(/data-stat-card=/g) || []).length, 6, 'home statistics must expose six active batch statistic cards');
+    assert.ok(homeStatisticsScreen.includes('aria-current="page" data-target-screen="home-statistics"'), 'statistics screen bottom nav must keep the statistics tab active on the current statistics view');
     assert.match(html, /\.home-statistics-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC 0%,\s*#F8EEF7 100%\)/s, 'statistics screen must match the warm home/progress palette');
     assert.match(html, /\.statistics-content\s*\{[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 18px 92px/s, 'statistics content must be scrollable above the fixed footer nav');
-    assert.match(html, /\.statistics-ring\s*\{[^}]*conic-gradient\(from -90deg,\s*#6A56B4 0 26\.666%,\s*rgba\(106,\s*86,\s*180,\s*\.13\) 26\.666% 100%\)/s, 'statistics clean-day ring must visualize the 24/90 progress');
+    assert.match(html, /\.sobriety-batch-carousel\s*\{[^}]*overflow-x:\s*auto;[^}]*scroll-snap-type:\s*x mandatory/s, 'statistics batch selector must be horizontally swipeable');
+    assert.match(html, /\.sobriety-batch-card\.current\s*\{[^}]*border:\s*4px solid #6A56B4/s, 'current sobriety batch must use the screenshot purple ring highlight');
+    assert.match(html, /\.selected-batch-ring\s*\{[^}]*conic-gradient\(from -90deg,\s*#6A56B4 0 72%,\s*rgba\(106,\s*86,\s*180,\s*\.18\) 72% 100%\)/s, 'selected batch card must visualize the current batch progress ring');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
@@ -532,10 +572,13 @@ const tests = {
     [
       'Napi kép',
       'Statisztikák',
-      'A tiszta napjaid képe',
-      'Jelenlegi sorozat',
+      'Válaszd ki az időszakodat',
+      'Jelenlegi időszak',
+      'Leghosszabb időszak',
       'Check-in arány',
       'Összes tiszta nap',
+      'NA részvétel',
+      'Szponzorral beszélgetések',
       'Mai feladataim',
       'Ma tiszta maradtam',
       'Megcsináltad!',
@@ -595,8 +638,8 @@ const tests = {
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') !== -1, 'collapsed home must keep the clean-days dashboard');
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') < collapsedHomeScreen.indexOf('data-action="expand-home-card"'), 'collapsed home dashboard must render before the invisible expand hotspot');
     assert.ok(homeScreen.includes('class="home-body"'), 'expanded home state must remain the opened-card version');
-    assert.ok(homeStatisticsScreen.includes('data-component="statistics-summary-grid"'), 'home statistics must include the full stats summary grid');
-    assert.equal((homeStatisticsScreen.match(/data-stat-card=/g) || []).length, 4, 'home statistics must expose four core statistics cards');
+    assert.ok(homeStatisticsScreen.includes('data-component="active-batch-stat-grid"'), 'home statistics must include the active batch stats summary grid');
+    assert.equal((homeStatisticsScreen.match(/data-stat-card=/g) || []).length, 6, 'home statistics must expose six active batch statistics cards');
     assert.ok(milestoneScreen.includes('class="phone-screen milestone-gallery-screen"'), 'milestones must move into the home-row gallery screen');
     assert.ok(milestoneScreen.includes('data-parent-screen="home"'), 'milestones must be a main menu child screen');
     assert.ok(milestoneScreen.includes('data-component="milestone-gallery-grid"'), 'milestones must render as a gallery grid');

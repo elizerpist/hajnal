@@ -325,42 +325,72 @@ try {
 
   const homeStatistics = await page.locator("#home-statistics").evaluate((screen) => ({
     parent: screen.dataset.parentScreen,
+    reference: screen.dataset.referenceScreenshot,
     title: screen.querySelector("h3")?.textContent.trim(),
     subtitle: screen.querySelector(".screen-subtitle")?.textContent.trim(),
-    navCurrent: screen.querySelector(".bottom-nav [aria-current='page']")?.dataset.targetScreen,
+    navCurrent: screen.querySelector(".bottom-nav [aria-current='page'] span")?.textContent.trim(),
+    navLabels: Array.from(screen.querySelectorAll(".bottom-nav button span")).map((span) => span.textContent.trim()),
+    batches: Array.from(screen.querySelectorAll("[data-component='sobriety-batch-card']")).map((batch) => ({
+      id: batch.dataset.batchId,
+      days: batch.dataset.batchDays,
+      state: batch.dataset.batchState || "past",
+      current: batch.getAttribute("aria-current") || null,
+      text: batch.textContent.replace(/\s+/g, " ").trim(),
+    })),
+    selectedBatch: {
+      title: screen.querySelector("[data-component='selected-sobriety-batch'] h4")?.textContent.trim(),
+      range: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-range")?.textContent.trim(),
+      pill: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-pill")?.textContent.trim(),
+      ring: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-ring strong")?.textContent.trim(),
+    },
     coreStats: Array.from(screen.querySelectorAll("[data-stat-card]")).map((card) => ({
       stat: card.dataset.statCard,
       label: card.querySelector("span")?.textContent.trim(),
       value: card.querySelector("strong")?.textContent.trim(),
     })),
-    periodLabels: Array.from(screen.querySelectorAll("[data-component='statistics-period-selector'] button")).map((button) => button.textContent.trim()),
-    hasTrend: Boolean(screen.querySelector("[data-component='statistics-trend-chart']")),
-    taskLabels: Array.from(screen.querySelectorAll(".statistics-task-row > span:first-child")).map((row) => row.textContent.trim()),
     forbiddenBlocks: [
+      "[data-component='statistics-period-selector']",
+      "[data-component='statistics-trend-chart']",
+      "[data-component='statistics-task-bars']",
+      ".statistics-task-row",
       "[data-component='statistics-calendar-preview']",
       "[data-action='open-statistics-calendar']",
       "[data-component='statistics-next-milestone']",
       "[data-action='open-statistics-milestones']",
       "[data-component='statistics-insights']",
     ].map((selector) => screen.querySelectorAll(selector).length),
-    forbiddenText: ["Szponzor hívás", "Naptár preview", "30 nap · Egy hónap", "Legstabilabb nap", "Nehéz idősáv", "Támogatás használata"]
+    forbiddenText: ["Szokások teljesülése", "Esti check-in", "Hála lista", "Szponzor hívás", "Naptár preview", "30 nap · Egy hónap", "Legstabilabb nap", "Nehéz idősáv", "Támogatás használata"]
       .filter((text) => screen.textContent.includes(text)),
   }));
   assert.deepEqual(homeStatistics, {
     parent: "home",
+    reference: "Screenshot_20260720-013331.png",
     title: "Statisztikák",
-    subtitle: "A tiszta napjaid képe",
-    navCurrent: "home-statistics",
-    coreStats: [
-      { stat: "current-streak", label: "Jelenlegi sorozat", value: "24. nap" },
-      { stat: "longest-streak", label: "Leghosszabb sorozat", value: "24 nap" },
-      { stat: "total-clean-days", label: "Összes tiszta nap", value: "37 nap" },
-      { stat: "checkin-rate", label: "Check-in arány", value: "82%" },
+    subtitle: "Válaszd ki az időszakodat",
+    navCurrent: "Statisztikák",
+    navLabels: ["Kezdőlap", "Felépülés", "Statisztikák", "Szponzor", "Profil"],
+    batches: [
+      { id: "2024-05", days: "8", state: "past", current: null, text: "2024 8 nap 2024.05." },
+      { id: "2024-08", days: "37", state: "past", current: null, text: "37 nap 2024.08." },
+      { id: "2025-01", days: "89", state: "past", current: null, text: "2025 89 nap 2025.01." },
+      { id: "2025-06", days: "4", state: "past", current: null, text: "4 nap 2025.06. Aktuális időszak" },
+      { id: "current", days: "24", state: "current", current: "true", text: "2026 24 nap Jelenleg" },
     ],
-    periodLabels: ["7 nap", "30 nap", "90 nap"],
-    hasTrend: true,
-    taskLabels: ["Esti check-in", "Hála lista", "12 lépés", "NA részvétel"],
-    forbiddenBlocks: [0, 0, 0, 0, 0],
+    selectedBatch: {
+      title: "Jelenlegi időszak",
+      range: "2026. május 1. - jelenleg",
+      pill: "24 nap tiszta",
+      ring: "24 nap",
+    },
+    coreStats: [
+      { stat: "longest-period", label: "Leghosszabb időszak", value: "89 nap" },
+      { stat: "total-clean-days", label: "Összes tiszta nap", value: "162 nap" },
+      { stat: "average-mood", label: "Átlagos hangulat", value: "😀 3.8 / 5" },
+      { stat: "checkin-rate", label: "Check-in arány", value: "82%" },
+      { stat: "na-participation", label: "NA részvétel", value: "12" },
+      { stat: "sponsor-conversations", label: "Szponzorral beszélgetések", value: "8" },
+    ],
+    forbiddenBlocks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
     forbiddenText: [],
   }, "home statistics must collect all stats-related dashboard content");
 

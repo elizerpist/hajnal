@@ -2109,93 +2109,211 @@
       display: none;
     }
 
-    .statistics-progress-card,
-    .statistics-stat-card,
-    .statistics-panel,
-    .statistics-insight-card {
+    .sobriety-batch-carousel {
+      position: relative;
+      margin: 0 -18px;
+      padding: 8px 18px 4px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .sobriety-batch-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sobriety-batch-track {
+      position: relative;
+      width: max-content;
+      min-width: 514px;
+      display: grid;
+      grid-template-columns: 78px 78px 78px 78px 84px;
+      align-items: start;
+      gap: 20px;
+      padding: 0 6px 18px;
+    }
+
+    .sobriety-batch-track::before {
+      content: "";
+      position: absolute;
+      left: 45px;
+      right: 47px;
+      top: 47px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .18);
+    }
+
+    .sobriety-batch-card {
+      position: relative;
+      z-index: 1;
+      min-height: 112px;
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      gap: 5px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--hajnal-navy);
+      font: inherit;
+      text-align: center;
+      scroll-snap-align: center;
+      cursor: pointer;
+    }
+
+    .batch-year {
+      min-height: 16px;
+      color: rgba(44, 46, 119, .48);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 760;
+    }
+
+    .sobriety-batch-card strong {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 2px solid rgba(106, 86, 180, .20);
+      background: #FFFFFF;
+      box-shadow: 0 10px 20px rgba(44, 46, 119, .09);
+      color: var(--hajnal-navy);
+      font-size: 13px;
+      line-height: 1.05;
+      font-weight: 850;
+    }
+
+    .sobriety-batch-card.current strong {
+      width: 68px;
+      height: 68px;
+      background: #FFFFFF;
+    }
+
+    .sobriety-batch-card.current {
+      border: 4px solid #6A56B4;
+      border-radius: 999px;
+      width: 76px;
+      height: 76px;
+      padding-top: 0;
+      margin-top: 15px;
+      align-content: center;
+      box-shadow: 0 12px 24px rgba(106, 86, 180, .18);
+    }
+
+    .sobriety-batch-card.current .batch-year {
+      position: absolute;
+      top: -23px;
+    }
+
+    .sobriety-batch-card.current .batch-date {
+      position: absolute;
+      bottom: -24px;
+    }
+
+    .batch-date,
+    .active-period-note {
+      color: rgba(44, 46, 119, .48);
+      font-size: 9.5px;
+      line-height: 1.1;
+      font-weight: 720;
+    }
+
+    .active-period-note {
+      max-width: 78px;
+      color: var(--hajnal-purple);
+      font-weight: 800;
+    }
+
+    .selected-batch-card,
+    .statistics-stat-card {
       border: 1px solid rgba(106, 86, 180, .12);
       border-radius: 16px;
       background: rgba(255, 255, 255, .82);
       box-shadow: 0 12px 28px rgba(44, 46, 119, .08);
     }
 
-    .statistics-progress-card {
-      min-height: 168px;
+    .selected-batch-card {
+      min-height: 140px;
       display: grid;
-      grid-template-columns: 138px minmax(0, 1fr);
+      grid-template-columns: 104px minmax(0, 1fr) 18px;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       padding: 16px;
-      overflow: hidden;
     }
 
-    .statistics-ring {
-      width: 122px;
-      height: 122px;
+    .selected-batch-ring {
+      width: 94px;
+      height: 94px;
       position: relative;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      background: conic-gradient(from -90deg, #6A56B4 0 26.666%, rgba(106, 86, 180, .13) 26.666% 100%);
+      background: conic-gradient(from -90deg, #6A56B4 0 72%, rgba(106, 86, 180, .18) 72% 100%);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .64), 0 16px 28px rgba(106, 86, 180, .12);
     }
 
-    .statistics-ring::before {
+    .selected-batch-ring::before {
       content: "";
       position: absolute;
-      width: 88px;
-      height: 88px;
+      width: 68px;
+      height: 68px;
       border-radius: inherit;
       background: #FFF9FC;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
     }
 
-    .statistics-ring strong {
+    .selected-batch-ring strong {
       position: relative;
       z-index: 1;
       color: var(--hajnal-navy);
-      font-size: 25px;
+      max-width: 54px;
+      font-size: 19px;
       line-height: 1;
       font-weight: 860;
       letter-spacing: 0;
+      text-align: center;
     }
 
-    .statistics-progress-copy span,
-    .statistics-stat-card span,
-    .statistics-panel p,
-    .statistics-insight-card span {
+    .selected-batch-copy h4 {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-size: 16px;
+      line-height: 1.1;
+      font-weight: 860;
+    }
+
+    .selected-batch-range,
+    .statistics-stat-card span {
       color: rgba(44, 46, 119, .58);
       font-size: 11px;
       line-height: 1.35;
       font-weight: 650;
     }
 
-    .statistics-progress-copy strong {
-      display: block;
-      color: var(--hajnal-navy);
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 860;
-      letter-spacing: 0;
+    .selected-batch-range {
+      margin: 6px 0 0;
     }
 
-    .statistics-progress-copy span {
-      display: block;
-      margin-top: 7px;
-    }
-
-    .statistics-progress-copy em {
+    .selected-batch-pill {
       display: inline-grid;
-      min-height: 25px;
+      min-height: 26px;
       align-items: center;
-      margin-top: 12px;
+      margin-top: 7px;
       padding: 0 10px;
       border-radius: 999px;
       background: rgba(106, 86, 180, .10);
       color: var(--hajnal-purple);
       font-size: 10.5px;
-      font-style: normal;
       font-weight: 790;
+    }
+
+    .selected-batch-chevron {
+      color: rgba(44, 46, 119, .35);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 600;
     }
 
     .statistics-summary-grid {
@@ -2205,7 +2323,7 @@
     }
 
     .statistics-stat-card {
-      min-height: 76px;
+      min-height: 78px;
       padding: 12px;
     }
 
@@ -2221,109 +2339,6 @@
     .statistics-stat-card span {
       display: block;
       margin-top: 6px;
-    }
-
-    .statistics-period-selector {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 6px;
-      padding: 4px;
-      border-radius: 14px;
-      background: rgba(106, 86, 180, .09);
-    }
-
-    .statistics-period-selector button {
-      min-height: 32px;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-      color: rgba(44, 46, 119, .62);
-      font-size: 11px;
-      font-weight: 780;
-      cursor: pointer;
-    }
-
-    .statistics-period-selector button[aria-current="true"] {
-      background: #FFFFFF;
-      color: var(--hajnal-purple);
-      box-shadow: 0 5px 12px rgba(44, 46, 119, .08);
-    }
-
-    .statistics-panel {
-      padding: 13px;
-    }
-
-    .statistics-panel-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .statistics-panel-title h4 {
-      margin: 0;
-      color: var(--hajnal-navy);
-      font-size: 12.5px;
-      line-height: 1.2;
-      font-weight: 840;
-    }
-
-    .statistics-panel-title small {
-      color: rgba(106, 86, 180, .72);
-      font-size: 10px;
-      font-weight: 760;
-    }
-
-    .statistics-trend-chart {
-      height: 112px;
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      align-items: end;
-      gap: 8px;
-      padding: 12px 6px 4px;
-      border-radius: 14px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .48)),
-        repeating-linear-gradient(180deg, transparent 0 27px, rgba(106, 86, 180, .08) 28px);
-    }
-
-    .statistics-trend-chart span {
-      min-height: 18px;
-      border-radius: 999px 999px 6px 6px;
-      background: linear-gradient(180deg, #F18EAF 0%, #6A56B4 100%);
-      box-shadow: 0 6px 14px rgba(106, 86, 180, .13);
-    }
-
-    .statistics-task-bars {
-      display: grid;
-      gap: 9px;
-    }
-
-    .statistics-task-row {
-      display: grid;
-      grid-template-columns: 96px minmax(0, 1fr) 34px;
-      align-items: center;
-      gap: 8px;
-      color: var(--hajnal-navy);
-      font-size: 10.5px;
-      font-weight: 720;
-    }
-
-    .statistics-task-track {
-      height: 7px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(106, 86, 180, .12);
-    }
-
-    .statistics-task-track span {
-      width: var(--bar, 50%);
-      height: 100%;
-      display: block;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #6A56B4, #F18EAF);
     }
 
     .home-statistics-screen .bottom-nav {
@@ -6803,60 +6818,71 @@
         </section>
         <section class="screen-column" id="column-home-statistics">
           <div class="screen-label"><span class="screen-index">8C</span><strong>Statisztikák</strong> · Tiszta napok tap</div>
-          <article class="phone-screen home-statistics-screen" id="home-statistics" data-screen="home-statistics" data-parent-screen="home">
+          <article class="phone-screen home-statistics-screen" id="home-statistics" data-screen="home-statistics" data-parent-screen="home" data-reference-screenshot="Screenshot_20260720-013331.png">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="screen-header">
               <button class="icon-button" type="button" aria-label="Vissza" data-action="return-home-from-statistics" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Statisztikák</h3><p class="screen-subtitle">A tiszta napjaid képe</p></div>
-              <span aria-hidden="true"></span>
+              <div class="screen-header-copy"><h3>Statisztikák</h3><p class="screen-subtitle">Válaszd ki az időszakodat</p></div>
+              <button class="icon-button statistics-info-button" type="button" aria-label="Statisztika információ" data-action="open-statistics-info">i</button>
             </header>
-            <main class="statistics-content" data-component="clean-day-statistics-hub">
-              <section class="statistics-progress-card" data-component="statistics-clean-progress">
-                <div class="statistics-ring" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><strong>24</strong></div>
-                <div class="statistics-progress-copy">
-                  <strong>24 nap</strong>
-                  <span>27% kész a 90 napos úton. A következő mérföldkő már látható távolságban van.</span>
-                  <em>6 nap a 30 napos kapuig</em>
+            <main class="statistics-content" data-component="sobriety-batch-statistics">
+              <section class="sobriety-batch-carousel" data-component="sobriety-batch-carousel" aria-label="Józan időszakok">
+                <div class="sobriety-batch-track">
+                  <button class="sobriety-batch-card" type="button" data-component="sobriety-batch-card" data-batch-id="2024-05" data-batch-days="8" data-batch-state="past">
+                    <span class="batch-year">2024</span>
+                    <strong>8 nap</strong>
+                    <small class="batch-date">2024.05.</small>
+                  </button>
+                  <button class="sobriety-batch-card" type="button" data-component="sobriety-batch-card" data-batch-id="2024-08" data-batch-days="37" data-batch-state="past">
+                    <span class="batch-year" aria-hidden="true"></span>
+                    <strong>37 nap</strong>
+                    <small class="batch-date">2024.08.</small>
+                  </button>
+                  <button class="sobriety-batch-card" type="button" data-component="sobriety-batch-card" data-batch-id="2025-01" data-batch-days="89" data-batch-state="past">
+                    <span class="batch-year">2025</span>
+                    <strong>89 nap</strong>
+                    <small class="batch-date">2025.01.</small>
+                  </button>
+                  <button class="sobriety-batch-card" type="button" data-component="sobriety-batch-card" data-batch-id="2025-06" data-batch-days="4" data-batch-state="past">
+                    <span class="batch-year" aria-hidden="true"></span>
+                    <strong>4 nap</strong>
+                    <small class="batch-date">2025.06.</small>
+                    <span class="active-period-note">Aktuális időszak</span>
+                  </button>
+                  <button class="sobriety-batch-card current" type="button" data-component="sobriety-batch-card" data-batch-id="current" data-batch-days="24" data-batch-state="current" aria-current="true">
+                    <span class="batch-year">2026</span>
+                    <strong>24 nap</strong>
+                    <small class="batch-date">Jelenleg</small>
+                  </button>
                 </div>
               </section>
 
-              <section class="statistics-summary-grid" data-component="statistics-summary-grid" aria-label="Fő statisztikák">
-                <div class="statistics-stat-card" data-stat-card="current-streak"><strong>24. nap</strong><span>Jelenlegi sorozat</span></div>
-                <div class="statistics-stat-card" data-stat-card="longest-streak"><strong>24 nap</strong><span>Leghosszabb sorozat</span></div>
-                <div class="statistics-stat-card" data-stat-card="total-clean-days"><strong>37 nap</strong><span>Összes tiszta nap</span></div>
+              <section class="selected-batch-card" data-component="selected-sobriety-batch">
+                <div class="selected-batch-ring" role="progressbar" aria-label="24 nap a jelenlegi józan időszakban" aria-valuemin="0" aria-valuemax="30" aria-valuenow="24"><strong>24 nap</strong></div>
+                <div class="selected-batch-copy">
+                  <h4>Jelenlegi időszak</h4>
+                  <p class="selected-batch-range">2026. május 1. - jelenleg</p>
+                  <span class="selected-batch-pill">24 nap tiszta</span>
+                </div>
+                <span class="selected-batch-chevron" aria-hidden="true">›</span>
+              </section>
+
+              <section class="statistics-summary-grid" data-component="active-batch-stat-grid" aria-label="Aktuális batch statisztikái">
+                <div class="statistics-stat-card" data-stat-card="longest-period"><strong>89 nap</strong><span>Leghosszabb időszak</span></div>
+                <div class="statistics-stat-card" data-stat-card="total-clean-days"><strong>162 nap</strong><span>Összes tiszta nap</span></div>
+                <div class="statistics-stat-card" data-stat-card="average-mood"><strong>😀 3.8 / 5</strong><span>Átlagos hangulat</span></div>
                 <div class="statistics-stat-card" data-stat-card="checkin-rate"><strong>82%</strong><span>Check-in arány</span></div>
-              </section>
-
-              <div class="statistics-period-selector" data-component="statistics-period-selector" role="group" aria-label="Statisztika időszak">
-                <button type="button">7 nap</button>
-                <button type="button" aria-current="true">30 nap</button>
-                <button type="button">90 nap</button>
-              </div>
-
-              <section class="statistics-panel">
-                <div class="statistics-panel-title"><h4>Hangulat és jelenlét</h4><small>30 nap</small></div>
-                <div class="statistics-trend-chart" data-component="statistics-trend-chart" aria-label="Hangulat és check-in trend">
-                  <span style="height: 42%"></span><span style="height: 66%"></span><span style="height: 54%"></span><span style="height: 78%"></span><span style="height: 62%"></span><span style="height: 84%"></span><span style="height: 72%"></span>
-                </div>
-              </section>
-
-              <section class="statistics-panel">
-                <div class="statistics-panel-title"><h4>Szokások teljesülése</h4><small>utolsó 30 nap</small></div>
-                <div class="statistics-task-bars" data-component="statistics-task-bars">
-                  <div class="statistics-task-row"><span>Esti check-in</span><span class="statistics-task-track"><span style="--bar: 82%"></span></span><strong>82%</strong></div>
-                  <div class="statistics-task-row"><span>Hála lista</span><span class="statistics-task-track"><span style="--bar: 64%"></span></span><strong>64%</strong></div>
-                  <div class="statistics-task-row"><span>12 lépés</span><span class="statistics-task-track"><span style="--bar: 48%"></span></span><strong>48%</strong></div>
-                  <div class="statistics-task-row"><span>NA részvétel</span><span class="statistics-task-track"><span style="--bar: 57%"></span></span><strong>57%</strong></div>
-                </div>
+                <div class="statistics-stat-card" data-stat-card="na-participation"><strong>12</strong><span>NA részvétel</span></div>
+                <div class="statistics-stat-card" data-stat-card="sponsor-conversations"><strong>8</strong><span>Szponzorral beszélgetések</span></div>
               </section>
             </main>
             <nav class="bottom-nav" aria-label="Fő navigáció">
-              <button type="button" aria-current="page" data-target-screen="home-statistics"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
-              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
               <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" aria-current="page" data-target-screen="home-statistics"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Statisztikák</span></button>
               <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
               <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
             </nav>
