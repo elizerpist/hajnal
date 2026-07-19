@@ -689,33 +689,6 @@
       width: 100%;
     }
 
-    .information-content {
-      display: flex;
-      flex-direction: column;
-      min-height: 772px;
-      padding: 4px 24px 24px;
-    }
-
-    .info-stack {
-      display: grid;
-      gap: 12px;
-      margin-top: 4px;
-    }
-
-    .info-card {
-      min-height: 100px;
-      display: grid;
-      grid-template-columns: 52px minmax(0, 1fr);
-      align-items: center;
-      gap: 14px;
-      padding: 15px 16px;
-      border: 1px solid var(--hairline);
-      border-radius: var(--radius-card);
-      background: rgba(255, 255, 255, .76);
-      box-shadow: 0 9px 24px rgba(44, 46, 119, .055);
-    }
-
-    .info-icon,
     .row-icon {
       width: 46px;
       height: 46px;
@@ -727,34 +700,6 @@
       box-shadow: 0 7px 16px rgba(106, 86, 180, .16);
     }
 
-    .info-card p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.42;
-      font-weight: 660;
-    }
-
-    .info-card small {
-      display: block;
-      margin-top: 5px;
-      color: rgba(44, 46, 119, .62);
-      font-size: 12px;
-      line-height: 1.4;
-      font-weight: 560;
-    }
-
-    .consent-row {
-      display: grid;
-      grid-template-columns: 24px minmax(0, 1fr);
-      align-items: center;
-      gap: 12px;
-      margin-top: 20px;
-      padding: 0 4px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 650;
-    }
-
     .native-control {
       width: 1px;
       height: 1px;
@@ -764,7 +709,6 @@
     }
 
     .choice-row:has(.native-control:focus-visible),
-    .consent-row:has(.native-control:focus-visible),
     .toggle-row:has(.native-control:focus-visible),
     .task-row:has(.native-control:focus-visible) {
       outline: 3px solid rgba(106, 86, 180, .62);
@@ -833,11 +777,6 @@
       border-color: rgba(106, 86, 180, .34);
       background: rgba(252, 248, 253, .96);
       box-shadow: 0 8px 20px rgba(106, 86, 180, .09);
-    }
-
-    .information-content .primary-button {
-      width: 100%;
-      margin-top: auto;
     }
 
     .date-screen-content {
@@ -2686,6 +2625,22 @@
       gap: 12px;
       min-height: 722px;
       padding: 0 18px 86px;
+    }
+
+    #recovery-overview .recovery-content {
+      max-height: calc(var(--screen-h) - 68px - 70px);
+      overflow-y: auto;
+      padding-bottom: 18px;
+      scrollbar-width: none;
+    }
+
+    #recovery-overview .recovery-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    #recovery-overview .bottom-nav {
+      position: relative;
+      z-index: 6;
     }
 
     .recovery-hero-card,
@@ -4949,6 +4904,33 @@
       padding: 16px;
     }
 
+    .panic-contact-title {
+      margin: 0 2px 2px;
+      color: var(--hajnal-navy);
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .panic-contact-accordion {
+      overflow: hidden;
+      padding: 0;
+      color: var(--hajnal-navy);
+    }
+
+    .panic-contact-accordion + .panic-contact-accordion {
+      margin-top: 10px;
+    }
+
+    .panic-contact-accordion summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .panic-contact-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
     .panic-contact-card {
       display: grid;
       grid-template-columns: 62px minmax(0, 1fr);
@@ -4981,6 +4963,10 @@
       font-size: 11px;
       line-height: 1.35;
       font-weight: 590;
+    }
+
+    .panic-contact-details {
+      padding: 0 12px 14px;
     }
 
     .panic-call-card {
@@ -5552,7 +5538,6 @@
         <pre class="flow-tree" aria-label="Navigációs hierarchia">SVG fényprofil labor
 └── Splash
     └── Onboarding
-        ├── Tájékoztatás
         ├── Kezdődátum
         ├── Felépülési cél
         ├── Szponzor hozzáadása
@@ -5560,7 +5545,7 @@
             └── Kezdőlap</pre>
       </div>
 
-      <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications">
+      <div class="screen-row" data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications">
         <section class="screen-column" id="column-welcome-lighting-lab">
           <div class="screen-label"><span class="screen-index">SVG</span><strong>Fényprofil</strong> · Welcome asset</div>
           <article class="phone-screen svg-lighting-lab-screen" id="welcome-lighting-lab" data-screen="welcome-lighting-lab" data-source-screen="splash" data-svg-source="assets/welcome_svg.svg" data-lighting-engine="bucketed-path-profiles" data-primary-sky-gradient="gradient_0" data-path-count="116" data-gradient-count="14" data-stop-count="28">
@@ -5644,45 +5629,7 @@
             </div>
             <div class="welcome-dots" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="welcome-actions">
-              <button class="primary-button" type="button" data-action="start-onboarding" data-target-screen="information">Kezdjük el</button>
-              <button class="secondary-button" type="button" data-action="sign-in">Már van fiókom</button>
-            </div>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-information">
-          <div class="screen-label"><span class="screen-index">3</span><strong>Tájékoztatás</strong> · Onboarding child</div>
-          <article class="phone-screen light-screen" id="information" data-screen="information" data-parent-screen="onboarding">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="onboarding"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Fontos tudnivalók</h3><p class="screen-subtitle">Biztonság és adatvédelem, érthetően.</p></div>
-              <span></span>
-            </header>
-            <div class="information-content">
-              <div class="info-stack">
-                <article class="info-card">
-                  <span class="info-icon" aria-hidden="true"><svg class="icon"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg></span>
-                  <div><p>Az app támogat, de nem helyettesít szakmai segítséget.</p><small>Nem kezelési vagy sürgősségi eszköz.</small></div>
-                </article>
-                <article class="info-card">
-                  <span class="info-icon" aria-hidden="true"><svg class="icon"><path d="M12 3 20 6v5c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V6z" /><path d="M12 8v5M12 17h.01" /></svg></span>
-                  <div><p>Sürgős veszélyben kérj azonnali segítséget.</p><small>Fordulj helyi sürgősségi vagy szakmai ellátáshoz.</small></div>
-                </article>
-                <article class="info-card">
-                  <span class="info-icon" aria-hidden="true"><svg class="icon"><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" /></svg></span>
-                  <div><p>Az adataid érzékeny személyes adatok lehetnek.</p><small>Helyi titkosítás és PIN-kód is beállítható.</small></div>
-                </article>
-              </div>
-              <label class="consent-row" for="privacy-consent">
-                <input class="native-control" id="privacy-consent" type="checkbox" data-action="accept-information">
-                <span class="checkbox-visual" aria-hidden="true"></span>
-                <span>Elolvastam és elfogadom.</span>
-              </label>
-              <button class="primary-button" type="button" data-action="continue-information" data-requires="privacy-consent" data-target-screen="start-date">Tovább</button>
+              <button class="primary-button" type="button" data-action="start-onboarding" data-target-screen="start-date">Kezdjük el</button>
             </div>
           </article>
         </section>
@@ -5695,7 +5642,7 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="information"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="onboarding"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
               <div class="screen-header-copy"><h3>Mikor kezdődött a jelenlegi tiszta időszakod?</h3></div>
               <span></span>
             </header>
@@ -6159,15 +6106,14 @@
 │   ├── Lélegezz.
 │   ├── Igyál vizet.
 │   ├── Menj ki.
-│   ├── Írj egy mondatot.
-│   └── Most hívd fel a szponzorodat.
+│   └── Írj egy mondatot.
 ├── Olvasd el, miért kezdted el
 ├── Keresd meg a következő meetinget
 ├── Szakmai vagy sürgősségi segítség
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -6189,7 +6135,7 @@
               <p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p>
               <div class="panic-grid" aria-label="Pánik mód gyors opciók">
                 <button type="button" data-action="call-sponsor" data-target-screen="panic-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
-                <button type="button" data-action="call-backup-contact" data-target-screen="panic-backup-contact"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
+                <button type="button" data-action="call-backup-contact" data-target-screen="panic-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
                 <button type="button" data-action="start-survival-pack" data-target-screen="survival-stop"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
                 <button type="button" data-action="why-started" data-target-screen="panic-why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Olvasd el, miért kezdted el</button>
                 <button type="button" data-action="meeting-finder" data-target-screen="panic-meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Keresd meg a következő meetinget</button>
@@ -6207,8 +6153,8 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="1 / 6">
-                <span class="survival-step-count">1 / 6</span>
+              <section class="survival-flow-card" data-survival-step="1 / 5">
+                <span class="survival-step-count">1 / 5</span>
                 <h3>Állj meg.</h3>
                 <p>Ne csinálj semmit 10 másodpercig.</p>
                 <div class="survival-visual"><div class="survival-calm-mark"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></div></div>
@@ -6228,8 +6174,8 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="2 / 6">
-                <span class="survival-step-count">2 / 6</span>
+              <section class="survival-flow-card" data-survival-step="2 / 5">
+                <span class="survival-step-count">2 / 5</span>
                 <h3>Lélegezz.</h3>
                 <p>Vegyél 5 lassú, mély levegőt.</p>
                 <div class="survival-visual"><div class="survival-breath-visual">Kilégzés</div></div>
@@ -6249,8 +6195,8 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="3 / 6">
-                <span class="survival-step-count">3 / 6</span>
+              <section class="survival-flow-card" data-survival-step="3 / 5">
+                <span class="survival-step-count">3 / 5</span>
                 <h3>Igyál vizet.</h3>
                 <p>Egy korty is számít.</p>
                 <div class="survival-visual"><div class="survival-water-visual" aria-hidden="true"></div></div>
@@ -6270,8 +6216,8 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="4 / 6">
-                <span class="survival-step-count">4 / 6</span>
+              <section class="survival-flow-card" data-survival-step="4 / 5">
+                <span class="survival-step-count">4 / 5</span>
                 <h3>Menj ki.</h3>
                 <p>Friss levegő. Változtass környezetet.</p>
                 <div class="survival-visual"><div class="survival-door-visual" aria-hidden="true"></div></div>
@@ -6291,106 +6237,77 @@
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="5 / 6">
-                <span class="survival-step-count">5 / 6</span>
+              <section class="survival-flow-card" data-survival-step="5 / 5">
+                <span class="survival-step-count">5 / 5</span>
                 <h3>Írj egy mondatot.</h3>
                 <p>Írd ki, ami benned van. Csak őszintén.</p>
                 <div class="survival-visual"><div class="survival-note-visual" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div>
               </section>
               <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="complete-survival-note" data-target-screen="survival-call-sponsor">Írni fogok</button>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-survival-call-sponsor">
-          <div class="screen-label"><span class="screen-index">18F</span><strong>Hívd fel a szponzorodat</strong> · 15 perces flow</div>
-          <article class="phone-screen survival-flow-screen no-nav" id="survival-call-sponsor" data-screen="survival-call-sponsor" data-parent-screen="survival-note">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="survival-flow-content">
-              <section class="survival-flow-card" data-survival-step="6 / 6">
-                <span class="survival-step-count">6 / 6</span>
-                <h3>Most hívd fel a szponzorodat.</h3>
-                <p>Nem kell egyedül megcsinálnod.</p>
-                <div class="survival-visual"><div class="survival-phone-visual"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div></div>
-              </section>
-              <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="call-sponsor-after-survival" data-target-screen="panic-help-message">Hívás</button>
+                <button class="checkin-action primary" type="button" data-action="complete-survival-note" data-target-screen="panic-help-message">Hívni fogok</button>
               </div>
             </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-panic-help-message">
-          <div class="screen-label"><span class="screen-index">26</span><strong>Szponzor</strong> · kontakt és gyors üzenetek</div>
-          <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root" data-contact-layout="contact-call-messages">
+          <div class="screen-label"><span class="screen-index">26</span><strong>Hívj fel valakit</strong> · kapcsolattartók</div>
+          <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root" data-contact-layout="combined-contact-accordions">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="screen-header">
               <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Szponzor</h3><p class="screen-subtitle">Kapcsolattartó és gyors üzenetek.</p></div>
+              <div class="screen-header-copy"><h3>Hívj fel valakit</h3><p class="screen-subtitle">Nyisd le, akit most elérsz.</p></div>
               <span aria-hidden="true"></span>
             </header>
             <div class="panic-detail-content">
-              <section class="panic-contact-card soft-card" data-component="panic-contact-card">
-                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></div>
-                <div><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></div>
-              </section>
-              <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-sponsor-call">
-                <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
-                <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
-                <span aria-hidden="true">›</span>
-              </button>
-              <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
-                <h4>Gyors üzenetek</h4>
-                <p>Válassz egyet, ha most nehéz megfogalmazni.</p>
-                <div class="panic-message-list">
-                  <button type="button" data-action="send-sponsor-template">Most erős sóvárgásom van, fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                  <button type="button" data-action="send-sponsor-template">Nem kell megoldanod, csak maradj velem pár percig.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                  <button type="button" data-action="send-sponsor-template">Elindítok egy túlélőcsomagot, közben jó lenne kapcsolódni.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+              <h4 class="panic-contact-title">Kapcsolattartók</h4>
+              <details class="panic-contact-accordion soft-card" data-component="panic-contact-accordion" data-contact="sponsor" data-contact-state="expanded" open>
+                <summary class="panic-contact-card" data-component="panic-contact-card">
+                  <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></div>
+                  <div><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></div>
+                </summary>
+                <div class="panic-contact-details">
+                  <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-sponsor-call">
+                    <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
+                    <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
+                    <span aria-hidden="true">›</span>
+                  </button>
+                  <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
+                    <h4>Gyors üzenetek</h4>
+                    <p>Válassz egyet, ha most nehéz megfogalmazni.</p>
+                    <div class="panic-message-list">
+                      <button type="button" data-action="send-sponsor-template">Most erős sóvárgásom van, fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                      <button type="button" data-action="send-sponsor-template">Nem kell megoldanod, csak maradj velem pár percig.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                      <button type="button" data-action="send-sponsor-template">Elindítok egy túlélőcsomagot, közben jó lenne kapcsolódni.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                    </div>
+                  </section>
                 </div>
-              </section>
-            </div>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-panic-backup-contact">
-          <div class="screen-label"><span class="screen-index">27</span><strong>Tartalék kapcsolat</strong> · gyors opció</div>
-          <article class="phone-screen branch-screen" id="panic-backup-contact" data-screen="panic-backup-contact" data-parent-screen="panic-root" data-contact-layout="contact-call-messages">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Tartalék kapcsolattartó</h3><p class="screen-subtitle">Ha a szponzor most nem elérhető.</p></div>
-              <span aria-hidden="true"></span>
-            </header>
-            <div class="panic-detail-content">
-              <section class="panic-contact-card soft-card" data-component="panic-contact-card">
-                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div>
-                <div><strong>Anya</strong><small>Tartalék kapcsolat · előre engedélyezett<br>+36 30 987 6543</small></div>
-              </section>
-              <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-backup-call">
-                <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
-                <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
-                <span aria-hidden="true">›</span>
-              </button>
-              <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
-                <h4>Gyors üzenetek</h4>
-                <p>Ugyanaz a gyors segítségkérés, csak a tartalék kapcsolattartónak.</p>
-                <div class="panic-message-list">
-                  <button type="button" data-action="send-backup-template">Most nehéz helyzetben vagyok. Fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                  <button type="button" data-action="send-backup-template">A szponzorom nem elérhető, pár perc támogatás kellene.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                  <button type="button" data-action="send-backup-template">Nem kell megoldanod, csak jó lenne nem egyedül lennem most.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+              </details>
+              <details class="panic-contact-accordion soft-card" data-component="panic-contact-accordion" data-contact="backup" data-contact-state="collapsed">
+                <summary class="panic-contact-card" data-component="panic-contact-card">
+                  <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div>
+                  <div><strong>Anya</strong><small>Tartalék kapcsolattartó · előre engedélyezett<br>+36 30 987 6543</small></div>
+                </summary>
+                <div class="panic-contact-details">
+                  <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-backup-call">
+                    <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
+                    <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
+                    <span aria-hidden="true">›</span>
+                  </button>
+                  <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
+                    <h4>Gyors üzenetek</h4>
+                    <p>Ugyanaz a gyors segítségkérés, csak a tartalék kapcsolattartónak.</p>
+                    <div class="panic-message-list">
+                      <button type="button" data-action="send-backup-template">Most nehéz helyzetben vagyok. Fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                      <button type="button" data-action="send-backup-template">A szponzorom nem elérhető, pár perc támogatás kellene.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                      <button type="button" data-action="send-backup-template">Nem kell megoldanod, csak jó lenne nem egyedül lennem most.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                    </div>
+                  </section>
                 </div>
-              </section>
+              </details>
             </div>
           </article>
         </section>

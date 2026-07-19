@@ -17,7 +17,6 @@ const screenOrder = [
   ["welcome-lighting-lab", null],
   ["splash", null],
   ["onboarding", "splash"],
-  ["information", "onboarding"],
   ["start-date", "onboarding"],
   ["recovery-goal", "onboarding"],
   ["sponsor-setup", "onboarding"],
@@ -33,9 +32,7 @@ const screenOrder = [
   ["survival-water", "survival-breathe"],
   ["survival-outside", "survival-water"],
   ["survival-note", "survival-outside"],
-  ["survival-call-sponsor", "survival-note"],
   ["panic-help-message", "panic-root"],
-  ["panic-backup-contact", "panic-root"],
   ["panic-why-started", "panic-root"],
   ["panic-meeting-finder", "panic-root"],
   ["panic-emergency-help", "panic-root"],
@@ -59,8 +56,8 @@ const screenRows = [
   [
     "entry",
     "splash",
-    "welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications",
-    ["welcome-lighting-lab", "splash", "onboarding", "information", "start-date", "recovery-goal", "sponsor-setup", "notifications"],
+    "welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications",
+    ["welcome-lighting-lab", "splash", "onboarding", "start-date", "recovery-goal", "sponsor-setup", "notifications"],
   ],
   [
     "home",
@@ -77,7 +74,7 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
       "survival-stop",
@@ -85,9 +82,7 @@ const screenRows = [
       "survival-water",
       "survival-outside",
       "survival-note",
-      "survival-call-sponsor",
       "panic-help-message",
-      "panic-backup-contact",
       "panic-why-started",
       "panic-meeting-finder",
       "panic-emergency-help",
@@ -321,7 +316,7 @@ try {
   );
   assert.deepEqual(panicRootActions, [
     { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-help-message" },
-    { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-backup-contact" },
+    { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-help-message" },
     { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "survival-stop" },
     { text: "Olvasd el, miért kezdted el", action: "why-started", target: "panic-why-started" },
     { text: "Keresd meg a következő meetinget", action: "meeting-finder", target: "panic-meeting-finder" },
@@ -362,28 +357,37 @@ try {
     }),
   );
   assert.deepEqual(survivalFlowScreens, [
-    { screen: "survival-stop", parent: "panic-root", step: "1 / 6", title: "Állj meg.", body: "Ne csinálj semmit 10 másodpercig.", cta: "Kész", target: "survival-breathe" },
-    { screen: "survival-breathe", parent: "survival-stop", step: "2 / 6", title: "Lélegezz.", body: "Vegyél 5 lassú, mély levegőt.", cta: "Kész", target: "survival-water" },
-    { screen: "survival-water", parent: "survival-breathe", step: "3 / 6", title: "Igyál vizet.", body: "Egy korty is számít.", cta: "Kész", target: "survival-outside" },
-    { screen: "survival-outside", parent: "survival-water", step: "4 / 6", title: "Menj ki.", body: "Friss levegő. Változtass környezetet.", cta: "Kész", target: "survival-note" },
-    { screen: "survival-note", parent: "survival-outside", step: "5 / 6", title: "Írj egy mondatot.", body: "Írd ki, ami benned van. Csak őszintén.", cta: "Írni fogok", target: "survival-call-sponsor" },
-    { screen: "survival-call-sponsor", parent: "survival-note", step: "6 / 6", title: "Most hívd fel a szponzorodat.", body: "Nem kell egyedül megcsinálnod.", cta: "Hívás", target: "panic-help-message" },
+    { screen: "survival-stop", parent: "panic-root", step: "1 / 5", title: "Állj meg.", body: "Ne csinálj semmit 10 másodpercig.", cta: "Kész", target: "survival-breathe" },
+    { screen: "survival-breathe", parent: "survival-stop", step: "2 / 5", title: "Lélegezz.", body: "Vegyél 5 lassú, mély levegőt.", cta: "Kész", target: "survival-water" },
+    { screen: "survival-water", parent: "survival-breathe", step: "3 / 5", title: "Igyál vizet.", body: "Egy korty is számít.", cta: "Kész", target: "survival-outside" },
+    { screen: "survival-outside", parent: "survival-water", step: "4 / 5", title: "Menj ki.", body: "Friss levegő. Változtass környezetet.", cta: "Kész", target: "survival-note" },
+    { screen: "survival-note", parent: "survival-outside", step: "5 / 5", title: "Írj egy mondatot.", body: "Írd ki, ami benned van. Csak őszintén.", cta: "Hívni fogok", target: "panic-help-message" },
   ], "15-minute survival package must include every source screen in order");
 
-  const contactScreens = await page.locator('[data-contact-layout="contact-call-messages"]').evaluateAll((screens) =>
+  const contactScreens = await page.locator('[data-contact-layout="combined-contact-accordions"]').evaluateAll((screens) =>
     screens.map((screen) => ({
       screen: screen.dataset.screen,
       title: screen.querySelector("h3")?.textContent.trim(),
-      contact: screen.querySelector('[data-component="panic-contact-card"] strong')?.textContent.trim(),
-      callAction: screen.querySelector('[data-component="panic-call-card"]')?.dataset.action,
-      callLabel: screen.querySelector('[data-component="panic-call-card"] strong')?.textContent.trim(),
-      messageActions: Array.from(screen.querySelectorAll('[data-component="panic-quick-messages"] [data-action]')).map((button) => button.dataset.action),
+      contacts: Array.from(screen.querySelectorAll('[data-component="panic-contact-accordion"]')).map((accordion) => ({
+        contact: accordion.dataset.contact,
+        state: accordion.dataset.contactState,
+        open: accordion.hasAttribute("open"),
+        name: accordion.querySelector('[data-component="panic-contact-card"] strong')?.textContent.trim(),
+        callAction: accordion.querySelector('[data-component="panic-call-card"]')?.dataset.action,
+        messageActions: Array.from(accordion.querySelectorAll('[data-component="panic-quick-messages"] [data-action]')).map((button) => button.dataset.action),
+      })),
     })),
   );
   assert.deepEqual(contactScreens, [
-    { screen: "panic-help-message", title: "Szponzor", contact: "Kata", callAction: "start-sponsor-call", callLabel: "Hívás indítása", messageActions: ["send-sponsor-template", "send-sponsor-template", "send-sponsor-template"] },
-    { screen: "panic-backup-contact", title: "Tartalék kapcsolattartó", contact: "Anya", callAction: "start-backup-call", callLabel: "Hívás indítása", messageActions: ["send-backup-template", "send-backup-template", "send-backup-template"] },
-  ], "sponsor and backup contact screens must share contact/call/quick-message layout");
+    {
+      screen: "panic-help-message",
+      title: "Hívj fel valakit",
+      contacts: [
+        { contact: "sponsor", state: "expanded", open: true, name: "Kata", callAction: "start-sponsor-call", messageActions: ["send-sponsor-template", "send-sponsor-template", "send-sponsor-template"] },
+        { contact: "backup", state: "collapsed", open: false, name: "Anya", callAction: "start-backup-call", messageActions: ["send-backup-template", "send-backup-template", "send-backup-template"] },
+      ],
+    },
+  ], "combined call screen must show sponsor and backup contacts as expandable accordions");
 
   const progressScreens = await page.locator(".progress-screen").evaluateAll((screens) =>
     screens.map((screen) => ({
@@ -423,6 +427,25 @@ try {
     { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", navActive: null, shortcuts: [] },
     { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", navActive: null, shortcuts: [] },
   ], "recovery row must integrate daily image, progress, and the remaining tools screens");
+
+  const recoveryOverviewLayout = await page.locator("#recovery-overview").evaluate((screen) => {
+    const content = screen.querySelector(".recovery-content");
+    const nav = screen.querySelector(".bottom-nav");
+    return {
+      overflowY: getComputedStyle(content).overflowY,
+      contentScrolls: content.scrollHeight > content.clientHeight,
+      hasBottomNav: Boolean(nav),
+      currentNav: nav?.querySelector("[aria-current='page'] span")?.textContent.trim(),
+      hasWhyStarted: Boolean(screen.querySelector('[data-action="open-recovery-why-started"][data-target-screen="panic-why-started"]')),
+    };
+  });
+  assert.deepEqual(recoveryOverviewLayout, {
+    overflowY: "auto",
+    contentScrolls: true,
+    hasBottomNav: true,
+    currentNav: "Felépülés",
+    hasWhyStarted: true,
+  }, "screen 30 recovery overview must scroll while keeping the bottom nav and why-started menu available");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images

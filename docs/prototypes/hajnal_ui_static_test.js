@@ -13,7 +13,6 @@ const screenOrder = [
   'welcome-lighting-lab',
   'splash',
   'onboarding',
-  'information',
   'start-date',
   'recovery-goal',
   'sponsor-setup',
@@ -29,9 +28,7 @@ const screenOrder = [
   'survival-water',
   'survival-outside',
   'survival-note',
-  'survival-call-sponsor',
   'panic-help-message',
-  'panic-backup-contact',
   'panic-why-started',
   'panic-meeting-finder',
   'panic-emergency-help',
@@ -129,7 +126,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 40, 'phone screen count');
+    expectCount(/class="phone-screen/g, 37, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -179,7 +176,6 @@ const tests = {
       'data-screen="welcome-lighting-lab"',
       'data-screen="splash"',
       'data-screen="onboarding"',
-      'data-screen="information"',
       'data-screen="start-date"'
     ]);
     [
@@ -188,8 +184,6 @@ const tests = {
       'Nem kell 90 napot egyszerre végigcsinálnod.',
       'Csak a mait.',
       'Kezdjük el',
-      'Már van fiókom',
-      'Elolvastam és elfogadom.',
       'Ma',
       'Tegnap',
       'Dátum kiválasztása'
@@ -199,6 +193,11 @@ const tests = {
     expectContains('data-returning-target="home"');
     expectContains('type="checkbox"');
     expectCount(/name="start-date"/g, 3, 'start-date choice count');
+    expectAbsent('data-screen="information"');
+    expectAbsent('data-target-screen="information"');
+    expectAbsent('id="column-information"');
+    expectAbsent('Már van fiókom');
+    expectAbsent('Elolvastam és elfogadom.');
     expectScreenContains('welcome-lighting-lab', [
       'class="phone-screen svg-lighting-lab-screen"',
       'data-screen="welcome-lighting-lab"',
@@ -253,9 +252,8 @@ const tests = {
     ]);
     assert.ok(!screenSlice('splash').includes('class="splash-landscape"'), 'Splash must not keep the old inline landscape SVG over the welcome background');
     assert.ok(!/<button\b/.test(screenSlice('splash')), 'Splash must not contain a CTA');
-    expectScreenContains('onboarding', ['Kezdjük el', 'Már van fiókom']);
-    expectScreenContains('information', ['Elolvastam és elfogadom.', 'continue-information']);
-    expectScreenContains('start-date', ['Ma', 'Tegnap', 'Dátum kiválasztása']);
+    expectScreenContains('onboarding', ['Kezdjük el', 'data-action="start-onboarding" data-target-screen="start-date"']);
+    expectScreenContains('start-date', ['data-parent-screen="onboarding"', 'data-target-screen="onboarding"', 'Ma', 'Tegnap', 'Dátum kiválasztása']);
     expectCount(/class="calendar-day[^\"]*"[^>]*type="button"/g, 35, 'semantic calendar date button count');
   },
 
@@ -402,7 +400,6 @@ const tests = {
       'data-screen="survival-water"',
       'data-screen="survival-outside"',
       'data-screen="survival-note"',
-      'data-screen="survival-call-sponsor"',
       'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
       'data-screen="daily-image"',
@@ -681,6 +678,7 @@ const tests = {
   },
 
   recoveryBranch() {
+    const recoveryOverviewScreen = screenSlice('recovery-overview');
     expectOrdered([
       'data-screen="recovery-overview"',
       'data-screen="recovery-steps-overview"',
@@ -755,6 +753,11 @@ const tests = {
       ['data-action="open-recovery-step-detail" data-target-screen="recovery-step-detail"', 'step detail target'],
       ['data-action="write-recovery-step-journal" data-target-screen="recovery-evening"', 'step journal CTA']
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    assert.ok(recoveryOverviewScreen.includes('<nav class="bottom-nav"'), 'screen 30 must keep its bottom nav inside the phone');
+    assert.ok(recoveryOverviewScreen.includes('aria-current="page" data-target-screen="recovery-overview"'), 'screen 30 bottom nav must keep Felépülés active');
+    assert.ok(recoveryOverviewScreen.includes('data-action="open-recovery-why-started" data-target-screen="panic-why-started"'), 'screen 30 must include a Miért kezdtem el menu action');
+    assert.match(html, /#recovery-overview \.recovery-content\s*\{[^}]*max-height:\s*calc\(var\(--screen-h\) - 68px - 70px\);[^}]*overflow-y:\s*auto;[^}]*padding-bottom:\s*18px/s, 'screen 30 recovery menu content must scroll above the bottom nav');
+    assert.match(html, /#recovery-overview \.bottom-nav\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*6/s, 'screen 30 bottom nav must stay visible below the scroll area');
     assert.match(html, /\.recovery-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF9F5/s, 'recovery screens must use the warm source-of-truth background');
     assert.match(html, /\.recovery-hero-card\s*\{[^}]*background:\s*url\("assets\/hero_s_svg\.svg"\)/s, 'recovery main hero must use an existing project SVG asset');
     assert.match(html, /\.recovery-step-art\s*\{[^}]*background:\s*url\("assets\/hero_fullscreen2_svg\.svg"\)/s, 'recovery detail art must use an existing project SVG asset');
@@ -770,9 +773,7 @@ const tests = {
       'data-screen="survival-water"',
       'data-screen="survival-outside"',
       'data-screen="survival-note"',
-      'data-screen="survival-call-sponsor"',
       'data-screen="panic-help-message"',
-      'data-screen="panic-backup-contact"',
       'data-screen="panic-why-started"',
       'data-screen="panic-meeting-finder"',
       'data-screen="panic-emergency-help"',
@@ -801,8 +802,8 @@ const tests = {
       'Friss levegő. Változtass környezetet.',
       'Írj egy mondatot.',
       'Írd ki, ami benned van. Csak őszintén.',
-      'Most hívd fel a szponzorodat.',
-      'Nem kell egyedül megcsinálnod.',
+      'Hívj fel valakit',
+      'Kapcsolattartók',
       'Meeting keresése',
       'Ma visszaestem'
     ].forEach(expectContains);
@@ -817,14 +818,19 @@ const tests = {
     expectAbsent('id="column-checkin-survival-pack"');
     expectAbsent('data-target-screen="checkin-survival-pack"');
     expectAbsent('data-action="start-checkin-survival"');
+    expectAbsent('data-screen="survival-call-sponsor"');
+    expectAbsent('id="column-survival-call-sponsor"');
+    expectAbsent('data-target-screen="survival-call-sponsor"');
+    expectAbsent('data-screen="panic-backup-contact"');
+    expectAbsent('id="column-panic-backup-contact"');
+    expectAbsent('data-target-screen="panic-backup-contact"');
     expectContains('data-action="start-survival-pack" data-target-screen="survival-stop"');
     [
-      ['survival-stop', '1 / 6', 'Kész', 'survival-breathe'],
-      ['survival-breathe', '2 / 6', 'Kész', 'survival-water'],
-      ['survival-water', '3 / 6', 'Kész', 'survival-outside'],
-      ['survival-outside', '4 / 6', 'Kész', 'survival-note'],
-      ['survival-note', '5 / 6', 'Írni fogok', 'survival-call-sponsor'],
-      ['survival-call-sponsor', '6 / 6', 'Hívás', 'panic-help-message']
+      ['survival-stop', '1 / 5', 'Kész', 'survival-breathe'],
+      ['survival-breathe', '2 / 5', 'Kész', 'survival-water'],
+      ['survival-water', '3 / 5', 'Kész', 'survival-outside'],
+      ['survival-outside', '4 / 5', 'Kész', 'survival-note'],
+      ['survival-note', '5 / 5', 'Hívni fogok', 'panic-help-message']
     ].forEach(([id, step, cta, target]) => {
       const screen = screenSlice(id);
       assert.ok(screen.includes(`data-survival-step="${step}"`), `${id} must expose its source step counter`);
@@ -854,27 +860,27 @@ const tests = {
     assert.ok(!panicRootScreen.includes('Szakmai vagy sürgősségi segítség'), 'screen 16 must remove the direct professional-help quick button');
     assert.ok(!panicRootScreen.includes('data-action="emergency-help"'), 'screen 16 must remove the direct professional-help action');
     assert.ok(panicRootScreen.includes('data-action="call-sponsor" data-target-screen="panic-help-message"'), 'screen 16 sponsor quick option must target the integrated screen 26');
+    assert.ok(panicRootScreen.includes('data-action="call-backup-contact" data-target-screen="panic-help-message"'), 'screen 16 backup quick option must target the combined call screen');
     assert.ok(panicRootScreen.includes('data-action="report-relapse" data-target-screen="checkin-relapse"'), 'screen 16 must include a relapse button targeting checkin-relapse');
     assert.ok(panicRootScreen.includes('>Visszaestem</button>'), 'screen 16 relapse button must be labeled Visszaestem');
-    const sponsorMessageScreen = screenSlice('panic-help-message');
-    const backupContactScreen = screenSlice('panic-backup-contact');
+    const callSomeoneScreen = screenSlice('panic-help-message');
+    assert.ok(callSomeoneScreen.includes('data-contact-layout="combined-contact-accordions"'), 'combined call screen must expose the accordion contact layout');
+    assert.ok(callSomeoneScreen.includes('<h3>Hívj fel valakit</h3>'), 'combined call screen title must be Hívj fel valakit');
+    assert.equal((callSomeoneScreen.match(/data-component="panic-contact-accordion"/g) || []).length, 2, 'combined call screen must contain sponsor and backup accordions');
     [
-      [sponsorMessageScreen, 'panic-help-message', 'Kata', '+36 30 123 4567', 'data-action="start-sponsor-call"', 'data-action="send-sponsor-template"', 'Szponzor'],
-      [backupContactScreen, 'panic-backup-contact', 'Anya', '+36 30 987 6543', 'data-action="start-backup-call"', 'data-action="send-backup-template"', 'Tartalék kapcsolattartó']
-    ].forEach(([screen, id, contactName, phone, callAction, messageAction, title]) => {
-      assert.ok(screen.includes(`data-contact-layout="contact-call-messages"`), `${id} must expose the shared contact/call/messages layout`);
-      assert.ok(screen.includes(`data-component="panic-contact-card"`), `${id} must have a contact card`);
-      assert.ok(screen.includes(contactName), `${id} must include contact name`);
-      assert.ok(screen.includes(phone), `${id} must include contact phone`);
-      assert.ok(screen.includes(`data-component="panic-call-card"`), `${id} must have a call-start card`);
-      assert.ok(screen.includes(callAction), `${id} must expose its call action`);
-      assert.ok(screen.includes('Hívás indítása'), `${id} must label the call-start card`);
-      assert.ok(screen.includes(`data-component="panic-quick-messages"`), `${id} must have a quick messages section`);
-      assert.ok(screen.includes(messageAction), `${id} must expose template message actions`);
-      assert.ok(screen.includes(title), `${id} must keep the correct contact title`);
-      assert.ok(screen.indexOf('data-component="panic-contact-card"') < screen.indexOf('data-component="panic-call-card"'), `${id} contact card must be above call card`);
-      assert.ok(screen.indexOf('data-component="panic-call-card"') < screen.indexOf('data-component="panic-quick-messages"'), `${id} call card must be above quick messages`);
+      ['data-contact="sponsor"', 'data-contact-state="expanded"', 'Kata', '+36 30 123 4567', 'data-action="start-sponsor-call"', 'data-action="send-sponsor-template"', 'Szponzor'],
+      ['data-contact="backup"', 'data-contact-state="collapsed"', 'Anya', '+36 30 987 6543', 'data-action="start-backup-call"', 'data-action="send-backup-template"', 'Tartalék kapcsolattartó']
+    ].forEach(([contact, state, contactName, phone, callAction, messageAction, title]) => {
+      assert.ok(callSomeoneScreen.includes(contact), `combined call screen must include ${contact}`);
+      assert.ok(callSomeoneScreen.includes(state), `combined call screen must expose ${state}`);
+      assert.ok(callSomeoneScreen.includes(contactName), `combined call screen must include ${contactName}`);
+      assert.ok(callSomeoneScreen.includes(phone), `combined call screen must include ${phone}`);
+      assert.ok(callSomeoneScreen.includes(callAction), `combined call screen must expose ${callAction}`);
+      assert.ok(callSomeoneScreen.includes(messageAction), `combined call screen must expose ${messageAction}`);
+      assert.ok(callSomeoneScreen.includes(title), `combined call screen must include ${title}`);
     });
+    assert.equal((callSomeoneScreen.match(/data-component="panic-call-card"/g) || []).length, 2, 'each contact accordion must include a call card');
+    assert.equal((callSomeoneScreen.match(/data-component="panic-quick-messages"/g) || []).length, 2, 'each contact accordion must include quick messages');
     expectCount(/class="screen-row/g, 6, 'screen row count');
   },
 
@@ -893,16 +899,15 @@ const tests = {
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 6, 'screen row count');
-    expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
+    expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     const parents = {
       onboarding: 'splash',
-      information: 'onboarding',
       'start-date': 'onboarding',
       'recovery-goal': 'onboarding',
       'sponsor-setup': 'onboarding',
@@ -920,9 +925,7 @@ const tests = {
       'survival-water': 'survival-breathe',
       'survival-outside': 'survival-water',
       'survival-note': 'survival-outside',
-      'survival-call-sponsor': 'survival-note',
       'panic-help-message': 'panic-root',
-      'panic-backup-contact': 'panic-root',
       'panic-why-started': 'panic-root',
       'panic-meeting-finder': 'panic-root',
       'panic-emergency-help': 'panic-root',
