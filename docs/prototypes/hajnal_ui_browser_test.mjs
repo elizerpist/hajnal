@@ -28,7 +28,6 @@ const screenOrder = [
   ["evening-reflection", "checkin-clean"],
   ["reflection-saved", "evening-reflection"],
   ["panic-root", "home"],
-  ["panic-help-sheet", "panic-root"],
   ["checkin-survival-pack", "panic-root"],
   ["panic-sponsor-call", "panic-root"],
   ["panic-help-message", "panic-root"],
@@ -61,10 +60,9 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root panic-help-sheet checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
-      "panic-help-sheet",
       "checkin-survival-pack",
       "panic-sponsor-call",
       "panic-help-message",
@@ -285,13 +283,14 @@ try {
         backgroundImage: style.backgroundImage,
         display: style.display,
         flexDirection: style.flexDirection,
+        action: button.dataset.action,
+        target: button.dataset.targetScreen || null,
       };
     }),
   );
   assert.deepEqual(panicMainButtonState, [
-    { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column" },
-    { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column" },
-  ], "large panic help buttons must have a homogeneous fill and heart icon");
+    { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column", action: "focus-panic-options", target: null },
+  ], "large panic help button must have a homogeneous fill, heart icon, and no deleted screen target");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
