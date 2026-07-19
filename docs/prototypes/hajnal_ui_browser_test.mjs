@@ -43,7 +43,6 @@ const screenOrder = [
   ["progress-journey", "progress-overview"],
   ["progress-day-detail", "progress-journey"],
   ["progress-calendar", "progress-overview"],
-  ["progress-stats", "progress-overview"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
   ["recovery-step-detail", "recovery-steps-overview"],
@@ -94,8 +93,8 @@ const screenRows = [
   [
     "progress",
     "progress-overview",
-    "progress-overview progress-journey progress-day-detail progress-calendar progress-stats",
-    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats"],
+    "progress-overview progress-journey progress-day-detail progress-calendar",
+    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar"],
   ],
   [
     "recovery",
@@ -397,12 +396,32 @@ try {
     })),
   );
   assert.deepEqual(progressScreens, [
-    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar", "progress-stats"] },
-    { screen: "progress-journey", parent: "progress-overview", title: "90 napos út", shortcuts: [] },
+    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar"] },
+    { screen: "progress-journey", parent: "progress-overview", title: "Általános statisztika", shortcuts: [] },
     { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
     { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
-    { screen: "progress-stats", parent: "progress-overview", title: "Statisztikák", shortcuts: [] },
-  ], "progress menu must keep milestones out of the progress row");
+  ], "progress menu must remove the former standalone statistics screen");
+
+  const generalStatsSummary = await page.locator("#progress-journey").evaluate((screen) => ({
+    component: screen.querySelector('[data-component="general-statistics-summary"]')?.dataset.component || null,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    cards: Array.from(screen.querySelectorAll(".progress-stat-card")).map((card) => ({
+      value: card.querySelector("strong")?.textContent.trim(),
+      label: card.querySelector("span")?.textContent.trim(),
+    })),
+    firstStatOffset: screen.textContent.indexOf("Jelenlegi sorozat"),
+    journeyOffset: screen.textContent.indexOf("1–30. nap"),
+    removedTargets: Array.from(screen.ownerDocument.querySelectorAll('[data-target-screen="progress-stats"], [data-action="open-progress-stats"], [data-progress-shortcut="stats"]')).length,
+  }));
+  assert.equal(generalStatsSummary.component, "general-statistics-summary", "screen 17 must expose the general statistics summary");
+  assert.equal(generalStatsSummary.title, "Általános statisztika", "screen 17 title");
+  assert.deepEqual(generalStatsSummary.cards, [
+    { value: "24 nap", label: "Jelenlegi sorozat" },
+    { value: "93%", label: "Check-in arány" },
+    { value: "37 nap", label: "Összes tiszta nap" },
+  ], "screen 17 must contain the moved statistic cards");
+  assert.ok(generalStatsSummary.firstStatOffset >= 0 && generalStatsSummary.firstStatOffset < generalStatsSummary.journeyOffset, "general stats must appear before journey content");
+  assert.equal(generalStatsSummary.removedTargets, 0, "no target or shortcut may point at removed screen 20");
 
   const milestoneGallery = await page.locator("#progress-milestones").evaluate((screen) => ({
     parent: screen.dataset.parentScreen,

@@ -39,7 +39,6 @@ const screenOrder = [
   'progress-journey',
   'progress-day-detail',
   'progress-calendar',
-  'progress-stats',
   'recovery-overview',
   'recovery-steps-overview',
   'recovery-step-detail',
@@ -126,7 +125,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 37, 'phone screen count');
+    expectCount(/class="phone-screen/g, 36, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -568,18 +567,20 @@ const tests = {
       'data-screen="progress-journey"',
       'data-screen="progress-day-detail"',
       'data-screen="progress-calendar"',
-      'data-screen="progress-stats"',
       'data-screen="recovery-overview"'
     ]);
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar"');
     [
       'Haladás',
       '24. nap',
       'a jelenlegi sorozatod',
       'Leghosszabb sorozat',
+      'Általános statisztika',
+      'Jelenlegi sorozat',
+      'Check-in arány',
+      'Összes tiszta nap',
       '90 napos út',
       'Naptár',
-      'Statisztikák',
       'Következő mérföldkő',
       '30 nap · Egy hónap',
       '1–30. nap',
@@ -591,17 +592,29 @@ const tests = {
       'Sóvárgás',
       'Szponzorral beszéltem',
       'Május 2024',
-      'Részletek megnyitása',
-      'Átlagos sóvárgás szint',
-      'Check-in arány',
-      'Legtöbbször használt eszközök'
+      'Részletek megnyitása'
     ].forEach(expectContains);
     [
-      ['data-action="open-progress-journey" data-target-screen="progress-journey"', '90 napos út shortcut'],
+      ['data-action="open-progress-journey" data-target-screen="progress-journey"', 'general statistics shortcut'],
       ['data-action="open-progress-calendar" data-target-screen="progress-calendar"', 'Naptár shortcut'],
-      ['data-action="open-progress-stats" data-target-screen="progress-stats"', 'Statisztikák shortcut'],
       ['data-action="open-progress-day-detail" data-target-screen="progress-day-detail"', 'day detail target']
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    [
+      'data-screen="progress-stats"',
+      'id="progress-stats"',
+      'id="column-progress-stats"',
+      'data-target-screen="progress-stats"',
+      'data-action="open-progress-stats"',
+      'data-progress-shortcut="stats"',
+      'Átlagos sóvárgás szint',
+      'Legtöbbször használt eszközök',
+      'Hangulat átlag',
+      'Segítségkérés gyakorisága'
+    ].forEach(expectAbsent);
+    const generalStatsScreen = screenSlice('progress-journey');
+    assert.ok(generalStatsScreen.includes('data-component="general-statistics-summary"'), 'screen 17 must expose the general statistics summary');
+    assert.ok(generalStatsScreen.indexOf('Jelenlegi sorozat') < generalStatsScreen.indexOf('1–30. nap'), 'screen 17 stats must appear before the journey grid');
+    assert.equal((generalStatsScreen.match(/class="progress-stat-card"/g) || []).length, 3, 'screen 17 must contain exactly three moved statistic cards');
     assert.ok(!progressOverviewScreen.includes('data-progress-shortcut="milestones"'), 'progress overview must no longer contain the milestone shortcut');
     assert.ok(!progressOverviewScreen.includes('data-action="open-progress-milestones"'), 'progress overview must not open milestones directly');
     assert.ok(!progressOverviewScreen.includes('data-target-screen="progress-milestones"'), 'progress overview must not target the moved milestone screen');
@@ -920,7 +933,7 @@ const tests = {
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectAbsent('data-page="daily-image"');
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     const parents = {
@@ -951,7 +964,6 @@ const tests = {
       'progress-journey': 'progress-overview',
       'progress-day-detail': 'progress-journey',
       'progress-calendar': 'progress-overview',
-      'progress-stats': 'progress-overview',
       'tools-journal-list': 'recovery-overview',
       'tools-journal-entry': 'tools-journal-list',
       'tools-journal-detail': 'tools-journal-list',
