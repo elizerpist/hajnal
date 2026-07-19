@@ -44,18 +44,13 @@ const screenOrder = [
   'progress-calendar',
   'progress-stats',
   'progress-milestones',
-  'tools-overview',
-  'tools-steps',
-  'tools-step-question',
-  'tools-step-summary',
-  'tools-journal-list',
-  'tools-journal-entry',
-  'tools-craving-log',
-  'tools-journal-detail',
   'recovery-overview',
   'recovery-steps-overview',
   'recovery-step-detail',
-  'recovery-evening'
+  'recovery-evening',
+  'tools-journal-list',
+  'tools-journal-entry',
+  'tools-journal-detail'
 ];
 
 function expectContains(value) {
@@ -135,7 +130,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 46, 'phone screen count');
+    expectCount(/class="phone-screen/g, 41, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -368,22 +363,24 @@ const tests = {
     const collapsedNavEnd = collapsedHomeScreen.indexOf('</nav>', collapsedNavStart);
     const collapsedNav = collapsedHomeScreen.slice(collapsedNavStart, collapsedNavEnd);
     assert.ok(collapsedNav.includes('data-target-screen="home-collapsed"'), 'collapsed home current nav item must target the collapsed home screen');
-    for (const label of ['Kezdőlap', 'Haladás', 'Eszközök', 'Szponzor', 'Profil']) {
+    for (const label of ['Kezdőlap', 'Haladás', 'Felépülés', 'Szponzor', 'Profil']) {
       assert.ok(collapsedNav.includes(label), `collapsed home bottom nav is missing ${label}`);
     }
     assert.ok(collapsedNav.includes('data-target-screen="progress-overview"'), 'collapsed home Haladás nav item must target the progress overview');
+    assert.ok(collapsedNav.includes('data-target-screen="recovery-overview"'), 'collapsed home Felépülés nav item must target the recovery overview');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
     const navEnd = html.indexOf('</nav>', navStart);
     const nav = html.slice(navStart, navEnd);
     let cursor = -1;
-    for (const label of ['Kezdőlap', 'Haladás', 'Eszközök', 'Szponzor', 'Profil']) {
+    for (const label of ['Kezdőlap', 'Haladás', 'Felépülés', 'Szponzor', 'Profil']) {
       const next = nav.indexOf(label, cursor + 1);
       assert.ok(next > cursor, `${label} is missing or out of order in bottom navigation`);
       cursor = next;
     }
     assert.ok(nav.includes('data-target-screen="progress-overview"'), 'expanded home Haladás nav item must target the progress overview');
+    assert.ok(nav.includes('data-target-screen="recovery-overview"'), 'expanded home Felépülés nav item must target the recovery overview');
   },
 
   homeBranch() {
@@ -557,7 +554,7 @@ const tests = {
     expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
     expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
     assert.equal((eveningReflectionScreen.match(/<textarea\b/g) || []).length, 1, 'screen 12 reflection editor textarea must be restored');
-    expectCount(/<textarea\b/g, 3, 'reflection, workbook question, and journal entry editors must expose textareas');
+    expectCount(/<textarea\b/g, 2, 'reflection and journal entry editors must expose textareas after deleting the old workbook question screen');
   },
 
   progressBranch() {
@@ -619,41 +616,47 @@ const tests = {
   toolsBranch() {
     expectOrdered([
       'data-screen="progress-milestones"',
+      'data-screen="recovery-overview"',
+      'data-screen="recovery-steps-overview"',
+      'data-screen="recovery-step-detail"',
+      'data-screen="recovery-evening"',
+      'data-screen="tools-journal-list"',
+      'data-screen="tools-journal-entry"',
+      'data-screen="tools-journal-detail"'
+    ]);
+    expectAbsent('data-page="tools"');
+    expectAbsent('data-target-screen="tools"');
+    [
       'data-screen="tools-overview"',
       'data-screen="tools-steps"',
       'data-screen="tools-step-question"',
       'data-screen="tools-step-summary"',
-      'data-screen="tools-journal-list"',
-      'data-screen="tools-journal-entry"',
       'data-screen="tools-craving-log"',
-      'data-screen="tools-journal-detail"'
-    ]);
-    expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
-    expectAbsent('data-target-screen="tools"');
+      'data-target-screen="tools-overview"',
+      'data-target-screen="tools-steps"',
+      'data-target-screen="tools-step-question"',
+      'data-target-screen="tools-step-summary"',
+      'data-target-screen="tools-craving-log"',
+      'id="column-tools-overview"',
+      'id="column-tools-steps"',
+      'id="column-tools-step-question"',
+      'id="column-tools-step-summary"',
+      'id="column-tools-craving-log"',
+      'data-component="recovery-services-overview"',
+      'screen-index">S</span>',
+      'Szolgáltatások áttekintése'
+    ].forEach(expectAbsent);
     [
-      'Eszközök',
-      'Eszközök a felépülésedhez, minden nap.',
-      '12 lépés munkafüzet',
+      'Felépülés',
+      'Napi kép',
+      'Haladás',
       'Napló',
-      'Sóvárgásnapló',
       'Hála lista',
       'Napi józansági kérdés',
       'Légzőgyakorlat',
       'Miért kezdtem el?',
       'Túlélőcsomag',
       'Pánik mód',
-      '12 lépés munkafüzet',
-      '3 / 12 lépés',
-      '1 Beismertük tehetetlenségünket',
-      '2 Elhittük, hogy létezik nálunk nagyobb erő',
-      '2. lépés',
-      '2 / 6 kérdés',
-      'Mit jelent számodra az, hogy létezik nálad nagyobb erő?',
-      '2. lépés összegzése',
-      'Fontos gondolataid',
-      'Szeretném megbeszélni a szponzorommal',
-      'PDF export',
-      'Megosztás',
       'Új bejegyzés',
       'Keresés a bejegyzések között...',
       'Nehéz nap volt, de nem adtam fel',
@@ -663,41 +666,33 @@ const tests = {
       'Mennyire volt erős a sóvárgásod?',
       'Kép hozzáadása',
       'Hangfelvétel',
-      'Mai nap',
-      '3 bejegyzés',
-      'Stressz a munka miatt',
-      'Egyedüllét, unalom',
-      'Reggel még nyugodt voltam',
       'Bejegyzések erről a hétvégi találkozón.',
       'Szerkesztés',
       'Törlés'
     ].forEach(expectContains);
     [
-      ['data-action="open-tools-steps" data-target-screen="tools-steps"', '12-step workbook card'],
-      ['data-action="open-tools-journal" data-target-screen="tools-journal-list"', 'journal card'],
-      ['data-action="open-tools-craving" data-target-screen="tools-craving-log"', 'craving card'],
-      ['data-action="open-tools-survival-pack" data-target-screen="checkin-survival-pack"', 'survival pack shortcut'],
-      ['data-action="open-tools-panic" data-target-screen="panic-root"', 'panic mode shortcut'],
-      ['data-action="open-tools-step-question" data-target-screen="tools-step-question"', 'step question target'],
-      ['data-action="open-tools-step-summary" data-target-screen="tools-step-summary"', 'step summary target'],
+      ['data-action="open-recovery-daily-image" data-target-screen="daily-image"', 'daily image shortcut in recovery'],
+      ['data-action="open-recovery-progress" data-target-screen="progress-overview"', 'progress shortcut in recovery'],
+      ['data-action="open-recovery-journal" data-target-screen="tools-journal-list"', 'journal card moved into recovery'],
+      ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'gratitude shortcut in recovery'],
       ['data-action="new-journal-entry" data-target-screen="tools-journal-entry"', 'new journal target'],
       ['data-action="open-journal-detail" data-target-screen="tools-journal-detail"', 'journal detail target']
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
-    assert.match(html, /\.tools-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC/s, 'tools screens must use the same warm utility surface as the source row');
-    assert.match(html, /\.tools-menu-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\)/s, 'tools overview must use a compact two-column menu grid');
-    assert.match(html, /\.tools-hero-art\s*\{[^}]*background-image:\s*url\('assets\/hero_s_svg\.svg'\)/s, 'tools overview must use a project SVG hero asset, not a new PNG');
+    assert.ok(screenSlice('tools-journal-list').includes('data-parent-screen="recovery-overview"'), 'journal list must move under the recovery menu');
     expectAbsent('eszkozok_12lepes_naplo.png');
   },
 
   recoveryBranch() {
     expectOrdered([
-      'data-screen="tools-journal-detail"',
       'data-screen="recovery-overview"',
       'data-screen="recovery-steps-overview"',
       'data-screen="recovery-step-detail"',
-      'data-screen="recovery-evening"'
+      'data-screen="recovery-evening"',
+      'data-screen="tools-journal-list"',
+      'data-screen="tools-journal-entry"',
+      'data-screen="tools-journal-detail"'
     ]);
-    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening"');
+    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     [
       'Felépülés menü',
       '12 lépés és eszközök',
@@ -711,6 +706,13 @@ const tests = {
       'Írd le a mai napod és gondolataid',
       'Bejegyzéseid',
       'Korábbi naplóbejegyzések',
+      'Napi kép',
+      'Aznapi vizuális kép',
+      'Haladás',
+      '90 napos út, naptár és mérföldkövek',
+      'Napló',
+      'Hála lista',
+      'Napi józansági kérdés',
       'Támogatók és eszközök',
       'Légzőgyakorlat',
       'Nyugtató légzés, amikor kell',
@@ -743,8 +745,11 @@ const tests = {
     [
       ['data-action="continue-recovery-step" data-target-screen="recovery-step-detail"', 'continue current step'],
       ['data-action="open-recovery-steps" data-target-screen="recovery-steps-overview"', 'open 12-step overview'],
+      ['data-action="open-recovery-daily-image" data-target-screen="daily-image"', 'daily image menu target'],
+      ['data-action="open-recovery-progress" data-target-screen="progress-overview"', 'progress menu target'],
       ['data-action="open-recovery-evening" data-target-screen="recovery-evening"', 'open recovery evening reflection'],
-      ['data-action="open-recovery-journal" data-target-screen="recovery-evening"', 'open entries shortcut'],
+      ['data-action="open-recovery-journal" data-target-screen="tools-journal-list"', 'open entries shortcut'],
+      ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'open gratitude shortcut'],
       ['data-action="open-recovery-breathing" data-target-screen="survival-breathe"', 'breathing shortcut'],
       ['data-action="open-recovery-why-started" data-target-screen="panic-why-started"', 'why started shortcut'],
       ['data-action="open-recovery-survival-pack" data-target-screen="checkin-survival-pack"', 'survival package shortcut'],
@@ -870,7 +875,7 @@ const tests = {
       assert.ok(screen.indexOf('data-component="panic-contact-card"') < screen.indexOf('data-component="panic-call-card"'), `${id} contact card must be above call card`);
       assert.ok(screen.indexOf('data-component="panic-call-card"') < screen.indexOf('data-component="panic-quick-messages"'), `${id} call card must be above quick messages`);
     });
-    expectCount(/class="screen-row/g, 7, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
   },
 
   accessibility() {
@@ -887,14 +892,14 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 7, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
-    expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
-    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening"');
+    expectAbsent('data-page="tools"');
+    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -928,13 +933,8 @@ const tests = {
       'progress-calendar': 'progress-overview',
       'progress-stats': 'progress-overview',
       'progress-milestones': 'progress-overview',
-      'tools-overview': 'home',
-      'tools-steps': 'tools-overview',
-      'tools-step-question': 'tools-steps',
-      'tools-step-summary': 'tools-step-question',
-      'tools-journal-list': 'tools-overview',
+      'tools-journal-list': 'recovery-overview',
       'tools-journal-entry': 'tools-journal-list',
-      'tools-craving-log': 'tools-overview',
       'tools-journal-detail': 'tools-journal-list',
       'recovery-overview': 'home',
       'recovery-steps-overview': 'recovery-overview',

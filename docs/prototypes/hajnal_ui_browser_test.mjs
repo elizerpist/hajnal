@@ -48,18 +48,13 @@ const screenOrder = [
   ["progress-calendar", "progress-overview"],
   ["progress-stats", "progress-overview"],
   ["progress-milestones", "progress-overview"],
-  ["tools-overview", "home"],
-  ["tools-steps", "tools-overview"],
-  ["tools-step-question", "tools-steps"],
-  ["tools-step-summary", "tools-step-question"],
-  ["tools-journal-list", "tools-overview"],
-  ["tools-journal-entry", "tools-journal-list"],
-  ["tools-craving-log", "tools-overview"],
-  ["tools-journal-detail", "tools-journal-list"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
   ["recovery-step-detail", "recovery-steps-overview"],
   ["recovery-evening", "recovery-overview"],
+  ["tools-journal-list", "recovery-overview"],
+  ["tools-journal-entry", "tools-journal-list"],
+  ["tools-journal-detail", "tools-journal-list"],
 ];
 const screenRows = [
   [
@@ -114,16 +109,10 @@ const screenRows = [
     ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats", "progress-milestones"],
   ],
   [
-    "tools",
-    "tools-overview",
-    "tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail",
-    ["tools-overview", "tools-steps", "tools-step-question", "tools-step-summary", "tools-journal-list", "tools-journal-entry", "tools-craving-log", "tools-journal-detail"],
-  ],
-  [
     "recovery",
     "recovery-overview",
-    "recovery-overview recovery-steps-overview recovery-step-detail recovery-evening",
-    ["recovery-overview", "recovery-steps-overview", "recovery-step-detail", "recovery-evening"],
+    "recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail",
+    ["recovery-overview", "recovery-steps-overview", "recovery-step-detail", "recovery-evening", "tools-journal-list", "tools-journal-entry", "tools-journal-detail"],
   ],
 ];
 
@@ -280,8 +269,7 @@ try {
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
   assert.ok(rowPositions["daily-image"].top > rowPositions["panic-root"].top + 900, "daily image row must render below the panic row");
   assert.ok(rowPositions["progress-overview"].top > rowPositions["daily-image"].top + 900, "progress row must render below the daily image row");
-  assert.ok(rowPositions["tools-overview"].top > rowPositions["progress-overview"].top + 900, "tools row must render below the progress row");
-  assert.ok(rowPositions["recovery-overview"].top > rowPositions["tools-overview"].top + 900, "recovery row must render below the tools row");
+  assert.ok(rowPositions["recovery-overview"].top > rowPositions["progress-overview"].top + 900, "recovery row must render below the progress row");
 
   const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
     const dashboard = screen.querySelector(".home-metrics");
@@ -304,7 +292,7 @@ try {
     dashboardTop: 614,
     hasOpenedCard: false,
     navBottomGap: 0,
-    navLabels: ["Kezdőlap", "Haladás", "Eszközök", "Szponzor", "Profil"],
+    navLabels: ["Kezdőlap", "Haladás", "Felépülés", "Szponzor", "Profil"],
     currentTarget: "home-collapsed",
     progressTarget: "progress-overview",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
@@ -416,24 +404,8 @@ try {
     { screen: "progress-milestones", parent: "progress-overview", title: "Mérföldkövek", shortcuts: [] },
   ], "progress menu must follow the written spec screen set and hierarchy");
 
-  const toolsScreens = await page.locator(".tools-screen").evaluateAll((screens) =>
-    screens.map((screen) => ({
-      screen: screen.dataset.screen,
-      parent: screen.dataset.parentScreen,
-      title: screen.querySelector("h3")?.textContent.trim(),
-      shortcuts: Array.from(screen.querySelectorAll("[data-tools-shortcut]")).map((button) => button.dataset.targetScreen),
-    })),
-  );
-  assert.deepEqual(toolsScreens, [
-    { screen: "tools-overview", parent: "home", title: "Eszközök", shortcuts: ["tools-steps", "evening-reflection", "tools-journal-list", "survival-breathe", "tools-craving-log", "panic-why-started", "evening-reflection", "checkin-survival-pack"] },
-    { screen: "tools-steps", parent: "tools-overview", title: "12 lépés munkafüzet", shortcuts: [] },
-    { screen: "tools-step-question", parent: "tools-steps", title: "2. lépés", shortcuts: [] },
-    { screen: "tools-step-summary", parent: "tools-step-question", title: "2. lépés összegzése", shortcuts: [] },
-    { screen: "tools-journal-list", parent: "tools-overview", title: "Napló", shortcuts: [] },
-    { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", shortcuts: [] },
-    { screen: "tools-craving-log", parent: "tools-overview", title: "Sóvárgásnapló", shortcuts: [] },
-    { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", shortcuts: [] },
-  ], "tools row must match the source tools/workbook/journal screen set and hierarchy");
+  assert.equal(await page.locator('[data-page="tools"]').count(), 0, "standalone tools row must be removed");
+  assert.equal(await page.locator(".tools-screen").count(), 0, "standalone tools screens must be folded into recovery");
 
   const recoveryScreens = await page.locator(".recovery-screen").evaluateAll((screens) =>
     screens.map((screen) => ({
@@ -445,11 +417,14 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "recovery-evening", "recovery-evening", "survival-breathe", "panic-why-started", "checkin-survival-pack", "panic-root"] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "daily-image", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "recovery-evening", "survival-breathe", "panic-why-started", "checkin-survival-pack", "panic-root"] },
     { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },
-  ], "recovery row must match the 12lepes.png four-screen source layout");
+    { screen: "tools-journal-list", parent: "recovery-overview", title: "Napló", navActive: "Felépülés", shortcuts: [] },
+    { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", navActive: null, shortcuts: [] },
+    { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", navActive: null, shortcuts: [] },
+  ], "recovery row must integrate daily image, progress, and the remaining tools screens");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
