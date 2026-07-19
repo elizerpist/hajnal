@@ -49,21 +49,19 @@ const screenOrder = [
   ["tools-journal-list", "recovery-overview"],
   ["tools-journal-entry", "tools-journal-list"],
   ["tools-journal-detail", "tools-journal-list"],
-  ["alt-progress-overview", "progress-overview"],
-  ["alt-progress-daily-view", "alt-progress-overview"],
+  ["alt-progress-daily-view", "progress-overview"],
   ["alt-progress-journal-entry", "alt-progress-daily-view"],
-  ["alt-progress-calendar", "alt-progress-overview"],
+  ["alt-progress-calendar", "progress-overview"],
   ["alt-progress-calendar-day", "alt-progress-calendar"],
-  ["alt-progress-activity", "alt-progress-overview"],
+  ["alt-progress-activity", "progress-overview"],
   ["alt-progress-activity-detail", "alt-progress-activity"],
 ];
 const altProgressScreens = [
-  ["alt-progress-overview", "Haladás - Áttekintés (#6)", "progress-overview"],
-  ["alt-progress-daily-view", "Napi nézet", "alt-progress-overview"],
+  ["alt-progress-daily-view", "Napi nézet", "progress-overview"],
   ["alt-progress-journal-entry", "Naplóbejegyzés", "alt-progress-daily-view"],
-  ["alt-progress-calendar", "Naptár (havi nézet)", "alt-progress-overview"],
+  ["alt-progress-calendar", "Naptár (havi nézet)", "progress-overview"],
   ["alt-progress-calendar-day", "Nap részlete (naptárból)", "alt-progress-calendar"],
-  ["alt-progress-activity", "Aktivitás (napló)", "alt-progress-overview"],
+  ["alt-progress-activity", "Aktivitás (napló)", "progress-overview"],
   ["alt-progress-activity-detail", "Aktivitás részlete", "alt-progress-activity"],
 ];
 const screenRows = [
@@ -119,7 +117,7 @@ const screenRows = [
   ],
   [
     "alt-progress",
-    "alt-progress-overview",
+    "alt-progress-daily-view",
     altProgressScreens.map(([id]) => id).join(" "),
     altProgressScreens.map(([id]) => id),
   ],
@@ -583,6 +581,7 @@ try {
     sourceAsset: row.dataset.sourceAsset || "",
     cropComponents: row.querySelectorAll('[data-component="haladas-source-crop"]').length,
     sourceCropMarkers: row.querySelectorAll("[data-source-crop]").length,
+    deletedA1References: row.querySelectorAll('[data-screen="alt-progress-overview"], #alt-progress-overview, #column-alt-progress-overview, [data-target-screen="alt-progress-overview"], [data-action="open-alt-overview"], [data-component="alt-progress-dashboard"], [data-component="alt-progress-menu-grid"]').length,
     deletedA3References: row.querySelectorAll('[data-screen="alt-progress-day-detail"], #alt-progress-day-detail, #column-alt-progress-day-detail, [data-target-screen="alt-progress-day-detail"], [data-action="open-alt-day-detail"]').length,
     deletedA7A8A9References: row.querySelectorAll('[data-screen="alt-progress-statistics"], #alt-progress-statistics, #column-alt-progress-statistics, [data-target-screen="alt-progress-statistics"], [data-action="open-alt-statistics"], [data-screen="alt-progress-milestones"], #alt-progress-milestones, #column-alt-progress-milestones, [data-target-screen="alt-progress-milestones"], [data-action="open-alt-milestones"], [data-action="open-alt-next-milestone"], [data-component="alt-progress-next-milestone"], [data-screen="alt-progress-milestone-detail"], #alt-progress-milestone-detail, #column-alt-progress-milestone-detail, [data-target-screen="alt-progress-milestone-detail"], [data-action="open-alt-milestone-detail"], [data-action="alt-progress-share-milestone"]').length,
     imageCount: row.querySelectorAll("img").length,
@@ -598,12 +597,13 @@ try {
       backgroundImage: getComputedStyle(screen).backgroundImage,
     })),
   }));
-  assert.deepEqual(altProgressRow.root, "alt-progress-overview", "alternative progress row root");
+  assert.deepEqual(altProgressRow.root, "alt-progress-daily-view", "alternative progress row root");
   assert.deepEqual(altProgressRow.rowScreens, altProgressScreens.map(([id]) => id).join(" "), "alternative progress row screen order");
   assert.deepEqual(altProgressRow.sourceReference, "/storage/emulated/0/hajnal/haladas.png", "alternative progress source reference");
   assert.deepEqual(altProgressRow.sourceAsset, "", "alternative progress row must not embed a copied PNG asset");
   assert.deepEqual(altProgressRow.cropComponents, 0, "alternative progress row must not use source crop components");
   assert.deepEqual(altProgressRow.sourceCropMarkers, 0, "alternative progress row must not expose source crop coordinates");
+  assert.deepEqual(altProgressRow.deletedA1References, 0, "A1 alt-progress overview and all row references must be removed");
   assert.deepEqual(altProgressRow.deletedA3References, 0, "A3 alt-progress day detail and all row references must be removed");
   assert.deepEqual(altProgressRow.deletedA7A8A9References, 0, "A7/A8/A9 alternative statistics and milestone screens and all row references must be removed");
   assert.deepEqual(altProgressRow.imageCount, 0, "alternative progress row must be built from DOM/CSS, not img tags");
@@ -615,10 +615,6 @@ try {
   assert.equal(altProgressRow.screens.every((screen) => screen.width === 412 && screen.height === 892), true, "every alternative progress screen must keep normal phone dimensions");
   assert.equal(altProgressRow.screens.every((screen) => screen.buttons > 0), true, "every alternative progress screen must expose real button controls");
   assert.equal(altProgressRow.screens.every((screen) => !screen.backgroundImage.includes("/assets/haladas.png")), true, "alternative progress screens must not use the source PNG as a background");
-  assert.ok(
-    altProgressRow.screens.find((screen) => screen.screen === "alt-progress-overview")?.components.includes("alt-progress-menu-grid"),
-    "alternative overview must contain a functional menu grid",
-  );
   assert.ok(
     altProgressRow.screens.find((screen) => screen.screen === "alt-progress-daily-view")?.textareas === 1,
     "alternative daily view must contain an editable note textarea",

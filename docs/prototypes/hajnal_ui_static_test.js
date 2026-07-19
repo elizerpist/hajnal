@@ -45,7 +45,6 @@ const screenOrder = [
   'tools-journal-list',
   'tools-journal-entry',
   'tools-journal-detail',
-  'alt-progress-overview',
   'alt-progress-daily-view',
   'alt-progress-journal-entry',
   'alt-progress-calendar',
@@ -55,23 +54,15 @@ const screenOrder = [
 ];
 
 const altProgressScreens = [
-  ['alt-progress-overview', 'Haladás - Áttekintés (#6)', 'progress-overview'],
-  ['alt-progress-daily-view', 'Napi nézet', 'alt-progress-overview'],
+  ['alt-progress-daily-view', 'Napi nézet', 'progress-overview'],
   ['alt-progress-journal-entry', 'Naplóbejegyzés', 'alt-progress-daily-view'],
-  ['alt-progress-calendar', 'Naptár (havi nézet)', 'alt-progress-overview'],
+  ['alt-progress-calendar', 'Naptár (havi nézet)', 'progress-overview'],
   ['alt-progress-calendar-day', 'Nap részlete (naptárból)', 'alt-progress-calendar'],
-  ['alt-progress-activity', 'Aktivitás (napló)', 'alt-progress-overview'],
+  ['alt-progress-activity', 'Aktivitás (napló)', 'progress-overview'],
   ['alt-progress-activity-detail', 'Aktivitás részlete', 'alt-progress-activity']
 ];
 
 const altProgressFunctionalRequirements = {
-  'alt-progress-overview': [
-    'data-component="alt-progress-dashboard"',
-    'data-component="alt-progress-menu-grid"',
-    'data-target-screen="alt-progress-daily-view"',
-    'data-target-screen="alt-progress-calendar"',
-    'data-target-screen="alt-progress-activity"'
-  ],
   'alt-progress-daily-view': [
     'data-component="alt-progress-day-switcher"',
     'data-component="alt-mood-selector"',
@@ -189,7 +180,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 42, 'phone screen count');
+    expectCount(/class="phone-screen/g, 41, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -982,12 +973,15 @@ const tests = {
 
   altProgressBranch() {
     const rowScreens = altProgressScreens.map(([id]) => id).join(' ');
+    const altProgressSectionStart = html.indexOf('<section class="screen-section alt-progress-section"');
+    assert.notEqual(altProgressSectionStart, -1, 'alternative progress section must exist');
+    const altProgressSection = html.slice(altProgressSectionStart);
     expectOrdered([
       'data-screen="tools-journal-detail"',
       'data-page="alt-progress"',
       ...altProgressScreens.map(([id]) => `data-screen="${id}"`)
     ]);
-    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="${rowScreens}"`);
+    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-daily-view" data-row-screens="${rowScreens}"`);
     expectContains('data-source-reference="/storage/emulated/0/hajnal/haladas.png"');
     expectContains('HALADÁS MENÜ - TELJES STRUKTÚRA ÉS NAVIGÁCIÓ');
     expectContains('Funkcionáló HTML menük - valódi containerek, gombok és állapotok');
@@ -1000,6 +994,27 @@ const tests = {
     expectAbsent('alt-progress-source-screen');
     expectAbsent('alt-progress-source-column');
     expectAbsent('<img src="assets/haladas.png"');
+    [
+      'data-screen="alt-progress-overview"',
+      'id="alt-progress-overview"',
+      'id="column-alt-progress-overview"',
+      'data-target-screen="alt-progress-overview"',
+      'data-action="open-alt-overview"',
+      'data-component="alt-progress-dashboard"',
+      'data-component="alt-progress-menu-grid"',
+      'alt-progress-dashboard',
+      'alt-progress-ring',
+      'alt-progress-stat-grid',
+      'alt-progress-menu-grid',
+      'alt-progress-menu-button',
+      '<span class="screen-index">A1</span>',
+      'Haladás - Áttekintés (#6)'
+    ].forEach(expectAbsent);
+    [
+      '├── Áttekintés',
+      '├── Statisztikák',
+      '├── Mérföldkövek'
+    ].forEach((value) => assert.ok(!altProgressSection.includes(value), `alternative progress tree must remove ${value}`));
     [
       'data-screen="alt-progress-day-detail"',
       'id="alt-progress-day-detail"',
@@ -1045,7 +1060,6 @@ const tests = {
     assert.equal((html.match(/class="screen-column alt-progress-column"/g) || []).length, altProgressScreens.length, 'every alternative progress screen must live in a normal labelled column');
     assert.match(html, /\.alt-progress-row\s*\{[^}]*display:\s*flex;[^}]*gap:\s*28px;[^}]*align-items:\s*flex-start/s, 'alternative progress row must be a bottom horizontal screen row');
     assert.match(html, /\.alt-progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF9F5/s, 'alternative progress screens must be CSS-rendered phone screens');
-    assert.match(html, /\.alt-progress-menu-grid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\)/s, 'overview menu must be a real grid of controls');
     assert.match(html, /\.alt-progress-bottom-nav\s*\{[^}]*position:\s*absolute;[^}]*bottom:\s*0/s, 'alternative progress screens must use an anchored bottom nav');
   },
 
@@ -1196,7 +1210,7 @@ const tests = {
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-calendar progress-day-detail"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
-    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="${altProgressScreens.map(([id]) => id).join(' ')}"`);
+    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-daily-view" data-row-screens="${altProgressScreens.map(([id]) => id).join(' ')}"`);
     const parents = {
       onboarding: 'splash',
       'start-date': 'onboarding',
@@ -1231,12 +1245,11 @@ const tests = {
       'recovery-steps-overview': 'recovery-overview',
       'recovery-step-detail': 'recovery-steps-overview',
       'recovery-evening': 'recovery-overview',
-      'alt-progress-overview': 'progress-overview',
-      'alt-progress-daily-view': 'alt-progress-overview',
+      'alt-progress-daily-view': 'progress-overview',
       'alt-progress-journal-entry': 'alt-progress-daily-view',
-      'alt-progress-calendar': 'alt-progress-overview',
+      'alt-progress-calendar': 'progress-overview',
       'alt-progress-calendar-day': 'alt-progress-calendar',
-      'alt-progress-activity': 'alt-progress-overview',
+      'alt-progress-activity': 'progress-overview',
       'alt-progress-activity-detail': 'alt-progress-activity'
     };
     Object.entries(parents).forEach(([id, parent]) => {
