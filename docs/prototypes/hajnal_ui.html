@@ -1827,6 +1827,17 @@
       padding: 15px 15px 12px;
     }
 
+    button.metric {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
     .metric small {
       display: block;
       color: rgba(44, 46, 119, .58);
@@ -2038,6 +2049,393 @@
     }
 
     .home-screen .bottom-nav {
+      position: absolute;
+      z-index: 30;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      color: var(--hajnal-navy);
+    }
+
+    .home-statistics-screen {
+      color: var(--hajnal-navy);
+      background: linear-gradient(180deg, #FFF8FC 0%, #F8EEF7 100%);
+    }
+
+    .home-statistics-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 252px;
+      background:
+        radial-gradient(circle at 22% 12%, rgba(254, 200, 132, .38), transparent 170px),
+        radial-gradient(circle at 86% 4%, rgba(184, 154, 215, .32), transparent 180px),
+        linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 248, 252, 0));
+      pointer-events: none;
+    }
+
+    .home-statistics-screen .screen-header {
+      position: relative;
+      z-index: 3;
+      min-height: 76px;
+      align-items: center;
+    }
+
+    .home-statistics-screen .screen-header-copy {
+      padding-top: 0;
+      text-align: center;
+    }
+
+    .home-statistics-screen .screen-header h3 {
+      color: var(--hajnal-navy);
+      font-size: 18px;
+      font-weight: 840;
+      letter-spacing: 0;
+    }
+
+    .statistics-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: calc(var(--screen-h) - 108px);
+      overflow-y: auto;
+      padding: 0 18px 92px;
+      scrollbar-width: none;
+    }
+
+    .statistics-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .statistics-progress-card,
+    .statistics-stat-card,
+    .statistics-panel,
+    .statistics-insight-card {
+      border: 1px solid rgba(106, 86, 180, .12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .82);
+      box-shadow: 0 12px 28px rgba(44, 46, 119, .08);
+    }
+
+    .statistics-progress-card {
+      min-height: 168px;
+      display: grid;
+      grid-template-columns: 138px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .statistics-ring {
+      width: 122px;
+      height: 122px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: conic-gradient(from -90deg, #6A56B4 0 26.666%, rgba(106, 86, 180, .13) 26.666% 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .64), 0 16px 28px rgba(106, 86, 180, .12);
+    }
+
+    .statistics-ring::before {
+      content: "";
+      position: absolute;
+      width: 88px;
+      height: 88px;
+      border-radius: inherit;
+      background: #FFF9FC;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
+    }
+
+    .statistics-ring strong {
+      position: relative;
+      z-index: 1;
+      color: var(--hajnal-navy);
+      font-size: 25px;
+      line-height: 1;
+      font-weight: 860;
+      letter-spacing: 0;
+    }
+
+    .statistics-progress-copy span,
+    .statistics-stat-card span,
+    .statistics-panel p,
+    .statistics-insight-card span {
+      color: rgba(44, 46, 119, .58);
+      font-size: 11px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .statistics-progress-copy strong {
+      display: block;
+      color: var(--hajnal-navy);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 860;
+      letter-spacing: 0;
+    }
+
+    .statistics-progress-copy span {
+      display: block;
+      margin-top: 7px;
+    }
+
+    .statistics-progress-copy em {
+      display: inline-grid;
+      min-height: 25px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .10);
+      color: var(--hajnal-purple);
+      font-size: 10.5px;
+      font-style: normal;
+      font-weight: 790;
+    }
+
+    .statistics-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .statistics-stat-card {
+      min-height: 76px;
+      padding: 12px;
+    }
+
+    .statistics-stat-card strong {
+      display: block;
+      color: var(--hajnal-navy);
+      font-size: 21px;
+      line-height: 1;
+      font-weight: 860;
+      letter-spacing: 0;
+    }
+
+    .statistics-stat-card span {
+      display: block;
+      margin-top: 6px;
+    }
+
+    .statistics-period-selector {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      padding: 4px;
+      border-radius: 14px;
+      background: rgba(106, 86, 180, .09);
+    }
+
+    .statistics-period-selector button {
+      min-height: 32px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: rgba(44, 46, 119, .62);
+      font-size: 11px;
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .statistics-period-selector button[aria-current="true"] {
+      background: #FFFFFF;
+      color: var(--hajnal-purple);
+      box-shadow: 0 5px 12px rgba(44, 46, 119, .08);
+    }
+
+    .statistics-panel {
+      padding: 13px;
+    }
+
+    .statistics-panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .statistics-panel-title h4 {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-size: 12.5px;
+      line-height: 1.2;
+      font-weight: 840;
+    }
+
+    .statistics-panel-title small {
+      color: rgba(106, 86, 180, .72);
+      font-size: 10px;
+      font-weight: 760;
+    }
+
+    .statistics-trend-chart {
+      height: 112px;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 8px;
+      padding: 12px 6px 4px;
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .48)),
+        repeating-linear-gradient(180deg, transparent 0 27px, rgba(106, 86, 180, .08) 28px);
+    }
+
+    .statistics-trend-chart span {
+      min-height: 18px;
+      border-radius: 999px 999px 6px 6px;
+      background: linear-gradient(180deg, #F18EAF 0%, #6A56B4 100%);
+      box-shadow: 0 6px 14px rgba(106, 86, 180, .13);
+    }
+
+    .statistics-task-bars {
+      display: grid;
+      gap: 9px;
+    }
+
+    .statistics-task-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr) 34px;
+      align-items: center;
+      gap: 8px;
+      color: var(--hajnal-navy);
+      font-size: 10.5px;
+      font-weight: 720;
+    }
+
+    .statistics-task-track {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(106, 86, 180, .12);
+    }
+
+    .statistics-task-track span {
+      width: var(--bar, 50%);
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #6A56B4, #F18EAF);
+    }
+
+    .statistics-calendar-dots {
+      display: grid;
+      grid-template-columns: repeat(14, 1fr);
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .statistics-calendar-dots span {
+      height: 19px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(84, 178, 120, .24);
+      color: #287549;
+      font-size: 8.5px;
+      font-weight: 820;
+    }
+
+    .statistics-calendar-dots .current {
+      background: var(--hajnal-purple);
+      color: var(--white);
+      box-shadow: 0 0 0 3px rgba(106, 86, 180, .13);
+    }
+
+    .statistics-inline-action {
+      width: 100%;
+      min-height: 42px;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) 16px;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 12px;
+      background: rgba(106, 86, 180, .10);
+      color: var(--hajnal-navy);
+      font-size: 11px;
+      font-weight: 780;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .statistics-inline-action .icon {
+      color: var(--hajnal-purple);
+    }
+
+    .statistics-next-milestone {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .statistics-next-milestone strong {
+      display: block;
+      color: var(--hajnal-navy);
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 860;
+    }
+
+    .statistics-next-milestone span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 11px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .statistics-next-milestone button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--hajnal-purple);
+      color: var(--white);
+      cursor: pointer;
+    }
+
+    .statistics-insights {
+      display: grid;
+      gap: 8px;
+    }
+
+    .statistics-insight-card {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+    }
+
+    .statistics-insight-card .row-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .statistics-insight-card strong {
+      display: block;
+      color: var(--hajnal-navy);
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 820;
+    }
+
+    .home-statistics-screen .bottom-nav {
       position: absolute;
       z-index: 30;
       left: 0;
@@ -6409,7 +6807,7 @@
 	└── Segítség kell → Pánik mód sora</pre>
       </div>
 
-	      <div class="screen-row" data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved">
+	      <div class="screen-row" data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home home-statistics progress-milestones daily-image checkin-clean evening-reflection reflection-saved">
         <section class="screen-column" id="column-home-collapsed">
           <div class="screen-label"><span class="screen-index">8A</span><strong>Kezdőlap csukott</strong> · Csak napi box</div>
           <article class="phone-screen home-screen home-collapsed-screen" id="home-collapsed" data-screen="home-collapsed" data-parent-screen="notifications" data-state="collapsed">
@@ -6427,13 +6825,13 @@
             </header>
 
             <div class="home-metrics soft-card" data-component="home-dashboard">
-              <div class="metric">
+              <button class="metric clean-days-metric" type="button" data-action="open-clean-day-statistics" data-target-screen="home-statistics" aria-label="Tiszta napok statisztikák megnyitása">
                 <small>Tiszta napok</small><strong>24</strong><em>nap</em>
                 <div class="segmented-progress" role="img" aria-label="24 nap a 90 napból">
                   <span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span>
                 </div>
                 <span class="progress-note">a 90 napból</span>
-              </div>
+              </button>
               <span class="dashboard-separator" aria-hidden="true"></span>
               <button class="clean-today-button" type="button" data-action="mark-clean-today" data-target-screen="checkin-clean">
                 <span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8" /></svg></span>
@@ -6468,13 +6866,13 @@
             </header>
 
             <div class="home-metrics soft-card" data-component="home-dashboard">
-              <div class="metric">
+              <button class="metric clean-days-metric" type="button" data-action="open-clean-day-statistics" data-target-screen="home-statistics" aria-label="Tiszta napok statisztikák megnyitása">
                 <small>Tiszta napok</small><strong>24</strong><em>nap</em>
                 <div class="segmented-progress" role="img" aria-label="24 nap a 90 napból">
                   <span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span>
                 </div>
                 <span class="progress-note">a 90 napból</span>
-              </div>
+              </button>
               <span class="dashboard-separator" aria-hidden="true"></span>
               <button class="clean-today-button" type="button" data-action="mark-clean-today" data-target-screen="checkin-clean">
                 <span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8" /></svg></span>
@@ -6505,6 +6903,86 @@
 
             <nav class="bottom-nav" aria-label="Fő navigáció">
               <button type="button" aria-current="page" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+        <section class="screen-column" id="column-home-statistics">
+          <div class="screen-label"><span class="screen-index">8C</span><strong>Statisztikák</strong> · Tiszta napok tap</div>
+          <article class="phone-screen home-statistics-screen" id="home-statistics" data-screen="home-statistics" data-parent-screen="home">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-action="return-home-from-statistics" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Statisztikák</h3><p class="screen-subtitle">A tiszta napjaid képe</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <main class="statistics-content" data-component="clean-day-statistics-hub">
+              <section class="statistics-progress-card" data-component="statistics-clean-progress">
+                <div class="statistics-ring" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><strong>24</strong></div>
+                <div class="statistics-progress-copy">
+                  <strong>24 nap</strong>
+                  <span>27% kész a 90 napos úton. A következő mérföldkő már látható távolságban van.</span>
+                  <em>6 nap a 30 napos kapuig</em>
+                </div>
+              </section>
+
+              <section class="statistics-summary-grid" data-component="statistics-summary-grid" aria-label="Fő statisztikák">
+                <div class="statistics-stat-card" data-stat-card="current-streak"><strong>24. nap</strong><span>Jelenlegi sorozat</span></div>
+                <div class="statistics-stat-card" data-stat-card="longest-streak"><strong>24 nap</strong><span>Leghosszabb sorozat</span></div>
+                <div class="statistics-stat-card" data-stat-card="total-clean-days"><strong>37 nap</strong><span>Összes tiszta nap</span></div>
+                <div class="statistics-stat-card" data-stat-card="checkin-rate"><strong>82%</strong><span>Check-in arány</span></div>
+              </section>
+
+              <div class="statistics-period-selector" data-component="statistics-period-selector" role="group" aria-label="Statisztika időszak">
+                <button type="button">7 nap</button>
+                <button type="button" aria-current="true">30 nap</button>
+                <button type="button">90 nap</button>
+              </div>
+
+              <section class="statistics-panel">
+                <div class="statistics-panel-title"><h4>Hangulat és jelenlét</h4><small>30 nap</small></div>
+                <div class="statistics-trend-chart" data-component="statistics-trend-chart" aria-label="Hangulat és check-in trend">
+                  <span style="height: 42%"></span><span style="height: 66%"></span><span style="height: 54%"></span><span style="height: 78%"></span><span style="height: 62%"></span><span style="height: 84%"></span><span style="height: 72%"></span>
+                </div>
+              </section>
+
+              <section class="statistics-panel">
+                <div class="statistics-panel-title"><h4>Szokások teljesülése</h4><small>utolsó 30 nap</small></div>
+                <div class="statistics-task-bars" data-component="statistics-task-bars">
+                  <div class="statistics-task-row"><span>Esti check-in</span><span class="statistics-task-track"><span style="--bar: 82%"></span></span><strong>82%</strong></div>
+                  <div class="statistics-task-row"><span>Hála lista</span><span class="statistics-task-track"><span style="--bar: 64%"></span></span><strong>64%</strong></div>
+                  <div class="statistics-task-row"><span>12 lépés</span><span class="statistics-task-track"><span style="--bar: 48%"></span></span><strong>48%</strong></div>
+                  <div class="statistics-task-row"><span>Szponzor hívás</span><span class="statistics-task-track"><span style="--bar: 71%"></span></span><strong>71%</strong></div>
+                </div>
+              </section>
+
+              <section class="statistics-panel" data-component="statistics-calendar-preview">
+                <div class="statistics-panel-title"><h4>Naptár preview</h4><small>utolsó 14 nap</small></div>
+                <div class="statistics-calendar-dots" aria-label="Utolsó 14 nap">
+                  <span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span class="current">24</span>
+                </div>
+                <button class="statistics-inline-action" type="button" data-action="open-statistics-calendar" data-target-screen="progress-calendar"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg><span>Részletes naptár megnyitása</span><span aria-hidden="true">›</span></button>
+              </section>
+
+              <section class="statistics-panel statistics-next-milestone" data-component="statistics-next-milestone">
+                <div><strong>30 nap · Egy hónap</strong><span>Következő mérföldkő, 6 tiszta nap múlva.</span></div>
+                <button type="button" aria-label="Mérföldkövek megnyitása" data-action="open-statistics-milestones" data-target-screen="progress-milestones"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg></button>
+              </section>
+
+              <section class="statistics-insights" data-component="statistics-insights" aria-label="Statisztika insightok">
+                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Legstabilabb nap</strong><span>Kedd és csütörtök hozta a legtöbb teljes check-int.</span></span></div>
+                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Nehéz idősáv</strong><span>Este 20:00 után több a sóvárgásjelzés.</span></span></div>
+                <div class="statistics-insight-card"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Támogatás használata</strong><span>4 alkalommal kapcsolódtál szponzorhoz vagy meetinghez.</span></span></div>
+              </section>
+            </main>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" aria-current="page" data-target-screen="home-statistics"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
               <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
               <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
               <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
@@ -6997,19 +7475,11 @@
             </div>
             <header class="screen-header">
               <span aria-hidden="true"></span>
-              <div class="screen-header-copy"><h3>Haladás</h3></div>
+              <div class="screen-header-copy"><h3>Haladás</h3><p class="screen-subtitle">Naptár és napi részletek</p></div>
               <span aria-hidden="true"></span>
             </header>
             <div class="progress-content">
-              <div class="progress-summary-grid">
-                <div class="progress-stat-card"><strong>24. nap</strong><span>a jelenlegi sorozatod</span></div>
-                <div class="progress-stat-card"><strong>24 nap</strong><span>Leghosszabb sorozat</span></div>
-              </div>
-              <div class="progress-hero-card"><p>Minden nap egy lépés a fény felé.</p></div>
-              <div class="progress-summary-grid">
-                <div class="progress-stat-card"><strong>37 nap</strong><span>Összes tiszta nap</span></div>
-                <div class="progress-stat-card"><strong>30 nap · Egy hónap</strong><span>Következő mérföldkő</span></div>
-              </div>
+              <div class="progress-hero-card"><p>A naptár a napok részleteit mutatja. Az összkép a főképernyő tiszta napok boxából nyílik.</p></div>
               <div class="progress-menu-list">
                 <button class="progress-menu-card" type="button" data-progress-shortcut="calendar" data-action="open-progress-calendar" data-target-screen="progress-calendar"><span class="progress-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Naptár</strong><small>Tekintsd át a napjaid</small></span><span aria-hidden="true">›</span></button>
               </div>

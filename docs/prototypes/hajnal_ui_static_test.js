@@ -19,6 +19,7 @@ const screenOrder = [
   'notifications',
   'home-collapsed',
   'home',
+  'home-statistics',
   'progress-milestones',
   'daily-image',
   'checkin-clean',
@@ -213,7 +214,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 44, 'phone screen count');
+    expectCount(/class="phone-screen/g, 45, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -378,8 +379,10 @@ const tests = {
   home() {
     expectContains('data-screen="home-collapsed"');
     expectContains('data-screen="home"');
+    expectContains('data-screen="home-statistics"');
     const collapsedHomeScreen = screenSlice('home-collapsed');
     const homeScreen = screenSlice('home');
+    const homeStatisticsScreen = screenSlice('home-statistics');
     const homeBodyIndex = homeScreen.indexOf('class="home-body');
     const dashboardIndex = homeScreen.indexOf('data-component="home-dashboard"');
     const tasksIndex = homeScreen.indexOf('<section class="tasks-card"');
@@ -425,6 +428,8 @@ const tests = {
     assert.ok(homeScreen.includes('class="segmented-progress"'), 'home dashboard needs a segmented progress bar');
     assert.ok(homeScreen.includes('class="dashboard-separator"'), 'home dashboard needs the center separator');
     assert.ok(homeScreen.includes('class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"'), 'home hero must use the fullscreen2 SVG asset');
+    assert.ok(collapsedHomeScreen.includes('data-action="open-clean-day-statistics" data-target-screen="home-statistics"'), 'collapsed home clean-days metric must open the statistics hub');
+    assert.ok(homeScreen.includes('data-action="open-clean-day-statistics" data-target-screen="home-statistics"'), 'expanded home clean-days metric must open the statistics hub');
     assert.ok(homeScreen.includes('data-action="mark-clean-today" data-target-screen="checkin-clean"'), 'home dashboard needs the clean-day action');
     assert.ok(homeScreen.includes('data-action="open-evening-checkin" data-target-screen="checkin-clean"'), 'home checklist evening check-in must start the new clean-day sheet flow');
     expectScreenContains('home-collapsed', [
@@ -433,6 +438,7 @@ const tests = {
       'data-parent-screen="notifications"',
       'data-state="collapsed"',
       'data-action="expand-home-card" data-target-screen="home"',
+      'data-action="open-clean-day-statistics" data-target-screen="home-statistics"',
       'data-action="mark-clean-today" data-target-screen="checkin-clean"',
       'class="home-hero-image" src="assets/hero_fullscreen2_svg.svg"',
       'Tiszta napok',
@@ -452,6 +458,42 @@ const tests = {
     }
     assert.ok(collapsedNav.includes('data-target-screen="progress-overview"'), 'collapsed home Haladás nav item must target the progress overview');
     assert.ok(collapsedNav.includes('data-target-screen="recovery-overview"'), 'collapsed home Felépülés nav item must target the recovery overview');
+    expectScreenContains('home-statistics', [
+      'class="phone-screen home-statistics-screen"',
+      'data-screen="home-statistics"',
+      'data-parent-screen="home"',
+      'data-component="clean-day-statistics-hub"',
+      'Statisztikák',
+      'A tiszta napjaid képe',
+      'data-action="return-home-from-statistics" data-target-screen="home"',
+      'data-component="statistics-clean-progress"',
+      'aria-label="24 nap a 90 napos úton"',
+      '24 nap',
+      '27% kész',
+      'Jelenlegi sorozat',
+      'Leghosszabb sorozat',
+      'Összes tiszta nap',
+      'Check-in arány',
+      'data-component="statistics-period-selector"',
+      '7 nap',
+      '30 nap',
+      '90 nap',
+      'data-component="statistics-trend-chart"',
+      'data-component="statistics-task-bars"',
+      'Esti check-in',
+      'Hála lista',
+      '12 lépés',
+      'Szponzor hívás',
+      'data-component="statistics-calendar-preview"',
+      'data-action="open-statistics-calendar" data-target-screen="progress-calendar"',
+      'data-component="statistics-next-milestone"',
+      'data-action="open-statistics-milestones" data-target-screen="progress-milestones"',
+      'data-component="statistics-insights"'
+    ]);
+    assert.ok(homeStatisticsScreen.includes('aria-current="page" data-target-screen="home-statistics"'), 'statistics screen bottom nav must keep Kezdőlap active on the current statistics view');
+    assert.match(html, /\.home-statistics-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC 0%,\s*#F8EEF7 100%\)/s, 'statistics screen must match the warm home/progress palette');
+    assert.match(html, /\.statistics-content\s*\{[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 18px 92px/s, 'statistics content must be scrollable above the fixed footer nav');
+    assert.match(html, /\.statistics-ring\s*\{[^}]*conic-gradient\(from -90deg,\s*#6A56B4 0 26\.666%,\s*rgba\(106,\s*86,\s*180,\s*\.13\) 26\.666% 100%\)/s, 'statistics clean-day ring must visualize the 24/90 progress');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
@@ -470,6 +512,7 @@ const tests = {
   homeBranch() {
     const collapsedHomeScreen = screenSlice('home-collapsed');
     const homeScreen = screenSlice('home');
+    const homeStatisticsScreen = screenSlice('home-statistics');
     const milestoneScreen = screenSlice('progress-milestones');
     const dailyImageScreen = screenSlice('daily-image');
     const cleanRewardScreen = screenSlice('checkin-clean');
@@ -479,6 +522,7 @@ const tests = {
     expectOrdered([
       'data-screen="home-collapsed"',
       'data-screen="home"',
+      'data-screen="home-statistics"',
       'data-screen="progress-milestones"',
       'data-screen="daily-image"',
       'data-screen="checkin-clean"',
@@ -495,6 +539,12 @@ const tests = {
     ]);
     [
       'Napi kép',
+      'Statisztikák',
+      'A tiszta napjaid képe',
+      'Jelenlegi sorozat',
+      'Check-in arány',
+      'Összes tiszta nap',
+      'Következő mérföldkő',
       'Mai feladataim',
       'Ma tiszta maradtam',
       'Megcsináltad!',
@@ -540,6 +590,7 @@ const tests = {
     expectContains('data-action="open-milestones" data-target-screen="progress-milestones"');
     expectContains('data-action="open-milestones" data-target-screen="progress-milestones" data-trigger="home-image-tap"');
     expectContains('data-action="expand-home-card" data-target-screen="home"');
+    expectContains('data-action="open-clean-day-statistics" data-target-screen="home-statistics"');
     expectContains('data-action="mark-clean-today" data-target-screen="checkin-clean"');
     expectContains('data-action="start-evening-reflection-now" data-target-screen="evening-reflection"');
     expectContains('data-action="skip-evening-reflection" data-target-screen="home"');
@@ -553,6 +604,8 @@ const tests = {
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') !== -1, 'collapsed home must keep the clean-days dashboard');
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') < collapsedHomeScreen.indexOf('data-action="expand-home-card"'), 'collapsed home dashboard must render before the invisible expand hotspot');
     assert.ok(homeScreen.includes('class="home-body"'), 'expanded home state must remain the opened-card version');
+    assert.ok(homeStatisticsScreen.includes('data-component="statistics-summary-grid"'), 'home statistics must include the full stats summary grid');
+    assert.equal((homeStatisticsScreen.match(/data-stat-card=/g) || []).length, 4, 'home statistics must expose four core statistics cards');
     assert.ok(milestoneScreen.includes('class="phone-screen milestone-gallery-screen"'), 'milestones must move into the home-row gallery screen');
     assert.ok(milestoneScreen.includes('data-parent-screen="home"'), 'milestones must be a main menu child screen');
     assert.ok(milestoneScreen.includes('data-component="milestone-gallery-grid"'), 'milestones must render as a gallery grid');
@@ -658,12 +711,10 @@ const tests = {
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-calendar progress-day-detail"');
     [
       'Haladás',
-      '24. nap',
-      'a jelenlegi sorozatod',
-      'Leghosszabb sorozat',
       'Naptár',
-      'Következő mérföldkő',
-      '30 nap · Egy hónap',
+      'Naptár és napi részletek',
+      'A naptár a napok részleteit mutatja.',
+      'Tekintsd át a napjaid',
       'Péntek, május 24.',
       'Esti check-in',
       'Hangulat',
@@ -700,9 +751,18 @@ const tests = {
       'Általános statisztika',
       '1–30. nap',
       '31–60. nap',
-      '61–90. nap',
-      'Check-in arány'
+      '61–90. nap'
     ].forEach(expectAbsent);
+    [
+      'progress-summary-grid',
+      'progress-stat-card',
+      'Jelenlegi sorozat',
+      'Leghosszabb sorozat',
+      'Összes tiszta nap',
+      'Check-in arány',
+      'Következő mérföldkő',
+      '30 nap · Egy hónap'
+    ].forEach((value) => assert.ok(!progressOverviewScreen.includes(value), `progress overview must not keep stats content: ${value}`));
     expectContains('<div class="screen-label"><span class="screen-index">18</span><strong>Naptár</strong> · Haladás child</div>');
     expectContains('<div class="screen-label"><span class="screen-index">19</span><strong>Napi részlet</strong> · Haladás child</div>');
     assert.ok(screenSlice('progress-day-detail').includes('data-parent-screen="progress-calendar"'), 'screen 19 must become a calendar child after deleting screen 17');
@@ -1073,7 +1133,7 @@ const tests = {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
     expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
+    expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home home-statistics progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse"');
     expectAbsent('data-page="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-calendar progress-day-detail"');
@@ -1088,6 +1148,7 @@ const tests = {
       notifications: 'onboarding',
       'home-collapsed': 'notifications',
       home: 'home-collapsed',
+      'home-statistics': 'home',
       'progress-milestones': 'home',
       'daily-image': 'progress-milestones',
       'checkin-clean': 'home',

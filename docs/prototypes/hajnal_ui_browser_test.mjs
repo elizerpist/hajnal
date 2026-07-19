@@ -23,6 +23,7 @@ const screenOrder = [
   ["notifications", "onboarding"],
   ["home-collapsed", "notifications"],
   ["home", "home-collapsed"],
+  ["home-statistics", "home"],
   ["progress-milestones", "home"],
   ["daily-image", "progress-milestones"],
   ["checkin-clean", "home"],
@@ -81,10 +82,11 @@ const screenRows = [
   [
     "home",
     "home-collapsed",
-    "home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved",
+    "home-collapsed home home-statistics progress-milestones daily-image checkin-clean evening-reflection reflection-saved",
     [
       "home-collapsed",
       "home",
+      "home-statistics",
       "progress-milestones",
       "daily-image",
       "checkin-clean",
@@ -279,8 +281,10 @@ try {
   );
   assert.ok(rowPositions["home-collapsed"].top > rowPositions.splash.top + 900, "home must render in the next row");
   assert.equal(rowPositions["home-collapsed"].left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
+  assert.equal(rowPositions["home-statistics"].top, rowPositions["home-collapsed"].top, "statistics must render in the home row next to 8B");
+  assert.ok(rowPositions["home-statistics"].left > rowPositions.home.left, "statistics must sit directly to the right of the expanded home screen");
   assert.equal(rowPositions["progress-milestones"].top, rowPositions["home-collapsed"].top, "milestones must render in the home row");
-  assert.ok(rowPositions["progress-milestones"].left > rowPositions.home.left, "milestones must sit to the right of the main home screen");
+  assert.ok(rowPositions["progress-milestones"].left > rowPositions["home-statistics"].left, "milestones must sit to the right of the statistics screen");
   assert.equal(rowPositions["daily-image"].top, rowPositions["home-collapsed"].top, "daily image must sit next to milestones in the home row");
   assert.ok(rowPositions["daily-image"].left > rowPositions["progress-milestones"].left, "daily image must sit to the right of milestones");
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
@@ -313,22 +317,55 @@ try {
     progressTarget: "progress-overview",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
 
-  const dailyAssetGallery = await page.locator("[data-component='daily-project-assets'] [data-asset-src]").evaluateAll((cards) =>
-    cards.map((card) => ({
-      label: card.dataset.assetLabel,
-      source: card.dataset.assetSrc,
+  const cleanDayTargets = await page.locator("#home-collapsed .clean-days-metric, #home .clean-days-metric").evaluateAll((buttons) =>
+    buttons.map((button) => ({
+      screen: button.closest(".phone-screen")?.dataset.screen,
+      action: button.dataset.action,
+      target: button.dataset.targetScreen,
     })),
   );
-  assert.deepEqual(dailyAssetGallery, [
-    { label: "Logó", source: "assets/logo_svg.svg" },
-    { label: "Welcome", source: "assets/welcome_svg.svg" },
-    { label: "Hero S", source: "assets/hero_s_svg.svg" },
-    { label: "Hero M", source: "assets/hero_m_svg.svg" },
-    { label: "Hero XL", source: "assets/hero_xl_svg.svg" },
-    { label: "Hero fullscreen", source: "assets/hero_fullscreen_svg.svg" },
-    { label: "Hero fullscreen 2", source: "assets/hero_fullscreen2_svg.svg" },
-    { label: "Hurray", source: "assets/hurray_svg.svg" },
-  ], "daily image row must expose every project SVG asset");
+  assert.deepEqual(cleanDayTargets, [
+    { screen: "home-collapsed", action: "open-clean-day-statistics", target: "home-statistics" },
+    { screen: "home", action: "open-clean-day-statistics", target: "home-statistics" },
+  ], "tapping clean days in either home state must open the statistics hub");
+
+  const homeStatistics = await page.locator("#home-statistics").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    subtitle: screen.querySelector(".screen-subtitle")?.textContent.trim(),
+    navCurrent: screen.querySelector(".bottom-nav [aria-current='page']")?.dataset.targetScreen,
+    coreStats: Array.from(screen.querySelectorAll("[data-stat-card]")).map((card) => ({
+      stat: card.dataset.statCard,
+      label: card.querySelector("span")?.textContent.trim(),
+      value: card.querySelector("strong")?.textContent.trim(),
+    })),
+    periodLabels: Array.from(screen.querySelectorAll("[data-component='statistics-period-selector'] button")).map((button) => button.textContent.trim()),
+    hasTrend: Boolean(screen.querySelector("[data-component='statistics-trend-chart']")),
+    taskLabels: Array.from(screen.querySelectorAll(".statistics-task-row > span:first-child")).map((row) => row.textContent.trim()),
+    calendarTarget: screen.querySelector("[data-action='open-statistics-calendar']")?.dataset.targetScreen,
+    milestoneTarget: screen.querySelector("[data-action='open-statistics-milestones']")?.dataset.targetScreen,
+    insights: screen.querySelectorAll("[data-component='statistics-insights'] .statistics-insight-card").length,
+  }));
+  assert.deepEqual(homeStatistics, {
+    parent: "home",
+    title: "Statisztikák",
+    subtitle: "A tiszta napjaid képe",
+    navCurrent: "home-statistics",
+    coreStats: [
+      { stat: "current-streak", label: "Jelenlegi sorozat", value: "24. nap" },
+      { stat: "longest-streak", label: "Leghosszabb sorozat", value: "24 nap" },
+      { stat: "total-clean-days", label: "Összes tiszta nap", value: "37 nap" },
+      { stat: "checkin-rate", label: "Check-in arány", value: "82%" },
+    ],
+    periodLabels: ["7 nap", "30 nap", "90 nap"],
+    hasTrend: true,
+    taskLabels: ["Esti check-in", "Hála lista", "12 lépés", "Szponzor hívás"],
+    calendarTarget: "progress-calendar",
+    milestoneTarget: "progress-milestones",
+    insights: 3,
+  }, "home statistics must collect all stats-related dashboard content");
+
+  assert.equal(await page.locator("[data-component='daily-project-assets'] [data-asset-src]").count(), 0, "daily image asset catalog must remain deleted");
 
   const panicRootActions = await page.locator("#panic-root .panic-grid button").evaluateAll((buttons) =>
     buttons.map((button) => ({
