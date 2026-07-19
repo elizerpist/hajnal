@@ -50,7 +50,6 @@ const screenOrder = [
   ["tools-journal-detail", "tools-journal-list"],
   ["alt-progress-overview", "progress-overview"],
   ["alt-progress-daily-view", "alt-progress-overview"],
-  ["alt-progress-day-detail", "alt-progress-daily-view"],
   ["alt-progress-journal-entry", "alt-progress-daily-view"],
   ["alt-progress-calendar", "alt-progress-overview"],
   ["alt-progress-calendar-day", "alt-progress-calendar"],
@@ -63,7 +62,6 @@ const screenOrder = [
 const altProgressScreens = [
   ["alt-progress-overview", "Haladás - Áttekintés (#6)", "progress-overview"],
   ["alt-progress-daily-view", "Napi nézet", "alt-progress-overview"],
-  ["alt-progress-day-detail", "Napi részlet", "alt-progress-daily-view"],
   ["alt-progress-journal-entry", "Naplóbejegyzés", "alt-progress-daily-view"],
   ["alt-progress-calendar", "Naptár (havi nézet)", "alt-progress-overview"],
   ["alt-progress-calendar-day", "Nap részlete (naptárból)", "alt-progress-calendar"],
@@ -519,6 +517,7 @@ try {
     sourceAsset: row.dataset.sourceAsset || "",
     cropComponents: row.querySelectorAll('[data-component="haladas-source-crop"]').length,
     sourceCropMarkers: row.querySelectorAll("[data-source-crop]").length,
+    deletedA3References: row.querySelectorAll('[data-screen="alt-progress-day-detail"], #alt-progress-day-detail, #column-alt-progress-day-detail, [data-target-screen="alt-progress-day-detail"], [data-action="open-alt-day-detail"]').length,
     imageCount: row.querySelectorAll("img").length,
     screens: Array.from(row.querySelectorAll(".alt-progress-screen")).map((screen) => ({
       screen: screen.dataset.screen,
@@ -538,6 +537,7 @@ try {
   assert.deepEqual(altProgressRow.sourceAsset, "", "alternative progress row must not embed a copied PNG asset");
   assert.deepEqual(altProgressRow.cropComponents, 0, "alternative progress row must not use source crop components");
   assert.deepEqual(altProgressRow.sourceCropMarkers, 0, "alternative progress row must not expose source crop coordinates");
+  assert.deepEqual(altProgressRow.deletedA3References, 0, "A3 alt-progress day detail and all row references must be removed");
   assert.deepEqual(altProgressRow.imageCount, 0, "alternative progress row must be built from DOM/CSS, not img tags");
   assert.deepEqual(
     altProgressRow.screens.map(({ screen, title, parent }) => ({ screen, title, parent })),

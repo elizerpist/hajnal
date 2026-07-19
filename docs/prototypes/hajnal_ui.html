@@ -7408,7 +7408,6 @@
         <pre class="flow-tree" aria-label="Alternatív Haladás hierarchia">Haladás alternatív
 ├── Áttekintés
 ├── Napi nézet
-│   ├── Napi részlet
 │   └── Naplóbejegyzés
 ├── Naptár
 │   └── Nap részlete
@@ -7419,7 +7418,7 @@
     └── Aktivitás részlete</pre>
       </div>
 
-      <div class="screen-row alt-progress-row" data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="alt-progress-overview alt-progress-daily-view alt-progress-day-detail alt-progress-journal-entry alt-progress-calendar alt-progress-calendar-day alt-progress-statistics alt-progress-milestones alt-progress-milestone-detail alt-progress-activity alt-progress-activity-detail" data-component="alt-progress-menu-row" data-source-reference="/storage/emulated/0/hajnal/haladas.png">
+      <div class="screen-row alt-progress-row" data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="alt-progress-overview alt-progress-daily-view alt-progress-journal-entry alt-progress-calendar alt-progress-calendar-day alt-progress-statistics alt-progress-milestones alt-progress-milestone-detail alt-progress-activity alt-progress-activity-detail" data-component="alt-progress-menu-row" data-source-reference="/storage/emulated/0/hajnal/haladas.png">
         <section class="screen-column alt-progress-column" id="column-alt-progress-overview">
           <div class="screen-label"><span class="screen-index">A1</span><strong>Haladás - Áttekintés (#6)</strong></div>
           <article class="phone-screen alt-progress-screen" id="alt-progress-overview" data-screen="alt-progress-overview" data-parent-screen="progress-overview" aria-label="Haladás - Áttekintés (#6)">
@@ -7493,8 +7492,8 @@
               <section class="alt-progress-panel">
                 <h4>Mai eredményeid</h4>
                 <div class="alt-progress-list" data-component="alt-progress-result-list">
-                  <button class="alt-progress-row-item" type="button" data-action="open-alt-day-detail" data-target-screen="alt-progress-day-detail"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></span><span><strong>Napi bejelentkezés</strong><small>Reggeli check-in</small></span><time>07:32</time></button>
-                  <button class="alt-progress-row-item" type="button" data-action="open-alt-day-detail" data-target-screen="alt-progress-day-detail"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></span><span><strong>Esti reflexió</strong><small>Napi gondolatok lezárása</small></span><time>21:14</time></button>
+                  <button class="alt-progress-row-item" type="button" data-action="open-alt-journal-entry" data-target-screen="alt-progress-journal-entry"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></span><span><strong>Napi bejelentkezés</strong><small>Reggeli check-in</small></span><time>07:32</time></button>
+                  <button class="alt-progress-row-item" type="button" data-action="open-alt-journal-entry" data-target-screen="alt-progress-journal-entry"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></span><span><strong>Esti reflexió</strong><small>Napi gondolatok lezárása</small></span><time>21:14</time></button>
                   <button class="alt-progress-row-item" type="button" data-action="open-alt-journal-entry" data-target-screen="alt-progress-journal-entry"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Hála lista</strong><small>3 dolog, amiért hálás vagy</small></span><time>Kész</time></button>
                 </div>
               </section>
@@ -7502,43 +7501,6 @@
                 <h4>Napi jegyzet</h4>
                 <textarea class="alt-progress-note" placeholder="Írd le a mai napod, gondolataid, érzéseid..."></textarea>
               </section>
-            </div>
-            <nav class="bottom-nav alt-progress-bottom-nav" aria-label="Fő navigáció">
-              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
-              <button type="button" aria-current="page" data-target-screen="alt-progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
-              <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
-              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
-              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
-            </nav>
-          </article>
-        </section>
-
-        <section class="screen-column alt-progress-column" id="column-alt-progress-day-detail">
-          <div class="screen-label"><span class="screen-index">A3</span><strong>Napi részlet</strong></div>
-          <article class="phone-screen alt-progress-screen" id="alt-progress-day-detail" data-screen="alt-progress-day-detail" data-parent-screen="alt-progress-daily-view" aria-label="Napi részlet">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="alt-progress-daily-view"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Napi részlet</h3><p class="screen-subtitle">Május 24., péntek</p></div>
-              <button class="icon-button" type="button" aria-label="Megosztás"><svg class="icon" aria-hidden="true"><use href="#icon-share"></use></svg></button>
-            </header>
-            <div class="alt-progress-content">
-              <section class="alt-progress-day-hero" data-component="alt-progress-day-hero">
-                <strong>Napi összegzés</strong>
-                <small>Reggel nehéz volt, de este már jobban.</small>
-              </section>
-              <section class="alt-progress-panel">
-                <h4>Napi részletek</h4>
-                <div class="alt-progress-metric-list" data-component="alt-progress-metric-list">
-                  <div class="alt-progress-row-item"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Hangulat</strong><small>Este stabilabbnak érezted magad</small></span><span class="alt-progress-rating-dots" data-component="alt-progress-rating-dots"><span class="active"></span><span class="active"></span><span class="active"></span><span class="active"></span><span class="active"></span></span></div>
-                  <div class="alt-progress-row-item"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg></span><span><strong>Energia szint</strong><small>Fokozatosan nőtt délután</small></span><span class="alt-progress-rating-dots" data-component="alt-progress-rating-dots"><span class="active"></span><span class="active"></span><span class="active"></span><span></span><span></span></span></div>
-                  <div class="alt-progress-row-item"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg></span><span><strong>Sikerélmény</strong><small>Napi check-in és esti reflektálás</small></span><span class="alt-progress-rating-dots" data-component="alt-progress-rating-dots"><span class="active"></span><span class="active"></span><span class="active"></span><span class="active"></span><span></span></span></div>
-                </div>
-              </section>
-              <button class="alt-progress-row-item" type="button" data-action="open-alt-journal-entry" data-target-screen="alt-progress-journal-entry"><span class="alt-progress-mini-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Naplóbejegyzés megnyitása</strong><small>A teljes szöveg és műveletek</small></span><span aria-hidden="true">›</span></button>
             </div>
             <nav class="bottom-nav alt-progress-bottom-nav" aria-label="Fő navigáció">
               <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>

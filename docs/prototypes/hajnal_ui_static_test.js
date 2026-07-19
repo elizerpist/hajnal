@@ -46,7 +46,6 @@ const screenOrder = [
   'tools-journal-detail',
   'alt-progress-overview',
   'alt-progress-daily-view',
-  'alt-progress-day-detail',
   'alt-progress-journal-entry',
   'alt-progress-calendar',
   'alt-progress-calendar-day',
@@ -60,7 +59,6 @@ const screenOrder = [
 const altProgressScreens = [
   ['alt-progress-overview', 'Haladás - Áttekintés (#6)', 'progress-overview'],
   ['alt-progress-daily-view', 'Napi nézet', 'alt-progress-overview'],
-  ['alt-progress-day-detail', 'Napi részlet', 'alt-progress-daily-view'],
   ['alt-progress-journal-entry', 'Naplóbejegyzés', 'alt-progress-daily-view'],
   ['alt-progress-calendar', 'Naptár (havi nézet)', 'alt-progress-overview'],
   ['alt-progress-calendar-day', 'Nap részlete (naptárból)', 'alt-progress-calendar'],
@@ -87,15 +85,8 @@ const altProgressFunctionalRequirements = {
     'data-component="alt-mood-option"',
     'data-component="alt-progress-result-list"',
     'data-component="alt-progress-daily-note"',
-    'data-target-screen="alt-progress-day-detail"',
     'data-target-screen="alt-progress-journal-entry"',
     '<textarea'
-  ],
-  'alt-progress-day-detail': [
-    'data-component="alt-progress-day-hero"',
-    'data-component="alt-progress-metric-list"',
-    'data-component="alt-progress-rating-dots"',
-    'data-target-screen="alt-progress-journal-entry"'
   ],
   'alt-progress-journal-entry': [
     'data-component="alt-progress-journal-card"',
@@ -222,7 +213,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 45, 'phone screen count');
+    expectCount(/class="phone-screen/g, 44, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -914,6 +905,14 @@ const tests = {
     expectAbsent('alt-progress-source-screen');
     expectAbsent('alt-progress-source-column');
     expectAbsent('<img src="assets/haladas.png"');
+    [
+      'data-screen="alt-progress-day-detail"',
+      'id="alt-progress-day-detail"',
+      'id="column-alt-progress-day-detail"',
+      'data-target-screen="alt-progress-day-detail"',
+      'data-action="open-alt-day-detail"',
+      '<span class="screen-index">A3</span>'
+    ].forEach(expectAbsent);
     altProgressScreens.forEach(([id, title, parent]) => {
       const screen = screenSlice(id);
       assert.ok(screen.includes('class="phone-screen alt-progress-screen"'), `${id} must be a full functional phone screen`);
@@ -925,7 +924,7 @@ const tests = {
         assert.ok(screen.includes(needle), `${id} is missing functional DOM marker ${needle}`);
       });
     });
-    assert.equal((html.match(/class="screen-column alt-progress-column"/g) || []).length, 11, 'every alternative progress screen must live in a normal labelled column');
+    assert.equal((html.match(/class="screen-column alt-progress-column"/g) || []).length, altProgressScreens.length, 'every alternative progress screen must live in a normal labelled column');
     assert.match(html, /\.alt-progress-row\s*\{[^}]*display:\s*flex;[^}]*gap:\s*28px;[^}]*align-items:\s*flex-start/s, 'alternative progress row must be a bottom horizontal screen row');
     assert.match(html, /\.alt-progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF9F5/s, 'alternative progress screens must be CSS-rendered phone screens');
     assert.match(html, /\.alt-progress-menu-grid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\)/s, 'overview menu must be a real grid of controls');
@@ -1115,7 +1114,6 @@ const tests = {
       'recovery-evening': 'recovery-overview',
       'alt-progress-overview': 'progress-overview',
       'alt-progress-daily-view': 'alt-progress-overview',
-      'alt-progress-day-detail': 'alt-progress-daily-view',
       'alt-progress-journal-entry': 'alt-progress-daily-view',
       'alt-progress-calendar': 'alt-progress-overview',
       'alt-progress-calendar-day': 'alt-progress-calendar',
