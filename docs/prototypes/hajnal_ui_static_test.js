@@ -50,9 +50,6 @@ const screenOrder = [
   'alt-progress-journal-entry',
   'alt-progress-calendar',
   'alt-progress-calendar-day',
-  'alt-progress-statistics',
-  'alt-progress-milestones',
-  'alt-progress-milestone-detail',
   'alt-progress-activity',
   'alt-progress-activity-detail'
 ];
@@ -63,9 +60,6 @@ const altProgressScreens = [
   ['alt-progress-journal-entry', 'Naplóbejegyzés', 'alt-progress-daily-view'],
   ['alt-progress-calendar', 'Naptár (havi nézet)', 'alt-progress-overview'],
   ['alt-progress-calendar-day', 'Nap részlete (naptárból)', 'alt-progress-calendar'],
-  ['alt-progress-statistics', 'Statisztikák', 'alt-progress-overview'],
-  ['alt-progress-milestones', 'Mérföldkövek', 'alt-progress-overview'],
-  ['alt-progress-milestone-detail', 'Mérföldkő részlete', 'alt-progress-milestones'],
   ['alt-progress-activity', 'Aktivitás (napló)', 'alt-progress-overview'],
   ['alt-progress-activity-detail', 'Aktivitás részlete', 'alt-progress-activity']
 ];
@@ -76,8 +70,6 @@ const altProgressFunctionalRequirements = {
     'data-component="alt-progress-menu-grid"',
     'data-target-screen="alt-progress-daily-view"',
     'data-target-screen="alt-progress-calendar"',
-    'data-target-screen="alt-progress-statistics"',
-    'data-target-screen="alt-progress-milestones"',
     'data-target-screen="alt-progress-activity"'
   ],
   'alt-progress-daily-view': [
@@ -105,23 +97,6 @@ const altProgressFunctionalRequirements = {
     'data-component="alt-progress-calendar-day-summary"',
     'data-component="alt-progress-calendar-checklist"',
     'data-target-screen="alt-progress-journal-entry"'
-  ],
-  'alt-progress-statistics': [
-    'data-component="alt-progress-period-tabs"',
-    'data-component="alt-progress-line-chart"',
-    'data-component="alt-progress-completion-ring"',
-    'data-component="alt-progress-task-bars"'
-  ],
-  'alt-progress-milestones': [
-    'data-component="alt-progress-milestone-tabs"',
-    'data-component="alt-progress-milestone-list"',
-    'data-component="alt-progress-next-milestone"',
-    'data-target-screen="alt-progress-milestone-detail"'
-  ],
-  'alt-progress-milestone-detail': [
-    'data-component="alt-progress-milestone-badge"',
-    'data-component="alt-progress-milestone-meaning"',
-    'data-action="alt-progress-share-milestone"'
   ],
   'alt-progress-activity': [
     'data-component="alt-progress-activity-tabs"',
@@ -214,7 +189,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 45, 'phone screen count');
+    expectCount(/class="phone-screen/g, 42, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -990,6 +965,29 @@ const tests = {
       'data-action="open-alt-day-detail"',
       '<span class="screen-index">A3</span>'
     ].forEach(expectAbsent);
+    [
+      'data-screen="alt-progress-statistics"',
+      'id="alt-progress-statistics"',
+      'id="column-alt-progress-statistics"',
+      'data-target-screen="alt-progress-statistics"',
+      'data-action="open-alt-statistics"',
+      '<span class="screen-index">A7</span>',
+      'data-screen="alt-progress-milestones"',
+      'id="alt-progress-milestones"',
+      'id="column-alt-progress-milestones"',
+      'data-target-screen="alt-progress-milestones"',
+      'data-action="open-alt-milestones"',
+      'data-action="open-alt-next-milestone"',
+      'data-component="alt-progress-next-milestone"',
+      '<span class="screen-index">A8</span>',
+      'data-screen="alt-progress-milestone-detail"',
+      'id="alt-progress-milestone-detail"',
+      'id="column-alt-progress-milestone-detail"',
+      'data-target-screen="alt-progress-milestone-detail"',
+      'data-action="open-alt-milestone-detail"',
+      'data-action="alt-progress-share-milestone"',
+      '<span class="screen-index">A9</span>'
+    ].forEach(expectAbsent);
     altProgressScreens.forEach(([id, title, parent]) => {
       const screen = screenSlice(id);
       assert.ok(screen.includes('class="phone-screen alt-progress-screen"'), `${id} must be a full functional phone screen`);
@@ -1195,9 +1193,6 @@ const tests = {
       'alt-progress-journal-entry': 'alt-progress-daily-view',
       'alt-progress-calendar': 'alt-progress-overview',
       'alt-progress-calendar-day': 'alt-progress-calendar',
-      'alt-progress-statistics': 'alt-progress-overview',
-      'alt-progress-milestones': 'alt-progress-overview',
-      'alt-progress-milestone-detail': 'alt-progress-milestones',
       'alt-progress-activity': 'alt-progress-overview',
       'alt-progress-activity-detail': 'alt-progress-activity'
     };

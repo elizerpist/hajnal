@@ -54,9 +54,6 @@ const screenOrder = [
   ["alt-progress-journal-entry", "alt-progress-daily-view"],
   ["alt-progress-calendar", "alt-progress-overview"],
   ["alt-progress-calendar-day", "alt-progress-calendar"],
-  ["alt-progress-statistics", "alt-progress-overview"],
-  ["alt-progress-milestones", "alt-progress-overview"],
-  ["alt-progress-milestone-detail", "alt-progress-milestones"],
   ["alt-progress-activity", "alt-progress-overview"],
   ["alt-progress-activity-detail", "alt-progress-activity"],
 ];
@@ -66,9 +63,6 @@ const altProgressScreens = [
   ["alt-progress-journal-entry", "Naplóbejegyzés", "alt-progress-daily-view"],
   ["alt-progress-calendar", "Naptár (havi nézet)", "alt-progress-overview"],
   ["alt-progress-calendar-day", "Nap részlete (naptárból)", "alt-progress-calendar"],
-  ["alt-progress-statistics", "Statisztikák", "alt-progress-overview"],
-  ["alt-progress-milestones", "Mérföldkövek", "alt-progress-overview"],
-  ["alt-progress-milestone-detail", "Mérföldkő részlete", "alt-progress-milestones"],
   ["alt-progress-activity", "Aktivitás (napló)", "alt-progress-overview"],
   ["alt-progress-activity-detail", "Aktivitás részlete", "alt-progress-activity"],
 ];
@@ -560,6 +554,7 @@ try {
     cropComponents: row.querySelectorAll('[data-component="haladas-source-crop"]').length,
     sourceCropMarkers: row.querySelectorAll("[data-source-crop]").length,
     deletedA3References: row.querySelectorAll('[data-screen="alt-progress-day-detail"], #alt-progress-day-detail, #column-alt-progress-day-detail, [data-target-screen="alt-progress-day-detail"], [data-action="open-alt-day-detail"]').length,
+    deletedA7A8A9References: row.querySelectorAll('[data-screen="alt-progress-statistics"], #alt-progress-statistics, #column-alt-progress-statistics, [data-target-screen="alt-progress-statistics"], [data-action="open-alt-statistics"], [data-screen="alt-progress-milestones"], #alt-progress-milestones, #column-alt-progress-milestones, [data-target-screen="alt-progress-milestones"], [data-action="open-alt-milestones"], [data-action="open-alt-next-milestone"], [data-component="alt-progress-next-milestone"], [data-screen="alt-progress-milestone-detail"], #alt-progress-milestone-detail, #column-alt-progress-milestone-detail, [data-target-screen="alt-progress-milestone-detail"], [data-action="open-alt-milestone-detail"], [data-action="alt-progress-share-milestone"]').length,
     imageCount: row.querySelectorAll("img").length,
     screens: Array.from(row.querySelectorAll(".alt-progress-screen")).map((screen) => ({
       screen: screen.dataset.screen,
@@ -580,6 +575,7 @@ try {
   assert.deepEqual(altProgressRow.cropComponents, 0, "alternative progress row must not use source crop components");
   assert.deepEqual(altProgressRow.sourceCropMarkers, 0, "alternative progress row must not expose source crop coordinates");
   assert.deepEqual(altProgressRow.deletedA3References, 0, "A3 alt-progress day detail and all row references must be removed");
+  assert.deepEqual(altProgressRow.deletedA7A8A9References, 0, "A7/A8/A9 alternative statistics and milestone screens and all row references must be removed");
   assert.deepEqual(altProgressRow.imageCount, 0, "alternative progress row must be built from DOM/CSS, not img tags");
   assert.deepEqual(
     altProgressRow.screens.map(({ screen, title, parent }) => ({ screen, title, parent })),
@@ -597,11 +593,6 @@ try {
     altProgressRow.screens.find((screen) => screen.screen === "alt-progress-daily-view")?.textareas === 1,
     "alternative daily view must contain an editable note textarea",
   );
-  assert.ok(
-    altProgressRow.screens.find((screen) => screen.screen === "alt-progress-statistics")?.components.includes("alt-progress-line-chart"),
-    "alternative statistics must contain DOM chart elements",
-  );
-
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {
