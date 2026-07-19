@@ -23,6 +23,8 @@ const screenOrder = [
   ["notifications", "onboarding"],
   ["home-collapsed", "notifications"],
   ["home", "home-collapsed"],
+  ["progress-milestones", "home"],
+  ["daily-image", "progress-milestones"],
   ["checkin-clean", "home"],
   ["evening-reflection", "checkin-clean"],
   ["reflection-saved", "evening-reflection"],
@@ -37,13 +39,11 @@ const screenOrder = [
   ["panic-meeting-finder", "panic-root"],
   ["panic-emergency-help", "panic-root"],
   ["checkin-relapse", "home"],
-  ["daily-image", "home"],
   ["progress-overview", "home"],
   ["progress-journey", "progress-overview"],
   ["progress-day-detail", "progress-journey"],
   ["progress-calendar", "progress-overview"],
   ["progress-stats", "progress-overview"],
-  ["progress-milestones", "progress-overview"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
   ["recovery-step-detail", "recovery-steps-overview"],
@@ -62,10 +62,12 @@ const screenRows = [
   [
     "home",
     "home-collapsed",
-    "home-collapsed home checkin-clean evening-reflection reflection-saved",
+    "home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved",
     [
       "home-collapsed",
       "home",
+      "progress-milestones",
+      "daily-image",
       "checkin-clean",
       "evening-reflection",
       "reflection-saved",
@@ -90,16 +92,10 @@ const screenRows = [
     ],
   ],
   [
-    "daily-image",
-    "daily-image",
-    "daily-image",
-    ["daily-image"],
-  ],
-  [
     "progress",
     "progress-overview",
-    "progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones",
-    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats", "progress-milestones"],
+    "progress-overview progress-journey progress-day-detail progress-calendar progress-stats",
+    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats"],
   ],
   [
     "recovery",
@@ -259,9 +255,12 @@ try {
   );
   assert.ok(rowPositions["home-collapsed"].top > rowPositions.splash.top + 900, "home must render in the next row");
   assert.equal(rowPositions["home-collapsed"].left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
+  assert.equal(rowPositions["progress-milestones"].top, rowPositions["home-collapsed"].top, "milestones must render in the home row");
+  assert.ok(rowPositions["progress-milestones"].left > rowPositions.home.left, "milestones must sit to the right of the main home screen");
+  assert.equal(rowPositions["daily-image"].top, rowPositions["home-collapsed"].top, "daily image must sit next to milestones in the home row");
+  assert.ok(rowPositions["daily-image"].left > rowPositions["progress-milestones"].left, "daily image must sit to the right of milestones");
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
-  assert.ok(rowPositions["daily-image"].top > rowPositions["panic-root"].top + 900, "daily image row must render below the panic row");
-  assert.ok(rowPositions["progress-overview"].top > rowPositions["daily-image"].top + 900, "progress row must render below the daily image row");
+  assert.ok(rowPositions["progress-overview"].top > rowPositions["panic-root"].top + 900, "progress row must render below the panic row");
   assert.ok(rowPositions["recovery-overview"].top > rowPositions["progress-overview"].top + 900, "recovery row must render below the progress row");
 
   const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
@@ -398,13 +397,50 @@ try {
     })),
   );
   assert.deepEqual(progressScreens, [
-    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar", "progress-stats", "progress-milestones"] },
+    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar", "progress-stats"] },
     { screen: "progress-journey", parent: "progress-overview", title: "90 napos út", shortcuts: [] },
     { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
     { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
     { screen: "progress-stats", parent: "progress-overview", title: "Statisztikák", shortcuts: [] },
-    { screen: "progress-milestones", parent: "progress-overview", title: "Mérföldkövek", shortcuts: [] },
-  ], "progress menu must follow the written spec screen set and hierarchy");
+  ], "progress menu must keep milestones out of the progress row");
+
+  const milestoneGallery = await page.locator("#progress-milestones").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    cards: Array.from(screen.querySelectorAll('[data-component="milestone-card"]')).map((card) => ({
+      day: card.dataset.milestoneDay,
+      state: card.dataset.milestoneState,
+      disabled: card.hasAttribute("disabled"),
+      target: card.dataset.targetScreen || null,
+      background: getComputedStyle(card).backgroundColor,
+    })),
+  }));
+  assert.deepEqual(milestoneGallery.cards.map((card) => card.day), ["1", "3", "7", "14", "21", "30", "45", "60", "90"], "milestone gallery must always show 9 cards within 90 days");
+  assert.deepEqual(milestoneGallery.cards.map((card) => card.state), ["active", "active", "active", "active", "active", "inactive", "inactive", "inactive", "inactive"], "milestone card state must match 24 days of progress");
+  assert.deepEqual(milestoneGallery.cards.map((card) => card.disabled), [false, false, false, false, false, true, true, true, true], "inactive milestone cards must be disabled");
+  assert.deepEqual(milestoneGallery.cards.map((card) => card.target), ["daily-image", "daily-image", "daily-image", "daily-image", "daily-image", null, null, null, null], "only active milestones may open the daily image gallery");
+
+  const dailyGallery = await page.locator("#daily-image").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    slideMode: screen.dataset.slideMode,
+    backTarget: screen.querySelector(".daily-image-back")?.dataset.targetScreen,
+    progressNow: screen.querySelector(".daily-image-progress")?.getAttribute("aria-valuenow"),
+    slides: Array.from(screen.querySelectorAll("[data-carousel-slide]")).map((slide) => ({
+      slide: slide.dataset.carouselSlide,
+      quote: slide.querySelector(".daily-image-quote")?.textContent.replace(/\s+/g, " ").trim(),
+    })),
+  }));
+  assert.deepEqual(dailyGallery, {
+    parent: "progress-milestones",
+    slideMode: "milestone-carousel",
+    backTarget: "progress-milestones",
+    progressNow: "24",
+    slides: [
+      { slide: "30-1", quote: "A következő kapu már látszik. Ma csak addig menj, ameddig a mai nap engedi." },
+      { slide: "30-2", quote: "A türelem is haladás. A kép változhat, a 24. napod stabilan itt marad." },
+      { slide: "30-3", quote: "Nem siettetjük a fényt. Minden tiszta nap hozzáad egy árnyalattal többet." },
+    ],
+  }, "daily image must be a milestone carousel with fixed progress and per-image quotes");
 
   assert.equal(await page.locator('[data-page="tools"]').count(), 0, "standalone tools row must be removed");
   assert.equal(await page.locator(".tools-screen").count(), 0, "standalone tools screens must be folded into recovery");
@@ -452,7 +488,7 @@ try {
       .filter((image) => {
         const screenId = image.closest(".phone-screen")?.id;
         const allowedSplash = screenId === "splash" && image.src.endsWith("/welcome_svg.svg");
-        const allowedFullscreen2 = ["home-collapsed", "home", "daily-image"].includes(screenId) && image.src.endsWith("/hero_fullscreen2_svg.svg");
+        const allowedFullscreen2 = ["home-collapsed", "home"].includes(screenId) && image.src.endsWith("/hero_fullscreen2_svg.svg");
         const allowedHurray = screenId === "checkin-clean" && image.src.endsWith("/hurray_svg.svg");
         const allowedFullscreen = [
           "evening-reflection",

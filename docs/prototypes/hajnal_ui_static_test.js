@@ -19,6 +19,8 @@ const screenOrder = [
   'notifications',
   'home-collapsed',
   'home',
+  'progress-milestones',
+  'daily-image',
   'checkin-clean',
   'evening-reflection',
   'reflection-saved',
@@ -33,13 +35,11 @@ const screenOrder = [
   'panic-meeting-finder',
   'panic-emergency-help',
   'checkin-relapse',
-  'daily-image',
   'progress-overview',
   'progress-journey',
   'progress-day-detail',
   'progress-calendar',
   'progress-stats',
-  'progress-milestones',
   'recovery-overview',
   'recovery-steps-overview',
   'recovery-step-detail',
@@ -161,10 +161,10 @@ const tests = {
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 8, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 7, 'only the approved SVG splash, hero, hurray, and wizard images may use img tags');
     expectCount(/<img\b[^>]*src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/<img\b[^>]*src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
-    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen2_svg\.svg"/g, 2, 'home states must use the approved fullscreen2 SVG asset as img tags');
     expectCount(/<img\b[^>]*src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
     expectCount(/<img\b[^>]*src="assets\/hero_fullscreen_svg\.svg"/g, 3, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
     expectCount(/<img\b[^>]*src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
@@ -383,6 +383,7 @@ const tests = {
   homeBranch() {
     const collapsedHomeScreen = screenSlice('home-collapsed');
     const homeScreen = screenSlice('home');
+    const milestoneScreen = screenSlice('progress-milestones');
     const dailyImageScreen = screenSlice('daily-image');
     const cleanRewardScreen = screenSlice('checkin-clean');
     const eveningReflectionScreen = screenSlice('evening-reflection');
@@ -391,6 +392,8 @@ const tests = {
     expectOrdered([
       'data-screen="home-collapsed"',
       'data-screen="home"',
+      'data-screen="progress-milestones"',
+      'data-screen="daily-image"',
       'data-screen="checkin-clean"',
       'data-screen="evening-reflection"',
       'data-screen="reflection-saved"',
@@ -402,7 +405,6 @@ const tests = {
       'data-screen="survival-note"',
       'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
-      'data-screen="daily-image"',
       'data-screen="progress-overview"'
     ]);
     [
@@ -449,9 +451,8 @@ const tests = {
       'Pánik mód',
       'Nem vagy egyedül.'
     ].forEach(expectContains);
-    expectContains('data-action="open-daily-image" data-target-screen="daily-image"');
-    expectContains('data-action="open-daily-image" data-target-screen="daily-image" data-trigger="home-image-tap"');
-    expectContains('Napi kép (a főmenü képére tap indítja)');
+    expectContains('data-action="open-milestones" data-target-screen="progress-milestones"');
+    expectContains('data-action="open-milestones" data-target-screen="progress-milestones" data-trigger="home-image-tap"');
     expectContains('data-action="expand-home-card" data-target-screen="home"');
     expectContains('data-action="mark-clean-today" data-target-screen="checkin-clean"');
     expectContains('data-action="start-evening-reflection-now" data-target-screen="evening-reflection"');
@@ -466,36 +467,44 @@ const tests = {
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') !== -1, 'collapsed home must keep the clean-days dashboard');
     assert.ok(collapsedHomeScreen.indexOf('data-component="home-dashboard"') < collapsedHomeScreen.indexOf('data-action="expand-home-card"'), 'collapsed home dashboard must render before the invisible expand hotspot');
     assert.ok(homeScreen.includes('class="home-body"'), 'expanded home state must remain the opened-card version');
+    assert.ok(milestoneScreen.includes('class="phone-screen milestone-gallery-screen"'), 'milestones must move into the home-row gallery screen');
+    assert.ok(milestoneScreen.includes('data-parent-screen="home"'), 'milestones must be a main menu child screen');
+    assert.ok(milestoneScreen.includes('data-component="milestone-gallery-grid"'), 'milestones must render as a gallery grid');
+    assert.equal((milestoneScreen.match(/data-component="milestone-card"/g) || []).length, 9, 'milestone gallery must always expose exactly 9 cards');
+    ['1', '3', '7', '14', '21', '30', '45', '60', '90'].forEach((day) => {
+      assert.ok(milestoneScreen.includes(`data-milestone-day="${day}"`), `milestone day ${day} must be present`);
+    });
+    assert.ok(!milestoneScreen.includes('180 nap'), 'milestones must stop at the 90-day journey');
+    assert.equal((milestoneScreen.match(/data-milestone-state="active"/g) || []).length, 5, '24 days must unlock five milestone cards');
+    assert.equal((milestoneScreen.match(/data-milestone-state="inactive"/g) || []).length, 4, 'future milestone cards must stay inactive');
+    assert.equal((milestoneScreen.match(/data-target-screen="daily-image"/g) || []).length, 5, 'only active milestone cards may target the daily image gallery');
+    assert.equal((milestoneScreen.match(/disabled aria-disabled="true"/g) || []).length, 4, 'inactive milestone cards must be disabled and non-tappable');
+    assert.match(html, /\.milestone-card:disabled\s*\{[^}]*background:\s*rgba\(232,\s*231,\s*238,\s*\.92\);[^}]*color:\s*rgba\(44,\s*46,\s*119,\s*\.40\);[^}]*cursor:\s*default/s, 'inactive milestone cards must be grey and non-interactive');
     assert.ok(dailyImageScreen.includes('class="phone-screen daily-image-screen no-nav"'), 'daily image screen must use the fullscreen screen variant');
-    assert.ok(dailyImageScreen.includes('data-slide-mode="fullscreen"'), 'daily image screen must document fullscreen slide behavior');
-    assert.ok(dailyImageScreen.includes('class="daily-fullscreen-bg" src="assets/hero_fullscreen2_svg.svg"'), 'daily image screen must use fullscreen2 as the full-screen image');
+    assert.ok(dailyImageScreen.includes('data-slide-mode="milestone-carousel"'), 'daily image screen must document milestone carousel behavior');
+    assert.ok(dailyImageScreen.includes('data-parent-screen="progress-milestones"'), 'daily image screen must sit next to the milestone gallery');
+    assert.ok(dailyImageScreen.includes('class="daily-image-back icon-button"'), 'daily image screen needs a top-left back button');
+    assert.ok(dailyImageScreen.includes('data-action="return-to-milestones" data-target-screen="progress-milestones"'), 'daily image back button must return to milestones');
+    assert.ok(dailyImageScreen.includes('data-component="daily-image-carousel"'), 'daily image screen must expose a horizontal swipe carousel');
+    assert.equal((dailyImageScreen.match(/data-carousel-slide=/g) || []).length, 3, 'daily image carousel must expose multiple images for the selected milestone');
+    assert.equal((dailyImageScreen.match(/class="daily-image-quote"/g) || []).length, 3, 'each carousel image must have its own quote');
+    ['assets/hero_fullscreen2_svg.svg', 'assets/hero_fullscreen_svg.svg', 'assets/hurray_svg.svg'].forEach((asset) => {
+      assert.ok(dailyImageScreen.includes(`--asset-url: url('${asset}')`), `${asset} must be available as a carousel slide`);
+    });
     assert.ok(dailyImageScreen.includes('class="daily-image-progress" role="progressbar"'), 'daily image screen needs a semantic progress bar');
     assert.ok(dailyImageScreen.includes('aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"'), 'daily image progress must expose the 90-day position');
     assert.ok(dailyImageScreen.includes('24. nap'), 'daily image screen needs the day label under the progress bar');
     assert.ok(dailyImageScreen.includes('a 90 napos úton'), 'daily image screen needs the 90-day subtitle under the progress bar');
-    assert.ok(dailyImageScreen.includes('daily-image-quote'), 'daily image screen needs the quote overlay near the image bottom');
-    assert.ok(!dailyImageScreen.includes('data-component="daily-image-carousel"'), 'daily image screen must remove the carousel component');
     assert.ok(!dailyImageScreen.includes('daily-carousel-nav'), 'daily image screen must remove carousel navigation buttons');
     assert.ok(!dailyImageScreen.includes('data-carousel-slide="past"'), 'daily image screen must remove neighboring past preview');
     assert.ok(!dailyImageScreen.includes('data-carousel-slide="future"'), 'daily image screen must remove neighboring future preview');
     assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
     assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
     assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
-    expectContains('data-component="daily-project-assets"');
-    expectContains('Napi kép asset készlet');
-    [
-      ['logo_svg.svg', 'Logó'],
-      ['welcome_svg.svg', 'Welcome'],
-      ['hero_s_svg.svg', 'Hero S'],
-      ['hero_m_svg.svg', 'Hero M'],
-      ['hero_xl_svg.svg', 'Hero XL'],
-      ['hero_fullscreen_svg.svg', 'Hero fullscreen'],
-      ['hero_fullscreen2_svg.svg', 'Hero fullscreen 2'],
-      ['hurray_svg.svg', 'Hurray']
-    ].forEach(([asset, label]) => {
-      expectContains(`data-asset-src="assets/${asset}"`);
-      expectContains(`data-asset-label="${label}"`);
-    });
+    expectAbsent('data-component="daily-project-assets"');
+    expectAbsent('Napi kép asset készlet');
+    expectAbsent('asset-preview-card');
+    expectAbsent('data-asset-src="assets/logo_svg.svg"');
     ['evening-reflection', 'reflection-saved', 'checkin-relapse']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     assert.ok(cleanRewardScreen.includes('class="checkin-bg" src="assets/hurray_svg.svg"'), 'checkin-clean must use the hurray fullscreen image');
@@ -553,16 +562,16 @@ const tests = {
   },
 
   progressBranch() {
+    const progressOverviewScreen = screenSlice('progress-overview');
     expectOrdered([
-      'data-screen="daily-image"',
       'data-screen="progress-overview"',
       'data-screen="progress-journey"',
       'data-screen="progress-day-detail"',
       'data-screen="progress-calendar"',
       'data-screen="progress-stats"',
-      'data-screen="progress-milestones"'
+      'data-screen="recovery-overview"'
     ]);
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats"');
     [
       'Haladás',
       '24. nap',
@@ -571,7 +580,6 @@ const tests = {
       '90 napos út',
       'Naptár',
       'Statisztikák',
-      'Mérföldkövek',
       'Következő mérföldkő',
       '30 nap · Egy hónap',
       '1–30. nap',
@@ -586,24 +594,17 @@ const tests = {
       'Részletek megnyitása',
       'Átlagos sóvárgás szint',
       'Check-in arány',
-      'Legtöbbször használt eszközök',
-      '1 nap',
-      '3 nap',
-      '7 nap',
-      '14 nap',
-      '30 nap',
-      '45 nap',
-      '60 nap',
-      '90 nap',
-      '180 nap'
+      'Legtöbbször használt eszközök'
     ].forEach(expectContains);
     [
       ['data-action="open-progress-journey" data-target-screen="progress-journey"', '90 napos út shortcut'],
       ['data-action="open-progress-calendar" data-target-screen="progress-calendar"', 'Naptár shortcut'],
       ['data-action="open-progress-stats" data-target-screen="progress-stats"', 'Statisztikák shortcut'],
-      ['data-action="open-progress-milestones" data-target-screen="progress-milestones"', 'Mérföldkövek shortcut'],
       ['data-action="open-progress-day-detail" data-target-screen="progress-day-detail"', 'day detail target']
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    assert.ok(!progressOverviewScreen.includes('data-progress-shortcut="milestones"'), 'progress overview must no longer contain the milestone shortcut');
+    assert.ok(!progressOverviewScreen.includes('data-action="open-progress-milestones"'), 'progress overview must not open milestones directly');
+    assert.ok(!progressOverviewScreen.includes('data-target-screen="progress-milestones"'), 'progress overview must not target the moved milestone screen');
     assert.match(html, /\.progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC/s, 'progress screens must use the warm blush utility surface');
     assert.match(html, /\.progress-menu-card\s*\{[^}]*border-radius:\s*12px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.88\)/s, 'progress menu elements must use warm rounded boxes');
   },
@@ -897,7 +898,7 @@ const tests = {
     });
     assert.equal((callSomeoneScreen.match(/data-component="panic-call-card"/g) || []).length, 2, 'each contact accordion must include a call card');
     assert.equal((callSomeoneScreen.match(/data-component="panic-quick-messages"/g) || []).length, 2, 'each contact accordion must include quick messages');
-    expectCount(/class="screen-row/g, 6, 'screen row count');
+    expectCount(/class="screen-row/g, 5, 'screen row count');
   },
 
   accessibility() {
@@ -914,12 +915,12 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 6, 'screen row count');
+    expectCount(/class="screen-row/g, 5, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications"');
-    expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
+    expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
-    expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
+    expectAbsent('data-page="daily-image"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     const parents = {
@@ -930,7 +931,8 @@ const tests = {
       notifications: 'onboarding',
       'home-collapsed': 'notifications',
       home: 'home-collapsed',
-      'daily-image': 'home',
+      'progress-milestones': 'home',
+      'daily-image': 'progress-milestones',
       'checkin-clean': 'home',
       'evening-reflection': 'checkin-clean',
       'reflection-saved': 'evening-reflection',
@@ -950,7 +952,6 @@ const tests = {
       'progress-day-detail': 'progress-journey',
       'progress-calendar': 'progress-overview',
       'progress-stats': 'progress-overview',
-      'progress-milestones': 'progress-overview',
       'tools-journal-list': 'recovery-overview',
       'tools-journal-entry': 'tools-journal-list',
       'tools-journal-detail': 'tools-journal-list',
