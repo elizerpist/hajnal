@@ -26,7 +26,6 @@ const screenOrder = [
   'panic-root',
   'panic-help-sheet',
   'checkin-survival-pack',
-  'checkin-breathing',
   'panic-sponsor-call',
   'panic-help-message',
   'panic-backup-contact',
@@ -114,7 +113,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 25, 'phone screen count');
+    expectCount(/class="phone-screen/g, 24, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -140,12 +139,12 @@ const tests = {
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 10, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 9, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
     expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
     expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
     expectCount(/src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 5, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
+    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 4, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
     expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -371,7 +370,6 @@ const tests = {
       'data-screen="panic-root"',
       'data-screen="panic-help-sheet"',
       'data-screen="checkin-survival-pack"',
-      'data-screen="checkin-breathing"',
       'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
       'data-screen="daily-image"'
@@ -416,7 +414,6 @@ const tests = {
       'Köszönjük,',
       'hogy őszinte voltál.',
       '15 perces túlélő csomag',
-      'Légzőgyakorlat',
       'Nem kell tökéletesnek lenned',
       'Pánik mód',
       'Nem vagy egyedül.'
@@ -453,7 +450,7 @@ const tests = {
     assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
     assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
     assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
-    ['evening-reflection', 'reflection-saved', 'checkin-relapse', 'checkin-survival-pack', 'checkin-breathing']
+    ['evening-reflection', 'reflection-saved', 'checkin-relapse', 'checkin-survival-pack']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     assert.ok(cleanRewardScreen.includes('class="checkin-bg" src="assets/hurray_svg.svg"'), 'checkin-clean must use the hurray fullscreen image');
     assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
@@ -514,7 +511,6 @@ const tests = {
       'data-screen="panic-root"',
       'data-screen="panic-help-sheet"',
       'data-screen="checkin-survival-pack"',
-      'data-screen="checkin-breathing"',
       'data-screen="panic-sponsor-call"',
       'data-screen="panic-help-message"',
       'data-screen="panic-backup-contact"',
@@ -535,7 +531,6 @@ const tests = {
       'Küldj segítségkérő üzenetet',
       'Hívd a tartalék kapcsolattartót',
       '15 perces túlélőcsomag',
-      'Légzőgyakorlat',
       'Olvasd el, miért kezdted el',
       'Keresd meg a következő meetinget',
       'Szakmai vagy sürgősségi segítség',
@@ -543,14 +538,16 @@ const tests = {
       'Vegyél öt lassú levegőt.',
       'Igyál vizet.',
       'Várj 10 percet.',
-      'Belégzés',
       'Meeting keresése',
       'Ma visszaestem'
     ].forEach(expectContains);
     expectContains('data-action="open-help-sheet" data-target-screen="panic-help-sheet"');
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
-    expectContains('data-action="breathing" data-target-screen="checkin-breathing"');
     expectContains('data-action="meeting-finder" data-target-screen="panic-meeting-finder"');
+    expectAbsent('data-screen="checkin-breathing"');
+    expectAbsent('data-action="breathing" data-target-screen="checkin-breathing"');
+    expectAbsent('id="column-checkin-breathing"');
+    expectAbsent('LÉGZŐGYAKORLAT');
     assert.ok(!panicRootScreen.includes('Küldj segítségkérő üzenetet'), 'screen 16 must remove the direct help-message quick button');
     assert.ok(!panicRootScreen.includes('data-action="send-help-message"'), 'screen 16 must remove the direct help-message action');
     assert.ok(!panicRootScreen.includes('Szakmai vagy sürgősségi segítség'), 'screen 16 must remove the direct professional-help quick button');
@@ -577,7 +574,7 @@ const tests = {
     expectCount(/class="screen-row/g, 4, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     const parents = {
       onboarding: 'splash',
@@ -596,7 +593,6 @@ const tests = {
       'panic-root': 'home',
       'panic-help-sheet': 'panic-root',
       'checkin-survival-pack': 'panic-root',
-      'checkin-breathing': 'panic-root',
       'panic-sponsor-call': 'panic-root',
       'panic-help-message': 'panic-root',
       'panic-backup-contact': 'panic-root',

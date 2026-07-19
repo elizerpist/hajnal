@@ -4683,14 +4683,13 @@
 ├── Küldj segítségkérő üzenetet
 ├── Hívd a tartalék kapcsolattartót
 ├── 15 perces túlélőcsomag
-├── Légzőgyakorlat
 ├── Olvasd el, miért kezdted el
 ├── Keresd meg a következő meetinget
 ├── Szakmai vagy sürgősségi segítség
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root panic-help-sheet checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -4714,7 +4713,6 @@
                 <button type="button" data-action="call-sponsor" data-target-screen="panic-sponsor-call"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
                 <button type="button" data-action="call-backup-contact" data-target-screen="panic-backup-contact"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
                 <button type="button" data-action="start-survival-pack" data-target-screen="checkin-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
-                <button type="button" data-action="breathing" data-target-screen="checkin-breathing"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>Légzőgyakorlat</button>
                 <button type="button" data-action="why-started" data-target-screen="panic-why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Olvasd el, miért kezdted el</button>
                 <button type="button" data-action="meeting-finder" data-target-screen="panic-meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Keresd meg a következő meetinget</button>
                 <button type="button" data-action="report-relapse" data-target-screen="checkin-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Visszaestem</button>
@@ -4784,35 +4782,6 @@
               </div>
               <div class="checkin-bottom-actions">
                 <button class="checkin-action primary" type="button" data-action="start-checkin-survival">Kezdés</button>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-checkin-breathing">
-          <div class="screen-label"><span class="screen-index">19</span><strong>LÉGZŐGYAKORLAT</strong> · Pánik child</div>
-          <article class="phone-screen checkin-fullscreen practice-state no-nav" id="checkin-breathing" data-screen="checkin-breathing" data-parent-screen="panic-root">
-            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="checkin-content">
-              <div class="checkin-top-actions">
-                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </div>
-              <section class="checkin-practice-copy" aria-label="Légzőgyakorlat">
-                <h3>Légzőgyakorlat</h3>
-                <p>4-7-8 légzés</p>
-              </section>
-              <div class="checkin-practice-center">
-                <div class="checkin-breath-ring" aria-hidden="true"><div><span>Belégzés</span><strong>4 mp</strong></div></div>
-                <p>1. kör / 4</p>
-              </div>
-              <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="next-breathing-step">Következő lépés</button>
               </div>
             </div>
           </article>

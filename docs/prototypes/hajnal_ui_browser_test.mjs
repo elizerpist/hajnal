@@ -30,7 +30,6 @@ const screenOrder = [
   ["panic-root", "home"],
   ["panic-help-sheet", "panic-root"],
   ["checkin-survival-pack", "panic-root"],
-  ["checkin-breathing", "panic-root"],
   ["panic-sponsor-call", "panic-root"],
   ["panic-help-message", "panic-root"],
   ["panic-backup-contact", "panic-root"],
@@ -62,12 +61,11 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root panic-help-sheet checkin-survival-pack checkin-breathing panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root panic-help-sheet checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
       "panic-help-sheet",
       "checkin-survival-pack",
-      "checkin-breathing",
       "panic-sponsor-call",
       "panic-help-message",
       "panic-backup-contact",
@@ -273,7 +271,6 @@ try {
     { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-sponsor-call" },
     { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-backup-contact" },
     { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "checkin-survival-pack" },
-    { text: "Légzőgyakorlat", action: "breathing", target: "checkin-breathing" },
     { text: "Olvasd el, miért kezdted el", action: "why-started", target: "panic-why-started" },
     { text: "Keresd meg a következő meetinget", action: "meeting-finder", target: "panic-meeting-finder" },
     { text: "Visszaestem", action: "report-relapse", target: "checkin-relapse" },
@@ -291,7 +288,6 @@ try {
           "reflection-saved",
           "checkin-relapse",
           "checkin-survival-pack",
-          "checkin-breathing",
         ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
         return !(allowedSplash || allowedFullscreen2 || allowedHurray || allowedFullscreen);
       })
