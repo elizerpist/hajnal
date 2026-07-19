@@ -262,6 +262,23 @@ try {
     currentTarget: "home-collapsed",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
 
+  const panicRootActions = await page.locator("#panic-root .panic-grid button").evaluateAll((buttons) =>
+    buttons.map((button) => ({
+      text: button.textContent.trim(),
+      action: button.dataset.action,
+      target: button.dataset.targetScreen,
+    })),
+  );
+  assert.deepEqual(panicRootActions, [
+    { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-sponsor-call" },
+    { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-backup-contact" },
+    { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "checkin-survival-pack" },
+    { text: "Légzőgyakorlat", action: "breathing", target: "checkin-breathing" },
+    { text: "Olvasd el, miért kezdted el", action: "why-started", target: "panic-why-started" },
+    { text: "Keresd meg a következő meetinget", action: "meeting-finder", target: "panic-meeting-finder" },
+    { text: "Visszaestem", action: "report-relapse", target: "checkin-relapse" },
+  ], "screen 16 panic quick options must remove message/professional help and add relapse");
+
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {

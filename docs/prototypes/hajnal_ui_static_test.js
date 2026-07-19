@@ -509,6 +509,7 @@ const tests = {
   },
 
   panicBranch() {
+    const panicRootScreen = screenSlice('panic-root');
     expectOrdered([
       'data-screen="panic-root"',
       'data-screen="panic-help-sheet"',
@@ -550,6 +551,12 @@ const tests = {
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
     expectContains('data-action="breathing" data-target-screen="checkin-breathing"');
     expectContains('data-action="meeting-finder" data-target-screen="panic-meeting-finder"');
+    assert.ok(!panicRootScreen.includes('Küldj segítségkérő üzenetet'), 'screen 16 must remove the direct help-message quick button');
+    assert.ok(!panicRootScreen.includes('data-action="send-help-message"'), 'screen 16 must remove the direct help-message action');
+    assert.ok(!panicRootScreen.includes('Szakmai vagy sürgősségi segítség'), 'screen 16 must remove the direct professional-help quick button');
+    assert.ok(!panicRootScreen.includes('data-action="emergency-help"'), 'screen 16 must remove the direct professional-help action');
+    assert.ok(panicRootScreen.includes('data-action="report-relapse" data-target-screen="checkin-relapse"'), 'screen 16 must include a relapse button targeting checkin-relapse');
+    assert.ok(panicRootScreen.includes('>Visszaestem</button>'), 'screen 16 relapse button must be labeled Visszaestem');
     expectCount(/class="screen-row/g, 4, 'screen row count');
   },
 
