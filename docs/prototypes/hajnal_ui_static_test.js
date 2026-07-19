@@ -51,7 +51,11 @@ const screenOrder = [
   'tools-journal-list',
   'tools-journal-entry',
   'tools-craving-log',
-  'tools-journal-detail'
+  'tools-journal-detail',
+  'recovery-overview',
+  'recovery-steps-overview',
+  'recovery-step-detail',
+  'recovery-evening'
 ];
 
 function expectContains(value) {
@@ -131,7 +135,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 42, 'phone screen count');
+    expectCount(/class="phone-screen/g, 46, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -685,6 +689,75 @@ const tests = {
     expectAbsent('eszkozok_12lepes_naplo.png');
   },
 
+  recoveryBranch() {
+    expectOrdered([
+      'data-screen="tools-journal-detail"',
+      'data-screen="recovery-overview"',
+      'data-screen="recovery-steps-overview"',
+      'data-screen="recovery-step-detail"',
+      'data-screen="recovery-evening"'
+    ]);
+    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening"');
+    [
+      'Felépülés menü',
+      '12 lépés és eszközök',
+      'A felépülésed központja',
+      'Felépülés',
+      'Aktuális lépésed',
+      '4. lépés',
+      'Alapos és bátor erkölcsi leltárt készítettünk magunkról.',
+      'Folytatás',
+      'Esti reflexió',
+      'Írd le a mai napod és gondolataid',
+      'Bejegyzéseid',
+      'Korábbi naplóbejegyzések',
+      'Támogatók és eszközök',
+      'Légzőgyakorlat',
+      'Nyugtató légzés, amikor kell',
+      'Miért kezdtem el?',
+      'Emlékeztet arra, amiért itt vagy',
+      'Túlélőcsomag',
+      'Eszközök a nehéz pillanatokra',
+      'Pánik mód',
+      'Azonnali segítség, ha szükséged van rá',
+      'Az út, amely egy nap egyszerre történik.',
+      '4 / 12 lépés teljesítve',
+      'Beismertük, hogy tehetetlenek vagyunk az alkohollal szemben',
+      'Elhittük, hogy egy nálunk nagyobb erő visszaadhatja józan eszünket.',
+      'Döntést hoztunk, hogy akaratunkat és életünket rábízzuk Istenre',
+      'Ma erre fókuszál',
+      'Írj őszintén az erősségeidről és a hibáidról.',
+      'Kérdések a mai napra',
+      'Milyen hibáim ismétlődnek?',
+      'Kiknek ártottam a viselkedésemmel?',
+      'Miben szeretnék változni?',
+      'Napló írása a 4. lépésről',
+      'Hogyan érzed magad most?',
+      'Napi bejegyzéseid',
+      'Május 20.',
+      'Május 19.',
+      'Május 18.',
+      'Május 17.',
+      'Felépülés'
+    ].forEach(expectContains);
+    [
+      ['data-action="continue-recovery-step" data-target-screen="recovery-step-detail"', 'continue current step'],
+      ['data-action="open-recovery-steps" data-target-screen="recovery-steps-overview"', 'open 12-step overview'],
+      ['data-action="open-recovery-evening" data-target-screen="recovery-evening"', 'open recovery evening reflection'],
+      ['data-action="open-recovery-journal" data-target-screen="recovery-evening"', 'open entries shortcut'],
+      ['data-action="open-recovery-breathing" data-target-screen="survival-breathe"', 'breathing shortcut'],
+      ['data-action="open-recovery-why-started" data-target-screen="panic-why-started"', 'why started shortcut'],
+      ['data-action="open-recovery-survival-pack" data-target-screen="checkin-survival-pack"', 'survival package shortcut'],
+      ['data-action="open-recovery-panic" data-target-screen="panic-root"', 'panic shortcut'],
+      ['data-action="open-recovery-step-detail" data-target-screen="recovery-step-detail"', 'step detail target'],
+      ['data-action="write-recovery-step-journal" data-target-screen="recovery-evening"', 'step journal CTA']
+    ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    assert.match(html, /\.recovery-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF9F5/s, 'recovery screens must use the warm source-of-truth background');
+    assert.match(html, /\.recovery-hero-card\s*\{[^}]*background:\s*url\("assets\/hero_s_svg\.svg"\)/s, 'recovery main hero must use an existing project SVG asset');
+    assert.match(html, /\.recovery-step-art\s*\{[^}]*background:\s*url\("assets\/hero_fullscreen2_svg\.svg"\)/s, 'recovery detail art must use an existing project SVG asset');
+    expectAbsent('12lepes.png');
+  },
+
   panicBranch() {
     const panicRootScreen = screenSlice('panic-root');
     expectOrdered([
@@ -797,7 +870,7 @@ const tests = {
       assert.ok(screen.indexOf('data-component="panic-contact-card"') < screen.indexOf('data-component="panic-call-card"'), `${id} contact card must be above call card`);
       assert.ok(screen.indexOf('data-component="panic-call-card"') < screen.indexOf('data-component="panic-quick-messages"'), `${id} call card must be above quick messages`);
     });
-    expectCount(/class="screen-row/g, 6, 'screen row count');
+    expectCount(/class="screen-row/g, 7, 'screen row count');
   },
 
   accessibility() {
@@ -814,13 +887,14 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 6, 'screen row count');
+    expectCount(/class="screen-row/g, 7, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
     expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
+    expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -861,7 +935,11 @@ const tests = {
       'tools-journal-list': 'tools-overview',
       'tools-journal-entry': 'tools-journal-list',
       'tools-craving-log': 'tools-overview',
-      'tools-journal-detail': 'tools-journal-list'
+      'tools-journal-detail': 'tools-journal-list',
+      'recovery-overview': 'home',
+      'recovery-steps-overview': 'recovery-overview',
+      'recovery-step-detail': 'recovery-steps-overview',
+      'recovery-evening': 'recovery-overview'
     };
     Object.entries(parents).forEach(([id, parent]) => {
       assert.ok(

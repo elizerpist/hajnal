@@ -2656,6 +2656,379 @@
       font-weight: 850;
     }
 
+    .recovery-screen {
+      color: var(--hajnal-navy);
+      background: linear-gradient(180deg, #FFF9F5 0%, #FBF2EE 100%);
+    }
+
+    .recovery-screen .screen-header {
+      min-height: 68px;
+      align-items: center;
+    }
+
+    .recovery-screen .screen-header-copy {
+      padding-top: 0;
+      text-align: center;
+    }
+
+    .recovery-screen .screen-header h3 {
+      color: var(--hajnal-navy);
+      font-size: 18px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .recovery-content {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 722px;
+      padding: 0 18px 86px;
+    }
+
+    .recovery-hero-card,
+    .recovery-card,
+    .recovery-menu-card,
+    .recovery-step-row,
+    .recovery-entry-card,
+    .recovery-service-card {
+      border: 1px solid rgba(44, 46, 119, .08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .84);
+      box-shadow: 0 14px 32px rgba(44, 46, 119, .08);
+    }
+
+    .recovery-hero-card {
+      min-height: 194px;
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      background: url("assets/hero_s_svg.svg") center/cover no-repeat;
+      color: var(--hajnal-navy);
+    }
+
+    .recovery-hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(39, 30, 83, .30));
+    }
+
+    .recovery-hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 172px;
+    }
+
+    .recovery-hero-copy strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--hajnal-navy);
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .recovery-hero-copy span,
+    .recovery-hero-copy small {
+      display: block;
+      color: rgba(44, 46, 119, .72);
+      font-size: 11px;
+      line-height: 1.35;
+      font-weight: 680;
+    }
+
+    .recovery-hero-copy h4 {
+      margin: 5px 0 4px;
+      color: var(--hajnal-navy);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 880;
+    }
+
+    .recovery-hero-card .primary-button {
+      position: absolute;
+      z-index: 2;
+      left: 18px;
+      bottom: 18px;
+      min-height: 40px;
+      padding: 0 18px;
+      font-size: 11px;
+    }
+
+    .recovery-section-title {
+      margin: 5px 2px 0;
+      color: var(--hajnal-navy);
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .recovery-menu-list,
+    .recovery-entry-list,
+    .recovery-step-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .recovery-menu-card {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) 18px;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      color: var(--hajnal-navy);
+      text-align: left;
+    }
+
+    .recovery-menu-card strong,
+    .recovery-step-row strong,
+    .recovery-entry-card strong {
+      display: block;
+      color: var(--hajnal-navy);
+      font-size: 11.5px;
+      line-height: 1.22;
+      font-weight: 830;
+    }
+
+    .recovery-menu-card small,
+    .recovery-step-row small,
+    .recovery-entry-card small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 9.5px;
+      line-height: 1.25;
+      font-weight: 650;
+    }
+
+    .recovery-icon,
+    .recovery-step-number,
+    .recovery-mood {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--hajnal-purple);
+      background: rgba(106, 86, 180, .12);
+    }
+
+    .recovery-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .recovery-step-hero {
+      min-height: 132px;
+      display: grid;
+      align-items: start;
+      padding: 18px;
+    }
+
+    .recovery-progress-caption {
+      display: grid;
+      gap: 7px;
+      color: rgba(44, 46, 119, .76);
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .recovery-step-row {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 11px;
+      color: var(--hajnal-navy);
+      text-align: left;
+    }
+
+    .recovery-step-number {
+      width: 30px;
+      height: 30px;
+      color: rgba(44, 46, 119, .74);
+      background: rgba(44, 46, 119, .06);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .recovery-step-row.done .recovery-step-number,
+    .recovery-step-row.current .recovery-step-number {
+      color: #FFFFFF;
+      background: var(--hajnal-purple);
+    }
+
+    .recovery-step-state {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      color: var(--hajnal-purple);
+      background: rgba(106, 86, 180, .10);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .recovery-step-row.locked {
+      opacity: .58;
+    }
+
+    .recovery-step-art {
+      min-height: 250px;
+      border-radius: 0 0 34px 34px;
+      background: url("assets/hero_fullscreen2_svg.svg") center 42%/cover no-repeat;
+      box-shadow: 0 18px 34px rgba(44, 46, 119, .12);
+    }
+
+    .recovery-focus-copy {
+      padding-top: 12px;
+    }
+
+    .recovery-focus-copy h4,
+    .recovery-card h4 {
+      margin: 0 0 8px;
+      color: var(--hajnal-navy);
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 850;
+    }
+
+    .recovery-focus-copy p,
+    .recovery-card p {
+      margin: 0;
+      color: rgba(44, 46, 119, .66);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .recovery-question-list {
+      margin: 0;
+      padding-left: 17px;
+      color: var(--hajnal-navy);
+      font-size: 12px;
+      line-height: 1.65;
+      font-weight: 720;
+    }
+
+    .recovery-card {
+      padding: 14px;
+    }
+
+    .recovery-mood-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .recovery-mood {
+      width: 38px;
+      height: 38px;
+      color: var(--hajnal-navy);
+      background: #F8D9A8;
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    .recovery-mood.active {
+      color: #FFFFFF;
+      background: var(--hajnal-purple);
+      box-shadow: 0 0 0 5px rgba(106, 86, 180, .13);
+    }
+
+    .recovery-entry-card {
+      min-height: 78px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 18px;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      color: var(--hajnal-navy);
+      text-align: left;
+    }
+
+    .recovery-entry-card time {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--hajnal-navy);
+      font-size: 11px;
+      font-weight: 840;
+    }
+
+    .recovery-floating-add {
+      width: 58px;
+      height: 58px;
+      position: absolute;
+      right: 20px;
+      bottom: 96px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--hajnal-purple);
+      color: #FFFFFF;
+      box-shadow: 0 16px 34px rgba(106, 86, 180, .28);
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .recovery-service-column {
+      flex: 0 0 930px;
+    }
+
+    .recovery-service-board {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid rgba(44, 46, 119, .08);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .72);
+      box-shadow: 0 18px 40px rgba(44, 46, 119, .08);
+    }
+
+    .recovery-service-card {
+      min-height: 166px;
+      padding: 14px 12px;
+      color: var(--hajnal-navy);
+      text-align: left;
+      box-shadow: none;
+    }
+
+    .recovery-service-card .icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 10px;
+      color: var(--hajnal-purple);
+    }
+
+    .recovery-service-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 840;
+      text-align: center;
+    }
+
+    .recovery-service-card p,
+    .recovery-service-card li {
+      margin: 0;
+      color: rgba(44, 46, 119, .68);
+      font-size: 10px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .recovery-service-card ul {
+      margin: 8px 0 0;
+      padding-left: 14px;
+    }
+
     .breathing-duration-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -6779,6 +7152,202 @@
               </div>
             </div>
           </article>
+        </section>
+      </div>
+    </section>
+
+    <section class="screen-section" aria-labelledby="recovery-row-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="recovery-row-title">Felépülés menü</h2>
+          <p>Oldal 7 · 12 lépés és eszközök. A felépülésed központja a minta alapján.</p>
+        </div>
+        <pre class="flow-tree" aria-label="Felépülés hierarchia">Felépülés
+├── 12 lépés
+│   └── 4. lépés részlet
+├── Esti reflexió
+├── Bejegyzéseid
+└── Támogatók és eszközök</pre>
+      </div>
+
+      <div class="screen-row" data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening">
+        <section class="screen-column" id="column-recovery-overview">
+          <div class="screen-label"><span class="screen-index">30</span><strong>Felépülés</strong> · 12 lépés főmenü</div>
+          <article class="phone-screen recovery-screen" id="recovery-overview" data-screen="recovery-overview" data-parent-screen="home" data-reference-screen="12lepes-source-of-truth">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <span aria-hidden="true"></span>
+              <div class="screen-header-copy"><h3>Felépülés</h3></div>
+              <button class="icon-button" type="button" aria-label="Beállítások"><svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg></button>
+            </header>
+            <div class="recovery-content">
+              <section class="recovery-hero-card">
+                <div class="recovery-hero-copy">
+                  <strong>12 lépés</strong>
+                  <span>Aktuális lépésed</span>
+                  <h4>4. lépés</h4>
+                  <small>Alapos és bátor erkölcsi leltárt készítettünk magunkról.</small>
+                </div>
+                <button class="primary-button" type="button" data-action="continue-recovery-step" data-target-screen="recovery-step-detail">Folytatás</button>
+              </section>
+              <div class="recovery-menu-list">
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="steps" data-action="open-recovery-steps" data-target-screen="recovery-steps-overview"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg></span><span><strong>12 lépés</strong><small>Dolgozz tovább a munkafüzetben</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="evening" data-action="open-recovery-evening" data-target-screen="recovery-evening"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Esti reflexió</strong><small>Írd le a mai napod és gondolataid</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="journal" data-action="open-recovery-journal" data-target-screen="recovery-evening"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Bejegyzéseid</strong><small>Korábbi naplóbejegyzések</small></span><span aria-hidden="true">›</span></button>
+              </div>
+              <h4 class="recovery-section-title">Támogatók és eszközök</h4>
+              <div class="recovery-menu-list">
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="breathing" data-action="open-recovery-breathing" data-target-screen="survival-breathe"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg></span><span><strong>Légzőgyakorlat</strong><small>Nyugtató légzés, amikor kell</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="why-started" data-action="open-recovery-why-started" data-target-screen="panic-why-started"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Miért kezdtem el?</strong><small>Emlékeztet arra, amiért itt vagy</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="survival" data-action="open-recovery-survival-pack" data-target-screen="checkin-survival-pack"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Túlélőcsomag</strong><small>Eszközök a nehéz pillanatokra</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="panic" data-action="open-recovery-panic" data-target-screen="panic-root"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></span><span><strong>Pánik mód</strong><small>Azonnali segítség, ha szükséged van rá</small></span><span aria-hidden="true">›</span></button>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" aria-current="page" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-recovery-steps-overview">
+          <div class="screen-label"><span class="screen-index">31</span><strong>12 lépés</strong> · Felépülés child</div>
+          <article class="phone-screen recovery-screen" id="recovery-steps-overview" data-screen="recovery-steps-overview" data-parent-screen="recovery-overview">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>12 lépés</h3></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="recovery-content">
+              <section class="recovery-hero-card recovery-step-hero">
+                <div class="recovery-hero-copy"><strong>Az út, amely egy nap egyszerre történik.</strong></div>
+              </section>
+              <div class="recovery-progress-caption">
+                <span>4 / 12 lépés teljesítve</span>
+                <div class="tools-progress-line" style="--progress: 34%"><span></span></div>
+              </div>
+              <div class="recovery-step-list">
+                <button class="recovery-step-row done" type="button"><span class="recovery-step-number">1</span><span><strong>Beismertük, hogy tehetetlenek vagyunk az alkohollal szemben, és hogy életünk kezelhetetlenné vált.</strong></span><span class="recovery-step-state">✓</span></button>
+                <button class="recovery-step-row done" type="button"><span class="recovery-step-number">2</span><span><strong>Elhittük, hogy egy nálunk nagyobb erő visszaadhatja józan eszünket.</strong></span><span class="recovery-step-state">✓</span></button>
+                <button class="recovery-step-row done" type="button"><span class="recovery-step-number">3</span><span><strong>Döntést hoztunk, hogy akaratunkat és életünket rábízzuk Istenre, ahogy mi Őt értjük.</strong></span><span class="recovery-step-state">✓</span></button>
+                <button class="recovery-step-row current" type="button" data-action="open-recovery-step-detail" data-target-screen="recovery-step-detail"><span class="recovery-step-number">4</span><span><strong>Alapos és bátor erkölcsi leltárt készítettünk magunkról.</strong></span><span class="recovery-step-state">›</span></button>
+                <button class="recovery-step-row locked" type="button"><span class="recovery-step-number">5</span><span><strong>Beismertük Istennek, önmagunknak és egy másik embernek hibáink természetét.</strong></span><span class="recovery-step-state">⌁</span></button>
+                <button class="recovery-step-row locked" type="button"><span class="recovery-step-number">6</span><span><strong>Teljesen készen álltunk arra, hogy Isten megszabadítson jellembeli hibáinktól.</strong></span><span class="recovery-step-state">⌁</span></button>
+                <button class="recovery-step-row locked" type="button"><span class="recovery-step-number">7</span><span><strong>Alázatosan kértük Őt, hogy szabadítson meg hibáinktól.</strong></span><span class="recovery-step-state">⌁</span></button>
+                <button class="recovery-step-row locked" type="button"><span class="recovery-step-number">8</span><span><strong>Készítettünk egy listát azokról, akiknek ártottunk, és hajlandóvá váltunk jóvátenni nekik.</strong></span><span class="recovery-step-state">⌁</span></button>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" aria-current="page" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-recovery-step-detail">
+          <div class="screen-label"><span class="screen-index">32</span><strong>4. lépés</strong> · Részlet</div>
+          <article class="phone-screen recovery-screen" id="recovery-step-detail" data-screen="recovery-step-detail" data-parent-screen="recovery-steps-overview">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="recovery-steps-overview"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>4. lépés</h3><p class="screen-subtitle">Alapos és bátor erkölcsi leltárt készítettünk magunkról.</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="recovery-content">
+              <div class="recovery-step-art" aria-hidden="true"></div>
+              <section class="recovery-focus-copy">
+                <h4>Ma erre fókuszál</h4>
+                <p>Írj őszintén az erősségeidről és a hibáidról. Ez nem ítélkezés, hanem felszabadulás.</p>
+              </section>
+              <section class="recovery-focus-copy">
+                <h4>Kérdések a mai napra</h4>
+                <ul class="recovery-question-list">
+                  <li>Milyen hibáim ismétlődnek?</li>
+                  <li>Kiknek ártottam a viselkedésemmel?</li>
+                  <li>Miben szeretnék változni?</li>
+                </ul>
+              </section>
+              <button class="primary-button" type="button" data-action="write-recovery-step-journal" data-target-screen="recovery-evening">Napló írása a 4. lépésről</button>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" aria-current="page" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-recovery-evening">
+          <div class="screen-label"><span class="screen-index">33</span><strong>Esti reflexió</strong> · Felépülés child</div>
+          <article class="phone-screen recovery-screen" id="recovery-evening" data-screen="recovery-evening" data-parent-screen="recovery-overview">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Esti reflexió</h3></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="recovery-content">
+              <section class="recovery-card">
+                <h4>Hogyan érzed magad most?</h4>
+                <div class="recovery-mood-row" aria-label="Hangulat választás">
+                  <button class="recovery-mood" type="button" aria-label="Nagyon nehéz">•</button>
+                  <button class="recovery-mood" type="button" aria-label="Nehéz">•</button>
+                  <button class="recovery-mood" type="button" aria-label="Közepes">•</button>
+                  <button class="recovery-mood" type="button" aria-label="Jó">•</button>
+                  <button class="recovery-mood active" type="button" aria-label="Nagyon jó">•</button>
+                </div>
+              </section>
+              <h4 class="recovery-section-title">Napi bejegyzéseid</h4>
+              <div class="recovery-entry-list">
+                <button class="recovery-entry-card" type="button"><span><time>Május 20.</time><strong>Ma nehéz napom volt, de nem adtam fel. Hálás vagyok a támogatásért.</strong></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-entry-card" type="button"><span><time>Május 19.</time><strong>Jobban érzem magam, kezd visszatérni a remény.</strong></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-entry-card" type="button"><span><time>Május 18.</time><strong>Vettem ma egy nagy levegőt, és elengedtem a múltat.</strong></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-entry-card" type="button"><span><time>Május 17.</time><strong>Jó napom volt, hálás vagyok a kis dolgokért is.</strong></span><span aria-hidden="true">›</span></button>
+              </div>
+              <button class="recovery-floating-add" type="button" aria-label="Új bejegyzés">+</button>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" aria-current="page" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="recovery-service-column" data-component="recovery-services-overview">
+          <div class="screen-label"><span class="screen-index">S</span><strong>Szolgáltatások áttekintése</strong> · Felépülés sora</div>
+          <div class="recovery-service-board">
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><strong>12 lépés</strong><p>Kövesd a felépülésed útját a 12 lépésen keresztül.</p><ul><li>Áttekintés</li><li>Részletes lépések</li><li>Napi fókusz</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg><strong>Esti reflexió</strong><p>Írd le a napod, gondolataid és érzéseid.</p><ul><li>Hangulat rögzítése</li><li>Napi bejegyzés</li><li>Hála gyakorlása</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg><strong>Bejegyzéseid</strong><p>Nézd vissza korábbi bejegyzéseidet.</p><ul><li>Naptár nézet</li><li>Keresés</li><li>Statisztikák</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg><strong>Légzőgyakorlat</strong><p>Gyors segítség a megnyugváshoz.</p><ul><li>Vezetett légzés</li><li>3-5-8 technika</li><li>Test ellazítása</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg><strong>Miért kezdtem el?</strong><p>Emlékeztet arra, amiért elindultál ezen az úton.</p><ul><li>Saját okok listája</li><li>Motiváció erősítése</li><li>Inspiráló idézetek</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg><strong>Túlélőcsomag</strong><p>Eszközök a nehéz pillanatokhoz.</p><ul><li>Megküzdési tippek</li><li>Figyelemelterelés</li><li>Gyors ötletek</li></ul></article>
+            <article class="recovery-service-card"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg><strong>Pánik mód</strong><p>Azonnali támogatás, ha baj van.</p><ul><li>Vészhelyzeti lépések</li><li>Segélyvonalak</li><li>Biztonsági terv</li></ul></article>
+          </div>
         </section>
       </div>
     </section>
