@@ -419,14 +419,14 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "daily-image", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "recovery-evening", "survival-breathe", "panic-why-started", "survival-stop", "panic-root"] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
     { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },
     { screen: "tools-journal-list", parent: "recovery-overview", title: "Napló", navActive: "Felépülés", shortcuts: [] },
     { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", navActive: null, shortcuts: [] },
     { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", navActive: null, shortcuts: [] },
-  ], "recovery row must integrate daily image, progress, and the remaining tools screens");
+  ], "recovery row must keep only the requested recovery menu shortcuts");
 
   const recoveryOverviewLayout = await page.locator("#recovery-overview").evaluate((screen) => {
     const content = screen.querySelector(".recovery-content");

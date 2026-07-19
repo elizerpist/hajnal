@@ -643,15 +643,11 @@ const tests = {
     ].forEach(expectAbsent);
     [
       'Felépülés',
-      'Napi kép',
       'Haladás',
       'Napló',
       'Hála lista',
-      'Napi józansági kérdés',
-      'Légzőgyakorlat',
       'Miért kezdtem el?',
       'Túlélőcsomag',
-      'Pánik mód',
       'Új bejegyzés',
       'Keresés a bejegyzések között...',
       'Nehéz nap volt, de nem adtam fel',
@@ -666,7 +662,6 @@ const tests = {
       'Törlés'
     ].forEach(expectContains);
     [
-      ['data-action="open-recovery-daily-image" data-target-screen="daily-image"', 'daily image shortcut in recovery'],
       ['data-action="open-recovery-progress" data-target-screen="progress-overview"', 'progress shortcut in recovery'],
       ['data-action="open-recovery-journal" data-target-screen="tools-journal-list"', 'journal card moved into recovery'],
       ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'gratitude shortcut in recovery'],
@@ -702,22 +697,15 @@ const tests = {
       'Írd le a mai napod és gondolataid',
       'Bejegyzéseid',
       'Korábbi naplóbejegyzések',
-      'Napi kép',
-      'Aznapi vizuális kép',
       'Haladás',
       '90 napos út, naptár és mérföldkövek',
       'Napló',
       'Hála lista',
-      'Napi józansági kérdés',
       'Támogatók és eszközök',
-      'Légzőgyakorlat',
-      'Nyugtató légzés, amikor kell',
       'Miért kezdtem el?',
       'Emlékeztet arra, amiért itt vagy',
       'Túlélőcsomag',
       'Eszközök a nehéz pillanatokra',
-      'Pánik mód',
-      'Azonnali segítség, ha szükséged van rá',
       'Az út, amely egy nap egyszerre történik.',
       '4 / 12 lépés teljesítve',
       'Beismertük, hogy tehetetlenek vagyunk az alkohollal szemben',
@@ -741,18 +729,46 @@ const tests = {
     [
       ['data-action="continue-recovery-step" data-target-screen="recovery-step-detail"', 'continue current step'],
       ['data-action="open-recovery-steps" data-target-screen="recovery-steps-overview"', 'open 12-step overview'],
-      ['data-action="open-recovery-daily-image" data-target-screen="daily-image"', 'daily image menu target'],
       ['data-action="open-recovery-progress" data-target-screen="progress-overview"', 'progress menu target'],
       ['data-action="open-recovery-evening" data-target-screen="recovery-evening"', 'open recovery evening reflection'],
       ['data-action="open-recovery-journal" data-target-screen="tools-journal-list"', 'open entries shortcut'],
       ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'open gratitude shortcut'],
-      ['data-action="open-recovery-breathing" data-target-screen="survival-breathe"', 'breathing shortcut'],
       ['data-action="open-recovery-why-started" data-target-screen="panic-why-started"', 'why started shortcut'],
       ['data-action="open-recovery-survival-pack" data-target-screen="survival-stop"', 'survival package shortcut'],
-      ['data-action="open-recovery-panic" data-target-screen="panic-root"', 'panic shortcut'],
       ['data-action="open-recovery-step-detail" data-target-screen="recovery-step-detail"', 'step detail target'],
       ['data-action="write-recovery-step-journal" data-target-screen="recovery-evening"', 'step journal CTA']
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    [
+      'data-action="open-recovery-daily-image"',
+      'data-recovery-shortcut="daily-image"',
+      '<strong>Napi kép</strong>',
+      'Aznapi vizuális kép',
+      'data-action="open-recovery-daily-question"',
+      'data-recovery-shortcut="daily-question"',
+      '<strong>Napi józansági kérdés</strong>',
+      'data-action="open-recovery-breathing"',
+      'data-recovery-shortcut="breathing"',
+      '<strong>Légzőgyakorlat</strong>',
+      'Nyugtató légzés, amikor kell',
+      'data-action="open-recovery-panic"',
+      'data-recovery-shortcut="panic"',
+      '<strong>Pánik mód</strong>',
+      'Azonnali segítség, ha szükséged van rá'
+    ].forEach((needle) => assert.ok(!recoveryOverviewScreen.includes(needle), `Screen 30 must not include ${needle}`));
+    let shortcutCursor = -1;
+    [
+      'data-recovery-shortcut="steps"',
+      'data-recovery-shortcut="progress"',
+      'data-recovery-shortcut="evening"',
+      'data-recovery-shortcut="journal"',
+      'data-recovery-shortcut="gratitude"',
+      'data-recovery-shortcut="why-started"',
+      'data-recovery-shortcut="survival"'
+    ].forEach((needle) => {
+      const next = recoveryOverviewScreen.indexOf(needle, shortcutCursor + 1);
+      assert.ok(next > shortcutCursor, `Screen 30 remaining shortcut ${needle} is missing or out of order`);
+      shortcutCursor = next;
+    });
     assert.ok(recoveryOverviewScreen.includes('<nav class="bottom-nav"'), 'screen 30 must keep its bottom nav inside the phone');
     assert.ok(recoveryOverviewScreen.includes('aria-current="page" data-target-screen="recovery-overview"'), 'screen 30 bottom nav must keep Felépülés active');
     assert.ok(recoveryOverviewScreen.includes('data-action="open-recovery-why-started" data-target-screen="panic-why-started"'), 'screen 30 must include a Miért kezdtem el menu action');
