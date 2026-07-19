@@ -31,7 +31,6 @@ const screenOrder = [
   'survival-outside',
   'survival-note',
   'survival-call-sponsor',
-  'panic-sponsor-call',
   'panic-help-message',
   'panic-backup-contact',
   'panic-why-started',
@@ -132,7 +131,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 43, 'phone screen count');
+    expectCount(/class="phone-screen/g, 42, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -697,7 +696,6 @@ const tests = {
       'data-screen="survival-outside"',
       'data-screen="survival-note"',
       'data-screen="survival-call-sponsor"',
-      'data-screen="panic-sponsor-call"',
       'data-screen="panic-help-message"',
       'data-screen="panic-backup-contact"',
       'data-screen="panic-why-started"',
@@ -709,12 +707,15 @@ const tests = {
       'Pánik mód elemei',
       'Sürgősségi segítség',
       'Hívd a szponzorod',
-      'Küldj segítségkérő üzenetet',
       'Hívd a tartalék kapcsolattartót',
       '15 perces túlélőcsomag',
       'Olvasd el, miért kezdted el',
       'Keresd meg a következő meetinget',
       'Szakmai vagy sürgősségi segítség',
+      'Szponzor',
+      'Kapcsolattartó',
+      'Gyors üzenetek',
+      'Hívás indítása',
       'Állj meg.',
       'Ne csinálj semmit 10 másodpercig.',
       'Lélegezz.',
@@ -734,6 +735,9 @@ const tests = {
     expectAbsent('id="column-panic-help-sheet"');
     expectAbsent('data-target-screen="panic-help-sheet"');
     expectAbsent('Segítség kell panel');
+    expectAbsent('data-screen="panic-sponsor-call"');
+    expectAbsent('id="column-panic-sponsor-call"');
+    expectAbsent('data-target-screen="panic-sponsor-call"');
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
     expectContains('data-action="start-checkin-survival" data-target-screen="survival-stop"');
     [
@@ -742,7 +746,7 @@ const tests = {
       ['survival-water', '3 / 6', 'Kész', 'survival-outside'],
       ['survival-outside', '4 / 6', 'Kész', 'survival-note'],
       ['survival-note', '5 / 6', 'Írni fogok', 'survival-call-sponsor'],
-      ['survival-call-sponsor', '6 / 6', 'Hívás', 'panic-sponsor-call']
+      ['survival-call-sponsor', '6 / 6', 'Hívás', 'panic-help-message']
     ].forEach(([id, step, cta, target]) => {
       const screen = screenSlice(id);
       assert.ok(screen.includes(`data-survival-step="${step}"`), `${id} must expose its source step counter`);
@@ -771,8 +775,28 @@ const tests = {
     assert.ok(!panicRootScreen.includes('data-action="send-help-message"'), 'screen 16 must remove the direct help-message action');
     assert.ok(!panicRootScreen.includes('Szakmai vagy sürgősségi segítség'), 'screen 16 must remove the direct professional-help quick button');
     assert.ok(!panicRootScreen.includes('data-action="emergency-help"'), 'screen 16 must remove the direct professional-help action');
+    assert.ok(panicRootScreen.includes('data-action="call-sponsor" data-target-screen="panic-help-message"'), 'screen 16 sponsor quick option must target the integrated screen 26');
     assert.ok(panicRootScreen.includes('data-action="report-relapse" data-target-screen="checkin-relapse"'), 'screen 16 must include a relapse button targeting checkin-relapse');
     assert.ok(panicRootScreen.includes('>Visszaestem</button>'), 'screen 16 relapse button must be labeled Visszaestem');
+    const sponsorMessageScreen = screenSlice('panic-help-message');
+    const backupContactScreen = screenSlice('panic-backup-contact');
+    [
+      [sponsorMessageScreen, 'panic-help-message', 'Kata', '+36 30 123 4567', 'data-action="start-sponsor-call"', 'data-action="send-sponsor-template"', 'Szponzor'],
+      [backupContactScreen, 'panic-backup-contact', 'Anya', '+36 30 987 6543', 'data-action="start-backup-call"', 'data-action="send-backup-template"', 'Tartalék kapcsolattartó']
+    ].forEach(([screen, id, contactName, phone, callAction, messageAction, title]) => {
+      assert.ok(screen.includes(`data-contact-layout="contact-call-messages"`), `${id} must expose the shared contact/call/messages layout`);
+      assert.ok(screen.includes(`data-component="panic-contact-card"`), `${id} must have a contact card`);
+      assert.ok(screen.includes(contactName), `${id} must include contact name`);
+      assert.ok(screen.includes(phone), `${id} must include contact phone`);
+      assert.ok(screen.includes(`data-component="panic-call-card"`), `${id} must have a call-start card`);
+      assert.ok(screen.includes(callAction), `${id} must expose its call action`);
+      assert.ok(screen.includes('Hívás indítása'), `${id} must label the call-start card`);
+      assert.ok(screen.includes(`data-component="panic-quick-messages"`), `${id} must have a quick messages section`);
+      assert.ok(screen.includes(messageAction), `${id} must expose template message actions`);
+      assert.ok(screen.includes(title), `${id} must keep the correct contact title`);
+      assert.ok(screen.indexOf('data-component="panic-contact-card"') < screen.indexOf('data-component="panic-call-card"'), `${id} contact card must be above call card`);
+      assert.ok(screen.indexOf('data-component="panic-call-card"') < screen.indexOf('data-component="panic-quick-messages"'), `${id} call card must be above quick messages`);
+    });
     expectCount(/class="screen-row/g, 6, 'screen row count');
   },
 
@@ -793,7 +817,7 @@ const tests = {
     expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
     expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
@@ -819,7 +843,6 @@ const tests = {
       'survival-outside': 'survival-water',
       'survival-note': 'survival-outside',
       'survival-call-sponsor': 'survival-note',
-      'panic-sponsor-call': 'panic-root',
       'panic-help-message': 'panic-root',
       'panic-backup-contact': 'panic-root',
       'panic-why-started': 'panic-root',

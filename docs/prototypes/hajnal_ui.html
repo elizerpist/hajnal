@@ -4610,6 +4610,46 @@
       font-weight: 590;
     }
 
+    .panic-call-card {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 22px;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .86);
+      color: var(--hajnal-navy);
+      text-align: left;
+      box-shadow: 0 12px 28px rgba(44, 46, 119, .07);
+      cursor: pointer;
+    }
+
+    .panic-call-card strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.22;
+      font-weight: 820;
+    }
+
+    .panic-call-card small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(44, 46, 119, .58);
+      font-size: 10.5px;
+      line-height: 1.3;
+      font-weight: 620;
+    }
+
+    .panic-call-card .row-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(145deg, #A987D4, #6B59BE);
+      box-shadow: none;
+    }
+
     .panic-message-list {
       display: grid;
       gap: 9px;
@@ -5739,8 +5779,7 @@
           <p>Oldal 3 · a Segítség kell gomb és minden pánik opció részletezve</p>
         </div>
         <pre class="flow-tree" aria-label="Pánik mód hierarchia">Pánik mód
-├── Hívd a szponzorod
-├── Küldj segítségkérő üzenetet
+├── Hívd a szponzorod / gyors üzenetek
 ├── Hívd a tartalék kapcsolattartót
 ├── 15 perces túlélőcsomag
 │   ├── Állj meg.
@@ -5755,7 +5794,7 @@
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -5776,7 +5815,7 @@
               </div>
               <p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p>
               <div class="panic-grid" aria-label="Pánik mód gyors opciók">
-                <button type="button" data-action="call-sponsor" data-target-screen="panic-sponsor-call"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
+                <button type="button" data-action="call-sponsor" data-target-screen="panic-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
                 <button type="button" data-action="call-backup-contact" data-target-screen="panic-backup-contact"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
                 <button type="button" data-action="start-survival-pack" data-target-screen="checkin-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
                 <button type="button" data-action="why-started" data-target-screen="panic-why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Olvasd el, miért kezdted el</button>
@@ -5944,70 +5983,50 @@
                 <div class="survival-visual"><div class="survival-phone-visual"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div></div>
               </section>
               <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="call-sponsor-after-survival" data-target-screen="panic-sponsor-call">Hívás</button>
+                <button class="checkin-action primary" type="button" data-action="call-sponsor-after-survival" data-target-screen="panic-help-message">Hívás</button>
               </div>
-            </div>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-panic-sponsor-call">
-          <div class="screen-label"><span class="screen-index">25</span><strong>Szponzor hívása</strong> · gyors opció</div>
-          <article class="phone-screen branch-screen" id="panic-sponsor-call" data-screen="panic-sponsor-call" data-parent-screen="panic-root">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Hívd a szponzorod</h3><p class="screen-subtitle">Egy megerősítés után indulhat a hívás.</p></div>
-              <span aria-hidden="true"></span>
-            </header>
-            <div class="panic-detail-content">
-              <section class="panic-contact-card soft-card">
-                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></div>
-                <div><strong>Kata</strong><small>Szponzorod · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></div>
-              </section>
-              <section class="panic-panel-card soft-card">
-                <h4>Mit mondhatok?</h4>
-                <p>Rövid mondatok, ha nehéz megszólalni.</p>
-                <div class="panic-message-list">
-                  <button type="button">Most erős sóvárgásom van, fel tudsz hívni?<span aria-hidden="true">›</span></button>
-                  <button type="button">Nem kell megoldanod, csak maradj velem pár percig.<span aria-hidden="true">›</span></button>
-                  <button type="button">Elindítok egy túlélőcsomagot, közben jó lenne kapcsolódni.<span aria-hidden="true">›</span></button>
-                </div>
-              </section>
-              <button class="primary-button" type="button" data-action="confirm-sponsor-call">Hívás megerősítése</button>
             </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-panic-help-message">
-          <div class="screen-label"><span class="screen-index">26</span><strong>Segítségkérő üzenet</strong> · gyors opció</div>
-          <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root">
+          <div class="screen-label"><span class="screen-index">26</span><strong>Szponzor</strong> · kontakt és gyors üzenetek</div>
+          <article class="phone-screen branch-screen" id="panic-help-message" data-screen="panic-help-message" data-parent-screen="panic-root" data-contact-layout="contact-call-messages">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="screen-header">
               <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Gyors üzenetek</h3><p class="screen-subtitle">Válassz egyet, majd küldd el.</p></div>
-              <button class="icon-button" type="button" aria-label="Szerkesztés">✎</button>
+              <div class="screen-header-copy"><h3>Szponzor</h3><p class="screen-subtitle">Kapcsolattartó és gyors üzenetek.</p></div>
+              <span aria-hidden="true"></span>
             </header>
             <div class="panic-detail-content">
-              <div class="panic-message-list">
-                <button type="button" data-action="message-template">Nehéz helyzetben vagyok. Fel tudnál hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                <button type="button" data-action="message-template">Erős sóvárgásom van. Szükségem van a támogatásodra.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                <button type="button" data-action="message-template">Ma még nem beszéltünk. Mikor lennél elérhető?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-                <button type="button" data-action="message-template">Csak szerettem volna jelentkezni. Hálás vagyok a támogatásodért.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
-              </div>
-              <button class="secondary-button" type="button" data-action="custom-help-message">Egyéni üzenet írása</button>
+              <section class="panic-contact-card soft-card" data-component="panic-contact-card">
+                <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg></div>
+                <div><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></div>
+              </section>
+              <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-sponsor-call">
+                <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
+                <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
+                <span aria-hidden="true">›</span>
+              </button>
+              <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
+                <h4>Gyors üzenetek</h4>
+                <p>Válassz egyet, ha most nehéz megfogalmazni.</p>
+                <div class="panic-message-list">
+                  <button type="button" data-action="send-sponsor-template">Most erős sóvárgásom van, fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                  <button type="button" data-action="send-sponsor-template">Nem kell megoldanod, csak maradj velem pár percig.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                  <button type="button" data-action="send-sponsor-template">Elindítok egy túlélőcsomagot, közben jó lenne kapcsolódni.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                </div>
+              </section>
             </div>
           </article>
         </section>
 
         <section class="screen-column" id="column-panic-backup-contact">
           <div class="screen-label"><span class="screen-index">27</span><strong>Tartalék kapcsolat</strong> · gyors opció</div>
-          <article class="phone-screen branch-screen" id="panic-backup-contact" data-screen="panic-backup-contact" data-parent-screen="panic-root">
+          <article class="phone-screen branch-screen" id="panic-backup-contact" data-screen="panic-backup-contact" data-parent-screen="panic-root" data-contact-layout="contact-call-messages">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
@@ -6018,16 +6037,22 @@
               <span aria-hidden="true"></span>
             </header>
             <div class="panic-detail-content">
-              <section class="panic-contact-card soft-card">
+              <section class="panic-contact-card soft-card" data-component="panic-contact-card">
                 <div class="panic-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div>
                 <div><strong>Anya</strong><small>Tartalék kapcsolat · előre engedélyezett<br>+36 30 987 6543</small></div>
               </section>
-              <section class="panic-panel-card soft-card">
-                <h4>Biztonságos megerősítés</h4>
-                <p>A hívás itt sem indul automatikusan. A felhasználó dönt.</p>
-                <div class="support-list">
-                  <button class="support-option" type="button"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span><span aria-hidden="true">›</span></button>
-                  <button class="support-option" type="button"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Üzenet küldése</strong><small>Rövid segítségkérő szöveggel.</small></span><span aria-hidden="true">›</span></button>
+              <button class="panic-call-card" type="button" data-component="panic-call-card" data-action="start-backup-call">
+                <span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
+                <span><strong>Hívás indítása</strong><small>Megnyitja a telefon hívásmegerősítését.</small></span>
+                <span aria-hidden="true">›</span>
+              </button>
+              <section class="panic-panel-card soft-card" data-component="panic-quick-messages">
+                <h4>Gyors üzenetek</h4>
+                <p>Ugyanaz a gyors segítségkérés, csak a tartalék kapcsolattartónak.</p>
+                <div class="panic-message-list">
+                  <button type="button" data-action="send-backup-template">Most nehéz helyzetben vagyok. Fel tudsz hívni?<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                  <button type="button" data-action="send-backup-template">A szponzorom nem elérhető, pár perc támogatás kellene.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
+                  <button type="button" data-action="send-backup-template">Nem kell megoldanod, csak jó lenne nem egyedül lennem most.<svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></button>
                 </div>
               </section>
             </div>

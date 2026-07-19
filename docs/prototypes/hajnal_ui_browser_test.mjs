@@ -35,7 +35,6 @@ const screenOrder = [
   ["survival-outside", "survival-water"],
   ["survival-note", "survival-outside"],
   ["survival-call-sponsor", "survival-note"],
-  ["panic-sponsor-call", "panic-root"],
   ["panic-help-message", "panic-root"],
   ["panic-backup-contact", "panic-root"],
   ["panic-why-started", "panic-root"],
@@ -80,7 +79,7 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
       "checkin-survival-pack",
@@ -90,7 +89,6 @@ const screenRows = [
       "survival-outside",
       "survival-note",
       "survival-call-sponsor",
-      "panic-sponsor-call",
       "panic-help-message",
       "panic-backup-contact",
       "panic-why-started",
@@ -324,7 +322,7 @@ try {
     })),
   );
   assert.deepEqual(panicRootActions, [
-    { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-sponsor-call" },
+    { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-help-message" },
     { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-backup-contact" },
     { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "checkin-survival-pack" },
     { text: "Olvasd el, miért kezdted el", action: "why-started", target: "panic-why-started" },
@@ -371,8 +369,23 @@ try {
     { screen: "survival-water", parent: "survival-breathe", step: "3 / 6", title: "Igyál vizet.", body: "Egy korty is számít.", cta: "Kész", target: "survival-outside" },
     { screen: "survival-outside", parent: "survival-water", step: "4 / 6", title: "Menj ki.", body: "Friss levegő. Változtass környezetet.", cta: "Kész", target: "survival-note" },
     { screen: "survival-note", parent: "survival-outside", step: "5 / 6", title: "Írj egy mondatot.", body: "Írd ki, ami benned van. Csak őszintén.", cta: "Írni fogok", target: "survival-call-sponsor" },
-    { screen: "survival-call-sponsor", parent: "survival-note", step: "6 / 6", title: "Most hívd fel a szponzorodat.", body: "Nem kell egyedül megcsinálnod.", cta: "Hívás", target: "panic-sponsor-call" },
+    { screen: "survival-call-sponsor", parent: "survival-note", step: "6 / 6", title: "Most hívd fel a szponzorodat.", body: "Nem kell egyedül megcsinálnod.", cta: "Hívás", target: "panic-help-message" },
   ], "15-minute survival package must include every source screen in order");
+
+  const contactScreens = await page.locator('[data-contact-layout="contact-call-messages"]').evaluateAll((screens) =>
+    screens.map((screen) => ({
+      screen: screen.dataset.screen,
+      title: screen.querySelector("h3")?.textContent.trim(),
+      contact: screen.querySelector('[data-component="panic-contact-card"] strong')?.textContent.trim(),
+      callAction: screen.querySelector('[data-component="panic-call-card"]')?.dataset.action,
+      callLabel: screen.querySelector('[data-component="panic-call-card"] strong')?.textContent.trim(),
+      messageActions: Array.from(screen.querySelectorAll('[data-component="panic-quick-messages"] [data-action]')).map((button) => button.dataset.action),
+    })),
+  );
+  assert.deepEqual(contactScreens, [
+    { screen: "panic-help-message", title: "Szponzor", contact: "Kata", callAction: "start-sponsor-call", callLabel: "Hívás indítása", messageActions: ["send-sponsor-template", "send-sponsor-template", "send-sponsor-template"] },
+    { screen: "panic-backup-contact", title: "Tartalék kapcsolattartó", contact: "Anya", callAction: "start-backup-call", callLabel: "Hívás indítása", messageActions: ["send-backup-template", "send-backup-template", "send-backup-template"] },
+  ], "sponsor and backup contact screens must share contact/call/quick-message layout");
 
   const progressScreens = await page.locator(".progress-screen").evaluateAll((screens) =>
     screens.map((screen) => ({
