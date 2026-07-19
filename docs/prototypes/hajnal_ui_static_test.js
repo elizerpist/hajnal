@@ -482,7 +482,8 @@ const tests = {
       'data-component="statistics-task-bars"',
       'Esti check-in',
       'Hála lista',
-      '12 lépés'
+      '12 lépés',
+      'NA részvétel'
     ]);
     [
       'Szponzor hívás',
@@ -500,7 +501,13 @@ const tests = {
       'Támogatás használata'
     ].forEach((value) => assert.ok(!homeStatisticsScreen.includes(value), `home statistics must remove ${value}`));
     assert.ok(homeStatisticsScreen.includes('aria-current="page" data-target-screen="home-statistics"'), 'statistics screen bottom nav must keep Kezdőlap active on the current statistics view');
-    assert.equal((homeStatisticsScreen.match(/class="statistics-task-row"/g) || []).length, 3, 'home statistics habits must keep exactly three rows');
+    expectOrdered([
+      '<div class="statistics-task-row"><span>Esti check-in</span>',
+      '<div class="statistics-task-row"><span>Hála lista</span>',
+      '<div class="statistics-task-row"><span>12 lépés</span>',
+      '<div class="statistics-task-row"><span>NA részvétel</span>'
+    ]);
+    assert.equal((homeStatisticsScreen.match(/class="statistics-task-row"/g) || []).length, 4, 'home statistics habits must keep exactly four rows including NA participation');
     assert.match(html, /\.home-statistics-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC 0%,\s*#F8EEF7 100%\)/s, 'statistics screen must match the warm home/progress palette');
     assert.match(html, /\.statistics-content\s*\{[^}]*overflow-y:\s*auto;[^}]*padding:\s*0 18px 92px/s, 'statistics content must be scrollable above the fixed footer nav');
     assert.match(html, /\.statistics-ring\s*\{[^}]*conic-gradient\(from -90deg,\s*#6A56B4 0 26\.666%,\s*rgba\(106,\s*86,\s*180,\s*\.13\) 26\.666% 100%\)/s, 'statistics clean-day ring must visualize the 24/90 progress');

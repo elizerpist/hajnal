@@ -365,7 +365,7 @@ try {
     ],
     periodLabels: ["7 nap", "30 nap", "90 nap"],
     hasTrend: true,
-    taskLabels: ["Esti check-in", "Hála lista", "12 lépés"],
+    taskLabels: ["Esti check-in", "Hála lista", "12 lépés", "NA részvétel"],
     forbiddenBlocks: [0, 0, 0, 0, 0],
     forbiddenText: [],
   }, "home statistics must collect all stats-related dashboard content");
