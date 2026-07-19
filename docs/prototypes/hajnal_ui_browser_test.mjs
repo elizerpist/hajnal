@@ -39,9 +39,8 @@ const screenOrder = [
   ["panic-meeting-finder", "panic-root"],
   ["checkin-relapse", "home"],
   ["progress-overview", "home"],
-  ["progress-journey", "progress-overview"],
   ["progress-calendar", "progress-overview"],
-  ["progress-day-detail", "progress-journey"],
+  ["progress-day-detail", "progress-calendar"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
   ["recovery-step-detail", "recovery-steps-overview"],
@@ -115,8 +114,8 @@ const screenRows = [
   [
     "progress",
     "progress-overview",
-    "progress-overview progress-journey progress-calendar progress-day-detail",
-    ["progress-overview", "progress-journey", "progress-calendar", "progress-day-detail"],
+    "progress-overview progress-calendar progress-day-detail",
+    ["progress-overview", "progress-calendar", "progress-day-detail"],
   ],
   [
     "recovery",
@@ -424,32 +423,15 @@ try {
     })),
   );
   assert.deepEqual(progressScreens, [
-    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar"] },
-    { screen: "progress-journey", parent: "progress-overview", title: "Általános statisztika", shortcuts: [] },
+    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-calendar"] },
     { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
-    { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
-  ], "progress menu must remove the former standalone statistics screen");
+    { screen: "progress-day-detail", parent: "progress-calendar", title: "Péntek, május 24.", shortcuts: [] },
+  ], "progress menu must remove screen 17 and keep day detail under calendar");
 
-  const generalStatsSummary = await page.locator("#progress-journey").evaluate((screen) => ({
-    component: screen.querySelector('[data-component="general-statistics-summary"]')?.dataset.component || null,
-    title: screen.querySelector("h3")?.textContent.trim(),
-    cards: Array.from(screen.querySelectorAll(".progress-stat-card")).map((card) => ({
-      value: card.querySelector("strong")?.textContent.trim(),
-      label: card.querySelector("span")?.textContent.trim(),
-    })),
-    firstStatOffset: screen.textContent.indexOf("Jelenlegi sorozat"),
-    journeyOffset: screen.textContent.indexOf("1–30. nap"),
-    removedTargets: Array.from(screen.ownerDocument.querySelectorAll('[data-target-screen="progress-stats"], [data-action="open-progress-stats"], [data-progress-shortcut="stats"]')).length,
-  }));
-  assert.equal(generalStatsSummary.component, "general-statistics-summary", "screen 17 must expose the general statistics summary");
-  assert.equal(generalStatsSummary.title, "Általános statisztika", "screen 17 title");
-  assert.deepEqual(generalStatsSummary.cards, [
-    { value: "24 nap", label: "Jelenlegi sorozat" },
-    { value: "93%", label: "Check-in arány" },
-    { value: "37 nap", label: "Összes tiszta nap" },
-  ], "screen 17 must contain the moved statistic cards");
-  assert.ok(generalStatsSummary.firstStatOffset >= 0 && generalStatsSummary.firstStatOffset < generalStatsSummary.journeyOffset, "general stats must appear before journey content");
-  assert.equal(generalStatsSummary.removedTargets, 0, "no target or shortcut may point at removed screen 20");
+  const deletedProgressJourney = await page.locator('[data-screen="progress-journey"], #progress-journey, #column-progress-journey, [data-target-screen="progress-journey"], [data-action="open-progress-journey"], [data-progress-shortcut="journey"], [data-component="general-statistics-summary"]').count();
+  assert.equal(deletedProgressJourney, 0, "screen 17 progress-journey and all references must be removed");
+  const removedProgressStats = await page.locator('[data-target-screen="progress-stats"], [data-action="open-progress-stats"], [data-progress-shortcut="stats"]').count();
+  assert.equal(removedProgressStats, 0, "no target or shortcut may point at removed screen 20");
 
   const milestoneGallery = await page.locator("#progress-milestones").evaluate((screen) => ({
     parent: screen.dataset.parentScreen,

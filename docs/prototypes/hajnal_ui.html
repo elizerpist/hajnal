@@ -6983,12 +6983,11 @@
           <p>Oldal 5 · a leírás szerinti Haladás menü elemei</p>
         </div>
         <pre class="flow-tree" aria-label="Haladás hierarchia">Haladás
-├── Általános statisztika
-│   └── Napi részlet
-└── Naptár</pre>
+└── Naptár
+    └── Napi részlet</pre>
       </div>
 
-      <div class="screen-row" data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-calendar progress-day-detail">
+      <div class="screen-row" data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-calendar progress-day-detail">
         <section class="screen-column" id="column-progress-overview">
           <div class="screen-label"><span class="screen-index">16</span><strong>Haladás</strong> · Főmenü</div>
           <article class="phone-screen progress-screen" id="progress-overview" data-screen="progress-overview" data-parent-screen="home">
@@ -7012,62 +7011,8 @@
                 <div class="progress-stat-card"><strong>30 nap · Egy hónap</strong><span>Következő mérföldkő</span></div>
               </div>
               <div class="progress-menu-list">
-                <button class="progress-menu-card" type="button" data-progress-shortcut="journey" data-action="open-progress-journey" data-target-screen="progress-journey"><span class="progress-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg></span><span><strong>Általános statisztika</strong><small>Sorozat, check-in arány és tiszta napok</small></span><span aria-hidden="true">›</span></button>
                 <button class="progress-menu-card" type="button" data-progress-shortcut="calendar" data-action="open-progress-calendar" data-target-screen="progress-calendar"><span class="progress-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Naptár</strong><small>Tekintsd át a napjaid</small></span><span aria-hidden="true">›</span></button>
               </div>
-            </div>
-            <nav class="bottom-nav" aria-label="Fő navigáció">
-              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
-              <button type="button" aria-current="page" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
-              <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
-              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
-              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
-            </nav>
-          </article>
-        </section>
-
-        <section class="screen-column" id="column-progress-journey">
-          <div class="screen-label"><span class="screen-index">17</span><strong>Általános statisztika</strong> · Haladás child</div>
-          <article class="phone-screen progress-screen" id="progress-journey" data-screen="progress-journey" data-parent-screen="progress-overview">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Általános statisztika</h3><p class="screen-subtitle">A tiszta napjaid áttekintése</p></div>
-              <button class="icon-button" type="button" aria-label="Súgó"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></button>
-            </header>
-            <div class="progress-content">
-              <div class="progress-summary-grid" data-component="general-statistics-summary">
-                <div class="progress-stat-card"><strong>24 nap</strong><span>Jelenlegi sorozat</span></div>
-                <div class="progress-stat-card"><strong>93%</strong><span>Check-in arány</span></div>
-                <div class="progress-stat-card"><strong>37 nap</strong><span>Összes tiszta nap</span></div>
-              </div>
-              <section class="progress-panel">
-                <h4 class="progress-section-title">1–30. nap</h4>
-                <div class="progress-day-grid" aria-label="1–30. nap">
-                  <span class="progress-day-state done">1</span><span class="progress-day-state done">2</span><span class="progress-day-state done">3</span><span class="progress-day-state done">4</span><span class="progress-day-state done">5</span><span class="progress-day-state done">6</span><span class="progress-day-state done">7</span><span class="progress-day-state done">8</span><span class="progress-day-state done">9</span><span class="progress-day-state done">10</span>
-                  <span class="progress-day-state done">11</span><span class="progress-day-state done">12</span><span class="progress-day-state done">13</span><span class="progress-day-state done">14</span><span class="progress-day-state done">15</span><span class="progress-day-state done">16</span><span class="progress-day-state done">17</span><span class="progress-day-state done">18</span><span class="progress-day-state done">19</span><span class="progress-day-state done">20</span>
-                  <span class="progress-day-state done">21</span><span class="progress-day-state done">22</span><span class="progress-day-state done">23</span><button class="progress-day-state current" type="button" data-action="open-progress-day-detail" data-target-screen="progress-day-detail">24</button><span class="progress-day-state">25</span><span class="progress-day-state">26</span><span class="progress-day-state">27</span><span class="progress-day-state">28</span><span class="progress-day-state">29</span><span class="progress-day-state">30</span>
-                </div>
-              </section>
-              <section class="progress-panel">
-                <h4 class="progress-section-title">31–60. nap</h4>
-                <div class="progress-day-grid" aria-label="31–60. nap">
-                  <span class="progress-day-state">31</span><span class="progress-day-state">32</span><span class="progress-day-state">33</span><span class="progress-day-state">34</span><span class="progress-day-state">35</span><span class="progress-day-state">36</span><span class="progress-day-state">37</span><span class="progress-day-state">38</span><span class="progress-day-state">39</span><span class="progress-day-state">40</span>
-                  <span class="progress-day-state">41</span><span class="progress-day-state">42</span><span class="progress-day-state">43</span><span class="progress-day-state">44</span><span class="progress-day-state">45</span><span class="progress-day-state">46</span><span class="progress-day-state">47</span><span class="progress-day-state">48</span><span class="progress-day-state">49</span><span class="progress-day-state">50</span>
-                  <span class="progress-day-state">51</span><span class="progress-day-state">52</span><span class="progress-day-state">53</span><span class="progress-day-state">54</span><span class="progress-day-state">55</span><span class="progress-day-state">56</span><span class="progress-day-state">57</span><span class="progress-day-state">58</span><span class="progress-day-state">59</span><span class="progress-day-state">60</span>
-                </div>
-              </section>
-              <section class="progress-panel">
-                <h4 class="progress-section-title">61–90. nap</h4>
-                <div class="progress-day-grid" aria-label="61–90. nap">
-                  <span class="progress-day-state locked">61</span><span class="progress-day-state locked">62</span><span class="progress-day-state locked">63</span><span class="progress-day-state locked">64</span><span class="progress-day-state locked">65</span><span class="progress-day-state locked">66</span><span class="progress-day-state locked">67</span><span class="progress-day-state locked">68</span><span class="progress-day-state locked">69</span><span class="progress-day-state locked">70</span>
-                  <span class="progress-day-state locked">71</span><span class="progress-day-state locked">72</span><span class="progress-day-state locked">73</span><span class="progress-day-state locked">74</span><span class="progress-day-state locked">75</span><span class="progress-day-state locked">76</span><span class="progress-day-state locked">77</span><span class="progress-day-state locked">78</span><span class="progress-day-state locked">79</span><span class="progress-day-state locked">80</span>
-                  <span class="progress-day-state locked">81</span><span class="progress-day-state locked">82</span><span class="progress-day-state locked">83</span><span class="progress-day-state locked">84</span><span class="progress-day-state locked">85</span><span class="progress-day-state locked">86</span><span class="progress-day-state locked">87</span><span class="progress-day-state locked">88</span><span class="progress-day-state locked">89</span><span class="progress-day-state locked">90</span>
-                </div>
-              </section>
             </div>
             <nav class="bottom-nav" aria-label="Fő navigáció">
               <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
@@ -7126,13 +7071,13 @@
 
         <section class="screen-column" id="column-progress-day-detail">
           <div class="screen-label"><span class="screen-index">19</span><strong>Napi részlet</strong> · Haladás child</div>
-          <article class="phone-screen progress-screen" id="progress-day-detail" data-screen="progress-day-detail" data-parent-screen="progress-journey">
+          <article class="phone-screen progress-screen" id="progress-day-detail" data-screen="progress-day-detail" data-parent-screen="progress-calendar">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
             </div>
             <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="progress-journey"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="progress-calendar"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
               <div class="screen-header-copy"><h3>Péntek, május 24.</h3><p class="screen-subtitle">24. nap</p></div>
               <span aria-hidden="true"></span>
             </header>
