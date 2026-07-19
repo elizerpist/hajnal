@@ -44,7 +44,15 @@ const screenOrder = [
   'progress-day-detail',
   'progress-calendar',
   'progress-stats',
-  'progress-milestones'
+  'progress-milestones',
+  'tools-overview',
+  'tools-steps',
+  'tools-step-question',
+  'tools-step-summary',
+  'tools-journal-list',
+  'tools-journal-entry',
+  'tools-craving-log',
+  'tools-journal-detail'
 ];
 
 function expectContains(value) {
@@ -124,7 +132,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 35, 'phone screen count');
+    expectCount(/class="phone-screen/g, 43, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -545,7 +553,8 @@ const tests = {
     assert.match(html, /\.saved-return-button\s*\{[^}]*min-height:\s*50px;[^}]*background:\s*linear-gradient\(135deg,\s*#8054DD,\s*#6938C1\)/s, 'final saved CTA must match the screenshot button');
     expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
     expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
-    expectCount(/<textarea\b/g, 1, 'screen 12 reflection editor textarea must be restored');
+    assert.equal((eveningReflectionScreen.match(/<textarea\b/g) || []).length, 1, 'screen 12 reflection editor textarea must be restored');
+    expectCount(/<textarea\b/g, 3, 'reflection, workbook question, and journal entry editors must expose textareas');
   },
 
   progressBranch() {
@@ -602,6 +611,79 @@ const tests = {
     ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
     assert.match(html, /\.progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC/s, 'progress screens must use the warm blush utility surface');
     assert.match(html, /\.progress-menu-card\s*\{[^}]*border-radius:\s*12px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.88\)/s, 'progress menu elements must use warm rounded boxes');
+  },
+
+  toolsBranch() {
+    expectOrdered([
+      'data-screen="progress-milestones"',
+      'data-screen="tools-overview"',
+      'data-screen="tools-steps"',
+      'data-screen="tools-step-question"',
+      'data-screen="tools-step-summary"',
+      'data-screen="tools-journal-list"',
+      'data-screen="tools-journal-entry"',
+      'data-screen="tools-craving-log"',
+      'data-screen="tools-journal-detail"'
+    ]);
+    expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
+    expectAbsent('data-target-screen="tools"');
+    [
+      'Eszközök',
+      'Eszközök a felépülésedhez, minden nap.',
+      '12 lépés munkafüzet',
+      'Napló',
+      'Sóvárgásnapló',
+      'Hála lista',
+      'Napi józansági kérdés',
+      'Légzőgyakorlat',
+      'Miért kezdtem el?',
+      'Túlélőcsomag',
+      'Pánik mód',
+      '12 lépés munkafüzet',
+      '3 / 12 lépés',
+      '1 Beismertük tehetetlenségünket',
+      '2 Elhittük, hogy létezik nálunk nagyobb erő',
+      '2. lépés',
+      '2 / 6 kérdés',
+      'Mit jelent számodra az, hogy létezik nálad nagyobb erő?',
+      '2. lépés összegzése',
+      'Fontos gondolataid',
+      'Szeretném megbeszélni a szponzorommal',
+      'PDF export',
+      'Megosztás',
+      'Új bejegyzés',
+      'Keresés a bejegyzések között...',
+      'Nehéz nap volt, de nem adtam fel',
+      'Új naplóbejegyzés',
+      'Milyen címkét választasz?',
+      'Hogyan érzed magad?',
+      'Mennyire volt erős a sóvárgásod?',
+      'Kép hozzáadása',
+      'Hangfelvétel',
+      'Mai nap',
+      '3 bejegyzés',
+      'Stressz a munka miatt',
+      'Egyedüllét, unalom',
+      'Reggel még nyugodt voltam',
+      'Bejegyzések erről a hétvégi találkozón.',
+      'Szerkesztés',
+      'Törlés'
+    ].forEach(expectContains);
+    [
+      ['data-action="open-tools-steps" data-target-screen="tools-steps"', '12-step workbook card'],
+      ['data-action="open-tools-journal" data-target-screen="tools-journal-list"', 'journal card'],
+      ['data-action="open-tools-craving" data-target-screen="tools-craving-log"', 'craving card'],
+      ['data-action="open-tools-survival-pack" data-target-screen="checkin-survival-pack"', 'survival pack shortcut'],
+      ['data-action="open-tools-panic" data-target-screen="panic-root"', 'panic mode shortcut'],
+      ['data-action="open-tools-step-question" data-target-screen="tools-step-question"', 'step question target'],
+      ['data-action="open-tools-step-summary" data-target-screen="tools-step-summary"', 'step summary target'],
+      ['data-action="new-journal-entry" data-target-screen="tools-journal-entry"', 'new journal target'],
+      ['data-action="open-journal-detail" data-target-screen="tools-journal-detail"', 'journal detail target']
+    ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    assert.match(html, /\.tools-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC/s, 'tools screens must use the same warm utility surface as the source row');
+    assert.match(html, /\.tools-menu-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\)/s, 'tools overview must use a compact two-column menu grid');
+    assert.match(html, /\.tools-hero-art\s*\{[^}]*background-image:\s*url\('assets\/hero_s_svg\.svg'\)/s, 'tools overview must use a project SVG hero asset, not a new PNG');
+    expectAbsent('eszkozok_12lepes_naplo.png');
   },
 
   panicBranch() {
@@ -691,7 +773,7 @@ const tests = {
     assert.ok(!panicRootScreen.includes('data-action="emergency-help"'), 'screen 16 must remove the direct professional-help action');
     assert.ok(panicRootScreen.includes('data-action="report-relapse" data-target-screen="checkin-relapse"'), 'screen 16 must include a relapse button targeting checkin-relapse');
     assert.ok(panicRootScreen.includes('>Visszaestem</button>'), 'screen 16 relapse button must be labeled Visszaestem');
-    expectCount(/class="screen-row/g, 5, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
   },
 
   accessibility() {
@@ -708,12 +790,13 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 5, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
+    expectContains('data-page="tools" data-root-screen="tools-overview" data-row-screens="tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -747,7 +830,15 @@ const tests = {
       'progress-day-detail': 'progress-journey',
       'progress-calendar': 'progress-overview',
       'progress-stats': 'progress-overview',
-      'progress-milestones': 'progress-overview'
+      'progress-milestones': 'progress-overview',
+      'tools-overview': 'home',
+      'tools-steps': 'tools-overview',
+      'tools-step-question': 'tools-steps',
+      'tools-step-summary': 'tools-step-question',
+      'tools-journal-list': 'tools-overview',
+      'tools-journal-entry': 'tools-journal-list',
+      'tools-craving-log': 'tools-overview',
+      'tools-journal-detail': 'tools-journal-list'
     };
     Object.entries(parents).forEach(([id, parent]) => {
       assert.ok(

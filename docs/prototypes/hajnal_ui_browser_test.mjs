@@ -49,6 +49,14 @@ const screenOrder = [
   ["progress-calendar", "progress-overview"],
   ["progress-stats", "progress-overview"],
   ["progress-milestones", "progress-overview"],
+  ["tools-overview", "home"],
+  ["tools-steps", "tools-overview"],
+  ["tools-step-question", "tools-steps"],
+  ["tools-step-summary", "tools-step-question"],
+  ["tools-journal-list", "tools-overview"],
+  ["tools-journal-entry", "tools-journal-list"],
+  ["tools-craving-log", "tools-overview"],
+  ["tools-journal-detail", "tools-journal-list"],
 ];
 const screenRows = [
   [
@@ -102,6 +110,12 @@ const screenRows = [
     "progress-overview",
     "progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones",
     ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats", "progress-milestones"],
+  ],
+  [
+    "tools",
+    "tools-overview",
+    "tools-overview tools-steps tools-step-question tools-step-summary tools-journal-list tools-journal-entry tools-craving-log tools-journal-detail",
+    ["tools-overview", "tools-steps", "tools-step-question", "tools-step-summary", "tools-journal-list", "tools-journal-entry", "tools-craving-log", "tools-journal-detail"],
   ],
 ];
 
@@ -376,6 +390,25 @@ try {
     { screen: "progress-stats", parent: "progress-overview", title: "Statisztikák", shortcuts: [] },
     { screen: "progress-milestones", parent: "progress-overview", title: "Mérföldkövek", shortcuts: [] },
   ], "progress menu must follow the written spec screen set and hierarchy");
+
+  const toolsScreens = await page.locator(".tools-screen").evaluateAll((screens) =>
+    screens.map((screen) => ({
+      screen: screen.dataset.screen,
+      parent: screen.dataset.parentScreen,
+      title: screen.querySelector("h3")?.textContent.trim(),
+      shortcuts: Array.from(screen.querySelectorAll("[data-tools-shortcut]")).map((button) => button.dataset.targetScreen),
+    })),
+  );
+  assert.deepEqual(toolsScreens, [
+    { screen: "tools-overview", parent: "home", title: "Eszközök", shortcuts: ["tools-steps", "evening-reflection", "tools-journal-list", "survival-breathe", "tools-craving-log", "panic-why-started", "evening-reflection", "checkin-survival-pack"] },
+    { screen: "tools-steps", parent: "tools-overview", title: "12 lépés munkafüzet", shortcuts: [] },
+    { screen: "tools-step-question", parent: "tools-steps", title: "2. lépés", shortcuts: [] },
+    { screen: "tools-step-summary", parent: "tools-step-question", title: "2. lépés összegzése", shortcuts: [] },
+    { screen: "tools-journal-list", parent: "tools-overview", title: "Napló", shortcuts: [] },
+    { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", shortcuts: [] },
+    { screen: "tools-craving-log", parent: "tools-overview", title: "Sóvárgásnapló", shortcuts: [] },
+    { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", shortcuts: [] },
+  ], "tools row must match the source tools/workbook/journal screen set and hierarchy");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
