@@ -43,6 +43,12 @@ const screenOrder = [
   ["panic-emergency-help", "panic-root"],
   ["checkin-relapse", "home"],
   ["daily-image", "home"],
+  ["progress-overview", "home"],
+  ["progress-journey", "progress-overview"],
+  ["progress-day-detail", "progress-journey"],
+  ["progress-calendar", "progress-overview"],
+  ["progress-stats", "progress-overview"],
+  ["progress-milestones", "progress-overview"],
 ];
 const screenRows = [
   [
@@ -90,6 +96,12 @@ const screenRows = [
     "daily-image",
     "daily-image",
     ["daily-image"],
+  ],
+  [
+    "progress",
+    "progress-overview",
+    "progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones",
+    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar", "progress-stats", "progress-milestones"],
   ],
 ];
 
@@ -245,6 +257,7 @@ try {
   assert.equal(rowPositions["home-collapsed"].left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
   assert.ok(rowPositions["daily-image"].top > rowPositions["panic-root"].top + 900, "daily image row must render below the panic row");
+  assert.ok(rowPositions["progress-overview"].top > rowPositions["daily-image"].top + 900, "progress row must render below the daily image row");
 
   const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
     const dashboard = screen.querySelector(".home-metrics");
@@ -257,10 +270,11 @@ try {
     return {
       dashboardTop: Math.round(dashboardBox.top - screenBox.top),
       hasOpenedCard: Boolean(homeBody),
-      navBottomGap: Math.round(screenBox.bottom - navBox.bottom),
-      navLabels: Array.from(nav.querySelectorAll("button")).map((button) => button.textContent.trim()),
-      currentTarget: nav.querySelector("[aria-current='page']")?.dataset.targetScreen,
-    };
+    navBottomGap: Math.round(screenBox.bottom - navBox.bottom),
+    navLabels: Array.from(nav.querySelectorAll("button")).map((button) => button.textContent.trim()),
+    currentTarget: nav.querySelector("[aria-current='page']")?.dataset.targetScreen,
+    progressTarget: Array.from(nav.querySelectorAll("button")).find((button) => button.textContent.trim() === "Haladás")?.dataset.targetScreen,
+  };
   });
   assert.deepEqual(collapsedHomeLayout, {
     dashboardTop: 614,
@@ -268,7 +282,25 @@ try {
     navBottomGap: 0,
     navLabels: ["Kezdőlap", "Haladás", "Eszközök", "Szponzor", "Profil"],
     currentTarget: "home-collapsed",
+    progressTarget: "progress-overview",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
+
+  const dailyAssetGallery = await page.locator("[data-component='daily-project-assets'] [data-asset-src]").evaluateAll((cards) =>
+    cards.map((card) => ({
+      label: card.dataset.assetLabel,
+      source: card.dataset.assetSrc,
+    })),
+  );
+  assert.deepEqual(dailyAssetGallery, [
+    { label: "Logó", source: "assets/logo_svg.svg" },
+    { label: "Welcome", source: "assets/welcome_svg.svg" },
+    { label: "Hero S", source: "assets/hero_s_svg.svg" },
+    { label: "Hero M", source: "assets/hero_m_svg.svg" },
+    { label: "Hero XL", source: "assets/hero_xl_svg.svg" },
+    { label: "Hero fullscreen", source: "assets/hero_fullscreen_svg.svg" },
+    { label: "Hero fullscreen 2", source: "assets/hero_fullscreen2_svg.svg" },
+    { label: "Hurray", source: "assets/hurray_svg.svg" },
+  ], "daily image row must expose every project SVG asset");
 
   const panicRootActions = await page.locator("#panic-root .panic-grid button").evaluateAll((buttons) =>
     buttons.map((button) => ({
@@ -327,6 +359,23 @@ try {
     { screen: "survival-note", parent: "survival-outside", step: "5 / 6", title: "Írj egy mondatot.", body: "Írd ki, ami benned van. Csak őszintén.", cta: "Írni fogok", target: "survival-call-sponsor" },
     { screen: "survival-call-sponsor", parent: "survival-note", step: "6 / 6", title: "Most hívd fel a szponzorodat.", body: "Nem kell egyedül megcsinálnod.", cta: "Hívás", target: "panic-sponsor-call" },
   ], "15-minute survival package must include every source screen in order");
+
+  const progressScreens = await page.locator(".progress-screen").evaluateAll((screens) =>
+    screens.map((screen) => ({
+      screen: screen.dataset.screen,
+      parent: screen.dataset.parentScreen,
+      title: screen.querySelector("h3")?.textContent.trim(),
+      shortcuts: Array.from(screen.querySelectorAll("[data-progress-shortcut]")).map((button) => button.dataset.targetScreen),
+    })),
+  );
+  assert.deepEqual(progressScreens, [
+    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar", "progress-stats", "progress-milestones"] },
+    { screen: "progress-journey", parent: "progress-overview", title: "90 napos út", shortcuts: [] },
+    { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
+    { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
+    { screen: "progress-stats", parent: "progress-overview", title: "Statisztikák", shortcuts: [] },
+    { screen: "progress-milestones", parent: "progress-overview", title: "Mérföldkövek", shortcuts: [] },
+  ], "progress menu must follow the written spec screen set and hierarchy");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images

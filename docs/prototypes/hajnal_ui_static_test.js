@@ -38,7 +38,13 @@ const screenOrder = [
   'panic-meeting-finder',
   'panic-emergency-help',
   'checkin-relapse',
-  'daily-image'
+  'daily-image',
+  'progress-overview',
+  'progress-journey',
+  'progress-day-detail',
+  'progress-calendar',
+  'progress-stats',
+  'progress-milestones'
 ];
 
 function expectContains(value) {
@@ -118,7 +124,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 29, 'phone screen count');
+    expectCount(/class="phone-screen/g, 35, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -138,19 +144,28 @@ const tests = {
     expectContains('assets/hero_fullscreen_svg.svg');
     expectContains('assets/hurray_svg.svg');
     expectContains('assets/welcome_svg.svg');
-    expectCopiedAsset('welcome_svg.svg');
+    [
+      'logo_svg.svg',
+      'welcome_svg.svg',
+      'hero_s_svg.svg',
+      'hero_m_svg.svg',
+      'hero_xl_svg.svg',
+      'hero_fullscreen_svg.svg',
+      'hero_fullscreen2_svg.svg',
+      'hurray_svg.svg'
+    ].forEach(expectCopiedAsset);
     expectAbsent('.glass-card');
     expectAbsent('id="hajnal-liquid-glass-warp"');
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
     expectContains('class="home-hero-image"');
     expectCount(/<img\b/g, 9, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
-    expectCount(/src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
-    expectCount(/src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
-    expectCount(/src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
-    expectCount(/src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
-    expectCount(/src="assets\/hero_fullscreen_svg\.svg"/g, 4, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
-    expectCount(/src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
+    expectCount(/<img\b[^>]*src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
+    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen_svg\.svg"/g, 4, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
 
@@ -345,6 +360,7 @@ const tests = {
     for (const label of ['Kezdőlap', 'Haladás', 'Eszközök', 'Szponzor', 'Profil']) {
       assert.ok(collapsedNav.includes(label), `collapsed home bottom nav is missing ${label}`);
     }
+    assert.ok(collapsedNav.includes('data-target-screen="progress-overview"'), 'collapsed home Haladás nav item must target the progress overview');
     expectCount(/data-component="daily-task"/g, 3, 'home daily task count');
     expectContains('<nav class="bottom-nav"');
     const navStart = html.indexOf('<nav class="bottom-nav"');
@@ -356,6 +372,7 @@ const tests = {
       assert.ok(next > cursor, `${label} is missing or out of order in bottom navigation`);
       cursor = next;
     }
+    assert.ok(nav.includes('data-target-screen="progress-overview"'), 'expanded home Haladás nav item must target the progress overview');
   },
 
   homeBranch() {
@@ -382,7 +399,8 @@ const tests = {
       'data-screen="survival-call-sponsor"',
       'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
-      'data-screen="daily-image"'
+      'data-screen="daily-image"',
+      'data-screen="progress-overview"'
     ]);
     [
       'Napi kép',
@@ -460,6 +478,21 @@ const tests = {
     assert.ok(!dailyImageScreen.includes('daily-art-card'), 'daily image screen must remove the inner image container');
     assert.ok(!dailyImageScreen.includes('daily-art-actions'), 'daily image screen must remove bottom action buttons');
     assert.ok(!dailyImageScreen.includes('<header class="screen-header"'), 'daily image screen must not show the old title/header');
+    expectContains('data-component="daily-project-assets"');
+    expectContains('Napi kép asset készlet');
+    [
+      ['logo_svg.svg', 'Logó'],
+      ['welcome_svg.svg', 'Welcome'],
+      ['hero_s_svg.svg', 'Hero S'],
+      ['hero_m_svg.svg', 'Hero M'],
+      ['hero_xl_svg.svg', 'Hero XL'],
+      ['hero_fullscreen_svg.svg', 'Hero fullscreen'],
+      ['hero_fullscreen2_svg.svg', 'Hero fullscreen 2'],
+      ['hurray_svg.svg', 'Hurray']
+    ].forEach(([asset, label]) => {
+      expectContains(`data-asset-src="assets/${asset}"`);
+      expectContains(`data-asset-label="${label}"`);
+    });
     ['evening-reflection', 'reflection-saved', 'checkin-relapse', 'checkin-survival-pack']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     assert.ok(cleanRewardScreen.includes('class="checkin-bg" src="assets/hurray_svg.svg"'), 'checkin-clean must use the hurray fullscreen image');
@@ -513,6 +546,62 @@ const tests = {
     expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
     expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
     expectCount(/<textarea\b/g, 1, 'screen 12 reflection editor textarea must be restored');
+  },
+
+  progressBranch() {
+    expectOrdered([
+      'data-screen="daily-image"',
+      'data-screen="progress-overview"',
+      'data-screen="progress-journey"',
+      'data-screen="progress-day-detail"',
+      'data-screen="progress-calendar"',
+      'data-screen="progress-stats"',
+      'data-screen="progress-milestones"'
+    ]);
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
+    [
+      'Haladás',
+      '24. nap',
+      'a jelenlegi sorozatod',
+      'Leghosszabb sorozat',
+      '90 napos út',
+      'Naptár',
+      'Statisztikák',
+      'Mérföldkövek',
+      'Következő mérföldkő',
+      '30 nap · Egy hónap',
+      '1–30. nap',
+      '31–60. nap',
+      '61–90. nap',
+      'Péntek, május 24.',
+      'Esti check-in',
+      'Hangulat',
+      'Sóvárgás',
+      'Szponzorral beszéltem',
+      'Május 2024',
+      'Részletek megnyitása',
+      'Átlagos sóvárgás szint',
+      'Check-in arány',
+      'Legtöbbször használt eszközök',
+      '1 nap',
+      '3 nap',
+      '7 nap',
+      '14 nap',
+      '30 nap',
+      '45 nap',
+      '60 nap',
+      '90 nap',
+      '180 nap'
+    ].forEach(expectContains);
+    [
+      ['data-action="open-progress-journey" data-target-screen="progress-journey"', '90 napos út shortcut'],
+      ['data-action="open-progress-calendar" data-target-screen="progress-calendar"', 'Naptár shortcut'],
+      ['data-action="open-progress-stats" data-target-screen="progress-stats"', 'Statisztikák shortcut'],
+      ['data-action="open-progress-milestones" data-target-screen="progress-milestones"', 'Mérföldkövek shortcut'],
+      ['data-action="open-progress-day-detail" data-target-screen="progress-day-detail"', 'day detail target']
+    ].forEach(([needle, label]) => assert.ok(html.includes(needle), `Missing ${label}`));
+    assert.match(html, /\.progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF8FC/s, 'progress screens must use the warm blush utility surface');
+    assert.match(html, /\.progress-menu-card\s*\{[^}]*border-radius:\s*12px;[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.88\)/s, 'progress menu elements must use warm rounded boxes');
   },
 
   panicBranch() {
@@ -602,7 +691,7 @@ const tests = {
     assert.ok(!panicRootScreen.includes('data-action="emergency-help"'), 'screen 16 must remove the direct professional-help action');
     assert.ok(panicRootScreen.includes('data-action="report-relapse" data-target-screen="checkin-relapse"'), 'screen 16 must include a relapse button targeting checkin-relapse');
     assert.ok(panicRootScreen.includes('>Visszaestem</button>'), 'screen 16 relapse button must be labeled Visszaestem');
-    expectCount(/class="screen-row/g, 4, 'screen row count');
+    expectCount(/class="screen-row/g, 5, 'screen row count');
   },
 
   accessibility() {
@@ -619,11 +708,12 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 4, 'screen row count');
+    expectCount(/class="screen-row/g, 5, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
     const parents = {
       onboarding: 'splash',
       information: 'onboarding',
@@ -651,7 +741,13 @@ const tests = {
       'panic-backup-contact': 'panic-root',
       'panic-why-started': 'panic-root',
       'panic-meeting-finder': 'panic-root',
-      'panic-emergency-help': 'panic-root'
+      'panic-emergency-help': 'panic-root',
+      'progress-overview': 'home',
+      'progress-journey': 'progress-overview',
+      'progress-day-detail': 'progress-journey',
+      'progress-calendar': 'progress-overview',
+      'progress-stats': 'progress-overview',
+      'progress-milestones': 'progress-overview'
     };
     Object.entries(parents).forEach(([id, parent]) => {
       assert.ok(
