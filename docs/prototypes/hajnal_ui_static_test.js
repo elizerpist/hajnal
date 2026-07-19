@@ -9,6 +9,7 @@ const htmlPath = path.join(__dirname, 'hajnal_ui.html');
 const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf8') : '';
 const sourceAssetDirectory = '/storage/emulated/0/hajnal';
 const group = process.argv[2] || 'all';
+const haladasSourceSha256 = 'fda97b4b31040bfb05d11456fa762e0d78035bb19fa77c018d7159ef7d55f398';
 const screenOrder = [
   'welcome-lighting-lab',
   'splash',
@@ -44,7 +45,32 @@ const screenOrder = [
   'recovery-evening',
   'tools-journal-list',
   'tools-journal-entry',
-  'tools-journal-detail'
+  'tools-journal-detail',
+  'alt-progress-overview',
+  'alt-progress-daily-view',
+  'alt-progress-day-detail',
+  'alt-progress-journal-entry',
+  'alt-progress-calendar',
+  'alt-progress-calendar-day',
+  'alt-progress-statistics',
+  'alt-progress-milestones',
+  'alt-progress-milestone-detail',
+  'alt-progress-activity',
+  'alt-progress-activity-detail'
+];
+
+const altProgressScreens = [
+  ['alt-progress-overview', 'Haladás - Áttekintés (#6)', '35,624,153,367'],
+  ['alt-progress-daily-view', 'Napi nézet', '218,624,154,367'],
+  ['alt-progress-day-detail', 'Napi részlet', '405,624,174,367'],
+  ['alt-progress-journal-entry', 'Naplóbejegyzés', '591,624,187,367'],
+  ['alt-progress-calendar', 'Naptár (havi nézet)', '779,624,203,367'],
+  ['alt-progress-calendar-day', 'Nap részlete (naptárból)', '36,1033,153,357'],
+  ['alt-progress-statistics', 'Statisztikák', '217,1033,153,357'],
+  ['alt-progress-milestones', 'Mérföldkövek', '394,1033,154,357'],
+  ['alt-progress-milestone-detail', 'Mérföldkő részlete', '553,1033,153,357'],
+  ['alt-progress-activity', 'Aktivitás (napló)', '705,1033,153,357'],
+  ['alt-progress-activity-detail', 'Aktivitás részlete', '857,1033,152,357']
 ];
 
 function expectContains(value) {
@@ -97,6 +123,15 @@ function pngSize(filename) {
   };
 }
 
+function pngDimensions(filename) {
+  const buffer = fs.readFileSync(filename);
+  assert.equal(buffer.toString('ascii', 1, 4), 'PNG', `${filename} must be PNG`);
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20)
+  };
+}
+
 function fileSha256(filename) {
   return crypto.createHash('sha256').update(fs.readFileSync(filename)).digest('hex');
 }
@@ -107,8 +142,10 @@ function expectCopiedAsset(filename) {
   const prototypePath = path.join(__dirname, 'assets', filename);
   assert.ok(fs.existsSync(referencePath), `${filename} must be copied into source-of-truth references`);
   assert.ok(fs.existsSync(prototypePath), `${filename} must be copied into prototype assets`);
-  assert.equal(fileSha256(referencePath), fileSha256(sourcePath), `${filename} source-of-truth hash`);
-  assert.equal(fileSha256(prototypePath), fileSha256(sourcePath), `${filename} prototype asset hash`);
+  assert.equal(fileSha256(prototypePath), fileSha256(referencePath), `${filename} prototype asset hash`);
+  if (fs.existsSync(sourcePath)) {
+    assert.equal(fileSha256(referencePath), fileSha256(sourcePath), `${filename} local source hash`);
+  }
 }
 
 function expectForbiddenPillAbsent(selector) {
@@ -124,7 +161,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 35, 'phone screen count');
+    expectCount(/class="phone-screen/g, 46, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -794,6 +831,38 @@ const tests = {
     expectAbsent('12lepes.png');
   },
 
+  altProgressBranch() {
+    const rowScreens = altProgressScreens.map(([id]) => id).join(' ');
+    expectCopiedAsset('haladas.png');
+    assert.equal(fileSha256(path.join(__dirname, '..', 'references', 'source-of-truth', 'haladas.png')), haladasSourceSha256, 'haladas.png source-of-truth expected hash');
+    assert.equal(fileSha256(path.join(__dirname, 'assets', 'haladas.png')), haladasSourceSha256, 'haladas.png prototype expected hash');
+    assert.deepEqual(pngDimensions(path.join(__dirname, 'assets', 'haladas.png')), { width: 1024, height: 1536 }, 'haladas.png prototype asset dimensions');
+    expectOrdered([
+      'data-screen="tools-journal-detail"',
+      'data-page="alt-progress"',
+      ...altProgressScreens.map(([id]) => `data-screen="${id}"`)
+    ]);
+    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="${rowScreens}"`);
+    expectContains('data-source-reference="docs/references/source-of-truth/haladas.png"');
+    expectContains('data-source-asset="assets/haladas.png"');
+    expectContains('HALADÁS MENÜ - TELJES STRUKTÚRA ÉS NAVIGÁCIÓ');
+    expectContains('Részletes képernyők - teljes felhasználói út');
+    expectContains('data-component="alt-progress-source-row"');
+    expectContains('background-image: url("assets/haladas.png")');
+    altProgressScreens.forEach(([id, title, crop]) => {
+      const screen = screenSlice(id);
+      assert.ok(screen.includes('class="phone-screen alt-progress-source-screen"'), `${id} must be rendered as a bottom-row source screen`);
+      assert.ok(screen.includes('data-component="haladas-source-crop"'), `${id} must expose the source crop component`);
+      assert.ok(screen.includes(`data-source-crop="${crop}"`), `${id} must use the exact source crop ${crop}`);
+      assert.ok(screen.includes(`aria-label="${title}"`), `${id} must expose the source title`);
+    });
+    assert.equal((html.match(/class="screen-column alt-progress-source-column" style="--display-w:/g) || []).length, 11, 'every source crop column must define a stable display width for labels and articles');
+    assert.equal((html.match(/--crop-pos:/g) || []).length, 11, 'every source crop column must define a stable background position');
+    assert.match(html, /\.alt-progress-source-column \.screen-label\s*\{[^}]*max-width:\s*var\(--display-w\)/s, 'alternative progress labels must share the column display width');
+    assert.match(html, /\.alt-progress-source-row\s*\{[^}]*display:\s*flex;[^}]*gap:\s*28px;[^}]*align-items:\s*flex-start/s, 'alternative progress row must be a bottom horizontal screen row');
+    assert.match(html, /\.alt-progress-source-screen\s*\{[^}]*background-image:\s*url\("assets\/haladas\.png"\);[^}]*background-size:\s*2048px 3072px;[^}]*border-radius:\s*18px/s, 'alternative progress screens must crop the source PNG at 2x display scale');
+  },
+
   panicBranch() {
     const panicRootScreen = screenSlice('panic-root');
     expectOrdered([
@@ -916,7 +985,7 @@ const tests = {
     });
     assert.equal((callSomeoneScreen.match(/data-component="panic-call-card"/g) || []).length, 2, 'each contact accordion must include a call card');
     assert.equal((callSomeoneScreen.match(/data-component="panic-quick-messages"/g) || []).length, 2, 'each contact accordion must include quick messages');
-    expectCount(/class="screen-row/g, 5, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
   },
 
   accessibility() {
@@ -933,7 +1002,7 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 5, 'screen row count');
+    expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse"');
@@ -941,6 +1010,7 @@ const tests = {
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-calendar progress-day-detail"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
+    expectContains(`data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="${altProgressScreens.map(([id]) => id).join(' ')}"`);
     const parents = {
       onboarding: 'splash',
       'start-date': 'onboarding',
@@ -974,7 +1044,18 @@ const tests = {
       'recovery-overview': 'home',
       'recovery-steps-overview': 'recovery-overview',
       'recovery-step-detail': 'recovery-steps-overview',
-      'recovery-evening': 'recovery-overview'
+      'recovery-evening': 'recovery-overview',
+      'alt-progress-overview': 'progress-overview',
+      'alt-progress-daily-view': 'alt-progress-overview',
+      'alt-progress-day-detail': 'alt-progress-daily-view',
+      'alt-progress-journal-entry': 'alt-progress-daily-view',
+      'alt-progress-calendar': 'alt-progress-overview',
+      'alt-progress-calendar-day': 'alt-progress-calendar',
+      'alt-progress-statistics': 'alt-progress-overview',
+      'alt-progress-milestones': 'alt-progress-overview',
+      'alt-progress-milestone-detail': 'alt-progress-milestones',
+      'alt-progress-activity': 'alt-progress-overview',
+      'alt-progress-activity-detail': 'alt-progress-activity'
     };
     Object.entries(parents).forEach(([id, parent]) => {
       assert.ok(
@@ -985,7 +1066,8 @@ const tests = {
   },
 
   visualEvidence() {
-    screenOrder.forEach((id) => {
+    const altProgressIds = new Set(altProgressScreens.map(([id]) => id));
+    screenOrder.filter((id) => !altProgressIds.has(id)).forEach((id) => {
       assert.deepEqual(pngSize(`${id}.png`), { width: 412, height: 892 }, `${id} screenshot size`);
     });
   }

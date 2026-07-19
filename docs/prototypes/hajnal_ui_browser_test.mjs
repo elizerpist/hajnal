@@ -49,7 +49,32 @@ const screenOrder = [
   ["tools-journal-list", "recovery-overview"],
   ["tools-journal-entry", "tools-journal-list"],
   ["tools-journal-detail", "tools-journal-list"],
+  ["alt-progress-overview", "progress-overview"],
+  ["alt-progress-daily-view", "alt-progress-overview"],
+  ["alt-progress-day-detail", "alt-progress-daily-view"],
+  ["alt-progress-journal-entry", "alt-progress-daily-view"],
+  ["alt-progress-calendar", "alt-progress-overview"],
+  ["alt-progress-calendar-day", "alt-progress-calendar"],
+  ["alt-progress-statistics", "alt-progress-overview"],
+  ["alt-progress-milestones", "alt-progress-overview"],
+  ["alt-progress-milestone-detail", "alt-progress-milestones"],
+  ["alt-progress-activity", "alt-progress-overview"],
+  ["alt-progress-activity-detail", "alt-progress-activity"],
 ];
+const altProgressScreens = [
+  ["alt-progress-overview", "Haladás - Áttekintés (#6)", "35,624,153,367"],
+  ["alt-progress-daily-view", "Napi nézet", "218,624,154,367"],
+  ["alt-progress-day-detail", "Napi részlet", "405,624,174,367"],
+  ["alt-progress-journal-entry", "Naplóbejegyzés", "591,624,187,367"],
+  ["alt-progress-calendar", "Naptár (havi nézet)", "779,624,203,367"],
+  ["alt-progress-calendar-day", "Nap részlete (naptárból)", "36,1033,153,357"],
+  ["alt-progress-statistics", "Statisztikák", "217,1033,153,357"],
+  ["alt-progress-milestones", "Mérföldkövek", "394,1033,154,357"],
+  ["alt-progress-milestone-detail", "Mérföldkő részlete", "553,1033,153,357"],
+  ["alt-progress-activity", "Aktivitás (napló)", "705,1033,153,357"],
+  ["alt-progress-activity-detail", "Aktivitás részlete", "857,1033,152,357"],
+];
+const altProgressById = new Map(altProgressScreens.map(([id, title, crop]) => [id, { title, crop }]));
 const screenRows = [
   [
     "entry",
@@ -99,6 +124,12 @@ const screenRows = [
     "recovery-overview",
     "recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail",
     ["recovery-overview", "recovery-steps-overview", "recovery-step-detail", "recovery-evening", "tools-journal-list", "tools-journal-entry", "tools-journal-detail"],
+  ],
+  [
+    "alt-progress",
+    "alt-progress-overview",
+    altProgressScreens.map(([id]) => id).join(" "),
+    altProgressScreens.map(([id]) => id),
   ],
 ];
 
@@ -500,6 +531,36 @@ try {
     hasWhyStarted: true,
   }, "screen 30 recovery overview must scroll while keeping the bottom nav and why-started menu available");
 
+  const altProgressRow = await page.locator('[data-page="alt-progress"]').evaluate((row) => ({
+    root: row.dataset.rootScreen,
+    rowScreens: row.dataset.rowScreens,
+    sourceReference: row.dataset.sourceReference,
+    sourceAsset: row.dataset.sourceAsset,
+    screens: Array.from(row.querySelectorAll(".alt-progress-source-screen")).map((screen) => ({
+      screen: screen.dataset.screen,
+      parent: screen.dataset.parentScreen,
+      title: screen.getAttribute("aria-label"),
+      crop: screen.dataset.sourceCrop,
+      component: screen.dataset.component,
+      width: Math.round(screen.getBoundingClientRect().width),
+      height: Math.round(screen.getBoundingClientRect().height),
+      backgroundImage: getComputedStyle(screen).backgroundImage,
+      backgroundSize: getComputedStyle(screen).backgroundSize,
+      backgroundPosition: getComputedStyle(screen).backgroundPosition,
+    })),
+  }));
+  assert.deepEqual(altProgressRow.root, "alt-progress-overview", "alternative progress row root");
+  assert.deepEqual(altProgressRow.rowScreens, altProgressScreens.map(([id]) => id).join(" "), "alternative progress row screen order");
+  assert.deepEqual(altProgressRow.sourceReference, "docs/references/source-of-truth/haladas.png", "alternative progress source reference");
+  assert.deepEqual(altProgressRow.sourceAsset, "assets/haladas.png", "alternative progress source asset");
+  assert.deepEqual(
+    altProgressRow.screens.map(({ screen, title, crop, component }) => ({ screen, title, crop, component })),
+    altProgressScreens.map(([screen, title, crop]) => ({ screen, title, crop, component: "haladas-source-crop" })),
+    "alternative progress row must expose all source-of-truth crops in order",
+  );
+  assert.equal(altProgressRow.screens.every((screen) => screen.backgroundImage.includes("/assets/haladas.png")), true, "every alternative progress crop must use the source PNG");
+  assert.equal(altProgressRow.screens.every((screen) => screen.backgroundSize === "2048px 3072px"), true, "every alternative progress crop must use the 2x source background size");
+
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {
@@ -679,6 +740,13 @@ try {
     assert.equal(await screen.getAttribute("data-parent-screen"), parent, `${id} parent`);
     const box = await screen.boundingBox();
     assert.ok(box, `${id} bounding box`);
+    const altProgressMeta = altProgressById.get(id);
+    const expectedSize = altProgressMeta
+      ? (() => {
+          const [, , cropWidth, cropHeight] = altProgressMeta.crop.split(",").map(Number);
+          return { width: cropWidth * 2, height: cropHeight * 2, radius: "18px" };
+        })()
+      : { width: 412, height: 892, radius: "34px" };
 
     const metrics = await screen.evaluate((element) => {
       const bounds = element.getBoundingClientRect();
@@ -694,9 +762,9 @@ try {
       };
     });
 
-    assert.equal(metrics.width, 412, `${id} width`);
-    assert.equal(metrics.height, 892, `${id} height`);
-    assert.equal(metrics.borderRadius, "34px", `${id} radius`);
+    assert.equal(metrics.width, expectedSize.width, `${id} width`);
+    assert.equal(metrics.height, expectedSize.height, `${id} height`);
+    assert.equal(metrics.borderRadius, expectedSize.radius, `${id} radius`);
     assert.equal(metrics.scrollHeight, metrics.clientHeight, `${id} vertical overflow`);
     assert.equal(metrics.scrollWidth, metrics.clientWidth, `${id} horizontal overflow`);
 
@@ -709,13 +777,13 @@ try {
       clip: {
         x: Math.round(box.x),
         y: Math.round(box.y),
-        width: 412,
-        height: 892,
+        width: expectedSize.width,
+        height: expectedSize.height,
       },
       animations: "disabled",
     });
-    assert.deepEqual(pngSize(evidencePath), { width: 412, height: 892 }, `${id} screenshot size`);
-    process.stdout.write(`PASS browser ${id} 412x892 no-overflow\n`);
+    assert.deepEqual(pngSize(evidencePath), { width: expectedSize.width, height: expectedSize.height }, `${id} screenshot size`);
+    process.stdout.write(`PASS browser ${id} ${expectedSize.width}x${expectedSize.height} no-overflow\n`);
   }
 
   if (updateEvidence) {

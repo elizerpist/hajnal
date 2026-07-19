@@ -247,6 +247,55 @@
       outline-offset: 6px;
     }
 
+    .alt-progress-section {
+      padding-bottom: 72px;
+    }
+
+    .alt-progress-source-row {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      padding: 6px 0 38px;
+    }
+
+    .alt-progress-source-column {
+      width: auto;
+      flex: 0 0 auto;
+    }
+
+    .alt-progress-source-column .screen-label {
+      max-width: var(--display-w);
+      min-height: 40px;
+      align-items: flex-end;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .alt-progress-source-column .screen-label strong {
+      display: block;
+      overflow: hidden;
+      color: var(--hajnal-navy);
+      font-size: 11px;
+      line-height: 1.18;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .alt-progress-source-screen {
+      width: var(--display-w);
+      height: var(--display-h);
+      min-width: var(--display-w);
+      min-height: var(--display-h);
+      border: 0;
+      background-color: #FFFFFF;
+      background-image: url("assets/haladas.png");
+      background-repeat: no-repeat;
+      background-size: 2048px 3072px;
+      background-position: var(--crop-pos);
+      border-radius: 18px;
+      box-shadow: 0 14px 30px rgba(44, 46, 119, .12);
+    }
+
     .screen-placeholder {
       height: 100%;
       display: grid;
@@ -6923,6 +6972,84 @@
           </article>
         </section>
 
+      </div>
+    </section>
+
+    <section class="screen-section alt-progress-section" aria-labelledby="alt-progress-row-title">
+      <div class="flow-heading">
+        <div>
+          <h2 id="alt-progress-row-title">HALADÁS MENÜ - TELJES STRUKTÚRA ÉS NAVIGÁCIÓ</h2>
+          <p>Részletes képernyők - teljes felhasználói út. Source: `/storage/emulated/0/hajnal/haladas.png`.</p>
+        </div>
+        <pre class="flow-tree" aria-label="Alternatív Haladás hierarchia">Haladás alternatív
+├── Áttekintés
+├── Napi nézet
+│   ├── Napi részlet
+│   └── Naplóbejegyzés
+├── Naptár
+│   └── Nap részlete
+├── Statisztikák
+├── Mérföldkövek
+│   └── Mérföldkő részlete
+└── Aktivitás
+    └── Aktivitás részlete</pre>
+      </div>
+
+      <div class="screen-row alt-progress-source-row" data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="alt-progress-overview alt-progress-daily-view alt-progress-day-detail alt-progress-journal-entry alt-progress-calendar alt-progress-calendar-day alt-progress-statistics alt-progress-milestones alt-progress-milestone-detail alt-progress-activity alt-progress-activity-detail" data-component="alt-progress-source-row" data-source-reference="docs/references/source-of-truth/haladas.png" data-source-asset="assets/haladas.png">
+        <section class="screen-column alt-progress-source-column" style="--display-w: 306px; --display-h: 734px; --crop-pos: -70px -1248px;">
+          <div class="screen-label"><span class="screen-index">A1</span><strong>Haladás - Áttekintés (#6)</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-overview" data-screen="alt-progress-overview" data-parent-screen="progress-overview" data-component="haladas-source-crop" data-source-crop="35,624,153,367" aria-label="Haladás - Áttekintés (#6)"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 308px; --display-h: 734px; --crop-pos: -436px -1248px;">
+          <div class="screen-label"><span class="screen-index">A2</span><strong>Napi nézet</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-daily-view" data-screen="alt-progress-daily-view" data-parent-screen="alt-progress-overview" data-component="haladas-source-crop" data-source-crop="218,624,154,367" aria-label="Napi nézet"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 348px; --display-h: 734px; --crop-pos: -810px -1248px;">
+          <div class="screen-label"><span class="screen-index">A3</span><strong>Napi részlet</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-day-detail" data-screen="alt-progress-day-detail" data-parent-screen="alt-progress-daily-view" data-component="haladas-source-crop" data-source-crop="405,624,174,367" aria-label="Napi részlet"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 374px; --display-h: 734px; --crop-pos: -1182px -1248px;">
+          <div class="screen-label"><span class="screen-index">A4</span><strong>Naplóbejegyzés</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-journal-entry" data-screen="alt-progress-journal-entry" data-parent-screen="alt-progress-daily-view" data-component="haladas-source-crop" data-source-crop="591,624,187,367" aria-label="Naplóbejegyzés"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 406px; --display-h: 734px; --crop-pos: -1558px -1248px;">
+          <div class="screen-label"><span class="screen-index">A5</span><strong>Naptár (havi nézet)</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-calendar" data-screen="alt-progress-calendar" data-parent-screen="alt-progress-overview" data-component="haladas-source-crop" data-source-crop="779,624,203,367" aria-label="Naptár (havi nézet)"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 306px; --display-h: 714px; --crop-pos: -72px -2066px;">
+          <div class="screen-label"><span class="screen-index">A6</span><strong>Nap részlete (naptárból)</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-calendar-day" data-screen="alt-progress-calendar-day" data-parent-screen="alt-progress-calendar" data-component="haladas-source-crop" data-source-crop="36,1033,153,357" aria-label="Nap részlete (naptárból)"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 306px; --display-h: 714px; --crop-pos: -434px -2066px;">
+          <div class="screen-label"><span class="screen-index">A7</span><strong>Statisztikák</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-statistics" data-screen="alt-progress-statistics" data-parent-screen="alt-progress-overview" data-component="haladas-source-crop" data-source-crop="217,1033,153,357" aria-label="Statisztikák"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 308px; --display-h: 714px; --crop-pos: -788px -2066px;">
+          <div class="screen-label"><span class="screen-index">A8</span><strong>Mérföldkövek</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-milestones" data-screen="alt-progress-milestones" data-parent-screen="alt-progress-overview" data-component="haladas-source-crop" data-source-crop="394,1033,154,357" aria-label="Mérföldkövek"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 306px; --display-h: 714px; --crop-pos: -1106px -2066px;">
+          <div class="screen-label"><span class="screen-index">A9</span><strong>Mérföldkő részlete</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-milestone-detail" data-screen="alt-progress-milestone-detail" data-parent-screen="alt-progress-milestones" data-component="haladas-source-crop" data-source-crop="553,1033,153,357" aria-label="Mérföldkő részlete"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 306px; --display-h: 714px; --crop-pos: -1410px -2066px;">
+          <div class="screen-label"><span class="screen-index">A10</span><strong>Aktivitás (napló)</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-activity" data-screen="alt-progress-activity" data-parent-screen="alt-progress-overview" data-component="haladas-source-crop" data-source-crop="705,1033,153,357" aria-label="Aktivitás (napló)"></article>
+        </section>
+
+        <section class="screen-column alt-progress-source-column" style="--display-w: 304px; --display-h: 714px; --crop-pos: -1714px -2066px;">
+          <div class="screen-label"><span class="screen-index">A11</span><strong>Aktivitás részlete</strong></div>
+          <article class="phone-screen alt-progress-source-screen" id="alt-progress-activity-detail" data-screen="alt-progress-activity-detail" data-parent-screen="alt-progress-activity" data-component="haladas-source-crop" data-source-crop="857,1033,152,357" aria-label="Aktivitás részlete"></article>
+        </section>
       </div>
     </section>
   </main>
