@@ -276,6 +276,23 @@ try {
     { text: "Visszaestem", action: "report-relapse", target: "checkin-relapse" },
   ], "screen 16 panic quick options must remove message/professional help and add relapse");
 
+  const panicMainButtonState = await page.locator(".panic-main-button").evaluateAll((buttons) =>
+    buttons.map((button) => {
+      const style = getComputedStyle(button);
+      return {
+        text: button.textContent.trim(),
+        hasHeartIcon: !!button.querySelector('use[href="#icon-heart"]'),
+        backgroundImage: style.backgroundImage,
+        display: style.display,
+        flexDirection: style.flexDirection,
+      };
+    }),
+  );
+  assert.deepEqual(panicMainButtonState, [
+    { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column" },
+    { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column" },
+  ], "large panic help buttons must have a homogeneous fill and heart icon");
+
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
       .filter((image) => {

@@ -3363,18 +3363,27 @@
     .panic-main-button {
       width: 146px;
       height: 146px;
-      display: grid;
-      place-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       margin-top: 30px;
-      border: 9px solid rgba(241, 142, 175, .23);
+      border: 0;
       border-radius: 50%;
-      background: linear-gradient(160deg, #FF78A8, #E04D86);
+      background: #F15D9A;
       color: var(--white);
-      box-shadow: 0 18px 38px rgba(239, 85, 145, .26);
+      box-shadow: 0 18px 38px rgba(239, 85, 145, .26), 0 0 0 9px rgba(241, 142, 175, .23);
       font-size: 20px;
       line-height: 1.12;
       font-weight: 840;
       cursor: pointer;
+    }
+
+    .panic-main-button .icon {
+      width: 28px;
+      height: 28px;
+      stroke-width: 2.4;
     }
 
     .panic-grid {
@@ -4706,7 +4715,7 @@
               <div class="panic-center">
                 <h3>Nem vagy egyedül.</h3>
                 <p>Most csak a következő néhány perc számít.</p>
-                <button class="panic-main-button" type="button" data-action="open-help-sheet" data-target-screen="panic-help-sheet">Segítség<br>kell</button>
+                <button class="panic-main-button" type="button" data-action="open-help-sheet" data-target-screen="panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg><span>Segítség<br>kell</span></button>
               </div>
               <p class="panic-detail-intro">A fő gomb először választópanelt nyit. Alatta minden gyors opció külön, nyugodt lépésként indul.</p>
               <div class="panic-grid" aria-label="Pánik mód gyors opciók">
@@ -4735,7 +4744,7 @@
             </header>
             <div class="panic-detail-content">
               <div class="panic-center">
-                <button class="panic-main-button" type="button" data-action="confirm-help-choice">Segítség<br>kell</button>
+                <button class="panic-main-button" type="button" data-action="confirm-help-choice"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg><span>Segítség<br>kell</span></button>
               </div>
               <section class="panic-sheet-card soft-card" aria-label="Segítség kell választópanel">
                 <div class="panic-sheet-handle" aria-hidden="true"></div>

@@ -544,6 +544,15 @@ const tests = {
     expectContains('data-action="open-help-sheet" data-target-screen="panic-help-sheet"');
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
     expectContains('data-action="meeting-finder" data-target-screen="panic-meeting-finder"');
+    const panicMainButtons = html.match(/<button class="panic-main-button"[\s\S]*?<\/button>/g) || [];
+    assert.equal(panicMainButtons.length, 2, 'panic flow must keep two large help buttons');
+    panicMainButtons.forEach((button) => {
+      assert.ok(button.includes('<svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>'), 'large help button must show a heart icon');
+      assert.ok(button.includes('<span>Segítség<br>kell</span>'), 'large help button label must stay two lines under the heart icon');
+    });
+    assert.match(html, /\.panic-main-button\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*border:\s*0;[^}]*background:\s*#F15D9A;[^}]*box-shadow:\s*0 18px 38px rgba\(239,\s*85,\s*145,\s*\.26\),\s*0 0 0 9px rgba\(241,\s*142,\s*175,\s*\.23\)/s, 'panic main help button must use a homogeneous solid fill with the existing outer glow as an outside ring');
+    assert.ok(!/\.panic-main-button\s*\{[^}]*background:\s*linear-gradient/s.test(html), 'panic main help button must not keep the darker gradient interior');
+    assert.match(html, /\.panic-main-button \.icon\s*\{[^}]*width:\s*28px;[^}]*height:\s*28px/s, 'panic main help button heart icon must have a stable size');
     expectAbsent('data-screen="checkin-breathing"');
     expectAbsent('data-action="breathing" data-target-screen="checkin-breathing"');
     expectAbsent('id="column-checkin-breathing"');
