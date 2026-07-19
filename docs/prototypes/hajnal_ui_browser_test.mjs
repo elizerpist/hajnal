@@ -482,7 +482,7 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-overview", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
     { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },

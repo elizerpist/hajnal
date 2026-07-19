@@ -799,7 +799,6 @@ const tests = {
       'Alapos és bátor erkölcsi leltárt készítettünk magunkról.',
       'Folytatás',
       'Esti reflexió',
-      'Írd le a mai napod és gondolataid',
       'Bejegyzéseid',
       'Korábbi naplóbejegyzések',
       'Haladás',
@@ -835,7 +834,6 @@ const tests = {
       ['data-action="continue-recovery-step" data-target-screen="recovery-step-detail"', 'continue current step'],
       ['data-action="open-recovery-steps" data-target-screen="recovery-steps-overview"', 'open 12-step overview'],
       ['data-action="open-recovery-progress" data-target-screen="progress-overview"', 'progress menu target'],
-      ['data-action="open-recovery-evening" data-target-screen="recovery-evening"', 'open recovery evening reflection'],
       ['data-action="open-recovery-journal" data-target-screen="tools-journal-list"', 'open entries shortcut'],
       ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'open gratitude shortcut'],
       ['data-action="open-recovery-why-started" data-target-screen="panic-why-started"', 'why started shortcut'],
@@ -858,13 +856,16 @@ const tests = {
       'data-action="open-recovery-panic"',
       'data-recovery-shortcut="panic"',
       '<strong>Pánik mód</strong>',
-      'Azonnali segítség, ha szükséged van rá'
+      'Azonnali segítség, ha szükséged van rá',
+      'data-action="open-recovery-evening"',
+      'data-recovery-shortcut="evening"',
+      '<strong>Esti reflexió</strong>',
+      'Írd le a mai napod és gondolataid'
     ].forEach((needle) => assert.ok(!recoveryOverviewScreen.includes(needle), `Screen 30 must not include ${needle}`));
     let shortcutCursor = -1;
     [
       'data-recovery-shortcut="steps"',
       'data-recovery-shortcut="progress"',
-      'data-recovery-shortcut="evening"',
       'data-recovery-shortcut="journal"',
       'data-recovery-shortcut="gratitude"',
       'data-recovery-shortcut="why-started"',
