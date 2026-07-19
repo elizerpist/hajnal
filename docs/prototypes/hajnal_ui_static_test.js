@@ -33,12 +33,11 @@ const screenOrder = [
   'panic-help-message',
   'panic-why-started',
   'panic-meeting-finder',
-  'panic-emergency-help',
   'checkin-relapse',
   'progress-overview',
   'progress-journey',
-  'progress-day-detail',
   'progress-calendar',
+  'progress-day-detail',
   'recovery-overview',
   'recovery-steps-overview',
   'recovery-step-detail',
@@ -125,7 +124,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 36, 'phone screen count');
+    expectCount(/class="phone-screen/g, 35, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -402,7 +401,6 @@ const tests = {
       'data-screen="survival-water"',
       'data-screen="survival-outside"',
       'data-screen="survival-note"',
-      'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
       'data-screen="progress-overview"'
     ]);
@@ -565,11 +563,11 @@ const tests = {
     expectOrdered([
       'data-screen="progress-overview"',
       'data-screen="progress-journey"',
-      'data-screen="progress-day-detail"',
       'data-screen="progress-calendar"',
+      'data-screen="progress-day-detail"',
       'data-screen="recovery-overview"'
     ]);
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-calendar progress-day-detail"');
     [
       'Haladás',
       '24. nap',
@@ -615,6 +613,8 @@ const tests = {
     assert.ok(generalStatsScreen.includes('data-component="general-statistics-summary"'), 'screen 17 must expose the general statistics summary');
     assert.ok(generalStatsScreen.indexOf('Jelenlegi sorozat') < generalStatsScreen.indexOf('1–30. nap'), 'screen 17 stats must appear before the journey grid');
     assert.equal((generalStatsScreen.match(/class="progress-stat-card"/g) || []).length, 3, 'screen 17 must contain exactly three moved statistic cards');
+    expectContains('<div class="screen-label"><span class="screen-index">18</span><strong>Naptár</strong> · Haladás child</div>');
+    expectContains('<div class="screen-label"><span class="screen-index">19</span><strong>Napi részlet</strong> · Haladás child</div>');
     assert.ok(!progressOverviewScreen.includes('data-progress-shortcut="milestones"'), 'progress overview must no longer contain the milestone shortcut');
     assert.ok(!progressOverviewScreen.includes('data-action="open-progress-milestones"'), 'progress overview must not open milestones directly');
     assert.ok(!progressOverviewScreen.includes('data-target-screen="progress-milestones"'), 'progress overview must not target the moved milestone screen');
@@ -806,18 +806,15 @@ const tests = {
       'data-screen="panic-help-message"',
       'data-screen="panic-why-started"',
       'data-screen="panic-meeting-finder"',
-      'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"'
     ]);
     [
       'Pánik mód elemei',
-      'Sürgősségi segítség',
       'Hívd a szponzorod',
       'Hívd a tartalék kapcsolattartót',
       '15 perces túlélőcsomag',
       'Olvasd el, miért kezdted el',
       'Keresd meg a következő meetinget',
-      'Szakmai vagy sürgősségi segítség',
       'Szponzor',
       'Kapcsolattartó',
       'Gyors üzenetek',
@@ -854,6 +851,14 @@ const tests = {
     expectAbsent('data-screen="panic-backup-contact"');
     expectAbsent('id="column-panic-backup-contact"');
     expectAbsent('data-target-screen="panic-backup-contact"');
+    expectAbsent('data-screen="panic-emergency-help"');
+    expectAbsent('id="panic-emergency-help"');
+    expectAbsent('id="column-panic-emergency-help"');
+    expectAbsent('data-target-screen="panic-emergency-help"');
+    expectAbsent('<span class="screen-index">32</span><strong>Szakmai segítség</strong>');
+    expectAbsent('Sürgősségi segítség');
+    expectAbsent('Szakmai vagy sürgősségi segítség');
+    expectAbsent('open-emergency-sheet');
     expectContains('data-action="start-survival-pack" data-target-screen="survival-stop"');
     [
       ['survival-stop', '1 / 5', 'Kész', 'survival-breathe'],
@@ -931,9 +936,9 @@ const tests = {
     expectCount(/class="screen-row/g, 5, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home progress-milestones daily-image checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse"');
     expectAbsent('data-page="daily-image"');
-    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar"');
+    expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-calendar progress-day-detail"');
     expectAbsent('data-page="tools"');
     expectContains('data-page="recovery" data-root-screen="recovery-overview" data-row-screens="recovery-overview recovery-steps-overview recovery-step-detail recovery-evening tools-journal-list tools-journal-entry tools-journal-detail"');
     const parents = {
@@ -959,7 +964,6 @@ const tests = {
       'panic-help-message': 'panic-root',
       'panic-why-started': 'panic-root',
       'panic-meeting-finder': 'panic-root',
-      'panic-emergency-help': 'panic-root',
       'progress-overview': 'home',
       'progress-journey': 'progress-overview',
       'progress-day-detail': 'progress-journey',

@@ -6170,11 +6170,10 @@
 │   └── Írj egy mondatot.
 ├── Olvasd el, miért kezdted el
 ├── Keresd meg a következő meetinget
-├── Szakmai vagy sürgősségi segítség
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -6422,30 +6421,6 @@
           </article>
         </section>
 
-        <section class="screen-column" id="column-panic-emergency-help">
-          <div class="screen-label"><span class="screen-index">32</span><strong>Szakmai segítség</strong> · gyors opció</div>
-          <article class="phone-screen branch-screen" id="panic-emergency-help" data-screen="panic-emergency-help" data-parent-screen="panic-root">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Sürgősségi segítség</h3><p class="screen-subtitle">Krízis vagy közvetlen veszély esetére.</p></div>
-              <span aria-hidden="true"></span>
-            </header>
-            <div class="panic-detail-content">
-              <section class="emergency-card soft-card">
-                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></span><span><strong>Azonnali veszély</strong><small>Hívd a helyi sürgősségi számot.</small></span><button class="secondary-button" type="button">Hívás</button></div>
-                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Addiktológiai segítség</strong><small>Szakmai kapcsolatok és ügyeletek.</small></span><button class="secondary-button" type="button">Lista</button></div>
-                <div class="emergency-row"><span class="row-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg></span><span><strong>Krízis üzenet</strong><small>Előre megírt segítségkérés.</small></span><button class="secondary-button" type="button">Küldés</button></div>
-              </section>
-              <p class="restart-note">A Hajnal nem helyettesít orvost, sürgősségi ellátást vagy szakmai segítséget.</p>
-              <button class="primary-button" type="button" data-action="open-emergency-sheet">Segítségkérési lehetőségek</button>
-            </div>
-          </article>
-        </section>
-
         <section class="screen-column" id="column-checkin-relapse">
           <div class="screen-label"><span class="screen-index">15</span><strong>Ma visszaestem</strong> · Pánik sor vége</div>
           <article class="phone-screen checkin-fullscreen relapse-state no-nav" id="checkin-relapse" data-screen="checkin-relapse" data-parent-screen="home">
@@ -6485,7 +6460,7 @@
 └── Naptár</pre>
       </div>
 
-      <div class="screen-row" data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar">
+      <div class="screen-row" data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-calendar progress-day-detail">
         <section class="screen-column" id="column-progress-overview">
           <div class="screen-label"><span class="screen-index">16</span><strong>Haladás</strong> · Főmenü</div>
           <article class="phone-screen progress-screen" id="progress-overview" data-screen="progress-overview" data-parent-screen="home">
@@ -6576,43 +6551,8 @@
           </article>
         </section>
 
-        <section class="screen-column" id="column-progress-day-detail">
-          <div class="screen-label"><span class="screen-index">18</span><strong>Napi részlet</strong> · Haladás child</div>
-          <article class="phone-screen progress-screen" id="progress-day-detail" data-screen="progress-day-detail" data-parent-screen="progress-journey">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <header class="screen-header">
-              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="progress-journey"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-              <div class="screen-header-copy"><h3>Péntek, május 24.</h3><p class="screen-subtitle">24. nap</p></div>
-              <span aria-hidden="true"></span>
-            </header>
-            <div class="progress-content">
-              <div class="progress-hero-card"><p>Nem kell tökéletesnek lenned. Ma elég kitartanod.</p></div>
-              <section class="progress-panel">
-                <h4 class="progress-section-title">Napi részlet</h4>
-                <div class="progress-detail-list">
-                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg><span>Esti check-in</span><strong>Tiszta nap</strong></div>
-                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg><span>Hangulat</span><strong>Jó</strong></div>
-                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Sóvárgás</span><strong>3 / 10</strong></div>
-                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg><span>Szponzorral beszéltem</span><strong>Igen</strong></div>
-                </div>
-              </section>
-              <section class="progress-panel"><h4 class="progress-section-title">Rövid napló</h4><p class="screen-subtitle">Ma volt nehéz pont, de felhívtam Katát és elmentem sétálni.</p></section>
-            </div>
-            <nav class="bottom-nav" aria-label="Fő navigáció">
-              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
-              <button type="button" aria-current="page" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
-              <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
-              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
-              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
-            </nav>
-          </article>
-        </section>
-
         <section class="screen-column" id="column-progress-calendar">
-          <div class="screen-label"><span class="screen-index">19</span><strong>Naptár</strong> · Haladás child</div>
+          <div class="screen-label"><span class="screen-index">18</span><strong>Naptár</strong> · Haladás child</div>
           <article class="phone-screen progress-screen" id="progress-calendar" data-screen="progress-calendar" data-parent-screen="progress-overview">
             <div class="status-bar">
               <span>9:41</span>
@@ -6645,6 +6585,41 @@
                 </div>
                 <button class="progress-menu-card" type="button" data-action="open-progress-day-detail" data-target-screen="progress-day-detail"><span class="progress-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Részletek megnyitása</strong><small>Napi kép, feladatok, jegyzet</small></span><span aria-hidden="true">›</span></button>
               </section>
+            </div>
+            <nav class="bottom-nav" aria-label="Fő navigáció">
+              <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>
+              <button type="button" aria-current="page" data-target-screen="progress-overview"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Haladás</span></button>
+              <button type="button" data-target-screen="recovery-overview"><svg class="icon" aria-hidden="true"><use href="#icon-tools"></use></svg><span>Felépülés</span></button>
+              <button type="button" data-target-screen="sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg><span>Szponzor</span></button>
+              <button type="button" data-target-screen="profile"><svg class="icon" aria-hidden="true"><use href="#icon-profile"></use></svg><span>Profil</span></button>
+            </nav>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-progress-day-detail">
+          <div class="screen-label"><span class="screen-index">19</span><strong>Napi részlet</strong> · Haladás child</div>
+          <article class="phone-screen progress-screen" id="progress-day-detail" data-screen="progress-day-detail" data-parent-screen="progress-journey">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <header class="screen-header">
+              <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="progress-journey"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
+              <div class="screen-header-copy"><h3>Péntek, május 24.</h3><p class="screen-subtitle">24. nap</p></div>
+              <span aria-hidden="true"></span>
+            </header>
+            <div class="progress-content">
+              <div class="progress-hero-card"><p>Nem kell tökéletesnek lenned. Ma elég kitartanod.</p></div>
+              <section class="progress-panel">
+                <h4 class="progress-section-title">Napi részlet</h4>
+                <div class="progress-detail-list">
+                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg><span>Esti check-in</span><strong>Tiszta nap</strong></div>
+                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg><span>Hangulat</span><strong>Jó</strong></div>
+                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-progress"></use></svg><span>Sóvárgás</span><strong>3 / 10</strong></div>
+                  <div class="progress-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg><span>Szponzorral beszéltem</span><strong>Igen</strong></div>
+                </div>
+              </section>
+              <section class="progress-panel"><h4 class="progress-section-title">Rövid napló</h4><p class="screen-subtitle">Ma volt nehéz pont, de felhívtam Katát és elmentem sétálni.</p></section>
             </div>
             <nav class="bottom-nav" aria-label="Fő navigáció">
               <button type="button" data-target-screen="home"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg><span>Kezdőlap</span></button>

@@ -37,12 +37,11 @@ const screenOrder = [
   ["panic-help-message", "panic-root"],
   ["panic-why-started", "panic-root"],
   ["panic-meeting-finder", "panic-root"],
-  ["panic-emergency-help", "panic-root"],
   ["checkin-relapse", "home"],
   ["progress-overview", "home"],
   ["progress-journey", "progress-overview"],
-  ["progress-day-detail", "progress-journey"],
   ["progress-calendar", "progress-overview"],
+  ["progress-day-detail", "progress-journey"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
   ["recovery-step-detail", "recovery-steps-overview"],
@@ -75,7 +74,7 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse",
     [
       "panic-root",
       "survival-stop",
@@ -86,15 +85,14 @@ const screenRows = [
       "panic-help-message",
       "panic-why-started",
       "panic-meeting-finder",
-      "panic-emergency-help",
       "checkin-relapse",
     ],
   ],
   [
     "progress",
     "progress-overview",
-    "progress-overview progress-journey progress-day-detail progress-calendar",
-    ["progress-overview", "progress-journey", "progress-day-detail", "progress-calendar"],
+    "progress-overview progress-journey progress-calendar progress-day-detail",
+    ["progress-overview", "progress-journey", "progress-calendar", "progress-day-detail"],
   ],
   [
     "recovery",
@@ -398,8 +396,8 @@ try {
   assert.deepEqual(progressScreens, [
     { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-journey", "progress-calendar"] },
     { screen: "progress-journey", parent: "progress-overview", title: "Általános statisztika", shortcuts: [] },
-    { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
     { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
+    { screen: "progress-day-detail", parent: "progress-journey", title: "Péntek, május 24.", shortcuts: [] },
   ], "progress menu must remove the former standalone statistics screen");
 
   const generalStatsSummary = await page.locator("#progress-journey").evaluate((screen) => ({
