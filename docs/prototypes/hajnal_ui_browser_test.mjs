@@ -62,19 +62,18 @@ const screenOrder = [
   ["alt-progress-activity-detail", "alt-progress-activity"],
 ];
 const altProgressScreens = [
-  ["alt-progress-overview", "Haladás - Áttekintés (#6)", "35,624,153,367"],
-  ["alt-progress-daily-view", "Napi nézet", "218,624,154,367"],
-  ["alt-progress-day-detail", "Napi részlet", "405,624,174,367"],
-  ["alt-progress-journal-entry", "Naplóbejegyzés", "591,624,187,367"],
-  ["alt-progress-calendar", "Naptár (havi nézet)", "779,624,203,367"],
-  ["alt-progress-calendar-day", "Nap részlete (naptárból)", "36,1033,153,357"],
-  ["alt-progress-statistics", "Statisztikák", "217,1033,153,357"],
-  ["alt-progress-milestones", "Mérföldkövek", "394,1033,154,357"],
-  ["alt-progress-milestone-detail", "Mérföldkő részlete", "553,1033,153,357"],
-  ["alt-progress-activity", "Aktivitás (napló)", "705,1033,153,357"],
-  ["alt-progress-activity-detail", "Aktivitás részlete", "857,1033,152,357"],
+  ["alt-progress-overview", "Haladás - Áttekintés (#6)", "progress-overview"],
+  ["alt-progress-daily-view", "Napi nézet", "alt-progress-overview"],
+  ["alt-progress-day-detail", "Napi részlet", "alt-progress-daily-view"],
+  ["alt-progress-journal-entry", "Naplóbejegyzés", "alt-progress-daily-view"],
+  ["alt-progress-calendar", "Naptár (havi nézet)", "alt-progress-overview"],
+  ["alt-progress-calendar-day", "Nap részlete (naptárból)", "alt-progress-calendar"],
+  ["alt-progress-statistics", "Statisztikák", "alt-progress-overview"],
+  ["alt-progress-milestones", "Mérföldkövek", "alt-progress-overview"],
+  ["alt-progress-milestone-detail", "Mérföldkő részlete", "alt-progress-milestones"],
+  ["alt-progress-activity", "Aktivitás (napló)", "alt-progress-overview"],
+  ["alt-progress-activity-detail", "Aktivitás részlete", "alt-progress-activity"],
 ];
-const altProgressById = new Map(altProgressScreens.map(([id, title, crop]) => [id, { title, crop }]));
 const screenRows = [
   [
     "entry",
@@ -534,32 +533,50 @@ try {
   const altProgressRow = await page.locator('[data-page="alt-progress"]').evaluate((row) => ({
     root: row.dataset.rootScreen,
     rowScreens: row.dataset.rowScreens,
-    sourceReference: row.dataset.sourceReference,
-    sourceAsset: row.dataset.sourceAsset,
-    screens: Array.from(row.querySelectorAll(".alt-progress-source-screen")).map((screen) => ({
+    sourceReference: row.dataset.sourceReference || "",
+    sourceAsset: row.dataset.sourceAsset || "",
+    cropComponents: row.querySelectorAll('[data-component="haladas-source-crop"]').length,
+    sourceCropMarkers: row.querySelectorAll("[data-source-crop]").length,
+    imageCount: row.querySelectorAll("img").length,
+    screens: Array.from(row.querySelectorAll(".alt-progress-screen")).map((screen) => ({
       screen: screen.dataset.screen,
       parent: screen.dataset.parentScreen,
       title: screen.getAttribute("aria-label"),
-      crop: screen.dataset.sourceCrop,
-      component: screen.dataset.component,
+      buttons: screen.querySelectorAll("button").length,
+      textareas: screen.querySelectorAll("textarea").length,
+      components: Array.from(screen.querySelectorAll("[data-component]")).map((element) => element.dataset.component),
       width: Math.round(screen.getBoundingClientRect().width),
       height: Math.round(screen.getBoundingClientRect().height),
       backgroundImage: getComputedStyle(screen).backgroundImage,
-      backgroundSize: getComputedStyle(screen).backgroundSize,
-      backgroundPosition: getComputedStyle(screen).backgroundPosition,
     })),
   }));
   assert.deepEqual(altProgressRow.root, "alt-progress-overview", "alternative progress row root");
   assert.deepEqual(altProgressRow.rowScreens, altProgressScreens.map(([id]) => id).join(" "), "alternative progress row screen order");
-  assert.deepEqual(altProgressRow.sourceReference, "docs/references/source-of-truth/haladas.png", "alternative progress source reference");
-  assert.deepEqual(altProgressRow.sourceAsset, "assets/haladas.png", "alternative progress source asset");
+  assert.deepEqual(altProgressRow.sourceReference, "/storage/emulated/0/hajnal/haladas.png", "alternative progress source reference");
+  assert.deepEqual(altProgressRow.sourceAsset, "", "alternative progress row must not embed a copied PNG asset");
+  assert.deepEqual(altProgressRow.cropComponents, 0, "alternative progress row must not use source crop components");
+  assert.deepEqual(altProgressRow.sourceCropMarkers, 0, "alternative progress row must not expose source crop coordinates");
+  assert.deepEqual(altProgressRow.imageCount, 0, "alternative progress row must be built from DOM/CSS, not img tags");
   assert.deepEqual(
-    altProgressRow.screens.map(({ screen, title, crop, component }) => ({ screen, title, crop, component })),
-    altProgressScreens.map(([screen, title, crop]) => ({ screen, title, crop, component: "haladas-source-crop" })),
-    "alternative progress row must expose all source-of-truth crops in order",
+    altProgressRow.screens.map(({ screen, title, parent }) => ({ screen, title, parent })),
+    altProgressScreens.map(([screen, title, parent]) => ({ screen, title, parent })),
+    "alternative progress row must expose all functional screens in order",
   );
-  assert.equal(altProgressRow.screens.every((screen) => screen.backgroundImage.includes("/assets/haladas.png")), true, "every alternative progress crop must use the source PNG");
-  assert.equal(altProgressRow.screens.every((screen) => screen.backgroundSize === "2048px 3072px"), true, "every alternative progress crop must use the 2x source background size");
+  assert.equal(altProgressRow.screens.every((screen) => screen.width === 412 && screen.height === 892), true, "every alternative progress screen must keep normal phone dimensions");
+  assert.equal(altProgressRow.screens.every((screen) => screen.buttons > 0), true, "every alternative progress screen must expose real button controls");
+  assert.equal(altProgressRow.screens.every((screen) => !screen.backgroundImage.includes("/assets/haladas.png")), true, "alternative progress screens must not use the source PNG as a background");
+  assert.ok(
+    altProgressRow.screens.find((screen) => screen.screen === "alt-progress-overview")?.components.includes("alt-progress-menu-grid"),
+    "alternative overview must contain a functional menu grid",
+  );
+  assert.ok(
+    altProgressRow.screens.find((screen) => screen.screen === "alt-progress-daily-view")?.textareas === 1,
+    "alternative daily view must contain an editable note textarea",
+  );
+  assert.ok(
+    altProgressRow.screens.find((screen) => screen.screen === "alt-progress-statistics")?.components.includes("alt-progress-line-chart"),
+    "alternative statistics must contain DOM chart elements",
+  );
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images
@@ -740,13 +757,7 @@ try {
     assert.equal(await screen.getAttribute("data-parent-screen"), parent, `${id} parent`);
     const box = await screen.boundingBox();
     assert.ok(box, `${id} bounding box`);
-    const altProgressMeta = altProgressById.get(id);
-    const expectedSize = altProgressMeta
-      ? (() => {
-          const [, , cropWidth, cropHeight] = altProgressMeta.crop.split(",").map(Number);
-          return { width: cropWidth * 2, height: cropHeight * 2, radius: "18px" };
-        })()
-      : { width: 412, height: 892, radius: "34px" };
+    const expectedSize = { width: 412, height: 892, radius: "34px" };
 
     const metrics = await screen.evaluate((element) => {
       const bounds = element.getBoundingClientRect();

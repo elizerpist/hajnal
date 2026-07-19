@@ -9,7 +9,6 @@ const htmlPath = path.join(__dirname, 'hajnal_ui.html');
 const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, 'utf8') : '';
 const sourceAssetDirectory = '/storage/emulated/0/hajnal';
 const group = process.argv[2] || 'all';
-const haladasSourceSha256 = 'fda97b4b31040bfb05d11456fa762e0d78035bb19fa77c018d7159ef7d55f398';
 const screenOrder = [
   'welcome-lighting-lab',
   'splash',
@@ -60,18 +59,90 @@ const screenOrder = [
 ];
 
 const altProgressScreens = [
-  ['alt-progress-overview', 'Haladás - Áttekintés (#6)', '35,624,153,367'],
-  ['alt-progress-daily-view', 'Napi nézet', '218,624,154,367'],
-  ['alt-progress-day-detail', 'Napi részlet', '405,624,174,367'],
-  ['alt-progress-journal-entry', 'Naplóbejegyzés', '591,624,187,367'],
-  ['alt-progress-calendar', 'Naptár (havi nézet)', '779,624,203,367'],
-  ['alt-progress-calendar-day', 'Nap részlete (naptárból)', '36,1033,153,357'],
-  ['alt-progress-statistics', 'Statisztikák', '217,1033,153,357'],
-  ['alt-progress-milestones', 'Mérföldkövek', '394,1033,154,357'],
-  ['alt-progress-milestone-detail', 'Mérföldkő részlete', '553,1033,153,357'],
-  ['alt-progress-activity', 'Aktivitás (napló)', '705,1033,153,357'],
-  ['alt-progress-activity-detail', 'Aktivitás részlete', '857,1033,152,357']
+  ['alt-progress-overview', 'Haladás - Áttekintés (#6)', 'progress-overview'],
+  ['alt-progress-daily-view', 'Napi nézet', 'alt-progress-overview'],
+  ['alt-progress-day-detail', 'Napi részlet', 'alt-progress-daily-view'],
+  ['alt-progress-journal-entry', 'Naplóbejegyzés', 'alt-progress-daily-view'],
+  ['alt-progress-calendar', 'Naptár (havi nézet)', 'alt-progress-overview'],
+  ['alt-progress-calendar-day', 'Nap részlete (naptárból)', 'alt-progress-calendar'],
+  ['alt-progress-statistics', 'Statisztikák', 'alt-progress-overview'],
+  ['alt-progress-milestones', 'Mérföldkövek', 'alt-progress-overview'],
+  ['alt-progress-milestone-detail', 'Mérföldkő részlete', 'alt-progress-milestones'],
+  ['alt-progress-activity', 'Aktivitás (napló)', 'alt-progress-overview'],
+  ['alt-progress-activity-detail', 'Aktivitás részlete', 'alt-progress-activity']
 ];
+
+const altProgressFunctionalRequirements = {
+  'alt-progress-overview': [
+    'data-component="alt-progress-dashboard"',
+    'data-component="alt-progress-menu-grid"',
+    'data-target-screen="alt-progress-daily-view"',
+    'data-target-screen="alt-progress-calendar"',
+    'data-target-screen="alt-progress-statistics"',
+    'data-target-screen="alt-progress-milestones"',
+    'data-target-screen="alt-progress-activity"'
+  ],
+  'alt-progress-daily-view': [
+    'data-component="alt-progress-day-switcher"',
+    'data-component="alt-mood-selector"',
+    'data-component="alt-mood-option"',
+    'data-component="alt-progress-result-list"',
+    'data-component="alt-progress-daily-note"',
+    'data-target-screen="alt-progress-day-detail"',
+    'data-target-screen="alt-progress-journal-entry"',
+    '<textarea'
+  ],
+  'alt-progress-day-detail': [
+    'data-component="alt-progress-day-hero"',
+    'data-component="alt-progress-metric-list"',
+    'data-component="alt-progress-rating-dots"',
+    'data-target-screen="alt-progress-journal-entry"'
+  ],
+  'alt-progress-journal-entry': [
+    'data-component="alt-progress-journal-card"',
+    'data-action="alt-progress-edit-entry"',
+    'data-action="alt-progress-share-entry"',
+    'data-action="alt-progress-delete-entry"'
+  ],
+  'alt-progress-calendar': [
+    'data-component="alt-progress-calendar-grid"',
+    'data-component="alt-calendar-day"',
+    'data-target-screen="alt-progress-calendar-day"',
+    'data-component="alt-calendar-view-switch"'
+  ],
+  'alt-progress-calendar-day': [
+    'data-component="alt-progress-calendar-day-summary"',
+    'data-component="alt-progress-calendar-checklist"',
+    'data-target-screen="alt-progress-journal-entry"'
+  ],
+  'alt-progress-statistics': [
+    'data-component="alt-progress-period-tabs"',
+    'data-component="alt-progress-line-chart"',
+    'data-component="alt-progress-completion-ring"',
+    'data-component="alt-progress-task-bars"'
+  ],
+  'alt-progress-milestones': [
+    'data-component="alt-progress-milestone-tabs"',
+    'data-component="alt-progress-milestone-list"',
+    'data-component="alt-progress-next-milestone"',
+    'data-target-screen="alt-progress-milestone-detail"'
+  ],
+  'alt-progress-milestone-detail': [
+    'data-component="alt-progress-milestone-badge"',
+    'data-component="alt-progress-milestone-meaning"',
+    'data-action="alt-progress-share-milestone"'
+  ],
+  'alt-progress-activity': [
+    'data-component="alt-progress-activity-tabs"',
+    'data-component="alt-progress-activity-list"',
+    'data-target-screen="alt-progress-activity-detail"'
+  ],
+  'alt-progress-activity-detail': [
+    'data-component="alt-progress-activity-result"',
+    'data-component="alt-progress-activity-detail-list"',
+    'data-target-screen="alt-progress-activity"'
+  ]
+};
 
 function expectContains(value) {
   assert.ok(html.includes(value), `Missing ${value}`);
@@ -116,15 +187,6 @@ function expectScreenContains(id, values) {
 
 function pngSize(filename) {
   const buffer = fs.readFileSync(path.join(__dirname, 'verification', filename));
-  assert.equal(buffer.toString('ascii', 1, 4), 'PNG', `${filename} must be PNG`);
-  return {
-    width: buffer.readUInt32BE(16),
-    height: buffer.readUInt32BE(20)
-  };
-}
-
-function pngDimensions(filename) {
-  const buffer = fs.readFileSync(filename);
   assert.equal(buffer.toString('ascii', 1, 4), 'PNG', `${filename} must be PNG`);
   return {
     width: buffer.readUInt32BE(16),
@@ -592,7 +654,7 @@ const tests = {
     expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
     expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
     assert.equal((eveningReflectionScreen.match(/<textarea\b/g) || []).length, 1, 'screen 12 reflection editor textarea must be restored');
-    expectCount(/<textarea\b/g, 2, 'reflection and journal entry editors must expose textareas after deleting the old workbook question screen');
+    expectCount(/<textarea\b/g, 3, 'reflection, journal entry, and functional alternative daily note editors must expose textareas');
   },
 
   progressBranch() {
@@ -833,34 +895,40 @@ const tests = {
 
   altProgressBranch() {
     const rowScreens = altProgressScreens.map(([id]) => id).join(' ');
-    expectCopiedAsset('haladas.png');
-    assert.equal(fileSha256(path.join(__dirname, '..', 'references', 'source-of-truth', 'haladas.png')), haladasSourceSha256, 'haladas.png source-of-truth expected hash');
-    assert.equal(fileSha256(path.join(__dirname, 'assets', 'haladas.png')), haladasSourceSha256, 'haladas.png prototype expected hash');
-    assert.deepEqual(pngDimensions(path.join(__dirname, 'assets', 'haladas.png')), { width: 1024, height: 1536 }, 'haladas.png prototype asset dimensions');
     expectOrdered([
       'data-screen="tools-journal-detail"',
       'data-page="alt-progress"',
       ...altProgressScreens.map(([id]) => `data-screen="${id}"`)
     ]);
     expectContains(`data-page="alt-progress" data-root-screen="alt-progress-overview" data-row-screens="${rowScreens}"`);
-    expectContains('data-source-reference="docs/references/source-of-truth/haladas.png"');
-    expectContains('data-source-asset="assets/haladas.png"');
+    expectContains('data-source-reference="/storage/emulated/0/hajnal/haladas.png"');
     expectContains('HALADÁS MENÜ - TELJES STRUKTÚRA ÉS NAVIGÁCIÓ');
-    expectContains('Részletes képernyők - teljes felhasználói út');
-    expectContains('data-component="alt-progress-source-row"');
-    expectContains('background-image: url("assets/haladas.png")');
-    altProgressScreens.forEach(([id, title, crop]) => {
+    expectContains('Funkcionáló HTML menük - valódi containerek, gombok és állapotok');
+    expectContains('data-component="alt-progress-menu-row"');
+    expectAbsent('data-component="haladas-source-crop"');
+    expectAbsent('data-component="alt-progress-source-row"');
+    expectAbsent('data-source-crop=');
+    expectAbsent('data-source-asset="assets/haladas.png"');
+    expectAbsent('background-image: url("assets/haladas.png")');
+    expectAbsent('alt-progress-source-screen');
+    expectAbsent('alt-progress-source-column');
+    expectAbsent('<img src="assets/haladas.png"');
+    altProgressScreens.forEach(([id, title, parent]) => {
       const screen = screenSlice(id);
-      assert.ok(screen.includes('class="phone-screen alt-progress-source-screen"'), `${id} must be rendered as a bottom-row source screen`);
-      assert.ok(screen.includes('data-component="haladas-source-crop"'), `${id} must expose the source crop component`);
-      assert.ok(screen.includes(`data-source-crop="${crop}"`), `${id} must use the exact source crop ${crop}`);
+      assert.ok(screen.includes('class="phone-screen alt-progress-screen"'), `${id} must be a full functional phone screen`);
+      assert.ok(screen.includes(`data-parent-screen="${parent}"`), `${id} parent must follow the alternative flow map`);
       assert.ok(screen.includes(`aria-label="${title}"`), `${id} must expose the source title`);
+      assert.ok(!screen.includes('<img'), `${id} must not flatten the source design into an image`);
+      assert.ok(screen.includes('<button'), `${id} must include native buttons for menu/actions`);
+      (altProgressFunctionalRequirements[id] || []).forEach((needle) => {
+        assert.ok(screen.includes(needle), `${id} is missing functional DOM marker ${needle}`);
+      });
     });
-    assert.equal((html.match(/class="screen-column alt-progress-source-column" style="--display-w:/g) || []).length, 11, 'every source crop column must define a stable display width for labels and articles');
-    assert.equal((html.match(/--crop-pos:/g) || []).length, 11, 'every source crop column must define a stable background position');
-    assert.match(html, /\.alt-progress-source-column \.screen-label\s*\{[^}]*max-width:\s*var\(--display-w\)/s, 'alternative progress labels must share the column display width');
-    assert.match(html, /\.alt-progress-source-row\s*\{[^}]*display:\s*flex;[^}]*gap:\s*28px;[^}]*align-items:\s*flex-start/s, 'alternative progress row must be a bottom horizontal screen row');
-    assert.match(html, /\.alt-progress-source-screen\s*\{[^}]*background-image:\s*url\("assets\/haladas\.png"\);[^}]*background-size:\s*2048px 3072px;[^}]*border-radius:\s*18px/s, 'alternative progress screens must crop the source PNG at 2x display scale');
+    assert.equal((html.match(/class="screen-column alt-progress-column"/g) || []).length, 11, 'every alternative progress screen must live in a normal labelled column');
+    assert.match(html, /\.alt-progress-row\s*\{[^}]*display:\s*flex;[^}]*gap:\s*28px;[^}]*align-items:\s*flex-start/s, 'alternative progress row must be a bottom horizontal screen row');
+    assert.match(html, /\.alt-progress-screen\s*\{[^}]*background:\s*linear-gradient\(180deg,\s*#FFF9F5/s, 'alternative progress screens must be CSS-rendered phone screens');
+    assert.match(html, /\.alt-progress-menu-grid\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*repeat\(2,\s*1fr\)/s, 'overview menu must be a real grid of controls');
+    assert.match(html, /\.alt-progress-bottom-nav\s*\{[^}]*position:\s*absolute;[^}]*bottom:\s*0/s, 'alternative progress screens must use an anchored bottom nav');
   },
 
   panicBranch() {
@@ -1066,8 +1134,7 @@ const tests = {
   },
 
   visualEvidence() {
-    const altProgressIds = new Set(altProgressScreens.map(([id]) => id));
-    screenOrder.filter((id) => !altProgressIds.has(id)).forEach((id) => {
+    screenOrder.forEach((id) => {
       assert.deepEqual(pngSize(`${id}.png`), { width: 412, height: 892 }, `${id} screenshot size`);
     });
   }
