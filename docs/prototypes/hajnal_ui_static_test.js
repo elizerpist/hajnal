@@ -24,7 +24,6 @@ const screenOrder = [
   'evening-reflection',
   'reflection-saved',
   'panic-root',
-  'checkin-survival-pack',
   'survival-stop',
   'survival-breathe',
   'survival-water',
@@ -130,7 +129,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 41, 'phone screen count');
+    expectCount(/class="phone-screen/g, 40, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -165,12 +164,12 @@ const tests = {
     expectAbsent('filter: url(#hajnal-liquid-glass-warp)');
     expectAbsent('rgba(255, 255, 255, 1.5)');
     expectContains('class="home-hero-image"');
-    expectCount(/<img\b/g, 9, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
+    expectCount(/<img\b/g, 8, 'only the approved SVG splash, hero, daily, hurray, and wizard images may use img tags');
     expectCount(/<img\b[^>]*src="assets\/hero_xl_svg\.svg"/g, 0, 'latest prototype must not keep the old XL SVG image tags');
     expectCount(/<img\b[^>]*src="assets\/welcome_svg\.svg"/g, 1, 'Splash must use the approved welcome SVG asset once');
     expectCount(/<img\b[^>]*src="assets\/hero_fullscreen2_svg\.svg"/g, 3, 'home states and daily image screen must use the approved fullscreen2 SVG asset');
     expectCount(/<img\b[^>]*src="assets\/hurray_svg\.svg"/g, 1, 'hurray reward screen must use the approved hurray SVG asset');
-    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen_svg\.svg"/g, 4, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
+    expectCount(/<img\b[^>]*src="assets\/hero_fullscreen_svg\.svg"/g, 3, 'regular fullscreen flow image tags must use the approved fullscreen SVG asset');
     expectCount(/<img\b[^>]*src="assets\/hero_m_svg\.svg"/g, 0, 'check-in wizard must not use the old card-sized M SVG asset');
     expectCount(/href="#hajnal-logo-symbol"/g, 2, 'top and Splash icons must use the inline SVG logo symbol');
   },
@@ -398,7 +397,6 @@ const tests = {
       'data-screen="evening-reflection"',
       'data-screen="reflection-saved"',
       'data-screen="panic-root"',
-      'data-screen="checkin-survival-pack"',
       'data-screen="survival-stop"',
       'data-screen="survival-breathe"',
       'data-screen="survival-water"',
@@ -449,7 +447,7 @@ const tests = {
       'Ma visszaestem',
       'Köszönjük,',
       'hogy őszinte voltál.',
-      '15 perces túlélő csomag',
+      '15 perces túlélőcsomag',
       'Nem kell tökéletesnek lenned',
       'Pánik mód',
       'Nem vagy egyedül.'
@@ -464,7 +462,7 @@ const tests = {
     expectContains('data-action="save-evening-reflection" data-target-screen="reflection-saved"');
     expectContains('data-action="open-panic" data-target-screen="panic-root"');
     expectContains('data-action="return-home-after-save" data-target-screen="home"');
-    ['daily-checkin', 'evening-clean-reward', 'checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo', 'support-next-step', 'checkin-motivation', 'daily-tasks', 'panic-mode', 'panic-survival-pack', 'panic-breathing'].forEach((id) => {
+    ['daily-checkin', 'evening-clean-reward', 'checkin-mood', 'checkin-craving', 'checkin-note', 'support-note', 'gratitude-add', 'photo-memo', 'voice-memo', 'support-next-step', 'checkin-motivation', 'daily-tasks', 'panic-mode', 'panic-survival-pack', 'panic-breathing', 'checkin-survival-pack'].forEach((id) => {
       expectAbsent(`data-screen="${id}"`);
       expectAbsent(`data-target-screen="${id}"`);
     });
@@ -501,7 +499,7 @@ const tests = {
       expectContains(`data-asset-src="assets/${asset}"`);
       expectContains(`data-asset-label="${label}"`);
     });
-    ['evening-reflection', 'reflection-saved', 'checkin-relapse', 'checkin-survival-pack']
+    ['evening-reflection', 'reflection-saved', 'checkin-relapse']
       .forEach((id) => assert.ok(screenSlice(id).includes('class="checkin-bg" src="assets/hero_fullscreen_svg.svg"'), `${id} must use the fullscreen hero image`));
     assert.ok(cleanRewardScreen.includes('class="checkin-bg" src="assets/hurray_svg.svg"'), 'checkin-clean must use the hurray fullscreen image');
     assert.match(html, /\.checkin-fullscreen\s*\{[^}]*background:\s*#171848/s, 'check-in wizard screens must define a fullscreen dark base');
@@ -752,7 +750,7 @@ const tests = {
       ['data-action="open-recovery-gratitude" data-target-screen="recovery-evening"', 'open gratitude shortcut'],
       ['data-action="open-recovery-breathing" data-target-screen="survival-breathe"', 'breathing shortcut'],
       ['data-action="open-recovery-why-started" data-target-screen="panic-why-started"', 'why started shortcut'],
-      ['data-action="open-recovery-survival-pack" data-target-screen="checkin-survival-pack"', 'survival package shortcut'],
+      ['data-action="open-recovery-survival-pack" data-target-screen="survival-stop"', 'survival package shortcut'],
       ['data-action="open-recovery-panic" data-target-screen="panic-root"', 'panic shortcut'],
       ['data-action="open-recovery-step-detail" data-target-screen="recovery-step-detail"', 'step detail target'],
       ['data-action="write-recovery-step-journal" data-target-screen="recovery-evening"', 'step journal CTA']
@@ -767,7 +765,6 @@ const tests = {
     const panicRootScreen = screenSlice('panic-root');
     expectOrdered([
       'data-screen="panic-root"',
-      'data-screen="checkin-survival-pack"',
       'data-screen="survival-stop"',
       'data-screen="survival-breathe"',
       'data-screen="survival-water"',
@@ -816,8 +813,11 @@ const tests = {
     expectAbsent('data-screen="panic-sponsor-call"');
     expectAbsent('id="column-panic-sponsor-call"');
     expectAbsent('data-target-screen="panic-sponsor-call"');
-    expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
-    expectContains('data-action="start-checkin-survival" data-target-screen="survival-stop"');
+    expectAbsent('data-screen="checkin-survival-pack"');
+    expectAbsent('id="column-checkin-survival-pack"');
+    expectAbsent('data-target-screen="checkin-survival-pack"');
+    expectAbsent('data-action="start-checkin-survival"');
+    expectContains('data-action="start-survival-pack" data-target-screen="survival-stop"');
     [
       ['survival-stop', '1 / 6', 'Kész', 'survival-breathe'],
       ['survival-breathe', '2 / 6', 'Kész', 'survival-water'],
@@ -895,7 +895,7 @@ const tests = {
     expectCount(/class="screen-row/g, 6, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-overview" data-row-screens="progress-overview progress-journey progress-day-detail progress-calendar progress-stats progress-milestones"');
     expectAbsent('data-page="tools"');
@@ -915,8 +915,7 @@ const tests = {
       'reflection-saved': 'evening-reflection',
       'checkin-relapse': 'home',
       'panic-root': 'home',
-      'checkin-survival-pack': 'panic-root',
-      'survival-stop': 'checkin-survival-pack',
+      'survival-stop': 'panic-root',
       'survival-breathe': 'survival-stop',
       'survival-water': 'survival-breathe',
       'survival-outside': 'survival-water',

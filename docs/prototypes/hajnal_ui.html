@@ -6167,7 +6167,7 @@
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -6190,7 +6190,7 @@
               <div class="panic-grid" aria-label="Pánik mód gyors opciók">
                 <button type="button" data-action="call-sponsor" data-target-screen="panic-help-message"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Hívd a szponzorod</button>
                 <button type="button" data-action="call-backup-contact" data-target-screen="panic-backup-contact"><svg class="icon" aria-hidden="true"><use href="#icon-people"></use></svg>Hívd a tartalék kapcsolattartót</button>
-                <button type="button" data-action="start-survival-pack" data-target-screen="checkin-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
+                <button type="button" data-action="start-survival-pack" data-target-screen="survival-stop"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg>15 perces túlélőcsomag</button>
                 <button type="button" data-action="why-started" data-target-screen="panic-why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Olvasd el, miért kezdted el</button>
                 <button type="button" data-action="meeting-finder" data-target-screen="panic-meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Keresd meg a következő meetinget</button>
                 <button type="button" data-action="report-relapse" data-target-screen="checkin-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg>Visszaestem</button>
@@ -6199,46 +6199,9 @@
           </article>
         </section>
 
-        <section class="screen-column" id="column-checkin-survival-pack">
-          <div class="screen-label"><span class="screen-index">18</span><strong>15 PERCES TÚLÉLŐ CSOMAG</strong> · Pánik child</div>
-          <article class="phone-screen checkin-fullscreen practice-state no-nav" id="checkin-survival-pack" data-screen="checkin-survival-pack" data-parent-screen="panic-root">
-            <img class="checkin-bg" src="assets/hero_fullscreen_svg.svg" alt="" loading="eager">
-            <div class="status-bar">
-              <span>9:41</span>
-              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
-            </div>
-            <div class="checkin-content">
-              <div class="checkin-top-actions">
-                <button class="icon-button" type="button" aria-label="Vissza" data-target-screen="panic-root"><svg class="icon" aria-hidden="true"><use href="#icon-back"></use></svg></button>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </div>
-              <section class="checkin-practice-copy" aria-label="Túlélő csomag">
-                <h3>15 perces túlélő csomag</h3>
-              </section>
-              <div class="checkin-practice-center">
-                <div class="checkin-timer-ring" aria-hidden="true"><div><svg class="icon"><use href="#icon-heart"></use></svg><strong>15:00</strong></div></div>
-                <h4>Kezdjük el!</h4>
-                <p>Kövesd a lépéseket.<br>A sóvárgás hullám, nem örök.</p>
-                <ol class="survival-steps">
-                  <li>Állj meg.</li>
-                  <li>Lélegezz.</li>
-                  <li>Igyál vizet.</li>
-                  <li>Menj ki.</li>
-                  <li>Írj egy mondatot.</li>
-                  <li>Hívd fel a szponzorodat.</li>
-                </ol>
-              </div>
-              <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="start-checkin-survival" data-target-screen="survival-stop">Kezdés</button>
-              </div>
-            </div>
-          </article>
-        </section>
-
         <section class="screen-column" id="column-survival-stop">
           <div class="screen-label"><span class="screen-index">18A</span><strong>Állj meg</strong> · 15 perces flow</div>
-          <article class="phone-screen survival-flow-screen no-nav" id="survival-stop" data-screen="survival-stop" data-parent-screen="checkin-survival-pack">
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-stop" data-screen="survival-stop" data-parent-screen="panic-root">
             <div class="status-bar">
               <span>9:41</span>
               <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
@@ -6915,7 +6878,7 @@
                 <button class="recovery-menu-card" type="button" data-recovery-shortcut="gratitude" data-action="open-recovery-gratitude" data-target-screen="recovery-evening"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Hála lista</strong><small>Vedd észre a jó dolgokat</small></span><span aria-hidden="true">›</span></button>
                 <button class="recovery-menu-card" type="button" data-recovery-shortcut="breathing" data-action="open-recovery-breathing" data-target-screen="survival-breathe"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-breath"></use></svg></span><span><strong>Légzőgyakorlat</strong><small>Nyugtató légzés, amikor kell</small></span><span aria-hidden="true">›</span></button>
                 <button class="recovery-menu-card" type="button" data-recovery-shortcut="why-started" data-action="open-recovery-why-started" data-target-screen="panic-why-started"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></span><span><strong>Miért kezdtem el?</strong><small>Emlékeztet arra, amiért itt vagy</small></span><span aria-hidden="true">›</span></button>
-                <button class="recovery-menu-card" type="button" data-recovery-shortcut="survival" data-action="open-recovery-survival-pack" data-target-screen="checkin-survival-pack"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Túlélőcsomag</strong><small>Eszközök a nehéz pillanatokra</small></span><span aria-hidden="true">›</span></button>
+                <button class="recovery-menu-card" type="button" data-recovery-shortcut="survival" data-action="open-recovery-survival-pack" data-target-screen="survival-stop"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span><span><strong>Túlélőcsomag</strong><small>Eszközök a nehéz pillanatokra</small></span><span aria-hidden="true">›</span></button>
                 <button class="recovery-menu-card" type="button" data-recovery-shortcut="panic" data-action="open-recovery-panic" data-target-screen="panic-root"><span class="recovery-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bell"></use></svg></span><span><strong>Pánik mód</strong><small>Azonnali segítség, ha szükséged van rá</small></span><span aria-hidden="true">›</span></button>
               </div>
             </div>

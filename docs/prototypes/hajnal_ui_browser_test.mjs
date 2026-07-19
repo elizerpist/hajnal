@@ -28,8 +28,7 @@ const screenOrder = [
   ["evening-reflection", "checkin-clean"],
   ["reflection-saved", "evening-reflection"],
   ["panic-root", "home"],
-  ["checkin-survival-pack", "panic-root"],
-  ["survival-stop", "checkin-survival-pack"],
+  ["survival-stop", "panic-root"],
   ["survival-breathe", "survival-stop"],
   ["survival-water", "survival-breathe"],
   ["survival-outside", "survival-water"],
@@ -78,10 +77,9 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
-      "checkin-survival-pack",
       "survival-stop",
       "survival-breathe",
       "survival-water",
@@ -324,7 +322,7 @@ try {
   assert.deepEqual(panicRootActions, [
     { text: "Hívd a szponzorod", action: "call-sponsor", target: "panic-help-message" },
     { text: "Hívd a tartalék kapcsolattartót", action: "call-backup-contact", target: "panic-backup-contact" },
-    { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "checkin-survival-pack" },
+    { text: "15 perces túlélőcsomag", action: "start-survival-pack", target: "survival-stop" },
     { text: "Olvasd el, miért kezdted el", action: "why-started", target: "panic-why-started" },
     { text: "Keresd meg a következő meetinget", action: "meeting-finder", target: "panic-meeting-finder" },
     { text: "Visszaestem", action: "report-relapse", target: "checkin-relapse" },
@@ -364,7 +362,7 @@ try {
     }),
   );
   assert.deepEqual(survivalFlowScreens, [
-    { screen: "survival-stop", parent: "checkin-survival-pack", step: "1 / 6", title: "Állj meg.", body: "Ne csinálj semmit 10 másodpercig.", cta: "Kész", target: "survival-breathe" },
+    { screen: "survival-stop", parent: "panic-root", step: "1 / 6", title: "Állj meg.", body: "Ne csinálj semmit 10 másodpercig.", cta: "Kész", target: "survival-breathe" },
     { screen: "survival-breathe", parent: "survival-stop", step: "2 / 6", title: "Lélegezz.", body: "Vegyél 5 lassú, mély levegőt.", cta: "Kész", target: "survival-water" },
     { screen: "survival-water", parent: "survival-breathe", step: "3 / 6", title: "Igyál vizet.", body: "Egy korty is számít.", cta: "Kész", target: "survival-outside" },
     { screen: "survival-outside", parent: "survival-water", step: "4 / 6", title: "Menj ki.", body: "Friss levegő. Változtass környezetet.", cta: "Kész", target: "survival-note" },
@@ -417,7 +415,7 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "daily-image", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "recovery-evening", "survival-breathe", "panic-why-started", "checkin-survival-pack", "panic-root"] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "daily-image", "progress-overview", "recovery-evening", "tools-journal-list", "recovery-evening", "recovery-evening", "survival-breathe", "panic-why-started", "survival-stop", "panic-root"] },
     { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },
@@ -437,7 +435,6 @@ try {
           "evening-reflection",
           "reflection-saved",
           "checkin-relapse",
-          "checkin-survival-pack",
         ].includes(screenId) && image.src.endsWith("/hero_fullscreen_svg.svg");
         return !(allowedSplash || allowedFullscreen2 || allowedHurray || allowedFullscreen);
       })
