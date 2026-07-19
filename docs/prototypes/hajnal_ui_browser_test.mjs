@@ -29,6 +29,12 @@ const screenOrder = [
   ["reflection-saved", "evening-reflection"],
   ["panic-root", "home"],
   ["checkin-survival-pack", "panic-root"],
+  ["survival-stop", "checkin-survival-pack"],
+  ["survival-breathe", "survival-stop"],
+  ["survival-water", "survival-breathe"],
+  ["survival-outside", "survival-water"],
+  ["survival-note", "survival-outside"],
+  ["survival-call-sponsor", "survival-note"],
   ["panic-sponsor-call", "panic-root"],
   ["panic-help-message", "panic-root"],
   ["panic-backup-contact", "panic-root"],
@@ -60,10 +66,16 @@ const screenRows = [
   [
     "panic",
     "panic-root",
-    "panic-root checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
+    "panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse",
     [
       "panic-root",
       "checkin-survival-pack",
+      "survival-stop",
+      "survival-breathe",
+      "survival-water",
+      "survival-outside",
+      "survival-note",
+      "survival-call-sponsor",
       "panic-sponsor-call",
       "panic-help-message",
       "panic-backup-contact",
@@ -291,6 +303,30 @@ try {
   assert.deepEqual(panicMainButtonState, [
     { text: "Segítségkell", hasHeartIcon: true, backgroundImage: "none", display: "flex", flexDirection: "column", action: "focus-panic-options", target: null },
   ], "large panic help button must have a homogeneous fill, heart icon, and no deleted screen target");
+
+  const survivalFlowScreens = await page.locator(".survival-flow-card").evaluateAll((cards) =>
+    cards.map((card) => {
+      const screen = card.closest(".phone-screen");
+      const cta = screen?.querySelector(".checkin-bottom-actions button");
+      return {
+        screen: screen?.dataset.screen,
+        parent: screen?.dataset.parentScreen,
+        step: card.dataset.survivalStep,
+        title: card.querySelector("h3")?.textContent.trim(),
+        body: card.querySelector("p")?.textContent.trim(),
+        cta: cta?.textContent.trim(),
+        target: cta?.dataset.targetScreen,
+      };
+    }),
+  );
+  assert.deepEqual(survivalFlowScreens, [
+    { screen: "survival-stop", parent: "checkin-survival-pack", step: "1 / 6", title: "Állj meg.", body: "Ne csinálj semmit 10 másodpercig.", cta: "Kész", target: "survival-breathe" },
+    { screen: "survival-breathe", parent: "survival-stop", step: "2 / 6", title: "Lélegezz.", body: "Vegyél 5 lassú, mély levegőt.", cta: "Kész", target: "survival-water" },
+    { screen: "survival-water", parent: "survival-breathe", step: "3 / 6", title: "Igyál vizet.", body: "Egy korty is számít.", cta: "Kész", target: "survival-outside" },
+    { screen: "survival-outside", parent: "survival-water", step: "4 / 6", title: "Menj ki.", body: "Friss levegő. Változtass környezetet.", cta: "Kész", target: "survival-note" },
+    { screen: "survival-note", parent: "survival-outside", step: "5 / 6", title: "Írj egy mondatot.", body: "Írd ki, ami benned van. Csak őszintén.", cta: "Írni fogok", target: "survival-call-sponsor" },
+    { screen: "survival-call-sponsor", parent: "survival-note", step: "6 / 6", title: "Most hívd fel a szponzorodat.", body: "Nem kell egyedül megcsinálnod.", cta: "Hívás", target: "panic-sponsor-call" },
+  ], "15-minute survival package must include every source screen in order");
 
   const flattenedImages = await page.locator(".phone-screen img").evaluateAll((images) =>
     images

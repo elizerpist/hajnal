@@ -25,6 +25,12 @@ const screenOrder = [
   'reflection-saved',
   'panic-root',
   'checkin-survival-pack',
+  'survival-stop',
+  'survival-breathe',
+  'survival-water',
+  'survival-outside',
+  'survival-note',
+  'survival-call-sponsor',
   'panic-sponsor-call',
   'panic-help-message',
   'panic-backup-contact',
@@ -112,7 +118,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 23, 'phone screen count');
+    expectCount(/class="phone-screen/g, 29, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -368,6 +374,12 @@ const tests = {
       'data-screen="reflection-saved"',
       'data-screen="panic-root"',
       'data-screen="checkin-survival-pack"',
+      'data-screen="survival-stop"',
+      'data-screen="survival-breathe"',
+      'data-screen="survival-water"',
+      'data-screen="survival-outside"',
+      'data-screen="survival-note"',
+      'data-screen="survival-call-sponsor"',
       'data-screen="panic-emergency-help"',
       'data-screen="checkin-relapse"',
       'data-screen="daily-image"'
@@ -508,6 +520,12 @@ const tests = {
     expectOrdered([
       'data-screen="panic-root"',
       'data-screen="checkin-survival-pack"',
+      'data-screen="survival-stop"',
+      'data-screen="survival-breathe"',
+      'data-screen="survival-water"',
+      'data-screen="survival-outside"',
+      'data-screen="survival-note"',
+      'data-screen="survival-call-sponsor"',
       'data-screen="panic-sponsor-call"',
       'data-screen="panic-help-message"',
       'data-screen="panic-backup-contact"',
@@ -526,10 +544,18 @@ const tests = {
       'Olvasd el, miért kezdted el',
       'Keresd meg a következő meetinget',
       'Szakmai vagy sürgősségi segítség',
-      'Állj meg. Nézz körül.',
-      'Vegyél öt lassú levegőt.',
+      'Állj meg.',
+      'Ne csinálj semmit 10 másodpercig.',
+      'Lélegezz.',
+      'Vegyél 5 lassú, mély levegőt.',
       'Igyál vizet.',
-      'Várj 10 percet.',
+      'Egy korty is számít.',
+      'Menj ki.',
+      'Friss levegő. Változtass környezetet.',
+      'Írj egy mondatot.',
+      'Írd ki, ami benned van. Csak őszintén.',
+      'Most hívd fel a szponzorodat.',
+      'Nem kell egyedül megcsinálnod.',
       'Meeting keresése',
       'Ma visszaestem'
     ].forEach(expectContains);
@@ -538,6 +564,22 @@ const tests = {
     expectAbsent('data-target-screen="panic-help-sheet"');
     expectAbsent('Segítség kell panel');
     expectContains('data-action="start-survival-pack" data-target-screen="checkin-survival-pack"');
+    expectContains('data-action="start-checkin-survival" data-target-screen="survival-stop"');
+    [
+      ['survival-stop', '1 / 6', 'Kész', 'survival-breathe'],
+      ['survival-breathe', '2 / 6', 'Kész', 'survival-water'],
+      ['survival-water', '3 / 6', 'Kész', 'survival-outside'],
+      ['survival-outside', '4 / 6', 'Kész', 'survival-note'],
+      ['survival-note', '5 / 6', 'Írni fogok', 'survival-call-sponsor'],
+      ['survival-call-sponsor', '6 / 6', 'Hívás', 'panic-sponsor-call']
+    ].forEach(([id, step, cta, target]) => {
+      const screen = screenSlice(id);
+      assert.ok(screen.includes(`data-survival-step="${step}"`), `${id} must expose its source step counter`);
+      assert.ok(screen.includes(`>${cta}</button>`), `${id} must use the source CTA label`);
+      assert.ok(screen.includes(`data-target-screen="${target}"`), `${id} CTA must target ${target}`);
+      assert.ok(screen.includes('class="survival-flow-card"'), `${id} must use the guided survival flow card layout`);
+    });
+    expectAbsent('15perc.png');
     expectContains('data-action="meeting-finder" data-target-screen="panic-meeting-finder"');
     const panicMainButtons = html.match(/<button class="panic-main-button"[\s\S]*?<\/button>/g) || [];
     assert.equal(panicMainButtons.length, 1, 'panic flow must keep only the screen 16 large help button after deleting screen 24');
@@ -580,7 +622,7 @@ const tests = {
     expectCount(/class="screen-row/g, 4, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="welcome-lighting-lab splash onboarding information start-date recovery-goal sponsor-setup notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home checkin-clean evening-reflection reflection-saved"');
-    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
+    expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse"');
     expectContains('data-page="daily-image" data-root-screen="daily-image" data-row-screens="daily-image"');
     const parents = {
       onboarding: 'splash',
@@ -598,6 +640,12 @@ const tests = {
       'checkin-relapse': 'home',
       'panic-root': 'home',
       'checkin-survival-pack': 'panic-root',
+      'survival-stop': 'checkin-survival-pack',
+      'survival-breathe': 'survival-stop',
+      'survival-water': 'survival-breathe',
+      'survival-outside': 'survival-water',
+      'survival-note': 'survival-outside',
+      'survival-call-sponsor': 'survival-note',
       'panic-sponsor-call': 'panic-root',
       'panic-help-message': 'panic-root',
       'panic-backup-contact': 'panic-root',

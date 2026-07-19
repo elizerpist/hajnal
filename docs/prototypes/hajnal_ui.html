@@ -3050,6 +3050,163 @@
       font-size: 10.5px;
     }
 
+    .survival-flow-screen {
+      background:
+        radial-gradient(circle at 50% 22%, rgba(252, 240, 240, .96) 0 18%, transparent 40%),
+        linear-gradient(180deg, #FFFCFB 0%, #FFF7FB 100%);
+      color: var(--hajnal-navy);
+    }
+
+    .survival-flow-screen .status-bar {
+      color: var(--hajnal-navy);
+    }
+
+    .survival-flow-content {
+      min-height: calc(var(--screen-h) - 32px);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px 22px;
+    }
+
+    .survival-flow-card {
+      min-height: 706px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0 0;
+      text-align: center;
+    }
+
+    .survival-step-count {
+      align-self: flex-start;
+      color: rgba(44, 46, 119, .78);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 820;
+    }
+
+    .survival-flow-card h3 {
+      margin: 56px 0 0;
+      color: var(--hajnal-navy);
+      font-size: 25px;
+      line-height: 1.16;
+      font-weight: 840;
+      letter-spacing: 0;
+    }
+
+    .survival-flow-card p {
+      max-width: 236px;
+      margin: 18px auto 0;
+      color: rgba(44, 46, 119, .78);
+      font-size: 14px;
+      line-height: 1.42;
+      font-weight: 690;
+    }
+
+    .survival-visual {
+      width: 216px;
+      height: 216px;
+      display: grid;
+      place-items: center;
+      margin: auto 0 34px;
+      color: var(--hajnal-purple);
+    }
+
+    .survival-visual .icon {
+      width: 84px;
+      height: 84px;
+      stroke-width: 1.8;
+    }
+
+    .survival-calm-mark {
+      width: 154px;
+      height: 154px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 48%, #FFF3F9 0 35%, transparent 36%),
+        radial-gradient(circle at 50% 50%, rgba(241, 142, 175, .24) 0 56%, transparent 57%),
+        radial-gradient(circle at 50% 50%, rgba(106, 86, 180, .12) 0 72%, transparent 73%);
+    }
+
+    .survival-breath-visual {
+      width: 196px;
+      height: 196px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #FDFCFF 0 34%, transparent 35%),
+        radial-gradient(circle at 50% 50%, rgba(184, 154, 215, .24) 0 48%, transparent 49%),
+        radial-gradient(circle at 50% 50%, rgba(184, 154, 215, .18) 0 62%, transparent 63%),
+        radial-gradient(circle at 50% 50%, rgba(184, 154, 215, .12) 0 76%, transparent 77%);
+      display: grid;
+      place-items: center;
+      color: rgba(44, 46, 119, .62);
+      font-size: 12px;
+      font-weight: 820;
+    }
+
+    .survival-water-visual {
+      position: relative;
+      width: 188px;
+      height: 172px;
+      align-self: center;
+      border-radius: 0 0 28px 28px;
+      background: linear-gradient(180deg, rgba(138, 201, 224, .18), rgba(138, 201, 224, .64));
+      clip-path: polygon(24% 0, 76% 0, 67% 100%, 33% 100%);
+      box-shadow: inset 0 0 0 4px rgba(44, 46, 119, .18), 0 18px 34px rgba(106, 86, 180, .10);
+    }
+
+    .survival-water-visual::before {
+      content: "";
+      position: absolute;
+      left: 28%;
+      right: 28%;
+      bottom: 28px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(88, 170, 216, .34);
+    }
+
+    .survival-door-visual {
+      width: 190px;
+      height: 190px;
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .08)),
+        url("assets/hero_fullscreen2_svg.svg") center/cover;
+      box-shadow: inset 0 0 0 9px rgba(120, 70, 78, .58), 0 18px 32px rgba(44, 46, 119, .14);
+    }
+
+    .survival-note-visual {
+      width: 196px;
+      height: 148px;
+      display: grid;
+      gap: 10px;
+      padding: 26px 24px;
+      border-radius: 20px;
+      background: #FFFDF8;
+      box-shadow: inset 28px 0 0 rgba(184, 154, 215, .20), 0 18px 30px rgba(44, 46, 119, .12);
+      transform: rotate(-4deg);
+    }
+
+    .survival-note-visual span {
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(44, 46, 119, .22);
+    }
+
+    .survival-phone-visual {
+      width: 172px;
+      height: 172px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(160deg, #8B5BDB, #6042B0);
+      color: var(--white);
+      box-shadow: 0 22px 34px rgba(96, 66, 176, .24);
+    }
+
     .checkin-round-art {
       width: 132px;
       height: 132px;
@@ -4691,13 +4848,19 @@
 ├── Küldj segítségkérő üzenetet
 ├── Hívd a tartalék kapcsolattartót
 ├── 15 perces túlélőcsomag
+│   ├── Állj meg.
+│   ├── Lélegezz.
+│   ├── Igyál vizet.
+│   ├── Menj ki.
+│   ├── Írj egy mondatot.
+│   └── Most hívd fel a szponzorodat.
 ├── Olvasd el, miért kezdted el
 ├── Keresd meg a következő meetinget
 ├── Szakmai vagy sürgősségi segítség
 └── Ma visszaestem</pre>
       </div>
 
-      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
+      <div class="screen-row" data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root checkin-survival-pack survival-stop survival-breathe survival-water survival-outside survival-note survival-call-sponsor panic-sponsor-call panic-help-message panic-backup-contact panic-why-started panic-meeting-finder panic-emergency-help checkin-relapse">
         <section class="screen-column" id="column-panic-root">
           <div class="screen-label"><span class="screen-index">16</span><strong>Pánik mód</strong> · Kezdőlap child</div>
           <article class="phone-screen branch-screen panic-screen" id="panic-root" data-screen="panic-root" data-parent-screen="home">
@@ -4751,14 +4914,142 @@
                 <h4>Kezdjük el!</h4>
                 <p>Kövesd a lépéseket.<br>A sóvárgás hullám, nem örök.</p>
                 <ol class="survival-steps">
-                  <li>Állj meg. Nézz körül. Biztonságban vagy most?</li>
-                  <li>Vegyél öt lassú levegőt.</li>
+                  <li>Állj meg.</li>
+                  <li>Lélegezz.</li>
                   <li>Igyál vizet.</li>
-                  <li>Várj 10 percet.</li>
+                  <li>Menj ki.</li>
+                  <li>Írj egy mondatot.</li>
+                  <li>Hívd fel a szponzorodat.</li>
                 </ol>
               </div>
               <div class="checkin-bottom-actions">
-                <button class="checkin-action primary" type="button" data-action="start-checkin-survival">Kezdés</button>
+                <button class="checkin-action primary" type="button" data-action="start-checkin-survival" data-target-screen="survival-stop">Kezdés</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-stop">
+          <div class="screen-label"><span class="screen-index">18A</span><strong>Állj meg</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-stop" data-screen="survival-stop" data-parent-screen="checkin-survival-pack">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="1 / 6">
+                <span class="survival-step-count">1 / 6</span>
+                <h3>Állj meg.</h3>
+                <p>Ne csinálj semmit 10 másodpercig.</p>
+                <div class="survival-visual"><div class="survival-calm-mark"><svg class="icon" aria-hidden="true"><use href="#icon-heart"></use></svg></div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="complete-survival-stop" data-target-screen="survival-breathe">Kész</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-breathe">
+          <div class="screen-label"><span class="screen-index">18B</span><strong>Lélegezz</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-breathe" data-screen="survival-breathe" data-parent-screen="survival-stop">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="2 / 6">
+                <span class="survival-step-count">2 / 6</span>
+                <h3>Lélegezz.</h3>
+                <p>Vegyél 5 lassú, mély levegőt.</p>
+                <div class="survival-visual"><div class="survival-breath-visual">Kilégzés</div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="complete-survival-breathe" data-target-screen="survival-water">Kész</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-water">
+          <div class="screen-label"><span class="screen-index">18C</span><strong>Igyál vizet</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-water" data-screen="survival-water" data-parent-screen="survival-breathe">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="3 / 6">
+                <span class="survival-step-count">3 / 6</span>
+                <h3>Igyál vizet.</h3>
+                <p>Egy korty is számít.</p>
+                <div class="survival-visual"><div class="survival-water-visual" aria-hidden="true"></div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="complete-survival-water" data-target-screen="survival-outside">Kész</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-outside">
+          <div class="screen-label"><span class="screen-index">18D</span><strong>Menj ki</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-outside" data-screen="survival-outside" data-parent-screen="survival-water">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="4 / 6">
+                <span class="survival-step-count">4 / 6</span>
+                <h3>Menj ki.</h3>
+                <p>Friss levegő. Változtass környezetet.</p>
+                <div class="survival-visual"><div class="survival-door-visual" aria-hidden="true"></div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="complete-survival-outside" data-target-screen="survival-note">Kész</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-note">
+          <div class="screen-label"><span class="screen-index">18E</span><strong>Írj egy mondatot</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-note" data-screen="survival-note" data-parent-screen="survival-outside">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="5 / 6">
+                <span class="survival-step-count">5 / 6</span>
+                <h3>Írj egy mondatot.</h3>
+                <p>Írd ki, ami benned van. Csak őszintén.</p>
+                <div class="survival-visual"><div class="survival-note-visual" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="complete-survival-note" data-target-screen="survival-call-sponsor">Írni fogok</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-survival-call-sponsor">
+          <div class="screen-label"><span class="screen-index">18F</span><strong>Hívd fel a szponzorodat</strong> · 15 perces flow</div>
+          <article class="phone-screen survival-flow-screen no-nav" id="survival-call-sponsor" data-screen="survival-call-sponsor" data-parent-screen="survival-note">
+            <div class="status-bar">
+              <span>9:41</span>
+              <span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span>
+            </div>
+            <div class="survival-flow-content">
+              <section class="survival-flow-card" data-survival-step="6 / 6">
+                <span class="survival-step-count">6 / 6</span>
+                <h3>Most hívd fel a szponzorodat.</h3>
+                <p>Nem kell egyedül megcsinálnod.</p>
+                <div class="survival-visual"><div class="survival-phone-visual"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></div></div>
+              </section>
+              <div class="checkin-bottom-actions">
+                <button class="checkin-action primary" type="button" data-action="call-sponsor-after-survival" data-target-screen="panic-sponsor-call">Hívás</button>
               </div>
             </div>
           </article>
