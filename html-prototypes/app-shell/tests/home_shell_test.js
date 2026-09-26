@@ -7,6 +7,17 @@ const path = require('node:path');
 
 const appShellPath = path.join(__dirname, '..', 'index.html');
 const heroAssetPath = path.join(__dirname, '..', 'assets', 'home-hero.svg');
+const milestoneAssets = Object.freeze({
+  1: '13570cd6daecb1586ee842113dfdb22746c7a1e7582c1ec7a07d4ef16b4a955b',
+  3: '824ce28182a7929f3488b293e69c4959a689859c98e4f3962aff3ddd47a292ef',
+  7: '42ca641a610f690fbb040109386706f49a35070d56e65df9ed084da9d01b90a7',
+  14: 'c6d01d96013aeada14a98519c4afa4d42c93cae6b5a03339ac8c5eef8e58f9ff',
+  21: 'ca7d0ef0156c39c2d6ebb09e838f5da1de3e86c7f45d20a428ecd595ae8a61a9',
+  30: 'ca7d0ef0156c39c2d6ebb09e838f5da1de3e86c7f45d20a428ecd595ae8a61a9',
+  45: 'a5c74a71236a1265246e311a597349dc0600945d6d64fcd505aef322afa6a11f',
+  60: '2f7ab47a49ef39f1ea7f74dffc9b203f11cd1345729c88eab8047b1ceb38c832',
+  90: '1206a59df76d4a3e7f2808c8e56720d2db2e2c1dfd85e4ffe5895748d3193228',
+});
 
 assert.ok(fs.existsSync(appShellPath), 'app-shell index.html must exist');
 
@@ -32,6 +43,17 @@ function expectAbsent(pattern, message) {
   'data-component="daily-summary-card"',
   'data-component="checklist-sheet"',
   'class="bottom-nav"',
+  'data-route="home"',
+  'class="route-screen timeline-screen" id="home-statistics-timeline"',
+  'class="route-screen milestone-screen" id="progress-milestones"',
+  'data-screen="home-statistics-timeline"',
+  'data-screen="progress-milestones"',
+  'data-action="open-current-period-timeline"',
+  'data-action="open-milestones"',
+  'data-action="return-home"',
+  'navigate(route)',
+  "case 'open-current-period-timeline': this.navigate('timeline'); break;",
+  "case 'open-milestones': this.navigate('milestones'); break;",
   'class HomeInteractionController',
   'setProgress(value',
   'settle(target)',
@@ -73,6 +95,19 @@ assert.equal((html.match(/data-task-id="/g) || []).length, 3, '8B must contain e
 assert.equal((html.match(/type="checkbox"/g) || []).length, 2, 'only the first two source-of-truth checklist rows are checkbox controls');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
+const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
+assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
+assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="active"')).length, 5, 'M must retain its five active source cards');
+assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="inactive"')).length, 4, 'M must retain its four inactive source cards');
+for (const [day, expectedHash] of Object.entries(milestoneAssets)) {
+  const milestoneAssetPath = path.join(__dirname, '..', 'assets', 'milestones', `milestone-${day}.svg`);
+  assert.ok(fs.existsSync(milestoneAssetPath), `M asset for day ${day} must exist locally`);
+  assert.equal(
+    crypto.createHash('sha256').update(fs.readFileSync(milestoneAssetPath)).digest('hex'),
+    expectedHash,
+    `M asset for day ${day} must remain byte-identical to its source-of-truth artwork`,
+  );
+}
 expectAbsent(/\bfetch\s*\(/, 'app shell must stay offline and must not call fetch');
 expectAbsent(/https?:\/\//i, 'app shell must not depend on network URLs');
 expectAbsent(/<link\b[^>]*href=/i, 'app shell must not load external stylesheets');
@@ -80,5 +115,6 @@ expectAbsent(/<script\b[^>]*\bsrc=/i, 'app shell must not load external scripts'
 expectAbsent(/data-component="home-scene"/, 'the hand-recreated home scene must be removed in favor of the approved asset');
 expectAbsent(/data-scene-object=/, 'the hand-recreated Panda/láma SVG objects must not remain');
 expectAbsent(/if \(event\.target\.closest\('button'\)\) return;/, 'a card swipe must not be rejected merely because it starts on a child button');
+expectAbsent(/data:image\//, 'app-shell source artwork must be local assets, not inline data URIs');
 
 console.log('PASS app-shell 8A → 8B contract');
