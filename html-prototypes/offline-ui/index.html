@@ -6483,13 +6483,16 @@
         radial-gradient(circle at 76% 13%, rgba(255, 200, 132, .62) 0 5%, transparent 5.4%),
         radial-gradient(circle at 24% 22%, rgba(184, 154, 215, .28) 0 13%, transparent 26%),
         linear-gradient(164deg, #6962A8 0%, #4A397D 39%, #27235E 72%, #171842 100%);
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
     .inventory-evening-bg::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(28, 26, 82, .10), rgba(25, 21, 63, .42) 58%, rgba(15, 16, 48, .78));
+      background: linear-gradient(180deg, rgba(28, 26, 82, .04), rgba(25, 21, 63, .14) 58%, rgba(15, 16, 48, .34));
     }
 
     .inventory-checkin-content {
@@ -8146,13 +8149,11 @@
         </aside>
       </div>
 
-    </section>
-
       <div class="screen-row" data-page="evening-inventory-wizard" data-root-screen="evening-inventory-state" data-row-screens="evening-inventory-state evening-inventory-recovery evening-inventory-connection evening-inventory-program evening-inventory-honest-review evening-inventory-gratitude evening-inventory-spirituality evening-inventory-free-reflection">
         <section class="screen-column" id="column-evening-inventory-state">
           <div class="screen-label"><span class="screen-index">12A</span><strong>Mai állapot</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-state" data-screen="evening-inventory-state" data-parent-screen="home" data-inventory-session="daily-inventory" data-wizard-step="1" data-prototype-context="after-clean-day" aria-label="Esti reflexió: mai állapot">
-            <div class="inventory-evening-bg" aria-hidden="true"></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div>
             <div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content">
               <section class="evening-inventory-panel" data-component="evening-inventory-panel">
@@ -8178,7 +8179,7 @@
         <section class="screen-column" id="column-evening-inventory-recovery">
           <div class="screen-label"><span class="screen-index">12B</span><strong>Felépülésem ma</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-recovery" data-screen="evening-inventory-recovery" data-parent-screen="evening-inventory-state" data-inventory-session="daily-inventory" data-wizard-step="2" aria-label="Esti reflexió: felépülésem ma">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>2 / 8</span></p><h3>Felépülésem ma</h3></div></header>
               <div class="inventory-scroll">
@@ -8195,7 +8196,7 @@
         <section class="screen-column" id="column-evening-inventory-connection">
           <div class="screen-label"><span class="screen-index">12C</span><strong>Kapcsolódás</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-connection" data-screen="evening-inventory-connection" data-parent-screen="evening-inventory-recovery" data-inventory-session="daily-inventory" data-wizard-step="3" aria-label="Esti reflexió: kapcsolódás">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>3 / 8</span></p><h3>Kapcsolódás</h3></div></header>
               <div class="inventory-scroll">
@@ -8212,7 +8213,7 @@
         <section class="screen-column" id="column-evening-inventory-program">
           <div class="screen-label"><span class="screen-index">12D</span><strong>Program ma</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-program" data-screen="evening-inventory-program" data-parent-screen="evening-inventory-connection" data-inventory-session="daily-inventory" data-wizard-step="4" aria-label="Esti reflexió: program ma">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>4 / 8</span></p><h3>Program ma</h3></div></header>
               <div class="inventory-scroll">
@@ -8229,7 +8230,7 @@
         <section class="screen-column" id="column-evening-inventory-honest-review">
           <div class="screen-label"><span class="screen-index">12E</span><strong>Őszinte leltár</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-honest-review" data-screen="evening-inventory-honest-review" data-parent-screen="evening-inventory-program" data-inventory-session="daily-inventory" data-wizard-step="5" aria-label="Esti reflexió: őszinte leltár">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>5 / 8</span></p><h3>Őszinte leltár</h3></div></header>
               <div class="inventory-scroll">
@@ -8246,7 +8247,7 @@
         <section class="screen-column" id="column-evening-inventory-gratitude">
           <div class="screen-label"><span class="screen-index">12F</span><strong>Hála</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-gratitude" data-screen="evening-inventory-gratitude" data-parent-screen="evening-inventory-honest-review" data-inventory-session="daily-inventory" data-wizard-step="6" aria-label="Esti reflexió: hála">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>6 / 8</span></p><h3>Hála</h3></div></header>
               <div class="inventory-scroll">
@@ -8261,7 +8262,7 @@
         <section class="screen-column" id="column-evening-inventory-spirituality">
           <div class="screen-label"><span class="screen-index">12G</span><strong>Spirituális oldal</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-spirituality" data-screen="evening-inventory-spirituality" data-parent-screen="evening-inventory-gratitude" data-inventory-session="daily-inventory" data-wizard-step="7" aria-label="Esti reflexió: spirituális oldal">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>7 / 8</span></p><h3>Spirituális oldal</h3></div></header>
               <div class="inventory-scroll">
@@ -8278,7 +8279,7 @@
         <section class="screen-column" id="column-evening-inventory-free-reflection">
           <div class="screen-label"><span class="screen-index">12H</span><strong>Szabad reflexió</strong> · Esti leltár</div>
           <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-free-reflection" data-screen="evening-inventory-free-reflection" data-parent-screen="evening-inventory-spirituality" data-inventory-session="daily-inventory" data-wizard-step="8" aria-label="Esti reflexió: szabad reflexió">
-            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <div class="inventory-evening-bg" data-component="inventory-evening-background" data-source-screen="evening-reflection" data-source-asset="hero_fullscreen_svg.svg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
             <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
               <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>8 / 8</span></p><h3>Szabad reflexió</h3></div></header>
               <div class="inventory-scroll">
@@ -8299,6 +8300,7 @@
           <p>A mostani 11 → 12 → 10 folyamat változatlan marad. A wizard belső lépései működnek, de a végleges esti folyamathoz való bekötésről csak a közös vizuális áttekintés után érdemes dönteni.</p>
         </aside>
       </div>
+    </section>
 
     <section class="screen-section" aria-labelledby="panic-row-title">
       <div class="flow-heading">
@@ -9391,6 +9393,13 @@
     (() => {
       const wizard = document.querySelector('[data-page="evening-inventory-wizard"]');
       if (!wizard) return;
+
+      const eveningAsset = document.querySelector('#evening-reflection .checkin-bg')?.getAttribute('src');
+      if (eveningAsset) {
+        wizard.querySelectorAll('[data-component="inventory-evening-background"]').forEach((background) => {
+          background.style.backgroundImage = `linear-gradient(180deg, rgba(20, 18, 64, .08), rgba(10, 20, 37, .38)), url("${eveningAsset}")`;
+        });
+      }
 
       const revealMatchingFields = (name, value) => {
         wizard.querySelectorAll('[data-reveal-when]').forEach((region) => {

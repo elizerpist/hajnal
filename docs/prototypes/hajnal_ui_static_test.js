@@ -656,14 +656,17 @@ const tests = {
     const gratitude = screenSlice('evening-inventory-gratitude');
     const connection = screenSlice('evening-inventory-connection');
 
-    assert.ok(
-      html.indexOf('data-page="home-daily-close"') < html.indexOf('data-page="evening-inventory-wizard"')
-        && html.indexOf('data-page="evening-inventory-wizard"') < html.indexOf('data-page="home-period-history"'),
-      'the inventory row must sit directly between the daily-close and current-period/history rows'
+    assert.match(html, /\.home-screen-section\s*\{\s*display:\s*contents;/s, 'Home rows must participate in the shared visual ordering context');
+    assert.match(
+      html,
+      /\.home-screen-section > \.screen-row\[data-page="home-daily-close"\] \{ order: 4; \}\s*\.home-screen-section > \.screen-row\[data-page="evening-inventory-wizard"\] \{ order: 5; \}\s*\.home-screen-section > \.screen-row\[data-page="home-period-history"\] \{ order: 6; \}/s,
+      'the inventory row must use the shared Home order directly between daily close and the Timeline/history row'
     );
     assert.equal((row.match(/data-screen="evening-inventory-/g) || []).length, 8, 'inventory row screen count');
     assert.equal((row.match(/data-wizard-step="[1-8]"/g) || []).length, 8, 'inventory wizard progress count');
     assert.ok(row.includes('data-inventory-session="daily-inventory"'), 'inventory must retain one session semantic');
+    assert.ok(row.includes('data-component="inventory-evening-background" data-source-screen="evening-reflection"'), 'inventory must reuse the approved Screen 12 evening background asset');
+    assert.ok(html.includes("document.querySelector('#evening-reflection .checkin-bg')"), 'inventory background must be sourced from the existing Screen 12 asset rather than a parallel image');
     assert.ok(!row.includes('data-timeline-event'), 'inventory must not split into eight Timeline events');
     assert.ok(!/\brequired\b/i.test(row), 'all inventory prompts must remain optional');
     assert.ok(!/inventory-(?:score|percentage)/i.test(row), 'inventory must not add a recovery score or percentage');

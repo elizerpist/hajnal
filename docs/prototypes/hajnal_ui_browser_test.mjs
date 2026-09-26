@@ -910,6 +910,15 @@ try {
   assert.equal(await inventoryWizard.locator('[data-action="inventory-next"][disabled]').count(), 0, "optional inventory fields must never disable forward navigation");
   assert.equal(await inventoryWizard.locator('[required]').count(), 0, "inventory fields must remain optional");
   assert.equal(await inventoryWizard.locator('[data-inventory-session="daily-inventory"]').count(), 8, "the eight screens must share one Daily Inventory session semantic");
+  assert.equal(
+    await inventoryWizard.locator('[data-component="inventory-evening-background"]').evaluateAll((backgrounds) => backgrounds.length === 8 && backgrounds.every((background) => (
+      background.dataset.sourceScreen === 'evening-reflection'
+      && background.dataset.sourceAsset === 'hero_fullscreen_svg.svg'
+      && getComputedStyle(background).backgroundImage.includes('data:image/svg+xml;base64')
+    ))),
+    true,
+    "every inventory screen must render the existing Screen 12 evening background asset",
+  );
 
   const moodGood = page.locator('#evening-inventory-state [data-inventory-value="good"]');
   await moodGood.click();
