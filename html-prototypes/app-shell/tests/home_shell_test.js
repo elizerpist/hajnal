@@ -39,6 +39,10 @@ function expectAbsent(pattern, message) {
   'pointermove',
   'pointerup',
   'pointercancel',
+  'this.summary.addEventListener(\'click\', (event) => this.consumeDragClick(event), true);',
+  'this.ignoreNextClick = moved;',
+  'consumeDragClick(event)',
+  'event.stopImmediatePropagation();',
   "event.key === 'Escape'",
   'prefers-reduced-motion: reduce',
   'Főmenü',
@@ -75,5 +79,6 @@ expectAbsent(/<link\b[^>]*href=/i, 'app shell must not load external stylesheets
 expectAbsent(/<script\b[^>]*\bsrc=/i, 'app shell must not load external scripts');
 expectAbsent(/data-component="home-scene"/, 'the hand-recreated home scene must be removed in favor of the approved asset');
 expectAbsent(/data-scene-object=/, 'the hand-recreated Panda/láma SVG objects must not remain');
+expectAbsent(/if \(event\.target\.closest\('button'\)\) return;/, 'a card swipe must not be rejected merely because it starts on a child button');
 
 console.log('PASS app-shell 8A → 8B contract');
