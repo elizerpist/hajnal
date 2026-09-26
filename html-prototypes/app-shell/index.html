@@ -74,7 +74,7 @@
     .bottom-nav .icon, .route-bottom-nav .icon { width: 21px; height: 21px; }
 
     .route-screen { display: none; position: absolute; z-index: 80; inset: 0; overflow: hidden; background: linear-gradient(155deg, #FFFDFE 0%, #FDF7FB 55%, #F8F0F6 100%); color: var(--hajnal-navy); }
-    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen { display: block; }
+    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen, .app-frame[data-route="history"] .history-screen, .app-frame[data-route="panic"] .panic-screen, .app-frame[data-route="clean-reward"] .hurray-screen { display: block; }
     .route-screen .status-bar { color: var(--hajnal-navy); text-shadow: none; }
     .route-screen .system-icons { color: var(--hajnal-navy); }
     .screen-header { min-height: 76px; position: relative; z-index: 3; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: start; padding: 12px 18px 8px; }
@@ -120,6 +120,78 @@
     .milestone-art { width: 74px; height: 74px; display: block; border-radius: 18px; object-fit: cover; }
     .milestone-card h3 { margin: 0; color: var(--hajnal-navy); font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.025em; }
     .milestone-card span { color: rgba(44, 46, 119, .55); font-size: 10px; line-height: 1.2; font-weight: 700; text-align: center; }
+
+    .history-screen { background: linear-gradient(180deg, #FFF8FC 0%, #F8EEF7 100%); }
+    .history-screen::before { content: ""; position: absolute; inset: 0 0 auto; height: 252px; background: radial-gradient(circle at 22% 12%, rgba(254, 200, 132, .38), transparent 170px), radial-gradient(circle at 86% 4%, rgba(184, 154, 215, .32), transparent 180px), linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 248, 252, 0)); pointer-events: none; }
+    .history-screen .screen-header { align-items: center; }
+    .history-screen .screen-header-copy { padding-top: 0; }
+    .history-screen .screen-header-copy h1 { font-size: 18px; letter-spacing: 0; }
+    .history-content { display: flex; flex-direction: column; gap: 10px; }
+    .history-batch-carousel { margin: 0 -18px; padding: 8px 18px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .history-batch-carousel::-webkit-scrollbar { display: none; }
+    .history-batch-track { width: max-content; min-width: 514px; position: relative; display: grid; grid-template-columns: 78px 78px 78px 78px 84px; align-items: start; gap: 20px; padding: 0 6px 18px; }
+    .history-batch-track::before { content: ""; position: absolute; top: 47px; right: 47px; left: 45px; height: 2px; border-radius: 999px; background: rgba(106, 86, 180, .18); }
+    .history-batch { min-height: 112px; position: relative; z-index: 1; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 0; border: 0; background: transparent; color: var(--hajnal-navy); font: inherit; text-align: center; scroll-snap-align: center; cursor: pointer; }
+    .history-batch-year { min-height: 16px; color: rgba(44, 46, 119, .48); font-size: 10px; line-height: 1; font-weight: 760; }
+    .history-batch strong { width: 58px; height: 58px; display: grid; place-items: center; border: 2px solid rgba(106, 86, 180, .20); border-radius: 50%; background: #fff; color: var(--hajnal-navy); box-shadow: 0 10px 20px rgba(44, 46, 119, .09); font-size: 13px; line-height: 1.05; font-weight: 850; }
+    .history-batch small, .history-batch-note { color: rgba(44, 46, 119, .48); font-size: 9.5px; line-height: 1.1; font-weight: 720; }
+    .history-batch-note { max-width: 78px; color: var(--hajnal-purple); font-weight: 800; }
+    .history-batch.current { width: 76px; height: 76px; align-content: center; margin-top: 15px; padding-top: 0; border: 4px solid var(--hajnal-purple); border-radius: 999px; box-shadow: 0 12px 24px rgba(106, 86, 180, .18); }
+    .history-batch.current strong { width: 68px; height: 68px; }
+    .history-batch.current .history-batch-year { position: absolute; top: -23px; }
+    .history-batch.current small { position: absolute; bottom: -24px; }
+    .history-current-card, .history-stat { border: 1px solid rgba(106, 86, 180, .12); border-radius: 16px; background: rgba(255, 255, 255, .82); box-shadow: 0 12px 28px rgba(44, 46, 119, .08); }
+    .history-current-card { width: 100%; min-height: 140px; display: grid; grid-template-columns: 104px minmax(0, 1fr) 18px; align-items: center; gap: 12px; padding: 16px; color: var(--hajnal-navy); font: inherit; text-align: left; }
+    .history-current-ring { width: 94px; height: 94px; position: relative; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(from -90deg, #6A56B4 0 72%, rgba(106, 86, 180, .18) 72% 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .64), 0 16px 28px rgba(106, 86, 180, .12); }
+    .history-current-ring::before { content: ""; width: 68px; height: 68px; position: absolute; border-radius: inherit; background: #FFF9FC; }
+    .history-current-ring strong { position: relative; z-index: 1; max-width: 54px; color: var(--hajnal-navy); font-size: 19px; line-height: 1; font-weight: 860; text-align: center; }
+    .history-current-copy > strong { display: block; margin: 0; font-size: 16px; line-height: 1.1; font-weight: 860; }
+    .history-current-copy > span { display: block; margin-top: 6px; color: rgba(44, 46, 119, .58); font-size: 11px; line-height: 1.35; font-weight: 650; }
+    .history-current-copy > em { min-height: 26px; display: inline-grid; align-items: center; margin-top: 7px; padding: 0 10px; border-radius: 999px; background: rgba(106, 86, 180, .10); color: var(--hajnal-purple); font-size: 10.5px; font-style: normal; font-weight: 790; }
+    .history-current-chevron { color: rgba(44, 46, 119, .35); font-size: 24px; font-weight: 600; }
+    .history-total { display: grid; gap: 8px; margin-top: 2px; }
+    .history-total h2 { margin: 0 2px; font-size: 13px; line-height: 1.2; font-weight: 850; }
+    .history-total > p { margin: -3px 2px 0; color: rgba(44, 46, 119, .52); font-size: 10px; line-height: 1.25; font-weight: 680; }
+    .history-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .history-stat { min-height: 78px; padding: 12px; }
+    .history-stat strong { display: block; font-size: 21px; line-height: 1; font-weight: 860; }
+    .history-stat span { display: block; margin-top: 6px; color: rgba(44, 46, 119, .58); font-size: 11px; line-height: 1.35; font-weight: 650; }
+
+    .hurray-screen { isolation: isolate; color: var(--white); background: #171848; }
+    .hurray-screen::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(24, 23, 76, .04) 0%, rgba(24, 23, 76, .08) 44%, rgba(13, 15, 48, .58) 100%); pointer-events: none; }
+    .hurray-screen .status-bar { color: var(--white); text-shadow: 0 2px 8px rgba(14, 14, 47, .36); }
+    .hurray-background { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
+    .hurray-content { min-height: calc(var(--screen-h) - 32px); position: relative; z-index: 3; display: flex; flex-direction: column; }
+    .hurray-copy { margin: 126px 34px 0; text-align: center; text-shadow: 0 3px 12px rgba(15, 15, 52, .34); }
+    .hurray-copy h1 { margin: 0; color: var(--white); font-family: Georgia, "Times New Roman", serif; font-size: 27px; line-height: 1.16; font-weight: 700; }
+    .hurray-copy strong { display: block; margin-top: 12px; color: var(--white); font-size: 31px; line-height: 1; font-weight: 860; }
+    .hurray-copy p { margin: 10px 0 0; color: rgba(255, 255, 255, .86); font-size: 13px; font-weight: 620; }
+    .reflection-choice-sheet { position: absolute; z-index: 4; right: 24px; bottom: 28px; left: 24px; display: grid; gap: 14px; padding: 29px 18px 20px; border: 1px solid rgba(106, 86, 180, .14); border-radius: 32px; background: rgba(255, 255, 255, .96); color: var(--hajnal-navy); box-shadow: 0 24px 42px rgba(34, 26, 82, .18); }
+    .sheet-handle { width: 44px; height: 4px; justify-self: center; margin: -16px 0 0; border-radius: 999px; background: rgba(106, 86, 180, .22); }
+    .sheet-moon-badge { width: 36px; height: 36px; display: grid; place-items: center; justify-self: center; margin-top: -2px; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); font-size: 23px; }
+    .reflection-choice-sheet h2 { margin: -4px 0 0; color: var(--hajnal-navy); font-size: 17px; line-height: 1.28; font-weight: 840; text-align: center; }
+    .reflection-choice-sheet p { margin: -7px 0 0; color: rgba(44, 46, 119, .58); font-size: 12px; line-height: 1.38; font-weight: 600; text-align: center; }
+    .sheet-actions { display: grid; gap: 9px; }
+    .sheet-actions button { min-height: 48px; border-radius: 17px; font: inherit; font-size: 12px; font-weight: 820; cursor: pointer; }
+    .sheet-primary { border: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .22); }
+    .sheet-secondary { border: 1px solid rgba(106, 86, 180, .16); background: transparent; color: var(--hajnal-purple); }
+
+    .panic-screen { color: var(--white); background: radial-gradient(circle at 35% 8%, rgba(144, 107, 202, .32), transparent 220px), linear-gradient(180deg, #29266F 0%, #171848 100%); }
+    .panic-screen .status-bar { color: var(--white); }
+    .panic-screen .screen-header { position: relative; z-index: 3; }
+    .panic-screen .screen-header .icon-button { border-color: rgba(255, 255, 255, .26); background: rgba(255, 255, 255, .14); color: var(--white); }
+    .panic-screen .screen-header-copy h1 { color: var(--white); font-size: 18px; }
+    .panic-screen .screen-header-copy p { color: rgba(255, 255, 255, .74); }
+    .panic-content { position: relative; z-index: 3; display: flex; flex-direction: column; min-height: 786px; padding: 0 24px 24px; }
+    .panic-center { display: grid; justify-items: center; margin-top: 18px; text-align: center; }
+    .panic-center h2 { margin: 0; color: var(--white); font-size: 26px; line-height: 1.16; font-weight: 830; }
+    .panic-center p { margin: 8px 28px 0; color: rgba(255, 255, 255, .78); font-size: 13px; line-height: 1.42; font-weight: 590; }
+    .panic-main-button { width: 146px; height: 146px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-top: 30px; border: 0; border-radius: 50%; background: #F15D9A; color: var(--white); box-shadow: 0 18px 38px rgba(239, 85, 145, .26), 0 0 0 9px rgba(241, 142, 175, .23); font-size: 20px; line-height: 1.12; font-weight: 840; }
+    .panic-main-button .icon { width: 28px; height: 28px; stroke-width: 2.4; }
+    .panic-detail-intro { margin: 22px 12px 16px; color: rgba(255, 255, 255, .76); text-align: center; font-size: 12px; line-height: 1.45; font-weight: 590; }
+    .panic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 18px; }
+    .panic-grid button { min-height: 92px; display: grid; justify-items: center; align-content: center; gap: 8px; padding: 9px; border: 1px solid rgba(255, 255, 255, .10); border-radius: var(--radius-button); background: rgba(255, 255, 255, .10); color: var(--white); font: inherit; font-size: 10px; line-height: 1.22; font-weight: 720; text-align: center; }
+    .panic-grid .icon { width: 24px; height: 24px; }
     @media (max-width: 430px), (max-height: 910px) { body { place-items: start center; background: #f8edf5; } .app-frame { border-radius: 0; box-shadow: none; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
   </style>
@@ -140,7 +212,7 @@
       <section class="tasks-card"><div class="tasks-heading"><h1 id="checklist-title">Mai feladataim</h1><button type="button" data-action="edit-home-checklist">Szerkesztés</button></div><div class="task-list" aria-label="Mai feladatok listája"><label class="task-row" data-task-id="sponsor-call"><input class="native-control task-input" type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" data-task-icon="phone" aria-hidden="true"><use href="#icon-phone"/></svg></label><label class="task-row" data-task-id="meeting"><input class="native-control task-input" type="checkbox" aria-label="Menj el egy meetingre"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" data-task-icon="people" aria-hidden="true"><use href="#icon-people"/></svg></label><button class="task-row" type="button" data-task-id="evening-checkin" data-action="open-evening-checkin"><span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" data-task-icon="message" aria-hidden="true"><use href="#icon-message"/></svg></button></div></section>
       <div class="home-actions"><button class="help-button" type="button" data-action="open-panic"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Segítség kell</button></div>
     </section>
-    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
 
     <section class="route-screen timeline-screen" id="home-statistics-timeline" data-screen="home-statistics-timeline" data-component="current-period-timeline" aria-labelledby="timeline-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
@@ -162,7 +234,7 @@
           <article class="timeline-event"><time class="timeline-date">ma</time><div class="timeline-node current" aria-hidden="true"></div><div class="timeline-event-copy"><h3>Ma</h3><p>24 nap tisztán. Hálás vagyok!</p><div class="timeline-event-meta"><span class="timeline-badge current-badge">Jelenleg</span></div></div></article>
         </section>
       </main>
-      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
     <section class="route-screen milestone-screen" id="progress-milestones" data-screen="progress-milestones" data-component="milestone-gallery" aria-labelledby="milestone-screen-title">
@@ -181,6 +253,48 @@
       </section></main>
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
+    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-statistics" aria-labelledby="history-screen-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="history-screen-title">Történetem</h1><p>Válaszd ki az időszakodat</p></div><button class="icon-button" type="button" aria-label="Történetem információ">i</button></header>
+      <main class="route-content history-content" aria-label="Józan időszakaim">
+        <section class="history-batch-carousel" aria-label="Józan időszakok"><div class="history-batch-track">
+          <button class="history-batch" type="button" data-history-batch="2024-05"><span class="history-batch-year">2024</span><strong>8 nap</strong><small>2024.05.</small></button>
+          <button class="history-batch" type="button" data-history-batch="2024-08"><span class="history-batch-year" aria-hidden="true"></span><strong>37 nap</strong><small>2024.08.</small></button>
+          <button class="history-batch" type="button" data-history-batch="2025-01"><span class="history-batch-year">2025</span><strong>89 nap</strong><small>2025.01.</small></button>
+          <button class="history-batch" type="button" data-history-batch="2025-06"><span class="history-batch-year" aria-hidden="true"></span><strong>4 nap</strong><small>2025.06.</small><span class="history-batch-note">Aktuális időszak</span></button>
+          <button class="history-batch current" type="button" data-history-batch="current" aria-current="true"><span class="history-batch-year">2026</span><strong>24 nap</strong><small>Jelenleg</small></button>
+        </div></section>
+        <button class="history-current-card" type="button" aria-label="Jelenlegi időszak részletes nézete"><span class="history-current-ring" role="progressbar" aria-label="24 nap a jelenlegi józan időszakban" aria-valuemin="0" aria-valuemax="30" aria-valuenow="24"><strong>24 nap</strong></span><span class="history-current-copy"><strong>Jelenlegi időszak</strong><span>2026. május 1. - jelenleg</span><em>24 nap tiszta</em></span><span class="history-current-chevron" aria-hidden="true">›</span></button>
+        <section class="history-total" aria-label="Történetem összesen"><h2>Történetem összesen</h2><p>Az összes eddigi időszak alapján</p><div class="history-stat-grid">
+          <article class="history-stat" data-history-stat="longest-period"><strong>89 nap</strong><span>Leghosszabb időszak</span></article>
+          <article class="history-stat" data-history-stat="total-clean-days"><strong>162 nap</strong><span>Összes tiszta nap</span></article>
+          <article class="history-stat" data-history-stat="average-mood"><strong>😀 3.8 / 5</strong><span>Átlagos hangulat</span></article>
+          <article class="history-stat" data-history-stat="checkin-rate"><strong>82%</strong><span>Check-in arány</span></article>
+          <article class="history-stat" data-history-stat="na-participation"><strong>12</strong><span>NA részvétel</span></article>
+          <article class="history-stat" data-history-stat="evening-reflections"><strong>19</strong><span>Esti reflexiók</span></article>
+        </div></section>
+      </main>
+      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    </section>
+
+    <section class="route-screen hurray-screen" id="checkin-clean" data-screen="checkin-clean" data-component="clean-day-reward" aria-labelledby="hurray-screen-title">
+      <img class="hurray-background" src="assets/milestones/milestone-45.svg" alt="" loading="eager">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <main class="hurray-content"><section class="hurray-copy" aria-label="Sikeres nap visszajelzés"><h1 id="hurray-screen-title">Megcsináltad!</h1><strong>25. nap</strong><p>Folytasd így holnap is!</p></section><section class="reflection-choice-sheet" aria-label="Esti reflexió választás"><span class="sheet-handle" aria-hidden="true"></span><span class="sheet-moon-badge" aria-hidden="true">☾</span><h2>Szeretnél pár percet szánni<br>az esti reflexióra?</h2><p>Segít lezárni a napot<br>és tisztábban látni holnap.</p><div class="sheet-actions"><button class="sheet-primary" type="button">Most, 2 percet rászánok</button><button class="sheet-secondary" type="button" data-action="return-home">Később</button></div></section></main>
+    </section>
+
+    <section class="route-screen panic-screen" id="panic-root" data-screen="panic-root" data-component="panic-mode" aria-labelledby="panic-screen-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="panic-screen-title">Pánik mód</h1><p>Egy érintés, de nincs automatikus hívás.</p></div><button class="icon-button" type="button" data-action="return-home" aria-label="Bezárás">×</button></header>
+      <main class="panic-content"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók">
+        <button type="button" data-panic-option="call-sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button>
+        <button type="button" data-panic-option="call-backup"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button>
+        <button type="button" data-panic-option="survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg>15 perces túlélőcsomag</button>
+        <button type="button" data-panic-option="why-started"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Olvasd el, miért kezdted el</button>
+        <button type="button" data-panic-option="meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button>
+        <button type="button" data-panic-option="report-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Visszaestem</button>
+      </section></main>
+    </section>
   </main>
   <script>
     (() => {
@@ -190,7 +304,7 @@
         setProgress(value, { animate = false } = {}) { const progress = Math.min(1, Math.max(0, value)); this.state.sheet.progress = progress; this.root.style.setProperty('--sheet-progress', progress.toFixed(3)); this.root.classList.toggle('is-dragging', !animate && Boolean(this.drag)); this.root.classList.toggle('home-collapsed-screen', progress < .995); this.root.dataset.screenState = progress >= .995 ? '8b-expanded' : '8a-collapsed'; }
         settle(target) { const expanded = target === 'expanded'; this.state.sheet.settled = expanded ? 'expanded' : 'collapsed'; this.root.classList.remove('is-dragging'); this.setProgress(expanded ? 1 : 0, { animate: !this.motionReduced }); this.render(); }
         bind() { this.summary.addEventListener('pointerdown', (event) => this.startDrag(event)); this.summary.addEventListener('pointermove', (event) => this.updateDrag(event)); this.summary.addEventListener('pointerup', (event) => this.endDrag(event)); this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event)); this.summary.addEventListener('click', (event) => this.consumeDragClick(event), true); this.expandHotspot.addEventListener('click', () => this.settle('expanded')); this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } }); this.root.addEventListener('click', (event) => this.handleAction(event)); this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } }); document.addEventListener('fullscreenchange', () => this.updateFullscreenButton()); this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked))); }
-        handleAction(event) { const action = event.target.closest('[data-action]')?.dataset.action; switch (action) { case 'open-current-period-timeline': this.navigate('timeline'); break; case 'open-milestones': this.navigate('milestones'); break; case 'return-home': this.navigate('home'); break; case 'toggle-fullscreen': this.toggleFullscreen(); break; default: break; } }
+        handleAction(event) { const action = event.target.closest('[data-action]')?.dataset.action; switch (action) { case 'open-current-period-timeline': this.navigate('timeline'); break; case 'open-milestones': this.navigate('milestones'); break; case 'open-history': this.navigate('history'); break; case 'open-panic': this.navigate('panic'); break; case 'mark-clean-today': this.navigate('clean-reward'); break; case 'return-home': this.navigate('home'); break; case 'toggle-fullscreen': this.toggleFullscreen(); break; default: break; } }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
         navigate(route) { this.state.route = route; this.root.dataset.route = route; }

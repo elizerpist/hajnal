@@ -46,10 +46,19 @@ function expectAbsent(pattern, message) {
   'data-route="home"',
   'class="route-screen timeline-screen" id="home-statistics-timeline"',
   'class="route-screen milestone-screen" id="progress-milestones"',
+  'class="route-screen history-screen" id="home-statistics"',
+  'class="route-screen panic-screen" id="panic-root"',
+  'class="route-screen hurray-screen" id="checkin-clean"',
   'data-screen="home-statistics-timeline"',
   'data-screen="progress-milestones"',
+  'data-screen="home-statistics"',
+  'data-screen="panic-root"',
+  'data-screen="checkin-clean"',
   'data-action="open-current-period-timeline"',
   'data-action="open-milestones"',
+  'data-action="open-history"',
+  'data-action="open-panic"',
+  'data-action="mark-clean-today"',
   'data-action="return-home"',
   'data-action="toggle-fullscreen"',
   'aria-label="Teljes képernyő"',
@@ -62,6 +71,9 @@ function expectAbsent(pattern, message) {
   'updateFullscreenButton()',
   "case 'open-current-period-timeline': this.navigate('timeline'); break;",
   "case 'open-milestones': this.navigate('milestones'); break;",
+  "case 'open-history': this.navigate('history'); break;",
+  "case 'open-panic': this.navigate('panic'); break;",
+  "case 'mark-clean-today': this.navigate('clean-reward'); break;",
   'class HomeInteractionController',
   'setProgress(value',
   'settle(target)',
@@ -91,6 +103,21 @@ function expectAbsent(pattern, message) {
   'data-task-icon="message"',
   'type="checkbox"',
   'Segítség kell',
+  'Nem vagy egyedül.',
+  'Hívd a szponzorod',
+  'Hívd a tartalék kapcsolattartót',
+  '15 perces túlélőcsomag',
+  'Olvasd el, miért kezdted el',
+  'Keresd meg a következő meetinget',
+  'Visszaestem',
+  'Válaszd ki az időszakodat',
+  'Jelenlegi időszak',
+  'Történetem összesen',
+  'Megcsináltad!',
+  '25. nap',
+  'Szeretnél pár percet szánni',
+  'Most, 2 percet rászánok',
+  'assets/milestones/milestone-45.svg',
 ].forEach(expectContains);
 
 assert.ok(fs.existsSync(heroAssetPath), 'the exact 8A/8B hero asset must live locally in the app-shell prototype');
@@ -103,6 +130,9 @@ assert.equal((html.match(/data-task-id="/g) || []).length, 3, '8B must contain e
 assert.equal((html.match(/type="checkbox"/g) || []).length, 2, 'only the first two source-of-truth checklist rows are checkbox controls');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
+assert.equal((html.match(/data-panic-option="/g) || []).length, 6, 'source 16 must expose its six panic quick options');
+assert.equal((html.match(/data-history-batch="/g) || []).length, 5, 'source 8C must expose its five sobriety periods');
+assert.equal((html.match(/data-history-stat="/g) || []).length, 6, 'source 8C must expose its six total-history stat cards');
 const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
 assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
 assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="active"')).length, 5, 'M must retain its five active source cards');
