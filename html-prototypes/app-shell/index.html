@@ -211,6 +211,102 @@
     .daily-image-day { position: absolute; z-index: 34; right: 24px; bottom: 24px; display: grid; justify-items: end; color: var(--white); text-align: right; text-shadow: 0 2px 10px rgba(12, 13, 51, .42); }
     .daily-image-day strong { font-size: 18px; line-height: 1; font-weight: 850; }
     .daily-image-day span { margin-top: 4px; color: rgba(255, 255, 255, .82); font-size: 10.5px; font-weight: 680; }
+
+    .path-screen { background: radial-gradient(circle at 86% 4%, rgba(254, 200, 132, .34), transparent 190px), radial-gradient(circle at 16% 18%, rgba(184, 154, 215, .22), transparent 230px), linear-gradient(180deg, #FFFDFE 0%, #FBF4F8 100%); color: var(--hajnal-navy); }
+    .app-frame[data-route="path"] .path-screen { display: block; }
+    .path-content { position: absolute; top: 42px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 18px 18px 28px; scrollbar-width: none; }
+    .path-content::-webkit-scrollbar { display: none; }
+    .path-screen.path-focus .route-bottom-nav { display: none; }
+    .path-screen.path-focus .path-content { top: 30px; bottom: 0; padding-bottom: 34px; }
+    .path-header { display: flex; align-items: center; gap: 11px; min-height: 51px; }
+    .path-header > div { min-width: 0; }
+    .path-header h1 { margin: 0; color: var(--hajnal-navy); font-size: 25px; line-height: 1.05; font-weight: 870; letter-spacing: -.035em; }
+    .path-header p, .path-kicker { margin: 4px 0 0; color: rgba(44, 46, 119, .58); font-size: 11.5px; font-weight: 700; }
+    .path-kicker { align-self: flex-start; min-width: 52px; margin: 4px 0 0; color: var(--hajnal-purple); font-size: 10.5px; font-weight: 840; letter-spacing: .04em; text-transform: uppercase; }
+    .path-back-button { flex: 0 0 auto; min-height: 38px; display: inline-flex; align-items: center; gap: 4px; padding: 7px 9px 7px 6px; border: 0; border-radius: 13px; background: rgba(255,255,255,.68); color: var(--hajnal-purple); font: inherit; font-size: 11.5px; font-weight: 790; cursor: pointer; }
+    .path-back-button .icon { width: 18px; height: 18px; }
+    .path-scroll { padding-top: 3px; }
+    .path-notice { margin: 12px 0; padding: 10px 12px; border: 1px solid rgba(106, 86, 180, .13); border-radius: 13px; background: rgba(244, 238, 250, .82); color: rgba(74, 55, 150, .83); font-size: 11px; line-height: 1.38; font-weight: 710; }
+    .path-section-label { display: block; margin-bottom: 8px; color: var(--hajnal-purple); font-size: 10.5px; font-weight: 840; letter-spacing: .045em; text-transform: uppercase; }
+    .path-current-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 11px; margin-top: 15px; }
+    .path-current-number { width: 48px; height: 48px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 15px; background: linear-gradient(135deg, #6A56B4, #B89AD7); color: var(--white); font-size: 12px; font-weight: 850; box-shadow: 0 8px 16px rgba(74, 55, 150, .16); }
+    .path-current-row strong, .path-current-row span:last-child { display: block; }
+    .path-current-row strong { color: var(--hajnal-navy); font-size: 15px; line-height: 1.16; font-weight: 850; }
+    .path-current-row div span { margin-top: 3px; color: rgba(44,46,119,.56); font-size: 11px; font-weight: 680; }
+    .path-progress-line { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; color: rgba(44,46,119,.61); font-size: 10.5px; font-weight: 760; }
+    .path-progress-line span:last-child { color: var(--hajnal-purple); }
+    .path-section-heading { margin: 4px 0 10px; }
+    .path-section-heading h2 { margin: 0; color: var(--hajnal-navy); font-size: 17px; line-height: 1.2; font-weight: 850; }
+    .path-section-heading p { margin: 4px 0 0; color: rgba(44,46,119,.57); font-size: 11px; line-height: 1.35; font-weight: 650; }
+    .path-stations { position: relative; display: grid; gap: 9px; padding: 4px 0; }
+    .path-stations::before { content: ""; width: 2px; position: absolute; top: 73px; bottom: 32px; left: 35px; border-radius: 999px; background: linear-gradient(#B89AD7, rgba(184,154,215,.12)); }
+    .path-page-header { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; min-height: 54px; margin-bottom: 14px; }
+    .path-page-header .icon-button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(106, 86, 180, .12); border-radius: 50%; background: rgba(255, 255, 255, .82); color: var(--hajnal-purple); box-shadow: 0 8px 20px rgba(44, 46, 119, .06); cursor: pointer; }
+    .path-page-header h1 { margin: 0; color: var(--hajnal-navy); font-size: 25px; line-height: 1.08; font-weight: 870; letter-spacing: -.035em; text-align: center; }
+    .path-page-header p { margin: 4px 0 0; color: rgba(44, 46, 119, .58); font-size: 11.5px; font-weight: 690; text-align: center; }
+    .path-heading { margin: 0 0 6px; color: var(--hajnal-navy); font-size: 19px; line-height: 1.2; font-weight: 850; letter-spacing: -.024em; }
+    .path-lede { margin: 0; color: rgba(44, 46, 119, .60); font-size: 12px; line-height: 1.46; font-weight: 610; }
+    .path-current-card, .path-topic-card, .path-section-card, .path-cycle-card, .path-answer-card, .path-summary-meta { border: 1px solid rgba(106, 86, 180, .12); border-radius: 19px; background: rgba(255, 255, 255, .82); box-shadow: 0 12px 28px rgba(44, 46, 119, .065); }
+    .path-current-card { position: relative; overflow: hidden; margin: 14px 0 20px; padding: 18px; background: linear-gradient(135deg, rgba(255,255,255,.96), rgba(246, 239, 252, .95)); }
+    .path-current-card::after { content: ""; width: 128px; height: 128px; position: absolute; right: -45px; bottom: -63px; border: 22px solid rgba(184, 154, 215, .24); border-radius: 50%; }
+    .path-eyebrow { margin: 0 0 8px; color: var(--hajnal-purple); font-size: 10px; font-weight: 820; letter-spacing: .04em; text-transform: uppercase; }
+    .path-current-card h2 { margin: 0; color: var(--hajnal-navy); font-size: 25px; line-height: 1; font-weight: 880; letter-spacing: -.035em; }
+    .path-current-card h2 span { display: block; margin-top: 5px; color: var(--hajnal-purple); font-size: 14px; letter-spacing: 0; }
+    .path-current-card p { position: relative; z-index: 1; margin: 12px 0 3px; color: rgba(44, 46, 119, .67); font-size: 12.5px; font-weight: 720; }
+    .path-current-card small { position: relative; z-index: 1; color: rgba(44, 46, 119, .52); font-size: 11px; font-weight: 680; }
+    .path-primary-button { width: 100%; min-height: 46px; position: relative; z-index: 1; display: grid; place-items: center; margin-top: 16px; padding: 10px 16px; border: 0; border-radius: var(--radius-button); background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .20); font: inherit; font-size: 13px; font-weight: 830; cursor: pointer; }
+    .path-secondary-button { width: 100%; min-height: 46px; display: grid; place-items: center; padding: 10px 16px; border: 1px solid rgba(106, 86, 180, .16); border-radius: var(--radius-button); background: rgba(255, 255, 255, .55); color: var(--hajnal-purple); font: inherit; font-size: 12.5px; font-weight: 790; cursor: pointer; }
+    .path-section-title { margin: 0 0 10px; color: var(--hajnal-navy); font-size: 16px; line-height: 1.2; font-weight: 850; }
+    .path-trail { position: relative; display: grid; gap: 9px; padding: 3px 0 4px; }
+    .path-trail::before { content: ""; width: 2px; position: absolute; top: 28px; bottom: 28px; left: 24px; border-radius: 999px; background: linear-gradient(#B89AD7, rgba(184, 154, 215, .18)); }
+    .path-station { min-height: 67px; position: relative; z-index: 1; display: grid; grid-template-columns: 14px 49px minmax(0, 1fr) 22px; align-items: center; gap: 9px; padding: 10px 11px; border: 0; border-radius: 17px; background: rgba(255, 255, 255, .68); color: var(--hajnal-navy); font: inherit; text-align: left; cursor: pointer; }
+    .path-station-marker { color: var(--hajnal-purple); font-size: 13px; font-weight: 850; text-align: center; }
+    .path-station-number { width: 49px; height: 49px; display: grid; place-items: center; border: 2px solid rgba(106, 86, 180, .27); border-radius: 50%; background: #FFFDFE; color: rgba(44, 46, 119, .68); font-size: 15px; font-weight: 850; box-shadow: 0 6px 14px rgba(44, 46, 119, .05); }
+    .path-station[data-path-state="in-progress"] .path-station-number { border-color: var(--hajnal-purple); background: linear-gradient(135deg, #6A56B4, #B89AD7); color: var(--white); }
+    .path-station[data-path-state="closed"] .path-station-number { border-color: #5AA579; background: #E5F6EC; color: #25814A; }
+    .path-station-copy { min-width: 0; }
+    .path-station-copy strong { display: block; color: var(--hajnal-navy); font-size: 13px; line-height: 1.2; font-weight: 820; }
+    .path-station-copy small { display: block; margin-top: 4px; overflow: hidden; color: rgba(44, 46, 119, .52); font-size: 10.5px; font-weight: 670; text-overflow: ellipsis; white-space: nowrap; }
+    .path-station-state { color: var(--hajnal-purple); font-size: 19px; font-weight: 820; text-align: center; }
+    .path-root-actions { display: grid; gap: 9px; margin-top: 20px; }
+    .path-root-action, .path-topic-row, .path-cycle-row, .path-review-row { width: 100%; min-height: 58px; display: grid; grid-template-columns: minmax(0, 1fr) auto 17px; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid rgba(106, 86, 180, .11); border-radius: 16px; background: rgba(255, 255, 255, .76); color: var(--hajnal-navy); box-shadow: 0 8px 20px rgba(44, 46, 119, .045); font: inherit; text-align: left; cursor: pointer; }
+    .path-root-action strong, .path-topic-row strong, .path-cycle-row strong, .path-review-row strong { display: block; font-size: 13px; line-height: 1.18; font-weight: 830; }
+    .path-root-action small, .path-topic-row small, .path-cycle-row small, .path-review-row small { display: block; margin-top: 3px; color: rgba(44, 46, 119, .54); font-size: 10.5px; line-height: 1.25; font-weight: 670; }
+    .path-row-meta { color: var(--hajnal-purple); font-size: 11px; font-weight: 810; white-space: nowrap; }
+    .path-chevron { color: rgba(106, 86, 180, .72); font-size: 20px; line-height: 1; }
+    .path-topic-list, .path-cycle-list, .path-review-list { display: grid; gap: 8px; margin-top: 16px; }
+    .path-review-list h2 { margin: 10px 0 1px; color: var(--hajnal-navy); font-size: 13px; font-weight: 830; }
+    article.path-review-row { display: grid; grid-template-columns: minmax(0, 1fr); padding: 0; overflow: hidden; }
+    article.path-review-row > button:first-child { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 17px; align-items: center; gap: 10px; padding: 12px 14px 9px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .path-review-state { justify-self: start; min-height: 30px; margin: 0 0 10px 14px; padding: 4px 8px; border: 0; border-radius: 9px; background: #F0E9FA; color: #5D4A9E; font: inherit; font-size: 10.5px; font-weight: 760; cursor: pointer; }
+    .path-review-state[aria-pressed="true"] { background: #E5F6EC; color: #25814A; }
+    .path-step-actions { display: grid; gap: 9px; margin-top: 18px; }
+    .path-info-card { margin-top: 15px; padding: 14px; border-radius: 16px; background: #F0E9FA; color: var(--hajnal-navy); }
+    .path-info-card strong { display: block; font-size: 12px; font-weight: 830; }
+    .path-info-card p { margin: 4px 0 0; color: rgba(44, 46, 119, .62); font-size: 11.5px; line-height: 1.4; font-weight: 620; }
+    .path-topic-card, .path-section-card { margin-top: 16px; padding: 17px; }
+    .path-topic-card h2, .path-section-card h2 { margin: 0; color: var(--hajnal-navy); font-size: 23px; line-height: 1.08; font-weight: 870; letter-spacing: -.03em; }
+    .path-topic-card p, .path-section-card p { margin: 10px 0 0; color: rgba(44, 46, 119, .62); font-size: 12.5px; line-height: 1.45; font-weight: 610; }
+    .path-topic-count { display: inline-block; margin-top: 15px; color: var(--hajnal-purple); font-size: 11px; font-weight: 830; }
+    .path-filter-row { display: flex; gap: 7px; margin: 14px 0; overflow-x: auto; scrollbar-width: none; }
+    .path-filter-row::-webkit-scrollbar { display: none; }
+    .path-filter { min-height: 32px; flex: 0 0 auto; padding: 6px 12px; border: 1px solid rgba(106, 86, 180, .16); border-radius: 999px; background: rgba(255,255,255,.76); color: rgba(44,46,119,.62); font: inherit; font-size: 11px; font-weight: 760; cursor: pointer; }
+    .path-filter[aria-pressed="true"] { border-color: var(--hajnal-purple); background: var(--hajnal-purple); color: var(--white); }
+    .path-question-progress { color: var(--hajnal-purple); font-size: 12px; font-weight: 820; text-align: center; }
+    .path-question-card { margin-top: 20px; }
+    .path-question-card h2 { margin: 0; color: var(--hajnal-navy); font-size: 25px; line-height: 1.18; font-weight: 870; letter-spacing: -.034em; }
+    .path-question-card label { display: block; margin: 22px 0 8px; color: rgba(44, 46, 119, .72); font-size: 12px; font-weight: 780; }
+    .path-question-card textarea, .path-summary-writing textarea { width: 100%; min-height: 230px; resize: vertical; padding: 15px; border: 1px solid rgba(106, 86, 180, .17); border-radius: 18px; outline: 0; background: rgba(255, 255, 255, .87); color: var(--hajnal-navy); font: inherit; font-size: 14px; line-height: 1.45; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
+    .path-question-card textarea:focus, .path-summary-writing textarea:focus { border-color: rgba(106, 86, 180, .58); box-shadow: 0 0 0 3px rgba(106, 86, 180, .13); }
+    .path-writing-tools, .path-question-actions, .path-summary-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+    .path-writing-tools button, .path-question-actions button, .path-summary-actions button { min-height: 43px; padding: 8px 10px; border: 1px solid rgba(106, 86, 180, .15); border-radius: 14px; background: rgba(255,255,255,.70); color: var(--hajnal-purple); font: inherit; font-size: 11.5px; font-weight: 790; cursor: pointer; }
+    .path-question-actions button[aria-pressed="true"] { border-color: rgba(106, 86, 180, .36); background: #EEE8FA; color: #513D9B; }
+    .path-question-navigation { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+    .path-summary-writing { display: grid; gap: 18px; }
+    .path-summary-writing label { display: block; color: var(--hajnal-navy); font-size: 15px; line-height: 1.26; font-weight: 840; }
+    .path-summary-writing textarea { min-height: 135px; margin-top: 8px; }
+    .path-summary-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; padding: 13px; color: var(--hajnal-purple); font-size: 11px; font-weight: 800; }
+    .path-read-only-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 13px; background: #F1ECF8; color: #5D4A9E; font-size: 11px; line-height: 1.35; font-weight: 720; }
     html:fullscreen, html:fullscreen body { background: #FFFCFC; }
     html:fullscreen body { width: 100vw; min-height: 100dvh; height: 100dvh; }
     html:fullscreen .app-frame { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; }
@@ -235,7 +331,7 @@
       <section class="tasks-card"><div class="tasks-heading"><h1 id="checklist-title">Mai feladataim</h1><button type="button" data-action="edit-home-checklist">Szerkesztés</button></div><div class="task-list" aria-label="Mai feladatok listája"><label class="task-row" data-task-id="sponsor-call"><input class="native-control task-input" type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" data-task-icon="phone" aria-hidden="true"><use href="#icon-phone"/></svg></label><label class="task-row" data-task-id="meeting"><input class="native-control task-input" type="checkbox" aria-label="Menj el egy meetingre"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" data-task-icon="people" aria-hidden="true"><use href="#icon-people"/></svg></label><button class="task-row" type="button" data-task-id="evening-checkin" data-action="open-evening-checkin"><span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" data-task-icon="message" aria-hidden="true"><use href="#icon-message"/></svg></button></div></section>
       <div class="home-actions"><button class="help-button" type="button" data-action="open-panic"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Segítség kell</button></div>
     </section>
-    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
 
     <section class="route-screen timeline-screen" id="home-statistics-timeline" data-screen="home-statistics-timeline" data-component="current-period-timeline" aria-labelledby="timeline-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
@@ -247,7 +343,7 @@
           <article class="timeline-event"><time class="timeline-date" datetime="2025-01-04">2025.<br>jan. 4.</time><div class="timeline-node milestone"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></div><div class="timeline-event-copy"><h3>7 nap</h3><p>Első mérföldkövem.</p><div class="timeline-event-meta"><span class="timeline-badge">7 nap</span></div></div></article>
           <article class="timeline-event"><time class="timeline-date" datetime="2025-01-07">jan. 7.</time><div class="timeline-node meeting"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></div><div class="timeline-event-copy"><h3>Első meeting</h3><p>Elmentem az első NA meetingemre.</p></div></article>
           <article class="timeline-event"><time class="timeline-date" datetime="2025-01-12">jan. 12.</time><div class="timeline-node sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg></div><div class="timeline-event-copy"><h3>Első szponzorom</h3><p>Találkoztam Katával, azóta rendszeresen beszélünk.</p></div></article>
-          <article class="timeline-event"><time class="timeline-date" datetime="2025-01-20">jan. 20.</time><div class="timeline-node step"><svg class="icon" aria-hidden="true"><use href="#icon-tools"/></svg></div><div class="timeline-event-copy"><h3>1. lépés kész</h3><p>Beazonosítottam, hogy tehetetlen vagyok az alkohol előtt.</p></div></article>
+          <article class="timeline-event"><time class="timeline-date" datetime="2025-01-20">jan. 20.</time><div class="timeline-node step"><svg class="icon" aria-hidden="true"><use href="#icon-tools"/></svg></div><div class="timeline-event-copy"><h3>1. lépés kész</h3><p>Beazonosítottam, hogy tehetetlen vagyok a függőségemmel szemben.</p></div></article>
           <article class="timeline-event"><time class="timeline-date" datetime="2025-01-28">jan. 28.</time><div class="timeline-node milestone"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></div><div class="timeline-event-copy with-thumb"><div><h3>30 nap</h3><p>Egy hónap tisztaság!</p><div class="timeline-event-meta"><span class="timeline-badge">30 nap</span></div></div><span class="timeline-thumb" aria-label="A 30 nap mérföldkő képe" role="img"></span></div></article>
           <article class="timeline-event"><time class="timeline-date" datetime="2025-02-02">febr. 2.</time><div class="timeline-node relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></div><div class="timeline-event-copy"><h3>Visszaesés</h3><p>Elestem. Tanulok belőle.</p></div></article>
           <article class="timeline-event"><time class="timeline-date" datetime="2025-02-03">febr. 3.</time><div class="timeline-node step"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></div><div class="timeline-event-copy"><h3>Újrakezdtem</h3><p>Ma újra elköteleztem magam.</p></div></article>
@@ -257,7 +353,7 @@
           <article class="timeline-event"><time class="timeline-date">ma</time><div class="timeline-node current" aria-hidden="true"></div><div class="timeline-event-copy"><h3>Ma</h3><p>24 nap tisztán. Hálás vagyok!</p><div class="timeline-event-meta"><span class="timeline-badge current-badge">Jelenleg</span></div></div></article>
         </section>
       </main>
-      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
     <section class="route-screen milestone-screen" id="progress-milestones" data-screen="progress-milestones" data-component="milestone-gallery" aria-labelledby="milestone-screen-title">
@@ -274,7 +370,7 @@
         <button class="milestone-card" type="button" data-milestone-day="60" data-milestone-state="inactive" aria-label="60 nap: Két hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-60.svg" alt=""><h3>60 nap</h3><span>Két hónap</span></button>
         <button class="milestone-card" type="button" data-milestone-day="90" data-milestone-state="inactive" aria-label="90 nap: Három hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-90.svg" alt=""><h3>90 nap</h3><span>Három hónap</span></button>
       </section></main>
-      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
     <section class="route-screen daily-image-screen" id="daily-image" data-screen="daily-image" data-component="daily-image-viewer" aria-label="Napi kép">
       <div class="daily-image-carousel" data-component="daily-image-carousel" aria-label="Mérföldkőhöz tartozó napi képek">
@@ -308,7 +404,12 @@
           <article class="history-stat" data-history-stat="evening-reflections"><strong>19</strong><span>Esti reflexiók</span></article>
         </div></section>
       </main>
-      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+      <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    </section>
+
+    <section class="route-screen path-screen" id="path-root" data-route="path" data-screen="path-root" data-component="path-workspace" data-path-view="overview" data-path-read-only="false" aria-label="Ösvény">
+      <main class="path-content" data-component="path-content" aria-live="polite"></main>
+      <nav class="route-bottom-nav" data-component="path-bottom-navigation" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
     <section class="route-screen hurray-screen" id="checkin-clean" data-screen="checkin-clean" data-component="clean-day-reward" aria-labelledby="hurray-screen-title">
@@ -328,27 +429,280 @@
         <button type="button" data-panic-option="meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button>
         <button type="button" data-panic-option="report-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Visszaestem</button>
       </section></main>
-      <nav class="route-bottom-nav" data-component="panic-bottom-navigation" aria-label="Fő navigáció"><button type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+      <nav class="route-bottom-nav" data-component="panic-bottom-navigation" aria-label="Fő navigáció"><button type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
   </main>
   <script>
     (() => {
       const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);
+      const PATH_VIEWS = Object.freeze(['overview', 'step', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'cycles']);
+      const PATH_QUESTION_OVERRIDES = Object.freeze({
+        'step-4-topic-2': Object.freeze([
+          'Melyik helyzet vagy kapcsolat foglalkoztat még mindig?',
+          'Mi történt akkor, ahogyan ma látod?',
+          'Mit éreztél közben, és mit érzel most?',
+          'Mihez kapcsolódik benned ez a neheztelés?',
+          'Milyen szerepem volt ebben a helyzetben?',
+          'Mit szeretnék jobban megérteni?',
+          'Mitől tartok, ha elengedem ezt a történetet?',
+          'Kinek a nézőpontját lenne nehéz most meghallani?',
+          'Mire lenne szükségem ahhoz, hogy nyugodtabban ránézzek?',
+          'Mit vinnék ebből a beszélgetésbe a szponzorommal?',
+          'Mi az, amit most még nem szeretnék lezárni?'
+        ])
+      });
+      const PATH_STEP_SEEDS = Object.freeze(
+[
+  { id: 'step-1', number: 1, title: 'Tehetetlenség és elfogadás', summary: 'Annak csendes felismerése, ami felett ma nincs irányításod.', themes: ['Függőségem', 'Tagadás', 'Következmények és mélypont', 'Tehetetlenség', 'Irányíthatatlanság', 'Fenntartások', 'Megadás', 'Elfogadás', 'Spirituális elvek', 'Mit jelent nekem az 1. lépés?'] },
+  { id: 'step-2', number: 2, title: 'Remény', summary: 'Helyet adni annak a lehetőségnek, hogy a változás lehetséges.', themes: ['Remény', 'A függőség gondolkodási mintái', 'Nyitottság', 'Egy nálam nagyobb erő lehetősége', 'Saját értelmezésem', 'A józan gondolkodás helyreállása', 'Bizalom', 'Spirituális elvek', 'Mit jelent nekem a 2. lépés?'] },
+  { id: 'step-3', number: 3, title: 'Döntés és bizalom', summary: 'A döntésből lassan, a saját tempódban lehet cselekvés.', themes: ['Mit jelent számomra a döntés?', 'Kontroll és önakarat', 'Elengedés', 'Bizalom', 'Saját spirituális utam', 'Hajlandóság', 'Döntésből cselekvés', 'Spirituális elvek', 'Mit jelent nekem a 3. lépés?'] },
+  { id: 'step-4', number: 4, title: 'Őszinte önleltár', summary: 'Biztonságos, saját ritmusú visszanézés a mintákra és a kapcsolatokra.', themes: ['Felkészülés', 'Neheztelések', 'Kapcsolatok', 'Intimitás és szexualitás', 'Önközpontúság és ismétlődő minták', 'Szégyen és bűntudat', 'Áldozattá válás / áldozatszerep', 'Félelmek', 'Erősségeim és értékeim', 'Őszinteség és spirituális elvek', 'Összegzés'] },
+  { id: 'step-5', number: 5, title: 'Őszinte megosztás', summary: 'Amit készen állsz tisztábban látni és biztonságosan kimondani.', themes: ['Felkészülés', 'Félelmeim a megosztással kapcsolatban', 'Amit önmagam előtt beismerek', 'Kapcsolatom a Felsőbb Erővel', 'Megosztás egy másik emberrel', 'Ismétlődő mintáim', 'Hibáim természete', 'Titkok és őszinteség', 'Önelfogadás', 'Spirituális elvek', 'Mit tanultam ebből?'] },
+  { id: 'step-6', number: 6, title: 'Készen állni a változásra', summary: 'Ránézni arra, mihez ragaszkodsz, és mi felé szeretnél mozdulni.', themes: ['Jellemhibák felismerése', 'Ismétlődő minták', 'Mit adtak nekem ezek a minták?', 'Mit vettek el?', 'Mihez ragaszkodom?', 'Ellenállás', 'Hajlandóság', 'Milyen szeretnék lenni helyettük?', 'Spirituális elvek', 'Felkészülés a következő lépésre'] },
+  { id: 'step-7', number: 7, title: 'Alázat és változás', summary: 'Emberi, türelmes gyakorlás — segítséget kérve, önbántás nélkül.', themes: ['Mit jelent nekem az alázat?', 'Alázat és megalázottság különbsége', 'Segítséget kérni', 'Hiányosságaim', 'Önelfogadás', 'Türelem', 'Jellemhibák helyett gyakorolt elvek', 'Spirituális fejlődés', 'Hogyan látszik a változás az életemben?', 'Összegzés'] },
+  { id: 'step-8', number: 8, title: 'Felelősség és hajlandóság', summary: 'A múlt feltérképezése és a felelősség előkészítése, biztonságosan.', themes: ['Mit jelent ártani?', 'Kiknek okoztam kárt?', 'Milyen kárt okoztam?', 'Aktív függőség alatt okozott károk', 'Felépülésben okozott károk', 'Magamnak okozott károk', 'Felelősség és hibáztatás', 'Hajlandóság', 'Megbocsátás', 'A jóvátételi lista előkészítése', 'Spirituális elvek'] },
+  { id: 'step-9', number: 9, title: 'Jóvátétel', summary: 'Érzékeny előkészítő munka: előbb átgondolni, mikor és hogyan biztonságos.', themes: ['Felkészülés', 'Motivációm', 'Elvárásaim', 'Mit kell előbb a szponzorral átbeszélnem?', 'Közvetlen jóvátétel', 'Közvetett jóvátétel', 'Mikor okozhatna újabb kárt?', 'Felelősségvállalás', 'Mit tanultam az egyes jóvátételekből?', 'Lezáratlan ügyek', 'Spirituális elvek'] },
+  { id: 'step-10', number: 10, title: 'Folyamatos önleltár', summary: 'A mindennapi reakciók és a saját felelősség észrevétele.', themes: ['Mit jelent számomra a folyamatos leltár?', 'Reakcióim felismerése', 'Saját felelősségem', 'Hibák gyors beismerése', 'Amit jól csináltam', 'Régi minták felismerése', 'Spirituális elvek', 'Hogyan használom ezt a mindennapokban?'] },
+  { id: 'step-11', number: 11, title: 'Tudatos kapcsolat', summary: 'Csend, figyelem és a saját spirituális utad keresése.', themes: ['Saját spirituális utam', 'Mit jelent nekem az ima?', 'Mit jelent nekem a meditáció?', 'Csend és figyelem', 'Tudatos kapcsolat', 'Saját akarat és irány', 'Mit jelent számomra a Felsőbb Erő akarata?', 'Figyelem és meghallás', 'Cselekvés', 'Spirituális elvek', 'Saját napi gyakorlatom'] },
+  { id: 'step-12', number: 12, title: 'Továbbadás', summary: 'A gyakorolt elvek továbbvitele a saját életedben és a közösségben.', themes: ['Mit változtattak bennem a lépések?', 'Spirituális ébredésem', 'Mit jelent nekem az üzenet továbbadása?', 'Más függők támogatása', 'Szolgálat', 'Határok', 'Önzetlenség', 'Együttérzés és szeretet', 'Spirituális elvek minden életterületen', 'Hogyan folytatom innen?'] }
+]
+      );
+      const PATH_STEPS = Object.freeze(PATH_STEP_SEEDS.map((step) => Object.freeze({
+        ...step,
+        themes: Object.freeze(step.themes.map((title, index) => Object.freeze({
+          id: `${step.id}-topic-${index + 1}`,
+          title,
+          summary: `Ezen a ponton a(z) „${title}” témára nézhetsz rá a saját szavaiddal.`,
+          questions: Object.freeze(makePathQuestions(step.number, title, index))
+        })))
+      })));
+
+      function makePathQuestions(stepNumber, topicTitle, topicIndex) {
+        const key = `step-${stepNumber}-topic-${topicIndex + 1}`;
+        const override = PATH_QUESTION_OVERRIDES?.[key];
+        if (override) return override.map((text, index) => ({ id: `${key}-question-${index + 1}`, text }));
+        return [
+          { id: `${key}-question-1`, text: `Mit jelent most számodra a(z) „${topicTitle}” témája?` },
+          { id: `${key}-question-2`, text: 'Milyen saját tapasztalat segít ezt őszintébben látni?' },
+          { id: `${key}-question-3`, text: 'Mi lenne egy kicsi, biztonságos következő gondolat vagy lépés?' }
+        ];
+      }
+
+      function createAnswer(seed = {}) { return { text: '', important: false, discussWithSponsor: false, discussedWithSponsor: false, voiceMemoState: 'none', ...seed }; }
+      function createStepWork() { return { status: 'not-started', topics: {}, summary: '', takeaway: '' }; }
+      function createCycle(id, startedAt, readOnly = false) { return { id, startedAt, readOnly, status: 'active', steps: Object.fromEntries(PATH_STEPS.map((step) => [step.id, createStepWork()])) }; }
+      function createPathState() {
+        const historical = createCycle('cycle-2024', '2024', true);
+        historical.status = 'closed';
+        historical.steps['step-1'].status = 'closed';
+        historical.steps['step-1'].summary = 'Felismertem, hogy a függőségemmel nem kell egyedül birkóznom.';
+        historical.steps['step-2'].status = 'in-progress';
+        const current = createCycle('cycle-2026', '2026');
+        current.steps['step-4'].status = 'in-progress';
+        const topic = current.steps['step-4'].topics['step-4-topic-2'] = { answers: {} };
+        ['Egy régi konfliktus még mindig erős érzéseket hoz fel bennem.', 'Nehéz volt észrevenni, hogy a félelem is benne volt.', 'Ma a saját részemet is próbálom nyugodtan látni.', 'Ezt még szeretném egy biztonságos beszélgetésben kibontani.', 'Most ott tartok, hogy nem kell azonnal megoldanom.'].forEach((text, index) => {
+          topic.answers[`step-4-topic-2-question-${index + 1}`] = createAnswer({ text, important: index === 1, discussWithSponsor: index === 3 });
+        });
+        current.steps['step-5'].topics['step-5-topic-2'] = { answers: { 'step-5-topic-2-question-1': createAnswer({ text: 'Ezt a félelmet szeretném majd elmondani egy bizalmi beszélgetésben.', discussWithSponsor: true }) } };
+        current.steps['step-9'].topics['step-9-topic-4'] = { answers: { 'step-9-topic-4-question-1': createAnswer({ text: 'Előbb át szeretném beszélni, mi lenne biztonságos és nem okozna újabb kárt.', discussWithSponsor: true }) } };
+        return { currentCycleId: current.id, cycles: [historical, current], navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', notice: '' } };
+      }
+
+      function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
+      function stepStatusLabel(status) { return status === 'closed' ? 'Lezárt munkakör' : status === 'in-progress' ? 'Folyamatban' : 'Még nem kezdted el'; }
+      function stepMarker(status) { return status === 'closed' ? '✓' : status === 'in-progress' ? '◐' : '○'; }
+
       class HomeInteractionController {
-        constructor(root) { this.root = root; this.summary = root.querySelector('[data-component="daily-summary-card"]'); this.expandHotspot = root.querySelector('[data-action="expand-home-card"]'); this.fullscreenButton = root.querySelector('[data-action="toggle-fullscreen"]'); this.tasks = INITIAL_TASKS.map((task) => ({ ...task })); this.state = { route: 'home', sheet: { progress: 0, settled: 'collapsed' } }; this.drag = null; this.ignoreNextClick = false; this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; this.bind(); this.render(); this.updateFullscreenButton(); }
+        constructor(root) {
+          this.root = root;
+          this.summary = root.querySelector('[data-component="daily-summary-card"]');
+          this.expandHotspot = root.querySelector('[data-action="expand-home-card"]');
+          this.fullscreenButton = root.querySelector('[data-action="toggle-fullscreen"]');
+          this.pathScreen = root.querySelector('[data-component="path-workspace"]');
+          this.pathContent = root.querySelector('[data-component="path-content"]');
+          this.tasks = INITIAL_TASKS.map((task) => ({ ...task }));
+          this.state = { route: 'home', sheet: { progress: 0, settled: 'collapsed' }, path: createPathState() };
+          this.drag = null;
+          this.ignoreNextClick = false;
+          this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          this.bind();
+          this.render();
+          this.updateFullscreenButton();
+          this.syncMainNavigation();
+        }
         setProgress(value, { animate = false } = {}) { const progress = Math.min(1, Math.max(0, value)); this.state.sheet.progress = progress; this.root.style.setProperty('--sheet-progress', progress.toFixed(3)); this.root.classList.toggle('is-dragging', !animate && Boolean(this.drag)); this.root.classList.toggle('home-collapsed-screen', progress < .995); this.root.dataset.screenState = progress >= .995 ? '8b-expanded' : '8a-collapsed'; }
         settle(target) { const expanded = target === 'expanded'; this.state.sheet.settled = expanded ? 'expanded' : 'collapsed'; this.root.classList.remove('is-dragging'); this.setProgress(expanded ? 1 : 0, { animate: !this.motionReduced }); this.render(); }
-        bind() { this.summary.addEventListener('pointerdown', (event) => this.startDrag(event)); this.summary.addEventListener('pointermove', (event) => this.updateDrag(event)); this.summary.addEventListener('pointerup', (event) => this.endDrag(event)); this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event)); this.summary.addEventListener('click', (event) => this.consumeDragClick(event), true); this.expandHotspot.addEventListener('click', () => this.settle('expanded')); this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } }); this.root.addEventListener('click', (event) => this.handleAction(event)); this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } }); document.addEventListener('fullscreenchange', () => this.updateFullscreenButton()); this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked))); }
-        handleAction(event) { const action = event.target.closest('[data-action]')?.dataset.action; switch (action) { case 'open-current-period-timeline': this.navigate('timeline'); break; case 'open-milestones': this.navigate('milestones'); break; case 'open-history': this.navigate('history'); break; case 'open-panic': this.navigate('panic'); break; case 'open-daily-image': this.navigate('daily-image'); break; case 'return-to-milestones': this.navigate('milestones'); break; case 'mark-clean-today': this.navigate('clean-reward'); break; case 'return-home': this.navigate('home'); break; case 'toggle-fullscreen': this.toggleFullscreen(); break; default: break; } }
+        bind() {
+          this.summary.addEventListener('pointerdown', (event) => this.startDrag(event));
+          this.summary.addEventListener('pointermove', (event) => this.updateDrag(event));
+          this.summary.addEventListener('pointerup', (event) => this.endDrag(event));
+          this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event));
+          this.summary.addEventListener('click', (event) => this.consumeDragClick(event), true);
+          this.expandHotspot.addEventListener('click', () => this.settle('expanded'));
+          this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } });
+          this.root.addEventListener('click', (event) => this.handleAction(event));
+          this.root.addEventListener('input', (event) => this.handleInput(event));
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+          this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
+        }
+        handleAction(event) {
+          const action = event.target.closest('[data-action]')?.dataset.action;
+          switch (action) {
+            case 'open-current-period-timeline': this.navigate('timeline'); break;
+            case 'open-milestones': this.navigate('milestones'); break;
+            case 'open-history': this.navigate('history'); break;
+            case 'open-panic': this.navigate('panic'); break;
+            case 'open-daily-image': this.navigate('daily-image'); break;
+            case 'return-to-milestones': this.navigate('milestones'); break;
+            case 'mark-clean-today': this.navigate('clean-reward'); break;
+            case 'return-home': this.navigate('home'); break;
+            case 'toggle-fullscreen': this.toggleFullscreen(); break;
+            case 'open-path': this.openPathView('overview'); break;
+            case 'open-path-step': this.openPathStep(event.target.closest('[data-step-id]').dataset.stepId); break;
+            case 'continue-path-current': this.openPathTopic(this.getPathNavigation().topicId); break;
+            case 'open-path-topic': this.openPathTopic(event.target.closest('[data-topic-id]').dataset.topicId); break;
+            case 'open-path-question': this.openPathQuestion(); break;
+            case 'path-next-question': this.movePathQuestion(1); break;
+            case 'path-previous-question': this.movePathQuestion(-1); break;
+            case 'toggle-path-important': this.togglePathAnswerFlag('important'); break;
+            case 'toggle-path-sponsor': this.togglePathAnswerFlag('discussWithSponsor'); break;
+            case 'toggle-path-voice-memo': this.togglePathVoiceMemo(); break;
+            case 'path-dictation': this.setPathNotice('A diktálás a készülék hangfelismerésével kapcsolódhat majd ide.'); break;
+            case 'open-path-sponsor-review': this.openPathSponsorReview(event.target.closest('[data-path-sponsor-scope]')?.dataset.pathSponsorScope || 'all'); break;
+            case 'open-path-answers': this.openPathAnswers(); break;
+            case 'set-path-answer-filter': this.setPathAnswerFilter(event.target.closest('[data-filter]').dataset.filter); break;
+            case 'open-path-summary': this.openPathSummary(); break;
+            case 'close-path-step': this.closePathStep(); break;
+            case 'keep-path-step-open': this.setPathNotice('A lépés nyitva marad; bármikor visszatérhetsz ide.'); break;
+            case 'open-path-cycles': this.openPathCycles(); break;
+            case 'open-path-cycle': this.openPathCycle(event.target.closest('[data-cycle-id]').dataset.cycleId); break;
+            case 'start-new-path-cycle': this.startNewPathCycle(); break;
+            case 'mark-path-sponsor-discussed': this.markPathSponsorDiscussed(event.target.closest('[data-answer-key]').dataset.answerKey); break;
+            case 'open-path-review-answer': this.openPathReviewAnswer(event.target.closest('[data-answer-key]').dataset.answerKey); break;
+            case 'open-path-answer': this.openPathAnswer(event.target.closest('[data-topic-id]').dataset.topicId, Number(event.target.closest('[data-question-index]').dataset.questionIndex)); break;
+            case 'path-back': this.pathBack(); break;
+            default: break;
+          }
+        }
+        handleInput(event) {
+          const target = event.target;
+          if (this.isPathReadOnly()) return;
+          if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; }
+          if (target.matches('[data-path-step-summary]')) { this.getCurrentStepWork().summary = target.value; }
+          if (target.matches('[data-path-step-takeaway]')) { this.getCurrentStepWork().takeaway = target.value; }
+        }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
-        navigate(route) { this.state.route = route; this.root.dataset.route = route; }
+        navigate(route) { this.state.route = route; this.root.dataset.route = route; if (route === 'path') this.renderPath(); this.syncMainNavigation(); }
+        syncMainNavigation() {
+          const action = this.state.route === 'path' ? 'open-path' : this.state.route === 'history' ? 'open-history' : 'return-home';
+          this.root.querySelectorAll("button[data-action='return-home'], button[data-action='open-history'], button[data-action='open-path']").forEach((button) => {
+            if (button.dataset.action === action) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
+          });
+        }
         startDrag(event) { if (event.button !== undefined && event.button !== 0) return; this.drag = { pointerId: event.pointerId, startY: event.clientY, startProgress: this.state.sheet.progress, moved: false }; this.summary.setPointerCapture(event.pointerId); this.root.classList.add('is-dragging'); }
         updateDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; const delta = this.drag.startY - event.clientY; if (Math.abs(delta) > 6) this.drag.moved = true; if (this.drag.moved) event.preventDefault(); this.setProgress(this.drag.startProgress + delta / 96); }
         endDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; const delta = this.drag.startY - event.clientY; const moved = this.drag.moved; const shouldExpand = delta > 30 || this.state.sheet.progress >= .42; this.ignoreNextClick = moved; this.summary.releasePointerCapture(event.pointerId); this.drag = null; this.settle(shouldExpand ? 'expanded' : 'collapsed'); }
         consumeDragClick(event) { if (!this.ignoreNextClick) return; this.ignoreNextClick = false; event.preventDefault(); event.stopImmediatePropagation(); }
         cancelDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; this.drag = null; this.settle(this.state.sheet.progress >= .5 ? 'expanded' : 'collapsed'); }
         updateTask(id, done) { const task = this.tasks.find((item) => item.id === id); if (task) task.done = done; }
+        getPathNavigation() { return this.state.path.navigation; }
+        getCurrentCycle() { return this.state.path.cycles.find((cycle) => cycle.id === this.state.path.currentCycleId); }
+        getStep(stepId = this.getPathNavigation().stepId) { return PATH_STEPS.find((step) => step.id === stepId); }
+        getTopic(topicId = this.getPathNavigation().topicId, step = this.getStep()) { return step?.themes.find((topic) => topic.id === topicId); }
+        getCurrentStepWork(stepId = this.getPathNavigation().stepId) { return this.getCurrentCycle().steps[stepId]; }
+        getTopicWork(stepId = this.getPathNavigation().stepId, topicId = this.getPathNavigation().topicId) { const stepWork = this.getCurrentStepWork(stepId); return stepWork.topics[topicId] ||= { answers: {} }; }
+        getCurrentQuestion() { const topic = this.getTopic(); return topic.questions[this.getPathNavigation().questionIndex] || topic.questions[0]; }
+        getCurrentPathAnswer() { const answerMap = this.getTopicWork().answers; const question = this.getCurrentQuestion(); return answerMap[question.id] ||= createAnswer(); }
+        isPathReadOnly() { return Boolean(this.getCurrentCycle().readOnly); }
+        getAnsweredCount(topic, stepId = this.getPathNavigation().stepId) { const answers = this.getTopicWork(stepId, topic.id).answers; return topic.questions.filter((question) => answers[question.id]?.text.trim()).length; }
+        getFlagCounts(stepId = this.getPathNavigation().stepId) { const step = this.getStep(stepId); const work = this.getCurrentStepWork(stepId); const all = step.themes.flatMap((topic) => Object.values(work.topics[topic.id]?.answers || {})); return { important: all.filter((answer) => answer.important).length, sponsor: all.filter((answer) => answer.discussWithSponsor).length }; }
+        setPathNotice(notice) { this.getPathNavigation().notice = notice; this.renderPath(); }
+        openPathView(view) {
+          const navigation = this.getPathNavigation();
+          navigation.view = PATH_VIEWS.includes(view) ? view : 'overview';
+          navigation.notice = '';
+          if (navigation.view === 'overview') this.selectCurrentPathWork();
+          this.navigate('path');
+        }
+        openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.view = 'step'; this.navigate('path'); }
+        openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = 0; navigation.view = 'topic'; this.getCurrentStepWork().status = this.getCurrentStepWork().status === 'not-started' && !this.isPathReadOnly() ? 'in-progress' : this.getCurrentStepWork().status; this.navigate('path'); }
+        openPathQuestion() { this.getPathNavigation().view = 'question'; this.navigate('path'); }
+        movePathQuestion(delta) { const topic = this.getTopic(); const navigation = this.getPathNavigation(); navigation.questionIndex = Math.min(topic.questions.length - 1, Math.max(0, navigation.questionIndex + delta)); this.renderPath(); }
+        pathBack() { const view = this.getPathNavigation().view; if (view === 'question') this.getPathNavigation().view = 'topic'; else if (view === 'topic' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') this.getPathNavigation().view = 'step'; else if (view === 'step' || view === 'cycles') this.getPathNavigation().view = 'overview'; else { this.navigate('home'); return; } this.renderPath(); }
+        togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; this.renderPath(); }
+        togglePathVoiceMemo() { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer.voiceMemoState = answer.voiceMemoState === 'recorded' ? 'none' : 'recorded'; this.renderPath(); }
+        openPathSponsorReview(scope = 'all') { this.getPathNavigation().sponsorScope = scope; this.getPathNavigation().view = 'sponsor-review'; this.navigate('path'); }
+        openPathAnswers() { this.getPathNavigation().view = 'answers'; this.navigate('path'); }
+        openPathSummary() { this.getPathNavigation().view = 'step-summary'; this.navigate('path'); }
+        setPathAnswerFilter(filter) { this.getPathNavigation().answerFilter = filter; this.renderPath(); }
+        closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.setPathNotice('A jelenlegi munkakört lezártad. Ez később bármikor újra megnyitható.'); }
+        openPathCycles() { this.getPathNavigation().view = 'cycles'; this.navigate('path'); }
+        openPathCycle(cycleId) { const cycle = this.state.path.cycles.find((item) => item.id === cycleId); if (!cycle) return; this.state.path.currentCycleId = cycle.id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-4'; navigation.topicId = 'step-4-topic-2'; navigation.questionIndex = 0; this.navigate('path'); }
+        startNewPathCycle() { const year = new Date().getFullYear(); const id = `cycle-${Date.now()}`; this.state.path.cycles.push(createCycle(id, String(year))); this.state.path.currentCycleId = id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-1'; navigation.topicId = 'step-1-topic-1'; navigation.questionIndex = 0; navigation.notice = 'Új munkakör indult. A korábbi válaszaid változatlanul megmaradtak.'; this.navigate('path'); }
+        collectSponsorItems(stepId = null) { const items = []; const cycle = this.getCurrentCycle(); PATH_STEPS.filter((step) => !stepId || step.id === stepId).forEach((step) => step.themes.forEach((topic) => topic.questions.forEach((question, index) => { const answer = cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]; if (answer?.discussWithSponsor) items.push({ step, topic, question, answer, key: `${step.id}|${topic.id}|${index}` }); }))); return items; }
+        markPathSponsorDiscussed(key) { if (this.isPathReadOnly()) return; const item = this.findReviewItem(key); if (item) item.answer.discussedWithSponsor = !item.answer.discussedWithSponsor; this.renderPath(); }
+        findReviewItem(key) { return this.collectSponsorItems().find((item) => item.key === key); }
+        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.view = 'question'; this.navigate('path'); }
+        openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.view = 'question'; this.navigate('path'); }
+        selectCurrentPathWork() {
+          const cycle = this.getCurrentCycle();
+          const step = PATH_STEPS.find((item) => cycle.steps[item.id].status === 'in-progress') || PATH_STEPS.find((item) => cycle.steps[item.id].status === 'not-started') || PATH_STEPS[0];
+          const topic = step.themes.find((item) => Object.values(cycle.steps[step.id].topics[item.id]?.answers || {}).some((answer) => answer.text.trim())) || step.themes[0];
+          const firstOpenQuestion = topic.questions.findIndex((question) => !cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]?.text.trim());
+          const navigation = this.getPathNavigation();
+          navigation.stepId = step.id;
+          navigation.topicId = topic.id;
+          navigation.questionIndex = firstOpenQuestion < 0 ? topic.questions.length - 1 : firstOpenQuestion;
+        }
+        renderPath() {
+          if (!this.pathScreen || !this.pathContent) return;
+          const navigation = this.getPathNavigation();
+          const view = PATH_VIEWS.includes(navigation.view) ? navigation.view : 'overview';
+          const focus = view === 'question' || view === 'step-summary';
+          this.pathScreen.dataset.pathView = view;
+          this.pathScreen.setAttribute('data-path-read-only', String(this.isPathReadOnly()));
+          this.pathScreen.classList.toggle('path-focus', focus);
+          this.pathContent.innerHTML = this[`renderPath${view.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')}`]();
+          this.syncMainNavigation();
+        }
+        pathHeader(title = 'Ösvény', eyebrow = '12 lépés', back = false) { return `<header class="path-header">${back ? '<button class="path-back-button" type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button>' : '<span class="path-kicker">12 lépés</span>'}<div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(eyebrow)}</p></div></header>`; }
+        pathNotice() { const notice = this.getPathNavigation().notice; return notice ? `<p class="path-notice" role="status">${escapeHtml(notice)}</p>` : ''; }
+        readOnlyNotice() { return this.isPathReadOnly() ? '<p class="path-read-only-note">Ez egy korábbi munkakör. A válaszokat itt csak vissza tudod nézni.</p>' : ''; }
+        renderPathOverview() {
+          this.selectCurrentPathWork();
+          const current = this.getCurrentCycle(); const currentStep = this.getStep(); const currentTopic = this.getTopic(); const work = this.getCurrentStepWork();
+          return `${this.pathHeader('Ösvény', '12 lépés')}<div class="path-scroll">${this.pathNotice()}${this.readOnlyNotice()}<section class="path-current-card"><span class="path-section-label">Jelenlegi munkám</span><h2>Jelenleg ezen dolgozol</h2><div class="path-current-row"><span class="path-current-number">${currentStep.number}. lépés</span><div><strong>${escapeHtml(currentStep.title)}</strong><span>${escapeHtml(currentTopic.title)}</span></div></div><div class="path-progress-line"><span>${this.getAnsweredCount(currentTopic)} / ${currentTopic.questions.length} kérdés</span><span>${stepStatusLabel(work.status)}</span></div><button class="path-primary-button" type="button" data-action="continue-path-current">Folytatás</button></section><section class="path-stations" aria-labelledby="path-stations-title"><div class="path-section-heading"><h2 id="path-stations-title">A 12 lépés</h2><p>Mindegyik lépés bármikor megnyitható.</p></div>${PATH_STEPS.map((step) => { const stepWork = current.steps[step.id]; return `<button class="path-station" type="button" data-action="open-path-step" data-step-id="${step.id}" data-path-state="${stepWork.status}" aria-label="${step.number}. lépés: ${escapeHtml(step.title)}, ${stepStatusLabel(stepWork.status)}"><span class="path-station-marker" aria-hidden="true">${stepMarker(stepWork.status)}</span><span class="path-station-number">${step.number}</span><span class="path-station-copy"><strong>${escapeHtml(step.title)}</strong><small>${stepStatusLabel(stepWork.status)}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section><section class="path-root-actions"><button class="path-root-action" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="all"><span><strong>Szponzorral átbeszélendő</strong><small>${this.collectSponsorItems().length} feljegyzés · csak nálad marad</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-cycles"><span><strong>Korábbi munkakörök</strong><small>${this.state.path.cycles.length} munkakör</small></span><span class="path-chevron" aria-hidden="true">›</span></button></section></div>`;
+        }
+        renderPathStep() {
+          const step = this.getStep(); const work = this.getCurrentStepWork(); const flags = this.getFlagCounts();
+          return `${this.pathHeader(`${step.number}. lépés`, step.title, true)}<div class="path-scroll">${this.pathNotice()}${this.readOnlyNotice()}<section class="path-section-card"><span class="path-section-label">${stepStatusLabel(work.status)}</span><h2>${escapeHtml(step.title)}</h2><p>${escapeHtml(step.summary)}</p></section><section class="path-topic-list" aria-label="Témák"><div class="path-section-heading"><h2>Témák</h2><p>Hajnal-témacsoportok, nem hivatalos NA-alépések.</p></div>${step.themes.map((topic) => `<button class="path-topic-row" type="button" data-action="open-path-topic" data-topic-id="${topic.id}"><span><strong>${escapeHtml(topic.title)}</strong><small>${this.getAnsweredCount(topic)} / ${topic.questions.length} kérdés</small></span><span class="path-row-meta">${this.getAnsweredCount(topic) ? '◐' : '○'}</span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section>${step.number === 10 ? '<section class="path-info-card"><strong>Napi gyakorlat</strong><p>A napi önleltár az Esti reflexió része.</p></section>' : ''}<section class="path-step-actions"><button class="path-root-action" type="button" data-action="open-path-answers"><span><strong>Válaszaim</strong><small>Csak ennek a lépésnek az írásai</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés ebben a lépésben</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-summary"><span><strong>A lépés összegzése</strong><small>Nem értékelés, csak saját összefoglaló</small></span><span class="path-chevron" aria-hidden="true">›</span></button></section></div>`;
+        }
+        renderPathTopic() {
+          const step = this.getStep(); const topic = this.getTopic(); const count = this.getAnsweredCount(topic);
+          return `${this.pathHeader(topic.title, `${step.number}. lépés`, true)}<div class="path-scroll">${this.readOnlyNotice()}<section class="path-topic-card"><h2>${escapeHtml(topic.title)}</h2><p>${escapeHtml(topic.summary)}</p><span class="path-topic-count">${topic.questions.length} kérdés · ${count} megválaszolva</span><button class="path-primary-button" type="button" data-action="open-path-question">${count ? 'Folytatom' : 'Elkezdés'}</button><button class="path-secondary-button" type="button" data-action="open-path-answers">Korábbi válaszaim</button></section></div>`;
+        }
+        renderPathQuestion() {
+          const step = this.getStep(); const topic = this.getTopic(); const question = this.getCurrentQuestion(); const answer = this.getCurrentPathAnswer(); const navigation = this.getPathNavigation(); const readOnly = this.isPathReadOnly();
+          return `${this.pathHeader(`${step.number}. lépés · ${topic.title}`, `${navigation.questionIndex + 1} / ${topic.questions.length}`, true)}<div class="path-scroll">${this.readOnlyNotice()}<p class="path-question-progress">${navigation.questionIndex + 1} / ${topic.questions.length}</p><section class="path-question-card"><h2>${escapeHtml(question.text)}</h2><label for="path-answer">A saját válaszod</label><textarea id="path-answer" data-path-answer-text placeholder="Írd ide a gondolataidat…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea><div class="path-writing-tools"><button type="button" data-action="path-dictation">Diktálás</button><button type="button" data-action="toggle-path-voice-memo" aria-pressed="${answer.voiceMemoState === 'recorded'}" ${readOnly ? 'disabled' : ''}>${answer.voiceMemoState === 'recorded' ? 'Hangjegyzet csatolva' : 'Hangjegyzet'}</button></div><div class="path-question-actions"><button type="button" data-action="toggle-path-important" aria-pressed="${answer.important}" ${readOnly ? 'disabled' : ''}>♡ Fontos nekem</button><button type="button" data-action="toggle-path-sponsor" aria-pressed="${answer.discussWithSponsor}" ${readOnly ? 'disabled' : ''}>☐ Megbeszélném a szponzorommal</button></div></section>${this.pathNotice()}<div class="path-question-navigation"><button class="path-secondary-button" type="button" data-action="path-previous-question" ${navigation.questionIndex === 0 ? 'disabled' : ''}>‹ Előző</button><button class="path-primary-button" type="button" data-action="path-next-question" ${navigation.questionIndex === topic.questions.length - 1 ? 'disabled' : ''}>Következő ›</button></div></div>`;
+        }
+        renderPathAnswers() {
+          const step = this.getStep(); const filter = this.getPathNavigation().answerFilter; const filterLabel = { all: 'Összes', important: 'Fontos', sponsor: 'Szponzorral átbeszélendő' };
+          const rows = step.themes.map((topic) => { const answers = Object.entries(this.getTopicWork(step.id, topic.id).answers).filter(([, answer]) => answer.text.trim() && (filter === 'all' || filter === 'important' && answer.important || filter === 'sponsor' && answer.discussWithSponsor)); if (!answers.length) return ''; return `<section class="path-review-list"><h2>${escapeHtml(topic.title)}</h2>${answers.map(([questionId, answer]) => { const questionIndex = topic.questions.findIndex((question) => question.id === questionId); return `<button class="path-review-row" type="button" data-action="open-path-answer" data-topic-id="${topic.id}" data-question-index="${questionIndex}"><span><strong>${questionIndex + 1}. válasz</strong><small>${escapeHtml(answer.text.slice(0, 92))}${answer.text.length > 92 ? '…' : ''}</small></span><span class="path-row-meta">${answer.important ? '♡' : answer.discussWithSponsor ? '◐' : ''}</span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section>`; }).join('');
+          return `${this.pathHeader('Válaszaim', `${step.number}. lépés`, true)}<div class="path-scroll">${this.readOnlyNotice()}<div class="path-filter-row" aria-label="Válaszok szűrése">${Object.entries(filterLabel).map(([key, label]) => `<button class="path-filter" type="button" data-action="set-path-answer-filter" data-filter="${key}" aria-pressed="${filter === key}">${label}</button>`).join('')}</div>${rows || '<section class="path-section-card"><h2>Még nincs ilyen válasz</h2><p>A kérdésekre saját ritmusodban térhetsz vissza.</p></section>'}</div>`;
+        }
+        renderPathSponsorReview() {
+          const step = this.getStep(); const scoped = this.getPathNavigation().sponsorScope === 'step'; const items = this.collectSponsorItems(scoped ? step.id : null);
+          return `${this.pathHeader('Szponzorral átbeszélendő', scoped ? `${step.number}. lépés · saját jelölések` : 'A jelölések csak a te listádban vannak', true)}<div class="path-scroll">${this.readOnlyNotice()}<p class="path-notice">Az app semmit nem küld el és nem oszt meg automatikusan.</p><section class="path-review-list">${items.length ? items.map((item) => `<article class="path-review-row"><button type="button" data-action="open-path-review-answer" data-answer-key="${item.key}"><span><strong>${item.step.number}. lépés · ${escapeHtml(item.topic.title)}</strong><small>${escapeHtml(item.answer.text.slice(0, 100))}${item.answer.text.length > 100 ? '…' : ''}</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-review-state" type="button" data-action="mark-path-sponsor-discussed" data-answer-key="${item.key}" aria-pressed="${item.answer.discussedWithSponsor}" ${this.isPathReadOnly() ? 'disabled' : ''}>${item.answer.discussedWithSponsor ? '✓ Átbeszéltük' : '○ Még nem beszéltük át'}</button></article>`).join('') : '<section class="path-section-card"><h2>Nincs jelölés</h2><p>Egy válasznál bármikor megjelölheted, ha később átbeszélnéd.</p></section>'}</section></div>`;
+        }
+        renderPathStepSummary() {
+          const step = this.getStep(); const work = this.getCurrentStepWork(); const flags = this.getFlagCounts(); const readOnly = this.isPathReadOnly();
+          return `${this.pathHeader(`${step.number}. lépés összegzése`, step.title, true)}<div class="path-scroll">${this.readOnlyNotice()}<section class="path-summary-writing"><label for="path-summary">Mit jelent számodra most ez a lépés?<textarea id="path-summary" data-path-step-summary placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.summary)}</textarea></label><label for="path-takeaway">Amit ebből magammal viszek<textarea id="path-takeaway" data-path-step-takeaway placeholder="Ami most fontos marad…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.takeaway)}</textarea></label></section><div class="path-summary-meta"><span>♡ ${flags.important} fontos válasz</span><span>${flags.sponsor} szponzorral átbeszélendő</span></div>${step.number === 12 ? '<section class="path-info-card"><strong>Az Ösvény nem ér véget itt.</strong><p>Új munkakörrel később újra végigjárhatod a saját tempódban.</p></section>' : ''}<div class="path-summary-actions"><button class="path-primary-button" type="button" data-action="close-path-step" ${readOnly ? 'disabled' : ''}>Ezt a munkakört lezárom</button><button class="path-secondary-button" type="button" data-action="keep-path-step-open">Még dolgozom rajta</button></div>${step.number === 12 ? '<button class="path-secondary-button" type="button" data-action="start-new-path-cycle">Új munkakör indítása</button>' : ''}${this.pathNotice()}</div>`;
+        }
+        renderPathCycles() {
+          return `${this.pathHeader('Korábbi munkakörök', 'A régebbi munka megmarad és visszanézhető', true)}<div class="path-scroll"><section class="path-cycle-list">${this.state.path.cycles.map((cycle, index) => `<button class="path-cycle-row" type="button" data-action="open-path-cycle" data-cycle-id="${cycle.id}" aria-current="${cycle.id === this.state.path.currentCycleId ? 'true' : 'false'}"><span><strong>${index + 1}. munkakör</strong><small>${escapeHtml(cycle.startedAt)} · ${cycle.readOnly ? 'korábbi, csak olvasható' : 'jelenlegi munkakör'}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section><button class="path-primary-button" type="button" data-action="start-new-path-cycle">Új munkakör indítása</button>${this.pathNotice()}</div>`;
+        }
         render() {}
       }
       new HomeInteractionController(document.querySelector('.app-frame'));
