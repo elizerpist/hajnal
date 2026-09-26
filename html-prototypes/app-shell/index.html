@@ -7,590 +7,108 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root {
-      --ink: #20225d;
-      --ink-soft: #5f6090;
-      --surface: #fffafd;
-      --surface-muted: #f8f0f7;
-      --line: rgba(76, 64, 137, .12);
-      --purple: #6553c8;
-      --purple-deep: #332d85;
-      --pink: #f36e9d;
-      --pink-soft: #ffe1e9;
-      --green: #4baf7b;
-      --shadow: 0 18px 38px rgba(42, 35, 101, .16);
-      --sheet-progress: 0;
-      color: var(--ink);
-      font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f8edf5;
-    }
-
+    :root { --screen-w: 412px; --screen-h: 892px; --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
-
-    body {
-      min-width: 320px;
-      min-height: 100vh;
-      margin: 0;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 187, .8), transparent 28rem),
-        linear-gradient(145deg, #f4e9f5, #fff8fa);
-    }
-
+    html { color-scheme: light; }
+    body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
     button, input { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, .home-metrics:focus-visible, input:focus-visible + .task-check { outline: 3px solid rgba(106, 86, 180, .62); outline-offset: 3px; }
+    .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+    .app-frame { width: var(--screen-w); height: var(--screen-h); position: relative; isolation: isolate; overflow: hidden; border-radius: 34px; color: var(--white); background: #F9F3F7; box-shadow: 0 24px 64px rgba(44, 46, 119, .18); }
 
-    button { -webkit-tap-highlight-color: transparent; }
+    .home-illustration { width: 100%; height: calc(var(--screen-h) - 70px); position: absolute; inset: 0 0 auto 0; z-index: 1; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .home-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
+    .status-bar { height: 32px; position: relative; z-index: 30; display: flex; align-items: center; justify-content: space-between; padding: 10px 22px 0; color: var(--white); font-size: 12px; line-height: 1; font-weight: 800; letter-spacing: -.01em; text-shadow: 0 2px 8px rgba(22, 20, 62, .42); }
+    .system-icons { display: flex; align-items: center; gap: 5px; }
+    .system-icons svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+    .home-topbar { height: 220px; position: absolute; z-index: 22; top: 34px; right: 0; left: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: start; padding: 0 20px; pointer-events: none; }
+    .home-topbar .icon-button { width: 54px; height: 54px; display: grid; place-items: center; padding: 0; pointer-events: auto; border: 1px solid rgba(255, 255, 255, .28); border-radius: 50%; background: rgba(255, 255, 255, .15); color: var(--white); box-shadow: 0 12px 28px rgba(24, 24, 74, .20); backdrop-filter: blur(12px); }
+    .home-topbar .icon-button:last-child { justify-self: end; }
+    .home-day { padding-top: 38px; text-align: center; text-shadow: 0 3px 12px rgba(22, 20, 62, .34); }
+    .home-day strong { display: block; font-size: 32px; line-height: 1; font-weight: 820; }
+    .home-subtitle { display: block; margin-top: 7px; color: rgba(255, 255, 255, .84); font-size: 13px; font-weight: 650; }
+    .home-tagline { display: block; margin-top: 18px; color: rgba(255, 255, 255, .97); font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.05; font-weight: 700; }
 
-    .app-frame {
-      width: 412px;
-      height: 892px;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      background: #3d399c;
-      box-shadow: 0 32px 78px rgba(44, 37, 104, .26);
-    }
+    .home-body { position: absolute; z-index: 20; top: calc(682px - var(--sheet-progress, 0) * 96px); right: 0; bottom: 70px; left: 0; display: flex; flex-direction: column; overflow: hidden; padding: 62px 28px 16px; border-radius: 92px 92px 0 0; background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%); color: var(--hajnal-navy); opacity: var(--sheet-progress, 0); pointer-events: none; transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 180ms ease; }
+    .home-body::before { content: ""; position: absolute; z-index: -1; top: -28px; right: -64px; left: -64px; height: 88px; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: inherit; }
+    .app-frame[data-screen-state="8b-expanded"] .home-body { pointer-events: auto; }
+    .home-metrics { min-height: 118px; position: absolute; z-index: 32; top: calc(614px - var(--sheet-progress, 0) * 96px); right: 58px; left: 58px; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); align-items: stretch; overflow: hidden; border: 1px solid rgba(106, 86, 180, .14); border-radius: 24px; background: #FFFCFB; color: var(--hajnal-navy); box-shadow: 0 2px 8px rgba(44, 46, 119, .04), inset 0 1px 0 rgba(255, 255, 255, .68); cursor: grab; touch-action: none; user-select: none; will-change: top; transition: top 300ms cubic-bezier(.2, .85, .25, 1); }
+    .app-frame.is-dragging .home-metrics, .app-frame.is-dragging .home-body { transition: none; }
+    .home-metrics:active { cursor: grabbing; }
+    .metric { padding: 15px 15px 12px; }
+    button.metric { width: 100%; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .metric small { display: block; color: rgba(44, 46, 119, .58); font-size: 10px; line-height: 1.15; font-weight: 680; }
+    .metric strong { display: inline-block; margin-top: 4px; color: var(--hajnal-navy); font-size: 28px; line-height: 1; font-weight: 830; }
+    .metric em { margin-left: 4px; color: var(--hajnal-purple); font-size: 10px; font-style: normal; font-weight: 680; }
+    .segmented-progress { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-top: 10px; }
+    .segmented-progress span { height: 7px; border-radius: 999px; background: rgba(184, 154, 215, .24); }
+    .segmented-progress .filled { background: linear-gradient(90deg, #6A56B4 0%, #B89AD7 100%); }
+    .progress-note { display: block; margin-top: 7px; color: rgba(44, 46, 119, .50); font-size: 10px; font-weight: 650; }
+    .dashboard-separator { width: 1px; height: 74px; align-self: center; background: rgba(106, 86, 180, .16); }
+    .clean-today-button { min-width: 0; display: grid; place-items: center; gap: 8px; padding: 13px 10px; border: 0; background: transparent; color: var(--hajnal-navy); font-size: 11px; line-height: 1.18; font-weight: 780; text-align: center; cursor: pointer; }
+    .clean-check-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #6A56B4 0%, #B89AD7 100%); color: var(--white); box-shadow: 0 10px 20px rgba(106, 86, 180, .23); }
+    .home-expand-hotspot { position: absolute; z-index: 22; top: 732px; right: 0; bottom: 70px; left: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .app-frame[data-screen-state="8b-expanded"] .home-expand-hotspot { pointer-events: none; }
 
-    .home-scene {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      background: linear-gradient(180deg, #35358f 0%, #7057c5 45%, #f4a2b6 79%, #fac6b4 100%);
-    }
+    .tasks-card { display: flex; flex-direction: column; height: 126px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .tasks-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .tasks-heading h1 { margin: 0; font-size: 12.5px; font-weight: 800; }
+    .tasks-heading button { padding: 4px; border: 0; background: transparent; color: var(--hajnal-purple); font-size: 10.5px; font-weight: 650; }
+    .task-list { display: grid; gap: 0; }
+    .task-row { min-height: 24px; display: grid; grid-template-columns: 17px minmax(0, 1fr) 20px; align-items: center; gap: 9px; color: var(--hajnal-navy); font-size: 10.8px; line-height: 1.12; font-weight: 620; cursor: pointer; }
+    button.task-row { width: 100%; padding: 0; border: 0; background: transparent; text-align: left; }
+    .task-row > span:not(.task-check) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .native-control { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .task-check { width: 15px; height: 15px; display: grid; place-items: center; border: 1.5px solid rgba(106, 86, 180, .50); border-radius: 50%; background: rgba(255, 255, 255, .78); }
+    .task-check::after { content: ""; width: 7px; height: 4px; margin-top: -2px; opacity: 0; border-bottom: 1.7px solid var(--white); border-left: 1.7px solid var(--white); transform: rotate(-45deg); }
+    .task-input:checked ~ .task-check { border-color: var(--hajnal-purple); background: var(--hajnal-purple); }
+    .task-input:checked ~ .task-check::after { opacity: 1; }
+    .task-action-icon { width: 17px; height: 17px; justify-self: end; color: rgba(106, 86, 180, .62); }
+    .home-actions { display: grid; margin-top: auto; }
+    .help-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--radius-button); background: linear-gradient(160deg, #FF78A8, #E04D86); color: var(--white); box-shadow: 0 18px 38px rgba(239, 85, 145, .26); font-size: 13px; font-weight: 840; cursor: pointer; }
 
-    .scene-stars,
-    .scene-glow,
-    .scene-sun,
-    .scene-hills,
-    .scene-characters { position: absolute; pointer-events: none; }
-
-    .scene-stars {
-      inset: 0 0 auto;
-      height: 320px;
-      opacity: calc(.72 - var(--sheet-progress) * .3);
-      background-image:
-        radial-gradient(circle at 20% 19%, #fff 0 1px, transparent 1.8px),
-        radial-gradient(circle at 71% 14%, #fff 0 1.3px, transparent 2px),
-        radial-gradient(circle at 83% 35%, #fff 0 1px, transparent 1.8px),
-        radial-gradient(circle at 38% 42%, #fff 0 .8px, transparent 1.6px),
-        radial-gradient(circle at 12% 57%, #fff 0 1px, transparent 1.8px);
-    }
-
-    .scene-glow {
-      width: 360px;
-      height: 260px;
-      left: 26px;
-      top: 212px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(255, 216, 147, .52), rgba(255, 202, 157, 0) 69%);
-      transform: translateY(calc(var(--sheet-progress) * 12px));
-    }
-
-    .scene-sun {
-      width: 116px;
-      height: 116px;
-      left: calc(50% - 58px);
-      top: 302px;
-      border-radius: 50%;
-      background: #ffe4a5;
-      box-shadow: 0 0 44px rgba(255, 221, 159, .66);
-      transform: translateY(calc(var(--sheet-progress) * -16px));
-    }
-
-    .scene-hills {
-      width: 100%;
-      height: 410px;
-      left: 0;
-      bottom: 104px;
-    }
-
-    .scene-hills path:nth-child(1) { fill: #ac79ca; }
-    .scene-hills path:nth-child(2) { fill: #7453b8; }
-    .scene-hills path:nth-child(3) { fill: #42378e; }
-
-    .scene-characters {
-      z-index: 2;
-      width: 248px;
-      height: 238px;
-      left: calc(50% - 124px);
-      top: 311px;
-      filter: drop-shadow(0 16px 12px rgba(31, 28, 94, .2));
-      transform: translateY(calc(var(--sheet-progress) * -18px));
-      transform-origin: center bottom;
-    }
-
-    .home-status-bar {
-      position: absolute;
-      z-index: 10;
-      inset: 0 0 auto;
-      height: 38px;
-      padding: 14px 20px 0;
-      display: flex;
-      justify-content: space-between;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 760;
-      text-shadow: 0 1px 6px rgba(20, 16, 77, .38);
-    }
-
-    .system-status { letter-spacing: 2px; font-size: 11px; }
-
-    .home-header {
-      position: absolute;
-      z-index: 10;
-      top: 48px;
-      left: 20px;
-      right: 20px;
-      display: grid;
-      grid-template-columns: 48px 1fr 48px;
-      align-items: start;
-      color: #fff;
-    }
-
-    .header-icon,
-    .sheet-collapse {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, .26);
-      border-radius: 50%;
-      color: inherit;
-      background: rgba(255, 255, 255, .13);
-      box-shadow: 0 8px 18px rgba(38, 31, 104, .15);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-    }
-
-    .header-icon:last-child { justify-self: end; }
-
-    .header-icon svg,
-    .sheet-collapse svg,
-    .nav-icon,
-    .help-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-
-    .home-title {
-      padding-top: 7px;
-      text-align: center;
-      text-shadow: 0 3px 14px rgba(25, 21, 89, .34);
-    }
-
-    .home-title strong { display: block; font-size: 30px; line-height: 1; letter-spacing: -.04em; }
-    .home-title span { display: block; margin-top: 6px; font-size: 13px; font-weight: 650; opacity: .92; }
-    .home-title em { display: block; margin-top: 16px; font-family: Georgia, serif; font-size: 25px; font-weight: 600; font-style: normal; line-height: 1.1; }
-
-    .daily-summary-card {
-      width: 296px;
-      min-height: 119px;
-      position: absolute;
-      z-index: 20;
-      top: calc(590px - var(--sheet-progress) * 238px);
-      left: calc(50% - 148px);
-      padding: 17px 18px 14px;
-      display: grid;
-      grid-template-columns: 1fr 1px 1fr;
-      gap: 15px;
-      overflow: hidden;
-      border: 1px solid rgba(70, 58, 127, .12);
-      border-radius: 25px;
-      color: var(--ink);
-      background: rgba(255, 253, 253, .96);
-      box-shadow: var(--shadow);
-      cursor: grab;
-      touch-action: none;
-      user-select: none;
-      will-change: transform, top;
-      transition: top 300ms cubic-bezier(.2, .85, .25, 1), border-radius 300ms ease, box-shadow 300ms ease;
-    }
-
-    .daily-summary-card:focus-visible,
-    .sheet-collapse:focus-visible,
-    .bottom-nav-item:focus-visible,
-    .help-button:focus-visible,
-    .task-row input:focus-visible + .task-box {
-      outline: 3px solid rgba(101, 83, 200, .48);
-      outline-offset: 3px;
-    }
-
-    .daily-summary-card[aria-expanded="true"] {
-      border-radius: 23px 23px 16px 16px;
-      box-shadow: 0 14px 28px rgba(42, 35, 101, .16);
-    }
-
-    .daily-summary-card:active { cursor: grabbing; }
-    .app-frame.is-dragging .daily-summary-card,
-    .app-frame.is-dragging .checklist-sheet { transition: none; }
-
-    .summary-side { min-width: 0; text-align: left; }
-    .summary-side:last-child { text-align: right; }
-    .summary-label { display: block; color: var(--ink-soft); font-size: 10px; font-weight: 760; }
-    .summary-number { display: inline-block; margin-top: 2px; font-size: 31px; line-height: 1; font-weight: 850; letter-spacing: -.06em; }
-    .summary-unit { margin-left: 3px; color: var(--purple); font-size: 12px; font-weight: 760; }
-    .summary-divider { width: 1px; background: var(--line); }
-    .summary-status { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 11px; color: var(--purple); font-size: 11px; font-weight: 760; }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 4px var(--pink-soft); }
-    .summary-hint { grid-column: 1 / -1; margin-top: -3px; color: var(--ink-soft); font-size: 10px; font-weight: 650; text-align: center; opacity: calc(.8 - var(--sheet-progress) * .5); }
-
-    .checklist-sheet {
-      position: absolute;
-      z-index: 15;
-      top: calc(725px - var(--sheet-progress) * 293px);
-      right: 0;
-      left: 0;
-      bottom: 70px;
-      padding: 76px 24px 16px;
-      overflow: hidden;
-      border-radius: 54px 54px 0 0;
-      color: var(--ink);
-      background: linear-gradient(180deg, #fffdfd, #f9f1f6 100%);
-      box-shadow: 0 -12px 30px rgba(48, 40, 104, .1);
-      opacity: calc(.2 + var(--sheet-progress) * .8);
-      pointer-events: none;
-      will-change: transform, top, opacity;
-      transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 220ms ease;
-    }
-
-    .app-frame[data-screen-state="8b-expanded"] .checklist-sheet { pointer-events: auto; }
-
-    .sheet-topline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .sheet-topline h1 { margin: 0; font-size: 19px; line-height: 1.15; letter-spacing: -.025em; }
-    .sheet-topline p { margin: 4px 0 0; color: var(--ink-soft); font-size: 12px; font-weight: 650; }
-
-    .sheet-collapse {
-      width: 36px;
-      height: 36px;
-      flex: 0 0 auto;
-      border-color: var(--line);
-      color: var(--purple);
-      background: var(--surface);
-      box-shadow: none;
-      backdrop-filter: none;
-    }
-
-    .sheet-collapse svg { width: 18px; height: 18px; }
-
-    .task-list {
-      padding: 4px 0;
-      border: 1px solid rgba(75, 63, 133, .08);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, .72);
-    }
-
-    .task-row {
-      min-height: 50px;
-      padding: 9px 13px;
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      border-bottom: 1px solid rgba(75, 63, 133, .08);
-      cursor: pointer;
-    }
-
-    .task-row:last-child { border-bottom: 0; }
-    .task-row input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-    .task-box {
-      width: 20px;
-      height: 20px;
-      position: relative;
-      flex: 0 0 auto;
-      border: 2px solid #aaa2d1;
-      border-radius: 50%;
-      background: #fff;
-      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-    }
-
-    .task-row input:checked + .task-box { border-color: var(--green); background: var(--green); transform: scale(1.05); }
-    .task-row input:checked + .task-box::after { content: ""; width: 8px; height: 4px; position: absolute; top: 5px; left: 4px; border-bottom: 2px solid white; border-left: 2px solid white; transform: rotate(-45deg); }
-    .task-copy { flex: 1; color: var(--ink); font-size: 13px; font-weight: 690; }
-    .task-row input:checked ~ .task-copy { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: rgba(95, 96, 144, .45); }
-
-    .sheet-footer { margin-top: 14px; display: grid; gap: 10px; }
-    .task-progress { color: var(--ink-soft); font-size: 11px; font-weight: 720; text-align: center; }
-    .help-button {
-      min-height: 46px;
-      padding: 0 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      border: 0;
-      border-radius: 15px;
-      color: #b03c69;
-      background: linear-gradient(90deg, #ffe1e9, #ffecef);
-      font-size: 13px;
-      font-weight: 790;
-      cursor: pointer;
-    }
-
-    .help-icon { width: 18px; height: 18px; stroke-width: 2.2; }
-
-    .bottom-navigation {
-      height: 70px;
-      position: absolute;
-      z-index: 30;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      padding: 7px 11px 5px;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      border-top: 1px solid rgba(72, 59, 130, .1);
-      background: rgba(255, 253, 254, .94);
-      box-shadow: 0 -6px 20px rgba(50, 40, 112, .05);
-      backdrop-filter: blur(14px);
-    }
-
-    .bottom-nav-item {
-      min-width: 0;
-      padding: 2px 1px;
-      display: grid;
-      place-items: center;
-      gap: 2px;
-      border: 0;
-      border-radius: 12px;
-      color: #8b83b2;
-      background: transparent;
-      font-size: 9px;
-      font-weight: 680;
-      cursor: pointer;
-    }
-
-    .bottom-nav-item[aria-current="page"] { color: var(--purple); font-weight: 820; }
-    .bottom-nav-item[aria-current="page"] .nav-icon { stroke-width: 2.6; }
-    .nav-icon { width: 18px; height: 18px; }
-
-    .gesture-note {
-      position: absolute;
-      z-index: 12;
-      right: 0;
-      bottom: 164px;
-      left: 0;
-      color: rgba(255, 255, 255, .76);
-      font-size: 10px;
-      font-weight: 650;
-      text-align: center;
-      text-shadow: 0 1px 6px rgba(32, 26, 91, .3);
-      opacity: calc(1 - var(--sheet-progress) * 1.2);
-      transition: opacity 180ms ease;
-      pointer-events: none;
-    }
-
-    @media (max-width: 430px), (max-height: 910px) {
-      body { place-items: start center; background: #f8edf5; }
-      .app-frame { box-shadow: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-    }
+    .bottom-nav { height: 70px; position: absolute; z-index: 40; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--hairline); background: rgba(255, 252, 252, .95); color: var(--hajnal-navy); }
+    .bottom-nav button { display: grid; place-items: center; align-content: center; gap: 4px; padding: 5px 2px 7px; border: 0; background: transparent; color: rgba(44, 46, 119, .46); font-size: 9px; font-weight: 750; cursor: pointer; }
+    .bottom-nav button[aria-current="page"] { color: var(--hajnal-purple); }
+    .bottom-nav .icon { width: 21px; height: 21px; }
+    @media (max-width: 430px), (max-height: 910px) { body { place-items: start center; background: #f8edf5; } .app-frame { border-radius: 0; box-shadow: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
   </style>
 </head>
 <body>
-  <main class="app-frame" data-screen-state="8a-collapsed" aria-label="Hajnal alkalmazás, Kezdőlap">
-    <section class="home-scene" data-component="home-scene" aria-hidden="true">
-      <div class="scene-stars"></div>
-      <div class="scene-glow"></div>
-      <div class="scene-sun"></div>
-      <svg class="scene-hills" viewBox="0 0 412 410" focusable="false">
-        <path d="M0 210C47 166 99 166 147 215c48 48 98 16 145-24 44-37 82-44 120-26v235H0Z"></path>
-        <path d="M0 254c56-30 102-18 151 28 53 50 114 28 163-16 32-29 66-36 98-31v175H0Z"></path>
-        <path d="M0 301c54-22 112-16 174 23 63 39 126 4 178-28 25-15 46-21 60-19v133H0Z"></path>
-      </svg>
-      <svg class="scene-characters" viewBox="0 0 248 238" focusable="false">
-        <g data-scene-object="panda">
-          <ellipse cx="88" cy="193" rx="58" ry="18" fill="#28236b" opacity=".28"></ellipse>
-          <ellipse cx="82" cy="145" rx="44" ry="58" fill="#24245f"></ellipse>
-          <circle cx="48" cy="87" r="18" fill="#1f2159"></circle>
-          <circle cx="113" cy="87" r="18" fill="#1f2159"></circle>
-          <circle cx="81" cy="111" r="52" fill="#fff5eb"></circle>
-          <ellipse cx="56" cy="111" rx="13" ry="17" fill="#252560" transform="rotate(22 56 111)"></ellipse>
-          <ellipse cx="106" cy="111" rx="13" ry="17" fill="#252560" transform="rotate(-22 106 111)"></ellipse>
-          <circle cx="58" cy="111" r="4" fill="#fff"></circle>
-          <circle cx="104" cy="111" r="4" fill="#fff"></circle>
-          <path d="M81 126c-5 0-8 3-8 7 0 5 4 8 8 8s8-3 8-8c0-4-3-7-8-7Z" fill="#252560"></path>
-          <path d="M81 141v10M81 151c-7 7-14 6-18 1M81 151c7 7 14 6 18 1" fill="none" stroke="#252560" stroke-width="2.4" stroke-linecap="round"></path>
-        </g>
-        <g data-scene-object="lama">
-          <ellipse cx="174" cy="195" rx="48" ry="15" fill="#28236b" opacity=".24"></ellipse>
-          <path d="M165 179c-3-43 4-97 27-113 15-10 31 2 30 22-1 20-11 31-12 46 9 16 11 29 9 49Z" fill="#ffe9dc"></path>
-          <path d="M185 65 177 27l13 21 8-30 6 42" fill="#ffe9dc"></path>
-          <ellipse cx="198" cy="91" rx="16" ry="20" fill="#fff7ef"></ellipse>
-          <circle cx="193" cy="88" r="2.6" fill="#332b79"></circle>
-          <circle cx="204" cy="88" r="2.6" fill="#332b79"></circle>
-          <path d="M198 98c4 0 5 3 2 6-2 2-5 2-7 0-3-3 1-6 5-6Z" fill="#b96a83"></path>
-          <path d="M169 177v20M208 177v20" stroke="#eacabc" stroke-width="8" stroke-linecap="round"></path>
-          <path d="M172 132c8 7 26 7 36-2" fill="none" stroke="#dfb7c0" stroke-width="3" stroke-linecap="round"></path>
-        </g>
-      </svg>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="icon-bell" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol><symbol id="icon-signal" viewBox="0 0 24 24"><path d="M5 18v-2M9 18v-5M13 18v-8M17 18V3"/></symbol><symbol id="icon-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9.5 15a4 4 0 0 1 5 0M12 19h.01"/></symbol><symbol id="icon-battery" viewBox="0 0 24 24"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M21 10v4M6 10h10v4H6z"/></symbol><symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-6h6v6"/></symbol><symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"/></symbol><symbol id="icon-path" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"/></symbol><symbol id="icon-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="3"/><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"/></symbol><symbol id="icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-6 15-6 16 0"/></symbol><symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.8 9 3l2.1 5.3-2.3 1.4a15 15 0 0 0 5.5 5.5l1.4-2.3L21 15l-.8 2.4c-.4 1.3-1.8 2-3.1 1.7C9.5 17.2 6.8 14.5 4.9 6.9 4.6 5.6 5.3 4.2 6.6 3.8Z"/></symbol><symbol id="icon-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 10h8M8 13h5"/></symbol><symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></symbol>
+  </svg>
+  <main class="app-frame home-collapsed-screen" data-screen-state="8a-collapsed" aria-label="Hajnal alkalmazás, Kezdőlap">
+    <button class="home-illustration" type="button" aria-label="Mérföldkövek megnyitása" data-action="open-milestones"><img class="home-hero-image" src="assets/home-hero.svg" alt="" loading="eager"></button>
+    <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+    <header class="home-topbar"><button class="icon-button" type="button" aria-label="Gyorsbeállítások"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button><div class="home-day"><strong>24. nap</strong><span class="home-subtitle">a 90 napos úton</span><span class="home-tagline">Minden nap<br>egy lépés.</span></div><button class="icon-button" type="button" aria-label="Értesítések"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg></button></header>
+    <div class="home-metrics" data-component="daily-summary-card" tabindex="0" aria-label="Napi összegzés. Húzd felfelé a mai feladatok megnyitásához.">
+      <button class="metric clean-days-metric" type="button" data-action="open-current-period-timeline" aria-label="Az aktuális időszak timeline-jának megnyitása"><small>Tiszta napok</small><strong>24</strong><em>nap</em><span class="segmented-progress" role="img" aria-label="24 nap a 90 napból"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span></span><span class="progress-note">a 90 napból</span></button><span class="dashboard-separator" aria-hidden="true"></span><button class="clean-today-button" type="button" data-action="mark-clean-today"><span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8"/></svg></span><span>Ma tiszta<br>maradtam</span></button>
+    </div>
+    <button class="home-expand-hotspot" type="button" data-action="expand-home-card" aria-label="Főmenü kártya kinyitása"></button>
+    <section class="home-body" id="daily-checklist" data-component="checklist-sheet" aria-labelledby="checklist-title">
+      <section class="tasks-card"><div class="tasks-heading"><h1 id="checklist-title">Mai feladataim</h1><button type="button" data-action="edit-home-checklist">Szerkesztés</button></div><div class="task-list" aria-label="Mai feladatok listája"><label class="task-row" data-task-id="sponsor-call"><input class="native-control task-input" type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" data-task-icon="phone" aria-hidden="true"><use href="#icon-phone"/></svg></label><label class="task-row" data-task-id="meeting"><input class="native-control task-input" type="checkbox" aria-label="Menj el egy meetingre"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" data-task-icon="people" aria-hidden="true"><use href="#icon-people"/></svg></label><button class="task-row" type="button" data-task-id="evening-checkin" data-action="open-evening-checkin"><span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" data-task-icon="message" aria-hidden="true"><use href="#icon-message"/></svg></button></div></section>
+      <div class="home-actions"><button class="help-button" type="button" data-action="open-panic"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Segítség kell</button></div>
     </section>
-
-    <div class="home-status-bar" aria-hidden="true"><span>9:41</span><span class="system-status">▮▮▮ ◒ ▰</span></div>
-
-    <header class="home-header">
-      <button class="header-icon" type="button" aria-label="Menü (hamarosan)">
-        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-      </button>
-      <div class="home-title"><strong>24. nap</strong><span>Csak a mai nap.</span><em>Minden nap<br>egy lépés.</em></div>
-      <button class="header-icon" type="button" aria-label="Értesítések (hamarosan)">
-        <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></svg>
-      </button>
-    </header>
-
-    <button class="daily-summary-card" type="button" data-component="daily-summary-card" aria-controls="daily-checklist" aria-expanded="false" aria-label="Napi összegzés. Koppints vagy húzd felfelé a mai feladatok megnyitásához.">
-      <span class="summary-side"><span class="summary-label">Tiszta napok</span><strong class="summary-number">24</strong><span class="summary-unit">nap</span></span>
-      <span class="summary-divider" aria-hidden="true"></span>
-      <span class="summary-side"><span class="summary-label">Ma</span><span class="summary-status"><span class="status-dot" aria-hidden="true"></span><span>nincs lezárva</span></span></span>
-      <span class="summary-hint">Húzd fel a napi feladatokért</span>
-    </button>
-
-    <p class="gesture-note" aria-hidden="true">Húzd fel a napi kártyát</p>
-
-    <section class="checklist-sheet" id="daily-checklist" data-component="checklist-sheet" aria-labelledby="checklist-title">
-      <div class="sheet-topline">
-        <div><h1 id="checklist-title">Mai feladataim</h1><p>Apró lépések is számítanak.</p></div>
-        <button class="sheet-collapse" type="button" data-action="collapse-home" aria-label="Napi feladatok összecsukása">
-          <svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"></path></svg>
-        </button>
-      </div>
-      <div class="task-list" aria-label="Mai feladatok listája">
-        <label class="task-row" data-task-id="sponsor-call"><input type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-box" aria-hidden="true"></span><span class="task-copy">Hívd fel a szponzorod</span></label>
-        <label class="task-row" data-task-id="write"><input type="checkbox" aria-label="Írj 10 percet"><span class="task-box" aria-hidden="true"></span><span class="task-copy">Írj 10 percet</span></label>
-        <label class="task-row" data-task-id="meeting"><input type="checkbox" aria-label="Menj el egy meetingre"><span class="task-box" aria-hidden="true"></span><span class="task-copy">Menj el egy meetingre</span></label>
-        <label class="task-row" data-task-id="gratitude"><input type="checkbox" checked aria-label="Írj 3 dolgot, amiért hálás vagy"><span class="task-box" aria-hidden="true"></span><span class="task-copy">Írj 3 dolgot, amiért hálás vagy</span></label>
-      </div>
-      <footer class="sheet-footer">
-        <p class="task-progress" data-role="task-progress">1 / 4 kész</p>
-        <button class="help-button" type="button" data-action="open-panic" aria-label="Segítség kell, hamarosan megnyitja a Pánik módot">
-          <svg class="help-icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path></svg>
-          Segítség kell
-        </button>
-      </footer>
-    </section>
-
-    <nav class="bottom-navigation" data-component="bottom-navigation" aria-label="Fő navigáció">
-      <button class="bottom-nav-item" type="button" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"></path><path d="M9 20v-6h6v6"></path></svg><span>Főmenü</span></button>
-      <button class="bottom-nav-item" type="button"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"></path></svg><span>Történetem</span></button>
-      <button class="bottom-nav-item" type="button"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"></path></svg><span>Ösvény</span></button>
-      <button class="bottom-nav-item" type="button"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="10" r="3"></circle><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"></path></svg><span>Gyűlések</span></button>
-      <button class="bottom-nav-item" type="button"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1-6 15-6 16 0"></path></svg><span>Szponzor</span></button>
-    </nav>
+    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
   </main>
-
   <script>
     (() => {
-      const INITIAL_TASKS = Object.freeze([
-        { id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false },
-        { id: 'write', label: 'Írj 10 percet', done: false },
-        { id: 'meeting', label: 'Menj el egy meetingre', done: false },
-        { id: 'gratitude', label: 'Írj 3 dolgot, amiért hálás vagy', done: true },
-      ]);
-
+      const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);
       class HomeInteractionController {
-        constructor(root) {
-          this.root = root;
-          this.summary = root.querySelector('[data-component="daily-summary-card"]');
-          this.collapseButton = root.querySelector('[data-action="collapse-home"]');
-          this.taskProgress = root.querySelector('[data-role="task-progress"]');
-          this.tasks = INITIAL_TASKS.map((task) => ({ ...task }));
-          this.state = { sheet: { progress: 0, settled: 'collapsed' } };
-          this.drag = null;
-          this.ignoreNextClick = false;
-          this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          this.bind();
-          this.render();
-        }
-
-        setProgress(value, { animate = false } = {}) {
-          const progress = Math.min(1, Math.max(0, value));
-          this.state.sheet.progress = progress;
-          this.root.style.setProperty('--sheet-progress', progress.toFixed(3));
-          this.root.classList.toggle('is-dragging', !animate && Boolean(this.drag));
-          this.summary.setAttribute('aria-expanded', String(progress >= .5));
-          this.root.dataset.screenState = progress >= .995 ? '8b-expanded' : '8a-collapsed';
-        }
-
-        settle(target) {
-          const expanded = target === 'expanded';
-          this.state.sheet.settled = expanded ? 'expanded' : 'collapsed';
-          this.root.classList.remove('is-dragging');
-          this.setProgress(expanded ? 1 : 0, { animate: !this.motionReduced });
-          this.render();
-        }
-
-        bind() {
-          this.summary.addEventListener('pointerdown', (event) => this.startDrag(event));
-          this.summary.addEventListener('pointermove', (event) => this.updateDrag(event));
-          this.summary.addEventListener('pointerup', (event) => this.endDrag(event));
-          this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event));
-          this.summary.addEventListener('click', () => {
-            if (this.ignoreNextClick) {
-              this.ignoreNextClick = false;
-              return;
-            }
-            this.settle(this.state.sheet.settled === 'expanded' ? 'collapsed' : 'expanded');
-          });
-          this.collapseButton.addEventListener('click', () => this.settle('collapsed'));
-          this.root.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') this.settle('collapsed');
-          });
-          this.root.querySelectorAll('[data-task-id] input').forEach((input) => {
-            input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked));
-          });
-        }
-
-        startDrag(event) {
-          if (event.button !== undefined && event.button !== 0) return;
-          this.drag = { pointerId: event.pointerId, startY: event.clientY, startProgress: this.state.sheet.progress, moved: false };
-          this.summary.setPointerCapture(event.pointerId);
-          this.root.classList.add('is-dragging');
-        }
-
-        updateDrag(event) {
-          if (!this.drag || event.pointerId !== this.drag.pointerId) return;
-          const delta = this.drag.startY - event.clientY;
-          if (Math.abs(delta) > 6) this.drag.moved = true;
-          if (this.drag.moved) event.preventDefault();
-          this.setProgress(this.drag.startProgress + delta / 220);
-        }
-
-        endDrag(event) {
-          if (!this.drag || event.pointerId !== this.drag.pointerId) return;
-          const delta = this.drag.startY - event.clientY;
-          const shouldExpand = delta > 56 || this.state.sheet.progress >= .42;
-          this.ignoreNextClick = this.drag.moved;
-          this.summary.releasePointerCapture(event.pointerId);
-          this.drag = null;
-          this.settle(shouldExpand ? 'expanded' : 'collapsed');
-        }
-
-        cancelDrag(event) {
-          if (!this.drag || event.pointerId !== this.drag.pointerId) return;
-          this.drag = null;
-          this.settle(this.state.sheet.progress >= .5 ? 'expanded' : 'collapsed');
-        }
-
-        updateTask(id, done) {
-          const task = this.tasks.find((item) => item.id === id);
-          if (!task) return;
-          task.done = done;
-          this.render();
-        }
-
-        render() {
-          const completed = this.tasks.filter((task) => task.done).length;
-          this.taskProgress.textContent = `${completed} / ${this.tasks.length} kész`;
-        }
+        constructor(root) { this.root = root; this.summary = root.querySelector('[data-component="daily-summary-card"]'); this.expandHotspot = root.querySelector('[data-action="expand-home-card"]'); this.tasks = INITIAL_TASKS.map((task) => ({ ...task })); this.state = { sheet: { progress: 0, settled: 'collapsed' } }; this.drag = null; this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; this.bind(); this.render(); }
+        setProgress(value, { animate = false } = {}) { const progress = Math.min(1, Math.max(0, value)); this.state.sheet.progress = progress; this.root.style.setProperty('--sheet-progress', progress.toFixed(3)); this.root.classList.toggle('is-dragging', !animate && Boolean(this.drag)); this.root.classList.toggle('home-collapsed-screen', progress < .995); this.root.dataset.screenState = progress >= .995 ? '8b-expanded' : '8a-collapsed'; }
+        settle(target) { const expanded = target === 'expanded'; this.state.sheet.settled = expanded ? 'expanded' : 'collapsed'; this.root.classList.remove('is-dragging'); this.setProgress(expanded ? 1 : 0, { animate: !this.motionReduced }); this.render(); }
+        bind() { this.summary.addEventListener('pointerdown', (event) => this.startDrag(event)); this.summary.addEventListener('pointermove', (event) => this.updateDrag(event)); this.summary.addEventListener('pointerup', (event) => this.endDrag(event)); this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event)); this.expandHotspot.addEventListener('click', () => this.settle('expanded')); this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } }); this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') this.settle('collapsed'); }); this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked))); }
+        startDrag(event) { if (event.button !== undefined && event.button !== 0) return; if (event.target.closest('button')) return; this.drag = { pointerId: event.pointerId, startY: event.clientY, startProgress: this.state.sheet.progress, moved: false }; this.summary.setPointerCapture(event.pointerId); this.root.classList.add('is-dragging'); }
+        updateDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; const delta = this.drag.startY - event.clientY; if (Math.abs(delta) > 6) this.drag.moved = true; if (this.drag.moved) event.preventDefault(); this.setProgress(this.drag.startProgress + delta / 96); }
+        endDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; const delta = this.drag.startY - event.clientY; const shouldExpand = delta > 30 || this.state.sheet.progress >= .42; this.summary.releasePointerCapture(event.pointerId); this.drag = null; this.settle(shouldExpand ? 'expanded' : 'collapsed'); }
+        cancelDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; this.drag = null; this.settle(this.state.sheet.progress >= .5 ? 'expanded' : 'collapsed'); }
+        updateTask(id, done) { const task = this.tasks.find((item) => item.id === id); if (task) task.done = done; }
+        render() {}
       }
-
       new HomeInteractionController(document.querySelector('.app-frame'));
     })();
   </script>
