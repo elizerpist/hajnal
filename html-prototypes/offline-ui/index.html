@@ -9129,6 +9129,14 @@
   </main>
   <script>
     (() => {
+      const BOTTOM_NAV_LABELS = Object.freeze(['Főmenü', 'Történetem', 'Ösvény', 'Gyűlések', 'Szponzor']);
+
+      document.querySelectorAll('.bottom-nav').forEach((nav) => {
+        nav.querySelectorAll('button > span').forEach((label, index) => {
+          label.textContent = BOTTOM_NAV_LABELS[index];
+        });
+      });
+
       const reflectionPromptContent = {
         best: {
           question: 'Mi volt ma a legjobb?',

@@ -410,11 +410,9 @@ const tests = {
     const collapsedNavEnd = collapsedHomeScreen.indexOf('</nav>', collapsedNavStart);
     const collapsedNav = collapsedHomeScreen.slice(collapsedNavStart, collapsedNavEnd);
     assert.ok(collapsedNav.includes('data-target-screen="home-collapsed"'), 'collapsed home current nav item must target the collapsed home screen');
-    for (const label of ['Kezdőlap', 'Haladás', 'Felépülés', 'Szponzor', 'Profil']) {
-      assert.ok(collapsedNav.includes(label), `collapsed home bottom nav is missing ${label}`);
-    }
-    assert.ok(collapsedNav.includes('data-target-screen="progress-calendar"'), 'collapsed home Haladás nav item must target the journal root');
-    assert.ok(collapsedNav.includes('data-target-screen="recovery-overview"'), 'collapsed home Felépülés nav item must target the recovery overview');
+    assert.equal((collapsedNav.match(/<button\b/g) || []).length, 5, 'collapsed home must retain five bottom-nav slots');
+    assert.ok(collapsedNav.includes('data-target-screen="progress-calendar"'), 'collapsed home Történetem nav slot must preserve its current target');
+    assert.ok(collapsedNav.includes('data-target-screen="recovery-overview"'), 'collapsed home Ösvény nav slot must preserve its current target');
     expectScreenContains('home-statistics', [
       'class="phone-screen home-statistics-screen"',
       'data-screen="home-statistics"',
@@ -639,14 +637,33 @@ const tests = {
     const navStart = html.indexOf('<nav class="bottom-nav"');
     const navEnd = html.indexOf('</nav>', navStart);
     const nav = html.slice(navStart, navEnd);
-    let cursor = -1;
-    for (const label of ['Kezdőlap', 'Haladás', 'Felépülés', 'Szponzor', 'Profil']) {
-      const next = nav.indexOf(label, cursor + 1);
-      assert.ok(next > cursor, `${label} is missing or out of order in bottom navigation`);
-      cursor = next;
-    }
-    assert.ok(nav.includes('data-target-screen="progress-calendar"'), 'expanded home Haladás nav item must target the journal root');
-    assert.ok(nav.includes('data-target-screen="recovery-overview"'), 'expanded home Felépülés nav item must target the recovery overview');
+    assert.equal((nav.match(/<button\b/g) || []).length, 5, 'expanded home must retain five bottom-nav slots');
+    assert.ok(nav.includes('data-target-screen="progress-calendar"'), 'expanded home Történetem nav slot must preserve its current target');
+    assert.ok(nav.includes('data-target-screen="recovery-overview"'), 'expanded home Ösvény nav slot must preserve its current target');
+  },
+
+  bottomNavigation() {
+    const expectedLabels = ['Főmenü', 'Történetem', 'Ösvény', 'Gyűlések', 'Szponzor'];
+    const bottomNavs = [...html.matchAll(/<nav class="bottom-nav(?: [^"]*)?"[^>]*>([\s\S]*?)<\/nav>/g)];
+
+    assert.equal(bottomNavs.length, 17, 'every screen with a bottom navigation must remain covered by the shared label contract');
+    bottomNavs.forEach(([, markup], index) => {
+      assert.equal((markup.match(/<button\b/g) || []).length, expectedLabels.length, `bottom navigation ${index + 1} must retain five slots`);
+    });
+    assert.match(
+      html,
+      /const BOTTOM_NAV_LABELS = Object\.freeze\(\['Főmenü', 'Történetem', 'Ösvény', 'Gyűlések', 'Szponzor'\]\);/,
+      'the approved labels must have one shared owner rather than seventeen divergent copies'
+    );
+    assert.match(
+      html,
+      /document\.querySelectorAll\('\.bottom-nav'\)\.forEach\(\(nav\) => \{[\s\S]*?nav\.querySelectorAll\('button > span'\)\.forEach\(\(label, index\) => \{[\s\S]*?label\.textContent = BOTTOM_NAV_LABELS\[index\];/,
+      'the shared label owner must apply the approved order to every bottom navigation'
+    );
+    assert.ok(
+      !html.includes('data-bottom-nav-labels'),
+      'the shared resolver must not introduce a second, feature-local label source'
+    );
   },
 
   eveningInventory() {

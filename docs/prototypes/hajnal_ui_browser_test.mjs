@@ -311,6 +311,16 @@ try {
   assert.ok(rowPositions["recovery-overview"].top > rowPositions["home-statistics"].top + 900, "recovery row must render directly below the Statistics row");
   assert.ok(rowPositions["progress-calendar"].top > rowPositions["recovery-overview"].top + 900, "progress row must render after the recovery row");
 
+  const approvedBottomNavLabels = ["Főmenü", "Történetem", "Ösvény", "Gyűlések", "Szponzor"];
+  assert.equal(
+    await page.locator(".bottom-nav").evaluateAll((navs, expectedLabels) => (
+      navs.length === 17
+      && navs.every((nav) => JSON.stringify(Array.from(nav.querySelectorAll("button > span"), (label) => label.textContent.trim())) === JSON.stringify(expectedLabels))
+    ), approvedBottomNavLabels),
+    true,
+    "every rendered bottom navigation must use the approved five-item label order",
+  );
+
   const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
     const dashboard = screen.querySelector(".home-metrics");
     const nav = screen.querySelector(".bottom-nav");
@@ -325,14 +335,14 @@ try {
     navBottomGap: Math.round(screenBox.bottom - navBox.bottom),
     navLabels: Array.from(nav.querySelectorAll("button")).map((button) => button.textContent.trim()),
     currentTarget: nav.querySelector("[aria-current='page']")?.dataset.targetScreen,
-    progressTarget: Array.from(nav.querySelectorAll("button")).find((button) => button.textContent.trim() === "Haladás")?.dataset.targetScreen,
+    progressTarget: Array.from(nav.querySelectorAll("button")).find((button) => button.textContent.trim() === "Történetem")?.dataset.targetScreen,
   };
   });
   assert.deepEqual(collapsedHomeLayout, {
     dashboardTop: 614,
     hasOpenedCard: false,
     navBottomGap: 0,
-    navLabels: ["Kezdőlap", "Haladás", "Felépülés", "Szponzor", "Profil"],
+    navLabels: ["Főmenü", "Történetem", "Ösvény", "Gyűlések", "Szponzor"],
     currentTarget: "home-collapsed",
     progressTarget: "progress-calendar",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
@@ -403,8 +413,8 @@ try {
     reference: "Screenshot_20260720-013331.png",
     title: "Statisztikák",
     subtitle: "Válaszd ki az időszakodat",
-    navCurrent: "Statisztikák",
-    navLabels: ["Kezdőlap", "Felépülés", "Statisztikák", "Szponzor", "Profil"],
+    navCurrent: "Ösvény",
+    navLabels: ["Főmenü", "Történetem", "Ösvény", "Gyűlések", "Szponzor"],
     batches: [
       { id: "2024-05", days: "8", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "2024 8 nap 2024.05." },
       { id: "2024-08", days: "37", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "37 nap 2024.08." },
@@ -779,11 +789,11 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-calendar", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
-    { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
-    { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
-    { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },
-    { screen: "tools-journal-list", parent: "recovery-overview", title: "Napló", navActive: "Felépülés", shortcuts: [] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Ösvény", shortcuts: ["recovery-steps-overview", "progress-calendar", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
+    { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Ösvény", shortcuts: [] },
+    { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Ösvény", shortcuts: [] },
+    { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Ösvény", shortcuts: [] },
+    { screen: "tools-journal-list", parent: "recovery-overview", title: "Napló", navActive: "Ösvény", shortcuts: [] },
     { screen: "tools-journal-entry", parent: "tools-journal-list", title: "Új naplóbejegyzés", navActive: null, shortcuts: [] },
     { screen: "tools-journal-detail", parent: "tools-journal-list", title: "Naplóbejegyzés", navActive: null, shortcuts: [] },
   ], "recovery row must keep only the requested recovery menu shortcuts");
@@ -803,7 +813,7 @@ try {
     overflowY: "auto",
     contentScrolls: true,
     hasBottomNav: true,
-    currentNav: "Felépülés",
+    currentNav: "Ösvény",
     hasWhyStarted: true,
   }, "screen 30 recovery overview must scroll while keeping the bottom nav and why-started menu available");
 
