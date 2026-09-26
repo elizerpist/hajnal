@@ -31,6 +31,14 @@ const screenOrder = [
   ["checkin-clean", "home"],
   ["evening-reflection", "checkin-clean"],
   ["reflection-saved", "evening-reflection"],
+  ["evening-inventory-state", "home"],
+  ["evening-inventory-recovery", "evening-inventory-state"],
+  ["evening-inventory-connection", "evening-inventory-recovery"],
+  ["evening-inventory-program", "evening-inventory-connection"],
+  ["evening-inventory-honest-review", "evening-inventory-program"],
+  ["evening-inventory-gratitude", "evening-inventory-honest-review"],
+  ["evening-inventory-spirituality", "evening-inventory-gratitude"],
+  ["evening-inventory-free-reflection", "evening-inventory-spirituality"],
   ["panic-root", "home"],
   ["survival-stop", "panic-root"],
   ["survival-breathe", "survival-stop"],
@@ -103,6 +111,21 @@ const screenRows = [
       "checkin-clean",
       "evening-reflection",
       "reflection-saved",
+    ],
+  ],
+  [
+    "evening-inventory-wizard",
+    "evening-inventory-state",
+    "evening-inventory-state evening-inventory-recovery evening-inventory-connection evening-inventory-program evening-inventory-honest-review evening-inventory-gratitude evening-inventory-spirituality evening-inventory-free-reflection",
+    [
+      "evening-inventory-state",
+      "evening-inventory-recovery",
+      "evening-inventory-connection",
+      "evening-inventory-program",
+      "evening-inventory-honest-review",
+      "evening-inventory-gratitude",
+      "evening-inventory-spirituality",
+      "evening-inventory-free-reflection",
     ],
   ],
   [
@@ -247,8 +270,23 @@ try {
   assert.ok(rowPositions["evening-reflection"].left > rowPositions["checkin-clean"].left, "screen 12 must sit directly to the right of screen 11");
   assert.equal(rowPositions["reflection-saved"].top, rowPositions["daily-image"].top, "screen 10 must render in the daily close row");
   assert.ok(rowPositions["reflection-saved"].left > rowPositions["evening-reflection"].left, "screen 10 must sit directly to the right of screen 12");
-  assert.ok(rowPositions["home-statistics-timeline"].top > rowPositions["daily-image"].top + 900, "period history row must render below the daily close row");
-  assert.equal(rowPositions["home-statistics-timeline"].left, rowPositions["daily-image"].left, "period history row must start at the same x position as the daily close row");
+  assert.ok(rowPositions["evening-inventory-state"].top > rowPositions["daily-image"].top + 900, "inventory row must render below the daily close row");
+  assert.equal(rowPositions["evening-inventory-state"].left, rowPositions["daily-image"].left, "inventory row must start at the same x position as the daily close row");
+  [
+    "evening-inventory-recovery",
+    "evening-inventory-connection",
+    "evening-inventory-program",
+    "evening-inventory-honest-review",
+    "evening-inventory-gratitude",
+    "evening-inventory-spirituality",
+    "evening-inventory-free-reflection",
+  ].forEach((id, index, ids) => {
+    const predecessor = index === 0 ? "evening-inventory-state" : ids[index - 1];
+    assert.equal(rowPositions[id].top, rowPositions["evening-inventory-state"].top, `${id} must remain in the inventory row`);
+    assert.ok(rowPositions[id].left > rowPositions[predecessor].left, `${id} must follow its predecessor in the inventory row`);
+  });
+  assert.ok(rowPositions["home-statistics-timeline"].top > rowPositions["evening-inventory-state"].top + 900, "period history row must render below the inventory row");
+  assert.equal(rowPositions["home-statistics-timeline"].left, rowPositions["evening-inventory-state"].left, "period history row must start at the same x position as the inventory row");
   assert.equal(rowPositions["progress-milestones"].top, rowPositions["home-statistics-timeline"].top, "milestones must render next to timeline screen 8E");
   assert.ok(rowPositions["progress-milestones"].left > rowPositions["home-statistics-timeline"].left, "milestones must sit directly to the right of screen 8E");
   assert.ok(rowPositions["panic-root"].top > rowPositions["home-statistics-timeline"].top + 900, "panic row must render directly below the period history row");
@@ -852,6 +890,52 @@ try {
     primaryText: "Most, 2 percet rászánok",
     secondaryText: "Később",
   }, "screen 11 must show the source-of-truth slide-up choice sheet");
+
+  const inventoryWizard = page.locator('[data-page="evening-inventory-wizard"]');
+  const inventoryScreens = inventoryWizard.locator('.evening-inventory-screen');
+  assert.equal(await inventoryScreens.count(), 8, "the expanded Evening Inventory must expose exactly eight review screens");
+  assert.equal(
+    await inventoryScreens.evaluateAll((screens) => screens.every((screen) => {
+      const bounds = screen.getBoundingClientRect();
+      const panel = screen.querySelector('[data-component="evening-inventory-panel"]');
+      return Math.round(bounds.width) === 412
+        && Math.round(bounds.height) === 892
+        && Boolean(panel)
+        && getComputedStyle(panel).backgroundColor === "rgba(255, 255, 255, 0.92)";
+    })),
+    true,
+    "every inventory screen must retain phone geometry and the Screen-12-derived reflection panel",
+  );
+  assert.equal(await inventoryWizard.locator('[data-wizard-step]').count(), 8, "every inventory screen must expose a progress step");
+  assert.equal(await inventoryWizard.locator('[data-action="inventory-next"][disabled]').count(), 0, "optional inventory fields must never disable forward navigation");
+  assert.equal(await inventoryWizard.locator('[required]').count(), 0, "inventory fields must remain optional");
+  assert.equal(await inventoryWizard.locator('[data-inventory-session="daily-inventory"]').count(), 8, "the eight screens must share one Daily Inventory session semantic");
+
+  const moodGood = page.locator('#evening-inventory-state [data-inventory-value="good"]');
+  await moodGood.click();
+  assert.equal(await moodGood.getAttribute('aria-pressed'), 'true', "mood selection must expose pressed state");
+  assert.equal(await page.locator('#evening-inventory-state [data-inventory-value="neutral"]').getAttribute('aria-pressed'), 'false', "single-select mood must clear the prior state");
+  const craving = page.locator('#evening-inventory-state [data-component="inventory-craving-range"]');
+  await craving.evaluate((input) => {
+    input.value = '7';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  assert.equal(await page.locator('#evening-inventory-state [data-component="inventory-craving-output"]').innerText(), '7 / 10', "craving range must provide a calm numeric readout");
+
+  await page.locator('#evening-inventory-recovery [data-inventory-choice="old-pattern"][data-inventory-value="yes"]').click();
+  assert.equal(await page.locator('#evening-inventory-recovery [data-reveal-when="old-pattern:yes"]').evaluate((node) => node.hidden), false, "old-pattern note must appear only after an affirmative answer");
+  const gratitudeRows = page.locator('#evening-inventory-gratitude [data-gratitude-item]');
+  assert.equal(await gratitudeRows.count(), 1, "daily gratitude begins with one quiet editable row, not a fixed count");
+  await page.locator('#evening-inventory-gratitude [data-action="remove-inventory-gratitude"]').click();
+  assert.equal(await gratitudeRows.count(), 0, "gratitude may be left empty");
+  await page.locator('#evening-inventory-gratitude [data-action="add-gratitude-item"]').click();
+  await page.locator('#evening-inventory-gratitude [data-action="add-gratitude-item"]').click();
+  assert.equal(await gratitudeRows.count(), 2, "gratitude supports multiple daily items without a limit or reward");
+  const freeText = page.locator('#evening-inventory-free-reflection [data-component="inventory-free-reflection-text"]');
+  await freeText.fill('Csendben lezárom a mai napot.');
+  assert.equal(await page.locator('#evening-inventory-free-reflection [data-component="inventory-character-count"]').innerText(), '29 karakter', "free reflection retains its visible character count");
+  assert.equal(await page.locator('#evening-inventory-free-reflection [data-action="add-photo-memo"]').count(), 1, "free reflection retains photo memo capability");
+  assert.equal(await page.locator('#evening-inventory-free-reflection [data-action="add-voice-memo"]').count(), 1, "free reflection retains voice memo capability");
 
   await page.locator('#evening-reflection [data-reflection-prompt="hardest"]').click();
   assert.equal(

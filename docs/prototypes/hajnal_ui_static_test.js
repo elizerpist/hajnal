@@ -27,6 +27,14 @@ const screenOrder = [
   'checkin-clean',
   'evening-reflection',
   'reflection-saved',
+  'evening-inventory-state',
+  'evening-inventory-recovery',
+  'evening-inventory-connection',
+  'evening-inventory-program',
+  'evening-inventory-honest-review',
+  'evening-inventory-gratitude',
+  'evening-inventory-spirituality',
+  'evening-inventory-free-reflection',
   'panic-root',
   'survival-stop',
   'survival-breathe',
@@ -55,6 +63,17 @@ const altProgressScreens = [
   ['alt-progress-daily-view', 'Napi nézet', 'progress-calendar'],
   ['alt-progress-journal-entry', 'Naplóbejegyzés', 'alt-progress-daily-view'],
   ['alt-progress-calendar-day', 'Nap részlete', 'alt-progress-daily-view']
+];
+
+const eveningInventoryScreens = [
+  ['evening-inventory-state', 'home', 'Esti reflexió'],
+  ['evening-inventory-recovery', 'evening-inventory-state', 'Felépülésem ma'],
+  ['evening-inventory-connection', 'evening-inventory-recovery', 'Kapcsolódás'],
+  ['evening-inventory-program', 'evening-inventory-connection', 'Program ma'],
+  ['evening-inventory-honest-review', 'evening-inventory-program', 'Őszinte leltár'],
+  ['evening-inventory-gratitude', 'evening-inventory-honest-review', 'Hála'],
+  ['evening-inventory-spirituality', 'evening-inventory-gratitude', 'Spirituális oldal'],
+  ['evening-inventory-free-reflection', 'evening-inventory-spirituality', 'Szabad reflexió']
 ];
 
 const altProgressFunctionalRequirements = {
@@ -167,7 +186,7 @@ const tests = {
     expectContains('--phone-radius: 34px');
     ['#2C2E77', '#6A56B4', '#B89AD7', '#F18EAF', '#FEC884', '#FCF0F0']
       .forEach(expectContains);
-    expectCount(/class="phone-screen/g, 39, 'phone screen count');
+    expectCount(/class="phone-screen/g, 47, 'phone screen count');
     expectContains('data-source-reference="docs/references/source-of-truth/logo_svg.svg"');
     expectContains('id="hajnal-logo-symbol"');
     expectContains('id="sun_bg_gradient"');
@@ -303,6 +322,7 @@ const tests = {
     expectContains('data-page="home-statistics-views" data-root-screen="home-statistics" data-row-screens="home-statistics home-statistics-detail home-statistics-detail-timeline"');
     expectContains('data-page="home-period-history" data-root-screen="home-statistics-timeline" data-row-screens="home-statistics-timeline progress-milestones"');
     expectContains('data-page="home-daily-close" data-root-screen="daily-image" data-row-screens="daily-image checkin-clean evening-reflection reflection-saved"');
+    expectContains(`data-page="evening-inventory-wizard" data-root-screen="evening-inventory-state" data-row-screens="${eveningInventoryScreens.map(([id]) => id).join(' ')}"`);
     expectContains('class="home-row-explanation"');
     expectContains('Az alkalmazás alján található fő navigációs sávval (bottom nav) válthatók a legfontosabb menük.');
     expectContains('A Kezdőlap egy egyszerű, letisztult gyorsműveleti kártyával indul. A kártyát felfelé húzva kibomlik a napi ellenőrzőlista és megjelenik a pánikgomb.');
@@ -629,6 +649,63 @@ const tests = {
     assert.ok(nav.includes('data-target-screen="recovery-overview"'), 'expanded home Felépülés nav item must target the recovery overview');
   },
 
+  eveningInventory() {
+    const row = screenRowSlice('evening-inventory-wizard');
+    const reflectionMaster = screenSlice('evening-reflection');
+    const freeReflection = screenSlice('evening-inventory-free-reflection');
+    const gratitude = screenSlice('evening-inventory-gratitude');
+    const connection = screenSlice('evening-inventory-connection');
+
+    assert.ok(
+      html.indexOf('data-page="home-daily-close"') < html.indexOf('data-page="evening-inventory-wizard"')
+        && html.indexOf('data-page="evening-inventory-wizard"') < html.indexOf('data-page="home-period-history"'),
+      'the inventory row must sit directly between the daily-close and current-period/history rows'
+    );
+    assert.equal((row.match(/data-screen="evening-inventory-/g) || []).length, 8, 'inventory row screen count');
+    assert.equal((row.match(/data-wizard-step="[1-8]"/g) || []).length, 8, 'inventory wizard progress count');
+    assert.ok(row.includes('data-inventory-session="daily-inventory"'), 'inventory must retain one session semantic');
+    assert.ok(!row.includes('data-timeline-event'), 'inventory must not split into eight Timeline events');
+    assert.ok(!/\brequired\b/i.test(row), 'all inventory prompts must remain optional');
+    assert.ok(!/inventory-(?:score|percentage)/i.test(row), 'inventory must not add a recovery score or percentage');
+    assert.ok(!/sikeres|sikertelen/i.test(row), 'inventory must not grade the reflection');
+    assert.ok(!/data-action="inventory-next"[^>]*(?:disabled|aria-disabled)/.test(row), 'forward navigation must never be blocked by unanswered fields');
+    assert.equal((row.match(/data-action="inventory-next"/g) || []).length, 7, 'each non-final screen needs optional forward navigation');
+
+    eveningInventoryScreens.forEach(([id, parent, label], index) => {
+      const screen = screenSlice(id);
+      assert.ok(screen.includes('class="phone-screen checkin-fullscreen'), `${id} must reuse the evening full-screen family`);
+      assert.ok(screen.includes('data-component="evening-inventory-panel"'), `${id} must use the shared inventory panel`);
+      assert.ok(screen.includes(`data-parent-screen="${parent}"`), `${id} must preserve its internal wizard parent`);
+      assert.ok(screen.includes(`data-wizard-step="${index + 1}"`), `${id} must expose its progress step`);
+      assert.ok(screen.includes(label), `${id} must retain its primary subject`);
+      assert.ok(screen.includes('class="inventory-navigation"'), `${id} must use the common bottom navigation`);
+    });
+    assert.ok(reflectionMaster.includes('data-component="reflection-selector"'), 'Screen 12 remains the preserved visual reference baseline');
+    assert.ok(!reflectionMaster.includes('data-component="evening-inventory-panel"'), 'Screen 12 must not be replaced by the prototype wizard');
+
+    [
+      'mood', 'craving-intensity', 'recovery-assessment', 'old-pattern', 'old-pattern-note',
+      'sponsor-contact', 'meeting-state', 'trusted-contact', 'literature-state', 'step-work-state',
+      'program-application-note', 'responsibility-item', 'harm-flag', 'future-resolution',
+      'rumination-categories', 'gratitude-items', 'spiritual-practice', 'spiritual-principles',
+      'service-state', 'free-reflection-type', 'free-reflection-text', 'photo-memo', 'voice-memo'
+    ].forEach((field) => assert.ok(row.includes(`data-inventory-field="${field}"`), `inventory field missing: ${field}`));
+
+    assert.ok(gratitude.includes('data-component="inventory-gratitude-list"'), 'gratitude must be a separate editable daily list');
+    assert.ok(gratitude.includes('data-action="add-gratitude-item"'), 'gratitude must allow adding items without a fixed count');
+    assert.ok(connection.includes('Nincs még szponzor'), 'connection must show a non-mandatory sponsor state');
+    assert.ok(!connection.includes('Kötelező szponzor'), 'connection must not frame sponsor contact as mandatory');
+    [
+      'data-component="free-reflection-selector"',
+      'data-inventory-field="free-reflection-text"',
+      'data-inventory-field="photo-memo"',
+      'data-inventory-field="voice-memo"',
+      'data-action="save-evening-inventory"'
+    ].forEach((value) => assert.ok(freeReflection.includes(value), `free reflection missing ${value}`));
+    assert.match(html, /\.evening-inventory-screen\s*\{[^}]*background:\s*#2C2E77/s, 'inventory screens must retain Screen 12 evening background treatment');
+    assert.match(html, /\.evening-inventory-panel\s*\{[^}]*background:\s*rgba\(255,\s*255,\s*255,\s*\.92\)/s, 'inventory panels must reuse the quiet translucent reflection-sheet treatment');
+  },
+
   homeBranch() {
     const collapsedHomeScreen = screenSlice('home-collapsed');
     const homeScreen = screenSlice('home');
@@ -643,6 +720,7 @@ const tests = {
     const savedScreen = screenSlice('reflection-saved');
     const relapseScreen = screenSlice('checkin-relapse');
     const dailyCloseRow = screenRowSlice('home-daily-close');
+    const inventoryRow = screenRowSlice('evening-inventory-wizard');
     const periodHistoryRow = screenRowSlice('home-period-history');
     const statisticsViewsRow = screenRowSlice('home-statistics-views');
     const panicRow = screenRowSlice('panic');
@@ -653,6 +731,7 @@ const tests = {
     assert.ok(dailyCloseRow.includes('A rövid írás és a hangulatnapló bármikor kitölthető'), 'daily close row must clarify all-day journal availability');
     assert.ok(dailyCloseRow.includes('Gyere vissza később'), 'daily close row must document the optional early check-in gate');
     assert.ok(dailyCloseRow.includes('még tervezés alatt áll'), 'daily close row must retain the unresolved retrospective-entry design as open work');
+    assert.ok(inventoryRow.includes('data-row-screens="evening-inventory-state evening-inventory-recovery evening-inventory-connection evening-inventory-program evening-inventory-honest-review evening-inventory-gratitude evening-inventory-spirituality evening-inventory-free-reflection"'), 'the third Home row must remain the complete reviewable Evening Inventory family');
     assert.ok(periodHistoryRow.includes('data-row-screens="home-statistics-timeline progress-milestones"'), 'period history row must contain only 8E and M');
     assert.ok(periodHistoryRow.includes('közvetlenül az aktuális időszak timeline-ját nyitja'), 'period history row must explain the direct current-period timeline entry point');
     assert.ok(periodHistoryRow.includes('korábbi időszakok elkülönített timeline-jai a Statisztikák menüből érhetők el'), 'period history row must explain the separate statistics entry for historical timelines');
@@ -678,12 +757,13 @@ const tests = {
     assert.equal((html.match(/data-target-screen="checkin-relapse"/g) || []).length, 1, 'only the panic flow may target the relapse screen');
     assert.match(html, /\.prototype-page\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start/s, 'prototype layout must support an interleaved panic row without duplicating it');
     assert.match(html, /\.home-screen-section\s*\{[^}]*display:\s*contents/s, 'home rows must participate in the shared top-level order');
-    assert.match(html, /\.home-screen-section > \.screen-row\[data-page="home-period-history"\]\s*\{\s*order:\s*5;\s*\}/s, 'timeline row must precede panic in the shared order');
-    assert.match(html, /\.screen-section\[aria-labelledby="panic-row-title"\]\s*\{\s*order:\s*6;\s*\}/s, 'panic row must render immediately after the timeline row');
-    assert.match(html, /\.home-screen-section > \.statistics-menu-heading\s*\{[^}]*order:\s*7;/s, 'statistics heading must render immediately after the panic row');
-    assert.match(html, /\.home-screen-section > \.screen-row\[data-page="home-statistics-views"\]\s*\{[^}]*order:\s*8;/s, 'statistics row must render below its heading after the panic row');
-    assert.match(html, /\.screen-section\[aria-labelledby="recovery-row-title"\]\s*\{\s*order:\s*9;\s*\}/s, 'recovery row must render immediately below the statistics row');
-    assert.match(html, /\.screen-section\[aria-labelledby="progress-row-title"\]\s*\{\s*order:\s*10;\s*\}/s, 'progress row must render after the recovery row');
+    assert.match(html, /\.home-screen-section > \.screen-row\[data-page="evening-inventory-wizard"\]\s*\{\s*order:\s*5;\s*\}/s, 'inventory row must be the third Home-content row');
+    assert.match(html, /\.home-screen-section > \.screen-row\[data-page="home-period-history"\]\s*\{\s*order:\s*6;\s*\}/s, 'timeline row must follow the inventory row');
+    assert.match(html, /\.screen-section\[aria-labelledby="panic-row-title"\]\s*\{\s*order:\s*7;\s*\}/s, 'panic row must render immediately after the timeline row');
+    assert.match(html, /\.home-screen-section > \.statistics-menu-heading\s*\{[^}]*order:\s*8;/s, 'statistics heading must render immediately after the panic row');
+    assert.match(html, /\.home-screen-section > \.screen-row\[data-page="home-statistics-views"\]\s*\{[^}]*order:\s*9;/s, 'statistics row must render below its heading after the panic row');
+    assert.match(html, /\.screen-section\[aria-labelledby="recovery-row-title"\]\s*\{\s*order:\s*10;\s*\}/s, 'recovery row must render immediately below the statistics row');
+    assert.match(html, /\.screen-section\[aria-labelledby="progress-row-title"\]\s*\{\s*order:\s*11;\s*\}/s, 'progress row must render after the recovery row');
     assert.ok(screenSlice('home-collapsed').includes('data-action="open-current-period-timeline" data-target-screen="home-statistics-timeline"'), 'collapsed home clean-days button must open the current-period timeline directly');
     assert.ok(homeScreen.includes('data-action="open-current-period-timeline" data-target-screen="home-statistics-timeline"'), 'expanded home clean-days button must open the current-period timeline directly');
     assert.ok(homeStatisticsTimelineScreen.includes('data-parent-screen="home"'), 'current-period timeline must be a direct child of home');
@@ -705,6 +785,14 @@ const tests = {
       'data-screen="checkin-clean"',
       'data-screen="evening-reflection"',
       'data-screen="reflection-saved"',
+      'data-screen="evening-inventory-state"',
+      'data-screen="evening-inventory-recovery"',
+      'data-screen="evening-inventory-connection"',
+      'data-screen="evening-inventory-program"',
+      'data-screen="evening-inventory-honest-review"',
+      'data-screen="evening-inventory-gratitude"',
+      'data-screen="evening-inventory-spirituality"',
+      'data-screen="evening-inventory-free-reflection"',
       'data-screen="panic-root"',
       'data-screen="survival-stop"',
       'data-screen="survival-breathe"',
@@ -874,7 +962,7 @@ const tests = {
     expectCount(/data-component="daily-task-detail"/g, 0, 'daily task detail screens must be removed');
     expectCount(/data-component="checkin-support-option"/g, 0, 'deleted check-in support menu must not leave option rows behind');
     assert.equal((eveningReflectionScreen.match(/<textarea\b/g) || []).length, 1, 'screen 12 reflection editor textarea must be restored');
-    expectCount(/<textarea\b/g, 4, 'motivation, reflection, journal entry, and functional alternative daily-note editors must expose textareas');
+    expectCount(/<textarea\b/g, 7, 'existing editors plus the optional inventory notes and free reflection must expose textareas');
   },
 
   progressBranch() {
@@ -1398,7 +1486,7 @@ const tests = {
     });
     assert.equal((callSomeoneScreen.match(/data-component="panic-call-card"/g) || []).length, 2, 'each contact accordion must include a call card');
     assert.equal((callSomeoneScreen.match(/data-component="panic-quick-messages"/g) || []).length, 2, 'each contact accordion must include quick messages');
-    expectCount(/class="screen-row/g, 9, 'screen row count');
+    expectCount(/class="screen-row/g, 10, 'screen row count');
   },
 
   accessibility() {
@@ -1415,12 +1503,13 @@ const tests = {
 
   hierarchy() {
     expectOrdered(screenOrder.map((id) => `data-screen="${id}"`));
-    expectCount(/class="screen-row/g, 9, 'screen row count');
+    expectCount(/class="screen-row/g, 10, 'screen row count');
     expectContains('data-page="entry" data-root-screen="splash" data-row-screens="splash onboarding start-date sponsor-setup onboarding-why-started notifications"');
     expectContains('data-page="home" data-root-screen="home-collapsed" data-row-screens="home-collapsed home"');
     expectContains('data-page="home-statistics-views" data-root-screen="home-statistics" data-row-screens="home-statistics home-statistics-detail home-statistics-detail-timeline"');
     expectContains('data-page="home-period-history" data-root-screen="home-statistics-timeline" data-row-screens="home-statistics-timeline progress-milestones"');
     expectContains('data-page="home-daily-close" data-root-screen="daily-image" data-row-screens="daily-image checkin-clean evening-reflection reflection-saved"');
+    expectContains(`data-page="evening-inventory-wizard" data-root-screen="evening-inventory-state" data-row-screens="${eveningInventoryScreens.map(([id]) => id).join(' ')}"`);
     expectContains('data-page="panic" data-root-screen="panic-root" data-row-screens="panic-root survival-stop survival-breathe survival-water survival-outside survival-note panic-help-message panic-why-started panic-meeting-finder checkin-relapse"');
     expectAbsent('data-page="daily-image"');
     expectContains('data-page="progress" data-root-screen="progress-calendar" data-row-screens="progress-calendar progress-day-detail"');
@@ -1444,6 +1533,14 @@ const tests = {
       'checkin-clean': 'home',
       'evening-reflection': 'checkin-clean',
       'reflection-saved': 'evening-reflection',
+      'evening-inventory-state': 'home',
+      'evening-inventory-recovery': 'evening-inventory-state',
+      'evening-inventory-connection': 'evening-inventory-recovery',
+      'evening-inventory-program': 'evening-inventory-connection',
+      'evening-inventory-honest-review': 'evening-inventory-program',
+      'evening-inventory-gratitude': 'evening-inventory-honest-review',
+      'evening-inventory-spirituality': 'evening-inventory-gratitude',
+      'evening-inventory-free-reflection': 'evening-inventory-spirituality',
       'checkin-relapse': 'panic-root',
       'panic-root': 'home',
       'survival-stop': 'panic-root',

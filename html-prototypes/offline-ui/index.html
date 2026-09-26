@@ -223,19 +223,20 @@
 
     .home-screen-section > .screen-row[data-page="home"] { order: 3; }
     .home-screen-section > .screen-row[data-page="home-daily-close"] { order: 4; }
-    .home-screen-section > .screen-row[data-page="home-period-history"] { order: 5; }
-    .screen-section[aria-labelledby="panic-row-title"] { order: 6; }
+    .home-screen-section > .screen-row[data-page="evening-inventory-wizard"] { order: 5; }
+    .home-screen-section > .screen-row[data-page="home-period-history"] { order: 6; }
+    .screen-section[aria-labelledby="panic-row-title"] { order: 7; }
     .home-screen-section > .statistics-menu-heading {
-      order: 7;
+      order: 8;
       margin-top: 48px;
     }
     .home-screen-section > .screen-row[data-page="home-statistics-views"] {
-      order: 8;
+      order: 9;
       margin-top: 18px;
     }
-    .screen-section[aria-labelledby="recovery-row-title"] { order: 9; }
-    .screen-section[aria-labelledby="progress-row-title"] { order: 10; }
-    .screen-section[aria-labelledby="alt-progress-row-title"] { order: 11; }
+    .screen-section[aria-labelledby="recovery-row-title"] { order: 10; }
+    .screen-section[aria-labelledby="progress-row-title"] { order: 11; }
+    .screen-section[aria-labelledby="alt-progress-row-title"] { order: 12; }
     .home-screen-section > .screen-row + .screen-row { margin-top: 48px; }
 
     .home-row-explanation {
@@ -6466,6 +6467,422 @@
         scroll-behavior: auto;
       }
     }
+    /* Screen 12-derived, review-only Daily Inventory wizard family. */
+    .evening-inventory-screen {
+      position: relative;
+      overflow: hidden;
+      background: #2C2E77;
+      color: #FFF8FF;
+    }
+
+    .inventory-evening-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 76% 13%, rgba(255, 200, 132, .62) 0 5%, transparent 5.4%),
+        radial-gradient(circle at 24% 22%, rgba(184, 154, 215, .28) 0 13%, transparent 26%),
+        linear-gradient(164deg, #6962A8 0%, #4A397D 39%, #27235E 72%, #171842 100%);
+    }
+
+    .inventory-evening-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(28, 26, 82, .10), rgba(25, 21, 63, .42) 58%, rgba(15, 16, 48, .78));
+    }
+
+    .inventory-checkin-content {
+      position: relative;
+      z-index: 1;
+      height: calc(var(--screen-h) - 32px);
+      min-height: 0;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .evening-inventory-panel {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 16px 15px;
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 -18px 44px rgba(18, 16, 55, .13), inset 0 1px 0 rgba(255, 255, 255, .72);
+      color: var(--hajnal-navy);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .inventory-hero {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      align-items: center;
+      gap: 11px;
+      padding: 0 4px 14px;
+    }
+
+    .inventory-moon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(106, 86, 180, .16);
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 230, 190, .96), rgba(255, 195, 124, .80));
+      color: #6A56B4;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 29px;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(106, 86, 180, .14), inset 0 1px 0 rgba(255, 255, 255, .72);
+    }
+
+    .inventory-progress {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 2px;
+      color: rgba(44, 46, 119, .65);
+      font-size: 11px;
+      font-weight: 820;
+      letter-spacing: .03em;
+    }
+
+    .inventory-hero h3 {
+      margin: 0;
+      color: var(--hajnal-navy);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+    }
+
+    .inventory-scroll {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      align-content: start;
+      gap: 15px;
+      overflow-y: auto;
+      padding: 2px 4px 12px;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+    }
+
+    .inventory-scroll::-webkit-scrollbar { display: none; }
+
+    .inventory-subtitle {
+      margin: 0;
+      color: rgba(44, 46, 119, .70);
+      font-size: 14px;
+      line-height: 1.38;
+      font-weight: 620;
+    }
+
+    .inventory-status-note {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid rgba(106, 86, 180, .13);
+      border-radius: 12px;
+      background: rgba(242, 235, 249, .78);
+      color: #6A56B4;
+      font-size: 11.5px;
+      font-weight: 780;
+    }
+
+    .inventory-section {
+      display: grid;
+      gap: 9px;
+      padding: 14px;
+      border: 1px solid rgba(106, 86, 180, .12);
+      border-radius: 18px;
+      background: rgba(255, 253, 254, .74);
+      box-shadow: 0 8px 22px rgba(69, 48, 123, .055), inset 0 1px 0 rgba(255, 255, 255, .82);
+    }
+
+    .inventory-section.compact { gap: 8px; padding: 12px 14px; }
+
+    .inventory-section h4,
+    .inventory-section legend {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      color: var(--hajnal-navy);
+      font-size: 14px;
+      line-height: 1.28;
+      font-weight: 830;
+    }
+
+    .inventory-section p,
+    .inventory-section small {
+      margin: 0;
+      color: rgba(44, 46, 119, .68);
+      font-size: 12px;
+      line-height: 1.38;
+      font-weight: 610;
+    }
+
+    .inventory-choice-row,
+    .inventory-chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .inventory-choice,
+    .inventory-chip {
+      min-height: 38px;
+      padding: 8px 11px;
+      border: 1px solid rgba(106, 86, 180, .17);
+      border-radius: 13px;
+      background: rgba(247, 242, 250, .88);
+      color: rgba(44, 46, 119, .82);
+      font: inherit;
+      font-size: 12px;
+      line-height: 1.12;
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .inventory-choice[aria-pressed="true"],
+    .inventory-chip[aria-pressed="true"] {
+      border-color: rgba(122, 72, 193, .48);
+      background: linear-gradient(135deg, #7B4AC5, #9A65D7);
+      color: #FFF9FF;
+      box-shadow: 0 8px 15px rgba(111, 70, 206, .18);
+    }
+
+    .inventory-choice.is-wide { flex: 1 1 92px; }
+
+    .inventory-mood-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+
+    .inventory-mood {
+      min-height: 62px;
+      display: grid;
+      place-items: center;
+      padding: 5px;
+      border: 1px solid rgba(106, 86, 180, .13);
+      border-radius: 16px;
+      background: rgba(247, 242, 250, .82);
+      color: #6A56B4;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .inventory-mood[aria-pressed="true"] {
+      border-color: rgba(122, 72, 193, .54);
+      background: #F1E7FB;
+      box-shadow: 0 0 0 3px rgba(139, 83, 215, .14);
+    }
+
+    .inventory-range-row { display: grid; gap: 7px; }
+
+    .inventory-range-row input[type="range"] {
+      width: 100%;
+      accent-color: #7B4AC5;
+      cursor: pointer;
+    }
+
+    .inventory-range-labels {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(44, 46, 119, .59);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .inventory-context-row {
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: 35px minmax(0, 1fr);
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border: 1px solid rgba(106, 86, 180, .10);
+      border-radius: 15px;
+      background: rgba(246, 240, 249, .68);
+    }
+
+    .inventory-context-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(184, 154, 215, .28);
+      color: #6A56B4;
+      font-size: 16px;
+    }
+
+    .inventory-context-row strong,
+    .inventory-context-row span { display: block; }
+    .inventory-context-row strong { color: var(--hajnal-navy); font-size: 12.5px; }
+    .inventory-context-row span { margin-top: 2px; color: rgba(44, 46, 119, .64); font-size: 11.5px; font-weight: 620; }
+
+    .inventory-field,
+    .inventory-textarea {
+      width: 100%;
+      border: 1px solid rgba(106, 86, 180, .18);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .78);
+      color: var(--hajnal-navy);
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 620;
+    }
+
+    .inventory-field { min-height: 41px; padding: 0 11px; }
+    .inventory-textarea { min-height: 68px; padding: 10px 11px; resize: vertical; }
+    .inventory-field::placeholder, .inventory-textarea::placeholder { color: rgba(44, 46, 119, .42); }
+
+    .inventory-reveal[hidden] { display: none; }
+    .inventory-reveal { display: grid; gap: 8px; }
+
+    .inventory-auto-context {
+      padding: 10px 11px;
+      border-left: 3px solid rgba(122, 72, 193, .54);
+      border-radius: 0 12px 12px 0;
+      background: rgba(242, 235, 249, .78);
+      color: rgba(44, 46, 119, .77);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 680;
+    }
+
+    .inventory-gratitude-list { display: grid; gap: 8px; }
+
+    .inventory-gratitude-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 36px;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .inventory-remove {
+      width: 36px;
+      min-height: 38px;
+      padding: 0;
+      border: 0;
+      border-radius: 12px;
+      background: rgba(245, 232, 240, .86);
+      color: #A8587B;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .inventory-add {
+      min-height: 40px;
+      border: 1px dashed rgba(122, 72, 193, .42);
+      border-radius: 13px;
+      background: transparent;
+      color: #6A56B4;
+      font: inherit;
+      font-size: 12.5px;
+      font-weight: 810;
+      cursor: pointer;
+    }
+
+    .inventory-free-selector {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .inventory-free-selector .inventory-choice {
+      min-height: 54px;
+      text-align: left;
+    }
+
+    .inventory-media-toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .inventory-media-button {
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid rgba(106, 86, 180, .14);
+      border-radius: 13px;
+      background: rgba(247, 242, 250, .82);
+      color: #6A56B4;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .inventory-character-count {
+      justify-self: end;
+      color: rgba(44, 46, 119, .52);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .inventory-navigation {
+      display: grid;
+      grid-template-columns: 1fr 1.24fr;
+      gap: 9px;
+      padding: 11px 4px 0;
+      border-top: 1px solid rgba(106, 86, 180, .10);
+    }
+
+    .inventory-navigation button {
+      min-height: 45px;
+      border-radius: 14px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 820;
+      cursor: pointer;
+    }
+
+    .inventory-back {
+      border: 1px solid rgba(106, 86, 180, .18);
+      background: rgba(250, 247, 252, .86);
+      color: #6A56B4;
+    }
+
+    .inventory-next {
+      border: 1px solid rgba(122, 72, 193, .20);
+      background: linear-gradient(135deg, #7B4AC5, #9A65D7);
+      color: #FFF9FF;
+      box-shadow: 0 10px 22px rgba(111, 70, 206, .18);
+    }
+
+    .inventory-later {
+      justify-self: center;
+      padding: 2px 4px;
+      border: 0;
+      background: transparent;
+      color: rgba(44, 46, 119, .55);
+      font: inherit;
+      font-size: 11.5px;
+      font-weight: 710;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .evening-inventory-screen button:focus-visible,
+    .evening-inventory-screen input:focus-visible,
+    .evening-inventory-screen textarea:focus-visible {
+      outline: 3px solid rgba(122, 72, 193, .38);
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
@@ -7731,6 +8148,158 @@
 
     </section>
 
+      <div class="screen-row" data-page="evening-inventory-wizard" data-root-screen="evening-inventory-state" data-row-screens="evening-inventory-state evening-inventory-recovery evening-inventory-connection evening-inventory-program evening-inventory-honest-review evening-inventory-gratitude evening-inventory-spirituality evening-inventory-free-reflection">
+        <section class="screen-column" id="column-evening-inventory-state">
+          <div class="screen-label"><span class="screen-index">12A</span><strong>Mai állapot</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-state" data-screen="evening-inventory-state" data-parent-screen="home" data-inventory-session="daily-inventory" data-wizard-step="1" data-prototype-context="after-clean-day" aria-label="Esti reflexió: mai állapot">
+            <div class="inventory-evening-bg" aria-hidden="true"></div>
+            <div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content">
+              <section class="evening-inventory-panel" data-component="evening-inventory-panel">
+                <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>1 / 8</span></p><h3>Esti reflexió</h3></div></header>
+                <div class="inventory-scroll">
+                  <p class="inventory-subtitle">Hogy vagy most, a nap végén?</p>
+                  <p class="inventory-status-note">✓ A mai nap lezárva</p>
+                  <fieldset class="inventory-section" data-inventory-field="mood"><legend>Hangulat</legend><div class="inventory-mood-row" aria-label="Mai hangulat">
+                    <button class="inventory-mood" type="button" data-inventory-choice="mood" data-inventory-value="very-bad" aria-label="Nagyon rossz" aria-pressed="false">😞</button>
+                    <button class="inventory-mood" type="button" data-inventory-choice="mood" data-inventory-value="difficult" aria-label="Nehéz" aria-pressed="false">😕</button>
+                    <button class="inventory-mood" type="button" data-inventory-choice="mood" data-inventory-value="neutral" aria-label="Semleges" aria-pressed="true">😐</button>
+                    <button class="inventory-mood" type="button" data-inventory-choice="mood" data-inventory-value="good" aria-label="Jó" aria-pressed="false">🙂</button>
+                    <button class="inventory-mood" type="button" data-inventory-choice="mood" data-inventory-value="very-good" aria-label="Nagyon jó" aria-pressed="false">😊</button>
+                  </div></fieldset>
+                  <fieldset class="inventory-section" data-inventory-field="craving-intensity"><legend>Sóvárgás ma</legend><div class="inventory-range-row"><label class="sr-only" for="inventory-craving">Sóvárgás erőssége 0-tól 10-ig</label><input id="inventory-craving" type="range" min="0" max="10" value="3" data-inventory-field="craving-intensity" data-component="inventory-craving-range" aria-valuetext="3 / 10"><div class="inventory-range-labels"><span>0 · Nem volt</span><output for="inventory-craving" data-component="inventory-craving-output">3 / 10</output><span>10 · Nagyon erős</span></div></div></fieldset>
+                </div>
+                <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="home">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-recovery">Tovább</button></footer>
+              </section>
+            </main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-recovery">
+          <div class="screen-label"><span class="screen-index">12B</span><strong>Felépülésem ma</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-recovery" data-screen="evening-inventory-recovery" data-parent-screen="evening-inventory-state" data-inventory-session="daily-inventory" data-wizard-step="2" aria-label="Esti reflexió: felépülésem ma">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>2 / 8</span></p><h3>Felépülésem ma</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Nézz rá őszintén a mai napodra.</p>
+                <fieldset class="inventory-section" data-inventory-field="recovery-assessment"><legend>Mennyire tudtál ma a felépülésed szerint élni?</legend><div class="inventory-choice-row"><button class="inventory-choice is-wide" type="button" data-inventory-choice="recovery-assessment" data-inventory-value="difficult" aria-pressed="false">Nehéz volt</button><button class="inventory-choice is-wide" type="button" data-inventory-choice="recovery-assessment" data-inventory-value="mixed" aria-pressed="false">Vegyes</button><button class="inventory-choice is-wide" type="button" data-inventory-choice="recovery-assessment" data-inventory-value="good" aria-pressed="false">Jól ment</button></div></fieldset>
+                <fieldset class="inventory-section" data-inventory-field="old-pattern"><legend>Volt ma olyan helyzet, amikor a régi mintáid vették át az irányítást?</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="old-pattern" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="old-pattern" data-inventory-value="no" aria-pressed="false">Nem</button><button class="inventory-choice" type="button" data-inventory-choice="old-pattern" data-inventory-value="unsure" aria-pressed="false">Nem tudom</button></div><div class="inventory-reveal" data-reveal-when="old-pattern:yes" hidden><label for="inventory-old-pattern-note">Mi történt? <small>Opcionális</small></label><textarea class="inventory-textarea" id="inventory-old-pattern-note" data-inventory-field="old-pattern-note" placeholder="Pár szóban, ha jól esik leírni."></textarea></div></fieldset>
+                <fieldset class="inventory-section compact" data-inventory-field="different-tomorrow"><legend>Van valami, amit ma másképp csinálnál?</legend><label class="sr-only" for="inventory-different-tomorrow">Amit ma másképp csinálnál</label><input class="inventory-field" id="inventory-different-tomorrow" type="text" placeholder="Opcionális rövid válasz"></fieldset>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-state">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-connection">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-connection">
+          <div class="screen-label"><span class="screen-index">12C</span><strong>Kapcsolódás</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-connection" data-screen="evening-inventory-connection" data-parent-screen="evening-inventory-recovery" data-inventory-session="daily-inventory" data-wizard-step="3" aria-label="Esti reflexió: kapcsolódás">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>3 / 8</span></p><h3>Kapcsolódás</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Nem kell egyedül végigcsinálnod.</p>
+                <section class="inventory-section compact" data-inventory-field="sponsor-contact"><h4>Szponzor</h4><div class="inventory-context-row"><span class="inventory-context-icon" aria-hidden="true">♡</span><span><strong>Ma nem beszéltetek</strong><span>Ez rendben van; nem napi elvárás.</span></span></div><small>Nincs még szponzor? Ezt később is hozzáadhatod.</small></section>
+                <section class="inventory-section compact" data-inventory-field="meeting-state"><h4>Meeting</h4><div class="inventory-context-row"><span class="inventory-context-icon" aria-hidden="true">⌁</span><span><strong>Nem volt ma meeting</strong><span>A korábbi részvétel később automatikusan itt jelenhet meg.</span></span></div></section>
+                <fieldset class="inventory-section" data-inventory-field="trusted-contact"><legend>Más kapcsolat</legend><p>Volt ma valaki, akivel őszintén tudtál beszélni?</p><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="trusted-contact" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="trusted-contact" data-inventory-value="no" aria-pressed="false">Nem</button><button class="inventory-choice" type="button" data-inventory-choice="trusted-contact" data-inventory-value="skip" aria-pressed="false">Kihagyom</button></div></fieldset>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-recovery">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-program">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-program">
+          <div class="screen-label"><span class="screen-index">12D</span><strong>Program ma</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-program" data-screen="evening-inventory-program" data-parent-screen="evening-inventory-connection" data-inventory-session="daily-inventory" data-wizard-step="4" aria-label="Esti reflexió: program ma">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>4 / 8</span></p><h3>Program ma</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Mi segített ma a felépülésedben?</p>
+                <fieldset class="inventory-section" data-inventory-field="literature-state"><legend>NA irodalom</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="literature-state" data-inventory-value="read" aria-pressed="false">Olvastam ma</button><button class="inventory-choice" type="button" data-inventory-choice="literature-state" data-inventory-value="not-read" aria-pressed="false">Ma nem</button></div></fieldset>
+                <section class="inventory-section" data-inventory-field="step-work-state"><h4>Lépésmunka</h4><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="step-work-state" data-inventory-value="worked" aria-pressed="false">Dolgoztam ma a lépéseken</button><button class="inventory-choice" type="button" data-inventory-choice="step-work-state" data-inventory-value="not-worked" aria-pressed="false">Ma nem</button></div><p class="inventory-auto-context">1. lépés · Tehetetlenség<br>2 kérdéssel haladtál ma</p></section>
+                <fieldset class="inventory-section" data-inventory-field="program-application-note"><legend>Használtál ma valamit abból, amit a programban tanulsz?</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="program-application" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="program-application" data-inventory-value="no" aria-pressed="false">Nem</button><button class="inventory-choice" type="button" data-inventory-choice="program-application" data-inventory-value="unsure" aria-pressed="false">Nem tudom</button></div><div class="inventory-reveal" data-reveal-when="program-application:yes" hidden><label for="inventory-program-note">Mit? <small>Opcionális</small></label><input class="inventory-field" id="inventory-program-note" type="text" data-inventory-field="program-application-note" placeholder="Pár szóban, ha jól esik."></div></fieldset>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-connection">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-honest-review">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-honest-review">
+          <div class="screen-label"><span class="screen-index">12E</span><strong>Őszinte leltár</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-honest-review" data-screen="evening-inventory-honest-review" data-parent-screen="evening-inventory-program" data-inventory-session="daily-inventory" data-wizard-step="5" aria-label="Esti reflexió: őszinte leltár">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>5 / 8</span></p><h3>Őszinte leltár</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Nem ítélet. Csak egy őszinte visszanézés.</p>
+                <fieldset class="inventory-section" data-inventory-field="responsibility-item"><legend>Van valami, amiért ma felelősséget szeretnél vállalni?</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="responsibility" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="responsibility" data-inventory-value="no" aria-pressed="false">Nem</button></div><div class="inventory-reveal" data-reveal-when="responsibility:yes" hidden><label for="inventory-responsibility-note">Röviden mi történt?</label><textarea class="inventory-textarea" id="inventory-responsibility-note" data-inventory-field="responsibility-item" placeholder="Opcionális rövid leírás."></textarea></div></fieldset>
+                <fieldset class="inventory-section" data-inventory-field="harm-flag"><legend>Bántottál ma magadat vagy valaki mást a viselkedéseddel?</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="harm-flag" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="harm-flag" data-inventory-value="no" aria-pressed="false">Nem</button><button class="inventory-choice" type="button" data-inventory-choice="harm-flag" data-inventory-value="unsure" aria-pressed="false">Nem tudom</button></div><div class="inventory-reveal" data-reveal-when="harm-flag:yes" hidden><p>Van valami, amit később szeretnél rendezni?</p><div class="inventory-choice-row" data-inventory-field="future-resolution"><button class="inventory-choice" type="button" data-inventory-choice="future-resolution" data-inventory-value="talk" aria-pressed="false">Beszélni szeretnék róla</button><button class="inventory-choice" type="button" data-inventory-choice="future-resolution" data-inventory-value="amends-later" aria-pressed="false">Lehet, hogy jóvátételre lesz szükség</button><button class="inventory-choice" type="button" data-inventory-choice="future-resolution" data-inventory-value="unsure" aria-pressed="false">Még nem tudom</button></div></div></fieldset>
+                <fieldset class="inventory-section compact" data-inventory-field="rumination-categories"><legend>Volt ma valami, amin újra és újra pörögtél?</legend><div class="inventory-chip-grid"><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-choice-mode="multi" data-inventory-value="past" aria-pressed="false">Múlt</button><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-choice-mode="multi" data-inventory-value="future" aria-pressed="false">Jövő</button><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-choice-mode="multi" data-inventory-value="fear" aria-pressed="false">Félelem</button><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-choice-mode="multi" data-inventory-value="anger" aria-pressed="false">Harag</button><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-choice-mode="multi" data-inventory-value="other" aria-pressed="false">Más</button><button class="inventory-chip" type="button" data-inventory-choice="rumination-categories" data-inventory-value="none" aria-pressed="false">Nem</button></div></fieldset>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-program">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-gratitude">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-gratitude">
+          <div class="screen-label"><span class="screen-index">12F</span><strong>Hála</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-gratitude" data-screen="evening-inventory-gratitude" data-parent-screen="evening-inventory-honest-review" data-inventory-session="daily-inventory" data-wizard-step="6" aria-label="Esti reflexió: hála">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>6 / 8</span></p><h3>Hála</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Mi az, amiért ma hálás tudsz lenni?</p>
+                <section class="inventory-section" data-inventory-field="gratitude-items"><p>A hála a mai leltár része. Annyit írhatsz, amennyi ma jól esik — akár semennyit.</p><div class="inventory-gratitude-list" data-component="inventory-gratitude-list" data-inventory-field="gratitude-items"><div class="inventory-gratitude-item" data-gratitude-item="1"><label class="sr-only" for="inventory-gratitude-1">Első hála</label><input class="inventory-field" id="inventory-gratitude-1" type="text" data-inventory-field="gratitude-items" placeholder="Ma hálás vagyok azért, hogy…"><button class="inventory-remove" type="button" data-action="remove-inventory-gratitude" aria-label="Hála elem törlése">×</button></div></div><button class="inventory-add" type="button" data-action="add-gratitude-item">+ Hozzáadás</button></section>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-honest-review">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-spirituality">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-spirituality">
+          <div class="screen-label"><span class="screen-index">12G</span><strong>Spirituális oldal</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-spirituality" data-screen="evening-inventory-spirituality" data-parent-screen="evening-inventory-gratitude" data-inventory-session="daily-inventory" data-wizard-step="7" aria-label="Esti reflexió: spirituális oldal">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>7 / 8</span></p><h3>Spirituális oldal</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Mit vittél ma magaddal a programból?</p>
+                <fieldset class="inventory-section" data-inventory-field="spiritual-practice"><legend>Volt ma időd tudatosan megállni?</legend><div class="inventory-chip-grid"><button class="inventory-chip" type="button" data-inventory-choice="spiritual-practice" data-inventory-choice-mode="multi" data-inventory-value="prayer" aria-pressed="false">Ima</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-practice" data-inventory-choice-mode="multi" data-inventory-value="meditation" aria-pressed="false">Meditáció</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-practice" data-inventory-choice-mode="multi" data-inventory-value="silence" aria-pressed="false">Csend / reflexió</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-practice" data-inventory-choice-mode="multi" data-inventory-value="other" aria-pressed="false">Más</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-practice" data-inventory-value="none" aria-pressed="false">Nem</button></div></fieldset>
+                <fieldset class="inventory-section" data-inventory-field="spiritual-principles"><legend>Milyen elvet sikerült ma gyakorolnod?</legend><div class="inventory-chip-grid"><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="honesty" aria-pressed="false">Őszinteség</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="openness" aria-pressed="false">Nyitottság</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="willingness" aria-pressed="false">Hajlandóság</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="acceptance" aria-pressed="false">Elfogadás</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="humility" aria-pressed="false">Alázat</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="patience" aria-pressed="false">Türelem</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="compassion" aria-pressed="false">Együttérzés</button><button class="inventory-chip" type="button" data-inventory-choice="spiritual-principles" data-inventory-choice-mode="multi" data-inventory-value="other" aria-pressed="false">Más</button></div></fieldset>
+                <fieldset class="inventory-section compact" data-inventory-field="service-state"><legend>Tettél ma valamit valakiért anélkül, hogy vártál volna érte valamit?</legend><div class="inventory-choice-row"><button class="inventory-choice" type="button" data-inventory-choice="service-state" data-inventory-value="yes" aria-pressed="false">Igen</button><button class="inventory-choice" type="button" data-inventory-choice="service-state" data-inventory-value="no" aria-pressed="false">Nem</button><button class="inventory-choice" type="button" data-inventory-choice="service-state" data-inventory-value="unsure" aria-pressed="false">Nem tudom</button></div></fieldset>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-gratitude">Vissza</button><button class="inventory-next" type="button" data-action="inventory-next" data-target-screen="evening-inventory-free-reflection">Tovább</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <section class="screen-column" id="column-evening-inventory-free-reflection">
+          <div class="screen-label"><span class="screen-index">12H</span><strong>Szabad reflexió</strong> · Esti leltár</div>
+          <article class="phone-screen checkin-fullscreen no-nav evening-inventory-screen" id="evening-inventory-free-reflection" data-screen="evening-inventory-free-reflection" data-parent-screen="evening-inventory-spirituality" data-inventory-session="daily-inventory" data-wizard-step="8" aria-label="Esti reflexió: szabad reflexió">
+            <div class="inventory-evening-bg" aria-hidden="true"></div><div class="status-bar"><span>21:36</span><span class="system-icons" aria-hidden="true"><svg><use href="#icon-signal"></use></svg><svg><use href="#icon-wifi"></use></svg><svg><use href="#icon-battery"></use></svg></span></div>
+            <main class="checkin-content inventory-checkin-content"><section class="evening-inventory-panel" data-component="evening-inventory-panel">
+              <header class="inventory-hero"><span class="inventory-moon" aria-hidden="true">☾</span><div><p class="inventory-progress">Esti reflexió <span>8 / 8</span></p><h3>Szabad reflexió</h3></div></header>
+              <div class="inventory-scroll">
+                <p class="inventory-subtitle">Amit még szeretnél megőrizni ebből a napból.</p>
+                <section class="inventory-section" data-inventory-field="free-reflection-type"><h4>Miről szeretnél írni?</h4><div class="inventory-free-selector" data-component="free-reflection-selector"><button class="inventory-choice" type="button" data-inventory-choice="free-reflection-type" data-inventory-value="best" aria-pressed="true">Mi volt ma a legjobb?</button><button class="inventory-choice" type="button" data-inventory-choice="free-reflection-type" data-inventory-value="hardest" aria-pressed="false">Mi volt ma a legnehezebb?</button><button class="inventory-choice" type="button" data-inventory-choice="free-reflection-type" data-inventory-value="remember" aria-pressed="false">Nem szeretném elfelejteni…</button><button class="inventory-choice" type="button" data-inventory-choice="free-reflection-type" data-inventory-value="free" aria-pressed="false">Csak írni szeretnék</button></div></section>
+                <section class="inventory-section" data-inventory-field="free-reflection-text"><h4>Írd le a gondolataidat</h4><label class="sr-only" for="inventory-free-reflection">Szabad esti reflexió</label><textarea class="inventory-textarea" id="inventory-free-reflection" data-inventory-field="free-reflection-text" data-component="inventory-free-reflection-text" maxlength="1200" placeholder="Kezdj el írni..."></textarea><output class="inventory-character-count" for="inventory-free-reflection" data-component="inventory-character-count">0 karakter</output><div class="inventory-media-toolbar"><button class="inventory-media-button" type="button" data-action="add-photo-memo" data-inventory-field="photo-memo" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-camera"></use></svg>Fotó hozzáadása</button><button class="inventory-media-button" type="button" data-action="add-voice-memo" data-inventory-field="voice-memo" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-message"></use></svg>Hangjegyzet</button></div></section>
+                <button class="inventory-later" type="button" data-action="inventory-later" data-target-screen="home">Később</button>
+              </div>
+              <footer class="inventory-navigation"><button class="inventory-back" type="button" data-action="inventory-back" data-target-screen="evening-inventory-spirituality">Vissza</button><button class="inventory-next" type="button" data-action="save-evening-inventory" data-target-screen="home">Mentés</button></footer>
+            </section></main>
+          </article>
+        </section>
+
+        <aside class="home-row-explanation" aria-label="Esti reflexió napi leltár wizard">
+          <p class="home-row-explanation-kicker">Kezdőlap · külön ellenőrizhető prototípus-sor</p>
+          <h3>Esti reflexió · napi leltár</h3>
+          <p>Ez a nyolclépéses, minden pontján kihagyható esti leltár a jelenlegi Screen 12 vizuális családját folytatja. Egyetlen későbbi Timeline-bejegyzéshez tartozik, nem nyolc külön eseményhez.</p>
+          <p>A mostani 11 → 12 → 10 folyamat változatlan marad. A wizard belső lépései működnek, de a végleges esti folyamathoz való bekötésről csak a közös vizuális áttekintés után érdemes dönteni.</p>
+        </aside>
+      </div>
+
     <section class="screen-section" aria-labelledby="panic-row-title">
       <div class="flow-heading">
         <div>
@@ -8816,6 +9385,133 @@
 
       window.hajnalReflection = { setActiveReflectionPrompt, addGratitudeItem, removeGratitudeItem };
       setActiveReflectionPrompt('best');
+    })();
+  </script>
+  <script>
+    (() => {
+      const wizard = document.querySelector('[data-page="evening-inventory-wizard"]');
+      if (!wizard) return;
+
+      const revealMatchingFields = (name, value) => {
+        wizard.querySelectorAll('[data-reveal-when]').forEach((region) => {
+          const [field, expected] = region.getAttribute('data-reveal-when').split(':');
+          if (field === name) region.hidden = value !== expected;
+        });
+      };
+
+      const activateChoice = (button) => {
+        const name = button.getAttribute('data-inventory-choice');
+        const value = button.getAttribute('data-inventory-value');
+        const multi = button.getAttribute('data-inventory-choice-mode') === 'multi';
+        const choices = Array.from(wizard.querySelectorAll('[data-inventory-choice]'))
+          .filter((candidate) => candidate.getAttribute('data-inventory-choice') === name);
+
+        if (multi) {
+          const active = button.getAttribute('aria-pressed') !== 'true';
+          choices.forEach((candidate) => {
+            if (candidate.getAttribute('data-inventory-value') === 'none') candidate.setAttribute('aria-pressed', 'false');
+          });
+          button.setAttribute('aria-pressed', String(active));
+        } else {
+          choices.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+          revealMatchingFields(name, value);
+        }
+      };
+
+      const updateCraving = (input) => {
+        const output = wizard.querySelector('[data-component="inventory-craving-output"]');
+        if (output) output.textContent = `${input.value} / 10`;
+        input.setAttribute('aria-valuetext', `${input.value} / 10`);
+      };
+
+      const reindexGratitude = (list) => {
+        list.querySelectorAll('[data-gratitude-item]').forEach((item, index) => {
+          const number = index + 1;
+          const input = item.querySelector('input');
+          const label = item.querySelector('label');
+          item.setAttribute('data-gratitude-item', String(number));
+          if (input) {
+            input.id = `inventory-gratitude-${number}`;
+            input.setAttribute('aria-label', `${number}. hála`);
+          }
+          if (label) label.htmlFor = `inventory-gratitude-${number}`;
+        });
+      };
+
+      const addGratitudeItem = () => {
+        const list = wizard.querySelector('[data-component="inventory-gratitude-list"]');
+        if (!list) return;
+        const item = document.createElement('div');
+        item.className = 'inventory-gratitude-item';
+        item.setAttribute('data-gratitude-item', '0');
+
+        const label = document.createElement('label');
+        label.className = 'sr-only';
+        label.textContent = 'Hála elem';
+        const input = document.createElement('input');
+        input.className = 'inventory-field';
+        input.type = 'text';
+        input.setAttribute('data-inventory-field', 'gratitude-items');
+        input.placeholder = 'Ma hálás vagyok azért, hogy…';
+        label.append(input);
+
+        const remove = document.createElement('button');
+        remove.className = 'inventory-remove';
+        remove.type = 'button';
+        remove.setAttribute('data-action', 'remove-inventory-gratitude');
+        remove.setAttribute('aria-label', 'Hála elem törlése');
+        remove.textContent = '×';
+        item.append(label, remove);
+        list.append(item);
+        reindexGratitude(list);
+        input.focus({ preventScroll: true });
+      };
+
+      const navigateWithinPrototype = (button) => {
+        const targetId = button.getAttribute('data-target-screen');
+        const target = targetId && document.getElementById(targetId);
+        if (!target || !target.matches('.evening-inventory-screen, #home')) return;
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (target.matches('.evening-inventory-screen')) {
+          target.tabIndex = -1;
+          target.focus({ preventScroll: true });
+        }
+      };
+
+      wizard.addEventListener('click', (event) => {
+        const choice = event.target.closest('[data-inventory-choice]');
+        if (choice) activateChoice(choice);
+
+        const action = event.target.closest('button[data-action]');
+        if (!action) return;
+        if (action.getAttribute('data-action') === 'add-gratitude-item') addGratitudeItem();
+        if (action.getAttribute('data-action') === 'remove-inventory-gratitude') {
+          const item = action.closest('[data-gratitude-item]');
+          const list = action.closest('[data-component="inventory-gratitude-list"]');
+          if (item && list) {
+            item.remove();
+            reindexGratitude(list);
+          }
+        }
+        if (action.matches('[data-action="add-photo-memo"], [data-action="add-voice-memo"]')) {
+          action.setAttribute('aria-pressed', String(action.getAttribute('aria-pressed') !== 'true'));
+        }
+        if (action.matches('[data-action="inventory-next"], [data-action="inventory-back"], [data-action="save-evening-inventory"], [data-action="inventory-later"]')) {
+          navigateWithinPrototype(action);
+        }
+      });
+
+      wizard.querySelectorAll('[data-component="inventory-craving-range"]').forEach((input) => {
+        updateCraving(input);
+        input.addEventListener('input', () => updateCraving(input));
+      });
+
+      wizard.querySelectorAll('[data-component="inventory-free-reflection-text"]').forEach((textarea) => {
+        const counter = wizard.querySelector('[data-component="inventory-character-count"]');
+        const updateCount = () => { if (counter) counter.textContent = `${textarea.value.length} karakter`; };
+        textarea.addEventListener('input', updateCount);
+        updateCount();
+      });
     })();
   </script>
 </body>
