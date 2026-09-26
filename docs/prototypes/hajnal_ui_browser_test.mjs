@@ -9,21 +9,23 @@ const moduleName = process.env.HAJNAL_PLAYWRIGHT_MODULE || "playwright";
 const { chromium } = await import(moduleName);
 
 const prototypeDirectory = path.dirname(fileURLToPath(import.meta.url));
-const htmlPath = path.join(prototypeDirectory, "hajnal_ui.html");
+const htmlPath = path.join(prototypeDirectory, "..", "..", "html-prototypes", "offline-ui", "index.html");
 const evidenceDirectory = path.join(prototypeDirectory, "verification");
 const updateEvidence = process.env.HAJNAL_UPDATE_EVIDENCE === "1";
 const scratchDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "hajnal-browser-test-"));
 const screenOrder = [
-  ["welcome-lighting-lab", null],
   ["splash", null],
   ["onboarding", "splash"],
   ["start-date", "onboarding"],
-  ["recovery-goal", "onboarding"],
   ["sponsor-setup", "onboarding"],
-  ["notifications", "onboarding"],
+  ["onboarding-why-started", "sponsor-setup"],
+  ["notifications", "onboarding-why-started"],
   ["home-collapsed", "notifications"],
   ["home", "home-collapsed"],
   ["home-statistics", "home"],
+  ["home-statistics-detail", "home-statistics"],
+  ["home-statistics-detail-timeline", "home-statistics-detail"],
+  ["home-statistics-timeline", "home"],
   ["progress-milestones", "home"],
   ["daily-image", "progress-milestones"],
   ["checkin-clean", "home"],
@@ -38,9 +40,8 @@ const screenOrder = [
   ["panic-help-message", "panic-root"],
   ["panic-why-started", "panic-root"],
   ["panic-meeting-finder", "panic-root"],
-  ["checkin-relapse", "home"],
-  ["progress-overview", "home"],
-  ["progress-calendar", "progress-overview"],
+  ["checkin-relapse", "panic-root"],
+  ["progress-calendar", "home"],
   ["progress-day-detail", "progress-calendar"],
   ["recovery-overview", "home"],
   ["recovery-steps-overview", "recovery-overview"],
@@ -49,37 +50,55 @@ const screenOrder = [
   ["tools-journal-list", "recovery-overview"],
   ["tools-journal-entry", "tools-journal-list"],
   ["tools-journal-detail", "tools-journal-list"],
-  ["alt-progress-daily-view", "progress-overview"],
+  ["alt-progress-daily-view", "progress-calendar"],
   ["alt-progress-journal-entry", "alt-progress-daily-view"],
-  ["alt-progress-calendar", "progress-overview"],
-  ["alt-progress-calendar-day", "alt-progress-calendar"],
-  ["alt-progress-activity", "progress-overview"],
-  ["alt-progress-activity-detail", "alt-progress-activity"],
+  ["alt-progress-calendar-day", "alt-progress-daily-view"],
 ];
 const altProgressScreens = [
-  ["alt-progress-daily-view", "Napi nézet", "progress-overview"],
+  ["alt-progress-daily-view", "Napi nézet", "progress-calendar"],
   ["alt-progress-journal-entry", "Naplóbejegyzés", "alt-progress-daily-view"],
-  ["alt-progress-calendar", "Naptár (havi nézet)", "progress-overview"],
-  ["alt-progress-calendar-day", "Nap részlete (naptárból)", "alt-progress-calendar"],
-  ["alt-progress-activity", "Aktivitás (napló)", "progress-overview"],
-  ["alt-progress-activity-detail", "Aktivitás részlete", "alt-progress-activity"],
+  ["alt-progress-calendar-day", "Nap részlete", "alt-progress-daily-view"],
 ];
 const screenRows = [
   [
     "entry",
     "splash",
-    "welcome-lighting-lab splash onboarding start-date recovery-goal sponsor-setup notifications",
-    ["welcome-lighting-lab", "splash", "onboarding", "start-date", "recovery-goal", "sponsor-setup", "notifications"],
+    "splash onboarding start-date sponsor-setup onboarding-why-started notifications",
+    ["splash", "onboarding", "start-date", "sponsor-setup", "onboarding-why-started", "notifications"],
   ],
   [
     "home",
     "home-collapsed",
-    "home-collapsed home home-statistics progress-milestones daily-image checkin-clean evening-reflection reflection-saved",
+    "home-collapsed home",
     [
       "home-collapsed",
       "home",
+    ],
+  ],
+  [
+    "home-statistics-views",
+    "home-statistics",
+    "home-statistics home-statistics-detail home-statistics-detail-timeline",
+    [
       "home-statistics",
+      "home-statistics-detail",
+      "home-statistics-detail-timeline",
+    ],
+  ],
+  [
+    "home-period-history",
+    "home-statistics-timeline",
+    "home-statistics-timeline progress-milestones",
+    [
+      "home-statistics-timeline",
       "progress-milestones",
+    ],
+  ],
+  [
+    "home-daily-close",
+    "daily-image",
+    "daily-image checkin-clean evening-reflection reflection-saved",
+    [
       "daily-image",
       "checkin-clean",
       "evening-reflection",
@@ -105,9 +124,9 @@ const screenRows = [
   ],
   [
     "progress",
-    "progress-overview",
-    "progress-overview progress-calendar progress-day-detail",
-    ["progress-overview", "progress-calendar", "progress-day-detail"],
+    "progress-calendar",
+    "progress-calendar progress-day-detail",
+    ["progress-calendar", "progress-day-detail"],
   ],
   [
     "recovery",
@@ -180,7 +199,7 @@ async function alignScreenForIntegerClip(screen) {
 }
 
 fs.mkdirSync(evidenceDirectory, { recursive: true });
-const staticServer = await createStaticServer(prototypeDirectory);
+const staticServer = await createStaticServer(path.dirname(htmlPath));
 
 const browser = await chromium.launch({
   headless: true,
@@ -210,59 +229,6 @@ try {
   );
   assert.deepEqual(renderedRows, screenRows, "screen row layout");
 
-  const lightingLab = await page.locator("#welcome-lighting-lab").evaluate(async (screen) => {
-    await window.hajnalWelcomeLighting?.ready;
-    const slider = screen.querySelector("[data-lighting-slider]");
-    const profileLabel = screen.querySelector("[data-lighting-profile-name]");
-    const svg = screen.querySelector("[data-component='welcome-svg-stage'] svg");
-    const primarySkyStops = Array.from(svg?.querySelectorAll("#gradient_0 stop") || [])
-      .map((stop) => `${stop.getAttribute("offset")}:${stop.getAttribute("stop-color")}`);
-    const firstDirectFill = Array.from(svg?.querySelectorAll("[fill]") || [])
-      .find((element) => /^#[0-9a-f]{6}$/i.test(element.getAttribute("fill") || ""));
-    return {
-      source: screen.dataset.svgSource,
-      engine: screen.dataset.lightingEngine,
-      primarySkyGradient: screen.dataset.primarySkyGradient,
-      hasSvg: Boolean(svg),
-      sliderMin: slider?.getAttribute("min"),
-      sliderMax: slider?.getAttribute("max"),
-      sliderStep: slider?.getAttribute("step"),
-      profileLabel: profileLabel?.textContent?.trim(),
-      primarySkyStops,
-      firstDirectFill: firstDirectFill?.getAttribute("fill"),
-    };
-  });
-  assert.deepEqual(lightingLab, {
-    source: "assets/welcome_svg.svg",
-    engine: "bucketed-path-profiles",
-    primarySkyGradient: "gradient_0",
-    hasSvg: true,
-    sliderMin: "0",
-    sliderMax: "1",
-    sliderStep: "0.001",
-    profileLabel: "Lila hajnal",
-    primarySkyStops: ["0:#D99AC9", ".52:#6A55A8", "1:#343477"],
-    firstDirectFill: "#5A4091",
-  }, "lighting lab must load the real welcome SVG and apply an art-directed starting profile");
-
-  const goldenHour = await page.locator("#welcome-lighting-lab").evaluate((screen) => {
-    const slider = screen.querySelector("[data-lighting-slider]");
-    slider.value = "0.84";
-    slider.dispatchEvent(new Event("input", { bubbles: true }));
-    const svg = screen.querySelector("[data-component='welcome-svg-stage'] svg");
-    return {
-      label: screen.querySelector("[data-lighting-profile-name]")?.textContent?.trim(),
-      primarySkyStops: Array.from(svg?.querySelectorAll("#gradient_0 stop") || [])
-        .map((stop) => `${stop.getAttribute("offset")}:${stop.getAttribute("stop-color")}`),
-      progress: screen.querySelector("[data-lighting-progress]")?.textContent?.trim(),
-    };
-  });
-  assert.deepEqual(goldenHour, {
-    label: "Aranyóra",
-    primarySkyStops: ["0:#FFD77B", ".52:#E9A46E", "1:#8065A8"],
-    progress: "76. nap",
-  }, "lighting slider must move through the explicit golden-hour keyframe, not a direct night-day mix");
-
   const rowPositions = await page.locator(".phone-screen").evaluateAll((screens) =>
     Object.fromEntries(
       screens.map((screen) => {
@@ -273,15 +239,39 @@ try {
   );
   assert.ok(rowPositions["home-collapsed"].top > rowPositions.splash.top + 900, "home must render in the next row");
   assert.equal(rowPositions["home-collapsed"].left, rowPositions.splash.left, "home row must start at the same x position as the entry row");
-  assert.equal(rowPositions["home-statistics"].top, rowPositions["home-collapsed"].top, "statistics must render in the home row next to 8B");
-  assert.ok(rowPositions["home-statistics"].left > rowPositions.home.left, "statistics must sit directly to the right of the expanded home screen");
-  assert.equal(rowPositions["progress-milestones"].top, rowPositions["home-collapsed"].top, "milestones must render in the home row");
-  assert.ok(rowPositions["progress-milestones"].left > rowPositions["home-statistics"].left, "milestones must sit to the right of the statistics screen");
-  assert.equal(rowPositions["daily-image"].top, rowPositions["home-collapsed"].top, "daily image must sit next to milestones in the home row");
-  assert.ok(rowPositions["daily-image"].left > rowPositions["progress-milestones"].left, "daily image must sit to the right of milestones");
-  assert.ok(rowPositions["panic-root"].top > rowPositions["home-collapsed"].top + 900, "panic row must be directly below the home row");
-  assert.ok(rowPositions["progress-overview"].top > rowPositions["panic-root"].top + 900, "progress row must render below the panic row");
-  assert.ok(rowPositions["recovery-overview"].top > rowPositions["progress-overview"].top + 900, "recovery row must render below the progress row");
+  assert.ok(rowPositions["daily-image"].top > rowPositions["home-collapsed"].top + 900, "daily close row must render below the two home states");
+  assert.equal(rowPositions["daily-image"].left, rowPositions["home-collapsed"].left, "daily close row must start at the same x position as the first home row");
+  assert.equal(rowPositions["checkin-clean"].top, rowPositions["daily-image"].top, "screen 11 must render next to screen 9 in the daily close row");
+  assert.ok(rowPositions["checkin-clean"].left > rowPositions["daily-image"].left, "screen 11 must sit directly to the right of screen 9");
+  assert.equal(rowPositions["evening-reflection"].top, rowPositions["daily-image"].top, "screen 12 must render in the daily close row");
+  assert.ok(rowPositions["evening-reflection"].left > rowPositions["checkin-clean"].left, "screen 12 must sit directly to the right of screen 11");
+  assert.equal(rowPositions["reflection-saved"].top, rowPositions["daily-image"].top, "screen 10 must render in the daily close row");
+  assert.ok(rowPositions["reflection-saved"].left > rowPositions["evening-reflection"].left, "screen 10 must sit directly to the right of screen 12");
+  assert.ok(rowPositions["home-statistics-timeline"].top > rowPositions["daily-image"].top + 900, "period history row must render below the daily close row");
+  assert.equal(rowPositions["home-statistics-timeline"].left, rowPositions["daily-image"].left, "period history row must start at the same x position as the daily close row");
+  assert.equal(rowPositions["progress-milestones"].top, rowPositions["home-statistics-timeline"].top, "milestones must render next to timeline screen 8E");
+  assert.ok(rowPositions["progress-milestones"].left > rowPositions["home-statistics-timeline"].left, "milestones must sit directly to the right of screen 8E");
+  assert.ok(rowPositions["panic-root"].top > rowPositions["home-statistics-timeline"].top + 900, "panic row must render directly below the period history row");
+  assert.equal(rowPositions["panic-root"].left, rowPositions["home-statistics-timeline"].left, "panic row must start at the same x position as the timeline row");
+  const statisticsMenuHeadingPosition = await page.locator("[data-statistics-menu-heading]").evaluate((heading) => {
+    const bounds = heading.getBoundingClientRect();
+    return { left: bounds.left + window.scrollX, top: bounds.top + window.scrollY, text: heading.textContent.replace(/\s+/g, " ").trim() };
+  });
+  assert.ok(statisticsMenuHeadingPosition.top > rowPositions["panic-root"].top + 900, "statistics menu heading must render below the panic row");
+  assert.ok(statisticsMenuHeadingPosition.text.includes("Statisztikák") && statisticsMenuHeadingPosition.text.includes("Saját alsó navigáció"), "statistics heading must identify its bottom-navigation branch");
+  assert.ok(rowPositions["home-statistics"].top > rowPositions["panic-root"].top + 900, "statistics views must render below the panic row");
+  assert.ok(rowPositions["home-statistics"].top > statisticsMenuHeadingPosition.top, "statistics row must render below its menu heading");
+  assert.equal(rowPositions["home-statistics"].left, rowPositions["panic-root"].left, "statistics views row must start at the same x position as the panic row");
+  assert.equal(rowPositions["home-statistics-detail"].top, rowPositions["home-statistics"].top, "current period detail must render next to 8C in the statistics row");
+  assert.ok(rowPositions["home-statistics-detail"].left > rowPositions["home-statistics"].left, "current period detail must sit directly to the right of the statistics screen");
+  assert.equal(rowPositions["home-statistics-detail-timeline"].top, rowPositions["home-statistics"].top, "selected-batch Timeline must render beside 8D in the Statistics row");
+  assert.ok(rowPositions["home-statistics-detail-timeline"].left > rowPositions["home-statistics-detail"].left, "selected-batch Timeline must sit directly to the right of 8D");
+  const statisticsRowExplanation = await page.locator('[data-page="home-statistics-views"] .home-row-explanation').textContent();
+  assert.ok(statisticsRowExplanation.includes("Józan időszakok, egy helyen"), "Statistics row must own the batch-model explanation");
+  assert.ok(statisticsRowExplanation.includes("vízszintesen görgethető idővonal"), "Statistics explanation must describe horizontal batch scrolling");
+  assert.ok(statisticsRowExplanation.includes("ez a három nézet készült el") && statisticsRowExplanation.includes("tervezés alatt van"), "Statistics explanation must state its current implementation scope");
+  assert.ok(rowPositions["recovery-overview"].top > rowPositions["home-statistics"].top + 900, "recovery row must render directly below the Statistics row");
+  assert.ok(rowPositions["progress-calendar"].top > rowPositions["recovery-overview"].top + 900, "progress row must render after the recovery row");
 
   const collapsedHomeLayout = await page.locator("#home-collapsed").evaluate((screen) => {
     const dashboard = screen.querySelector(".home-metrics");
@@ -306,7 +296,7 @@ try {
     navBottomGap: 0,
     navLabels: ["Kezdőlap", "Haladás", "Felépülés", "Szponzor", "Profil"],
     currentTarget: "home-collapsed",
-    progressTarget: "progress-overview",
+    progressTarget: "progress-calendar",
   }, "collapsed home must keep the dashboard lower and render a complete bottom nav");
 
   const cleanDayTargets = await page.locator("#home-collapsed .clean-days-metric, #home .clean-days-metric").evaluateAll((buttons) =>
@@ -317,9 +307,9 @@ try {
     })),
   );
   assert.deepEqual(cleanDayTargets, [
-    { screen: "home-collapsed", action: "open-clean-day-statistics", target: "home-statistics" },
-    { screen: "home", action: "open-clean-day-statistics", target: "home-statistics" },
-  ], "tapping clean days in either home state must open the statistics hub");
+    { screen: "home-collapsed", action: "open-current-period-timeline", target: "home-statistics-timeline" },
+    { screen: "home", action: "open-current-period-timeline", target: "home-statistics-timeline" },
+  ], "tapping clean days in either home state must open the current-period timeline directly");
 
   const homeStatistics = await page.locator("#home-statistics").evaluate((screen) => ({
     parent: screen.dataset.parentScreen,
@@ -333,6 +323,8 @@ try {
       days: batch.dataset.batchDays,
       state: batch.dataset.batchState || "past",
       current: batch.getAttribute("aria-current") || null,
+      action: batch.dataset.action || null,
+      target: batch.dataset.targetScreen || null,
       text: batch.textContent.replace(/\s+/g, " ").trim(),
     })),
     selectedBatch: {
@@ -340,6 +332,14 @@ try {
       range: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-range")?.textContent.trim(),
       pill: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-pill")?.textContent.trim(),
       ring: screen.querySelector("[data-component='selected-sobriety-batch'] .selected-batch-ring strong")?.textContent.trim(),
+      action: screen.querySelector("[data-component='selected-sobriety-batch']")?.dataset.action,
+      target: screen.querySelector("[data-component='selected-sobriety-batch']")?.dataset.targetScreen,
+    },
+    globalHeader: {
+      title: screen.querySelector("[data-component='global-stat-summary'] h4")?.textContent.trim(),
+      subtitle: screen.querySelector("[data-component='global-stat-summary'] p")?.textContent.trim(),
+      gridAria: screen.querySelector("[data-component='global-stat-grid']")?.getAttribute("aria-label"),
+      legacyBatchGridCount: screen.querySelectorAll("[data-component='active-batch-stat-grid']").length,
     },
     coreStats: Array.from(screen.querySelectorAll("[data-stat-card]")).map((card) => ({
       stat: card.dataset.statCard,
@@ -357,7 +357,7 @@ try {
       "[data-action='open-statistics-milestones']",
       "[data-component='statistics-insights']",
     ].map((selector) => screen.querySelectorAll(selector).length),
-    forbiddenText: ["Szokások teljesülése", "Esti check-in", "Hála lista", "Szponzor hívás", "Naptár preview", "30 nap · Egy hónap", "Legstabilabb nap", "Nehéz idősáv", "Támogatás használata"]
+    forbiddenText: ["Szokások teljesülése", "Esti check-in", "Hála lista", "Szponzor hívás", "Naptár preview", "30 nap · Egy hónap", "Legstabilabb nap", "Nehéz idősáv", "Támogatás használata", "Szponzorral beszélgetések", "Sóvárgásmentes napok"]
       .filter((text) => screen.textContent.includes(text)),
   }));
   assert.deepEqual(homeStatistics, {
@@ -368,17 +368,25 @@ try {
     navCurrent: "Statisztikák",
     navLabels: ["Kezdőlap", "Felépülés", "Statisztikák", "Szponzor", "Profil"],
     batches: [
-      { id: "2024-05", days: "8", state: "past", current: null, text: "2024 8 nap 2024.05." },
-      { id: "2024-08", days: "37", state: "past", current: null, text: "37 nap 2024.08." },
-      { id: "2025-01", days: "89", state: "past", current: null, text: "2025 89 nap 2025.01." },
-      { id: "2025-06", days: "4", state: "past", current: null, text: "4 nap 2025.06. Aktuális időszak" },
-      { id: "current", days: "24", state: "current", current: "true", text: "2026 24 nap Jelenleg" },
+      { id: "2024-05", days: "8", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "2024 8 nap 2024.05." },
+      { id: "2024-08", days: "37", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "37 nap 2024.08." },
+      { id: "2025-01", days: "89", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "2025 89 nap 2025.01." },
+      { id: "2025-06", days: "4", state: "past", current: null, action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "4 nap 2025.06. Aktuális időszak" },
+      { id: "current", days: "24", state: "current", current: "true", action: "open-sobriety-batch-detail", target: "home-statistics-detail", text: "2026 24 nap Jelenleg" },
     ],
     selectedBatch: {
       title: "Jelenlegi időszak",
       range: "2026. május 1. - jelenleg",
       pill: "24 nap tiszta",
       ring: "24 nap",
+      action: "open-current-period-detail",
+      target: "home-statistics-detail",
+    },
+    globalHeader: {
+      title: "Globális statisztikák",
+      subtitle: "Az összes eddigi időszak alapján",
+      gridAria: "Globális statisztikák",
+      legacyBatchGridCount: 0,
     },
     coreStats: [
       { stat: "longest-period", label: "Leghosszabb időszak", value: "89 nap" },
@@ -386,11 +394,135 @@ try {
       { stat: "average-mood", label: "Átlagos hangulat", value: "😀 3.8 / 5" },
       { stat: "checkin-rate", label: "Check-in arány", value: "82%" },
       { stat: "na-participation", label: "NA részvétel", value: "12" },
-      { stat: "sponsor-conversations", label: "Szponzorral beszélgetések", value: "8" },
+      { stat: "evening-reflections", label: "Esti reflexiók", value: "19" },
     ],
     forbiddenBlocks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
     forbiddenText: [],
   }, "home statistics must collect all stats-related dashboard content");
+
+  const homeStatisticsDetail = await page.locator("#home-statistics-detail").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    reference: screen.dataset.referenceScreenshot,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    period: {
+      badge: screen.querySelector(".period-detail-badge")?.textContent.trim(),
+      range: screen.querySelector(".period-detail-range")?.textContent.trim(),
+    },
+    tabs: Array.from(screen.querySelectorAll("[data-period-detail-tab]")).map((tab) => ({
+      tab: tab.dataset.periodDetailTab,
+      pressed: tab.getAttribute("aria-pressed"),
+      text: tab.textContent.trim(),
+    })),
+    charts: Array.from(screen.querySelectorAll("[data-component^='overview-'][data-chart-value]")).map((chart) => ({
+      component: chart.dataset.component,
+      value: chart.dataset.chartValue,
+      heading: chart.querySelector("h4")?.textContent.trim(),
+    })),
+    navCurrent: screen.querySelector(".bottom-nav [aria-current='page'] span")?.textContent.trim(),
+  }));
+  assert.deepEqual(homeStatisticsDetail, {
+    parent: "home-statistics",
+    reference: "Screenshot_20260720-063624.png",
+    title: "Statisztikák",
+    period: {
+      badge: "24 nap",
+      range: "2026. május 1. - jelenleg",
+    },
+    tabs: [
+      { tab: "overview", pressed: "true", text: "Áttekintés" },
+      { tab: "timeline", pressed: "false", text: "Timeline" },
+    ],
+    charts: [
+      { component: "overview-mood-line-chart", value: "3.8", heading: "Mood line" },
+      { component: "overview-checkin-rate-chart", value: "82", heading: "Check-in arány" },
+    ],
+    navCurrent: "Statisztikák",
+  }, "current period detail must expose the overview tab with chart summaries");
+  assert.equal(await page.locator("#home-statistics-detail [data-period-detail-tab='timeline'][data-target-screen='home-statistics-detail-timeline']").count(), 1, "8D timeline tab must open the selected-batch Timeline submenu");
+  assert.equal(await page.locator("#home-statistics-detail [data-period-detail-tab='craving']").count(), 0, "8D must not keep a craving tab");
+  assert.equal(await page.locator("#home-statistics-detail [data-period-detail-tab='periods'], #home-statistics-detail [data-period-detail-tab='trends']").count(), 0, "8D must remove unfinished Periods and Trends submenu buttons");
+  assert.equal(await page.locator("#home-statistics-detail [data-component='overview-clean-days-chart'], #home-statistics-detail .bar-chart").count(), 0, "current period detail must replace the clean-days bar chart with a mood line");
+
+  const statisticsDetailTimeline = await page.locator("#home-statistics-detail-timeline").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    reference: screen.dataset.referenceImage,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    period: {
+      badge: screen.querySelector(".period-detail-badge")?.textContent.trim(),
+      range: screen.querySelector(".period-detail-range")?.textContent.trim(),
+    },
+    tabs: Array.from(screen.querySelectorAll("[data-period-detail-tab]")).map((tab) => ({
+      tab: tab.dataset.periodDetailTab,
+      pressed: tab.getAttribute("aria-pressed"),
+      text: tab.textContent.trim(),
+      target: tab.dataset.targetScreen || null,
+    })),
+    batch: screen.querySelector("[data-component='batch-timeline']")?.getAttribute("data-timeline-batch"),
+    batchId: screen.querySelector("[data-component='batch-timeline']")?.getAttribute("data-batch-id"),
+    eventCount: screen.querySelectorAll("[data-component='timeline-event']").length,
+    navCurrent: screen.querySelector(".bottom-nav [aria-current='page'] span")?.textContent.trim(),
+  }));
+  assert.deepEqual(statisticsDetailTimeline, {
+    parent: "home-statistics-detail",
+    reference: "/storage/emulated/0/hajnal/timeline.png",
+    title: "Statisztikák",
+    period: { badge: "24 nap", range: "2026. május 1. - jelenleg" },
+    tabs: [
+      { tab: "overview", pressed: "false", text: "Áttekintés", target: "home-statistics-detail" },
+      { tab: "timeline", pressed: "true", text: "Timeline", target: null },
+    ],
+    batch: "current",
+    batchId: "current",
+    eventCount: 12,
+    navCurrent: "Statisztikák",
+  }, "8F must be the 8D-context Timeline submenu with the interactive batch timeline body");
+
+  const timelineScreen = await page.locator("#home-statistics-timeline").evaluate((screen) => ({
+    parent: screen.dataset.parentScreen,
+    reference: screen.dataset.referenceImage,
+    title: screen.querySelector("h3")?.textContent.trim(),
+    tabCount: screen.querySelectorAll("[data-period-detail-tab]").length,
+    contentFirstChild: screen.querySelector(".timeline-content")?.firstElementChild?.className,
+    batch: screen.querySelector("[data-component='batch-timeline']")?.getAttribute("data-timeline-batch"),
+    batchId: screen.querySelector("[data-component='batch-timeline']")?.getAttribute("data-batch-id"),
+    filterAction: screen.querySelector("[data-action='filter-timeline']")?.getAttribute("aria-label"),
+    eventCount: screen.querySelectorAll("[data-component='timeline-event']").length,
+    events: Array.from(screen.querySelectorAll("[data-component='timeline-event']")).map((event) => ({
+      event: event.dataset.timelineEvent,
+      type: event.dataset.timelineType,
+      title: event.querySelector(".timeline-event-title")?.textContent.trim(),
+      date: event.querySelector(".timeline-date")?.textContent.replace(/\s+/g, " ").trim(),
+      badge: event.querySelector(".timeline-badge")?.textContent.trim() || null,
+      hasThumbnail: Boolean(event.querySelector(".timeline-thumb")),
+    })),
+    imageCount: screen.querySelectorAll("img").length,
+  }));
+  assert.deepEqual(timelineScreen, {
+    parent: "home",
+    reference: "/storage/emulated/0/hajnal/timeline.png",
+    title: "Timeline",
+    tabCount: 0,
+    contentFirstChild: "timeline-header-row",
+    batch: "current",
+    batchId: "current",
+    filterAction: "Timeline szűrése",
+    eventCount: 12,
+    events: [
+      { event: "started", type: "start", title: "Elindultam", date: "2024 dec. 28.", badge: null, hasThumbnail: true },
+      { event: "seven-days", type: "milestone", title: "7 nap", date: "2025 jan. 4.", badge: "7 nap", hasThumbnail: false },
+      { event: "first-meeting", type: "meeting", title: "Első meeting", date: "2025 jan. 7.", badge: null, hasThumbnail: false },
+      { event: "first-sponsor", type: "sponsor", title: "Első szponzorom", date: "2025 jan. 12.", badge: null, hasThumbnail: false },
+      { event: "step-one", type: "step", title: "1. lépés kész", date: "2025 jan. 20.", badge: null, hasThumbnail: false },
+      { event: "thirty-days", type: "milestone", title: "30 nap", date: "2025 jan. 28.", badge: "30 nap", hasThumbnail: true },
+      { event: "relapse", type: "relapse", title: "Visszaesés", date: "2025 febr. 2.", badge: null, hasThumbnail: false },
+      { event: "restarted", type: "start", title: "Újrakezdtem", date: "2025 febr. 3.", badge: null, hasThumbnail: false },
+      { event: "fourteen-days", type: "milestone", title: "14 nap", date: "2025 febr. 17.", badge: "14 nap", hasThumbnail: false },
+      { event: "step-two", type: "step", title: "2. lépés kész", date: "2025 márc. 1.", badge: null, hasThumbnail: false },
+      { event: "first-sponsor-meeting", type: "meeting", title: "Első szponzori találkozó", date: "2025 márc. 15.", badge: null, hasThumbnail: false },
+      { event: "today", type: "current", title: "Ma", date: "2025 máj. 24.", badge: "Jelenleg", hasThumbnail: false },
+    ],
+    imageCount: 0,
+  }, "8E must render the reference timeline as interactive DOM for the selected batch");
 
   assert.equal(await page.locator("[data-component='daily-project-assets'] [data-asset-src]").count(), 0, "daily image asset catalog must remain deleted");
 
@@ -409,6 +541,21 @@ try {
     { text: "Keresd meg a következő meetinget", action: "meeting-finder", target: "panic-meeting-finder" },
     { text: "Visszaestem", action: "report-relapse", target: "checkin-relapse" },
   ], "screen 16 panic quick options must remove message/professional help and add relapse");
+
+  const motivationViews = await page.locator("#onboarding-why-started, #panic-why-started").evaluateAll((screens) =>
+    screens.map((screen) => ({
+      id: screen.id,
+      parent: screen.dataset.parentScreen,
+      record: screen.dataset.motivationRecord || null,
+      source: screen.dataset.motivationSource || null,
+      textareas: screen.querySelectorAll("textarea").length,
+      editControls: screen.querySelectorAll('[aria-label="Szerkesztés"]').length,
+    })),
+  );
+  assert.deepEqual(motivationViews, [
+    { id: "onboarding-why-started", parent: "sponsor-setup", record: "initial-personal-motivation", source: null, textareas: 1, editControls: 0 },
+    { id: "panic-why-started", parent: "panic-root", record: null, source: "initial-personal-motivation", textareas: 0, editControls: 0 },
+  ], "onboarding must be the only motivation authoring screen while screen 30 stays a read-only panic reminder");
 
   const panicMainButtonState = await page.locator(".panic-main-button").evaluateAll((buttons) =>
     buttons.map((button) => {
@@ -485,10 +632,58 @@ try {
     })),
   );
   assert.deepEqual(progressScreens, [
-    { screen: "progress-overview", parent: "home", title: "Haladás", shortcuts: ["progress-calendar"] },
-    { screen: "progress-calendar", parent: "progress-overview", title: "Naptár", shortcuts: [] },
+    { screen: "progress-calendar", parent: "home", title: "Napló", shortcuts: [] },
     { screen: "progress-day-detail", parent: "progress-calendar", title: "Péntek, május 24.", shortcuts: [] },
-  ], "progress menu must remove screen 17 and keep day detail under calendar");
+  ], "progress row must use screen 18 journal menu as the direct Haladás root");
+  assert.equal(
+    await page.locator('[data-screen="progress-overview"], #progress-overview, #column-progress-overview, [data-target-screen="progress-overview"], [data-parent-screen="progress-overview"], [data-action="open-progress-calendar"], [data-progress-shortcut="journal"]').count(),
+    0,
+    "deleted screen 16 progress overview and all direct references must be removed",
+  );
+
+  const progressJournalMenu = await page.locator("#progress-calendar").evaluate((screen) => ({
+    subtitle: screen.querySelector(".screen-subtitle")?.textContent.trim(),
+    dayBeltLabel: screen.querySelector("[data-component='journal-day-belt']")?.getAttribute("aria-label"),
+    dayButtons: Array.from(screen.querySelectorAll("[data-component='journal-day-button']")).map((button) => ({
+      date: button.dataset.date,
+      selected: button.getAttribute("aria-current") || null,
+      text: button.textContent.replace(/\s+/g, " ").trim(),
+    })),
+    selectedDateCount: screen.querySelectorAll("[aria-current='date']").length,
+    notes: Array.from(screen.querySelectorAll("[data-component='journal-day-notes'] [data-journal-note]")).map((note) => ({
+      note: note.dataset.journalNote,
+      target: note.dataset.targetScreen,
+      title: note.querySelector("strong")?.textContent.trim(),
+    })),
+    forbiddenText: ["Szponzorral beszéltem", "Sóvárgás", "Részletek megnyitása"].filter((text) => screen.textContent.includes(text)),
+    legacyCalendarGridCount: screen.querySelectorAll(".calendar-mini-grid").length,
+    expandedCalendarComponentCount: screen.querySelectorAll("[data-component='journal-calendar-expand'], [data-component='journal-month-grid']").length,
+    expandedCalendarStateCount: screen.querySelectorAll("[data-state='expanded'], [data-gesture='swipe-down'], [aria-expanded='true']").length,
+  }));
+  assert.deepEqual(progressJournalMenu, {
+    subtitle: "Napok és jegyzetek",
+    dayBeltLabel: "Napló napjai",
+    dayButtons: [
+      { date: "2024-05-20", selected: null, text: "H 20" },
+      { date: "2024-05-21", selected: null, text: "K 21" },
+      { date: "2024-05-22", selected: null, text: "Sz 22" },
+      { date: "2024-05-23", selected: null, text: "Cs 23" },
+      { date: "2024-05-24", selected: "date", text: "P 24" },
+      { date: "2024-05-25", selected: null, text: "Sz 25" },
+      { date: "2024-05-26", selected: null, text: "V 26" },
+    ],
+    selectedDateCount: 1,
+    notes: [
+      { note: "evening-reflection", target: "progress-day-detail", title: "Esti reflexió" },
+      { note: "gratitude", target: "progress-day-detail", title: "Hála lista" },
+      { note: "journal-entry", target: "progress-day-detail", title: "Naplóbejegyzés" },
+      { note: "meeting-note", target: "progress-day-detail", title: "Meeting jegyzet" },
+    ],
+    forbiddenText: [],
+    legacyCalendarGridCount: 0,
+    expandedCalendarComponentCount: 0,
+    expandedCalendarStateCount: 0,
+  }, "screen 18 must render as a journal menu with only the day belt above selected-day notes");
 
   const deletedProgressJourney = await page.locator('[data-screen="progress-journey"], #progress-journey, #column-progress-journey, [data-target-screen="progress-journey"], [data-action="open-progress-journey"], [data-progress-shortcut="journey"], [data-component="general-statistics-summary"]').count();
   assert.equal(deletedProgressJourney, 0, "screen 17 progress-journey and all references must be removed");
@@ -546,7 +741,7 @@ try {
     })),
   );
   assert.deepEqual(recoveryScreens, [
-    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-overview", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
+    { screen: "recovery-overview", parent: "home", title: "Felépülés", navActive: "Felépülés", shortcuts: ["recovery-steps-overview", "progress-calendar", "tools-journal-list", "recovery-evening", "panic-why-started", "survival-stop"] },
     { screen: "recovery-steps-overview", parent: "recovery-overview", title: "12 lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-step-detail", parent: "recovery-steps-overview", title: "4. lépés", navActive: "Felépülés", shortcuts: [] },
     { screen: "recovery-evening", parent: "recovery-overview", title: "Esti reflexió", navActive: "Felépülés", shortcuts: [] },
@@ -583,7 +778,9 @@ try {
     sourceCropMarkers: row.querySelectorAll("[data-source-crop]").length,
     deletedA1References: row.querySelectorAll('[data-screen="alt-progress-overview"], #alt-progress-overview, #column-alt-progress-overview, [data-target-screen="alt-progress-overview"], [data-action="open-alt-overview"], [data-component="alt-progress-dashboard"], [data-component="alt-progress-menu-grid"]').length,
     deletedA3References: row.querySelectorAll('[data-screen="alt-progress-day-detail"], #alt-progress-day-detail, #column-alt-progress-day-detail, [data-target-screen="alt-progress-day-detail"], [data-action="open-alt-day-detail"]').length,
+    deletedA5References: row.querySelectorAll('[data-screen="alt-progress-calendar"], #alt-progress-calendar, #column-alt-progress-calendar, [data-target-screen="alt-progress-calendar"], [data-action="open-alt-calendar"], [data-component="alt-progress-calendar-grid"], [data-component="alt-calendar-view-switch"]').length,
     deletedA7A8A9References: row.querySelectorAll('[data-screen="alt-progress-statistics"], #alt-progress-statistics, #column-alt-progress-statistics, [data-target-screen="alt-progress-statistics"], [data-action="open-alt-statistics"], [data-screen="alt-progress-milestones"], #alt-progress-milestones, #column-alt-progress-milestones, [data-target-screen="alt-progress-milestones"], [data-action="open-alt-milestones"], [data-action="open-alt-next-milestone"], [data-component="alt-progress-next-milestone"], [data-screen="alt-progress-milestone-detail"], #alt-progress-milestone-detail, #column-alt-progress-milestone-detail, [data-target-screen="alt-progress-milestone-detail"], [data-action="open-alt-milestone-detail"], [data-action="alt-progress-share-milestone"]').length,
+    deletedA10A11References: row.querySelectorAll('[data-screen="alt-progress-activity"], #alt-progress-activity, #column-alt-progress-activity, [data-target-screen="alt-progress-activity"], [data-action="open-alt-activity-detail"], [data-component="alt-progress-activity-tabs"], [data-component="alt-progress-activity-list"], [data-screen="alt-progress-activity-detail"], #alt-progress-activity-detail, #column-alt-progress-activity-detail, [data-target-screen="alt-progress-activity-detail"], [data-action="return-alt-activity"], [data-component="alt-progress-activity-result"], [data-component="alt-progress-activity-detail-list"]').length,
     imageCount: row.querySelectorAll("img").length,
     screens: Array.from(row.querySelectorAll(".alt-progress-screen")).map((screen) => ({
       screen: screen.dataset.screen,
@@ -605,7 +802,9 @@ try {
   assert.deepEqual(altProgressRow.sourceCropMarkers, 0, "alternative progress row must not expose source crop coordinates");
   assert.deepEqual(altProgressRow.deletedA1References, 0, "A1 alt-progress overview and all row references must be removed");
   assert.deepEqual(altProgressRow.deletedA3References, 0, "A3 alt-progress day detail and all row references must be removed");
+  assert.deepEqual(altProgressRow.deletedA5References, 0, "A5 alt-progress monthly calendar and all row references must be removed");
   assert.deepEqual(altProgressRow.deletedA7A8A9References, 0, "A7/A8/A9 alternative statistics and milestone screens and all row references must be removed");
+  assert.deepEqual(altProgressRow.deletedA10A11References, 0, "A10/A11 alternative activity screens and all row references must be removed");
   assert.deepEqual(altProgressRow.imageCount, 0, "alternative progress row must be built from DOM/CSS, not img tags");
   assert.deepEqual(
     altProgressRow.screens.map(({ screen, title, parent }) => ({ screen, title, parent })),

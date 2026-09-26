@@ -2,46 +2,48 @@
 
 ## 1. Az alkalmazás célja
 
-A Hajnal egy felépülést támogató mobilalkalmazás, amely elsősorban az első 90 tiszta nap során segíti a felhasználót.
+A Hajnal célja a függőségből felépülő emberek tiszta időszakainak követése, támogatása és ösztönzése. Egy egyszerűen használható, látványos mobilalkalmazás készül, amely szemléletében összeegyeztethető a Névtelen Alkoholisták (NA) alapelveivel.
 
-Az alkalmazás négy központi feladata:
+Technikailag a Hajnal egy kiterjesztett naplóalkalmazás. A felhasználó követheti tiszta időszakait, rögzítheti gondolatait és haladását, valamint dolgozhat a 12 lépés írásos feladatain. A rendszer központi eleme a naplózás: a cél egy egyszerű, letisztult, könnyen áttekinthető és később visszanézhető felület.
+
+A naplóhoz egyedi szövegszerkesztő készül hangalapú gépeléssel és eltárolható hangjegyzetekkel. Az alkalmazás elsődleges célja az első 90 nap támogatása, ezt követően pedig a hosszú távú józanság követésének segítése.
+
+Az alkalmazás fő funkcionális területei:
 
 - a tiszta napok követése;
-- a napi megtartó rutin kialakítása;
-- a szponzorral vagy segítő személlyel való gyors kapcsolattartás;
-- a 12 lépéshez kapcsolódó írás és önreflexió megkönnyítése.
+- a gondolatok, haladás és napi élmények naplózása;
+- a 12 lépéshez kapcsolódó írás és önreflexió támogatása;
+- a napi megtartó rutin és a szponzorral vagy segítő személlyel való kapcsolattartás;
+- az első 90 nap, majd a további józanság áttekinthető követése.
 
 Az app nem kezelési eszköz és nem helyettesít addiktológust, pszichológust, orvost, önsegítő közösséget vagy sürgősségi ellátást. A felülete ezt egyértelműen, de nem ijesztő módon kommunikálja.
 
-## 2. Alapkoncepció
+## 2. Alapkoncepció és képmotor
 
-A felhasználó egy 90 napos vizuális úton halad végig.
+Az alkalmazás legfontosabb vizuális eleme a képmotor. Minden kép metaforikus, egységes és determinisztikusan előállított. Két képtípus jelenik meg:
 
-A történet:
-
-- az 1. nap sötét, kopár téli éjszaka;
-- lassan megjelenik a hajnal;
-- olvadni kezd a hó;
-- megjelennek az első növények;
-- tavasz lesz;
-- végül világos, nyári nappalba érkezik.
-
-A képi világ minimalista flat vector:
-
-- egyszerű geometriai formák;
-- kevés objektum;
-- nagy, nyugodt felületek;
-- finom színátmenetek;
-- pasztell lila, rózsaszín, barack és kék árnyalatok;
-- nincs részletes szőr, textúrázott karakter vagy klasszikus rajzfilmes mimika.
+- a mérföldköveknél ajándékként kapott képek;
+- a főképernyő állandóan változó háttérképe.
 
 ### A szereplők jelentése
 
 **Panda:** a felhasználót jelképezi.
 
-**Láma:** a megtartó kapcsolatot jelképezi. Jelentheti a programot, a szponzort, a közösséget vagy egyszerűen azt, hogy a felhasználó nincs egyedül.
+**Láma:** a programot és a megtartó, „felsőbb erőt” jelképezi. Jelen van, támogat és elkísér; nem tanít, nem ítélkezik és nem beszél túl sokat.
 
-A láma nem tanít, nem ítélkezik és nem beszél túl sokat. Jelen van, elkísér és emlékeztet a kapcsolódásra.
+Az első 90 napban a panda és a láma háttal áll a felhasználónak; a láma kizárólag jelenlétével támogat. A 90. nap után megfordulnak, és közös tevékenységet végeznek: például tónál horgásznak, mezőn énekelnek vagy erdei tisztáson olvasnak.
+
+### A háttér szabályai
+
+- A megjelenített évszak mindig a valós naptár szerinti évszakkal azonos.
+- Az első 90 nap alatt a napszak a felhasználó haladásával együtt változik: a sötét éjszaka fokozatosan hajnallá válik.
+- A 90. nap után a nehezén túljutást nappali idő jelzi.
+- Az időjárás és a táj részletessége az alkalmazásban rögzített aktuális hangulatot követi ötfokú skálán.
+- Az 1-es hangulatérték borús, zivataros eget és gyér, kopár növényzetet jelent; az 5-ös tiszta eget vagy holdfényt, napfényt, madarakat és dús, kidolgozott növényzetet.
+
+### A prototípus jelenlegi állapota
+
+A jelenlegi állapot egy megközelítő menüszerkezetet mutat. A gombok végleges helye és a menük részletes elrendezése későbbi tervezési körben készül el.
 
 ## 3. Fő navigáció
 
