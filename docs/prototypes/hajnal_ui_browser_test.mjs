@@ -296,7 +296,7 @@ try {
     return { left: bounds.left + window.scrollX, top: bounds.top + window.scrollY, text: heading.textContent.replace(/\s+/g, " ").trim() };
   });
   assert.ok(statisticsMenuHeadingPosition.top > rowPositions["panic-root"].top + 900, "statistics menu heading must render below the panic row");
-  assert.ok(statisticsMenuHeadingPosition.text.includes("Statisztikák") && statisticsMenuHeadingPosition.text.includes("Saját alsó navigáció"), "statistics heading must identify its bottom-navigation branch");
+  assert.ok(statisticsMenuHeadingPosition.text.includes("Történetem") && statisticsMenuHeadingPosition.text.includes("Saját alsó navigáció"), "story heading must identify its bottom-navigation branch");
   assert.ok(rowPositions["home-statistics"].top > rowPositions["panic-root"].top + 900, "statistics views must render below the panic row");
   assert.ok(rowPositions["home-statistics"].top > statisticsMenuHeadingPosition.top, "statistics row must render below its menu heading");
   assert.equal(rowPositions["home-statistics"].left, rowPositions["panic-root"].left, "statistics views row must start at the same x position as the panic row");
@@ -308,6 +308,12 @@ try {
   assert.ok(statisticsRowExplanation.includes("Józan időszakok, egy helyen"), "Statistics row must own the batch-model explanation");
   assert.ok(statisticsRowExplanation.includes("vízszintesen görgethető idővonal"), "Statistics explanation must describe horizontal batch scrolling");
   assert.ok(statisticsRowExplanation.includes("ez a három nézet készült el") && statisticsRowExplanation.includes("tervezés alatt van"), "Statistics explanation must state its current implementation scope");
+  assert.equal(/statisztik/iu.test(statisticsRowExplanation), false, "8C/8D/8F explanation must not retain Statistics wording");
+  assert.equal(
+    /statisztik/iu.test(await page.locator('[data-page="home-statistics-views"]').textContent()),
+    false,
+    "8C/8D/8F rendered content must not retain Statistics wording",
+  );
   assert.ok(rowPositions["recovery-overview"].top > rowPositions["home-statistics"].top + 900, "recovery row must render directly below the Statistics row");
   assert.ok(rowPositions["progress-calendar"].top > rowPositions["recovery-overview"].top + 900, "progress row must render after the recovery row");
 
@@ -411,7 +417,7 @@ try {
   assert.deepEqual(homeStatistics, {
     parent: "home",
     reference: "Screenshot_20260720-013331.png",
-    title: "Statisztikák",
+    title: "Történetem",
     subtitle: "Válaszd ki az időszakodat",
     navCurrent: "Ösvény",
     navLabels: ["Főmenü", "Történetem", "Ösvény", "Gyűlések", "Szponzor"],
@@ -431,9 +437,9 @@ try {
       target: "home-statistics-detail",
     },
     globalHeader: {
-      title: "Globális statisztikák",
+      title: "Történetem összesen",
       subtitle: "Az összes eddigi időszak alapján",
-      gridAria: "Globális statisztikák",
+      gridAria: "Történetem összesen",
       legacyBatchGridCount: 0,
     },
     coreStats: [
@@ -471,7 +477,7 @@ try {
   assert.deepEqual(homeStatisticsDetail, {
     parent: "home-statistics",
     reference: "Screenshot_20260720-063624.png",
-    title: "Statisztikák",
+    title: "Történetem",
     period: {
       badge: "24 nap",
       range: "2026. május 1. - jelenleg",
@@ -484,7 +490,7 @@ try {
       { component: "overview-mood-line-chart", value: "3.8", heading: "Mood line" },
       { component: "overview-checkin-rate-chart", value: "82", heading: "Check-in arány" },
     ],
-    navCurrent: "Statisztikák",
+    navCurrent: "Ösvény",
   }, "current period detail must expose the overview tab with chart summaries");
   assert.equal(await page.locator("#home-statistics-detail [data-period-detail-tab='timeline'][data-target-screen='home-statistics-detail-timeline']").count(), 1, "8D timeline tab must open the selected-batch Timeline submenu");
   assert.equal(await page.locator("#home-statistics-detail [data-period-detail-tab='craving']").count(), 0, "8D must not keep a craving tab");
@@ -513,7 +519,7 @@ try {
   assert.deepEqual(statisticsDetailTimeline, {
     parent: "home-statistics-detail",
     reference: "/storage/emulated/0/hajnal/timeline.png",
-    title: "Statisztikák",
+    title: "Történetem",
     period: { badge: "24 nap", range: "2026. május 1. - jelenleg" },
     tabs: [
       { tab: "overview", pressed: "false", text: "Áttekintés", target: "home-statistics-detail" },
@@ -522,7 +528,7 @@ try {
     batch: "current",
     batchId: "current",
     eventCount: 12,
-    navCurrent: "Statisztikák",
+    navCurrent: "Ösvény",
   }, "8F must be the 8D-context Timeline submenu with the interactive batch timeline body");
 
   const timelineScreen = await page.locator("#home-statistics-timeline").evaluate((screen) => ({

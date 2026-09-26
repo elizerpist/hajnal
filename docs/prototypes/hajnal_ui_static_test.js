@@ -419,7 +419,7 @@ const tests = {
       'data-parent-screen="home"',
       'data-reference-screenshot="Screenshot_20260720-013331.png"',
       'data-component="sobriety-batch-statistics"',
-      'Statisztikák',
+      'Történetem',
       'Válaszd ki az időszakodat',
       'data-action="return-home-from-statistics" data-target-screen="home"',
       'data-action="open-statistics-info"',
@@ -458,10 +458,10 @@ const tests = {
       'NA részvétel',
       '12',
       'data-component="global-stat-summary"',
-      'Globális statisztikák',
+      'Történetem összesen',
       'Az összes eddigi időszak alapján',
       'data-component="global-stat-grid"',
-      'aria-label="Globális statisztikák"',
+      'aria-label="Történetem összesen"',
       'Esti reflexiók',
       '19'
     ]);
@@ -522,7 +522,7 @@ const tests = {
       'data-parent-screen="home-statistics"',
       'data-reference-screenshot="Screenshot_20260720-063624.png"',
       'data-component="current-period-detail-overview"',
-      'Statisztikák',
+      'Történetem',
       '24 nap',
       '2026. május 1. - jelenleg',
       'data-component="period-detail-tabs"',
@@ -565,7 +565,7 @@ const tests = {
       'data-parent-screen="home-statistics-detail"',
       'data-reference-image="/storage/emulated/0/hajnal/timeline.png"',
       'data-component="current-period-detail-timeline"',
-      'Statisztikák',
+      'Történetem',
       '24 nap',
       '2026. május 1. - jelenleg',
       'data-component="period-detail-tabs"',
@@ -765,9 +765,11 @@ const tests = {
     assert.ok(statisticsViewsRow.includes('vízszintesen görgethető idővonal'), 'statistics views row must explain horizontal batch scrolling');
     assert.ok(statisticsViewsRow.includes('Egy józan batchre koppintva nyílik meg az adott időszak 8D menüje'), 'statistics views row must explain that a selected batch opens its detail menu');
     assert.ok(statisticsViewsRow.includes('ez a három nézet készült el'), 'statistics views row must declare the implemented Statistics scope');
-    assert.ok(statisticsViewsRow.includes('többi statisztikai funkció tervezés alatt van'), 'statistics views row must mark the remaining Statistics functions as planned');
+    assert.ok(statisticsViewsRow.includes('A többi nézet tervezés alatt van'), 'story row must mark the remaining views as planned');
     assert.ok(statisticsHeadingIndex !== -1 && statisticsHeadingIndex < statisticsRowIndex, 'statistics menu heading must precede the 8C/8D row');
-    assert.match(html, /data-statistics-menu-heading[^>]*>[\s\S]*?<h2[^>]*>Statisztikák<\/h2>[\s\S]*?Saját alsó navigáció/s, 'statistics heading must identify its own bottom-navigation branch');
+    assert.match(html, /data-statistics-menu-heading[^>]*>[\s\S]*?<h2[^>]*>Történetem<\/h2>[\s\S]*?Saját alsó navigáció/s, 'story heading must identify its own bottom-navigation branch');
+    const visibleStoryRow = statisticsViewsRow.replace(/<nav class="bottom-nav"[\s\S]*?<\/nav>/g, '');
+    assert.ok(!/statisztik/iu.test(visibleStoryRow), '8C/8D/8F visible row copy and ARIA labels must not retain Statistics wording');
     assert.ok(panicRow.includes('class="home-row-explanation panic-row-explanation"'), 'panic row must include its adjacent purpose explanation');
     assert.ok(panicRow.includes('A Pánik mód akkor segít, amikor a sóvárgás már nehezen kontrollálható'), 'panic explanation must identify overwhelming craving as its use case');
     assert.ok(panicRow.includes('A Visszaestem képernyő innen érhető el, közvetlenül a főmenüből nem'), 'panic explanation must make the relapse route exclusive to the panic flow');
@@ -824,7 +826,7 @@ const tests = {
     ]);
     [
       'Napi kép',
-      'Statisztikák',
+      'Történetem',
       'Válaszd ki az időszakodat',
       'Jelenlegi időszak',
       'Leghosszabb időszak',
