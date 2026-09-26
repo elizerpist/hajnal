@@ -78,7 +78,7 @@ const documentStub = {
 };
 const runnableScript = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/)[1]
   .replace("new HomeInteractionController(document.querySelector('.app-frame'));", "globalThis.__routeController = new HomeInteractionController(document.querySelector('.app-frame'));");
-const sandbox = { console, document: documentStub, globalThis: {}, window: { matchMedia: () => ({ matches: false }) } };
+const sandbox = { console, document: documentStub, globalThis: { setTimeout() { return 1; }, clearTimeout() {} }, window: { matchMedia: () => ({ matches: false }) } };
 vm.runInNewContext(runnableScript, sandbox);
 const controller = sandbox.globalThis.__routeController;
 
@@ -120,7 +120,7 @@ assert.equal(root.dataset.route, 'home', 'the same meetings page must return to 
 
 controller.openInitialization('splash');
 assert.equal(root.dataset.route, 'initialization', 'Home hamburger must start the initialization simulator');
-assert.match(initializationContent.innerHTML, /Minden nap/, 'initialization must begin at splash');
+assert.match(initializationContent.innerHTML, /Csak a mai nap\./, 'initialization must begin at the source Splash screen');
 for (let index = 0; index < 4; index += 1) controller.advanceInitialization(1);
 assert.equal(initializationScreen.dataset.initializationView, 'why-started', 'initialization must include the personal motivation screen');
 controller.advanceInitialization(1);
@@ -139,15 +139,17 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'toggle-history-timeline-filter': this.toggleHistoryTimelineFilter(); break;",
   "case 'open-initialization': this.openInitialization('splash'); break;",
   "const SURVIVAL_STEPS = Object.freeze([",
-  "const INITIALIZATION_VIEWS = Object.freeze([",
+  "const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze([",
 ].forEach((value) => assert.ok(html.includes(value), `route controller is missing ${value}`));
 [
   'class="survival-card"',
   'class="survival-action"',
-  'class="init-nav"',
-  '.init-progress {',
-  '.init-choice-list {',
-  '.init-notification-note {',
+  'class="source-splash-background"',
+  'class="source-welcome-arch"',
+  'class="source-start-date-calendar"',
+  'class="source-sponsor-choices"',
+  'class="source-why-card"',
+  'class="source-notification-list"',
   'Meeting keresése',
   'data-action="toggle-history-timeline-filter"',
   'Állj meg.',

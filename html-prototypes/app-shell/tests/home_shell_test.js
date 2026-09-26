@@ -174,7 +174,10 @@ assert.equal(
   'the local hero asset must remain byte-identical to the approved 8A/8B asset',
 );
 assert.equal((html.match(/data-task-id="/g) || []).length, 3, '8B must contain exactly the three source-of-truth checklist rows');
-assert.equal((html.match(/type="checkbox"/g) || []).length, 2, 'only the first two source-of-truth checklist rows are checkbox controls');
+const homeMarkupStart = html.indexOf('<section class="home-body"');
+const homeMarkupEnd = html.indexOf('<nav class="bottom-nav"', homeMarkupStart);
+const homeChecklistMarkup = html.slice(homeMarkupStart, homeMarkupEnd);
+assert.equal((homeChecklistMarkup.match(/type="checkbox"/g) || []).length, 2, 'only the first two source-of-truth checklist rows are checkbox controls');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.equal((html.match(/data-panic-option="/g) || []).length, 6, 'source 16 must expose its six panic quick options');

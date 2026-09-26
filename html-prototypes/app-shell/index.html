@@ -382,30 +382,80 @@
     .contact-details small { margin-top: 3px; color: rgba(44,46,119,.56); font-size: 10.5px; line-height: 1.3; font-weight: 650; }
     .contact-actions { display: grid; gap: 7px; padding: 0 13px 13px 66px; }
     .contact-actions button { min-height: 38px; border: 0; border-radius: 12px; background: #EEE8FA; color: var(--hajnal-purple); font: inherit; font-size: 11px; font-weight: 790; }
-    .initialization-screen { background: radial-gradient(circle at 83% 10%, rgba(255,205,147,.46), transparent 180px), linear-gradient(165deg, #FDF7FB, #EDE4F8); }
-    .initialization-content { top: 46px; padding: 24px 24px 34px; }
-    .init-kicker { margin: 0; color: var(--hajnal-purple); font-size: 11px; font-weight: 820; letter-spacing: .05em; text-transform: uppercase; }
-    .init-title { margin: 10px 0 0; color: var(--hajnal-navy); font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.04; letter-spacing: -.04em; }
-    .init-subtitle { margin: 10px 0 0; color: rgba(44,46,119,.62); font-size: 13px; line-height: 1.42; font-weight: 640; }
-    .init-illustration { height: 245px; display: grid; place-items: center; margin: 26px 0; border-radius: 120px 120px 22px 22px; background: linear-gradient(180deg, #34377F 0%, #8062B6 51%, #D69ACB 100%); color: #FFF7E9; font-size: 82px; box-shadow: inset 0 -42px 0 rgba(38,39,101,.24), 0 18px 34px rgba(44,46,119,.14); }
-    .init-card { display: grid; gap: 12px; }
-    .init-card label, .init-card legend { color: var(--hajnal-navy); font-size: 12px; font-weight: 800; }
-    .init-card textarea, .init-card input { width: 100%; padding: 12px; border: 1px solid rgba(106,86,180,.17); border-radius: 13px; background: rgba(255,255,255,.88); color: var(--hajnal-navy); font: inherit; font-size: 13px; line-height: 1.4; }
-    .init-card textarea { min-height: 135px; resize: vertical; }
-    .init-choice { width: 100%; min-height: 46px; display: flex; align-items: center; gap: 9px; padding: 10px; border: 1px solid rgba(106,86,180,.12); border-radius: 13px; background: rgba(255,255,255,.62); color: var(--hajnal-navy); font: inherit; font-size: 12px; font-weight: 720; text-align: left; cursor: pointer; }
-    .init-choice[aria-pressed="true"] { border-color: rgba(106,86,180,.4); background: #F0E9FA; color: var(--hajnal-purple); }
-    .init-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 18px; }
-    .init-nav .init-primary { margin: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); }
-    .init-nav .init-secondary { min-height: 48px; border: 1px solid rgba(106,86,180,.16); border-radius: var(--radius-button); background: rgba(255,255,255,.62); color: var(--hajnal-purple); font: inherit; font-size: 12px; font-weight: 790; }
-    .init-splash { min-height: 690px; align-content: center; text-align: center; }
-    .init-splash .init-illustration { margin: 0 0 27px; }
-    .init-progress { display: flex; justify-content: center; gap: 7px; margin-top: 8px; }
-    .init-progress span { width: 7px; height: 7px; border-radius: 50%; background: rgba(106,86,180,.18); }
-    .init-progress .is-current { width: 21px; border-radius: 999px; background: var(--hajnal-purple); }
-    .init-progress .is-done { background: rgba(106,86,180,.58); }
-    .init-choice-list { display: grid; gap: 8px; }
-    .init-notification-note { display: flex; align-items: center; gap: 10px; padding: 11px; border-radius: 13px; background: rgba(255,255,255,.62); color: rgba(44,46,119,.68); font-size: 11px; line-height: 1.35; font-weight: 700; }
-    .init-notification-note .icon { width: 21px; height: 21px; flex: 0 0 auto; color: var(--hajnal-purple); }
+    .initialization-screen { background: #F8F1F6; }
+    .initialization-content { position: absolute; inset: 0; overflow: hidden; padding: 0; color: var(--hajnal-navy); }
+    .source-entry-screen { width: 100%; height: 100%; min-height: 100%; position: relative; overflow-y: auto; color: var(--hajnal-navy); scrollbar-width: none; }
+    .source-entry-screen::-webkit-scrollbar { display: none; }
+    .source-entry-screen.light { display: flex; flex-direction: column; background: radial-gradient(circle at 88% 7%, rgba(184,154,215,.12), transparent 190px), radial-gradient(circle at 8% 94%, rgba(241,142,175,.10), transparent 230px), linear-gradient(155deg, #FDF8FA 0%, #F8F1F6 100%); }
+    .source-entry-screen .status-bar { color: var(--hajnal-navy); text-shadow: none; }
+    .source-splash { overflow: hidden; background: #B084EE; color: var(--hajnal-navy); }
+    .source-splash .status-bar { position: absolute; inset: 0 0 auto; color: var(--white); text-shadow: 0 2px 8px rgba(22,20,62,.42); }
+    .source-splash-background { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; pointer-events: none; }
+    .source-splash-brand { position: relative; z-index: 2; display: grid; justify-items: center; padding-top: 56px; text-align: center; }
+    .source-splash-logo { width: 102px; height: 102px; display: block; overflow: hidden; border-radius: 25px; box-shadow: 0 12px 28px rgba(44,46,119,.16); }
+    .source-splash-brand h1 { margin: 23px 0 0; color: var(--hajnal-navy); font-size: 48px; line-height: 1; font-weight: 820; letter-spacing: -.045em; }
+    .source-splash-brand p { margin: 12px 0 0; color: #EA6F9B; font-size: 18px; font-weight: 780; }
+    .source-splash-advance { position: absolute; z-index: 3; inset: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .source-welcome-heading { margin: 22px 0 14px; color: var(--hajnal-navy); text-align: center; font-size: 23px; font-weight: 820; letter-spacing: -.02em; }
+    .source-welcome-arch { width: 316px; height: 382px; align-self: center; overflow: hidden; border-radius: 158px 158px 20px 20px; box-shadow: 0 14px 32px rgba(44,46,119,.12); }
+    .source-welcome-arch svg { width: 100%; height: 100%; display: block; }
+    .source-welcome-message { margin: 20px 34px 0; text-align: center; }
+    .source-welcome-message strong { display: block; color: var(--hajnal-navy); font-size: 18px; line-height: 1.45; font-weight: 760; }
+    .source-welcome-message span { display: block; margin-top: 3px; color: #EA6F9B; font-size: 17px; font-weight: 800; }
+    .source-welcome-dots { display: flex; justify-content: center; gap: 7px; margin-top: 15px; }
+    .source-welcome-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(106,86,180,.24); }
+    .source-welcome-dots span:first-child { width: 18px; border-radius: 999px; background: var(--hajnal-purple); }
+    .source-entry-actions { display: grid; gap: 10px; margin: auto 24px 24px; }
+    .source-primary-button { width: 100%; min-height: 54px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 22px; border: 1px solid rgba(83,70,174,.24); border-radius: var(--radius-button); background: linear-gradient(135deg, #6253BC, var(--hajnal-purple)); color: var(--white); box-shadow: 0 12px 24px rgba(83,70,174,.18); font: inherit; font-size: 15px; line-height: 1; font-weight: 800; cursor: pointer; }
+    .source-entry-header { min-height: 74px; position: relative; z-index: 3; display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: start; padding: 14px 18px 8px; }
+    .source-entry-header .source-back-button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--hajnal-navy); cursor: pointer; }
+    .source-entry-header h1 { margin: 4px 0 0; color: var(--hajnal-navy); font-size: 21px; line-height: 1.22; font-weight: 820; letter-spacing: -.02em; text-align: center; }
+    .source-entry-header p { margin: 5px 0 0; color: rgba(44,46,119,.68); font-size: 13px; line-height: 1.4; font-weight: 570; text-align: center; }
+    .source-entry-body { min-height: 764px; flex: 1 1 auto; display: flex; flex-direction: column; padding: 0 24px 22px; }
+    .source-start-date-calendar { padding: 17px 18px 18px; border: 1px solid var(--hairline); border-radius: 22px; background: rgba(255,255,255,.75); box-shadow: 0 12px 28px rgba(44,46,119,.06); }
+    .source-calendar-titlebar { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; margin-bottom: 14px; color: var(--hajnal-navy); font-size: 15px; font-weight: 780; text-align: center; }
+    .source-calendar-titlebar button { width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--hajnal-purple); cursor: pointer; }
+    .source-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px 5px; color: var(--hajnal-navy); font-size: 12px; font-weight: 660; text-align: center; }
+    .source-calendar-grid .weekday { color: rgba(44,46,119,.55); font-size: 10px; font-weight: 780; }
+    .source-calendar-day { width: 29px; height: 29px; display: grid; place-items: center; justify-self: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+    .source-calendar-day.muted { color: rgba(44,46,119,.28); }
+    .source-calendar-day.selected { background: var(--hajnal-purple); color: var(--white); box-shadow: 0 6px 13px rgba(106,86,180,.20); }
+    .source-date-choices, .source-sponsor-choices { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; border: 0; }
+    .source-choice-row { min-height: 54px; display: grid; grid-template-columns: minmax(0,1fr) 24px; align-items: center; gap: 12px; padding: 8px 14px 8px 16px; border: 1px solid var(--hairline); border-radius: 16px; background: rgba(255,255,255,.78); box-shadow: 0 7px 18px rgba(44,46,119,.045); cursor: pointer; }
+    .source-choice-row.source-sponsor-choice { min-height: 68px; grid-template-columns: 42px minmax(0,1fr) 24px; padding: 10px 14px; }
+    .source-choice-copy strong { display: block; color: var(--hajnal-navy); font-size: 14px; line-height: 1.15; font-weight: 760; }
+    .source-choice-copy small { display: block; margin-top: 3px; color: rgba(44,46,119,.56); font-size: 11px; line-height: 1.25; font-weight: 570; }
+    .source-choice-symbol { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: rgba(184,154,215,.20); color: var(--hajnal-purple); }
+    .source-choice-symbol .icon { width: 20px; height: 20px; }
+    .source-radio-visual { width: 20px; height: 20px; border: 1.5px solid rgba(106,86,180,.30); border-radius: 50%; }
+    .source-choice-row:has(input:checked) { border-color: rgba(106,86,180,.34); background: rgba(252,248,253,.96); box-shadow: 0 8px 20px rgba(106,86,180,.09); }
+    .source-choice-row:has(input:checked) .source-radio-visual { border: 6px solid var(--hajnal-purple); }
+    .source-date-note { margin: 12px 8px 0; color: rgba(44,46,119,.60); font-size: 11px; line-height: 1.42; text-align: center; font-weight: 580; }
+    .source-sponsor-note { margin: 10px 4px 0; color: rgba(44,46,119,.56); font-size: 10px; line-height: 1.4; text-align: center; font-weight: 570; }
+    .source-entry-body > .source-primary-button { margin-top: auto; }
+    .source-sponsor-choices { gap: 10px; margin-top: 3px; }
+    .source-sponsor-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 13px; border: 1px solid var(--hairline); border-radius: 16px; background: rgba(255,255,255,.66); }
+    .source-compact-field { min-width: 0; min-height: 50px; display: grid; align-content: center; padding: 7px 10px; border: 1px solid var(--hairline); border-radius: 13px; background: rgba(255,255,255,.78); }
+    .source-compact-field.full { grid-column: 1 / -1; }
+    .source-compact-field span, .source-compact-field label { color: rgba(44,46,119,.55); font-size: 9px; line-height: 1; font-weight: 760; letter-spacing: .03em; text-transform: uppercase; }
+    .source-compact-field input, .source-compact-field button { width: 100%; min-width: 0; margin-top: 4px; padding: 0; border: 0; background: transparent; color: var(--hajnal-navy); font: inherit; font-size: 12px; line-height: 1.25; font-weight: 680; text-align: left; }
+    .source-why-card { min-height: 252px; display: grid; align-content: center; gap: 16px; margin-top: 4px; padding: 26px 24px; border: 1px solid var(--hairline); border-radius: 16px; background: rgba(255,255,255,.76); color: var(--hajnal-navy); text-align: center; box-shadow: 0 14px 36px rgba(44,46,119,.10); }
+    .source-why-card blockquote { margin: 0; color: var(--hajnal-navy); font-size: 25px; line-height: 1.22; font-weight: 820; }
+    .source-why-card p { margin: 0; color: rgba(44,46,119,.62); font-size: 13px; line-height: 1.45; font-weight: 590; }
+    .source-motivation-field { margin-top: 12px; }
+    .source-motivation-field textarea { width: 100%; min-height: 128px; margin-top: 7px; padding: 12px; border: 1px solid var(--hairline); border-radius: 13px; background: rgba(255,255,255,.78); color: var(--hajnal-navy); font: inherit; font-size: 13px; line-height: 1.4; resize: vertical; }
+    .source-notifications-intro { margin: 0 15px 16px; color: rgba(44,46,119,.64); font-size: 12px; line-height: 1.42; text-align: center; font-weight: 570; }
+    .source-notification-list { display: grid; gap: 9px; }
+    .source-notification-setting { min-height: 72px; display: grid; grid-template-columns: 40px minmax(0,1fr) auto; align-items: center; gap: 11px; padding: 9px 13px; border: 1px solid var(--hairline); border-radius: 16px; background: rgba(255,255,255,.74); cursor: pointer; }
+    .source-notification-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: rgba(184,154,215,.18); color: var(--hajnal-purple); }
+    .source-notification-icon .icon { width: 20px; height: 20px; }
+    .source-notification-copy strong { display: block; color: var(--hajnal-navy); font-size: 13px; line-height: 1.2; font-weight: 760; }
+    .source-notification-copy small { display: block; margin-top: 3px; color: var(--hajnal-purple); font-size: 11px; font-weight: 630; }
+    .source-switch { width: 44px; height: 25px; position: relative; border-radius: 999px; background: rgba(143,139,176,.26); transition: background 160ms ease, box-shadow 160ms ease; }
+    .source-switch::after { content: ""; width: 19px; height: 19px; position: absolute; top: 3px; left: 3px; border-radius: 50%; background: var(--white); box-shadow: 0 2px 6px rgba(44,46,119,.18); transition: transform 160ms ease; }
+    .source-notification-setting input:checked ~ .source-switch { background: linear-gradient(135deg, #6253BC, var(--hajnal-purple)); box-shadow: 0 5px 13px rgba(106,86,180,.18); }
+    .source-notification-setting input:checked ~ .source-switch::after { transform: translateX(19px); }
+    .source-notification-actions { margin-top: auto; padding-top: 18px; }
     html:fullscreen, html:fullscreen body { background: #FFFCFC; }
     html:fullscreen body { width: 100vw; min-height: 100dvh; height: 100dvh; }
     html:fullscreen .app-frame { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; }
@@ -417,6 +467,22 @@
 <body>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
     <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></symbol><symbol id="icon-signal" viewBox="0 0 24 24"><path d="M5 18v-2M9 18v-5M13 18v-8M17 18V3"/></symbol><symbol id="icon-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9.5 15a4 4 0 0 1 5 0M12 19h.01"/></symbol><symbol id="icon-battery" viewBox="0 0 24 24"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M21 10v4M6 10h10v4H6z"/></symbol><symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-6h6v6"/></symbol><symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"/></symbol><symbol id="icon-path" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"/></symbol><symbol id="icon-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="3"/><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"/></symbol><symbol id="icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-6 15-6 16 0"/></symbol><symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.8 9 3l2.1 5.3-2.3 1.4a15 15 0 0 0 5.5 5.5l1.4-2.3L21 15l-.8 2.4c-.4 1.3-1.8 2-3.1 1.7C9.5 17.2 6.8 14.5 4.9 6.9 4.6 5.6 5.3 4.2 6.6 3.8Z"/></symbol><symbol id="icon-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 10h8M8 13h5"/></symbol><symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></symbol><symbol id="icon-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7M8 12h11"/></symbol><symbol id="icon-progress" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-7"/></symbol><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4.3 4.3L19 6.7"/></symbol><symbol id="icon-tools" viewBox="0 0 24 24"><path d="m14 6 4-4 4 4-4 4-2-2-7 7-3-3 7-7Z"/><path d="m5 19 4-4 3 3-4 4H5Z"/></symbol><symbol id="icon-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+  </svg>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+    <symbol id="source-character-llama" viewBox="0 0 112 180">
+      <ellipse cx="55" cy="171" rx="47" ry="8" fill="#25265F" opacity=".17" />
+      <circle cx="13" cy="113" r="10" fill="#F6E5DE" />
+      <rect x="28" y="136" width="15" height="38" rx="7.5" fill="#F6E5DE" />
+      <rect x="66" y="136" width="15" height="38" rx="7.5" fill="#F6E5DE" />
+      <ellipse cx="50" cy="126" rx="41" ry="32" fill="#F6E5DE" />
+      <path d="M54 130c3-28 1-61 7-88h25c-2 29 0 66-10 98z" fill="#F6E5DE" />
+      <ellipse cx="74" cy="41" rx="25" ry="21" fill="#F6E5DE" />
+      <ellipse cx="94" cy="47" rx="16" ry="11" fill="#F6E5DE" />
+      <path d="M57 27 58 6c.4-7 8-9 11-2l6 23M75 25 82 4c2-7 10-5 10 2l-3 25" fill="#F6E5DE" />
+      <circle cx="76" cy="39" r="2.2" fill="#2C2E77" />
+      <circle cx="101" cy="46" r="1.8" fill="#2C2E77" />
+      <path d="M91 53q5 4 10 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="1.8" />
+    </symbol>
   </svg>
   <main class="app-frame home-collapsed-screen" data-screen-state="8a-collapsed" data-route="home" aria-label="Hajnal alkalmazás, Kezdőlap">
     <button class="home-illustration" type="button" aria-label="Mérföldkövek megnyitása" data-action="open-milestones"><img class="home-hero-image" src="assets/home-hero.svg" alt="" loading="eager"></button>
@@ -588,7 +654,9 @@
         { id: 'survival-outside', title: 'Menj ki.', copy: 'Friss levegő. Változtass környezetet.', visual: 'outside', action: 'Kész' },
         { id: 'survival-note', title: 'Írj egy mondatot.', copy: 'Írd ki, ami benned van. Csak őszintén.', visual: 'note', action: 'Hívni fogok' }
       ]);
-      const INITIALIZATION_VIEWS = Object.freeze(['splash', 'onboarding', 'start-date', 'sponsor-setup', 'why-started', 'notifications']);
+      const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze(['splash', 'onboarding', 'start-date', 'sponsor-setup', 'why-started', 'notifications']);
+      const INITIALIZATION_VIEWS = INITIALIZATION_SOURCE_VIEW_ORDER;
+      const INITIALIZATION_SPLASH_DELAY_MS = 2500;
       const PATH_VIEWS = Object.freeze(['overview', 'step', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'cycles']);
       const PATH_QUESTION_OVERRIDES = Object.freeze({
         'step-4-topic-2': Object.freeze([
@@ -693,7 +761,8 @@
             initialization: {
               view: 'splash',
               startDate: 'Ma',
-              sponsorState: 'Van szponzorom',
+              selectedCalendarDate: '2026-07-18',
+              sponsorState: 'add',
               motivation: 'Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.'
             }
           };
@@ -745,6 +814,7 @@
             case 'initialization-back': this.advanceInitialization(-1); break;
             case 'initialization-finish': this.navigate('home'); break;
             case 'select-initialization-start': this.setInitializationChoice('startDate', event.target.closest('[data-initialization-value]')?.dataset.initializationValue); break;
+            case 'select-initialization-calendar-date': this.setInitializationCalendarDate(event.target.closest('[data-date]')?.dataset.date); break;
             case 'select-initialization-sponsor': this.setInitializationChoice('sponsorState', event.target.closest('[data-initialization-value]')?.dataset.initializationValue); break;
             case 'open-daily-image': this.navigate('daily-image'); break;
             case 'return-to-milestones': this.navigate('milestones'); break;
@@ -819,7 +889,20 @@
           };
           this.survivalContent.innerHTML = `<button class="path-back-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button><section class="survival-card" data-survival-step="${this.state.survivalStep + 1} / ${SURVIVAL_STEPS.length}"><span class="survival-count">${this.state.survivalStep + 1} / ${SURVIVAL_STEPS.length}</span><h1 id="survival-title">${escapeHtml(step.title)}</h1><p>${escapeHtml(step.copy)}</p><div class="survival-visual">${visuals[step.visual] || visuals.calm}</div><button class="survival-action" type="button" data-action="advance-survival-step">${escapeHtml(step.action)}</button></section>`;
         }
-        openInitialization(view = 'splash') { this.state.initialization.view = INITIALIZATION_VIEWS.includes(view) ? view : 'splash'; this.navigate('initialization'); }
+        clearInitializationSplashTimer() { if (this.initializationSplashTimer) { globalThis.clearTimeout(this.initializationSplashTimer); this.initializationSplashTimer = null; } }
+        scheduleInitializationSplash() {
+          this.clearInitializationSplashTimer();
+          this.initializationSplashTimer = globalThis.setTimeout(() => {
+            this.initializationSplashTimer = null;
+            if (this.state.route === 'initialization' && this.state.initialization.view === 'splash') this.advanceInitialization(1);
+          }, INITIALIZATION_SPLASH_DELAY_MS);
+        }
+        openInitialization(view = 'splash') {
+          this.clearInitializationSplashTimer();
+          this.state.initialization.view = INITIALIZATION_VIEWS.includes(view) ? view : 'splash';
+          this.navigate('initialization');
+          if (this.state.initialization.view === 'splash') this.scheduleInitializationSplash();
+        }
         advanceInitialization(direction) {
           const currentIndex = INITIALIZATION_VIEWS.indexOf(this.state.initialization.view);
           const nextIndex = Math.max(0, Math.min(INITIALIZATION_VIEWS.length - 1, currentIndex + direction));
@@ -827,6 +910,12 @@
           this.openInitialization(INITIALIZATION_VIEWS[nextIndex]);
         }
         setInitializationChoice(property, value) { if (!value) return; this.state.initialization[property] = value; this.renderInitialization(); }
+        setInitializationCalendarDate(date) {
+          if (!date) return;
+          this.state.initialization.selectedCalendarDate = date;
+          this.state.initialization.startDate = 'Dátum kiválasztása';
+          this.renderInitialization();
+        }
         updateMotivationSurfaces() {
           const copy = this.root.querySelector('[data-component="panic-motivation-copy"]');
           if (copy) copy.textContent = `„${this.state.initialization.motivation || 'Szeretnék tisztán maradni.'}”`;
@@ -837,21 +926,37 @@
           const state = this.state.initialization;
           const view = state.view;
           this.initializationScreen.dataset.initializationView = view;
-          const controls = (nextLabel = 'Tovább', { back = true, finish = false } = {}) => `<footer class="init-nav">${back ? '<button class="init-secondary" type="button" data-action="initialization-back">Vissza</button>' : '<span aria-hidden="true"></span>'}<button class="init-primary" type="button" data-action="${finish ? 'initialization-finish' : 'initialization-next'}">${nextLabel}</button></footer>`;
-          const dots = `<div class="init-progress" aria-label="Inicializálás: ${INITIALIZATION_VIEWS.indexOf(view) + 1} / ${INITIALIZATION_VIEWS.length}">${INITIALIZATION_VIEWS.map((item) => `<span class="${item === view ? 'is-current' : INITIALIZATION_VIEWS.indexOf(item) < INITIALIZATION_VIEWS.indexOf(view) ? 'is-done' : ''}" aria-hidden="true"></span>`).join('')}</div>`;
-          const startChoices = ['Ma', 'Tegnap', 'Korábbi dátum'].map((value) => `<button class="init-choice" type="button" data-action="select-initialization-start" data-initialization-value="${value}" aria-pressed="${state.startDate === value}">${value}</button>`).join('');
-          const sponsorChoices = ['Van szponzorom', 'Még keresek szponzort', 'Később döntöm el'].map((value) => `<button class="init-choice" type="button" data-action="select-initialization-sponsor" data-initialization-value="${value}" aria-pressed="${state.sponsorState === value}">${value}</button>`).join('');
+          const statusBar = `<div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>`;
+          const backButton = `<button class="source-back-button" type="button" data-action="initialization-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button>`;
+          const header = (title, subtitle = '') => `<header class="source-entry-header">${backButton}<div><h1>${title}</h1>${subtitle ? `<p>${subtitle}</p>` : ''}</div><span aria-hidden="true"></span></header>`;
+          const primary = (label, finish = false) => `<button class="source-primary-button" type="button" data-action="${finish ? 'initialization-finish' : 'initialization-next'}">${label}</button>`;
+          const startChoice = (value, title, copy) => `<label class="source-choice-row"><input class="native-control" type="radio" name="initialization-start-date" value="${value}" data-action="select-initialization-start" data-initialization-value="${value}" ${state.startDate === value ? 'checked' : ''}><span class="source-choice-copy"><strong>${title}</strong><small>${copy}</small></span><span class="source-radio-visual" aria-hidden="true"></span></label>`;
+          const sponsorChoice = (value, title, copy, icon) => `<label class="source-choice-row source-sponsor-choice"><input class="native-control" type="radio" name="initialization-sponsor" value="${value}" data-action="select-initialization-sponsor" data-initialization-value="${value}" ${state.sponsorState === value ? 'checked' : ''}><span class="source-choice-symbol" aria-hidden="true">${icon}</span><span class="source-choice-copy"><strong>${title}</strong><small>${copy}</small></span><span class="source-radio-visual" aria-hidden="true"></span></label>`;
+          const calendarDays = [
+            ['2026-06-29', '29', 'muted'], ['2026-06-30', '30', 'muted'], ['2026-07-01', '1', ''], ['2026-07-02', '2', ''], ['2026-07-03', '3', ''], ['2026-07-04', '4', ''], ['2026-07-05', '5', ''], ['2026-07-06', '6', ''], ['2026-07-07', '7', ''], ['2026-07-08', '8', ''], ['2026-07-09', '9', ''], ['2026-07-10', '10', ''], ['2026-07-11', '11', ''], ['2026-07-12', '12', ''], ['2026-07-13', '13', ''], ['2026-07-14', '14', ''], ['2026-07-15', '15', ''], ['2026-07-16', '16', ''], ['2026-07-17', '17', ''], ['2026-07-18', '18', ''], ['2026-07-19', '19', ''], ['2026-07-20', '20', ''], ['2026-07-21', '21', ''], ['2026-07-22', '22', ''], ['2026-07-23', '23', ''], ['2026-07-24', '24', ''], ['2026-07-25', '25', ''], ['2026-07-26', '26', ''], ['2026-07-27', '27', ''], ['2026-07-28', '28', ''], ['2026-07-29', '29', ''], ['2026-07-30', '30', ''], ['2026-07-31', '31', ''], ['2026-08-01', '1', 'muted'], ['2026-08-02', '2', 'muted']
+          ].map(([date, day, className]) => {
+            const selected = state.selectedCalendarDate === date;
+            return `<button class="source-calendar-day ${className}${selected ? ' selected' : ''}" type="button" data-action="select-initialization-calendar-date" data-date="${date}" aria-label="${date}${selected ? ', kiválasztva' : ''}" ${selected ? 'aria-current="date" aria-pressed="true"' : ''}>${day}</button>`;
+          }).join('');
+          const notifications = [
+            ['Reggeli emlékeztető', '08:00', '<svg class="icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'],
+            ['Esti check-in', '21:00', '<svg class="icon"><path d="M19 15a8 8 0 1 1-10-10 7 7 0 0 0 10 10z"/></svg>'],
+            ['Szponzorhívás emlékeztetője', '20:00', '<svg class="icon"><use href="#icon-phone"/></svg>'],
+            ['Napi írás emlékeztetője', '19:00', '<svg class="icon"><path d="m4 20 4-1 11-11-3-3L5 16zM13 6l3 3"/></svg>'],
+            ['Meeting emlékeztetője', 'A naptár alapján', '<svg class="icon"><use href="#icon-people"/></svg>']
+          ].map(([label, detail, icon]) => `<label class="source-notification-setting"><span class="source-notification-icon" aria-hidden="true">${icon}</span><span class="source-notification-copy"><strong>${label}</strong><small>${detail}</small></span><input class="native-control" type="checkbox" checked aria-label="${label} bekapcsolása"><span class="source-switch" aria-hidden="true"></span></label>`).join('');
           const pages = {
-            splash: `<section class="init-card init-splash"><div class="init-illustration" aria-hidden="true">☀</div><p class="init-kicker">Hajnal</p><h1 class="init-title">Minden nap<br>egy lépés.</h1><p class="init-subtitle">Ez a rövid kezdeti út végigvezet azon, amire az appnak szüksége van, hogy melletted lehessen.</p>${controls('Kezdjük', { back: false })}</section>`,
-            onboarding: `<section class="init-card"><p class="init-kicker">Üdv itt</p><h1 class="init-title">Nem kell egyedül csinálnod.</h1><p class="init-subtitle">A Hajnal a saját ritmusodban tartja kéznél a napi kapaszkodókat, az időszakaid történetét és a kapcsolódási lehetőségeket.</p>${dots}${controls()}</section>`,
-            'start-date': `<section class="init-card"><p class="init-kicker">Kezdőpont</p><h1 class="init-title">Mikor indult ez az időszak?</h1><p class="init-subtitle">Nem végleges döntés: később pontosíthatod.</p><div class="init-choice-list" aria-label="Kezdő dátum">${startChoices}</div>${dots}${controls()}</section>`,
-            'sponsor-setup': `<section class="init-card"><p class="init-kicker">Kapcsolódás</p><h1 class="init-title">Hol tartasz a szponzorral?</h1><p class="init-subtitle">Nem kötelező minden nap beszélni. Csak azt jelöld, ami most igaz rád.</p><div class="init-choice-list" aria-label="Szponzor állapota">${sponsorChoices}</div>${dots}${controls()}</section>`,
-            'why-started': `<section class="init-card"><p class="init-kicker">Saját emlékeztető</p><h1 class="init-title">Miért kezdted el?</h1><p class="init-subtitle">Ezt később a pánik módban olvashatod vissza, amikor jól jön egy csendes emlékeztető.</p><label for="initial-motivation">A saját szavaid</label><textarea id="initial-motivation" data-initial-motivation placeholder="Írd le, ami most fontos…">${escapeHtml(state.motivation)}</textarea>${dots}${controls()}</section>`,
-            notifications: `<section class="init-card"><p class="init-kicker">Emlékeztetők</p><h1 class="init-title">Maradj kapcsolatban a napoddal.</h1><p class="init-subtitle">A későbbiekben egy halk értesítés emlékeztethet az esti reflexióra vagy egy közeli meetingre. Ezt bármikor módosíthatod.</p><div class="init-notification-note"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg><span>Értesítések később a beállításokban is elérhetők.</span></div>${dots}${controls('Belépek a Hajnalba', { finish: true })}</section>`
+            splash: `<section class="source-entry-screen source-splash" data-source-screen="1-splash"><img class="source-splash-background" src="assets/initialization/welcome_svg.svg" alt="" aria-hidden="true"><button class="source-splash-advance" type="button" data-action="initialization-next" aria-label="Tovább az üdvözlőképernyőhöz"></button>${statusBar}<div class="source-splash-brand"><img class="source-splash-logo" src="assets/initialization/logo_svg.svg" alt="Hajnal logó"><h1>Hajnal</h1><p>Csak a mai nap.</p></div></section>`,
+            onboarding: `<section class="source-entry-screen light" data-source-screen="2-onboarding">${statusBar}<h1 class="source-welcome-heading">Üdv a Hajnalban!</h1><div class="source-welcome-arch" aria-hidden="true"><svg viewBox="0 0 316 382"><defs><linearGradient id="source-welcome-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#30347E"/><stop offset=".52" stop-color="#7D62B7"/><stop offset="1" stop-color="#D69ACB"/></linearGradient></defs><rect width="316" height="382" fill="url(#source-welcome-sky)"/><circle cx="87" cy="83" r="25" fill="#FFF7E9"/><circle cx="98" cy="74" r="25" fill="#4D4798"/><g fill="#fff" opacity=".78"><circle cx="51" cy="116" r="1.5"/><circle cx="249" cy="88" r="1.3"/><circle cx="269" cy="134" r="1.5"/><circle cx="126" cy="48" r="1.1"/></g><path d="M0 206c52-27 94 19 145 31 55 14 101-43 171-24v169H0z" fill="#8E68BF"/><path d="M0 260c63-25 99 28 157 36 48 7 92-35 159-27v113H0z" fill="#51479B"/><g fill="#34377F"><path d="m23 271 16-54 16 54h-9l13 36H19l12-36z"/><path d="m278 265 15-49 15 49h-8l12 33h-36l11-33z"/></g><g transform="translate(55 231)"><circle cx="20" cy="27" r="12" fill="#22265F"/><circle cx="60" cy="27" r="12" fill="#22265F"/><ellipse cx="40" cy="53" rx="34" ry="31" fill="#FFF0E7"/><ellipse cx="40" cy="94" rx="42" ry="48" fill="#22265F"/><ellipse cx="25" cy="51" rx="11" ry="15" fill="#22265F" transform="rotate(20 25 51)"/><ellipse cx="55" cy="51" rx="11" ry="15" fill="#22265F" transform="rotate(-20 55 51)"/><circle cx="28" cy="51" r="3" fill="#fff"/><circle cx="52" cy="51" r="3" fill="#fff"/><path d="M35 64q5 4 10 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="2"/></g><use href="#source-character-llama" x="176" y="177" width="112" height="180"/></svg></div><div class="source-welcome-message"><strong>Nem kell 90 napot egyszerre végigcsinálnod.</strong><span>Csak a mait.</span></div><div class="source-welcome-dots" aria-hidden="true"><span></span><span></span><span></span></div><div class="source-entry-actions">${primary('Kezdjük el')}</div></section>`,
+            'start-date': `<section class="source-entry-screen light" data-source-screen="4-start-date">${statusBar}${header('Mikor kezdődött a jelenlegi tiszta időszakod?')}<main class="source-entry-body"><section class="source-start-date-calendar" aria-label="Dátum kiválasztása"><div class="source-calendar-titlebar"><button type="button" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>Július 2026</strong><button type="button" aria-label="Következő hónap"><svg class="icon" aria-hidden="true" style="transform:rotate(180deg)"><use href="#icon-back"/></svg></button></div><div class="source-calendar-grid" aria-label="2026. júliusi naptár"><span class="weekday">H</span><span class="weekday">K</span><span class="weekday">Sze</span><span class="weekday">Cs</span><span class="weekday">P</span><span class="weekday">Szo</span><span class="weekday">V</span>${calendarDays}</div></section><fieldset class="source-date-choices"><legend class="visually-hidden">Kezdődátum gyors kiválasztása</legend>${startChoice('Ma', 'Ma', 'Az időszak kezdete: július 18.')}${startChoice('Tegnap', 'Tegnap', 'Az időszak kezdete: július 17.')}${startChoice('Dátum kiválasztása', 'Dátum kiválasztása', 'Válassz a fenti naptárból.')}</fieldset><p class="source-date-note">A nap csak az esti check-in után válik megerősített tiszta nappá.</p>${primary('Tovább')}</main></section>`,
+            'sponsor-setup': `<section class="source-entry-screen light" data-source-screen="6-sponsor-setup">${statusBar}${header('Van szponzorod vagy segítő személyed?')}<main class="source-entry-body"><fieldset class="source-sponsor-choices"><legend class="visually-hidden">Segítő kapcsolat kiválasztása</legend>${sponsorChoice('add', 'Igen, hozzáadom', 'A kapcsolat adatait most adom meg.', '<svg class="icon"><use href="#icon-people"/></svg>')}${sponsorChoice('later', 'Később', 'A Profilból bármikor visszatérhetsz.', '<svg class="icon"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>')}${sponsorChoice('none', 'Nincs még', 'Az app ettől teljesen használható marad.', '<svg class="icon"><use href="#icon-profile"/></svg>')}</fieldset><div class="source-sponsor-preview" aria-label="Szponzor adatainak előnézete"><div class="source-compact-field"><label for="source-sponsor-name">Név</label><input id="source-sponsor-name" type="text" value="Kata" aria-label="Szponzor neve"></div><div class="source-compact-field"><label for="source-sponsor-phone">Telefonszám</label><input id="source-sponsor-phone" type="tel" value="+36 30 123 4567" aria-label="Szponzor telefonszáma"></div><div class="source-compact-field"><span>Üzenetküldési mód</span><button type="button">SMS és chat</button></div><div class="source-compact-field"><span>Mikor érdemes hívni?</span><button type="button">18:00 után</button></div><div class="source-compact-field full"><span>Tartalék segítő személy</span><button type="button">+ Kapcsolat hozzáadása</button></div></div><p class="source-sponsor-note">A kapcsolat adatai helyben, bizalmasan kezelhetők.</p>${primary('Tovább')}</main></section>`,
+            'why-started': `<section class="source-entry-screen light" data-source-screen="6b-why-started">${statusBar}${header('Miért kezdted el?', 'Ezt később a Pánik mód felidézi neked.')}<main class="source-entry-body"><section class="source-why-card"><blockquote>Adj magadnak egy mondatot a nehezebb pillanatokra.</blockquote><p>Írd le a saját szavaiddal, miért fontos most neked a felépülés.</p></section><section class="source-motivation-field" aria-labelledby="source-motivation-label"><label id="source-motivation-label" for="initial-motivation">Saját emlékeztetőd</label><textarea id="initial-motivation" data-initial-motivation aria-label="Miért kezdtem el?">${escapeHtml(state.motivation)}</textarea></section><p class="source-sponsor-note">A bejegyzés csak neked szól. A Pánik módban olvasható emlékeztetőként jelenik meg.</p>${primary('Tovább')}</main></section>`,
+            notifications: `<section class="source-entry-screen light" data-source-screen="7-notifications">${statusBar}${header('Értesítések beállítása')}<main class="source-entry-body"><p class="source-notifications-intro">Segítünk, hogy ne maradj le a fontos, megtartó pillanatokról. Minden később módosítható.</p><div class="source-notification-list">${notifications}</div><div class="source-notification-actions">${primary('Belépek a Hajnalba', true)}</div></main></section>`
           };
           this.initializationContent.innerHTML = pages[view] || pages.splash;
         }
         navigate(route) {
+          if (route !== 'initialization') this.clearInitializationSplashTimer();
           this.state.route = route;
           this.root.dataset.route = route;
           if (route === 'path') this.renderPath();
