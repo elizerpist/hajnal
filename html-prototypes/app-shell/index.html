@@ -351,12 +351,19 @@
     .panic-child-header p { margin: 4px 0 0; color: rgba(44,46,119,.58); font-size: 11px; font-weight: 660; text-align: center; }
     .motivation-quote { margin: 0; color: var(--hajnal-navy); font-family: Georgia, "Times New Roman", serif; font-size: 23px; line-height: 1.28; font-weight: 700; }
     .panic-soft-card p { margin: 8px 0 0; color: rgba(44,46,119,.62); font-size: 12px; line-height: 1.42; font-weight: 620; }
-    .relapse-screen { background: linear-gradient(160deg, #323575 0%, #6D5DB0 48%, #D98DBC 100%); color: var(--white); }
-    .relapse-screen .panic-child-content { top: 0; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 42px; color: var(--white); }
-    .relapse-copy { margin: 0 6px auto; padding-top: 176px; font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.12; font-weight: 700; }
-    .relapse-actions { display: grid; gap: 10px; }
-    .relapse-actions button, .survival-action, .init-primary { width: 100%; min-height: 48px; border: 0; border-radius: var(--radius-button); background: var(--white); color: var(--hajnal-purple); font: inherit; font-size: 13px; font-weight: 840; cursor: pointer; }
-    .relapse-actions .relapse-secondary { border: 1px solid rgba(255,255,255,.58); background: transparent; color: var(--white); }
+    .source-relapse-screen { color: var(--white); background: #171848; isolation: isolate; }
+    .source-relapse-screen::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(12,14,42,.30) 0%, rgba(18,18,46,.58) 44%, rgba(12,13,36,.94) 100%); pointer-events: none; }
+    .source-relapse-background { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; filter: saturate(.34) brightness(.64); }
+    .source-relapse-screen .status-bar { color: var(--white); text-shadow: 0 2px 8px rgba(14,14,47,.36); }
+    .source-relapse-content { min-height: calc(var(--screen-h) - 32px); position: relative; z-index: 3; display: flex; flex-direction: column; }
+    .source-relapse-top-actions { height: 54px; display: grid; grid-template-columns: 54px minmax(0,1fr) 54px; align-items: center; padding: 8px 20px 0; }
+    .source-relapse-top-actions .source-relapse-back-button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.26); border-radius: 50%; background: rgba(255,255,255,.18); color: var(--white); box-shadow: 0 12px 28px rgba(19,18,68,.20); backdrop-filter: blur(12px); cursor: pointer; }
+    .source-relapse-copy { margin: 80px 45px auto; text-align: center; text-shadow: 0 3px 12px rgba(8,9,30,.38); }
+    .source-relapse-copy h3 { margin: 0; color: var(--white); font-family: Georgia, "Times New Roman", serif; font-size: 24px; line-height: 1.18; font-weight: 700; letter-spacing: 0; }
+    .source-relapse-bottom-actions { display: grid; gap: 11px; margin-top: auto; padding: 0 34px 25px; }
+    .source-relapse-action { width: 100%; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 18px; border: 0; border-radius: 18px; color: var(--white); font: inherit; font-size: 13px; line-height: 1; font-weight: 820; cursor: pointer; box-shadow: 0 16px 28px rgba(21,19,75,.22); }
+    .source-relapse-action.primary { background: linear-gradient(135deg, #7961DD, #634FC5); }
+    .source-relapse-action.outline { border: 1px solid rgba(255,255,255,.72); background: rgba(13,14,42,.12); box-shadow: none; }
     .survival-screen { background: linear-gradient(160deg, #FFF8FC 0%, #EEE7FA 100%); }
     .survival-card { min-height: 585px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 26px; text-align: center; }
     .survival-count { color: var(--hajnal-purple); font-size: 12px; font-weight: 820; }
@@ -625,8 +632,10 @@
       <main class="panic-child-content"><section class="panic-soft-card"><blockquote class="motivation-quote" data-component="panic-motivation-copy">„Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.”</blockquote><p>Ez a személyes motivációd az inicializálási flow-ban szerkeszthető, és itt ugyanaz a szöveg jelenik meg.</p></section><section class="panic-soft-card"><strong>Fontos emberek</strong><p>Kata · Anya · a keddi meeting csoport</p></section><button class="path-primary-button" type="button" data-action="open-initialization-why">Saját emlékeztető szerkesztése</button></main>
     </section>
 
-    <section class="route-screen relapse-screen" id="checkin-relapse" data-screen="checkin-relapse" data-component="relapse-state" aria-labelledby="relapse-title">
-      <main class="panic-child-content"><button class="path-back-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button><h1 class="relapse-copy" id="relapse-title">Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h1><div class="relapse-actions"><button type="button" data-action="return-home">Újrakezdem</button><button class="relapse-secondary" type="button" data-action="open-panic">Segítséget kérek</button></div></main>
+    <section class="route-screen relapse-screen source-relapse-screen" id="checkin-relapse" data-screen="checkin-relapse" data-component="relapse-state" aria-labelledby="relapse-title">
+      <img class="source-relapse-background" src="assets/milestones/milestone-60.svg" alt="" loading="eager">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <main class="source-relapse-content"><div class="source-relapse-top-actions"><button class="source-relapse-back-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><span aria-hidden="true"></span><span aria-hidden="true"></span></div><section class="source-relapse-copy" aria-label="Visszaesés utáni visszajelzés"><h3 id="relapse-title">Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3></section><div class="source-relapse-bottom-actions"><button class="source-relapse-action primary" type="button" data-action="return-home">Újrakezdem</button><button class="source-relapse-action outline" type="button" data-action="open-panic">Segítséget kérek</button></div></main>
     </section>
 
     <section class="route-screen survival-screen" id="panic-survival" data-screen="panic-survival" data-component="survival-pack" aria-labelledby="survival-title">

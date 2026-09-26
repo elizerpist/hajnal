@@ -57,7 +57,7 @@ function expectAbsent(pattern, message) {
   'class="route-screen hurray-screen" id="checkin-clean"',
   'class="route-screen history-detail-screen" id="history-detail"',
   'class="route-screen panic-why-screen" id="panic-why-started"',
-  'class="route-screen relapse-screen" id="checkin-relapse"',
+  'class="route-screen relapse-screen source-relapse-screen" id="checkin-relapse"',
   'class="route-screen survival-screen" id="panic-survival"',
   'class="route-screen panic-contacts-screen" id="panic-contacts"',
   'class="route-screen meetings-screen" id="meetings"',
