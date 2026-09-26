@@ -51,7 +51,15 @@ function expectAbsent(pattern, message) {
   'data-action="open-current-period-timeline"',
   'data-action="open-milestones"',
   'data-action="return-home"',
+  'data-action="toggle-fullscreen"',
+  'aria-label="Teljes képernyő"',
+  'href="#icon-fullscreen"',
   'navigate(route)',
+  'toggleFullscreen()',
+  'document.documentElement.requestFullscreen()',
+  'document.exitFullscreen()',
+  "document.addEventListener('fullscreenchange'",
+  'updateFullscreenButton()',
   "case 'open-current-period-timeline': this.navigate('timeline'); break;",
   "case 'open-milestones': this.navigate('milestones'); break;",
   'class HomeInteractionController',
@@ -115,6 +123,8 @@ expectAbsent(/<script\b[^>]*\bsrc=/i, 'app shell must not load external scripts'
 expectAbsent(/data-component="home-scene"/, 'the hand-recreated home scene must be removed in favor of the approved asset');
 expectAbsent(/data-scene-object=/, 'the hand-recreated Panda/láma SVG objects must not remain');
 expectAbsent(/if \(event\.target\.closest\('button'\)\) return;/, 'a card swipe must not be rejected merely because it starts on a child button');
+expectAbsent(/aria-label="Értesítések"/, 'the Home upper-right bell control must be replaced by the fullscreen control');
+expectAbsent(/icon-bell/, 'the obsolete Home bell icon must not remain in the app-shell sprite');
 expectAbsent(/data:image\//, 'app-shell source artwork must be local assets, not inline data URIs');
 
 console.log('PASS app-shell 8A → 8B contract');
