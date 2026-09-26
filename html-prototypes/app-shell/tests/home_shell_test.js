@@ -55,6 +55,13 @@ function expectAbsent(pattern, message) {
   'class="route-screen panic-screen" id="panic-root"',
   'class="route-screen daily-image-screen" id="daily-image"',
   'class="route-screen hurray-screen" id="checkin-clean"',
+  'class="route-screen history-detail-screen" id="history-detail"',
+  'class="route-screen panic-why-screen" id="panic-why-started"',
+  'class="route-screen relapse-screen" id="checkin-relapse"',
+  'class="route-screen survival-screen" id="panic-survival"',
+  'class="route-screen panic-contacts-screen" id="panic-contacts"',
+  'class="route-screen meetings-screen" id="meetings"',
+  'class="route-screen initialization-screen" id="initialization"',
   'data-screen="home-statistics-timeline"',
   'data-screen="progress-milestones"',
   'data-screen="home-statistics"',
@@ -68,6 +75,12 @@ function expectAbsent(pattern, message) {
   'data-action="open-daily-image"',
   'data-action="return-to-milestones"',
   'data-action="mark-clean-today"',
+  'data-action="open-history-detail"',
+  'data-action="open-panic-why"',
+  'data-action="open-panic-relapse"',
+  'data-action="start-survival-pack"',
+  'data-action="open-meetings"',
+  'data-action="open-initialization"',
   'data-action="return-home"',
   'data-action="toggle-fullscreen"',
   'aria-label="Teljes képernyő"',
@@ -92,6 +105,16 @@ function expectAbsent(pattern, message) {
   'height: 100dvh;',
   'html:fullscreen .home-illustration',
   "case 'mark-clean-today': this.navigate('clean-reward'); break;",
+  "case 'open-history-detail': this.openHistoryDetail('overview'); break;",
+  "case 'open-panic-why': this.navigate('panic-why'); break;",
+  "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
+  "case 'start-survival-pack': this.startSurvivalPack(); break;",
+  "case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;",
+  "case 'open-initialization': this.openInitialization('splash'); break;",
+  'renderHistoryDetail()',
+  'renderSurvival()',
+  'renderInitialization()',
+  'advanceSurvivalStep()',
   'class HomeInteractionController',
   'setProgress(value',
   'settle(target)',
@@ -155,6 +178,10 @@ assert.equal((html.match(/type="checkbox"/g) || []).length, 2, 'only the first t
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.equal((html.match(/data-panic-option="/g) || []).length, 6, 'source 16 must expose its six panic quick options');
+assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'source 31 must have one shared screen owner for Pánik and Gyűlések');
+assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'source 8D and 8F must be two submenus of one period-detail screen');
+assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
+assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the survival data model must retain all five source 18A–E states');
 assert.equal((html.match(/data-component="panic-bottom-navigation"/g) || []).length, 1, 'source 16 must expose one shared bottom navigation');
 assert.equal((html.match(/data-history-batch="/g) || []).length, 5, 'source 8C must expose its five sobriety periods');
 assert.equal((html.match(/data-history-stat="/g) || []).length, 6, 'source 8C must expose its six total-history stat cards');

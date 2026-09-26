@@ -137,7 +137,7 @@ assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting
   'Az Ösvény nem ér véget itt.',
 ].forEach(expectContains);
 
-assert.equal((html.match(/data-action="open-path"/g) || []).length, 6, 'Ösvény must be functional in every existing and path shared BottomNav');
+assert.equal((html.match(/data-action="open-path"/g) || []).length, 8, 'Ösvény must be functional in every shared BottomNav, including the new current-period and meeting routes');
 assert.equal((html.match(/data-path-step-id=/g) || []).length, 0, 'steps must be rendered from state, not hardcoded screen markup');
 const pathActions = [...new Set([...html.matchAll(/data-action="([^"]+)"/g)].map((match) => match[1]).filter((action) => action.includes('path') || action === 'continue-path-current'))];
 const unhandledPathActions = pathActions.filter((action) => !html.includes(`case '${action}':`));
