@@ -18,6 +18,11 @@ const milestoneAssets = Object.freeze({
   60: '2f7ab47a49ef39f1ea7f74dffc9b203f11cd1345729c88eab8047b1ceb38c832',
   90: '1206a59df76d4a3e7f2808c8e56720d2db2e2c1dfd85e4ffe5895748d3193228',
 });
+const dailyImageSlideAssets = Object.freeze([
+  ['assets/home-hero.svg', 'ca7d0ef0156c39c2d6ebb09e838f5da1de3e86c7f45d20a428ecd595ae8a61a9'],
+  ['assets/milestones/milestone-60.svg', '2f7ab47a49ef39f1ea7f74dffc9b203f11cd1345729c88eab8047b1ceb38c832'],
+  ['assets/milestones/milestone-45.svg', 'a5c74a71236a1265246e311a597349dc0600945d6d64fcd505aef322afa6a11f'],
+]);
 
 assert.ok(fs.existsSync(appShellPath), 'app-shell index.html must exist');
 
@@ -48,16 +53,20 @@ function expectAbsent(pattern, message) {
   'class="route-screen milestone-screen" id="progress-milestones"',
   'class="route-screen history-screen" id="home-statistics"',
   'class="route-screen panic-screen" id="panic-root"',
+  'class="route-screen daily-image-screen" id="daily-image"',
   'class="route-screen hurray-screen" id="checkin-clean"',
   'data-screen="home-statistics-timeline"',
   'data-screen="progress-milestones"',
   'data-screen="home-statistics"',
   'data-screen="panic-root"',
+  'data-screen="daily-image"',
   'data-screen="checkin-clean"',
   'data-action="open-current-period-timeline"',
   'data-action="open-milestones"',
   'data-action="open-history"',
   'data-action="open-panic"',
+  'data-action="open-daily-image"',
+  'data-action="return-to-milestones"',
   'data-action="mark-clean-today"',
   'data-action="return-home"',
   'data-action="toggle-fullscreen"',
@@ -73,6 +82,12 @@ function expectAbsent(pattern, message) {
   "case 'open-milestones': this.navigate('milestones'); break;",
   "case 'open-history': this.navigate('history'); break;",
   "case 'open-panic': this.navigate('panic'); break;",
+  "case 'open-daily-image': this.navigate('daily-image'); break;",
+  "case 'return-to-milestones': this.navigate('milestones'); break;",
+  'data-component="panic-bottom-navigation"',
+  '--bottom-safe-area: env(safe-area-inset-bottom, 0px);',
+  '--bottom-nav-h: calc(70px + var(--bottom-safe-area));',
+  'background: #FFFCFC;',
   "case 'mark-clean-today': this.navigate('clean-reward'); break;",
   'class HomeInteractionController',
   'setProgress(value',
@@ -118,6 +133,12 @@ function expectAbsent(pattern, message) {
   'Szeretnél pár percet szánni',
   'Most, 2 percet rászánok',
   'assets/milestones/milestone-45.svg',
+  'A következő kapu már látszik.',
+  'A türelem is haladás.',
+  'Nem siettetjük a fényt.',
+  'data-carousel-slide="30-1"',
+  'data-carousel-slide="30-2"',
+  'data-carousel-slide="30-3"',
 ].forEach(expectContains);
 
 assert.ok(fs.existsSync(heroAssetPath), 'the exact 8A/8B hero asset must live locally in the app-shell prototype');
@@ -131,12 +152,25 @@ assert.equal((html.match(/type="checkbox"/g) || []).length, 2, 'only the first t
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.equal((html.match(/data-panic-option="/g) || []).length, 6, 'source 16 must expose its six panic quick options');
+assert.equal((html.match(/data-component="panic-bottom-navigation"/g) || []).length, 1, 'source 16 must expose one shared bottom navigation');
 assert.equal((html.match(/data-history-batch="/g) || []).length, 5, 'source 8C must expose its five sobriety periods');
 assert.equal((html.match(/data-history-stat="/g) || []).length, 6, 'source 8C must expose its six total-history stat cards');
 const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
 assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
 assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="active"')).length, 5, 'M must retain its five active source cards');
 assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="inactive"')).length, 4, 'M must retain its four inactive source cards');
+assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="active"') && card.includes('data-action="open-daily-image"')).length, 5, 'every active M card must use the single daily-image action');
+assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="inactive"') && card.includes('data-action="open-daily-image"')).length, 0, 'inactive M cards must stay unbound from daily images');
+assert.equal((html.match(/data-carousel-slide=/g) || []).length, 3, 'source Screen 9 must retain its three daily-image slides');
+for (const [asset, expectedHash] of dailyImageSlideAssets) {
+  const assetPath = path.join(__dirname, '..', asset);
+  assert.ok(fs.existsSync(assetPath), `source Screen 9 asset ${asset} must exist locally`);
+  assert.equal(
+    crypto.createHash('sha256').update(fs.readFileSync(assetPath)).digest('hex'),
+    expectedHash,
+    `source Screen 9 asset ${asset} must remain byte-identical`,
+  );
+}
 for (const [day, expectedHash] of Object.entries(milestoneAssets)) {
   const milestoneAssetPath = path.join(__dirname, '..', 'assets', 'milestones', `milestone-${day}.svg`);
   assert.ok(fs.existsSync(milestoneAssetPath), `M asset for day ${day} must exist locally`);

@@ -7,7 +7,7 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root { --screen-w: 412px; --screen-h: 892px; --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
+    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
     html { color-scheme: light; }
     body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -17,7 +17,7 @@
     .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
     .app-frame { width: var(--screen-w); height: var(--screen-h); position: relative; isolation: isolate; overflow: hidden; border-radius: 34px; color: var(--white); background: #F9F3F7; box-shadow: 0 24px 64px rgba(44, 46, 119, .18); }
 
-    .home-illustration { width: 100%; height: calc(var(--screen-h) - 70px); position: absolute; inset: 0 0 auto 0; z-index: 1; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .home-illustration { width: 100%; height: calc(var(--screen-h) - var(--bottom-nav-h)); position: absolute; inset: 0 0 auto 0; z-index: 1; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .home-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
     .status-bar { height: 32px; position: relative; z-index: 30; display: flex; align-items: center; justify-content: space-between; padding: 10px 22px 0; color: var(--white); font-size: 12px; line-height: 1; font-weight: 800; letter-spacing: -.01em; text-shadow: 0 2px 8px rgba(22, 20, 62, .42); }
     .system-icons { display: flex; align-items: center; gap: 5px; }
@@ -30,7 +30,7 @@
     .home-subtitle { display: block; margin-top: 7px; color: rgba(255, 255, 255, .84); font-size: 13px; font-weight: 650; }
     .home-tagline { display: block; margin-top: 18px; color: rgba(255, 255, 255, .97); font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.05; font-weight: 700; }
 
-    .home-body { position: absolute; z-index: 20; top: calc(682px - var(--sheet-progress, 0) * 96px); right: 0; bottom: 70px; left: 0; display: flex; flex-direction: column; overflow: hidden; padding: 62px 28px 16px; border-radius: 92px 92px 0 0; background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%); color: var(--hajnal-navy); opacity: var(--sheet-progress, 0); pointer-events: none; transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 180ms ease; }
+    .home-body { position: absolute; z-index: 20; top: calc(682px - var(--sheet-progress, 0) * 96px); right: 0; bottom: var(--bottom-nav-h); left: 0; display: flex; flex-direction: column; overflow: hidden; padding: 62px 28px 16px; border-radius: 92px 92px 0 0; background: linear-gradient(180deg, #FFFBFD 0%, #F9F2F6 100%); color: var(--hajnal-navy); opacity: var(--sheet-progress, 0); pointer-events: none; transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 180ms ease; }
     .home-body::before { content: ""; position: absolute; z-index: -1; top: -28px; right: -64px; left: -64px; height: 88px; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: inherit; }
     .app-frame[data-screen-state="8b-expanded"] .home-body { pointer-events: auto; }
     .home-metrics { min-height: 118px; position: absolute; z-index: 32; top: calc(614px - var(--sheet-progress, 0) * 96px); right: 58px; left: 58px; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); align-items: stretch; overflow: hidden; border: 1px solid rgba(106, 86, 180, .14); border-radius: 24px; background: #FFFCFB; color: var(--hajnal-navy); box-shadow: 0 2px 8px rgba(44, 46, 119, .04), inset 0 1px 0 rgba(255, 255, 255, .68); cursor: grab; touch-action: none; user-select: none; will-change: top; transition: top 300ms cubic-bezier(.2, .85, .25, 1); }
@@ -48,7 +48,7 @@
     .dashboard-separator { width: 1px; height: 74px; align-self: center; background: rgba(106, 86, 180, .16); }
     .clean-today-button { min-width: 0; display: grid; place-items: center; gap: 8px; padding: 13px 10px; border: 0; background: transparent; color: var(--hajnal-navy); font-size: 11px; line-height: 1.18; font-weight: 780; text-align: center; cursor: pointer; }
     .clean-check-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #6A56B4 0%, #B89AD7 100%); color: var(--white); box-shadow: 0 10px 20px rgba(106, 86, 180, .23); }
-    .home-expand-hotspot { position: absolute; z-index: 22; top: 732px; right: 0; bottom: 70px; left: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .home-expand-hotspot { position: absolute; z-index: 22; top: 732px; right: 0; bottom: var(--bottom-nav-h); left: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .app-frame[data-screen-state="8b-expanded"] .home-expand-hotspot { pointer-events: none; }
 
     .tasks-card { display: flex; flex-direction: column; height: 126px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
@@ -68,13 +68,13 @@
     .home-actions { display: grid; margin-top: auto; }
     .help-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--radius-button); background: linear-gradient(160deg, #FF78A8, #E04D86); color: var(--white); box-shadow: 0 18px 38px rgba(239, 85, 145, .26); font-size: 13px; font-weight: 840; cursor: pointer; }
 
-    .bottom-nav, .route-bottom-nav { height: 70px; position: absolute; z-index: 40; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--hairline); background: rgba(255, 252, 252, .95); color: var(--hajnal-navy); }
-    .bottom-nav button, .route-bottom-nav button { display: grid; place-items: center; align-content: center; gap: 4px; padding: 5px 2px 7px; border: 0; background: transparent; color: rgba(44, 46, 119, .46); font-size: 9px; font-weight: 750; cursor: pointer; }
+    .bottom-nav, .route-bottom-nav { height: var(--bottom-nav-h); position: absolute; z-index: 40; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: 70px var(--bottom-safe-area); align-content: start; border-top: 1px solid var(--hairline); background: #FFFCFC; color: var(--hajnal-navy); }
+    .bottom-nav button, .route-bottom-nav button { height: 70px; display: grid; place-items: center; align-content: center; gap: 4px; padding: 5px 2px 7px; border: 0; background: transparent; color: rgba(44, 46, 119, .46); font-size: 9px; font-weight: 750; cursor: pointer; }
     .bottom-nav button[aria-current="page"], .route-bottom-nav button[aria-current="page"] { color: var(--hajnal-purple); }
     .bottom-nav .icon, .route-bottom-nav .icon { width: 21px; height: 21px; }
 
     .route-screen { display: none; position: absolute; z-index: 80; inset: 0; overflow: hidden; background: linear-gradient(155deg, #FFFDFE 0%, #FDF7FB 55%, #F8F0F6 100%); color: var(--hajnal-navy); }
-    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen, .app-frame[data-route="history"] .history-screen, .app-frame[data-route="panic"] .panic-screen, .app-frame[data-route="clean-reward"] .hurray-screen { display: block; }
+    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen, .app-frame[data-route="history"] .history-screen, .app-frame[data-route="panic"] .panic-screen, .app-frame[data-route="daily-image"] .daily-image-screen, .app-frame[data-route="clean-reward"] .hurray-screen { display: block; }
     .route-screen .status-bar { color: var(--hajnal-navy); text-shadow: none; }
     .route-screen .system-icons { color: var(--hajnal-navy); }
     .screen-header { min-height: 76px; position: relative; z-index: 3; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: start; padding: 12px 18px 8px; }
@@ -82,7 +82,7 @@
     .screen-header-copy { min-width: 0; padding: 5px 8px 0; text-align: center; }
     .screen-header-copy h1 { margin: 0; font-size: 21px; line-height: 1.16; font-weight: 840; letter-spacing: -.025em; }
     .screen-header-copy p { margin: 4px 0 0; color: rgba(44, 46, 119, .56); font-size: 11.5px; font-weight: 650; }
-    .route-content { position: absolute; top: 108px; right: 0; bottom: 70px; left: 0; overflow-y: auto; padding: 0 18px 24px; scrollbar-width: none; }
+    .route-content { position: absolute; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 0 18px 24px; scrollbar-width: none; }
     .route-content::-webkit-scrollbar { display: none; }
 
     .timeline-header-row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; align-items: start; gap: 14px; padding: 4px 0 15px; }
@@ -182,7 +182,8 @@
     .panic-screen .screen-header .icon-button { border-color: rgba(255, 255, 255, .26); background: rgba(255, 255, 255, .14); color: var(--white); }
     .panic-screen .screen-header-copy h1 { color: var(--white); font-size: 18px; }
     .panic-screen .screen-header-copy p { color: rgba(255, 255, 255, .74); }
-    .panic-content { position: relative; z-index: 3; display: flex; flex-direction: column; min-height: 786px; padding: 0 24px 24px; }
+    .panic-content { position: absolute; z-index: 3; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: flex; flex-direction: column; overflow-y: auto; padding: 0 24px 24px; scrollbar-width: none; }
+    .panic-content::-webkit-scrollbar { display: none; }
     .panic-center { display: grid; justify-items: center; margin-top: 18px; text-align: center; }
     .panic-center h2 { margin: 0; color: var(--white); font-size: 26px; line-height: 1.16; font-weight: 830; }
     .panic-center p { margin: 8px 28px 0; color: rgba(255, 255, 255, .78); font-size: 13px; line-height: 1.42; font-weight: 590; }
@@ -192,6 +193,24 @@
     .panic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 18px; }
     .panic-grid button { min-height: 92px; display: grid; justify-items: center; align-content: center; gap: 8px; padding: 9px; border: 1px solid rgba(255, 255, 255, .10); border-radius: var(--radius-button); background: rgba(255, 255, 255, .10); color: var(--white); font: inherit; font-size: 10px; line-height: 1.22; font-weight: 720; text-align: center; }
     .panic-grid .icon { width: 24px; height: 24px; }
+
+    .daily-image-screen { background: #171848; color: var(--white); }
+    .daily-image-carousel { position: absolute; inset: 0; z-index: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .daily-image-carousel::-webkit-scrollbar { display: none; }
+    .daily-image-slide { min-width: 100%; position: relative; isolation: isolate; display: flex; align-items: end; padding: 0 38px 116px; scroll-snap-align: start; }
+    .daily-image-slide::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(14, 15, 59, .15) 0%, rgba(14, 15, 59, .10) 42%, rgba(14, 15, 59, .83) 100%); }
+    .daily-image-slide img { width: 100%; height: 100%; position: absolute; z-index: -2; inset: 0; display: block; object-fit: cover; object-position: center top; }
+    .daily-image-quote { max-width: 300px; margin: 0; color: var(--white); font-family: Georgia, "Times New Roman", serif; font-size: 26px; line-height: 1.17; font-weight: 700; letter-spacing: -.022em; text-shadow: 0 3px 16px rgba(12, 13, 51, .55); }
+    .daily-image-quote span { display: block; margin-top: 12px; color: rgba(255, 255, 255, .84); font-family: var(--font); font-size: 13px; line-height: 1.42; font-weight: 650; letter-spacing: 0; }
+    .daily-image-back { width: 42px; height: 42px; position: absolute; z-index: 35; top: 48px; left: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .30); border-radius: 50%; background: rgba(25, 24, 78, .23); color: var(--white); box-shadow: 0 8px 20px rgba(15, 15, 57, .18); backdrop-filter: blur(12px); cursor: pointer; }
+    .daily-image-screen .status-bar { position: absolute; z-index: 34; top: 0; right: 0; left: 0; color: var(--white); }
+    .daily-image-screen .system-icons { color: var(--white); }
+    .daily-image-progress { width: 108px; height: 5px; position: absolute; z-index: 34; right: 24px; bottom: 72px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+    .daily-image-progress span { border-radius: 999px; background: rgba(255, 255, 255, .38); }
+    .daily-image-progress span:first-child { background: var(--white); }
+    .daily-image-day { position: absolute; z-index: 34; right: 24px; bottom: 24px; display: grid; justify-items: end; color: var(--white); text-align: right; text-shadow: 0 2px 10px rgba(12, 13, 51, .42); }
+    .daily-image-day strong { font-size: 18px; line-height: 1; font-weight: 850; }
+    .daily-image-day span { margin-top: 4px; color: rgba(255, 255, 255, .82); font-size: 10.5px; font-weight: 680; }
     @media (max-width: 430px), (max-height: 910px) { body { place-items: start center; background: #f8edf5; } .app-frame { border-radius: 0; box-shadow: none; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
   </style>
@@ -241,17 +260,28 @@
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="milestone-screen-title">Mérföldkövek</h1><p>9 kapu a 90 napos úton.</p></div></header>
       <main class="route-content" aria-label="Mérföldkő képgaléria"><p class="milestone-intro">Az aktív mérföldkövek képgalériát nyitnak. A szürke kártyák később válnak elérhetővé.</p><section class="milestone-grid" aria-label="Mérföldkövek">
-        <button class="milestone-card" type="button" data-milestone-day="1" data-milestone-state="active" aria-label="1 nap: Az első lépés"><img class="milestone-art" src="assets/milestones/milestone-1.svg" alt=""><h3>1 nap</h3><span>Az első lépés</span></button>
-        <button class="milestone-card" type="button" data-milestone-day="3" data-milestone-state="active" aria-label="3 nap: Kezdés"><img class="milestone-art" src="assets/milestones/milestone-3.svg" alt=""><h3>3 nap</h3><span>Kezdés</span></button>
-        <button class="milestone-card" type="button" data-milestone-day="7" data-milestone-state="active" aria-label="7 nap: Egy hét"><img class="milestone-art" src="assets/milestones/milestone-7.svg" alt=""><h3>7 nap</h3><span>Egy hét</span></button>
-        <button class="milestone-card" type="button" data-milestone-day="14" data-milestone-state="active" aria-label="14 nap: Két hét"><img class="milestone-art" src="assets/milestones/milestone-14.svg" alt=""><h3>14 nap</h3><span>Két hét</span></button>
-        <button class="milestone-card" type="button" data-milestone-day="21" data-milestone-state="active" aria-label="21 nap: Három hét"><img class="milestone-art" src="assets/milestones/milestone-21.svg" alt=""><h3>21 nap</h3><span>Három hét</span></button>
+        <button class="milestone-card" type="button" data-milestone-day="1" data-milestone-state="active" data-action="open-daily-image" aria-label="1 nap: Az első lépés"><img class="milestone-art" src="assets/milestones/milestone-1.svg" alt=""><h3>1 nap</h3><span>Az első lépés</span></button>
+        <button class="milestone-card" type="button" data-milestone-day="3" data-milestone-state="active" data-action="open-daily-image" aria-label="3 nap: Kezdés"><img class="milestone-art" src="assets/milestones/milestone-3.svg" alt=""><h3>3 nap</h3><span>Kezdés</span></button>
+        <button class="milestone-card" type="button" data-milestone-day="7" data-milestone-state="active" data-action="open-daily-image" aria-label="7 nap: Egy hét"><img class="milestone-art" src="assets/milestones/milestone-7.svg" alt=""><h3>7 nap</h3><span>Egy hét</span></button>
+        <button class="milestone-card" type="button" data-milestone-day="14" data-milestone-state="active" data-action="open-daily-image" aria-label="14 nap: Két hét"><img class="milestone-art" src="assets/milestones/milestone-14.svg" alt=""><h3>14 nap</h3><span>Két hét</span></button>
+        <button class="milestone-card" type="button" data-milestone-day="21" data-milestone-state="active" data-action="open-daily-image" aria-label="21 nap: Három hét"><img class="milestone-art" src="assets/milestones/milestone-21.svg" alt=""><h3>21 nap</h3><span>Három hét</span></button>
         <button class="milestone-card" type="button" data-milestone-day="30" data-milestone-state="inactive" aria-label="30 nap: Egy hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-30.svg" alt=""><h3>30 nap</h3><span>Egy hónap</span></button>
         <button class="milestone-card" type="button" data-milestone-day="45" data-milestone-state="inactive" aria-label="45 nap: Másfél hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-45.svg" alt=""><h3>45 nap</h3><span>Másfél hónap</span></button>
         <button class="milestone-card" type="button" data-milestone-day="60" data-milestone-state="inactive" aria-label="60 nap: Két hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-60.svg" alt=""><h3>60 nap</h3><span>Két hónap</span></button>
         <button class="milestone-card" type="button" data-milestone-day="90" data-milestone-state="inactive" aria-label="90 nap: Három hónap, később elérhető" disabled><img class="milestone-art" src="assets/milestones/milestone-90.svg" alt=""><h3>90 nap</h3><span>Három hónap</span></button>
       </section></main>
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    </section>
+    <section class="route-screen daily-image-screen" id="daily-image" data-screen="daily-image" data-component="daily-image-viewer" aria-label="Napi kép">
+      <div class="daily-image-carousel" data-component="daily-image-carousel" aria-label="Mérföldkőhöz tartozó napi képek">
+        <section class="daily-image-slide" data-carousel-slide="30-1"><img src="assets/home-hero.svg" alt="" loading="eager"><blockquote class="daily-image-quote">A következő kapu már látszik.<span>Ma csak addig menj, ameddig a mai nap engedi.</span></blockquote></section>
+        <section class="daily-image-slide" data-carousel-slide="30-2"><img src="assets/milestones/milestone-60.svg" alt=""><blockquote class="daily-image-quote">A türelem is haladás.<span>A kép változhat, a 24. napod stabilan itt marad.</span></blockquote></section>
+        <section class="daily-image-slide" data-carousel-slide="30-3"><img src="assets/milestones/milestone-45.svg" alt=""><blockquote class="daily-image-quote">Nem siettetjük a fényt.<span>Minden tiszta nap hozzáad egy árnyalattal többet.</span></blockquote></section>
+      </div>
+      <button class="daily-image-back" type="button" data-action="return-to-milestones" aria-label="Vissza a mérföldkövekhez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button>
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><span></span><span></span><span></span></div>
+      <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
     <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-statistics" aria-labelledby="history-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
@@ -294,6 +324,7 @@
         <button type="button" data-panic-option="meeting-finder"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button>
         <button type="button" data-panic-option="report-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Visszaestem</button>
       </section></main>
+      <nav class="route-bottom-nav" data-component="panic-bottom-navigation" aria-label="Fő navigáció"><button type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
   </main>
   <script>
@@ -304,7 +335,7 @@
         setProgress(value, { animate = false } = {}) { const progress = Math.min(1, Math.max(0, value)); this.state.sheet.progress = progress; this.root.style.setProperty('--sheet-progress', progress.toFixed(3)); this.root.classList.toggle('is-dragging', !animate && Boolean(this.drag)); this.root.classList.toggle('home-collapsed-screen', progress < .995); this.root.dataset.screenState = progress >= .995 ? '8b-expanded' : '8a-collapsed'; }
         settle(target) { const expanded = target === 'expanded'; this.state.sheet.settled = expanded ? 'expanded' : 'collapsed'; this.root.classList.remove('is-dragging'); this.setProgress(expanded ? 1 : 0, { animate: !this.motionReduced }); this.render(); }
         bind() { this.summary.addEventListener('pointerdown', (event) => this.startDrag(event)); this.summary.addEventListener('pointermove', (event) => this.updateDrag(event)); this.summary.addEventListener('pointerup', (event) => this.endDrag(event)); this.summary.addEventListener('pointercancel', (event) => this.cancelDrag(event)); this.summary.addEventListener('click', (event) => this.consumeDragClick(event), true); this.expandHotspot.addEventListener('click', () => this.settle('expanded')); this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } }); this.root.addEventListener('click', (event) => this.handleAction(event)); this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } }); document.addEventListener('fullscreenchange', () => this.updateFullscreenButton()); this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked))); }
-        handleAction(event) { const action = event.target.closest('[data-action]')?.dataset.action; switch (action) { case 'open-current-period-timeline': this.navigate('timeline'); break; case 'open-milestones': this.navigate('milestones'); break; case 'open-history': this.navigate('history'); break; case 'open-panic': this.navigate('panic'); break; case 'mark-clean-today': this.navigate('clean-reward'); break; case 'return-home': this.navigate('home'); break; case 'toggle-fullscreen': this.toggleFullscreen(); break; default: break; } }
+        handleAction(event) { const action = event.target.closest('[data-action]')?.dataset.action; switch (action) { case 'open-current-period-timeline': this.navigate('timeline'); break; case 'open-milestones': this.navigate('milestones'); break; case 'open-history': this.navigate('history'); break; case 'open-panic': this.navigate('panic'); break; case 'open-daily-image': this.navigate('daily-image'); break; case 'return-to-milestones': this.navigate('milestones'); break; case 'mark-clean-today': this.navigate('clean-reward'); break; case 'return-home': this.navigate('home'); break; case 'toggle-fullscreen': this.toggleFullscreen(); break; default: break; } }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
         navigate(route) { this.state.route = route; this.root.dataset.route = route; }
