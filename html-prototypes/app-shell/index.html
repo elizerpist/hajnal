@@ -211,6 +211,10 @@
     .daily-image-day { position: absolute; z-index: 34; right: 24px; bottom: 24px; display: grid; justify-items: end; color: var(--white); text-align: right; text-shadow: 0 2px 10px rgba(12, 13, 51, .42); }
     .daily-image-day strong { font-size: 18px; line-height: 1; font-weight: 850; }
     .daily-image-day span { margin-top: 4px; color: rgba(255, 255, 255, .82); font-size: 10.5px; font-weight: 680; }
+    html:fullscreen, html:fullscreen body { background: #FFFCFC; }
+    html:fullscreen body { width: 100vw; min-height: 100dvh; height: 100dvh; }
+    html:fullscreen .app-frame { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; }
+    html:fullscreen .home-illustration { height: calc(100% - var(--bottom-nav-h)); }
     @media (max-width: 430px), (max-height: 910px) { body { place-items: start center; background: #f8edf5; } .app-frame { border-radius: 0; box-shadow: none; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
   </style>
