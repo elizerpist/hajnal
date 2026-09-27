@@ -506,9 +506,9 @@
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .period-detail-tabs, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-number-summary { display: none; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-panel-slot, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-calendar { height: auto; min-height: 0; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-calendar-rail-view { display: block; }
-    .history-calendar-day-rail { overflow-x: auto; display: grid; grid-template-columns: repeat(7, minmax(45px, 1fr)); gap: 5px; padding: 9px 6px; border: 1px solid rgba(106,86,180,.10); border-radius: 20px; background: rgba(255,255,255,.84); scrollbar-width: none; }
+    .history-calendar-day-rail { overflow-x: auto; display: flex; gap: 5px; padding: 9px 6px; border: 1px solid rgba(106,86,180,.10); border-radius: 20px; background: rgba(255,255,255,.84); scroll-snap-type: x mandatory; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-calendar-day-rail::-webkit-scrollbar { display: none; }
-    .history-calendar-rail-day { min-height: 70px; display: grid; grid-template-rows: 12px 1fr; gap: 6px; padding: 0; border: 0; background: transparent; color: #8477B4; font: inherit; font-size: 10px; line-height: 1; font-weight: 800; cursor: pointer; }
+    .history-calendar-rail-day { flex: 0 0 58px; min-height: 70px; display: grid; grid-template-rows: 12px 1fr; gap: 6px; padding: 0; border: 0; background: transparent; color: #8477B4; font: inherit; font-size: 10px; line-height: 1; font-weight: 800; scroll-snap-align: center; cursor: pointer; }
     .history-calendar-rail-day span:first-child { display: grid; place-items: center; }
     .history-calendar-rail-day-inner { display: grid; grid-template-rows: 1fr 9px; place-items: center; padding: 8px 2px 5px; border: 1px solid rgba(106,86,180,.08); border-radius: 12px; background: rgba(255,255,255,.48); color: #24176F; font-size: 13px; font-weight: 850; }
     .history-calendar-rail-day.is-selected .history-calendar-rail-day-inner { border-color: transparent; background: linear-gradient(135deg, #7D59D7, #A678E9); color: #fff; box-shadow: 0 8px 16px rgba(106,86,180,.20); }
@@ -948,6 +948,7 @@
         '2025-02-28': Object.freeze(['mint'])
       });
       const HISTORY_CALENDAR_GRID_REFERENCE_DATE = '2025-02-14';
+      const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;
       const HISTORY_PRESENTATION_HERO_ASSET = 'assets/hero/timelinehero.png';
       const HISTORY_CALENDAR_WEEKDAYS = Object.freeze(['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Sz']);
       const HISTORY_CALENDAR_MONTHS = Object.freeze(['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December']);
@@ -1251,9 +1252,10 @@
         openHistoryCalendarGrid() { this.state.historyDetailView = 'calendar'; this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; this.navigate('history-detail'); }
         getHistoryCalendarRailDays(selectedDate) {
           const selected = new Date(`${selectedDate}T00:00:00Z`);
-          return Array.from({ length: 7 }, (_, index) => {
+          const selectedOffset = Math.floor(HISTORY_CALENDAR_RAIL_DAY_COUNT / 2);
+          return Array.from({ length: HISTORY_CALENDAR_RAIL_DAY_COUNT }, (_, index) => {
             const date = new Date(selected);
-            date.setUTCDate(selected.getUTCDate() + index - 4);
+            date.setUTCDate(selected.getUTCDate() + index - selectedOffset);
             return { iso: date.toISOString().slice(0, 10), day: date.getUTCDate(), weekday: HISTORY_CALENDAR_WEEKDAYS[date.getUTCDay()] };
           });
         }
@@ -1268,8 +1270,10 @@
             return `<button class="history-calendar-rail-day${isSelected ? ' is-selected' : ''}" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="${iso}" aria-label="${month} ${day}.${isSelected ? ', kiválasztva' : ''}"${isSelected ? ' aria-current="date"' : ''}><span>${weekday}</span><span class="history-calendar-rail-day-inner">${day}<span class="history-calendar-day-dots">${dots}</span></span></button>`;
           }).join('');
           this.historyDetailScreen.querySelectorAll('[data-component="history-calendar-rail"]').forEach((rail) => {
-            rail.setAttribute('aria-label', `${month} ${selected.getUTCDate()}. körüli napok, vízszintesen görgethető`);
+            rail.setAttribute('aria-label', `${month} ${selected.getUTCDate()}. körüli 21 nap, vízszintesen görgethető`);
             rail.innerHTML = railMarkup;
+            const selectedButton = rail.querySelector('[aria-current="date"]');
+            selectedButton?.scrollIntoView?.({ block: 'nearest', inline: 'center' });
           });
         }
         renderHistoryDetail() {

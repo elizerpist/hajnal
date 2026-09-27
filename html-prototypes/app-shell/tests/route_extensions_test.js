@@ -191,6 +191,8 @@ assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'the Rail must p
 assert.equal(historyDetailSubtitle.textContent, '14. tiszta nap', 'the rail must render the source clean-day subtitle from the selected calendar state');
 assert.equal(historyDetailBack.dataset.action, 'open-history-calendar-grid', 'the rail back control must be a real controller-owned grid return action');
 assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"/, 'the source rail must be derived from the selected day state');
+assert.equal((historyCalendarRail.innerHTML.match(/class="history-calendar-rail-day(?:\s|")/g) || []).length, 21, 'the native Rail must render a scrollable 21-day window rather than a static seven-day placeholder');
+assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"[^>]*aria-current="date"/, 'the selected date must remain represented inside the scrollable Rail window');
 controller.openHistoryCalendarGrid();
 assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'the rail header back affordance must return to the exact monthly grid state');
 assert.equal(historyDetailBack.dataset.action, 'open-history', 'the grid restores the period header back action');
@@ -275,6 +277,7 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   'renderHistoryLayout() {',
   'renderHistoryPresentation(surface) {',
   'renderHistoryCalendarRail() {',
+  'const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;',
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
   "case 'start-survival-pack': this.startSurvivalPack(); break;",

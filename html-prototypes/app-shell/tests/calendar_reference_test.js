@@ -93,6 +93,10 @@ assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state 
 
 [
   '.history-calendar-day-rail { overflow-x: auto;',
+  'display: flex;',
+  'scroll-snap-type: x mandatory;',
+  '.history-calendar-rail-day { flex: 0 0 58px;',
+  'scroll-snap-align: center;',
   '.history-calendar-memories { margin-top: 12px;',
   '.calendar-rail-hero',
   '[data-history-calendar-view="rail"] .history-detail-content',
@@ -108,6 +112,8 @@ assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state 
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
   'renderHistoryCalendarRail() {',
+  'const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;',
+  "selectedButton?.scrollIntoView?.({ block: 'nearest', inline: 'center' });",
   'const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({',
   'this.historyDetailScreen.dataset.historyCalendarView = calendarView;',
 ].forEach((value) => assert.ok(html.includes(value), `the existing controller must own ${value}`));
