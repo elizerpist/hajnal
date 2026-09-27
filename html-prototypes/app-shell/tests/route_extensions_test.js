@@ -33,17 +33,14 @@ const fullscreenButton = makeElement();
 const pathScreen = makeElement();
 const pathContent = makeElement();
 const historyDetailScreen = makeElement();
-const historyOverviewTab = makeElement();
-historyOverviewTab.dataset.historyDetailTab = 'overview';
 const historyTimelineTab = makeElement();
 historyTimelineTab.dataset.historyDetailTab = 'timeline';
-historyDetailScreen.querySelectorAll = (selector) => selector === '[data-history-detail-tab]' ? [historyOverviewTab, historyTimelineTab] : [];
+const historyCalendarTab = makeElement();
+historyCalendarTab.dataset.historyDetailTab = 'calendar';
+historyDetailScreen.querySelectorAll = (selector) => selector === '[data-history-detail-tab]' ? [historyTimelineTab, historyCalendarTab] : [];
 const survivalContent = makeElement();
 const meetingSearchNote = makeElement();
 meetingSearchNote.hidden = true;
-const periodTimelineFilter = makeElement();
-periodTimelineFilter.hidden = true;
-const periodTimelineFilterButton = makeElement();
 const initializationScreen = makeElement();
 const initializationContent = makeElement();
 const panicMotivationCopy = makeElement();
@@ -61,8 +58,6 @@ root.querySelector = (selector) => ({
   '[data-component="current-period-detail"]': historyDetailScreen,
   '[data-component="survival-content"]': survivalContent,
   '[data-component="meeting-search-note"]': meetingSearchNote,
-  '[data-component="period-timeline-filter"]': periodTimelineFilter,
-  '[data-action="toggle-history-timeline-filter"]': periodTimelineFilterButton,
   '[data-component="initialization-flow"]': initializationScreen,
   '[data-component="initialization-content"]': initializationContent,
   '[data-component="panic-motivation-copy"]': panicMotivationCopy,
@@ -82,17 +77,17 @@ const sandbox = { console, document: documentStub, globalThis: { setTimeout() { 
 vm.runInNewContext(runnableScript, sandbox);
 const controller = sandbox.globalThis.__routeController;
 
-controller.openHistoryDetail('overview');
-assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
-assert.equal(historyDetailScreen.dataset.historyDetailView, 'overview', '8D must be the first current-period submenu');
-assert.equal(historyOverviewTab.getAttribute('aria-pressed'), 'true', 'overview tab must expose selected state');
 controller.openHistoryDetail('timeline');
-assert.equal(historyDetailScreen.dataset.historyDetailView, 'timeline', '8F must be the second submenu of the same route');
+assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
+assert.equal(historyDetailScreen.dataset.historyDetailView, 'timeline', 'a current-period card must open the source-right Idővonal submenu');
 assert.equal(historyTimelineTab.getAttribute('aria-pressed'), 'true', 'timeline tab must expose selected state');
+controller.openHistoryDetail('calendar');
+assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
+assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active within current-period detail');
-controller.toggleHistoryTimelineFilter();
-assert.equal(periodTimelineFilter.hidden, false, '8F timeline filter must be a real local control');
-assert.equal(periodTimelineFilterButton.getAttribute('aria-expanded'), 'true', 'timeline filter must expose expanded state');
+controller.navigate('timeline-event-detail');
+assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must open the distinct source-center event-detail route');
+assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active inside event detail');
 
 controller.navigate('panic-why');
 assert.equal(root.dataset.route, 'panic-why', 'Pánik why option must open source Screen 30');
@@ -129,14 +124,18 @@ controller.advanceInitialization(1);
 assert.equal(root.dataset.route, 'home', 'initialization completion must return to Home');
 
 [
-  "case 'open-history-detail': this.openHistoryDetail('overview'); break;",
+  "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
+  "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
+  "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
+  "case 'return-to-history-detail': this.navigate('history-detail'); break;",
+  "case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;",
+  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; this.navigate('history-detail'); }",
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
   "case 'start-survival-pack': this.startSurvivalPack(); break;",
   "case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;",
   "case 'return-from-meetings': this.returnFromMeetings(); break;",
   "case 'show-meeting-search-note': this.showMeetingSearchNote(); break;",
-  "case 'toggle-history-timeline-filter': this.toggleHistoryTimelineFilter(); break;",
   "case 'open-initialization': this.openInitialization('splash'); break;",
   "const SURVIVAL_STEPS = Object.freeze([",
   "const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze([",
@@ -151,7 +150,8 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   'class="source-why-card"',
   'class="source-notification-list"',
   'Meeting keresése',
-  'data-action="toggle-history-timeline-filter"',
+  'data-action="open-timeline-event-detail"',
+  'Idővonalam számokban',
   'Állj meg.',
   'Lélegezz.',
   'Igyál vizet.',
