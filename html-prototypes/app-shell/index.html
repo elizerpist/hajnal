@@ -382,7 +382,7 @@
     .calendar-period-clean-copy { display: block; margin-top: 12px; color: #2E2177; font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.03em; text-shadow: 0 1px 0 rgba(255,255,255,.58); }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .calendar-period-hero { display: block; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .screen-header { display: none; }
-    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 36px minmax(0, 1fr) auto; gap: 10px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero { height: 185px; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy { top: 48px; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy h1 { font-size: 27px; }
@@ -438,9 +438,7 @@
     .history-event-card p { grid-column: 1 / -1; margin: 0; color: #7669A7; font-size: 10.5px; line-height: 1.22; font-weight: 620; }
     .history-event-card .history-event-mini { width: 37px; height: 37px; grid-row: span 2; object-fit: cover; border-radius: 9px; }
     .history-event-badge { display: inline-flex; width: max-content; min-height: 18px; align-items: center; padding: 3px 7px; border-radius: 999px; background: #DDF8E8; color: #268D58; font-size: 8.5px; font-weight: 830; }
-    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 36px minmax(0, 1fr) auto; gap: 10px; }
-    .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs { padding: 3px; border-radius: 20px; }
-    .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs button { min-height: 30px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-clean-card { display: none; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-number-summary { padding-top: 8px; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-number-summary-heading { margin-bottom: 6px; }
@@ -480,11 +478,11 @@
     .history-calendar-selected-copy strong { color: #22166C; font-size: 14px; line-height: 1.1; font-weight: 860; letter-spacing: -.025em; }
     .history-calendar-selected-copy small { margin-top: 4px; color: #8175AE; font-size: 10.5px; font-weight: 690; }
     .history-calendar-selected-day > span:last-child { color: #6948C1; font-size: 24px; line-height: 1; }
-    .history-calendar-grid-memories { margin-top: 12px; }
-    .history-calendar-grid-memories > header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 1px 7px; }
-    .history-calendar-grid-memories h2 { margin: 0; color: #25166F; font-size: 15px; line-height: 1; font-weight: 860; letter-spacing: -.035em; }
-    .history-calendar-grid-memories a { color: #8A79B8; font-size: 9px; font-weight: 760; text-decoration: none; }
-    .history-calendar-grid-memories a span { margin-left: 4px; color: #6A4CC7; font-size: 18px; line-height: 0; vertical-align: -2px; }
+    .history-calendar-memories { margin-top: 12px; }
+    .history-calendar-memories > header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 1px 7px; }
+    .history-calendar-memories h2 { margin: 0; color: #25166F; font-size: 15px; line-height: 1; font-weight: 860; letter-spacing: -.035em; }
+    .history-calendar-memories a { color: #8A79B8; font-size: 9px; font-weight: 760; text-decoration: none; }
+    .history-calendar-memories a span { margin-left: 4px; color: #6A4CC7; font-size: 18px; line-height: 0; vertical-align: -2px; }
     .history-calendar-memory-list { display: grid; gap: 7px; }
     .history-calendar-memory { width: 100%; min-height: 75px; display: grid; grid-template-columns: 77px minmax(0, 1fr) 18px; align-items: center; gap: 10px; padding: 7px; border: 1px solid rgba(106,86,180,.10); border-radius: 18px; background: rgba(255,255,255,.82); color: inherit; font: inherit; text-align: left; box-shadow: 0 7px 18px rgba(44,46,119,.035); cursor: pointer; }
     .history-calendar-memory img { width: 77px; height: 61px; display: block; object-fit: cover; border-radius: 12px; }
@@ -507,26 +505,6 @@
     .history-calendar-rail-day-inner { display: grid; grid-template-rows: 1fr 9px; place-items: center; padding: 8px 2px 5px; border: 1px solid rgba(106,86,180,.08); border-radius: 12px; background: rgba(255,255,255,.48); color: #24176F; font-size: 13px; font-weight: 850; }
     .history-calendar-rail-day.is-selected .history-calendar-rail-day-inner { border-color: transparent; background: linear-gradient(135deg, #7D59D7, #A678E9); color: #fff; box-shadow: 0 8px 16px rgba(106,86,180,.20); }
     .history-calendar-rail-day .history-calendar-day-dots { min-height: 8px; }
-    .history-day-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 11px; padding: 3px; border: 1px solid rgba(106,86,180,.10); border-radius: 20px; background: rgba(255,255,255,.66); }
-    .history-day-tabs button { min-height: 32px; padding: 0 3px; border: 0; border-radius: 17px; background: transparent; color: #8679B2; font: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
-    .history-day-tabs button[aria-pressed="true"] { background: linear-gradient(135deg, #6C46C8, #A377E8); color: #fff; box-shadow: 0 5px 11px rgba(96,70,183,.19); }
-    .history-day-event-list { position: relative; display: grid; gap: 10px; margin-top: 15px; padding: 0 0 4px; }
-    .history-day-event-list::before { content: ""; position: absolute; top: 13px; bottom: 38px; left: 48px; width: 2px; border-radius: 999px; background: linear-gradient(#B8A0E8, #CDBCF0 86%, rgba(205,188,240,.1)); }
-    .history-day-event { min-height: 62px; position: relative; z-index: 1; display: grid; grid-template-columns: 43px minmax(0, 1fr); align-items: center; gap: 15px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-    .history-day-event time { position: relative; color: #7569A8; font-size: 11px; line-height: 1; font-weight: 780; text-align: right; }
-    .history-day-event time::after { content: ""; width: 9px; height: 9px; position: absolute; top: 50%; right: -20px; border: 2px solid #FEFAFD; border-radius: 50%; background: #8C69E1; box-shadow: 0 2px 6px rgba(75,57,154,.18); transform: translateY(-50%); }
-    .history-day-event-card { min-width: 0; min-height: 62px; display: grid; grid-template-columns: 49px minmax(0, 1fr) 16px; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid rgba(106,86,180,.10); border-radius: 20px; background: rgba(255,255,255,.86); box-shadow: 0 7px 18px rgba(44,46,119,.045); }
-    .history-day-event-icon { width: 45px; height: 45px; display: grid; place-items: center; border-radius: 50%; background: #E1F8EE; color: #35AA7B; }
-    .history-day-event-icon .icon { width: 25px; height: 25px; stroke-width: 2.05; }
-    .history-day-event-icon.meeting { background: #FFF1D3; color: #DEA21F; }
-    .history-day-event-icon.walk { background: #EEE7FD; color: #7651DA; }
-    .history-day-event-icon.urge { background: #FFE4EC; color: #E7487B; }
-    .history-day-event-icon.checkin { background: #E4F0FF; color: #4C7FD6; }
-    .history-day-event-copy { min-width: 0; }
-    .history-day-event-copy h3, .history-day-event-copy p { margin: 0; }
-    .history-day-event-copy h3 { overflow: hidden; color: #21146B; font-size: 14px; line-height: 1.08; font-weight: 860; letter-spacing: -.035em; white-space: nowrap; text-overflow: ellipsis; }
-    .history-day-event-copy p { overflow: hidden; margin-top: 5px; color: #786CAD; font-size: 11px; line-height: 1.08; font-weight: 630; white-space: nowrap; text-overflow: ellipsis; }
-    .history-day-event-card > span:last-child { color: #6745C0; font-size: 26px; line-height: 1; }
     .history-day-quote-card { height: 177px; position: relative; overflow: hidden; display: grid; align-content: start; margin: 12px 0 0; padding: 21px 24px; border: 1px solid rgba(106,86,180,.12); border-radius: 22px; background: #B79CE0; box-shadow: 0 10px 23px rgba(44,46,119,.08); }
     .history-day-quote-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.67) 36%, rgba(255,255,255,.08) 67%); pointer-events: none; }
     .history-day-quote-card img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; object-position: center; }
@@ -854,12 +832,16 @@
                 </section>
                   <button class="history-calendar-selected-day" data-component="calendar-integrated-selected-slot" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-14" aria-label="Február 14. napi idővonala"><span class="history-calendar-selected-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="history-calendar-selected-copy"><strong>Febr. 14. • Péntek</strong><small>3 esemény • 14. tiszta nap</small></span><span aria-hidden="true">›</span></button>
                   </div>
-                <section class="history-calendar-grid-memories" aria-labelledby="history-calendar-memories-title"><header><h2 id="history-calendar-memories-title">Aznapi emlékek</h2><a href="#history-calendar-memories-title">Összes megtekintése <span aria-hidden="true">›</span></a></header><div class="history-calendar-memory-list"><button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Elindultam esemény részletei"><img src="assets/hero/timelinehero.png" alt=""><span class="history-calendar-memory-copy"><h3>Elindultam</h3><time>10:24</time><p>„Ma döntöttem úgy, hogy új életet kezdek…”</p><span class="history-calendar-memory-tags"><span>#kezdet</span><span>#döntés</span><span>#remény</span></span></span><span aria-hidden="true">›</span></button><button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Jobban vagyok esemény részletei"><img src="assets/milestones/milestone-14.svg" alt=""><span class="history-calendar-memory-copy"><h3>Jobban vagyok</h3><time>16:30</time><p>Ma kicsit könnyebb volt. 😊</p><span class="history-calendar-memory-tags"><span>#haladás</span><span>#hála</span></span></span><span aria-hidden="true">›</span></button></div></section>
               </div>
             <div class="history-calendar-rail-view" data-history-calendar-rail-view>
               <div class="history-calendar-day-rail" data-component="history-calendar-rail" aria-label="Február második hete, vízszintesen görgethető"><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-10"><span>H</span><span class="history-calendar-rail-day-inner">10<span class="history-calendar-day-dots"><span class="yellow"></span></span></span></button><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-11"><span>K</span><span class="history-calendar-rail-day-inner">11<span class="history-calendar-day-dots"></span></span></button><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-12"><span>Sz</span><span class="history-calendar-rail-day-inner">12<span class="history-calendar-day-dots"><span></span></span></span></button><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-13"><span>Cs</span><span class="history-calendar-rail-day-inner">13<span class="history-calendar-day-dots"></span></span></button><button class="history-calendar-rail-day is-selected" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-14" aria-current="date"><span>P</span><span class="history-calendar-rail-day-inner">14<span class="history-calendar-day-dots"><span></span><span class="violet"></span><span class="yellow"></span></span></span></button><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-15"><span>Sz</span><span class="history-calendar-rail-day-inner">15<span class="history-calendar-day-dots"><span class="pink"></span></span></span></button><button class="history-calendar-rail-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-16"><span>V</span><span class="history-calendar-rail-day-inner">16<span class="history-calendar-day-dots"></span></span></button></div>
-              <nav class="history-day-tabs" aria-label="A kiválasztott nap nézetei"><button type="button" aria-pressed="true">Idővonal</button><button type="button" aria-pressed="false">Jegyzetek</button><button type="button" aria-pressed="false">Statisztika</button></nav>
-              <section class="history-day-event-list" data-component="history-day-event-list" aria-label="Február 14. eseményei"><button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>07:12</time><span class="history-day-event-card"><span class="history-day-event-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><span class="history-day-event-copy"><h3>Reggeli gondolatok</h3><p>Hálás vagyok, hogy józanul ébredtem.</p></span><span aria-hidden="true">›</span></span></button><button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>11:00</time><span class="history-day-event-card"><span class="history-day-event-icon meeting"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="history-day-event-copy"><h3>AA meeting – Belváros</h3><p>90 perc</p></span><span aria-hidden="true">›</span></span></button><button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>14:30</time><span class="history-day-event-card"><span class="history-day-event-icon walk"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span class="history-day-event-copy"><h3>Séta a Duna-parton</h3><p>Segített lenyugodni.</p></span><span aria-hidden="true">›</span></span></button><button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>19:42</time><span class="history-day-event-card"><span class="history-day-event-icon urge"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><span class="history-day-event-copy"><h3>Erős késztetés</h3><p>10 perc légzés segített.</p></span><span aria-hidden="true">›</span></span></button><button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>21:15</time><span class="history-day-event-card"><span class="history-day-event-icon checkin"><svg class="icon" aria-hidden="true"><use href="#icon-moon"/></svg></span><span class="history-day-event-copy"><h3>Esti check-in</h3><p>Ma is sikerült.</p></span><span aria-hidden="true">›</span></span></button></section>
+              <section class="history-calendar-memories" aria-labelledby="history-calendar-memories-title">
+                <header><h2 id="history-calendar-memories-title">Aznapi emlékek</h2><a href="#history-calendar-memories-title">Összes megtekintése <span aria-hidden="true">›</span></a></header>
+                <div class="history-calendar-memory-list">
+                  <button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Elindultam esemény részletei"><img src="assets/hero/timelinehero.png" alt=""><span class="history-calendar-memory-copy"><h3>Elindultam</h3><time>10:24</time><p>„Ma döntöttem úgy, hogy új életet kezdek…</p><span class="history-calendar-memory-tags"><span>#kezdet</span><span>#döntés</span><span>#remény</span></span></span><span aria-hidden="true">›</span></button>
+                  <button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Jobban vagyok esemény részletei"><img src="assets/milestones/milestone-14.svg" alt=""><span class="history-calendar-memory-copy"><h3>Jobban vagyok</h3><time>16:30</time><p>Ma kicsit könnyebb volt. 😊</p><span class="history-calendar-memory-tags"><span>#haladás</span><span>#hála</span></span></span><span aria-hidden="true">›</span></button>
+                </div>
+              </section>
               <section class="history-day-quote-card" aria-label="Napi idézet"><img src="assets/hero/timelinehero.png" alt=""><blockquote><span class="history-day-quote-mark">“</span> A nehéz pillanatok is a történetem részei, és erősebbé tesznek.</blockquote></section>
             </div>
           </section>
@@ -941,15 +923,6 @@
     (() => {
       const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);
       const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic']);
-      const HISTORY_CALENDAR_DAY_EVENTS = Object.freeze({
-        '2025-02-14': Object.freeze([
-          { time: '07:12', title: 'Reggeli gondolatok', copy: 'Hálás vagyok, hogy józanul ébredtem.', icon: 'icon-leaf', tone: '' },
-          { time: '11:00', title: 'AA meeting – Belváros', copy: '90 perc', icon: 'icon-people', tone: 'meeting' },
-          { time: '14:30', title: 'Séta a Duna-parton', copy: 'Segített lenyugodni.', icon: 'icon-progress', tone: 'walk' },
-          { time: '19:42', title: 'Erős késztetés', copy: '10 perc légzés segített.', icon: 'icon-heart', tone: 'urge' },
-          { time: '21:15', title: 'Esti check-in', copy: 'Ma is sikerült.', icon: 'icon-moon', tone: 'checkin' }
-        ])
-      });
       const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({
         '2025-02-03': Object.freeze(['mint']),
         '2025-02-05': Object.freeze(['violet']),
@@ -1287,12 +1260,6 @@
           this.historyDetailScreen.querySelectorAll('[data-component="history-calendar-rail"]').forEach((rail) => {
             rail.setAttribute('aria-label', `${month} ${selected.getUTCDate()}. körüli napok, vízszintesen görgethető`);
             rail.innerHTML = railMarkup;
-          });
-          const events = HISTORY_CALENDAR_DAY_EVENTS[selectedDate] || [];
-          const eventMarkup = events.length ? events.map((event) => `<button class="history-day-event" type="button" data-action="open-timeline-event-detail"><time>${escapeHtml(event.time)}</time><span class="history-day-event-card"><span class="history-day-event-icon${event.tone ? ` ${escapeHtml(event.tone)}` : ''}"><svg class="icon" aria-hidden="true"><use href="#${escapeHtml(event.icon)}"/></svg></span><span class="history-day-event-copy"><h3>${escapeHtml(event.title)}</h3><p>${escapeHtml(event.copy)}</p></span><span aria-hidden="true">›</span></span></button>`).join('') : '<article class="history-day-event is-empty"><time>–</time><span class="history-day-event-card"><span class="history-day-event-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="history-day-event-copy"><h3>Nincs rögzített esemény</h3><p>Erre a napra még nincs mentett bejegyzés.</p></span></span></article>';
-          this.historyDetailScreen.querySelectorAll('[data-component="history-day-event-list"]').forEach((list) => {
-            list.setAttribute('aria-label', `${month} ${selected.getUTCDate()}. eseményei`);
-            list.innerHTML = eventMarkup;
           });
         }
         renderHistoryDetail() {

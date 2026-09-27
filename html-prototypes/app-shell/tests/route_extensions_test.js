@@ -45,7 +45,6 @@ const historyDetailSubtitle = makeElement();
 const historyDetailBack = makeElement('open-history');
 const historyDetailTopAction = makeElement();
 const historyCalendarRail = makeElement();
-const historyDayEventList = makeElement();
 const historyScreen = makeElement();
 const historyHeroImage = makeElement();
 const historyHeroVariantToggle = makeElement('toggle-history-hero-variant');
@@ -69,7 +68,6 @@ historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-component="history-detail-back"]': [historyDetailBack],
   '[data-component="history-detail-top-action"]': [historyDetailTopAction],
   '[data-component="history-calendar-rail"]': [historyCalendarRail],
-  '[data-component="history-day-event-list"]': [historyDayEventList],
 }[selector] || []);
 historyDetailScreen.querySelector = (selector) => ({
   '.history-calendar-month-card': calendarMonthCard,
@@ -189,7 +187,6 @@ assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the grid retur
 controller.openHistoryCalendarRail('2025-02-24');
 assert.equal(historyDetailTitle.textContent, 'Február 24.', 'a non-source calendar day must receive its own rail heading');
 assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-24"[^>]*aria-current="date"/, 'the dynamically rendered rail must contain the selected non-source date');
-assert.match(historyDayEventList.innerHTML, /Nincs rögzített esemény/, 'a non-source date must not misleadingly render February 14 event content');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active within current-period detail');
 controller.navigate('timeline-event-detail');
 assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must open the distinct source-center event-detail route');
@@ -265,7 +262,6 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "toggleHistoryMetrics(surface = 'history') {",
   'renderHistoryLayout() {',
   'renderHistoryPresentation(surface) {',
-  'const HISTORY_CALENDAR_DAY_EVENTS = Object.freeze({',
   'renderHistoryCalendarRail() {',
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
@@ -277,6 +273,7 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "const SURVIVAL_STEPS = Object.freeze([",
   "const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze([",
 ].forEach((value) => assert.ok(html.includes(value), `route controller is missing ${value}`));
+assert.ok(!html.includes('HISTORY_CALENDAR_DAY_EVENTS'), 'the route controller must not retain data for the removed Rail day Timeline');
 assert.ok(!html.includes('select-history-timeline-filter'), 'the shared route controller must not retain the removed Timeline filter action');
 assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller must not retain state for removed Timeline filter pills');
 [
