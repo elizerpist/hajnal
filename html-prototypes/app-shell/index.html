@@ -145,6 +145,9 @@
     .history-hero-copy { position: absolute; z-index: 1; top: 51px; right: 22px; left: 22px; text-align: center; }
     .history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -.035em; margin: 0; color: #302176; text-shadow: 0 1px 0 rgba(255, 255, 255, .45); }
     .history-hero-copy p { margin: 7px 0 0; color: #7F74B0; font-size: 13px; line-height: 1.15; font-weight: 760; }
+    .history-hero-variant-toggle { width: 38px; height: 38px; position: absolute; z-index: 2; top: 49px; right: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(255,255,255,.76); color: #6950BE; box-shadow: 0 7px 16px rgba(55,34,117,.10); cursor: pointer; }
+    .history-hero-variant-toggle .icon { width: 19px; height: 19px; stroke-width: 1.9; }
+    .history-hero-variant-toggle[aria-pressed="true"] { background: #7650CC; color: #fff; box-shadow: 0 7px 16px rgba(89,54,175,.24); }
     .history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; color: #352576; }
     .history-period-intro { min-height: 28px; display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 7px; margin: 0 1px 10px; color: #7667AB; font-family: Georgia, "Times New Roman", serif; font-size: 12px; font-style: italic; line-height: 1.22; }
     .history-period-intro .icon { width: 20px; height: 20px; color: #A76BB4; stroke-width: 1.45; }
@@ -168,6 +171,8 @@
     .history-number-summary-heading h2::after { content: ""; width: 24px; height: 1px; display: inline-block; margin: 0 5px 4px 7px; background: rgba(129, 116, 184, .42); }
     .history-number-summary-heading p { margin: 0; color: #8A7BB5; font-family: Georgia, "Times New Roman", serif; font-size: 9px; font-style: italic; line-height: 1.12; text-align: right; }
     .history-number-summary-heading p::after { content: "♥"; margin-left: 3px; color: #D07CAC; font-size: 10px; }
+    .history-metrics-toggle { width: 31px; height: 31px; display: none; place-items: center; padding: 0; border: 1px solid rgba(131,105,173,.14); border-radius: 50%; background: rgba(255,255,255,.86); color: #6E50BF; cursor: pointer; transition: transform .24s ease, background .24s ease; }
+    .history-metrics-toggle .icon { width: 17px; height: 17px; transform: rotate(90deg); stroke-width: 2.2; }
     .history-number-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
     .history-number-card { min-width: 0; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); text-align: center; }
     .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px; background: #E3F6EF; color: #53AD89; }
@@ -176,6 +181,23 @@
     .history-number-card:nth-child(3) .history-number-icon { background: #F0E9FA; color: #9975C1; }
     .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
     .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
+    .history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }
+    .history-screen[data-history-hero-variant="compact"] .history-hero-image { object-position: center center; }
+    .history-screen[data-history-hero-variant="compact"] .history-hero-copy { top: 48px; }
+    .history-screen[data-history-hero-variant="compact"] .history-hero-copy h1 { font-size: 27px; }
+    .history-screen[data-history-hero-variant="compact"] .history-hero-variant-toggle { top: 47px; }
+    .history-screen[data-history-hero-variant="compact"] .history-content { top: 154px; padding-top: 18px; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading { grid-template-columns: 20px minmax(0, 1fr) minmax(0, 106px) 31px; gap: 4px; margin: 0; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading > .icon { width: 17px; height: 17px; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2 { font-size: 16px; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2::after { width: 17px; margin-right: 3px; margin-left: 5px; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading p { font-size: 8.5px; }
+    .history-screen[data-history-hero-variant="compact"] .history-metrics-toggle { display: grid; }
+    .history-screen[data-history-hero-variant="compact"][data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
+    .history-screen[data-history-hero-variant="compact"][data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
+    .history-screen[data-history-hero-variant="compact"][data-history-metrics-expanded="true"] .history-metrics-toggle { background: #7650CC; color: #fff; transform: rotate(180deg); }
+    .history-screen[data-history-hero-variant="compact"] .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
     .history-number-card strong { color: #3B2B7E; font-size: 13px; line-height: 1; font-weight: 850; letter-spacing: -.025em; }
     .history-number-card span { color: #8176A8; font-size: 7.5px; line-height: 1.12; font-weight: 720; }
 
@@ -733,8 +755,8 @@
       <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><span></span><span></span><span></span></div>
       <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
-    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-history" aria-labelledby="history-screen-title">
-      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div></section>
+    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="true" aria-labelledby="history-screen-title">
+      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-component="history-hero-variant-toggle" aria-label="Kompakt Történetem nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="history-content" aria-label="Józan időszakaim">
         <p class="history-period-intro"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Minden időszak egy külön fejezet az utamból.</span></p>
@@ -745,7 +767,7 @@
           <button class="history-period-card" type="button" data-history-batch="2025-06" data-action="open-history-detail" aria-label="Rövid időszak, 4 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-14.svg" alt=""></span><span class="history-period-copy"><h2>Rövid időszak</h2><p>2025. jún.</p><span class="history-period-badge">4 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
           <button class="history-period-card" type="button" data-history-batch="current" data-action="open-history-detail" aria-label="Jelenlegi időszak, 24 nap tiszta"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-21.svg" alt=""></span><span class="history-period-copy"><h2>Jelenlegi időszak</h2><p>2026. máj. 1. – jelenleg</p><span class="history-period-badge">24 nap tiszta</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
         </div></section>
-        <section class="history-number-summary" aria-labelledby="history-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
+        <section class="history-number-summary" aria-labelledby="history-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p><button class="history-metrics-toggle" type="button" data-action="toggle-history-metrics" data-component="history-metrics-toggle" aria-label="Utam számokban kibontása" aria-expanded="true"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="history-number-grid">
           <article class="history-number-card" data-history-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article>
           <article class="history-number-card" data-history-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article>
           <article class="history-number-card" data-history-stat="evening-reflections"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>19</strong><span>esti reflexió</span></article>
@@ -1000,6 +1022,10 @@
           this.fullscreenButton = root.querySelector('[data-action="toggle-fullscreen"]');
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
+          this.historyScreen = root.querySelector('[data-component="sobriety-batch-history"]');
+          this.historyHeroImage = root.querySelector('[data-component="history-hero-image"]');
+          this.historyHeroVariantToggle = root.querySelector('[data-component="history-hero-variant-toggle"]');
+          this.historyMetricsToggle = root.querySelector('[data-component="history-metrics-toggle"]');
           this.historyDetailScreen = root.querySelector('[data-component="current-period-detail"]');
           this.survivalContent = root.querySelector('[data-component="survival-content"]');
           this.meetingSearchNote = root.querySelector('[data-component="meeting-search-note"]');
@@ -1011,6 +1037,8 @@
             sheet: { progress: 0, settled: 'collapsed' },
             path: createPathState(),
             historyDetailView: 'timeline',
+            historyHeroVariant: 'large',
+            historyMetricsExpanded: true,
             historyTimelineFilter: 'all',
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
@@ -1029,6 +1057,7 @@
           this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           this.bind();
           this.render();
+          this.renderHistoryLayout();
           this.updateFullscreenButton();
           this.syncMainNavigation();
         }
@@ -1054,6 +1083,8 @@
             case 'open-current-period-timeline': this.navigate('timeline'); break;
             case 'open-milestones': this.navigate('milestones'); break;
             case 'open-history': this.navigate('history'); break;
+            case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(); break;
+            case 'toggle-history-metrics': this.toggleHistoryMetrics(); break;
             case 'open-panic': this.navigate('panic'); break;
             case 'open-panic-why': this.navigate('panic-why'); break;
             case 'open-panic-relapse': this.navigate('panic-relapse'); break;
@@ -1120,6 +1151,33 @@
         }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
+        toggleHistoryHeroVariant() {
+          const compact = this.state.historyHeroVariant !== 'compact';
+          this.state.historyHeroVariant = compact ? 'compact' : 'large';
+          this.state.historyMetricsExpanded = !compact;
+          this.renderHistoryLayout();
+        }
+        toggleHistoryMetrics() {
+          if (this.state.historyHeroVariant !== 'compact') return;
+          this.state.historyMetricsExpanded = !this.state.historyMetricsExpanded;
+          this.renderHistoryLayout();
+        }
+        renderHistoryLayout() {
+          if (!this.historyScreen) return;
+          const compact = this.state.historyHeroVariant === 'compact';
+          const expanded = compact ? this.state.historyMetricsExpanded : true;
+          this.historyScreen.dataset.historyHeroVariant = compact ? 'compact' : 'large';
+          this.historyScreen.dataset.historyMetricsExpanded = String(expanded);
+          if (this.historyHeroImage) this.historyHeroImage.setAttribute('src', compact ? 'assets/hero/hero_s.png' : 'assets/hero/hero_m.png');
+          if (this.historyHeroVariantToggle) {
+            this.historyHeroVariantToggle.setAttribute('aria-pressed', String(compact));
+            this.historyHeroVariantToggle.setAttribute('aria-label', compact ? 'Nagy Történetem nézet' : 'Kompakt Történetem nézet');
+          }
+          if (this.historyMetricsToggle) {
+            this.historyMetricsToggle.setAttribute('aria-expanded', String(expanded));
+            this.historyMetricsToggle.setAttribute('aria-label', expanded ? 'Utam számokban összecsukása' : 'Utam számokban kibontása');
+          }
+        }
         openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }
         openHistoryCalendarRail(date) {
           if (!/^2025-(01|02|03)-\d{2}$/.test(date || '')) return;
@@ -1274,6 +1332,7 @@
           if (route !== 'initialization') this.clearInitializationSplashTimer();
           this.state.route = route;
           this.root.dataset.route = route;
+          if (route === 'history') this.renderHistoryLayout();
           if (route === 'path') this.renderPath();
           if (route === 'history-detail') this.renderHistoryDetail();
           if (route === 'survival') this.renderSurvival();

@@ -43,6 +43,10 @@ const historyDetailBack = makeElement('open-history');
 const historyDetailTopAction = makeElement();
 const historyCalendarRail = makeElement();
 const historyDayEventList = makeElement();
+const historyScreen = makeElement();
+const historyHeroImage = makeElement();
+const historyHeroVariantToggle = makeElement('toggle-history-hero-variant');
+const historyMetricsToggle = makeElement('toggle-history-metrics');
 historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-history-detail-tab]': [historyTimelineTab, historyCalendarTab],
   '[data-component="history-detail-title"]': [historyDetailTitle],
@@ -70,6 +74,10 @@ root.querySelector = (selector) => ({
   '[data-component="path-workspace"]': pathScreen,
   '[data-component="path-content"]': pathContent,
   '[data-component="current-period-detail"]': historyDetailScreen,
+  '[data-component="sobriety-batch-history"]': historyScreen,
+  '[data-component="history-hero-image"]': historyHeroImage,
+  '[data-component="history-hero-variant-toggle"]': historyHeroVariantToggle,
+  '[data-component="history-metrics-toggle"]': historyMetricsToggle,
   '[data-component="survival-content"]': survivalContent,
   '[data-component="meeting-search-note"]': meetingSearchNote,
   '[data-component="initialization-flow"]': initializationScreen,
@@ -119,6 +127,20 @@ controller.navigate('timeline-event-detail');
 assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must open the distinct source-center event-detail route');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active inside event detail');
 
+controller.toggleHistoryHeroVariant();
+assert.equal(historyScreen.dataset.historyHeroVariant, 'compact', 'the History hero top-right push-push control must enter the compact alternate layout without changing route');
+assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'the compact alternate layout must begin with its lower metric strip collapsed');
+assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'the compact alternate layout must use the supplied local hero_s asset');
+assert.equal(historyHeroVariantToggle.getAttribute('aria-pressed'), 'true', 'the hero-layout control must expose its compact state');
+assert.equal(historyMetricsToggle.getAttribute('aria-expanded'), 'false', 'the lower metric arrow must expose its collapsed state');
+controller.toggleHistoryMetrics();
+assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'tapping the lower metric arrow must expand the existing metric payload upward');
+assert.equal(historyMetricsToggle.getAttribute('aria-expanded'), 'true', 'the lower metric arrow must expose its expanded state');
+controller.toggleHistoryHeroVariant();
+assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'the same hero corner control must return to the established large History layout');
+assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'returning to the established large layout must restore its existing fully visible metric section');
+assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'the large History layout must restore the existing hero_m asset');
+
 controller.navigate('panic-why');
 assert.equal(root.dataset.route, 'panic-why', 'Pánik why option must open source Screen 30');
 controller.handleInput({ target: { value: 'A kapcsolataimért és a nyugalmamért.', matches: (selector) => selector === '[data-initial-motivation]' } });
@@ -158,12 +180,17 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
   "case 'open-history-calendar-rail': this.openHistoryCalendarRail(event.target.closest('[data-history-calendar-date]')?.dataset.historyCalendarDate); break;",
   "case 'open-history-calendar-grid': this.openHistoryCalendarGrid(); break;",
+  "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(); break;",
+  "case 'toggle-history-metrics': this.toggleHistoryMetrics(); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
   "case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;",
   "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
+  'toggleHistoryHeroVariant() {',
+  'toggleHistoryMetrics() {',
+  'renderHistoryLayout() {',
   'const HISTORY_CALENDAR_DAY_EVENTS = Object.freeze({',
   'renderHistoryCalendarRail() {',
   "case 'open-panic-why': this.navigate('panic-why'); break;",
