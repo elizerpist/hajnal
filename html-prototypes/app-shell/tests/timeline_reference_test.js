@@ -54,7 +54,7 @@ assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline 
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
 assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 5, 'every rendered timeline event must be a semantic event-detail trigger');
-assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { top: 224px;'), 'the large Timeline hero must overlap a higher-value body card');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px;'), 'the overlapping Timeline body card and its two tabs must render above the hero, like the working History body');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');
 assert.ok(html.includes('.history-detail-events-scroll { min-height: 0; overflow-y: auto;'), 'only the event list may scroll inside the source-right timeline view');
