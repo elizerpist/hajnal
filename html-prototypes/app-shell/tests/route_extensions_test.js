@@ -16,11 +16,14 @@ function makeElement(action = '') {
     style: { setProperty() {} },
     innerHTML: '',
     textContent: '',
+    children: [],
     addEventListener() {},
     setAttribute(name, value) { this.attributes.set(name, String(value)); },
     getAttribute(name) { return this.attributes.get(name); },
     removeAttribute(name) { this.attributes.delete(name); },
     querySelectorAll() { return []; },
+    querySelector() { return null; },
+    appendChild(child) { this.children.push(child); child.parentElement = this; return child; },
     setPointerCapture() {},
     releasePointerCapture() {},
   };
@@ -52,6 +55,13 @@ const timelineHeroVariantToggle = makeElement('toggle-history-hero-variant');
 timelineHeroVariantToggle.dataset.historyPresentationSurface = 'timeline';
 const timelineMetricsToggle = makeElement('toggle-history-metrics');
 timelineMetricsToggle.dataset.historyPresentationSurface = 'timeline';
+const calendarHeroImage = makeElement();
+const calendarHeroVariantToggle = makeElement('toggle-history-hero-variant');
+calendarHeroVariantToggle.dataset.historyPresentationSurface = 'calendar';
+const calendarMonthCard = makeElement();
+const calendarMonthCardOrigin = makeElement();
+const calendarIntegratedGridSlot = makeElement();
+const timelineMetricsTitle = makeElement();
 historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-history-detail-tab]': [historyTimelineTab, historyCalendarTab],
   '[data-component="history-detail-title"]': [historyDetailTitle],
@@ -61,6 +71,12 @@ historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-component="history-calendar-rail"]': [historyCalendarRail],
   '[data-component="history-day-event-list"]': [historyDayEventList],
 }[selector] || []);
+historyDetailScreen.querySelector = (selector) => ({
+  '.history-calendar-month-card': calendarMonthCard,
+  '[data-component="calendar-month-card-origin"]': calendarMonthCardOrigin,
+  '[data-component="calendar-integrated-grid-slot"]': calendarIntegratedGridSlot,
+  '#timeline-number-title': timelineMetricsTitle,
+}[selector] || null);
 const survivalContent = makeElement();
 const meetingSearchNote = makeElement();
 meetingSearchNote.hidden = true;
@@ -85,7 +101,10 @@ root.querySelector = (selector) => ({
   '[data-component="history-metrics-toggle"]': historyMetricsToggle,
   '[data-component="timeline-hero-image"]': timelineHeroImage,
   '[data-component="timeline-hero-variant-toggle"]': timelineHeroVariantToggle,
-  '[data-component="timeline-metrics-toggle"]': timelineMetricsToggle,
+  '[data-component="history-metrics-surface"][data-history-presentation-surface="history"]': historyMetricsToggle,
+  '[data-component="history-metrics-surface"][data-history-presentation-surface="timeline"]': timelineMetricsToggle,
+  '[data-component="calendar-hero-image"]': calendarHeroImage,
+  '[data-component="calendar-hero-variant-toggle"]': calendarHeroVariantToggle,
   '[data-component="survival-content"]': survivalContent,
   '[data-component="meeting-search-note"]': meetingSearchNote,
   '[data-component="initialization-flow"]': initializationScreen,
@@ -127,6 +146,21 @@ controller.openHistoryDetail('calendar');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
 assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
 assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'opening Naptár must begin with the source monthly grid');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must begin in the established large-hero mode');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Calendar large mode must use the supplied History hero');
+controller.toggleHistoryHeroVariant('calendar');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Calendar push-push control must enter its compact variant');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'Calendar compact mode must use the supplied compact hero');
+controller.toggleHistoryHeroVariant('calendar');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'integrated', 'Calendar must expose the third integrated-grid variant');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Calendar integrated mode must restore the large hero asset');
+assert.equal(calendarIntegratedGridSlot.children[0], calendarMonthCard, 'integrated Calendar must move the one monthly grid into the hero slot');
+controller.toggleHistoryHeroVariant('calendar');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must cycle from integrated back to large');
+assert.equal(calendarMonthCardOrigin.children[0], calendarMonthCard, 'returning to large Calendar must restore the same grid node below the hero');
+controller.toggleHistoryMetrics('calendar');
+assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'true', 'Calendar insight card must expand through the shared presentation owner');
+assert.equal(timelineMetricsToggle.getAttribute('aria-expanded'), 'true', 'Calendar full-card tap surface must expose expanded state');
 controller.openHistoryCalendarRail('2025-02-14');
 assert.equal(historyDetailScreen.dataset.historyCalendarView, 'rail', 'a semantic calendar-day tap must open the focused rail state on the same route');
 assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the controller must retain the selected calendar day for the rail header and selected day treatment');

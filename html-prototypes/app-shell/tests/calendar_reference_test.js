@@ -13,6 +13,30 @@ const historyDetail = html.slice(historyDetailStart, eventDetailStart);
 assert.ok(historyDetailStart >= 0, 'the existing current-period route must remain the calendar state owner');
 
 [
+  'class="calendar-period-hero"',
+  'data-component="calendar-hero-image"',
+  'data-component="calendar-hero-variant-toggle"',
+  'data-history-presentation-surface="calendar"',
+  'data-component="calendar-integrated-grid-slot"',
+  'data-component="calendar-integrated-selected-slot"',
+  "calendar: { heroVariant: 'large', metricsExpanded: false }",
+  "const variants = surface === 'calendar' ? ['large', 'compact', 'integrated'] : ['large', 'compact'];",
+  "renderCalendarGridPlacement(integrated) {",
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .calendar-period-hero { display: block; }',
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .screen-header { display: none; }',
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero { height: 185px; }',
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .calendar-integrated-grid-slot { display: block; }',
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .history-detail-content { top: 270px; padding-top: 18px; }',
+  '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .calendar-integrated-grid-slot { top: 132px; bottom: auto; height: 130px; }',
+  'transform: scale(.45);',
+].forEach((value) => assert.ok(html.includes(value), `the three-state Calendar presentation is missing ${value}`));
+
+assert.ok(!historyDetail.includes('history-metrics-toggle'), 'the Calendar insight card must no longer contain a dedicated arrow button');
+assert.ok(historyDetail.includes('data-component="history-metrics-surface"'), 'the Calendar insight card must expose its full-card semantic tap target');
+assert.equal((historyDetail.match(/class="history-calendar-month-card"/g) || []).length, 1, 'the integrated Calendar variant must move one monthly grid node rather than duplicate it');
+assert.ok(html.includes('.history-metrics-surface { position: absolute; inset: 0; z-index: 3;'), 'the full insight card must own the semantic tap overlay rather than a dedicated arrow');
+
+[
   'data-history-calendar-view="grid"',
   'data-history-calendar-grid-view',
   'Február 2025',

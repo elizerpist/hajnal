@@ -165,14 +165,15 @@
     .history-period-card[data-history-batch="current"] .history-period-badge { background: #DCF5E8; color: #2E9A62; }
     .history-period-chevron { align-self: center; color: #A89ABF; font-size: 21px; line-height: 1; font-weight: 400; }
     .history-number-summary { margin: 0; padding-top: 13px; }
-    .history-number-summary-heading { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(0, 110px) 31px; align-items: center; gap: 5px; margin-bottom: 9px; }
+    .history-number-summary-heading { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(0, 110px); align-items: center; gap: 5px; margin-bottom: 9px; }
     .history-number-summary-heading > .icon { width: 18px; height: 18px; color: #D07CAC; stroke-width: 1.55; }
     .history-number-summary-heading h2 { min-width: 0; margin: 0; color: #3B2B7E; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1; font-weight: 700; letter-spacing: -.025em; white-space: nowrap; }
     .history-number-summary-heading h2::after { content: ""; width: 24px; height: 1px; display: inline-block; margin: 0 5px 4px 7px; background: rgba(129, 116, 184, .42); }
     .history-number-summary-heading p { margin: 0; color: #8A7BB5; font-family: Georgia, "Times New Roman", serif; font-size: 9px; font-style: italic; line-height: 1.12; text-align: right; }
     .history-number-summary-heading p::after { content: "♥"; margin-left: 3px; color: #D07CAC; font-size: 10px; }
-    .history-metrics-toggle { width: 31px; height: 31px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(131,105,173,.14); border-radius: 50%; background: rgba(255,255,255,.86); color: #6E50BF; cursor: pointer; transition: transform .24s ease, background .24s ease; }
-    .history-metrics-toggle .icon { width: 17px; height: 17px; transform: rotate(90deg); stroke-width: 2.2; }
+    .history-number-summary { position: relative; }
+    .history-metrics-surface { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+    .history-metrics-surface:focus-visible { outline: 3px solid rgba(106,86,180,.45); outline-offset: 2px; }
     .history-number-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
     .history-number-card { min-width: 0; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); text-align: center; }
     .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px; background: #E3F6EF; color: #53AD89; }
@@ -181,11 +182,10 @@
     .history-number-card:nth-child(3) .history-number-icon { background: #F0E9FA; color: #9975C1; }
     .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
     .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="true"] .history-metrics-toggle { background: #7650CC; color: #fff; transform: rotate(180deg); }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"]) .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"]) .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
     .history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-image { object-position: center center; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-copy { top: 48px; }
@@ -193,7 +193,7 @@
     .history-screen[data-history-hero-variant="compact"] .history-hero-variant-toggle { top: 47px; }
     .history-screen[data-history-hero-variant="compact"] .history-content { top: 154px; padding-top: 18px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary { padding: 9px 10px 8px; }
-    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading { grid-template-columns: 20px minmax(0, 1fr) minmax(0, 106px) 31px; gap: 4px; margin: 0; }
+    .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading { grid-template-columns: 20px minmax(0, 1fr) minmax(0, 106px); gap: 4px; margin: 0; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading > .icon { width: 17px; height: 17px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2 { font-size: 16px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2::after { width: 17px; margin-right: 3px; margin-left: 5px; }
@@ -373,6 +373,32 @@
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-copy h1 { font-size: 27px; }
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-variant-toggle { top: 47px; }
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px; padding-top: 18px; }
+    .calendar-period-hero { display: none; height: 270px; position: absolute; z-index: 1; inset: 0 0 auto; overflow: hidden; background: #F2DDED; }
+    .calendar-period-hero::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .08) 0%, rgba(255, 244, 250, .08) 59%, rgba(255, 250, 253, .48) 100%); pointer-events: none; }
+    .calendar-period-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
+    .calendar-period-hero .history-hero-copy { z-index: 2; }
+    .calendar-period-hero .history-hero-variant-toggle { z-index: 3; }
+    .calendar-period-clean-copy { display: block; margin-top: 12px; color: #2E2177; font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.03em; text-shadow: 0 1px 0 rgba(255,255,255,.58); }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .calendar-period-hero { display: block; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .screen-header { display: none; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 36px 31px minmax(0, 1fr) auto; gap: 10px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero { height: 185px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy { top: 48px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy h1 { font-size: 27px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-variant-toggle { top: 47px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .history-detail-content { top: 154px; padding-top: 18px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .calendar-integrated-grid-slot { display: block; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .history-detail-content { top: 270px; padding-top: 18px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="integrated"] .calendar-integrated-grid-slot { top: 132px; bottom: auto; height: 130px; }
+    .calendar-integrated-grid-slot { display: none; position: absolute; z-index: 2; right: 12px; bottom: 8px; left: 12px; height: 122px; overflow: hidden; }
+    .calendar-integrated-grid-slot .history-calendar-month-card { height: 286px; padding: 5px 5px 4px; border-radius: 18px; box-shadow: 0 7px 18px rgba(44,46,119,.08); transform: scale(.45); transform-origin: top center; }
+    .calendar-integrated-grid-slot .history-calendar-month-header { min-height: 28px; margin-bottom: 2px; }
+    .calendar-integrated-grid-slot .history-calendar-month-header button { width: 24px; height: 24px; }
+    .calendar-integrated-grid-slot .history-calendar-month-header .icon { width: 14px; height: 14px; }
+    .calendar-integrated-grid-slot .history-calendar-month-header h2 { font-size: 15px; }
+    .calendar-integrated-grid-slot .history-calendar-weekdays { margin-bottom: 3px; font-size: 8px; }
+    .calendar-integrated-grid-slot .history-calendar-days { gap: 2px; }
+    .calendar-integrated-grid-slot .history-calendar-day { min-height: 24px; border-radius: 7px; font-size: 10px; }
     .period-detail-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px; border: 1px solid rgba(106,86,180,.11); border-radius: 21px; background: rgba(255,255,255,.72); box-shadow: 0 8px 20px rgba(44,46,119,.045); }
     .period-detail-tabs button { min-height: 34px; border: 0; border-radius: 17px; background: transparent; color: rgba(44,46,119,.61); font: inherit; font-size: 12px; font-weight: 790; cursor: pointer; }
     .period-detail-tabs button[aria-pressed="true"] { background: linear-gradient(135deg, #6946C5 0%, #906DDF 100%); color: var(--white); box-shadow: 0 5px 11px rgba(96,70,183,.22); }
@@ -419,7 +445,7 @@
     .history-event-card p { grid-column: 1 / -1; margin: 0; color: #7669A7; font-size: 10.5px; line-height: 1.22; font-weight: 620; }
     .history-event-card .history-event-mini { width: 37px; height: 37px; grid-row: span 2; object-fit: cover; border-radius: 9px; }
     .history-event-badge { display: inline-flex; width: max-content; min-height: 18px; align-items: center; padding: 3px 7px; border-radius: 999px; background: #DDF8E8; color: #268D58; font-size: 8.5px; font-weight: 830; }
-    .history-detail-screen[data-history-detail-view="calendar"] .history-detail-content { top: 84px; grid-template-rows: 36px 31px minmax(0, 1fr) auto; gap: 10px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 36px 31px minmax(0, 1fr) auto; gap: 10px; }
     .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs { padding: 3px; border-radius: 20px; }
     .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs button { min-height: 30px; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-clean-card { display: none; }
@@ -784,7 +810,7 @@
           <button class="history-period-card" type="button" data-history-batch="2025-11" data-action="open-history-detail" aria-label="Téli kitartás, 46 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-90.svg" alt=""></span><span class="history-period-copy"><h2>Téli kitartás</h2><p>2025. nov. 10. – 2025. dec. 25.</p><span class="history-period-badge">46 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
           <button class="history-period-card" type="button" data-history-batch="current" data-action="open-history-detail" aria-label="Jelenlegi időszak, 24 nap tiszta"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-21.svg" alt=""></span><span class="history-period-copy"><h2>Jelenlegi időszak</h2><p>2026. máj. 1. – jelenleg</p><span class="history-period-badge">24 nap tiszta</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
         </div></section>
-        <section class="history-number-summary" aria-labelledby="history-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p><button class="history-metrics-toggle" type="button" data-action="toggle-history-metrics" data-component="history-metrics-toggle" aria-label="Utam számokban kibontása" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="history-number-grid">
+        <section class="history-number-summary" aria-labelledby="history-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" data-component="history-metrics-surface" aria-label="Utam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
           <article class="history-number-card" data-history-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article>
           <article class="history-number-card" data-history-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article>
           <article class="history-number-card" data-history-stat="evening-reflections"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>19</strong><span>esti reflexió</span></article>
@@ -796,6 +822,12 @@
     </section>
 
     <section class="route-screen history-detail-screen" id="history-detail" data-screen="history-detail" data-component="current-period-detail" data-history-detail-view="timeline" data-history-calendar-view="grid" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-detail-title">
+      <section class="calendar-period-hero" aria-label="A naptár hero">
+        <img class="calendar-period-hero-image" data-component="calendar-hero-image" src="assets/hero/hero_m.png" alt="">
+        <div class="history-hero-copy"><h1>Történetem</h1><p>Naptár</p><strong class="calendar-period-clean-copy">24 nap tiszta</strong></div>
+        <button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-history-presentation-surface="calendar" data-component="calendar-hero-variant-toggle" aria-label="Kompakt naptár nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button>
+        <div class="calendar-integrated-grid-slot" data-component="calendar-integrated-grid-slot" aria-label="Integrált havi naptár"></div>
+      </section>
       <section class="timeline-period-hero" aria-label="A jelenlegi időszakom hero"><img class="timeline-period-hero-image" data-component="timeline-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1>Történetem</h1><p>Jelenlegi időszakom</p><strong class="timeline-period-clean-copy">24 nap tiszta</strong></div><button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-history-presentation-surface="timeline" data-component="timeline-hero-variant-toggle" aria-label="Kompakt idővonal nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-component="history-detail-back" data-action="open-history" aria-label="Vissza a Történetemhez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="history-detail-title" data-component="history-detail-title">Történetem</h1><p data-component="history-detail-subtitle">Egy nap, egy lépés közelebb</p></div><button class="icon-button" type="button" data-component="history-detail-top-action" aria-label="Új esemény hozzáadása">+</button></header>
@@ -812,7 +844,7 @@
           </div></div></section>
           <section class="history-detail-panel history-detail-calendar" data-history-detail-panel="calendar" aria-label="Naptár">
             <div class="history-calendar-grid-view" data-history-calendar-grid-view>
-              <div class="history-calendar-grid-scroll">
+              <div class="history-calendar-grid-scroll" data-component="calendar-month-card-origin">
                 <section class="history-calendar-month-card" aria-labelledby="history-calendar-month-title">
                   <header class="history-calendar-month-header"><button type="button" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h2 id="history-calendar-month-title">Február 2025</h2><button type="button" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></header>
                   <div class="history-calendar-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sz</span><span>Cs</span><span>P</span><span>Sz</span><span>V</span></div>
@@ -822,9 +854,9 @@
                     <button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-10" aria-label="Február 10."><span class="history-calendar-day-number">10</span><span class="history-calendar-day-dots"><span class="yellow"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-11" aria-label="Február 11."><span class="history-calendar-day-number">11</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-12" aria-label="Február 12."><span class="history-calendar-day-number">12</span><span class="history-calendar-day-dots"><span></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-13" aria-label="Február 13."><span class="history-calendar-day-number">13</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day is-selected" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-14" aria-label="Február 14., kiválasztva" aria-current="date"><span class="history-calendar-day-number">14</span><span class="history-calendar-day-dots"><span></span><span class="violet"></span><span class="yellow"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-15" aria-label="Február 15."><span class="history-calendar-day-number">15</span><span class="history-calendar-day-dots"><span class="pink"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-16" aria-label="Február 16."><span class="history-calendar-day-number">16</span><span class="history-calendar-day-dots"></span></button>
                     <button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-17" aria-label="Február 17."><span class="history-calendar-day-number">17</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-18" aria-label="Február 18."><span class="history-calendar-day-number">18</span><span class="history-calendar-day-dots"><span class="violet"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-19" aria-label="Február 19."><span class="history-calendar-day-number">19</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-20" aria-label="Február 20."><span class="history-calendar-day-number">20</span><span class="history-calendar-day-dots"><span></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-21" aria-label="Február 21."><span class="history-calendar-day-number">21</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-22" aria-label="Február 22."><span class="history-calendar-day-number">22</span><span class="history-calendar-day-dots"><span class="gold"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-23" aria-label="Február 23."><span class="history-calendar-day-number">23</span><span class="history-calendar-day-dots"></span></button>
                     <button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-24" aria-label="Február 24."><span class="history-calendar-day-number">24</span><span class="history-calendar-day-dots"><span class="violet"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-25" aria-label="Február 25."><span class="history-calendar-day-number">25</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-26" aria-label="Február 26."><span class="history-calendar-day-number">26</span><span class="history-calendar-day-dots"><span class="pink"></span></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-27" aria-label="Február 27."><span class="history-calendar-day-number">27</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-28" aria-label="Február 28."><span class="history-calendar-day-number">28</span><span class="history-calendar-day-dots"><span></span></span></button><button class="history-calendar-day is-muted" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-03-01" aria-label="Március 1."><span class="history-calendar-day-number">1</span><span class="history-calendar-day-dots"></span></button><button class="history-calendar-day is-muted" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-03-02" aria-label="Március 2."><span class="history-calendar-day-number">2</span><span class="history-calendar-day-dots"></span></button>
-                  </div>
-                  <button class="history-calendar-selected-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-14" aria-label="Február 14. napi idővonala"><span class="history-calendar-selected-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="history-calendar-selected-copy"><strong>Febr. 14. • Péntek</strong><small>3 esemény • 14. tiszta nap</small></span><span aria-hidden="true">›</span></button>
                 </section>
+                  <button class="history-calendar-selected-day" data-component="calendar-integrated-selected-slot" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="2025-02-14" aria-label="Február 14. napi idővonala"><span class="history-calendar-selected-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="history-calendar-selected-copy"><strong>Febr. 14. • Péntek</strong><small>3 esemény • 14. tiszta nap</small></span><span aria-hidden="true">›</span></button>
+                  </div>
                 <section class="history-calendar-grid-memories" aria-labelledby="history-calendar-memories-title"><header><h2 id="history-calendar-memories-title">Aznapi emlékek</h2><a href="#history-calendar-memories-title">Összes megtekintése <span aria-hidden="true">›</span></a></header><div class="history-calendar-memory-list"><button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Elindultam esemény részletei"><img src="assets/hero/timelinehero.png" alt=""><span class="history-calendar-memory-copy"><h3>Elindultam</h3><time>10:24</time><p>„Ma döntöttem úgy, hogy új életet kezdek…”</p><span class="history-calendar-memory-tags"><span>#kezdet</span><span>#döntés</span><span>#remény</span></span></span><span aria-hidden="true">›</span></button><button class="history-calendar-memory" type="button" data-action="open-timeline-event-detail" aria-label="Jobban vagyok esemény részletei"><img src="assets/milestones/milestone-14.svg" alt=""><span class="history-calendar-memory-copy"><h3>Jobban vagyok</h3><time>16:30</time><p>Ma kicsit könnyebb volt. 😊</p><span class="history-calendar-memory-tags"><span>#haladás</span><span>#hála</span></span></span><span aria-hidden="true">›</span></button></div></section>
               </div>
             </div>
@@ -836,7 +868,7 @@
             </div>
           </section>
         </div>
-        <section class="history-number-summary" aria-labelledby="timeline-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p><button class="history-metrics-toggle" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="timeline-metrics-toggle" aria-label="Idővonalam számokban kibontása" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="history-number-grid"><article class="history-number-card" data-timeline-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article><article class="history-number-card" data-timeline-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article><article class="history-number-card" data-timeline-stat="evening-reflection"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>19</strong><span>esti reflexió</span></article><article class="history-number-card" data-timeline-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8</strong><span>átlagos hangulat</span></article><article class="history-number-card" data-timeline-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></span><strong>82%</strong><span>check-in arány</span></article></div></section>
+        <section class="history-number-summary" aria-labelledby="timeline-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="history-metrics-surface" aria-label="Idővonalam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid"><article class="history-number-card" data-timeline-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article><article class="history-number-card" data-timeline-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article><article class="history-number-card" data-timeline-stat="evening-reflection"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>19</strong><span>esti reflexió</span></article><article class="history-number-card" data-timeline-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8</strong><span>átlagos hangulat</span></article><article class="history-number-card" data-timeline-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></span><strong>82%</strong><span>check-in arány</span></article></div></section>
       </main>
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
@@ -1045,15 +1077,22 @@
               screen: root.querySelector('[data-component="sobriety-batch-history"]'),
               heroImage: root.querySelector('[data-component="history-hero-image"]'),
               heroToggle: root.querySelector('[data-component="history-hero-variant-toggle"]'),
-              metricsToggle: root.querySelector('[data-component="history-metrics-toggle"]'),
+              metricsSurface: root.querySelector('[data-component="history-metrics-surface"][data-history-presentation-surface="history"]'),
               labels: { compact: 'Kompakt Történetem nézet', large: 'Nagy Történetem nézet', expand: 'Utam számokban kibontása', collapse: 'Utam számokban összecsukása' }
             },
             timeline: {
               screen: this.historyDetailScreen,
               heroImage: root.querySelector('[data-component="timeline-hero-image"]'),
               heroToggle: root.querySelector('[data-component="timeline-hero-variant-toggle"]'),
-              metricsToggle: root.querySelector('[data-component="timeline-metrics-toggle"]'),
+              metricsSurface: root.querySelector('[data-component="history-metrics-surface"][data-history-presentation-surface="timeline"]'),
               labels: { compact: 'Kompakt idővonal nézet', large: 'Nagy idővonal nézet', expand: 'Idővonalam számokban kibontása', collapse: 'Idővonalam számokban összecsukása' }
+            },
+            calendar: {
+              screen: this.historyDetailScreen,
+              heroImage: root.querySelector('[data-component="calendar-hero-image"]'),
+              heroToggle: root.querySelector('[data-component="calendar-hero-variant-toggle"]'),
+              metricsSurface: root.querySelector('[data-component="history-metrics-surface"][data-history-presentation-surface="timeline"]'),
+              labels: { compact: 'Kompakt naptár nézet', integrated: 'Integrált naptár nézet', large: 'Nagy naptár nézet', expand: 'Utam számokban kibontása', collapse: 'Utam számokban összecsukása' }
             }
           };
           this.survivalContent = root.querySelector('[data-component="survival-content"]');
@@ -1066,7 +1105,7 @@
             sheet: { progress: 0, settled: 'collapsed' },
             path: createPathState(),
             historyDetailView: 'timeline',
-            historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false } },
+            historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false }, calendar: { heroVariant: 'large', metricsExpanded: false } },
             historyTimelineFilter: 'all',
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
@@ -1183,7 +1222,9 @@
         getHistoryPresentation(surface = 'history') { return this.state.historyPresentation[surface] || this.state.historyPresentation.history; }
         toggleHistoryHeroVariant(surface = 'history') {
           const presentation = this.getHistoryPresentation(surface);
-          presentation.heroVariant = presentation.heroVariant === 'compact' ? 'large' : 'compact';
+          const variants = surface === 'calendar' ? ['large', 'compact', 'integrated'] : ['large', 'compact'];
+          const currentIndex = Math.max(0, variants.indexOf(presentation.heroVariant));
+          presentation.heroVariant = variants[(currentIndex + 1) % variants.length];
           this.renderHistoryPresentation(surface);
         }
         toggleHistoryMetrics(surface = 'history') {
@@ -1192,23 +1233,37 @@
           this.renderHistoryPresentation(surface);
         }
         renderHistoryLayout() { this.renderHistoryPresentation('history'); }
+        renderCalendarGridPlacement(integrated) {
+          const screen = this.historyDetailScreen;
+          const monthCard = screen?.querySelector('.history-calendar-month-card');
+          const origin = screen?.querySelector('[data-component="calendar-month-card-origin"]');
+          const slot = screen?.querySelector('[data-component="calendar-integrated-grid-slot"]');
+          if (!monthCard || !origin || !slot) return;
+          (integrated ? slot : origin).appendChild(monthCard);
+        }
         renderHistoryPresentation(surface) {
           const presentation = this.getHistoryPresentation(surface);
           const elements = this.historyPresentationElements[surface] || this.historyPresentationElements.history;
           if (!elements || !elements.screen) return;
           const compact = presentation.heroVariant === 'compact';
+          const integrated = surface === 'calendar' && presentation.heroVariant === 'integrated';
           const expanded = presentation.metricsExpanded;
           elements.screen.dataset.historyHeroVariant = compact ? 'compact' : 'large';
           elements.screen.dataset.historyMetricsExpanded = String(expanded);
+          if (surface === 'calendar') elements.screen.dataset.historyHeroVariant = presentation.heroVariant;
           if (elements.heroImage) elements.heroImage.setAttribute('src', compact ? 'assets/hero/hero_s.png' : 'assets/hero/hero_m.png');
           if (elements.heroToggle) {
-            elements.heroToggle.setAttribute('aria-pressed', String(compact));
-            elements.heroToggle.setAttribute('aria-label', compact ? elements.labels.large : elements.labels.compact);
+            const variants = surface === 'calendar' ? ['large', 'compact', 'integrated'] : ['large', 'compact'];
+            const nextVariant = variants[(Math.max(0, variants.indexOf(presentation.heroVariant)) + 1) % variants.length];
+            elements.heroToggle.setAttribute('aria-pressed', String(presentation.heroVariant !== 'large'));
+            elements.heroToggle.setAttribute('aria-label', nextVariant === 'compact' ? elements.labels.compact : nextVariant === 'integrated' ? elements.labels.integrated : elements.labels.large);
           }
-          if (elements.metricsToggle) {
-            elements.metricsToggle.setAttribute('aria-expanded', String(expanded));
-            elements.metricsToggle.setAttribute('aria-label', expanded ? elements.labels.collapse : elements.labels.expand);
+          if (elements.metricsSurface) {
+            elements.metricsSurface.setAttribute('data-history-presentation-surface', surface);
+            elements.metricsSurface.setAttribute('aria-expanded', String(expanded));
+            elements.metricsSurface.setAttribute('aria-label', expanded ? elements.labels.collapse : elements.labels.expand);
           }
+          if (surface === 'calendar') this.renderCalendarGridPlacement(integrated);
         }
         openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }
         openHistoryCalendarRail(date) {
@@ -1272,6 +1327,9 @@
           this.historyDetailScreen.querySelectorAll('[data-component="history-detail-top-action"]').forEach((action) => { action.textContent = railActive ? '•••' : '+'; action.setAttribute('aria-label', railActive ? 'További lehetőségek' : 'Új esemény hozzáadása'); });
           if (railActive) this.renderHistoryCalendarRail();
           if (view === 'timeline') this.renderHistoryPresentation('timeline');
+          if (view === 'calendar' && !railActive) this.renderHistoryPresentation('calendar');
+          const metricsTitle = this.historyDetailScreen.querySelector?.('#timeline-number-title');
+          if (metricsTitle) metricsTitle.textContent = view === 'calendar' ? 'Utam számokban' : 'Idővonalam számokban';
         }
         selectHistoryTimelineFilter(filter) { this.state.historyTimelineFilter = ['all', 'milestone', 'meeting', 'steps'].includes(filter) ? filter : 'all'; this.renderHistoryDetail(); }
         openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.navigate('meetings'); }

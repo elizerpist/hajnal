@@ -69,8 +69,9 @@ assert.equal((history.match(/data-history-stat=/g) || []).length, 5, 'the source
 assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 10, 'each of the ten period cards must use a local gallery artwork asset');
 assert.ok(history.includes('class="history-number-grid"'), 'the five measures must share one compact lower-row component');
 assert.equal((history.match(/class="history-number-grid"/g) || []).length, 1, 'the compact/expanded metric presentation must reuse the one existing metric payload');
-assert.ok(history.includes('data-action="toggle-history-metrics"'), 'the compact history footer must expose one semantic metric expansion control');
-assert.ok(history.includes('data-component="history-metrics-toggle"'), 'the metric control must have a stable controller-owned component contract');
+assert.ok(history.includes('data-action="toggle-history-metrics"'), 'the entire compact history footer must expose one semantic metric expansion control');
+assert.ok(history.includes('data-component="history-metrics-surface"'), 'the full History insight card must have a stable controller-owned tap-surface contract');
+assert.ok(!history.includes('history-metrics-toggle'), 'the History insight card must not retain a dedicated arrow trigger');
 assert.ok(history.includes('class="history-period-scroll"'), 'only the period-card list must own its own scroll area');
 assert.ok(history.includes('data-history-batch="2025-06"'), 'the recovered June 2025 period must remain available as the fifth card');
 assert.ok(history.indexOf('history-period-intro') < history.indexOf('history-period-scroll') && history.indexOf('history-period-scroll') < history.indexOf('history-number-summary'), 'the fixed quote, scrollable period list, and fixed number summary must stay in visual order');
@@ -80,8 +81,8 @@ assert.ok(html.includes('.history-period-scroll { min-height: 0; overflow-y: aut
 assert.ok(html.includes('.history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px;'), 'the history hero title must retain source serif typography');
 assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }'), 'the compact layout must use the hero_s aspect-derived smaller hero');
 assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-content { top: 154px;'), 'the compact layout must raise the body card and grow its sole scroll area');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid'), 'both hero variants must share the collapsed metric-grid state through the neutral presentation primitive');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="true"] .history-number-grid'), 'both hero variants must share the expanded metric-grid state through the neutral presentation primitive');
+assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'all hero variants must share the collapsed metric-grid state through the neutral presentation primitive');
+assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid'), 'all hero variants must share the expanded metric-grid state through the neutral presentation primitive');
 assert.ok(html.includes('.history-period-card h2 { font-family: Georgia, "Times New Roman", serif;'), 'period card names must retain the source serif typography');
 assert.ok(!history.includes('history-batch-carousel'), 'the old horizontal batch circles must not remain in Történetem');
 assert.ok(!history.includes('history-current-card'), 'the old dashboard current-period card must not remain in Történetem');

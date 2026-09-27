@@ -46,6 +46,7 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
   '60 nap',
   'Idővonalam számokban',
   'class="history-number-summary"',
+  'data-component="history-metrics-surface"',
   'data-action="open-history" aria-current="page"',
 ].forEach((expected) => assert.ok(historyDetail.includes(expected), `source-right timeline is missing ${expected}`));
 assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2, 'the current period has exactly Idővonal and Naptár tabs');
@@ -53,10 +54,11 @@ assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-r
 assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline must initially bind the established large History hero');
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
+assert.ok(!historyDetail.includes('history-metrics-toggle'), 'all Timeline insight cards must remove their dedicated arrow trigger');
 assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 5, 'every rendered timeline event must be a semantic event-detail trigger');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px;'), 'the overlapping Timeline body card and its two tabs must render above the hero, like the working History body');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');
+assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');
 assert.ok(html.includes('.history-detail-events-scroll { min-height: 0; overflow-y: auto;'), 'only the event list may scroll inside the source-right timeline view');
 
 [
@@ -89,7 +91,7 @@ assert.ok(html.includes('.app-frame[data-route="timeline-event-detail"] .timelin
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
-  "historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false } }",
+  "historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false }, calendar: { heroVariant: 'large', metricsExpanded: false } }",
   'toggleHistoryHeroVariant(surface = \'history\') {',
   'toggleHistoryMetrics(surface = \'history\') {',
   'renderHistoryPresentation(surface) {',
