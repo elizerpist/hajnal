@@ -37,7 +37,21 @@ const historyTimelineTab = makeElement();
 historyTimelineTab.dataset.historyDetailTab = 'timeline';
 const historyCalendarTab = makeElement();
 historyCalendarTab.dataset.historyDetailTab = 'calendar';
-historyDetailScreen.querySelectorAll = (selector) => selector === '[data-history-detail-tab]' ? [historyTimelineTab, historyCalendarTab] : [];
+const historyDetailTitle = makeElement();
+const historyDetailSubtitle = makeElement();
+const historyDetailBack = makeElement('open-history');
+const historyDetailTopAction = makeElement();
+const historyCalendarRail = makeElement();
+const historyDayEventList = makeElement();
+historyDetailScreen.querySelectorAll = (selector) => ({
+  '[data-history-detail-tab]': [historyTimelineTab, historyCalendarTab],
+  '[data-component="history-detail-title"]': [historyDetailTitle],
+  '[data-component="history-detail-subtitle"]': [historyDetailSubtitle],
+  '[data-component="history-detail-back"]': [historyDetailBack],
+  '[data-component="history-detail-top-action"]': [historyDetailTopAction],
+  '[data-component="history-calendar-rail"]': [historyCalendarRail],
+  '[data-component="history-day-event-list"]': [historyDayEventList],
+}[selector] || []);
 const survivalContent = makeElement();
 const meetingSearchNote = makeElement();
 meetingSearchNote.hidden = true;
@@ -84,6 +98,22 @@ assert.equal(historyTimelineTab.getAttribute('aria-pressed'), 'true', 'timeline 
 controller.openHistoryDetail('calendar');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
 assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
+assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'opening Naptár must begin with the source monthly grid');
+controller.openHistoryCalendarRail('2025-02-14');
+assert.equal(historyDetailScreen.dataset.historyCalendarView, 'rail', 'a semantic calendar-day tap must open the focused rail state on the same route');
+assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the controller must retain the selected calendar day for the rail header and selected day treatment');
+assert.equal(historyDetailTitle.textContent, 'Február 14.', 'the rail must render the source day heading from the selected calendar state');
+assert.equal(historyDetailSubtitle.textContent, '14. tiszta nap', 'the rail must render the source clean-day subtitle from the selected calendar state');
+assert.equal(historyDetailBack.dataset.action, 'open-history-calendar-grid', 'the rail back control must be a real controller-owned grid return action');
+assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"/, 'the source rail must be derived from the selected day state');
+controller.openHistoryCalendarGrid();
+assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'the rail header back affordance must return to the exact monthly grid state');
+assert.equal(historyDetailBack.dataset.action, 'open-history', 'the grid restores the period header back action');
+assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the grid return restores the exact grid.png reference selection rather than retaining a rail-only selection');
+controller.openHistoryCalendarRail('2025-02-24');
+assert.equal(historyDetailTitle.textContent, 'Február 24.', 'a non-source calendar day must receive its own rail heading');
+assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-24"[^>]*aria-current="date"/, 'the dynamically rendered rail must contain the selected non-source date');
+assert.match(historyDayEventList.innerHTML, /Nincs rögzített esemény/, 'a non-source date must not misleadingly render February 14 event content');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active within current-period detail');
 controller.navigate('timeline-event-detail');
 assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must open the distinct source-center event-detail route');
@@ -126,10 +156,16 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
 [
   "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
+  "case 'open-history-calendar-rail': this.openHistoryCalendarRail(event.target.closest('[data-history-calendar-date]')?.dataset.historyCalendarDate); break;",
+  "case 'open-history-calendar-grid': this.openHistoryCalendarGrid(); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
   "case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;",
-  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; this.navigate('history-detail'); }",
+  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
+  "openHistoryCalendarRail(date) {",
+  "openHistoryCalendarGrid() {",
+  'const HISTORY_CALENDAR_DAY_EVENTS = Object.freeze({',
+  'renderHistoryCalendarRail() {',
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
   "case 'start-survival-pack': this.startSurvivalPack(); break;",

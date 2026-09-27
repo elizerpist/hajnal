@@ -13,6 +13,9 @@ const eventDetailStart = html.indexOf('<section class="route-screen timeline-eve
 const eventDetailEnd = html.indexOf('<section class="route-screen', eventDetailStart + 1);
 const historyDetail = html.slice(historyDetailStart, eventDetailStart);
 const eventDetail = html.slice(eventDetailStart, eventDetailEnd === -1 ? html.length : eventDetailEnd);
+const timelinePanelStart = historyDetail.indexOf('data-history-detail-panel="timeline"');
+const calendarPanelStart = historyDetail.indexOf('data-history-detail-panel="calendar"');
+const timelinePanel = historyDetail.slice(timelinePanelStart, calendarPanelStart);
 
 assert.ok(fs.existsSync(timelineHero), 'the supplied timeline detail hero must be copied into the canonical app-shell assets');
 assert.equal(
@@ -45,9 +48,9 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
 ].forEach((expected) => assert.ok(historyDetail.includes(expected), `source-right timeline is missing ${expected}`));
 assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2, 'the current period has exactly Idővonal and Naptár tabs');
 assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-right view must not expose a Statisztikák tab or heading');
-assert.ok(!historyDetail.includes('timelinehero.png'), 'the current-period source-right view must not include a top hero');
+assert.ok(!timelinePanel.includes('timelinehero.png'), 'the current-period source-right timeline panel must not include a top hero');
 assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 5, 'every rendered timeline event must be a semantic event-detail trigger');
-assert.ok(html.includes('.history-detail-content { position: absolute; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid;'), 'timeline chrome and Idővonalam számokban must be fixed by a single detail grid');
+assert.ok(html.includes('.history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid;'), 'the source header/tab rhythm and Idővonalam számokban must be fixed by a single detail grid');
 assert.ok(html.includes('.history-detail-events-scroll { min-height: 0; overflow-y: auto;'), 'only the event list may scroll inside the source-right timeline view');
 
 [
@@ -78,7 +81,7 @@ assert.ok(html.includes('.app-frame[data-route="timeline-event-detail"] .timelin
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
-  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; this.navigate('history-detail'); }",
+  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
   "['history', 'history-detail', 'timeline-event-detail'].includes(this.state.route)",
 ].forEach((expected) => assert.ok(html.includes(expected), `the sole controller must own ${expected}`));
 assert.ok(!/\bfetch\s*\(/.test(html), 'the timeline source implementation must remain fully local/offline');
