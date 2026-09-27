@@ -31,10 +31,6 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
   'data-history-detail-tab="calendar"',
   'Idővonal',
   'Naptár',
-  'Összes',
-  'Mérföldkő',
-  'Meeting',
-  'Lépések',
   'class="timeline-period-hero"',
   'data-component="timeline-hero-image"',
   'data-history-presentation-surface="timeline"',
@@ -50,6 +46,8 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
 ].forEach((expected) => assert.ok(historyDetail.includes(expected), `source-right timeline is missing ${expected}`));
 assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2, 'the current period has exactly Idővonal and Naptár tabs');
 assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-right view must not expose a Statisztikák tab or heading');
+assert.ok(!historyDetail.includes('history-timeline-filters'), 'the Timeline must not retain the removed filter-pill row');
+assert.ok(!historyDetail.includes('data-history-timeline-filter'), 'the Timeline must not retain filter-pill interactions');
 assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline must initially bind the established large History hero');
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
@@ -57,11 +55,13 @@ assert.ok(!historyDetail.includes('history-metrics-toggle'), 'all Timeline insig
 assert.equal((timelinePanel.match(/class="history-detail-event"/g) || []).length, 12, 'the Timeline must have twelve reusable event cards so its one internal scroll region can be exercised');
 assert.equal((timelinePanel.match(/class="history-detail-events-scroll"/g) || []).length, 1, 'the longer Timeline must retain exactly one internal scroll owner');
 assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 12, 'every rendered Timeline event must remain a semantic event-detail trigger');
-assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px;'), 'the overlapping Timeline body card and its two tabs must render above the hero, like the working History body');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto;'), 'the overlapping Timeline body card must retain only its tabs above the scroll panel, above the hero');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');
 assert.ok(html.includes('.history-detail-events-scroll { min-height: 0; overflow-y: auto;'), 'only the event list may scroll inside the source-right timeline view');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }'), 'collapsed Timeline metrics must leave persistent breathing room above the insight rail without adding a second scroll owner');
+assert.ok(!html.includes('historyTimelineFilter'), 'the controller must not retain state for removed Timeline filter pills');
+assert.ok(!html.includes('selectHistoryTimelineFilter'), 'the controller must not retain the removed Timeline filter action');
 
 [
   'id="timeline-event-detail"',

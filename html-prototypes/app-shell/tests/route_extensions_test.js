@@ -258,7 +258,6 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
-  "case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;",
   "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
@@ -278,6 +277,8 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "const SURVIVAL_STEPS = Object.freeze([",
   "const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze([",
 ].forEach((value) => assert.ok(html.includes(value), `route controller is missing ${value}`));
+assert.ok(!html.includes('select-history-timeline-filter'), 'the shared route controller must not retain the removed Timeline filter action');
+assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller must not retain state for removed Timeline filter pills');
 [
   'class="survival-card"',
   'class="survival-action"',

@@ -361,13 +361,13 @@
     .history-detail-screen .screen-header-copy { padding: 0 8px; }
     .history-detail-screen .screen-header-copy h1 { font-size: 20px; line-height: 1.06; }
     .history-detail-screen .screen-header-copy p { margin-top: 3px; }
-    .history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: 44px 42px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 0 18px 17px; color: var(--hajnal-navy); }
+    .history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 0 18px 17px; color: var(--hajnal-navy); }
     .timeline-period-hero { display: none; }
     .timeline-period-hero .history-hero-copy { top: 51px; }
     .timeline-period-clean-copy { display: block; margin-top: 12px; color: #2E2177; font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.03em; text-shadow: 0 1px 0 rgba(255,255,255,.58); }
     .history-detail-screen[data-history-detail-view="timeline"] .timeline-period-hero { display: block; }
     .history-detail-screen[data-history-detail-view="timeline"] .screen-header { display: none; }
-    .history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px 42px minmax(0, 1fr) auto; gap: 8px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
+    .history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero { height: 185px; }
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero-image { object-position: center center; }
     .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-copy { top: 48px; }
@@ -382,7 +382,7 @@
     .calendar-period-clean-copy { display: block; margin-top: 12px; color: #2E2177; font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.03em; text-shadow: 0 1px 0 rgba(255,255,255,.58); }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .calendar-period-hero { display: block; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .screen-header { display: none; }
-    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 36px 31px minmax(0, 1fr) auto; gap: 10px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 36px minmax(0, 1fr) auto; gap: 10px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero { height: 185px; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy { top: 48px; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"][data-history-hero-variant="compact"] .calendar-period-hero .history-hero-copy h1 { font-size: 27px; }
@@ -403,14 +403,6 @@
     .period-detail-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px; border: 1px solid rgba(106,86,180,.11); border-radius: 21px; background: rgba(255,255,255,.72); box-shadow: 0 8px 20px rgba(44,46,119,.045); }
     .period-detail-tabs button { min-height: 34px; border: 0; border-radius: 17px; background: transparent; color: rgba(44,46,119,.61); font: inherit; font-size: 12px; font-weight: 790; cursor: pointer; }
     .period-detail-tabs button[aria-pressed="true"] { background: linear-gradient(135deg, #6946C5 0%, #906DDF 100%); color: var(--white); box-shadow: 0 5px 11px rgba(96,70,183,.22); }
-    .history-timeline-filters { display: flex; align-items: center; gap: 5px; min-width: 0; overflow: hidden; }
-    .history-timeline-filter { min-width: 0; height: 32px; flex: 1 1 auto; padding: 0 7px; border: 1px solid rgba(106,86,180,.11); border-radius: 16px; background: rgba(255,255,255,.78); color: #7666AA; font: inherit; font-size: 9.4px; font-weight: 790; white-space: nowrap; cursor: pointer; }
-    .history-timeline-filter[data-filter="milestone"] { color: #39956E; background: #E5F8EF; }
-    .history-timeline-filter[data-filter="meeting"] { color: #C78919; background: #FFF3D6; }
-    .history-timeline-filter[data-filter="steps"] { color: #7257AF; background: #EEE8FB; }
-    .history-timeline-filter[aria-pressed="true"] { border-color: transparent; background: linear-gradient(135deg, #7047CB, #9471DE); color: #fff; box-shadow: 0 4px 10px rgba(94,67,177,.19); }
-    .history-filter-icon { width: 32px; height: 32px; flex: 0 0 32px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(106,86,180,.12); border-radius: 50%; background: rgba(255,255,255,.8); color: #735DAC; }
-    .history-filter-icon .icon { width: 15px; height: 15px; }
     .history-clean-card { min-height: 78px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 70px 18px; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid rgba(106,86,180,.08); border-radius: 22px; background: rgba(255,255,255,.86); box-shadow: 0 9px 22px rgba(44,46,119,.055); }
     .history-clean-flame { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: #FFF7ED; color: #FF991E; }
     .history-clean-flame .icon { width: 27px; height: 27px; stroke-width: 2.15; }
@@ -446,7 +438,7 @@
     .history-event-card p { grid-column: 1 / -1; margin: 0; color: #7669A7; font-size: 10.5px; line-height: 1.22; font-weight: 620; }
     .history-event-card .history-event-mini { width: 37px; height: 37px; grid-row: span 2; object-fit: cover; border-radius: 9px; }
     .history-event-badge { display: inline-flex; width: max-content; min-height: 18px; align-items: center; padding: 3px 7px; border-radius: 999px; background: #DDF8E8; color: #268D58; font-size: 8.5px; font-weight: 830; }
-    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 36px 31px minmax(0, 1fr) auto; gap: 10px; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 36px minmax(0, 1fr) auto; gap: 10px; }
     .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs { padding: 3px; border-radius: 20px; }
     .history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs button { min-height: 30px; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-clean-card { display: none; }
@@ -505,7 +497,7 @@
     .history-calendar-memory-tags span { flex: 0 0 auto; padding: 4px 7px; border-radius: 999px; background: #F0EAFB; color: #7657BE; font-size: 8px; line-height: 1; font-weight: 780; }
     .history-calendar-memory > span:last-child { color: #6B45C3; font-size: 25px; line-height: 1; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { top: 88px; display: block; overflow-y: auto; padding: 0 18px 14px; }
-    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .period-detail-tabs, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-timeline-filters, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-number-summary { display: none; }
+    .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .period-detail-tabs, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-number-summary { display: none; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-panel-slot, .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-calendar { height: auto; min-height: 0; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-calendar-rail-view { display: block; }
     .history-calendar-day-rail { overflow-x: auto; display: grid; grid-template-columns: repeat(7, minmax(45px, 1fr)); gap: 5px; padding: 9px 6px; border: 1px solid rgba(106,86,180,.10); border-radius: 20px; background: rgba(255,255,255,.84); scrollbar-width: none; }
@@ -831,7 +823,6 @@
       <header class="screen-header"><button class="icon-button" type="button" data-component="history-detail-back" data-action="open-history" aria-label="Vissza a Történetemhez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="history-detail-title" data-component="history-detail-title">Történetem</h1><p data-component="history-detail-subtitle">Egy nap, egy lépés közelebb</p></div><button class="icon-button" type="button" data-component="history-detail-top-action" aria-label="Új esemény hozzáadása">+</button></header>
       <main class="history-detail-content" aria-label="Az aktuális tiszta időszak idővonala">
         <nav class="period-detail-tabs" aria-label="Az időszak nézetei"><button type="button" data-history-detail-tab="timeline" data-action="open-history-detail" aria-pressed="true">Idővonal</button><button type="button" data-history-detail-tab="calendar" data-action="open-history-detail-calendar" aria-pressed="false">Naptár</button></nav>
-        <div class="history-timeline-filters" aria-label="Idővonal szűrői"><button class="history-timeline-filter" type="button" data-history-timeline-filter="all" data-action="select-history-timeline-filter" aria-pressed="true">Összes</button><button class="history-timeline-filter" type="button" data-filter="milestone" data-history-timeline-filter="milestone" data-action="select-history-timeline-filter" aria-pressed="false">Mérföldkő</button><button class="history-timeline-filter" type="button" data-filter="meeting" data-history-timeline-filter="meeting" data-action="select-history-timeline-filter" aria-pressed="false">Meeting</button><button class="history-timeline-filter" type="button" data-filter="steps" data-history-timeline-filter="steps" data-action="select-history-timeline-filter" aria-pressed="false">Lépések</button><span class="history-filter-icon" aria-hidden="true"><svg class="icon"><use href="#icon-filter"/></svg></span></div>
         <div class="history-detail-panel-slot">
           <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong>Február 2025</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list">
             <button class="history-detail-event" type="button" data-action="open-timeline-event-detail" aria-label="Újrakezdtem esemény részletei"><time class="history-event-date">febr. 3.<small>H</small></time><span class="history-event-node"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span class="history-event-card"><h3>Újrakezdtem</h3><time>09:15</time><p>Ma újra elköteleztem magam.</p></span></button>
@@ -1109,7 +1100,6 @@
             path: createPathState(),
             historyDetailView: 'timeline',
             historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false }, calendar: { heroVariant: 'large', metricsExpanded: false } },
-            historyTimelineFilter: 'all',
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
             survivalStep: 0,
@@ -1171,7 +1161,6 @@
             case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;
             case 'return-from-meetings': this.returnFromMeetings(); break;
             case 'show-meeting-search-note': this.showMeetingSearchNote(); break;
-            case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;
             case 'open-initialization': this.openInitialization('splash'); break;
             case 'open-initialization-why': this.openInitialization('why-started'); break;
             case 'initialization-next': this.advanceInitialization(1); break;
@@ -1318,7 +1307,6 @@
           this.historyDetailScreen.dataset.historyDetailView = view;
           this.historyDetailScreen.dataset.historyCalendarView = calendarView;
           this.historyDetailScreen.querySelectorAll('[data-history-detail-tab]').forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.historyDetailTab === view)));
-          this.historyDetailScreen.querySelectorAll('[data-history-timeline-filter]').forEach((filter) => filter.setAttribute('aria-pressed', String(filter.dataset.historyTimelineFilter === this.state.historyTimelineFilter)));
           this.historyDetailScreen.querySelectorAll('[data-history-calendar-date]').forEach((day) => {
             const selected = day.dataset.historyCalendarDate === selectedDate;
             day.classList.toggle('is-selected', selected);
@@ -1334,7 +1322,6 @@
           const metricsTitle = this.historyDetailScreen.querySelector?.('#timeline-number-title');
           if (metricsTitle) metricsTitle.textContent = view === 'calendar' ? 'Utam számokban' : 'Idővonalam számokban';
         }
-        selectHistoryTimelineFilter(filter) { this.state.historyTimelineFilter = ['all', 'milestone', 'meeting', 'steps'].includes(filter) ? filter : 'all'; this.renderHistoryDetail(); }
         openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.navigate('meetings'); }
         returnFromMeetings() { this.navigate(this.state.meetingOrigin === 'panic' ? 'panic' : 'home'); }
         showMeetingSearchNote() { if (this.meetingSearchNote) this.meetingSearchNote.hidden = false; }

@@ -35,6 +35,9 @@ assert.ok(!historyDetail.includes('history-metrics-toggle'), 'the Calendar insig
 assert.ok(historyDetail.includes('data-component="history-metrics-surface"'), 'the Calendar insight card must expose its full-card semantic tap target');
 assert.equal((historyDetail.match(/class="history-calendar-month-card"/g) || []).length, 1, 'the integrated Calendar variant must move one monthly grid node rather than duplicate it');
 assert.ok(html.includes('.history-metrics-surface { position: absolute; inset: 0; z-index: 3;'), 'the full insight card must own the semantic tap overlay rather than a dedicated arrow');
+assert.ok(!historyDetail.includes('history-timeline-filters'), 'the Calendar must not retain the shared removed filter-pill row');
+assert.ok(!historyDetail.includes('data-history-timeline-filter'), 'the Calendar must not retain Timeline filter-pill interactions');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 36px minmax(0, 1fr) auto;'), 'the Calendar grid must retain only its tabs above the calendar scroll panel');
 
 [
   'data-history-calendar-view="grid"',
