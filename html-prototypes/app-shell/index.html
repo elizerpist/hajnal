@@ -137,41 +137,46 @@
     .milestone-gallery-divider::before, .milestone-gallery-divider::after { content: ""; width: 28px; height: 1px; background: rgba(129, 116, 184, .46); }
     .milestone-gallery-divider span { font-size: 17px; line-height: 1; }
 
-    .history-screen { background: linear-gradient(180deg, #FFF8FC 0%, #F8EEF7 100%); }
-    .history-screen::before { content: ""; position: absolute; inset: 0 0 auto; height: 252px; background: radial-gradient(circle at 22% 12%, rgba(254, 200, 132, .38), transparent 170px), radial-gradient(circle at 86% 4%, rgba(184, 154, 215, .32), transparent 180px), linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 248, 252, 0)); pointer-events: none; }
-    .history-screen .screen-header { align-items: center; }
-    .history-screen .screen-header-copy { padding-top: 0; }
-    .history-screen .screen-header-copy h1 { font-size: 18px; letter-spacing: 0; }
-    .history-content { display: flex; flex-direction: column; gap: 10px; }
-    .history-batch-carousel { margin: 0 -18px; padding: 8px 18px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    .history-batch-carousel::-webkit-scrollbar { display: none; }
-    .history-batch-track { width: max-content; min-width: 514px; position: relative; display: grid; grid-template-columns: 78px 78px 78px 78px 84px; align-items: start; gap: 20px; padding: 0 6px 18px; }
-    .history-batch-track::before { content: ""; position: absolute; top: 47px; right: 47px; left: 45px; height: 2px; border-radius: 999px; background: rgba(106, 86, 180, .18); }
-    .history-batch { min-height: 112px; position: relative; z-index: 1; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 0; border: 0; background: transparent; color: var(--hajnal-navy); font: inherit; text-align: center; scroll-snap-align: center; cursor: pointer; }
-    .history-batch-year { min-height: 16px; color: rgba(44, 46, 119, .48); font-size: 10px; line-height: 1; font-weight: 760; }
-    .history-batch strong { width: 58px; height: 58px; display: grid; place-items: center; border: 2px solid rgba(106, 86, 180, .20); border-radius: 50%; background: #fff; color: var(--hajnal-navy); box-shadow: 0 10px 20px rgba(44, 46, 119, .09); font-size: 13px; line-height: 1.05; font-weight: 850; }
-    .history-batch small, .history-batch-note { color: rgba(44, 46, 119, .48); font-size: 9.5px; line-height: 1.1; font-weight: 720; }
-    .history-batch-note { max-width: 78px; color: var(--hajnal-purple); font-weight: 800; }
-    .history-batch.current { width: 76px; height: 76px; align-content: center; margin-top: 15px; padding-top: 0; border: 4px solid var(--hajnal-purple); border-radius: 999px; box-shadow: 0 12px 24px rgba(106, 86, 180, .18); }
-    .history-batch.current strong { width: 68px; height: 68px; }
-    .history-batch.current .history-batch-year { position: absolute; top: -23px; }
-    .history-batch.current small { position: absolute; bottom: -24px; }
-    .history-current-card, .history-stat { border: 1px solid rgba(106, 86, 180, .12); border-radius: 16px; background: rgba(255, 255, 255, .82); box-shadow: 0 12px 28px rgba(44, 46, 119, .08); }
-    .history-current-card { width: 100%; min-height: 140px; display: grid; grid-template-columns: 104px minmax(0, 1fr) 18px; align-items: center; gap: 12px; padding: 16px; color: var(--hajnal-navy); font: inherit; text-align: left; }
-    .history-current-ring { width: 94px; height: 94px; position: relative; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(from -90deg, #6A56B4 0 72%, rgba(106, 86, 180, .18) 72% 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .64), 0 16px 28px rgba(106, 86, 180, .12); }
-    .history-current-ring::before { content: ""; width: 68px; height: 68px; position: absolute; border-radius: inherit; background: #FFF9FC; }
-    .history-current-ring strong { position: relative; z-index: 1; max-width: 54px; color: var(--hajnal-navy); font-size: 19px; line-height: 1; font-weight: 860; text-align: center; }
-    .history-current-copy > strong { display: block; margin: 0; font-size: 16px; line-height: 1.1; font-weight: 860; }
-    .history-current-copy > span { display: block; margin-top: 6px; color: rgba(44, 46, 119, .58); font-size: 11px; line-height: 1.35; font-weight: 650; }
-    .history-current-copy > em { min-height: 26px; display: inline-grid; align-items: center; margin-top: 7px; padding: 0 10px; border-radius: 999px; background: rgba(106, 86, 180, .10); color: var(--hajnal-purple); font-size: 10.5px; font-style: normal; font-weight: 790; }
-    .history-current-chevron { color: rgba(44, 46, 119, .35); font-size: 24px; font-weight: 600; }
-    .history-total { display: grid; gap: 8px; margin-top: 2px; }
-    .history-total h2 { margin: 0 2px; font-size: 13px; line-height: 1.2; font-weight: 850; }
-    .history-total > p { margin: -3px 2px 0; color: rgba(44, 46, 119, .52); font-size: 10px; line-height: 1.25; font-weight: 680; }
-    .history-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-    .history-stat { min-height: 78px; padding: 12px; }
-    .history-stat strong { display: block; font-size: 21px; line-height: 1; font-weight: 860; }
-    .history-stat span { display: block; margin-top: 6px; color: rgba(44, 46, 119, .58); font-size: 11px; line-height: 1.35; font-weight: 650; }
+    .history-screen { background: #FFF9FC; }
+    .history-screen .status-bar { color: #31256F; }
+    .history-hero { height: 270px; position: absolute; z-index: 1; inset: 0 0 auto; overflow: hidden; background: #F2DDED; }
+    .history-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .08) 0%, rgba(255, 244, 250, .08) 59%, rgba(255, 250, 253, .48) 100%); pointer-events: none; }
+    .history-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
+    .history-hero-copy { position: absolute; z-index: 1; top: 51px; right: 22px; left: 22px; text-align: center; }
+    .history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -.035em; margin: 0; color: #302176; text-shadow: 0 1px 0 rgba(255, 255, 255, .45); }
+    .history-hero-copy p { margin: 7px 0 0; color: #7F74B0; font-size: 13px; line-height: 1.15; font-weight: 760; }
+    .history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: block; overflow-y: auto; padding: 59px 18px 20px; border-radius: 33px 33px 0 0; background: #FFFCFD; color: #352576; scrollbar-width: none; }
+    .history-content::-webkit-scrollbar { display: none; }
+    .history-period-intro { min-height: 28px; display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 7px; margin: 0 1px 13px; color: #7667AB; font-family: Georgia, "Times New Roman", serif; font-size: 12px; font-style: italic; line-height: 1.22; }
+    .history-period-intro .icon { width: 20px; height: 20px; color: #A76BB4; stroke-width: 1.45; }
+    .history-period-list { display: grid; gap: 8px; }
+    .history-period-card { width: 100%; min-height: 82px; display: grid; grid-template-columns: 91px minmax(0, 1fr) 17px; align-items: center; gap: 11px; padding: 6px; border: 1px solid rgba(131, 105, 173, .14); border-radius: 17px; background: rgba(255, 255, 255, .96); color: #352576; box-shadow: 0 7px 18px rgba(69, 47, 122, .055); font: inherit; text-align: left; cursor: pointer; }
+    .history-period-card:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
+    .history-period-art { width: 91px; height: 70px; display: block; overflow: hidden; border-radius: 12px; background: #EFE4F4; }
+    .history-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .history-period-copy { min-width: 0; align-self: center; }
+    .history-period-card h2 { font-family: Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.05; font-weight: 700; letter-spacing: -.025em; margin: 0; color: #352576; }
+    .history-period-card p { margin: 4px 0 0; color: #8176A8; font-size: 11px; line-height: 1.2; font-weight: 660; }
+    .history-period-badge { min-height: 24px; display: inline-flex; align-items: center; margin-top: 6px; padding: 3px 9px; border-radius: 999px; background: #EFE9FA; color: #7056B3; font-size: 10.5px; line-height: 1; font-weight: 820; }
+    .history-period-card[data-history-batch="current"] .history-period-badge { background: #DCF5E8; color: #2E9A62; }
+    .history-period-chevron { align-self: center; color: #A89ABF; font-size: 21px; line-height: 1; font-weight: 400; }
+    .history-number-summary { margin-top: 16px; }
+    .history-number-summary-heading { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(0, 110px); align-items: center; gap: 5px; margin-bottom: 9px; }
+    .history-number-summary-heading > .icon { width: 18px; height: 18px; color: #D07CAC; stroke-width: 1.55; }
+    .history-number-summary-heading h2 { min-width: 0; margin: 0; color: #3B2B7E; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1; font-weight: 700; letter-spacing: -.025em; white-space: nowrap; }
+    .history-number-summary-heading h2::after { content: ""; width: 24px; height: 1px; display: inline-block; margin: 0 5px 4px 7px; background: rgba(129, 116, 184, .42); }
+    .history-number-summary-heading p { margin: 0; color: #8A7BB5; font-family: Georgia, "Times New Roman", serif; font-size: 9px; font-style: italic; line-height: 1.12; text-align: right; }
+    .history-number-summary-heading p::after { content: "♥"; margin-left: 3px; color: #D07CAC; font-size: 10px; }
+    .history-number-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+    .history-number-card { min-width: 0; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); text-align: center; }
+    .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px; background: #E3F6EF; color: #53AD89; }
+    .history-number-icon .icon { width: 14px; height: 14px; stroke-width: 1.8; }
+    .history-number-card:nth-child(2) .history-number-icon { background: #E7EFFC; color: #5F83D2; }
+    .history-number-card:nth-child(3) .history-number-icon { background: #F0E9FA; color: #9975C1; }
+    .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
+    .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
+    .history-number-card strong { color: #3B2B7E; font-size: 13px; line-height: 1; font-weight: 850; letter-spacing: -.025em; }
+    .history-number-card span { color: #8176A8; font-size: 7.5px; line-height: 1.12; font-weight: 720; }
 
     .hurray-screen { isolation: isolate; color: var(--white); background: #171848; }
     .hurray-screen::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(24, 23, 76, .04) 0%, rgba(24, 23, 76, .08) 44%, rgba(13, 15, 48, .58) 100%); pointer-events: none; }
@@ -489,7 +494,7 @@
 </head>
 <body>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
-    <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></symbol><symbol id="icon-signal" viewBox="0 0 24 24"><path d="M5 18v-2M9 18v-5M13 18v-8M17 18V3"/></symbol><symbol id="icon-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9.5 15a4 4 0 0 1 5 0M12 19h.01"/></symbol><symbol id="icon-battery" viewBox="0 0 24 24"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M21 10v4M6 10h10v4H6z"/></symbol><symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-6h6v6"/></symbol><symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"/></symbol><symbol id="icon-path" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"/></symbol><symbol id="icon-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="3"/><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"/></symbol><symbol id="icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-6 15-6 16 0"/></symbol><symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.8 9 3l2.1 5.3-2.3 1.4a15 15 0 0 0 5.5 5.5l1.4-2.3L21 15l-.8 2.4c-.4 1.3-1.8 2-3.1 1.7C9.5 17.2 6.8 14.5 4.9 6.9 4.6 5.6 5.3 4.2 6.6 3.8Z"/></symbol><symbol id="icon-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 10h8M8 13h5"/></symbol><symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></symbol><symbol id="icon-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7M8 12h11"/></symbol><symbol id="icon-progress" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-7"/></symbol><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4.3 4.3L19 6.7"/></symbol><symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol><symbol id="icon-tools" viewBox="0 0 24 24"><path d="m14 6 4-4 4 4-4 4-2-2-7 7-3-3 7-7Z"/><path d="m5 19 4-4 3 3-4 4H5Z"/></symbol><symbol id="icon-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></symbol><symbol id="icon-signal" viewBox="0 0 24 24"><path d="M5 18v-2M9 18v-5M13 18v-8M17 18V3"/></symbol><symbol id="icon-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9.5 15a4 4 0 0 1 5 0M12 19h.01"/></symbol><symbol id="icon-battery" viewBox="0 0 24 24"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M21 10v4M6 10h10v4H6z"/></symbol><symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-6h6v6"/></symbol><symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"/></symbol><symbol id="icon-path" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"/></symbol><symbol id="icon-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="3"/><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"/></symbol><symbol id="icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-6 15-6 16 0"/></symbol><symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.8 9 3l2.1 5.3-2.3 1.4a15 15 0 0 0 5.5 5.5l1.4-2.3L21 15l-.8 2.4c-.4 1.3-1.8 2-3.1 1.7C9.5 17.2 6.8 14.5 4.9 6.9 4.6 5.6 5.3 4.2 6.6 3.8Z"/></symbol><symbol id="icon-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 10h8M8 13h5"/></symbol><symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></symbol><symbol id="icon-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7M8 12h11"/></symbol><symbol id="icon-progress" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-7"/></symbol><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4.3 4.3L19 6.7"/></symbol><symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol><symbol id="icon-tools" viewBox="0 0 24 24"><path d="m14 6 4-4 4 4-4 4-2-2-7 7-3-3 7-7Z"/><path d="m5 19 4-4 3 3-4 4H5Z"/></symbol><symbol id="icon-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol><symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M20 4C11 4 5 8.6 5 15c0 2.8 2.2 5 5 5 6.4 0 10-6 10-16Z"/><path d="M4 20c3.2-3.4 7.1-6.5 12-9"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v17H7.5A3.5 3.5 0 0 0 4 22Z"/><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H12v17h4.5A3.5 3.5 0 0 1 20 22Z"/></symbol><symbol id="icon-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.2 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol>
   </svg>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
     <symbol id="source-character-llama" viewBox="0 0 112 180">
@@ -571,25 +576,23 @@
       <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><span></span><span></span><span></span></div>
       <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
-    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-statistics" aria-labelledby="history-screen-title">
+    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-history" aria-labelledby="history-screen-title">
+      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="history-screen-title">Történetem</h1><p>Válaszd ki az időszakodat</p></div><button class="icon-button" type="button" aria-label="Történetem információ">i</button></header>
-      <main class="route-content history-content" aria-label="Józan időszakaim">
-        <section class="history-batch-carousel" aria-label="Józan időszakok"><div class="history-batch-track">
-          <button class="history-batch" type="button" data-history-batch="2024-05"><span class="history-batch-year">2024</span><strong>8 nap</strong><small>2024.05.</small></button>
-          <button class="history-batch" type="button" data-history-batch="2024-08"><span class="history-batch-year" aria-hidden="true"></span><strong>37 nap</strong><small>2024.08.</small></button>
-          <button class="history-batch" type="button" data-history-batch="2025-01"><span class="history-batch-year">2025</span><strong>89 nap</strong><small>2025.01.</small></button>
-          <button class="history-batch" type="button" data-history-batch="2025-06"><span class="history-batch-year" aria-hidden="true"></span><strong>4 nap</strong><small>2025.06.</small><span class="history-batch-note">Aktuális időszak</span></button>
-          <button class="history-batch current" type="button" data-history-batch="current" aria-current="true"><span class="history-batch-year">2026</span><strong>24 nap</strong><small>Jelenleg</small></button>
-        </div></section>
-        <button class="history-current-card" type="button" data-action="open-history-detail" aria-label="Jelenlegi időszak részletes nézete"><span class="history-current-ring" role="progressbar" aria-label="24 nap a jelenlegi józan időszakban" aria-valuemin="0" aria-valuemax="30" aria-valuenow="24"><strong>24 nap</strong></span><span class="history-current-copy"><strong>Jelenlegi időszak</strong><span>2026. május 1. - jelenleg</span><em>24 nap tiszta</em></span><span class="history-current-chevron" aria-hidden="true">›</span></button>
-        <section class="history-total" aria-label="Történetem összesen"><h2>Történetem összesen</h2><p>Az összes eddigi időszak alapján</p><div class="history-stat-grid">
-          <article class="history-stat" data-history-stat="longest-period"><strong>89 nap</strong><span>Leghosszabb időszak</span></article>
-          <article class="history-stat" data-history-stat="total-clean-days"><strong>162 nap</strong><span>Összes tiszta nap</span></article>
-          <article class="history-stat" data-history-stat="average-mood"><strong>😀 3.8 / 5</strong><span>Átlagos hangulat</span></article>
-          <article class="history-stat" data-history-stat="checkin-rate"><strong>82%</strong><span>Check-in arány</span></article>
-          <article class="history-stat" data-history-stat="na-participation"><strong>12</strong><span>NA részvétel</span></article>
-          <article class="history-stat" data-history-stat="evening-reflections"><strong>19</strong><span>Esti reflexiók</span></article>
+      <main class="history-content" aria-label="Józan időszakaim">
+        <p class="history-period-intro"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Minden időszak egy külön fejezet az utamból.</span></p>
+        <section class="history-period-list" aria-label="Józan időszakok">
+          <button class="history-period-card" type="button" data-history-batch="2024-05" data-action="open-history-detail" aria-label="Első időszak, 8 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-1.svg" alt=""></span><span class="history-period-copy"><h2>Első időszak</h2><p>2024. máj. 1. – 2024. máj. 8.</p><span class="history-period-badge">8 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
+          <button class="history-period-card" type="button" data-history-batch="2024-08" data-action="open-history-detail" aria-label="Nyári szakasz, 37 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-3.svg" alt=""></span><span class="history-period-copy"><h2>Nyári szakasz</h2><p>2024. aug. – 2024. szept.</p><span class="history-period-badge">37 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
+          <button class="history-period-card" type="button" data-history-batch="2025-01" data-action="open-history-detail" aria-label="Leghosszabb időszak, 89 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-7.svg" alt=""></span><span class="history-period-copy"><h2>Leghosszabb időszak</h2><p>2025. jan. – 2025. ápr.</p><span class="history-period-badge">89 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
+          <button class="history-period-card" type="button" data-history-batch="current" data-action="open-history-detail" aria-label="Jelenlegi időszak, 24 nap tiszta"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-21.svg" alt=""></span><span class="history-period-copy"><h2>Jelenlegi időszak</h2><p>2026. máj. 1. – jelenleg</p><span class="history-period-badge">24 nap tiszta</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
+        </section>
+        <section class="history-number-summary" aria-labelledby="history-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
+          <article class="history-number-card" data-history-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article>
+          <article class="history-number-card" data-history-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article>
+          <article class="history-number-card" data-history-stat="evening-reflections"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>19</strong><span>esti reflexió</span></article>
+          <article class="history-number-card" data-history-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8 / 5</strong><span>átlagos hangulat</span></article>
+          <article class="history-number-card" data-history-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>82%</strong><span>check-in arány</span></article>
         </div></section>
       </main>
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>

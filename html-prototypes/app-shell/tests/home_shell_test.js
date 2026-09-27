@@ -151,9 +151,9 @@ function expectAbsent(pattern, message) {
   'Olvasd el, miért kezdted el',
   'Keresd meg a következő meetinget',
   'Visszaestem',
-  'Válaszd ki az időszakodat',
+  'Fejezeteim és emlékeim',
   'Jelenlegi időszak',
-  'Történetem összesen',
+  'Utam számokban',
   'Megcsináltad!',
   '25. nap',
   'Szeretnél pár percet szánni',
@@ -186,8 +186,11 @@ assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'source 
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the survival data model must retain all five source 18A–E states');
 assert.equal((html.match(/data-component="panic-bottom-navigation"/g) || []).length, 1, 'source 16 must expose one shared bottom navigation');
-assert.equal((html.match(/data-history-batch="/g) || []).length, 5, 'source 8C must expose its five sobriety periods');
-assert.equal((html.match(/data-history-stat="/g) || []).length, 6, 'source 8C must expose its six total-history stat cards');
+const historyScreenStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
+const historyScreenEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyScreenStart);
+const historyScreenMarkup = html.slice(historyScreenStart, historyScreenEnd);
+assert.equal((historyScreenMarkup.match(/data-history-batch="/g) || []).length, 4, 'the source History screen must expose its four vertical sobriety periods');
+assert.equal((historyScreenMarkup.match(/data-history-stat="/g) || []).length, 5, 'the source History lower section must expose its five compact measures');
 const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
 assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
 assert.equal(milestoneCardMarkup.filter((card) => card.includes('data-milestone-state="active"')).length, 5, 'M must retain its five active source cards');
