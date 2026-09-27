@@ -77,6 +77,8 @@ assert.ok(history.indexOf('history-period-intro') < history.indexOf('history-per
 assert.ok(html.includes('grid-template-columns: repeat(5, minmax(0, 1fr));'), 'the lower history measures must use the source one-row five-column layout');
 assert.ok(html.includes('.history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 24px 18px 17px;'), 'the quote and number summary must be fixed by the History three-row layout');
 assert.ok(html.includes('.history-period-scroll { min-height: 0; overflow-y: auto;'), 'the period list must be the sole scrolling History region');
+assert.ok(html.includes('--insight-rail-gap: 8px;'), 'the shared insight-rail breathing space must come from one semantic visual token');
+assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }'), 'collapsed History metrics must leave persistent breathing room above the insight rail without adding a second scroll owner');
 assert.ok(html.includes('.history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px;'), 'the history hero title must retain source serif typography');
 assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }'), 'the compact layout must use the hero_s aspect-derived smaller hero');
 assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-content { top: 154px;'), 'the compact layout must raise the body card and grow its sole scroll area');

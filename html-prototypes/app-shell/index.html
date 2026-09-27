@@ -7,7 +7,7 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
+    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
     html { color-scheme: light; }
     body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -111,7 +111,7 @@
     .timeline-thumb { width: 72px; height: 58px; flex: 0 0 auto; border: 1px solid rgba(106, 86, 180, .10); border-radius: 12px; background: linear-gradient(145deg, #EAD8EE 0%, #E4C8D6 42%, #B89AD7 43%, #8274C5 100%); box-shadow: 0 5px 12px rgba(44, 46, 119, .08); }
     .timeline-event-copy.with-thumb { display: grid; grid-template-columns: minmax(0, 1fr) 72px; gap: 10px; }
 
-    .milestone-screen { background-color: #F9EDF7; background-image: url("assets/backgrounds/galery1.png"); background-repeat: no-repeat; background-size: cover; background-position: center top; }
+    .milestone-screen { background-color: #F9EDF7; background-image: url("assets/backgrounds/galery2.png"); background-repeat: no-repeat; background-size: cover; background-position: center top; }
     .milestone-screen .screen-header-copy h1 { color: #302176; font-family: Georgia, "Times New Roman", serif; font-size: 29px; line-height: .98; font-weight: 700; letter-spacing: -.035em; }
     .milestone-screen .screen-header-copy p { margin-top: 6px; color: #8174B8; font-size: 14px; font-weight: 760; }
     .milestone-screen .route-content { padding: 0 18px 14px; }
@@ -184,6 +184,7 @@
     .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
     .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"]) .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }

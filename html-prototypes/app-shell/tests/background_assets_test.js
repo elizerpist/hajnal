@@ -11,7 +11,7 @@ const backgroundsRoot = path.join(shellRoot, 'assets', 'backgrounds');
 const requiredBackgrounds = [
   ['index1.png', 'ae4e7c9bd6b893b7ea513d2ff619cc3a1012872a3eec0c104005adbdabacac80'],
   ['panik1.png', '1c18b94a7ff841d02eec105b71c1cd04b629e021fe98e4c00cf53b4dee7a2672'],
-  ['galery1.png', '6c8d661ce602d67b468d79156c3c8c4c21ff3fe65da23b6d5dacf582d2308313'],
+  ['galery2.png', '0f4cb950b3910c4891211f62e3d6684d12fe72e7e1e225998b16db78ca5ee163'],
 ];
 
 for (const [fileName, expectedHash] of requiredBackgrounds) {
@@ -26,6 +26,6 @@ for (const [fileName, expectedHash] of requiredBackgrounds) {
 
 assert.match(html, /<img class="home-hero-image" src="assets\/backgrounds\/index1\.png" alt="" loading="eager">/, 'Home must use supplied index1.png as its real background image');
 assert.match(html, /\.panic-screen\s*\{[^}]*background-image:\s*url\("assets\/backgrounds\/panik1\.png"\)[^}]*background-size:\s*cover[^}]*background-position:\s*center top/s, 'Pánik must use supplied panik1.png as a cover background');
-assert.match(html, /\.milestone-screen\s*\{[^}]*background-image:\s*url\("assets\/backgrounds\/galery1\.png"\)[^}]*background-size:\s*cover[^}]*background-position:\s*center top/s, 'Mérföldkövek must use supplied galery1.png as a cover background');
+assert.match(html, /\.milestone-screen\s*\{[^}]*background-image:\s*url\("assets\/backgrounds\/galery2\.png"\)[^}]*background-size:\s*cover[^}]*background-position:\s*center top/s, 'Mérföldkövek must use supplied galery2.png as a cover background');
 
 console.log('PASS supplied Home, Pánik, and Mérföldkő background asset contract');
