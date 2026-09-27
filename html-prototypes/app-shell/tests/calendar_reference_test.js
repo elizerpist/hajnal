@@ -9,6 +9,9 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const historyDetailStart = html.indexOf('<section class="route-screen history-detail-screen"');
 const eventDetailStart = html.indexOf('<section class="route-screen timeline-event-detail-screen"');
 const historyDetail = html.slice(historyDetailStart, eventDetailStart);
+const calendarHeroStart = historyDetail.indexOf('<section class="calendar-period-hero"');
+const timelineHeroStart = historyDetail.indexOf('<section class="timeline-period-hero"');
+const calendarHero = historyDetail.slice(calendarHeroStart, timelineHeroStart);
 const calendarGridStart = historyDetail.indexOf('data-history-calendar-grid-view');
 const calendarRailStart = historyDetail.indexOf('data-history-calendar-rail-view');
 const calendarGrid = historyDetail.slice(calendarGridStart, calendarRailStart);
@@ -43,6 +46,12 @@ assert.ok(!historyDetail.includes('history-timeline-filters'), 'the Calendar mus
 assert.ok(!historyDetail.includes('data-history-timeline-filter'), 'the Calendar must not retain Timeline filter-pill interactions');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px;'), 'the Calendar grid must use the taller shared Timeline tab geometry above the calendar scroll panel');
 assert.ok(!html.includes('.history-detail-screen[data-history-detail-view="calendar"] .period-detail-tabs {'), 'the Calendar must not retain its smaller feature-local tab override');
+assert.ok(calendarHero.includes('class="history-day-quote-card calendar-rail-hero"'), 'the Rail must reuse the existing quote-card primitive as its one hero variant');
+assert.ok(calendarHero.includes('A nehéz pillanatok is a történetem részei, és erősebbé tesznek.'), 'the Rail hero must contain the requested quote');
+assert.ok(html.includes('.calendar-period-hero .calendar-rail-hero { display: none; }'), 'the Grid Calendar must hide the Rail-only quote hero despite the quote-card base display rule');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .calendar-period-hero { display: block; }'), 'the Rail Calendar must expose the same shared Calendar hero owner as Grid');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { z-index: 2; top: 224px; display: block; overflow-y: auto; padding: 24px 18px 14px; border-radius: 33px 33px 0 0; background: #FFFCFD; }'), 'the Rail body must overlap the same-sized hero at the Grid body boundary');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .calendar-rail-hero { height: 100%; position: absolute; inset: 0; z-index: 2; display: grid;'), 'the quote visual must fill the shared Rail hero rather than remain a body card');
 
 [
   'data-history-calendar-view="grid"',
@@ -70,18 +79,19 @@ assert.ok(!calendarGrid.includes('Aznapi emlékek'), 'the Grid Calendar must not
   'Aznapi emlékek',
   'Elindultam',
   'Jobban vagyok',
-  'A nehéz pillanatok is a történetem részei, és erősebbé tesznek.',
   'src="assets/hero/timelinehero.png"',
 ].forEach((value) => assert.ok(calendarRail.includes(value), `the reworked rail state is missing ${value}`));
 assert.equal((historyDetail.match(/class="history-calendar-memories"/g) || []).length, 1, 'Aznapi emlékek must have one physical owner after moving from Grid to Rail');
 assert.ok(!calendarRail.includes('history-day-tabs'), 'the Rail Calendar must not retain the Idővonal/Jegyzetek/Statisztika pill row');
 assert.ok(!calendarRail.includes('history-day-event-list'), 'the Rail Calendar must not retain its former day Timeline');
+assert.ok(!calendarRail.includes('history-day-quote-card'), 'the quote card must move out of the Rail body and into its Hero');
+assert.ok(calendarRail.indexOf('class="history-calendar-day-rail"') < calendarRail.indexOf('class="history-calendar-memories"'), 'the date Rail card must be the first body content beneath the Hero');
 assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state must be represented by the existing current-period route state');
 
 [
   '.history-calendar-day-rail { overflow-x: auto;',
   '.history-calendar-memories { margin-top: 12px;',
-  '.history-day-quote-card',
+  '.calendar-rail-hero',
   '[data-history-calendar-view="rail"] .history-detail-content',
   '[data-history-calendar-view="rail"] .history-number-summary { display: none; }',
 ].forEach((value) => assert.ok(html.includes(value), `rail.png geometry contract is missing ${value}`));
