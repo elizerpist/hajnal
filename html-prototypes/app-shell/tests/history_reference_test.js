@@ -47,6 +47,11 @@ assert.equal(
   'Jelenlegi időszak',
   '2026. máj. 1. – jelenleg',
   '24 nap tiszta',
+  'Júniusi folytatás',
+  'Őszi újrakezdés',
+  'Tavaszi újrakezdés',
+  'Nyár végi időszak',
+  'Téli kitartás',
   'Utam számokban',
   'Kisebb lépések. Nagyobb élet.',
   'összes tiszta nap',
@@ -58,10 +63,10 @@ assert.equal(
   'data-action="open-history" aria-current="page"',
 ].forEach((expected) => assert.ok(history.includes(expected), `history reference content is missing ${expected}`));
 
-assert.equal((history.match(/class="history-period-card"/g) || []).length, 5, 'History must preserve five tappable sobriety-period cards in its dedicated list');
-assert.equal((history.match(/data-history-batch=/g) || []).length, 5, 'each history period card must retain its semantic batch identity');
+assert.equal((history.match(/class="history-period-card"/g) || []).length, 10, 'History must provide ten tappable sobriety-period cards so its sole scroll region has meaningful test depth');
+assert.equal((history.match(/data-history-batch=/g) || []).length, 10, 'each of the ten history period cards must retain a semantic batch identity');
 assert.equal((history.match(/data-history-stat=/g) || []).length, 5, 'the source lower section has exactly five history measures');
-assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 5, 'each period card must use a local gallery artwork asset');
+assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 10, 'each of the ten period cards must use a local gallery artwork asset');
 assert.ok(history.includes('class="history-number-grid"'), 'the five measures must share one compact lower-row component');
 assert.equal((history.match(/class="history-number-grid"/g) || []).length, 1, 'the compact/expanded metric presentation must reuse the one existing metric payload');
 assert.ok(history.includes('data-action="toggle-history-metrics"'), 'the compact history footer must expose one semantic metric expansion control');

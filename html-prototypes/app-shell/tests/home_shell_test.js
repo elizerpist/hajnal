@@ -189,7 +189,7 @@ assert.equal((html.match(/data-component="panic-bottom-navigation"/g) || []).len
 const historyScreenStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyScreenEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyScreenStart);
 const historyScreenMarkup = html.slice(historyScreenStart, historyScreenEnd);
-assert.equal((historyScreenMarkup.match(/data-history-batch="/g) || []).length, 5, 'the source History screen must expose its five vertical sobriety periods');
+assert.equal((historyScreenMarkup.match(/data-history-batch="/g) || []).length, 10, 'History must expose ten vertical sobriety periods for meaningful scroll testing');
 assert.equal((historyScreenMarkup.match(/data-history-stat="/g) || []).length, 5, 'the source History lower section must expose its five compact measures');
 const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
 assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
