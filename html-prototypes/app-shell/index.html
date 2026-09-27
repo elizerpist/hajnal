@@ -145,11 +145,12 @@
     .history-hero-copy { position: absolute; z-index: 1; top: 51px; right: 22px; left: 22px; text-align: center; }
     .history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -.035em; margin: 0; color: #302176; text-shadow: 0 1px 0 rgba(255, 255, 255, .45); }
     .history-hero-copy p { margin: 7px 0 0; color: #7F74B0; font-size: 13px; line-height: 1.15; font-weight: 760; }
-    .history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: block; overflow-y: auto; padding: 59px 18px 20px; border-radius: 33px 33px 0 0; background: #FFFCFD; color: #352576; scrollbar-width: none; }
-    .history-content::-webkit-scrollbar { display: none; }
-    .history-period-intro { min-height: 28px; display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 7px; margin: 0 1px 13px; color: #7667AB; font-family: Georgia, "Times New Roman", serif; font-size: 12px; font-style: italic; line-height: 1.22; }
+    .history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 34px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; color: #352576; }
+    .history-period-intro { min-height: 28px; display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: center; gap: 7px; margin: 0 1px 10px; color: #7667AB; font-family: Georgia, "Times New Roman", serif; font-size: 12px; font-style: italic; line-height: 1.22; }
     .history-period-intro .icon { width: 20px; height: 20px; color: #A76BB4; stroke-width: 1.45; }
-    .history-period-list { display: grid; gap: 8px; }
+    .history-period-scroll { min-height: 0; overflow-y: auto; padding: 0 2px; overscroll-behavior: contain; scrollbar-width: none; }
+    .history-period-scroll::-webkit-scrollbar { display: none; }
+    .history-period-list { display: grid; gap: 8px; padding-bottom: 8px; }
     .history-period-card { width: 100%; min-height: 82px; display: grid; grid-template-columns: 91px minmax(0, 1fr) 17px; align-items: center; gap: 11px; padding: 6px; border: 1px solid rgba(131, 105, 173, .14); border-radius: 17px; background: rgba(255, 255, 255, .96); color: #352576; box-shadow: 0 7px 18px rgba(69, 47, 122, .055); font: inherit; text-align: left; cursor: pointer; }
     .history-period-card:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
     .history-period-art { width: 91px; height: 70px; display: block; overflow: hidden; border-radius: 12px; background: #EFE4F4; }
@@ -160,7 +161,7 @@
     .history-period-badge { min-height: 24px; display: inline-flex; align-items: center; margin-top: 6px; padding: 3px 9px; border-radius: 999px; background: #EFE9FA; color: #7056B3; font-size: 10.5px; line-height: 1; font-weight: 820; }
     .history-period-card[data-history-batch="current"] .history-period-badge { background: #DCF5E8; color: #2E9A62; }
     .history-period-chevron { align-self: center; color: #A89ABF; font-size: 21px; line-height: 1; font-weight: 400; }
-    .history-number-summary { margin-top: 16px; }
+    .history-number-summary { margin: 0; padding-top: 13px; }
     .history-number-summary-heading { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(0, 110px); align-items: center; gap: 5px; margin-bottom: 9px; }
     .history-number-summary-heading > .icon { width: 18px; height: 18px; color: #D07CAC; stroke-width: 1.55; }
     .history-number-summary-heading h2 { min-width: 0; margin: 0; color: #3B2B7E; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1; font-weight: 700; letter-spacing: -.025em; white-space: nowrap; }
@@ -581,12 +582,13 @@
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="history-content" aria-label="Józan időszakaim">
         <p class="history-period-intro"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Minden időszak egy külön fejezet az utamból.</span></p>
-        <section class="history-period-list" aria-label="Józan időszakok">
+        <section class="history-period-scroll" aria-label="Józan időszakok"><div class="history-period-list">
           <button class="history-period-card" type="button" data-history-batch="2024-05" data-action="open-history-detail" aria-label="Első időszak, 8 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-1.svg" alt=""></span><span class="history-period-copy"><h2>Első időszak</h2><p>2024. máj. 1. – 2024. máj. 8.</p><span class="history-period-badge">8 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
           <button class="history-period-card" type="button" data-history-batch="2024-08" data-action="open-history-detail" aria-label="Nyári szakasz, 37 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-3.svg" alt=""></span><span class="history-period-copy"><h2>Nyári szakasz</h2><p>2024. aug. – 2024. szept.</p><span class="history-period-badge">37 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
           <button class="history-period-card" type="button" data-history-batch="2025-01" data-action="open-history-detail" aria-label="Leghosszabb időszak, 89 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-7.svg" alt=""></span><span class="history-period-copy"><h2>Leghosszabb időszak</h2><p>2025. jan. – 2025. ápr.</p><span class="history-period-badge">89 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
+          <button class="history-period-card" type="button" data-history-batch="2025-06" data-action="open-history-detail" aria-label="Rövid időszak, 4 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-14.svg" alt=""></span><span class="history-period-copy"><h2>Rövid időszak</h2><p>2025. jún.</p><span class="history-period-badge">4 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
           <button class="history-period-card" type="button" data-history-batch="current" data-action="open-history-detail" aria-label="Jelenlegi időszak, 24 nap tiszta"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-21.svg" alt=""></span><span class="history-period-copy"><h2>Jelenlegi időszak</h2><p>2026. máj. 1. – jelenleg</p><span class="history-period-badge">24 nap tiszta</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-        </section>
+        </div></section>
         <section class="history-number-summary" aria-labelledby="history-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
           <article class="history-number-card" data-history-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article>
           <article class="history-number-card" data-history-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article>

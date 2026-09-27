@@ -48,12 +48,17 @@ assert.equal(
   'data-action="open-history" aria-current="page"',
 ].forEach((expected) => assert.ok(history.includes(expected), `history reference content is missing ${expected}`));
 
-assert.equal((history.match(/class="history-period-card"/g) || []).length, 4, 'the source screen has four vertical, tappable sobriety-period cards');
-assert.equal((history.match(/data-history-batch=/g) || []).length, 4, 'each history period card must retain its semantic batch identity');
+assert.equal((history.match(/class="history-period-card"/g) || []).length, 5, 'History must preserve five tappable sobriety-period cards in its dedicated list');
+assert.equal((history.match(/data-history-batch=/g) || []).length, 5, 'each history period card must retain its semantic batch identity');
 assert.equal((history.match(/data-history-stat=/g) || []).length, 5, 'the source lower section has exactly five history measures');
-assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 4, 'each period card must use a local gallery artwork asset');
+assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 5, 'each period card must use a local gallery artwork asset');
 assert.ok(history.includes('class="history-number-grid"'), 'the five measures must share one compact lower-row component');
+assert.ok(history.includes('class="history-period-scroll"'), 'only the period-card list must own its own scroll area');
+assert.ok(history.includes('data-history-batch="2025-06"'), 'the recovered June 2025 period must remain available as the fifth card');
+assert.ok(history.indexOf('history-period-intro') < history.indexOf('history-period-scroll') && history.indexOf('history-period-scroll') < history.indexOf('history-number-summary'), 'the fixed quote, scrollable period list, and fixed number summary must stay in visual order');
 assert.ok(html.includes('grid-template-columns: repeat(5, minmax(0, 1fr));'), 'the lower history measures must use the source one-row five-column layout');
+assert.ok(html.includes('.history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 34px 18px 17px;'), 'the quote and number summary must be fixed by the History three-row layout');
+assert.ok(html.includes('.history-period-scroll { min-height: 0; overflow-y: auto;'), 'the period list must be the sole scrolling History region');
 assert.ok(html.includes('.history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px;'), 'the history hero title must retain source serif typography');
 assert.ok(html.includes('.history-period-card h2 { font-family: Georgia, "Times New Roman", serif;'), 'period card names must retain the source serif typography');
 assert.ok(!history.includes('history-batch-carousel'), 'the old horizontal batch circles must not remain in Történetem');
