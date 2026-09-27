@@ -730,7 +730,7 @@
       <path d="M91 53q5 4 10 0" fill="none" stroke="#2C2E77" stroke-linecap="round" stroke-width="1.8" />
     </symbol>
   </svg>
-  <main class="app-frame home-collapsed-screen" data-screen-state="8a-collapsed" data-route="home" aria-label="Hajnal alkalmazás, Kezdőlap">
+  <div class="app-frame home-collapsed-screen" data-screen-state="8a-collapsed" data-route="home" role="application" aria-label="Hajnal alkalmazás, Kezdőlap">
     <button class="home-illustration" type="button" aria-label="Mérföldkövek megnyitása" data-action="open-milestones"><img class="home-hero-image" src="assets/backgrounds/index1.png" alt="" loading="eager"></button>
     <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
     <header class="home-topbar"><button class="icon-button" type="button" data-action="open-initialization" aria-label="Inicializálás bemutatása"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button><div class="home-day"><strong>24. nap</strong><span class="home-subtitle">a 90 napos úton</span><span class="home-tagline">Minden nap<br>egy lépés.</span></div><button class="icon-button" type="button" data-action="toggle-fullscreen" aria-label="Teljes képernyő"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></header>
@@ -945,7 +945,7 @@
     <section class="route-screen initialization-screen" id="initialization" data-screen="initialization" data-component="initialization-flow" data-initialization-view="splash" aria-label="Splash és onboarding">
       <main class="initialization-content" data-component="initialization-content" aria-live="polite"></main>
     </section>
-  </main>
+  </div>
   <script>
     (() => {
       const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);

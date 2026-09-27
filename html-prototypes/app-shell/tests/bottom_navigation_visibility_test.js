@@ -8,6 +8,17 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 assert.match(
   html,
+  /<div class="app-frame home-collapsed-screen"[^>]*role="application"/,
+  'the outer phone frame must not be a main element: nested route mains otherwise close it in mobile HTML parsing',
+);
+assert.doesNotMatch(
+  html,
+  /<main class="app-frame/,
+  'the outer frame must stay a neutral structural container while route content owns main semantics',
+);
+
+assert.match(
+  html,
   /\.bottom-nav\[hidden\],\s*\.route-bottom-nav\[hidden\]\s*\{[^}]*display:\s*none\s*!important/s,
   'the inactive navigation copy must be removed from the layout, not only visually covered',
 );
