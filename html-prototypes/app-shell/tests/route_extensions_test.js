@@ -23,7 +23,8 @@ function makeElement(action = '') {
     removeAttribute(name) { this.attributes.delete(name); },
     querySelectorAll() { return []; },
     querySelector() { return null; },
-    appendChild(child) { this.children.push(child); child.parentElement = this; return child; },
+    appendChild(child) { if (child.parentElement?.children) child.parentElement.children.splice(child.parentElement.children.indexOf(child), 1); this.children.push(child); child.parentElement = this; return child; },
+    prepend(child) { if (child.parentElement?.children) child.parentElement.children.splice(child.parentElement.children.indexOf(child), 1); this.children.unshift(child); child.parentElement = this; return child; },
     setPointerCapture() {},
     releasePointerCapture() {},
   };
@@ -41,6 +42,8 @@ historyTimelineTab.dataset.historyDetailTab = 'timeline';
 const historyCalendarTab = makeElement();
 historyCalendarTab.dataset.historyDetailTab = 'calendar';
 const historyDetailTitle = makeElement();
+const timelineHeroTitle = makeElement();
+const calendarHeroTitle = makeElement();
 const historyDetailSubtitle = makeElement();
 const historyDetailBack = makeElement('open-history');
 const historyDetailTopAction = makeElement();
@@ -59,11 +62,14 @@ const calendarHeroVariantToggle = makeElement('toggle-history-hero-variant');
 calendarHeroVariantToggle.dataset.historyPresentationSurface = 'calendar';
 const calendarMonthCard = makeElement();
 const calendarMonthCardOrigin = makeElement();
+const calendarSelectedDay = makeElement();
+calendarMonthCardOrigin.appendChild(calendarMonthCard);
+calendarMonthCardOrigin.appendChild(calendarSelectedDay);
 const calendarIntegratedGridSlot = makeElement();
 const timelineMetricsTitle = makeElement();
 historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-history-detail-tab]': [historyTimelineTab, historyCalendarTab],
-  '[data-component="history-detail-title"]': [historyDetailTitle],
+  '[data-component="history-detail-title"]': [historyDetailTitle, timelineHeroTitle, calendarHeroTitle],
   '[data-component="history-detail-subtitle"]': [historyDetailSubtitle],
   '[data-component="history-detail-back"]': [historyDetailBack],
   '[data-component="history-detail-top-action"]': [historyDetailTopAction],
@@ -138,16 +144,19 @@ assert.equal(mainNavigation.hidden, false, 'Pánik root must reuse the same Bott
 controller.navigate('panic-why');
 assert.equal(mainNavigation.hidden, true, 'Pánik child routes must hide the one shared BottomNav');
 
-controller.openHistoryDetail('timeline');
+controller.openHistoryDetail('timeline', 'Téli kitartás');
 assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'timeline', 'a current-period card must open the source-right Idővonal submenu');
+assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'the shared detail semantic heading must use the tapped period-card title');
+assert.equal(timelineHeroTitle.textContent, 'Téli kitartás', 'the visible Timeline hero heading must use the tapped period-card title');
+assert.equal(calendarHeroTitle.textContent, 'Téli kitartás', 'the shared Calendar hero heading must retain the tapped period-card title');
 assert.equal(historyTimelineTab.getAttribute('aria-pressed'), 'true', 'timeline tab must expose selected state');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Timeline must begin in the same established large-hero mode');
 assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'false', 'Timeline must begin with its lower insight strip collapsed');
-assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Timeline large mode must use the supplied local History hero');
+assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Timeline large mode must use the Rail hero image');
 controller.toggleHistoryHeroVariant('timeline');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Timeline push-push control must enter its compact variant');
-assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'Timeline compact mode must use the supplied local compact hero');
+assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Timeline compact mode must retain the Rail hero image');
 assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'Timeline hero changes must not alter the History hero state');
 controller.toggleHistoryMetrics('timeline');
 assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'true', 'Timeline insight row must expand through the shared presentation owner');
@@ -157,15 +166,17 @@ controller.toggleHistoryMetrics('timeline');
 controller.openHistoryDetail('calendar');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
 assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
+assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'Calendar must preserve the period-card title when changing from Timeline');
 assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'opening Naptár must begin with the source monthly grid');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must begin in the established large-hero mode');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Calendar large mode must use the supplied History hero');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar large mode must use the Rail hero image');
+assert.equal(calendarMonthCardOrigin.children[0], calendarMonthCard, 'the normal Calendar Grid must keep the monthly grid before the selected-day card');
 controller.toggleHistoryHeroVariant('calendar');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Calendar push-push control must enter its compact variant');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'Calendar compact mode must use the supplied compact hero');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar compact mode must retain the Rail hero image');
 controller.toggleHistoryHeroVariant('calendar');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'integrated', 'Calendar must expose the third integrated-grid variant');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Calendar integrated mode must restore the large hero asset');
+assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar integrated mode must retain the Rail hero image');
 assert.equal(calendarIntegratedGridSlot.children[0], calendarMonthCard, 'integrated Calendar must move the one monthly grid into the hero slot');
 controller.toggleHistoryHeroVariant('calendar');
 assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must cycle from integrated back to large');
@@ -176,7 +187,7 @@ assert.equal(timelineMetricsToggle.getAttribute('aria-expanded'), 'true', 'Calen
 controller.openHistoryCalendarRail('2025-02-14');
 assert.equal(historyDetailScreen.dataset.historyCalendarView, 'rail', 'a semantic calendar-day tap must open the focused rail state on the same route');
 assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the controller must retain the selected calendar day for the rail header and selected day treatment');
-assert.equal(historyDetailTitle.textContent, 'Február 14.', 'the rail must render the source day heading from the selected calendar state');
+assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'the Rail must preserve the selected period title from the shared detail route');
 assert.equal(historyDetailSubtitle.textContent, '14. tiszta nap', 'the rail must render the source clean-day subtitle from the selected calendar state');
 assert.equal(historyDetailBack.dataset.action, 'open-history-calendar-grid', 'the rail back control must be a real controller-owned grid return action');
 assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"/, 'the source rail must be derived from the selected day state');
@@ -185,7 +196,7 @@ assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'the rail 
 assert.equal(historyDetailBack.dataset.action, 'open-history', 'the grid restores the period header back action');
 assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the grid return restores the exact grid.png reference selection rather than retaining a rail-only selection');
 controller.openHistoryCalendarRail('2025-02-24');
-assert.equal(historyDetailTitle.textContent, 'Február 24.', 'a non-source calendar day must receive its own rail heading');
+assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'a non-source calendar day must preserve the shared selected period title');
 assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-24"[^>]*aria-current="date"/, 'the dynamically rendered rail must contain the selected non-source date');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active within current-period detail');
 controller.navigate('timeline-event-detail');
@@ -201,14 +212,14 @@ assert.equal(historyMetricsToggle.getAttribute('aria-expanded'), 'true', 'the lo
 controller.toggleHistoryHeroVariant();
 assert.equal(historyScreen.dataset.historyHeroVariant, 'compact', 'the History hero top-right push-push control must enter the compact alternate layout without changing route');
 assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'changing hero variant must preserve the shared expanded metric state');
-assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'the compact alternate layout must use the supplied local hero_s asset');
+assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'the compact History layout must retain the Rail hero image');
 assert.equal(historyHeroVariantToggle.getAttribute('aria-pressed'), 'true', 'the hero-layout control must expose its compact state');
 controller.toggleHistoryMetrics();
 assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'the compact arrow must collapse the shared metric payload');
 controller.toggleHistoryHeroVariant();
 assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'the same hero corner control must return to the established large History layout');
 assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'returning to large must preserve the collapsed shared metric state');
-assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'the large History layout must restore the existing hero_m asset');
+assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'the large History layout must retain the Rail hero image');
 controller.toggleHistoryMetrics();
 assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'the large hero arrow must expand after returning from the compact layout');
 
@@ -247,7 +258,7 @@ controller.advanceInitialization(1);
 assert.equal(root.dataset.route, 'home', 'initialization completion must return to Home');
 
 [
-  "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
+  "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
   "case 'open-history-calendar-rail': this.openHistoryCalendarRail(event.target.closest('[data-history-calendar-date]')?.dataset.historyCalendarDate); break;",
   "case 'open-history-calendar-grid': this.openHistoryCalendarGrid(); break;",
@@ -255,7 +266,8 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
-  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
+  'historySelectedPeriodTitle:',
+  "const HISTORY_PRESENTATION_HERO_ASSET = 'assets/hero/timelinehero.png';",
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
   "toggleHistoryHeroVariant(surface = 'history') {",

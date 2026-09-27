@@ -48,7 +48,7 @@ assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2,
 assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-right view must not expose a Statisztikák tab or heading');
 assert.ok(!historyDetail.includes('history-timeline-filters'), 'the Timeline must not retain the removed filter-pill row');
 assert.ok(!historyDetail.includes('data-history-timeline-filter'), 'the Timeline must not retain filter-pill interactions');
-assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline must initially bind the established large History hero');
+assert.ok(historyDetail.includes('src="assets/hero/timelinehero.png"'), 'the Timeline must initially bind the shared Rail hero image');
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
 assert.ok(!historyDetail.includes('history-metrics-toggle'), 'all Timeline insight cards must remove their dedicated arrow trigger');
@@ -87,7 +87,7 @@ assert.ok(!html.includes('selectHistoryTimelineFilter'), 'the controller must no
 assert.ok(!eventDetail.includes('route-bottom-nav'), 'the source-center event detail must not carry a BottomNav');
 assert.ok(html.includes('.app-frame[data-route="timeline-event-detail"] .timeline-event-detail-screen'), 'the existing route switch must own event detail visibility');
 [
-  "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
+  "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
   "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",

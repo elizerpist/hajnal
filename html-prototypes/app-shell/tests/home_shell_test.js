@@ -105,7 +105,7 @@ function expectAbsent(pattern, message) {
   'height: 100dvh;',
   'html:fullscreen .home-illustration',
   "case 'mark-clean-today': this.navigate('clean-reward'); break;",
-  "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
+  "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
   "case 'start-survival-pack': this.startSurvivalPack(); break;",

@@ -18,18 +18,18 @@ assert.ok(fs.existsSync(heroPath), 'the supplied history hero asset must be copi
 assert.equal(
   crypto.createHash('sha256').update(fs.readFileSync(heroPath)).digest('hex'),
   '91046d51167af3d1ec2395791788564c355b8c495f5cf6367e0032c90c7d855d',
-  'history hero must remain byte-identical to the supplied hero_m.png',
+  'the retained legacy large hero asset must remain byte-identical to the supplied hero_m.png',
 );
 assert.ok(fs.existsSync(compactHeroPath), 'the supplied compact history hero asset must be copied into the canonical app-shell assets');
 assert.equal(
   crypto.createHash('sha256').update(fs.readFileSync(compactHeroPath)).digest('hex'),
   'a47180c7ef158ebcbf26cbee5a9792dc719365ddce4db9241fa8ff881861f5f0',
-  'compact history hero must remain byte-identical to the supplied hero_s.png',
+  'the retained legacy compact hero asset must remain byte-identical to the supplied hero_s.png',
 );
 
 [
   'class="history-hero"',
-  'src="assets/hero/hero_m.png"',
+  'src="assets/hero/timelinehero.png"',
   'data-component="history-hero-image"',
   'data-action="toggle-history-hero-variant"',
   'data-component="history-hero-variant-toggle"',
@@ -80,7 +80,7 @@ assert.ok(html.includes('.history-period-scroll { min-height: 0; overflow-y: aut
 assert.ok(html.includes('--insight-rail-gap: 8px;'), 'the shared insight-rail breathing space must come from one semantic visual token');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }'), 'collapsed History metrics must leave persistent breathing room above the insight rail without adding a second scroll owner');
 assert.ok(html.includes('.history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px;'), 'the history hero title must retain source serif typography');
-assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }'), 'the compact layout must use the hero_s aspect-derived smaller hero');
+assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }'), 'the compact layout must retain its established smaller hero geometry while sharing the Rail image');
 assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-content { top: 154px;'), 'the compact layout must raise the body card and grow its sole scroll area');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'all hero variants must share the collapsed metric-grid state through the neutral presentation primitive');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid'), 'all hero variants must share the expanded metric-grid state through the neutral presentation primitive');
