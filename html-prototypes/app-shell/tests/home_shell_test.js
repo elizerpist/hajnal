@@ -97,7 +97,7 @@ function expectAbsent(pattern, message) {
   "case 'open-panic': this.navigate('panic'); break;",
   "case 'open-daily-image': this.navigate('daily-image'); break;",
   "case 'return-to-milestones': this.navigate('milestones'); break;",
-  'data-component="panic-bottom-navigation"',
+  "const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic']);",
   '--bottom-safe-area: env(safe-area-inset-bottom, 0px);',
   '--bottom-nav-h: calc(70px + var(--bottom-safe-area));',
   'background: #FFFCFC;',
@@ -185,7 +185,7 @@ assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length,
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'source 8D and 8F must be two submenus of one period-detail screen');
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the survival data model must retain all five source 18A–E states');
-assert.equal((html.match(/data-component="panic-bottom-navigation"/g) || []).length, 1, 'source 16 must expose one shared bottom navigation');
+assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'Pánik must reuse the one app-frame-owned BottomNav rather than render a route-local copy');
 const historyScreenStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyScreenEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyScreenStart);
 const historyScreenMarkup = html.slice(historyScreenStart, historyScreenEnd);

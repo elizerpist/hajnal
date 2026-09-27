@@ -47,7 +47,6 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
   'Idővonalam számokban',
   'class="history-number-summary"',
   'data-component="history-metrics-surface"',
-  'data-action="open-history" aria-current="page"',
 ].forEach((expected) => assert.ok(historyDetail.includes(expected), `source-right timeline is missing ${expected}`));
 assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2, 'the current period has exactly Idővonal and Naptár tabs');
 assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-right view must not expose a Statisztikák tab or heading');

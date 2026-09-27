@@ -6,6 +6,44 @@ const path = require('node:path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
+function staticBodyMarkup(htmlSource) {
+  const bodyStart = htmlSource.indexOf('<body>');
+  const scriptStart = htmlSource.indexOf('<script>', bodyStart);
+  assert.notEqual(bodyStart, -1, 'the prototype must have a body');
+  assert.notEqual(scriptStart, -1, 'the interactive script must follow the static app markup');
+  return htmlSource.slice(bodyStart + '<body>'.length, scriptStart);
+}
+
+function assertWellNestedStaticMarkup(markup) {
+  const voidElements = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'use', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'stop', 'wbr']);
+  const stack = [];
+  const tags = /<\/?([A-Za-z][\w:-]*)(?:\s[^<>]*?)?\s*\/?\s*>/g;
+  let match;
+
+  while ((match = tags.exec(markup))) {
+    const rawTag = match[0];
+    const tagName = match[1].toLowerCase();
+    const isClosingTag = rawTag.startsWith('</');
+    const isSelfClosing = rawTag.endsWith('/>') || voidElements.has(tagName);
+    const line = markup.slice(0, match.index).split('\n').length;
+
+    if (isClosingTag) {
+      assert.equal(
+        stack.at(-1)?.tagName,
+        tagName,
+        `static app markup must be well nested at body line ${line}; an unmatched close re-parents routes outside the app frame`,
+      );
+      stack.pop();
+    } else if (!isSelfClosing) {
+      stack.push({ tagName, line });
+    }
+  }
+
+  assert.equal(stack.length, 0, 'the static app markup must close every app-frame child before the script');
+}
+
+assertWellNestedStaticMarkup(staticBodyMarkup(html));
+
 assert.match(
   html,
   /<div class="app-frame home-collapsed-screen"[^>]*role="application"/,
@@ -19,28 +57,33 @@ assert.doesNotMatch(
 
 assert.match(
   html,
-  /\.bottom-nav\[hidden\],\s*\.route-bottom-nav\[hidden\]\s*\{[^}]*display:\s*none\s*!important/s,
-  'the inactive navigation copy must be removed from the layout, not only visually covered',
+  /\.bottom-nav\[hidden\]\s*\{[^}]*display:\s*none\s*!important/s,
+  'the one navigation surface must be removed from layout when a child route intentionally has no navigation',
+);
+assert.doesNotMatch(
+  html,
+  /route-bottom-nav/,
+  'route screens must not duplicate the physical BottomNav; the app frame owns exactly one navigation surface',
+);
+assert.equal(
+  (html.match(/<nav class="bottom-nav"/g) || []).length,
+  1,
+  'there must be exactly one physical BottomNav in the complete document',
 );
 assert.match(
   html,
-  /this\.mainNavigation\s*=\s*root\.querySelector\('\[data-component="bottom-navigation"\]'\)/,
-  'the controller must own the one home navigation surface',
+  /const NAVIGATION_ROUTES = new Set\(\['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic'\]\);/,
+  'one route policy must declare the routes that use the shared BottomNav',
 );
 assert.match(
   html,
-  /this\.routeNavigations\s*=\s*Array\.from\(root\.querySelectorAll\('\.route-bottom-nav'\)\)/,
-  'route navigation surfaces must be registered by the same controller',
+  /this\.mainNavigation\.hidden\s*=\s*!isNavigationRoute/,
+  'the controller must toggle the single navigation surface from the route policy',
 );
-assert.match(
+assert.doesNotMatch(
   html,
-  /this\.mainNavigation\.hidden\s*=\s*!isHome/,
-  'the home navigation must be hidden while a route navigation is active',
-);
-assert.match(
-  html,
-  /nav\.hidden\s*=\s*!\(\s*!isHome\s*&&\s*ownerRoute\s*===\s*this\.state\.route/s,
-  'the controller must expose only the active route navigation',
+  /this\.routeNavigations/,
+  'the controller must not retain a second navigation ownership collection',
 );
 
-console.log('PASS app-shell single visible bottom navigation contract');
+console.log('PASS app-shell structural boundary and single BottomNav ownership contract');

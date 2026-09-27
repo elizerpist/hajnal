@@ -60,7 +60,6 @@ assert.equal(
   'átlagos hangulat',
   'check-in arány',
   'data-action="open-history-detail"',
-  'data-action="open-history" aria-current="page"',
 ].forEach((expected) => assert.ok(history.includes(expected), `history reference content is missing ${expected}`));
 
 assert.equal((history.match(/class="history-period-card"/g) || []).length, 10, 'History must provide ten tappable sobriety-period cards so its sole scroll region has meaningful test depth');

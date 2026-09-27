@@ -11,7 +11,7 @@ const html = fs.readFileSync(appShellPath, 'utf8');
 function makeElement(action = '') {
   return {
     attributes: new Map(),
-    classList: { add() {}, remove() {}, toggle() {} },
+    classList: { add() {}, remove() {}, toggle() {}, contains() { return false; } },
     dataset: action ? { action } : {},
     style: { setProperty() {} },
     innerHTML: '',
@@ -87,11 +87,13 @@ const homeNav = makeElement('return-home');
 const historyNav = makeElement('open-history');
 const pathNav = makeElement('open-path');
 const meetingsNav = makeElement('open-meetings');
+const mainNavigation = makeElement();
 
 root.querySelector = (selector) => ({
   '[data-component="daily-summary-card"]': summary,
   '[data-action="expand-home-card"]': expandHotspot,
   '[data-action="toggle-fullscreen"]': fullscreenButton,
+  '[data-component="bottom-navigation"]': mainNavigation,
   '[data-component="path-workspace"]': pathScreen,
   '[data-component="path-content"]': pathContent,
   '[data-component="current-period-detail"]': historyDetailScreen,
@@ -125,6 +127,16 @@ const runnableScript = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/)[1]
 const sandbox = { console, document: documentStub, globalThis: { setTimeout() { return 1; }, clearTimeout() {} }, window: { matchMedia: () => ({ matches: false }) } };
 vm.runInNewContext(runnableScript, sandbox);
 const controller = sandbox.globalThis.__routeController;
+
+assert.equal(mainNavigation.hidden, false, 'Home must expose the one app-frame-owned BottomNav');
+controller.navigate('history');
+assert.equal(mainNavigation.hidden, false, 'History must retain the same BottomNav instead of mounting a route-local copy');
+controller.navigate('timeline-event-detail');
+assert.equal(mainNavigation.hidden, true, 'the full-height event detail must hide the one shared BottomNav');
+controller.navigate('panic');
+assert.equal(mainNavigation.hidden, false, 'Pánik root must reuse the same BottomNav');
+controller.navigate('panic-why');
+assert.equal(mainNavigation.hidden, true, 'Pánik child routes must hide the one shared BottomNav');
 
 controller.openHistoryDetail('timeline');
 assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
@@ -285,7 +297,7 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'Screens 8D and 8F must stay as the only two current-period submenus');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the source 18A–E pack must have exactly five data states');
-assert.equal((html.match(/data-action="open-meetings"/g) || []).length, 9, 'Pánik plus all eight shared navigation instances must target the one meeting route');
+assert.equal((html.match(/data-action="open-meetings"/g) || []).length, 2, 'the one shared BottomNav and the Pánik quick action must target the one meeting route');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');
 
 console.log('PASS shared route extensions and initialization contract');
