@@ -131,6 +131,8 @@ const controller = sandbox.globalThis.__routeController;
 assert.equal(mainNavigation.hidden, false, 'Home must expose the one app-frame-owned BottomNav');
 controller.navigate('history');
 assert.equal(mainNavigation.hidden, false, 'History must retain the same BottomNav instead of mounting a route-local copy');
+controller.navigate('timeline');
+assert.equal(mainNavigation.hidden, false, 'Timeline must retain the same BottomNav above its route layer');
 controller.navigate('timeline-event-detail');
 assert.equal(mainNavigation.hidden, true, 'the full-height event detail must hide the one shared BottomNav');
 controller.navigate('panic');

@@ -54,7 +54,9 @@ assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline 
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
 assert.ok(!historyDetail.includes('history-metrics-toggle'), 'all Timeline insight cards must remove their dedicated arrow trigger');
-assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 5, 'every rendered timeline event must be a semantic event-detail trigger');
+assert.equal((timelinePanel.match(/class="history-detail-event"/g) || []).length, 12, 'the Timeline must have twelve reusable event cards so its one internal scroll region can be exercised');
+assert.equal((timelinePanel.match(/class="history-detail-events-scroll"/g) || []).length, 1, 'the longer Timeline must retain exactly one internal scroll owner');
+assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 12, 'every rendered Timeline event must remain a semantic event-detail trigger');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px;'), 'the overlapping Timeline body card and its two tabs must render above the hero, like the working History body');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');

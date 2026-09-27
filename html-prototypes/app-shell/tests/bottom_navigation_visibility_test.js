@@ -60,6 +60,16 @@ assert.match(
   /\.bottom-nav\[hidden\]\s*\{[^}]*display:\s*none\s*!important/s,
   'the one navigation surface must be removed from layout when a child route intentionally has no navigation',
 );
+assert.match(
+  html,
+  /\.bottom-nav\s*\{[^}]*z-index:\s*90/s,
+  'the shared BottomNav must render above route screens instead of being covered by them',
+);
+assert.match(
+  html,
+  /\.route-screen\s*\{[^}]*z-index:\s*80/s,
+  'route content must stay below the shared BottomNav layer',
+);
 assert.doesNotMatch(
   html,
   /route-bottom-nav/,
