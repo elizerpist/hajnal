@@ -139,9 +139,9 @@
 
     .history-screen { background: #FFF9FC; }
     .history-screen .status-bar { color: #31256F; }
-    .history-hero { height: 270px; position: absolute; z-index: 1; inset: 0 0 auto; overflow: hidden; background: #F2DDED; }
-    .history-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .08) 0%, rgba(255, 244, 250, .08) 59%, rgba(255, 250, 253, .48) 100%); pointer-events: none; }
-    .history-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
+    .history-hero, .timeline-period-hero { height: 270px; position: absolute; z-index: 1; inset: 0 0 auto; overflow: hidden; background: #F2DDED; }
+    .history-hero::after, .timeline-period-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .08) 0%, rgba(255, 244, 250, .08) 59%, rgba(255, 250, 253, .48) 100%); pointer-events: none; }
+    .history-hero-image, .timeline-period-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center center; }
     .history-hero-copy { position: absolute; z-index: 1; top: 51px; right: 22px; left: 22px; text-align: center; }
     .history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -.035em; margin: 0; color: #302176; text-shadow: 0 1px 0 rgba(255, 255, 255, .45); }
     .history-hero-copy p { margin: 7px 0 0; color: #7F74B0; font-size: 13px; line-height: 1.15; font-weight: 760; }
@@ -181,11 +181,11 @@
     .history-number-card:nth-child(3) .history-number-icon { background: #F0E9FA; color: #9975C1; }
     .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
     .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
-    .history-screen[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
-    .history-screen[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
-    .history-screen[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
-    .history-screen[data-history-metrics-expanded="true"] .history-metrics-toggle { background: #7650CC; color: #fff; transform: rotate(180deg); }
-    .history-screen .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="true"] .history-metrics-toggle { background: #7650CC; color: #fff; transform: rotate(180deg); }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"]) .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
     .history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-image { object-position: center center; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-copy { top: 48px; }
@@ -360,7 +360,19 @@
     .history-detail-screen .screen-header-copy { padding: 0 8px; }
     .history-detail-screen .screen-header-copy h1 { font-size: 20px; line-height: 1.06; }
     .history-detail-screen .screen-header-copy p { margin-top: 3px; }
-    .history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: 44px 42px 78px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 0 18px 17px; color: var(--hajnal-navy); }
+    .history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: 44px 42px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 0 18px 17px; color: var(--hajnal-navy); }
+    .timeline-period-hero { display: none; }
+    .timeline-period-hero .history-hero-copy { top: 51px; }
+    .timeline-period-clean-copy { display: block; margin-top: 12px; color: #2E2177; font-size: 16px; line-height: 1; font-weight: 850; letter-spacing: -.03em; text-shadow: 0 1px 0 rgba(255,255,255,.58); }
+    .history-detail-screen[data-history-detail-view="timeline"] .timeline-period-hero { display: block; }
+    .history-detail-screen[data-history-detail-view="timeline"] .screen-header { display: none; }
+    .history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { top: 224px; grid-template-rows: 44px 42px minmax(0, 1fr) auto; gap: 8px; padding: 24px 18px 17px; border-radius: 33px 33px 0 0; background: #FFFCFD; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero { height: 185px; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero-image { object-position: center center; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-copy { top: 48px; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-copy h1 { font-size: 27px; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .timeline-period-hero .history-hero-variant-toggle { top: 47px; }
+    .history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px; padding-top: 18px; }
     .period-detail-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px; border: 1px solid rgba(106,86,180,.11); border-radius: 21px; background: rgba(255,255,255,.72); box-shadow: 0 8px 20px rgba(44,46,119,.045); }
     .period-detail-tabs button { min-height: 34px; border: 0; border-radius: 17px; background: transparent; color: rgba(44,46,119,.61); font: inherit; font-size: 12px; font-weight: 790; cursor: pointer; }
     .period-detail-tabs button[aria-pressed="true"] { background: linear-gradient(135deg, #6946C5 0%, #906DDF 100%); color: var(--white); box-shadow: 0 5px 11px rgba(96,70,183,.22); }
@@ -783,13 +795,13 @@
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
-    <section class="route-screen history-detail-screen" id="history-detail" data-screen="history-detail" data-component="current-period-detail" data-history-detail-view="timeline" data-history-calendar-view="grid" aria-labelledby="history-detail-title">
+    <section class="route-screen history-detail-screen" id="history-detail" data-screen="history-detail" data-component="current-period-detail" data-history-detail-view="timeline" data-history-calendar-view="grid" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-detail-title">
+      <section class="timeline-period-hero" aria-label="A jelenlegi időszakom hero"><img class="timeline-period-hero-image" data-component="timeline-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1>Történetem</h1><p>Jelenlegi időszakom</p><strong class="timeline-period-clean-copy">24 nap tiszta</strong></div><button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-history-presentation-surface="timeline" data-component="timeline-hero-variant-toggle" aria-label="Kompakt idővonal nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-component="history-detail-back" data-action="open-history" aria-label="Vissza a Történetemhez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="history-detail-title" data-component="history-detail-title">Történetem</h1><p data-component="history-detail-subtitle">Egy nap, egy lépés közelebb</p></div><button class="icon-button" type="button" data-component="history-detail-top-action" aria-label="Új esemény hozzáadása">+</button></header>
       <main class="history-detail-content" aria-label="Az aktuális tiszta időszak idővonala">
         <nav class="period-detail-tabs" aria-label="Az időszak nézetei"><button type="button" data-history-detail-tab="timeline" data-action="open-history-detail" aria-pressed="true">Idővonal</button><button type="button" data-history-detail-tab="calendar" data-action="open-history-detail-calendar" aria-pressed="false">Naptár</button></nav>
         <div class="history-timeline-filters" aria-label="Idővonal szűrői"><button class="history-timeline-filter" type="button" data-history-timeline-filter="all" data-action="select-history-timeline-filter" aria-pressed="true">Összes</button><button class="history-timeline-filter" type="button" data-filter="milestone" data-history-timeline-filter="milestone" data-action="select-history-timeline-filter" aria-pressed="false">Mérföldkő</button><button class="history-timeline-filter" type="button" data-filter="meeting" data-history-timeline-filter="meeting" data-action="select-history-timeline-filter" aria-pressed="false">Meeting</button><button class="history-timeline-filter" type="button" data-filter="steps" data-history-timeline-filter="steps" data-action="select-history-timeline-filter" aria-pressed="false">Lépések</button><span class="history-filter-icon" aria-hidden="true"><svg class="icon"><use href="#icon-filter"/></svg></span></div>
-        <section class="history-clean-card" aria-label="Jelenlegi tiszta időszak"><span class="history-clean-flame" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M13.7 2.6c.8 3.8-1.7 5.1-2.7 7.1-.6-1-1-2.1-.8-3.3-3 2.3-5.2 5.1-5.2 8.3a7 7 0 0 0 14 0c0-3.1-1.9-6.8-5.3-12.1Z"/><path d="M12.2 12c1.7 1.3 2.4 2.7 2.4 4a2.8 2.8 0 0 1-5.6 0c0-1.3.9-2.7 3.2-4Z"/></svg></span><span class="history-clean-copy"><strong>24 nap tiszta</strong><small>Az utolsó esemény óta</small></span><svg class="history-clean-spark" viewBox="0 0 72 36" aria-hidden="true"><path d="M1 29c12 3 13-18 26-12 8 4 10 11 18 7 10-5 12-23 26-18"/></svg><span class="history-clean-chevron" aria-hidden="true">›</span></section>
         <div class="history-detail-panel-slot">
           <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong>Február 2025</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list">
             <button class="history-detail-event" type="button" data-action="open-timeline-event-detail" aria-label="Újrakezdtem esemény részletei"><time class="history-event-date">febr. 3.<small>H</small></time><span class="history-event-node"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span class="history-event-card"><h3>Újrakezdtem</h3><time>09:15</time><p>Ma újra elköteleztem magam.</p></span></button>
@@ -824,7 +836,7 @@
             </div>
           </section>
         </div>
-        <section class="history-number-summary" aria-labelledby="timeline-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid"><article class="history-number-card" data-timeline-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article><article class="history-number-card" data-timeline-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article><article class="history-number-card" data-timeline-stat="evening-reflection"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>19</strong><span>esti reflexió</span></article><article class="history-number-card" data-timeline-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8</strong><span>átlagos hangulat</span></article><article class="history-number-card" data-timeline-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></span><strong>82%</strong><span>check-in arány</span></article></div></section>
+        <section class="history-number-summary" aria-labelledby="timeline-number-title"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p><button class="history-metrics-toggle" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="timeline-metrics-toggle" aria-label="Idővonalam számokban kibontása" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="history-number-grid"><article class="history-number-card" data-timeline-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article><article class="history-number-card" data-timeline-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article><article class="history-number-card" data-timeline-stat="evening-reflection"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>19</strong><span>esti reflexió</span></article><article class="history-number-card" data-timeline-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8</strong><span>átlagos hangulat</span></article><article class="history-number-card" data-timeline-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></span><strong>82%</strong><span>check-in arány</span></article></div></section>
       </main>
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
@@ -1027,11 +1039,23 @@
           this.fullscreenButton = root.querySelector('[data-action="toggle-fullscreen"]');
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
-          this.historyScreen = root.querySelector('[data-component="sobriety-batch-history"]');
-          this.historyHeroImage = root.querySelector('[data-component="history-hero-image"]');
-          this.historyHeroVariantToggle = root.querySelector('[data-component="history-hero-variant-toggle"]');
-          this.historyMetricsToggle = root.querySelector('[data-component="history-metrics-toggle"]');
           this.historyDetailScreen = root.querySelector('[data-component="current-period-detail"]');
+          this.historyPresentationElements = {
+            history: {
+              screen: root.querySelector('[data-component="sobriety-batch-history"]'),
+              heroImage: root.querySelector('[data-component="history-hero-image"]'),
+              heroToggle: root.querySelector('[data-component="history-hero-variant-toggle"]'),
+              metricsToggle: root.querySelector('[data-component="history-metrics-toggle"]'),
+              labels: { compact: 'Kompakt Történetem nézet', large: 'Nagy Történetem nézet', expand: 'Utam számokban kibontása', collapse: 'Utam számokban összecsukása' }
+            },
+            timeline: {
+              screen: this.historyDetailScreen,
+              heroImage: root.querySelector('[data-component="timeline-hero-image"]'),
+              heroToggle: root.querySelector('[data-component="timeline-hero-variant-toggle"]'),
+              metricsToggle: root.querySelector('[data-component="timeline-metrics-toggle"]'),
+              labels: { compact: 'Kompakt idővonal nézet', large: 'Nagy idővonal nézet', expand: 'Idővonalam számokban kibontása', collapse: 'Idővonalam számokban összecsukása' }
+            }
+          };
           this.survivalContent = root.querySelector('[data-component="survival-content"]');
           this.meetingSearchNote = root.querySelector('[data-component="meeting-search-note"]');
           this.initializationScreen = root.querySelector('[data-component="initialization-flow"]');
@@ -1042,8 +1066,7 @@
             sheet: { progress: 0, settled: 'collapsed' },
             path: createPathState(),
             historyDetailView: 'timeline',
-            historyHeroVariant: 'large',
-            historyMetricsExpanded: false,
+            historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false } },
             historyTimelineFilter: 'all',
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
@@ -1062,7 +1085,8 @@
           this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           this.bind();
           this.render();
-          this.renderHistoryLayout();
+          this.renderHistoryPresentation('history');
+          this.renderHistoryPresentation('timeline');
           this.updateFullscreenButton();
           this.syncMainNavigation();
         }
@@ -1088,8 +1112,8 @@
             case 'open-current-period-timeline': this.navigate('timeline'); break;
             case 'open-milestones': this.navigate('milestones'); break;
             case 'open-history': this.navigate('history'); break;
-            case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(); break;
-            case 'toggle-history-metrics': this.toggleHistoryMetrics(); break;
+            case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
+            case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'open-panic': this.navigate('panic'); break;
             case 'open-panic-why': this.navigate('panic-why'); break;
             case 'open-panic-relapse': this.navigate('panic-relapse'); break;
@@ -1156,29 +1180,34 @@
         }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
-        toggleHistoryHeroVariant() {
-          const compact = this.state.historyHeroVariant !== 'compact';
-          this.state.historyHeroVariant = compact ? 'compact' : 'large';
-          this.renderHistoryLayout();
+        getHistoryPresentation(surface = 'history') { return this.state.historyPresentation[surface] || this.state.historyPresentation.history; }
+        toggleHistoryHeroVariant(surface = 'history') {
+          const presentation = this.getHistoryPresentation(surface);
+          presentation.heroVariant = presentation.heroVariant === 'compact' ? 'large' : 'compact';
+          this.renderHistoryPresentation(surface);
         }
-        toggleHistoryMetrics() {
-          this.state.historyMetricsExpanded = !this.state.historyMetricsExpanded;
-          this.renderHistoryLayout();
+        toggleHistoryMetrics(surface = 'history') {
+          const presentation = this.getHistoryPresentation(surface);
+          presentation.metricsExpanded = !presentation.metricsExpanded;
+          this.renderHistoryPresentation(surface);
         }
-        renderHistoryLayout() {
-          if (!this.historyScreen) return;
-          const compact = this.state.historyHeroVariant === 'compact';
-          const expanded = this.state.historyMetricsExpanded;
-          this.historyScreen.dataset.historyHeroVariant = compact ? 'compact' : 'large';
-          this.historyScreen.dataset.historyMetricsExpanded = String(expanded);
-          if (this.historyHeroImage) this.historyHeroImage.setAttribute('src', compact ? 'assets/hero/hero_s.png' : 'assets/hero/hero_m.png');
-          if (this.historyHeroVariantToggle) {
-            this.historyHeroVariantToggle.setAttribute('aria-pressed', String(compact));
-            this.historyHeroVariantToggle.setAttribute('aria-label', compact ? 'Nagy Történetem nézet' : 'Kompakt Történetem nézet');
+        renderHistoryLayout() { this.renderHistoryPresentation('history'); }
+        renderHistoryPresentation(surface) {
+          const presentation = this.getHistoryPresentation(surface);
+          const elements = this.historyPresentationElements[surface] || this.historyPresentationElements.history;
+          if (!elements || !elements.screen) return;
+          const compact = presentation.heroVariant === 'compact';
+          const expanded = presentation.metricsExpanded;
+          elements.screen.dataset.historyHeroVariant = compact ? 'compact' : 'large';
+          elements.screen.dataset.historyMetricsExpanded = String(expanded);
+          if (elements.heroImage) elements.heroImage.setAttribute('src', compact ? 'assets/hero/hero_s.png' : 'assets/hero/hero_m.png');
+          if (elements.heroToggle) {
+            elements.heroToggle.setAttribute('aria-pressed', String(compact));
+            elements.heroToggle.setAttribute('aria-label', compact ? elements.labels.large : elements.labels.compact);
           }
-          if (this.historyMetricsToggle) {
-            this.historyMetricsToggle.setAttribute('aria-expanded', String(expanded));
-            this.historyMetricsToggle.setAttribute('aria-label', expanded ? 'Utam számokban összecsukása' : 'Utam számokban kibontása');
+          if (elements.metricsToggle) {
+            elements.metricsToggle.setAttribute('aria-expanded', String(expanded));
+            elements.metricsToggle.setAttribute('aria-label', expanded ? elements.labels.collapse : elements.labels.expand);
           }
         }
         openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }
@@ -1242,6 +1271,7 @@
           this.historyDetailScreen.querySelectorAll('[data-component="history-detail-back"]').forEach((back) => { back.dataset.action = railActive ? 'open-history-calendar-grid' : 'open-history'; back.setAttribute('aria-label', railActive ? 'Vissza a naptárhoz' : 'Vissza a Történetemhez'); });
           this.historyDetailScreen.querySelectorAll('[data-component="history-detail-top-action"]').forEach((action) => { action.textContent = railActive ? '•••' : '+'; action.setAttribute('aria-label', railActive ? 'További lehetőségek' : 'Új esemény hozzáadása'); });
           if (railActive) this.renderHistoryCalendarRail();
+          if (view === 'timeline') this.renderHistoryPresentation('timeline');
         }
         selectHistoryTimelineFilter(filter) { this.state.historyTimelineFilter = ['all', 'milestone', 'meeting', 'steps'].includes(filter) ? filter : 'all'; this.renderHistoryDetail(); }
         openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.navigate('meetings'); }

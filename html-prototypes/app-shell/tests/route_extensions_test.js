@@ -47,6 +47,11 @@ const historyScreen = makeElement();
 const historyHeroImage = makeElement();
 const historyHeroVariantToggle = makeElement('toggle-history-hero-variant');
 const historyMetricsToggle = makeElement('toggle-history-metrics');
+const timelineHeroImage = makeElement();
+const timelineHeroVariantToggle = makeElement('toggle-history-hero-variant');
+timelineHeroVariantToggle.dataset.historyPresentationSurface = 'timeline';
+const timelineMetricsToggle = makeElement('toggle-history-metrics');
+timelineMetricsToggle.dataset.historyPresentationSurface = 'timeline';
 historyDetailScreen.querySelectorAll = (selector) => ({
   '[data-history-detail-tab]': [historyTimelineTab, historyCalendarTab],
   '[data-component="history-detail-title"]': [historyDetailTitle],
@@ -78,6 +83,9 @@ root.querySelector = (selector) => ({
   '[data-component="history-hero-image"]': historyHeroImage,
   '[data-component="history-hero-variant-toggle"]': historyHeroVariantToggle,
   '[data-component="history-metrics-toggle"]': historyMetricsToggle,
+  '[data-component="timeline-hero-image"]': timelineHeroImage,
+  '[data-component="timeline-hero-variant-toggle"]': timelineHeroVariantToggle,
+  '[data-component="timeline-metrics-toggle"]': timelineMetricsToggle,
   '[data-component="survival-content"]': survivalContent,
   '[data-component="meeting-search-note"]': meetingSearchNote,
   '[data-component="initialization-flow"]': initializationScreen,
@@ -103,6 +111,18 @@ controller.openHistoryDetail('timeline');
 assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'timeline', 'a current-period card must open the source-right Idővonal submenu');
 assert.equal(historyTimelineTab.getAttribute('aria-pressed'), 'true', 'timeline tab must expose selected state');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Timeline must begin in the same established large-hero mode');
+assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'false', 'Timeline must begin with its lower insight strip collapsed');
+assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/hero_m.png', 'Timeline large mode must use the supplied local History hero');
+controller.toggleHistoryHeroVariant('timeline');
+assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Timeline push-push control must enter its compact variant');
+assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/hero_s.png', 'Timeline compact mode must use the supplied local compact hero');
+assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'Timeline hero changes must not alter the History hero state');
+controller.toggleHistoryMetrics('timeline');
+assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'true', 'Timeline insight row must expand through the shared presentation owner');
+assert.equal(timelineMetricsToggle.getAttribute('aria-expanded'), 'true', 'Timeline insight toggle must expose expanded state');
+controller.toggleHistoryHeroVariant('timeline');
+controller.toggleHistoryMetrics('timeline');
 controller.openHistoryDetail('calendar');
 assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
 assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
@@ -186,17 +206,18 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
   "case 'open-history-calendar-rail': this.openHistoryCalendarRail(event.target.closest('[data-history-calendar-date]')?.dataset.historyCalendarDate); break;",
   "case 'open-history-calendar-grid': this.openHistoryCalendarGrid(); break;",
-  "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(); break;",
-  "case 'toggle-history-metrics': this.toggleHistoryMetrics(); break;",
+  "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
+  "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
   "case 'select-history-timeline-filter': this.selectHistoryTimelineFilter(event.target.closest('[data-history-timeline-filter]')?.dataset.historyTimelineFilter); break;",
   "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
-  'toggleHistoryHeroVariant() {',
-  'toggleHistoryMetrics() {',
+  "toggleHistoryHeroVariant(surface = 'history') {",
+  "toggleHistoryMetrics(surface = 'history') {",
   'renderHistoryLayout() {',
+  'renderHistoryPresentation(surface) {',
   'const HISTORY_CALENDAR_DAY_EVENTS = Object.freeze({',
   'renderHistoryCalendarRail() {',
   "case 'open-panic-why': this.navigate('panic-why'); break;",

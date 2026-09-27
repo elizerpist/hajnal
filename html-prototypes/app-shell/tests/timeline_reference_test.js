@@ -35,8 +35,10 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
   'Mérföldkő',
   'Meeting',
   'Lépések',
+  'class="timeline-period-hero"',
+  'data-component="timeline-hero-image"',
+  'data-history-presentation-surface="timeline"',
   '24 nap tiszta',
-  'Az utolsó esemény óta',
   'Február 2025',
   'Újrakezdtem',
   'Irodalom',
@@ -48,9 +50,13 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
 ].forEach((expected) => assert.ok(historyDetail.includes(expected), `source-right timeline is missing ${expected}`));
 assert.equal((historyDetail.match(/data-history-detail-tab=/g) || []).length, 2, 'the current period has exactly Idővonal and Naptár tabs');
 assert.ok(!historyDetail.includes('Statisztikák'), 'the current-period source-right view must not expose a Statisztikák tab or heading');
-assert.ok(!timelinePanel.includes('timelinehero.png'), 'the current-period source-right timeline panel must not include a top hero');
+assert.ok(historyDetail.includes('src="assets/hero/hero_m.png"'), 'the Timeline must initially bind the established large History hero');
+assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
+assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
 assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 5, 'every rendered timeline event must be a semantic event-detail trigger');
-assert.ok(html.includes('.history-detail-content { position: absolute; top: 84px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid;'), 'the source header/tab rhythm and Idővonalam számokban must be fixed by a single detail grid');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { top: 224px;'), 'the large Timeline hero must overlap a higher-value body card');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
+assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');
 assert.ok(html.includes('.history-detail-events-scroll { min-height: 0; overflow-y: auto;'), 'only the event list may scroll inside the source-right timeline view');
 
 [
@@ -79,9 +85,14 @@ assert.ok(html.includes('.app-frame[data-route="timeline-event-detail"] .timelin
 [
   "case 'open-history-detail': this.openHistoryDetail('timeline'); break;",
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
+  "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
+  "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history-detail'); break;",
-  "openHistoryDetail(view = 'timeline') { this.state.historyDetailView = view === 'calendar' ? 'calendar' : 'timeline'; if (this.state.historyDetailView === 'calendar') { this.state.historyCalendarView = 'grid'; this.state.historyCalendarDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE; } this.navigate('history-detail'); }",
+  "historyPresentation: { history: { heroVariant: 'large', metricsExpanded: false }, timeline: { heroVariant: 'large', metricsExpanded: false } }",
+  'toggleHistoryHeroVariant(surface = \'history\') {',
+  'toggleHistoryMetrics(surface = \'history\') {',
+  'renderHistoryPresentation(surface) {',
   "['history', 'history-detail', 'timeline-event-detail'].includes(this.state.route)",
 ].forEach((expected) => assert.ok(html.includes(expected), `the sole controller must own ${expected}`));
 assert.ok(!/\bfetch\s*\(/.test(html), 'the timeline source implementation must remain fully local/offline');
