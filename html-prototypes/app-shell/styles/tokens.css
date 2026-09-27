@@ -1,0 +1,13 @@
+:root {
+  --screen-w: 412px;
+  --screen-h: 892px;
+  --bottom-safe-area: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-h: calc(70px + var(--bottom-safe-area));
+  --hajnal-navy: #2c2e77;
+  --hajnal-purple: #6a56b4;
+  --hajnal-lavender: #b89ad7;
+  --hajnal-pink: #e04d86;
+  --white: #fff;
+  --hairline: rgba(106, 86, 180, .13);
+  --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif;
+}
