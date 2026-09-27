@@ -69,6 +69,7 @@
     .help-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--radius-button); background: linear-gradient(160deg, #FF78A8, #E04D86); color: var(--white); box-shadow: 0 18px 38px rgba(239, 85, 145, .26); font-size: 13px; font-weight: 840; cursor: pointer; }
 
     .bottom-nav, .route-bottom-nav { height: var(--bottom-nav-h); position: absolute; z-index: 40; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: 70px var(--bottom-safe-area); align-content: start; border-top: 1px solid var(--hairline); background: #FFFCFC; color: var(--hajnal-navy); }
+    .bottom-nav[hidden], .route-bottom-nav[hidden] { display: none !important; }
     .bottom-nav button, .route-bottom-nav button { height: 70px; display: grid; place-items: center; align-content: center; gap: 4px; padding: 5px 2px 7px; border: 0; background: transparent; color: rgba(44, 46, 119, .46); font-size: 9px; font-weight: 750; cursor: pointer; }
     .bottom-nav button[aria-current="page"], .route-bottom-nav button[aria-current="page"] { color: var(--hajnal-purple); }
     .bottom-nav .icon, .route-bottom-nav .icon { width: 21px; height: 21px; }
@@ -743,7 +744,7 @@
     </section>
     <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
 
-    <section class="route-screen timeline-screen" id="home-statistics-timeline" data-screen="home-statistics-timeline" data-component="current-period-timeline" aria-labelledby="timeline-screen-title">
+    <section class="route-screen timeline-screen" id="home-statistics-timeline" data-route="timeline" data-screen="home-statistics-timeline" data-component="current-period-timeline" aria-labelledby="timeline-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="timeline-screen-title">Timeline</h1><p>Az aktuális tiszta időszakom</p></div></header>
       <main class="route-content" aria-label="Az aktuális tiszta időszak eseményei">
@@ -766,7 +767,7 @@
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
-    <section class="route-screen milestone-screen" id="progress-milestones" data-screen="progress-milestones" data-component="milestone-gallery" aria-labelledby="milestone-screen-title">
+    <section class="route-screen milestone-screen" id="progress-milestones" data-route="milestones" data-screen="progress-milestones" data-component="milestone-gallery" aria-labelledby="milestone-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="milestone-screen-title">Mérföldkövek</h1><p>9 kapu a 90 napos úton.</p></div></header>
       <main class="route-content" aria-label="Mérföldkő képgaléria"><p class="milestone-intro">Minden tiszta nap egy újabb lépés<br>önmagad felé.</p><section class="milestone-grid" aria-label="Mérföldkövek">
@@ -793,7 +794,7 @@
       <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><span></span><span></span><span></span></div>
       <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
-    <section class="route-screen history-screen" id="home-statistics" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-screen-title">
+    <section class="route-screen history-screen" id="home-statistics" data-route="history" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-screen-title">
       <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/hero_m.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-component="history-hero-variant-toggle" aria-label="Kompakt Történetem nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="history-content" aria-label="Józan időszakaim">
@@ -821,7 +822,7 @@
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
-    <section class="route-screen history-detail-screen" id="history-detail" data-screen="history-detail" data-component="current-period-detail" data-history-detail-view="timeline" data-history-calendar-view="grid" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-detail-title">
+    <section class="route-screen history-detail-screen" id="history-detail" data-route="history-detail" data-screen="history-detail" data-component="current-period-detail" data-history-detail-view="timeline" data-history-calendar-view="grid" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-detail-title">
       <section class="calendar-period-hero" aria-label="A naptár hero">
         <img class="calendar-period-hero-image" data-component="calendar-hero-image" src="assets/hero/hero_m.png" alt="">
         <div class="history-hero-copy"><h1>Történetem</h1><p>Naptár</p><strong class="calendar-period-clean-copy">24 nap tiszta</strong></div>
@@ -873,7 +874,7 @@
       <nav class="route-bottom-nav" aria-label="Fő navigáció"><button type="button" data-action="return-home"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
-    <section class="route-screen timeline-event-detail-screen" id="timeline-event-detail" data-screen="timeline-event-detail" aria-labelledby="timeline-event-detail-title">
+    <section class="route-screen timeline-event-detail-screen" id="timeline-event-detail" data-route="timeline-event-detail" data-screen="timeline-event-detail" aria-labelledby="timeline-event-detail-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-to-history-detail" aria-label="Vissza az idővonalhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="timeline-event-detail-title">Esemény részletei</h1></div><button class="icon-button timeline-event-detail-more" type="button" aria-label="További lehetőségek">•••</button></header>
       <main class="timeline-event-detail-content" aria-label="Elindultam esemény részletei">
@@ -886,7 +887,7 @@
       </main>
     </section>
 
-    <section class="route-screen meetings-screen" id="meetings" data-screen="meetings" data-component="meeting-finder" aria-labelledby="meetings-title">
+    <section class="route-screen meetings-screen" id="meetings" data-route="meetings" data-screen="meetings" data-component="meeting-finder" aria-labelledby="meetings-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-from-meetings" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="meetings-title">Következő meeting</h1><p>Találj közeli vagy online gyűlést.</p></div><span></span></header>
       <main class="meetings-content" aria-label="Következő gyűlések"><section class="meeting-list"><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span><strong>Ma 18:30 · Belvárosi csoport</strong><small>Közösségi ház · nyitott meeting</small></span><span class="meeting-distance">1.2 km</span></article><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg></span><span><strong>Ma 20:00 · Online gyűlés</strong><small>Zoom link hozzáadva</small></span><span class="meeting-distance">online</span></article><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span><strong>Holnap 07:30 · Reggeli kör</strong><small>Csendes, rövid gyűlés</small></span><span class="meeting-distance">3.4 km</span></article></section><button class="meeting-search-button" type="button" data-action="show-meeting-search-note">Meeting keresése</button><p class="meeting-search-note" data-component="meeting-search-note" role="status" hidden>A térképes kereső a következő prototípus-körben nyílik meg.</p></main>
@@ -904,7 +905,7 @@
       <main class="hurray-content"><section class="hurray-copy" aria-label="Sikeres nap visszajelzés"><h1 id="hurray-screen-title">Megcsináltad!</h1><strong>25. nap</strong><p>Folytasd így holnap is!</p></section><section class="reflection-choice-sheet" aria-label="Esti reflexió választás"><span class="sheet-handle" aria-hidden="true"></span><span class="sheet-moon-badge" aria-hidden="true">☾</span><h2>Szeretnél pár percet szánni<br>az esti reflexióra?</h2><p>Segít lezárni a napot<br>és tisztábban látni holnap.</p><div class="sheet-actions"><button class="sheet-primary" type="button">Most, 2 percet rászánok</button><button class="sheet-secondary" type="button" data-action="return-home">Később</button></div></section></main>
     </section>
 
-    <section class="route-screen panic-screen" id="panic-root" data-screen="panic-root" data-component="panic-mode" aria-labelledby="panic-screen-title">
+    <section class="route-screen panic-screen" id="panic-root" data-route="panic" data-screen="panic-root" data-component="panic-mode" aria-labelledby="panic-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="panic-screen-title">Pánik mód</h1><p>Egy érintés, de nincs automatikus hívás.</p></div><button class="icon-button" type="button" data-action="return-home" aria-label="Bezárás">×</button></header>
       <main class="panic-content"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók">
@@ -918,24 +919,24 @@
       <nav class="route-bottom-nav" data-component="panic-bottom-navigation" aria-label="Fő navigáció"><button type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
     </section>
 
-    <section class="route-screen panic-why-screen" id="panic-why-started" data-screen="panic-why-started" data-component="panic-why-started" aria-labelledby="panic-why-title">
+    <section class="route-screen panic-why-screen" id="panic-why-started" data-route="panic-why" data-screen="panic-why-started" data-component="panic-why-started" aria-labelledby="panic-why-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="panic-child-header"><button class="icon-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div><h1 id="panic-why-title">Miért kezdtem el?</h1><p>Emlékeztető a saját szavaiddal.</p></div><span></span></header>
       <main class="panic-child-content"><section class="panic-soft-card"><blockquote class="motivation-quote" data-component="panic-motivation-copy">„Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.”</blockquote><p>Ez a személyes motivációd az inicializálási flow-ban szerkeszthető, és itt ugyanaz a szöveg jelenik meg.</p></section><section class="panic-soft-card"><strong>Fontos emberek</strong><p>Kata · Anya · a keddi meeting csoport</p></section><button class="path-primary-button" type="button" data-action="open-initialization-why">Saját emlékeztető szerkesztése</button></main>
     </section>
 
-    <section class="route-screen relapse-screen source-relapse-screen" id="checkin-relapse" data-screen="checkin-relapse" data-component="relapse-state" aria-labelledby="relapse-title">
+    <section class="route-screen relapse-screen source-relapse-screen" id="checkin-relapse" data-route="panic-relapse" data-screen="checkin-relapse" data-component="relapse-state" aria-labelledby="relapse-title">
       <img class="source-relapse-background" src="assets/milestones/milestone-60.svg" alt="" loading="eager">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="source-relapse-content"><div class="source-relapse-top-actions"><button class="source-relapse-back-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><span aria-hidden="true"></span><span aria-hidden="true"></span></div><section class="source-relapse-copy" aria-label="Visszaesés utáni visszajelzés"><h3 id="relapse-title">Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3></section><div class="source-relapse-bottom-actions"><button class="source-relapse-action primary" type="button" data-action="return-home">Újrakezdem</button><button class="source-relapse-action outline" type="button" data-action="open-panic">Segítséget kérek</button></div></main>
     </section>
 
-    <section class="route-screen survival-screen" id="panic-survival" data-screen="panic-survival" data-component="survival-pack" aria-labelledby="survival-title">
+    <section class="route-screen survival-screen" id="panic-survival" data-route="survival" data-screen="panic-survival" data-component="survival-pack" aria-labelledby="survival-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="panic-child-content" data-component="survival-content" aria-live="polite"></main>
     </section>
 
-    <section class="route-screen panic-contacts-screen" id="panic-contacts" data-screen="panic-contacts" data-component="panic-contacts" aria-labelledby="panic-contacts-title">
+    <section class="route-screen panic-contacts-screen" id="panic-contacts" data-route="panic-contacts" data-screen="panic-contacts" data-component="panic-contacts" aria-labelledby="panic-contacts-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="panic-child-header"><button class="icon-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div><h1 id="panic-contacts-title">Hívj fel valakit</h1><p>Nyisd le, akit most elérsz.</p></div><span></span></header>
       <main class="panic-child-content"><details class="contact-details" open><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button><button type="button" data-action="open-panic">Gyors üzenet kiválasztása</button></div></details><details class="contact-details"><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span><strong>Anya</strong><small>Tartalék kapcsolattartó<br>+36 30 987 6543</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button></div></details></main>
@@ -1069,6 +1070,8 @@
           this.summary = root.querySelector('[data-component="daily-summary-card"]');
           this.expandHotspot = root.querySelector('[data-action="expand-home-card"]');
           this.fullscreenButton = root.querySelector('[data-action="toggle-fullscreen"]');
+          this.mainNavigation = root.querySelector('[data-component="bottom-navigation"]');
+          this.routeNavigations = Array.from(root.querySelectorAll('.route-bottom-nav'));
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
           this.historyDetailScreen = root.querySelector('[data-component="current-period-detail"]');
@@ -1432,6 +1435,14 @@
           this.syncMainNavigation();
         }
         syncMainNavigation() {
+          const isHome = this.state.route === 'home';
+          if (this.mainNavigation) this.mainNavigation.hidden = !isHome;
+          this.routeNavigations.forEach((nav) => {
+            const owner = nav.closest?.('.route-screen');
+            const ownerRoute = owner?.dataset.route || owner?.id;
+            const pathFocus = owner?.classList.contains('path-focus');
+            nav.hidden = !(!isHome && ownerRoute === this.state.route && !pathFocus);
+          });
           const action = this.state.route === 'path' ? 'open-path' : ['history', 'history-detail', 'timeline-event-detail'].includes(this.state.route) ? 'open-history' : this.state.route === 'meetings' ? 'open-meetings' : 'return-home';
           this.root.querySelectorAll("button[data-action='return-home'], button[data-action='open-history'], button[data-action='open-path'], button[data-action='open-meetings']").forEach((button) => {
             if (button.dataset.action === action) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
