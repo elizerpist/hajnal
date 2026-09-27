@@ -44,7 +44,7 @@ function expectAbsent(pattern, message) {
   'data-screen-state="8a-collapsed"',
   '8b-expanded',
   'class="home-illustration"',
-  '<img class="home-hero-image" src="assets/home-hero.svg"',
+  '<img class="home-hero-image" src="assets/backgrounds/index1.png"',
   'data-component="daily-summary-card"',
   'data-component="checklist-sheet"',
   'class="bottom-nav"',
