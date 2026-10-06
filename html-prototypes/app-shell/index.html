@@ -7,7 +7,7 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
+    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --screen-background: #F9F3F7; --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
     html { color-scheme: light; }
     body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -15,7 +15,7 @@
     button { color: inherit; }
     button:focus-visible, .home-metrics:focus-visible, input:focus-visible + .task-check { outline: 3px solid rgba(106, 86, 180, .62); outline-offset: 3px; }
     .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
-    .app-frame { width: var(--screen-w); height: var(--screen-h); position: relative; isolation: isolate; overflow: hidden; border-radius: 34px; color: var(--white); background: #F9F3F7; box-shadow: 0 24px 64px rgba(44, 46, 119, .18); }
+    .app-frame { width: var(--screen-w); height: var(--screen-h); position: relative; isolation: isolate; overflow: hidden; border-radius: 34px; color: var(--white); background: var(--screen-background); box-shadow: 0 24px 64px rgba(44, 46, 119, .18); }
 
     .home-illustration { width: 100%; height: calc(var(--screen-h) - var(--bottom-nav-h)); position: absolute; inset: 0 0 auto 0; z-index: 1; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .home-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
@@ -75,7 +75,7 @@
     .bottom-nav .icon { width: 21px; height: 21px; }
 
     .route-screen { display: none; position: absolute; z-index: 80; inset: 0; overflow: hidden; background: linear-gradient(155deg, #FFFDFE 0%, #FDF7FB 55%, #F8F0F6 100%); color: var(--hajnal-navy); }
-    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen, .app-frame[data-route="history"] .history-screen, .app-frame[data-route="history-detail"] .history-detail-screen, .app-frame[data-route="timeline-event-detail"] .timeline-event-detail-screen, .app-frame[data-route="panic"] .panic-screen, .app-frame[data-route="panic-why"] .panic-why-screen, .app-frame[data-route="panic-relapse"] .relapse-screen, .app-frame[data-route="survival"] .survival-screen, .app-frame[data-route="panic-contacts"] .panic-contacts-screen, .app-frame[data-route="meetings"] .meetings-screen, .app-frame[data-route="initialization"] .initialization-screen, .app-frame[data-route="daily-image"] .daily-image-screen, .app-frame[data-route="clean-reward"] .hurray-screen { display: block; }
+    .app-frame[data-route="timeline"] .timeline-screen, .app-frame[data-route="milestones"] .milestone-screen, .app-frame[data-route="history"] .history-screen, .app-frame[data-route="history-detail"] .history-detail-screen, .app-frame[data-route="timeline-event-detail"] .timeline-event-detail-screen, .app-frame[data-route="panic"] .panic-screen, .app-frame[data-route="panic-why"] .panic-why-screen, .app-frame[data-route="panic-relapse"] .relapse-screen, .app-frame[data-route="survival"] .survival-screen, .app-frame[data-route="panic-contacts"] .panic-contacts-screen, .app-frame[data-route="meetings"] .meetings-screen, .app-frame[data-route="meeting-detail"] .meeting-detail-screen, .app-frame[data-route="meeting-editor"] .meeting-editor-screen, .app-frame[data-route="sponsor"] .sponsor-screen, .app-frame[data-route="sponsor-details"] .sponsor-details-screen, .app-frame[data-route="sponsor-takeaways"] .sponsor-takeaways-screen, .app-frame[data-route="sponsor-takeaway-editor"] .sponsor-takeaway-editor-screen, .app-frame[data-route="initialization"] .initialization-screen, .app-frame[data-route="daily-image"] .daily-image-screen, .app-frame[data-route="clean-reward"] .hurray-screen { display: block; }
     .route-screen .status-bar { color: var(--hajnal-navy); text-shadow: none; }
     .route-screen .system-icons { color: var(--hajnal-navy); }
     .screen-header { min-height: 76px; position: relative; z-index: 3; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: start; padding: 12px 18px 8px; }
@@ -85,6 +85,281 @@
     .screen-header-copy p { margin: 4px 0 0; color: rgba(44, 46, 119, .56); font-size: 11.5px; font-weight: 650; }
     .route-content { position: absolute; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 0 18px 24px; scrollbar-width: none; }
     .route-content::-webkit-scrollbar { display: none; }
+
+    /* Sponsor main menu — source of truth: /storage/emulated/0/hajnal/source of truth/sponsor2.png */
+    .sponsor-screen { background: var(--screen-background); color: #07132C; }
+    .sponsor-screen .status-bar { color: #07132C; text-shadow: none; }
+    .sponsor-main-header { height: 63px; display: flex; align-items: center; justify-content: space-between; padding: 4px 20px 9px; }
+    .sponsor-main-header h1 { margin: 0; color: #07132C; font-size: 32px; line-height: 1; font-weight: 850; letter-spacing: -.05em; }
+    .sponsor-content { position: absolute; top: 95px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; align-content: start; gap: 10px; overflow-y: auto; padding: 6px 18px 8px; scrollbar-width: none; }
+    .sponsor-content::-webkit-scrollbar { display: none; }
+    .sponsor-profile-card, .sponsor-next-card, .sponsor-list-card, .sponsor-action { border: 1px solid rgba(44, 46, 119, .045); background: #FEFBFA; box-shadow: 0 8px 18px rgba(44, 46, 119, .065); }
+    .sponsor-profile-card { width: 100%; min-height: 108px; display: flex; align-items: center; gap: 18px; padding: 15px 18px 15px 15px; border-radius: 23px; color: inherit; font: inherit; text-align: left; cursor: pointer; text-decoration: none; }
+    .sponsor-profile-card:active, .sponsor-action:active, .sponsor-next-card:active { opacity: .82; transform: scale(.99); }
+    .sponsor-profile-card:focus-visible, .sponsor-action:focus-visible, .sponsor-next-card:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 3px; }
+    .sponsor-avatar { width: 79px; height: 79px; display: block; flex: 0 0 79px; border-radius: 50%; object-fit: cover; object-position: center; }
+    .sponsor-profile-copy { min-width: 0; display: grid; gap: 3px; padding-bottom: 1px; }
+    .sponsor-profile-copy strong { color: #07132C; font-size: 25px; line-height: 1.05; font-weight: 830; letter-spacing: -.04em; }
+    .sponsor-profile-copy span { color: #69728A; font-size: 16px; line-height: 1.23; font-weight: 560; letter-spacing: -.025em; }
+    .sponsor-profile-chevron { margin-left: auto; color: rgba(44, 46, 119, .54); font-size: 32px; line-height: 1; font-weight: 360; }
+    .sponsor-action-grid { min-height: 104px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .sponsor-action { min-width: 0; min-height: 104px; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 9px 4px 10px; border-radius: 21px; color: #07132C; cursor: pointer; }
+    .sponsor-action-icon, .sponsor-next-icon { display: grid; place-items: center; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); }
+    .sponsor-action-icon { width: 52px; height: 52px; }
+    .sponsor-action-icon .icon { width: 29px; height: 29px; stroke-width: 2.25; }
+    .sponsor-action-label { min-height: 27px; display: grid; place-items: start center; color: #07132C; font-size: 14px; line-height: 1.18; font-weight: 735; letter-spacing: -.03em; text-align: center; }
+    .sponsor-next-card { width: 100%; min-height: 90px; display: grid; grid-template-columns: 54px minmax(0, 1fr) 22px; align-items: center; gap: 13px; padding: 13px 20px 13px 14px; border-radius: 22px; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
+    .sponsor-next-icon { width: 52px; height: 52px; }
+    .sponsor-next-icon .icon { width: 29px; height: 29px; stroke-width: 2.15; }
+    .sponsor-next-copy { min-width: 0; display: grid; gap: 2px; }
+    .sponsor-next-copy strong, .sponsor-list-heading h2 { color: #07132C; font-size: 19px; line-height: 1.1; font-weight: 810; letter-spacing: -.045em; }
+    .sponsor-next-copy span { color: var(--hajnal-purple); font-size: 16px; line-height: 1.2; font-weight: 700; letter-spacing: -.025em; }
+    .sponsor-next-copy small { color: #1A2740; font-size: 12.5px; line-height: 1.26; font-weight: 540; letter-spacing: -.025em; }
+    .sponsor-chevron { color: #49546A; font-size: 36px; line-height: .7; font-weight: 350; text-align: right; }
+    .sponsor-list-card { overflow: hidden; padding: 14px 14px 10px; border-radius: 22px; }
+    .sponsor-list-heading { min-height: 31px; display: flex; align-items: start; justify-content: space-between; gap: 12px; padding: 0 0 6px; border-bottom: 1px solid rgba(44, 46, 119, .075); }
+    .sponsor-list-heading h2 { margin: 0; }
+    .sponsor-list-heading button { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 28px; margin: -4px -4px 0 0; padding: 0; border: 0; background: transparent; color: var(--hajnal-purple); font-size: 31px; line-height: 1; font-weight: 360; cursor: pointer; }
+    .sponsor-list-action-arrow { margin-top: -2px !important; font-size: 31px !important; font-weight: 350 !important; }
+    .sponsor-check-list { margin: 0; padding: 0; list-style: none; }
+    .sponsor-check-list li { min-height: 35px; display: flex; align-items: center; border-bottom: 1px solid rgba(44, 46, 119, .075); }
+    .sponsor-check-list li:last-child { border-bottom: 0; }
+    .sponsor-check-list label { min-width: 0; display: flex; align-items: center; gap: 16px; color: #18243D; font-size: 14px; line-height: 1.2; font-weight: 520; letter-spacing: -.025em; cursor: pointer; }
+    .sponsor-checkbox { width: 18px; height: 18px; flex: 0 0 18px; margin: 0 0 0 3px; appearance: none; border: 1.5px solid #788190; border-radius: 4px; background: transparent; }
+    .sponsor-checkbox:checked { border-color: var(--hajnal-purple); background: var(--hajnal-purple); box-shadow: inset 0 0 0 4px #FEFBFA; }
+    .sponsor-pending-card { padding-bottom: 11px; }
+    .sponsor-pending-card .sponsor-list-heading { min-height: 34px; }
+    .sponsor-pending-scroll { height: 105px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
+    .sponsor-pending-scroll::-webkit-scrollbar { width: 4px; }
+    .sponsor-pending-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(106, 86, 180, .28); }
+    .sponsor-pending-row { min-height: 35px; display: flex; align-items: center; gap: 16px; padding: 0 2px; border-bottom: 1px solid rgba(44, 46, 119, .075); color: #18243D; font-size: 14px; line-height: 1.2; font-weight: 520; letter-spacing: -.025em; cursor: pointer; transition: opacity 180ms ease, transform 180ms ease; }
+    .sponsor-pending-row:last-child { border-bottom: 0; }
+    .sponsor-pending-row:active { opacity: .74; }
+    .sponsor-pending-row:focus-within { color: var(--hajnal-purple); }
+    .sponsor-pending-row .sponsor-checkbox { pointer-events: none; }
+    .sponsor-pending-inline-input { width: 100%; min-width: 0; padding: 2px 0; border: 0; outline: 0; background: transparent; color: #18243D; font: inherit; font-size: 14px; line-height: 1.2; font-weight: 560; }
+    .sponsor-pending-inline-input::placeholder { color: #8C93A5; opacity: 1; }
+    .sponsor-pending-inline-row { cursor: text; }
+    .sponsor-pending-add:focus-visible, .sponsor-pending-row:focus-visible, .sponsor-pending-inline-input:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
+
+    /* Sponsor next conversation — one two-step bottom sheet, no separate route. */
+    .sponsor-next-sheet-host, .sponsor-message-sheet-host, .sponsor-availability-sheet-host, .meeting-picker-sheet-host { position: absolute; z-index: 500; inset: 0; pointer-events: auto; isolation: isolate; overscroll-behavior: contain; touch-action: none; }
+    .sponsor-next-sheet-backdrop, .sponsor-message-sheet-backdrop, .sponsor-availability-sheet-backdrop, .meeting-picker-sheet-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(19, 24, 47, .30); opacity: 0; transition: opacity 220ms ease-out; cursor: default; }
+    .sponsor-next-sheet, .sponsor-message-sheet, .sponsor-availability-sheet, .meeting-picker-sheet { position: absolute; right: 0; bottom: 0; left: 0; max-height: calc(100% - 22px); overflow-y: auto; border-radius: 30px 30px 0 0; background: #FEFBFA; box-shadow: 0 -16px 38px rgba(31, 28, 70, .20); color: #07132C; transform: translateY(104%); transition: transform 250ms cubic-bezier(.2, .8, .2, 1); overscroll-behavior: contain; touch-action: pan-y; }
+    .sponsor-next-sheet-host[data-sheet-state="open"] .sponsor-next-sheet-backdrop, .sponsor-message-sheet-host[data-sheet-state="open"] .sponsor-message-sheet-backdrop, .sponsor-availability-sheet-host[data-sheet-state="open"] .sponsor-availability-sheet-backdrop, .meeting-picker-sheet-host[data-sheet-state="open"] .meeting-picker-sheet-backdrop { opacity: 1; }
+    .sponsor-next-sheet-host[data-sheet-state="open"] .sponsor-next-sheet, .sponsor-message-sheet-host[data-sheet-state="open"] .sponsor-message-sheet, .sponsor-availability-sheet-host[data-sheet-state="open"] .sponsor-availability-sheet, .meeting-picker-sheet-host[data-sheet-state="open"] .meeting-picker-sheet { transform: translateY(0); }
+    .sponsor-next-sheet-handle, .sponsor-message-sheet-handle, .sponsor-availability-sheet-handle { width: 38px; height: 4px; display: block; margin: 10px auto 7px; border-radius: 999px; background: #C9C3D6; }
+    .sponsor-next-sheet-header { min-height: 45px; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; padding: 0 14px; }
+    .sponsor-next-sheet-header h2 { margin: 0; color: #07132C; font-size: 19px; line-height: 1.1; font-weight: 830; letter-spacing: -.04em; text-align: center; }
+    .sponsor-next-sheet-close, .sponsor-next-step-back { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #49546A; cursor: pointer; }
+    .sponsor-next-sheet-close { font-size: 28px; font-weight: 350; line-height: 1; }
+    .sponsor-next-step-back .icon { width: 25px; height: 25px; stroke-width: 2.2; }
+    .sponsor-next-sheet-content { padding: 0 20px calc(18px + env(safe-area-inset-bottom)); }
+    .sponsor-next-sheet-step { animation: sponsor-next-step-in 180ms ease-out both; }
+    .sponsor-next-sheet-step h3 { margin: 5px 0 6px; color: #07132C; font-size: 22px; line-height: 1.12; font-weight: 840; letter-spacing: -.045em; }
+    .sponsor-next-sheet-intro { margin: 0 0 15px; color: #737C92; font-size: 14px; line-height: 1.35; font-weight: 540; }
+    .sponsor-next-calendar { overflow: hidden; border: 1px solid rgba(44, 46, 119, .08); border-radius: 20px; background: #FFFCFD; }
+    .sponsor-next-month-switch { min-height: 52px; display: grid; grid-template-columns: 42px minmax(0, 1fr) 42px; align-items: center; padding: 5px 9px; border-bottom: 1px solid rgba(44, 46, 119, .075); }
+    .sponsor-next-month-switch strong { color: #07132C; font-size: 16px; line-height: 1.1; font-weight: 790; letter-spacing: -.025em; text-align: center; }
+    .sponsor-next-month-switch button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #F4F0F8; color: var(--hajnal-purple); cursor: pointer; }
+    .sponsor-next-month-switch .icon { width: 21px; height: 21px; stroke-width: 2.25; }
+    .sponsor-next-month-switch button:last-child .icon { transform: rotate(180deg); }
+    .sponsor-next-weekdays, .sponsor-next-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .sponsor-next-weekdays { padding: 12px 8px 4px; color: #8A91A3; font-size: 10px; line-height: 1; font-weight: 760; text-align: center; }
+    .sponsor-next-calendar-grid { gap: 2px; padding: 3px 8px 12px; }
+    .sponsor-next-day-spacer { min-height: 37px; }
+    .sponsor-next-day { min-height: 37px; display: grid; place-items: center; padding: 0; border: 2px solid transparent; border-radius: 50%; background: transparent; color: #1A2740; font: inherit; font-size: 13px; font-weight: 650; cursor: pointer; }
+    .sponsor-next-day.is-today { border-color: rgba(106, 86, 180, .34); color: var(--hajnal-purple); }
+    .sponsor-next-day.is-selected { border-color: var(--hajnal-purple); background: var(--hajnal-purple); color: var(--white); box-shadow: 0 6px 12px rgba(74, 55, 150, .22); }
+    .sponsor-next-day:disabled { border-color: transparent; background: transparent; color: #7E8491; opacity: .36; cursor: default; }
+    .sponsor-next-sheet-footer { display: grid; gap: 9px; margin-top: 16px; }
+    .sponsor-next-primary { width: 100%; min-height: 54px; border: 0; border-radius: 17px; background: var(--hajnal-purple); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .19); font: inherit; font-size: 16px; font-weight: 790; cursor: pointer; }
+    .sponsor-next-primary:disabled { background: #D9D3E5; box-shadow: none; color: #F9F7FB; cursor: default; }
+    .sponsor-next-clear { min-height: 34px; padding: 3px 8px; border: 0; background: transparent; color: #756A95; font: inherit; font-size: 13px; font-weight: 680; cursor: pointer; }
+    .sponsor-next-time-date { margin: 0 0 18px; color: var(--hajnal-purple); font-size: 14px; line-height: 1.25; font-weight: 700; text-align: center; }
+    .sponsor-next-time-picker { min-height: 155px; display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; padding: 10px 28px; border: 1px solid rgba(44, 46, 119, .08); border-radius: 20px; background: #FFFCFD; }
+    .sponsor-next-time-column { display: grid; gap: 2px; }
+    .sponsor-next-time-option { min-height: 40px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: #8A91A3; font: inherit; font-size: 21px; line-height: 1; font-weight: 650; cursor: pointer; }
+    .sponsor-next-time-option.is-selected { background: #EEE8FA; color: var(--hajnal-purple); font-size: 27px; font-weight: 830; box-shadow: inset 0 0 0 1px rgba(106, 86, 180, .10); }
+    .sponsor-next-time-separator { color: var(--hajnal-purple); font-size: 30px; font-weight: 800; text-align: center; }
+    .sponsor-next-slot-picker { min-height: 0; max-height: 214px; display: block; overflow-y: auto; padding: 10px; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
+    .sponsor-next-time-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+    .sponsor-next-slot-picker .sponsor-next-time-option { min-height: 38px; border-radius: 11px; font-size: 14px; }
+    .sponsor-next-slot-picker .sponsor-next-time-option.is-selected { font-size: 15px; }
+    .sponsor-next-slot-picker .sponsor-next-time-option:disabled { background: transparent; color: #8F95A3; opacity: .36; cursor: default; }
+    .sponsor-next-sheet button:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+    @keyframes sponsor-next-step-in { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+    @media (prefers-reduced-motion: reduce) { .sponsor-next-sheet-backdrop, .sponsor-next-sheet, .sponsor-message-sheet-backdrop, .sponsor-message-sheet, .sponsor-availability-sheet-backdrop, .sponsor-availability-sheet { transition: none; } .sponsor-next-sheet-step { animation: none; } }
+
+    /* Sponsor quick SMS — content only; overlay mechanics are shared with the next-conversation sheet. */
+    .sponsor-message-sheet { min-height: 400px; }
+    .sponsor-message-sheet-handle { width: 44px; height: 5px; margin: 11px auto 20px; }
+    .sponsor-message-sheet-content { padding: 0 24px calc(11px + env(safe-area-inset-bottom)); text-align: center; }
+    .sponsor-message-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); }
+    .sponsor-message-icon .icon { width: 37px; height: 37px; stroke-width: 2.2; }
+    .sponsor-message-sheet h2 { max-width: 85%; margin: 18px auto 0; color: #07132C; font-size: 22px; line-height: 1.17; font-weight: 820; letter-spacing: -.04em; }
+    .sponsor-message-sheet-copy { max-width: 82%; margin: 10px auto 0; color: #707992; font-size: 14.5px; line-height: 1.4; font-weight: 520; }
+    .sponsor-message-field { width: 100%; min-height: 72px; display: block; margin: 18px 0 0; padding: 13px 15px; border: 1px solid rgba(74, 55, 150, .15); border-radius: 17px; outline: 0; background: #FCF9FA; color: #18243D; font: inherit; font-size: 15px; line-height: 1.4; font-weight: 520; resize: none; }
+    .sponsor-message-field:focus { border-color: rgba(106, 86, 180, .62); box-shadow: 0 0 0 3px rgba(106, 86, 180, .10); }
+    .sponsor-message-open { width: 100%; min-height: 55px; display: grid; place-items: center; margin-top: 13px; border: 0; border-radius: 16px; background: var(--hajnal-purple); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .19); font: inherit; font-size: 16px; font-weight: 760; text-decoration: none; cursor: pointer; }
+    .sponsor-message-cancel { min-height: 40px; margin: 2px auto 0; padding: 0 14px; border: 0; background: transparent; color: #706C83; font: inherit; font-size: 14px; font-weight: 680; cursor: pointer; }
+    .sponsor-message-phone-warning { margin: 10px 0 -4px; color: #8A5570; font-size: 13px; line-height: 1.3; font-weight: 640; }
+    .sponsor-message-open:active, .sponsor-message-cancel:active { opacity: .82; transform: scale(.99); }
+    .sponsor-message-open:focus-visible, .sponsor-message-cancel:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+
+    /* Sponsor availability — one weekly availability draft, used by the next-conversation picker. */
+    .sponsor-availability-sheet { height: min(72vh, 650px); }
+    .sponsor-availability-sheet-handle { width: 44px; height: 5px; margin: 11px auto 21px; }
+    .sponsor-availability-sheet-content { height: calc(100% - 37px); display: flex; flex-direction: column; padding: 0 24px calc(12px + env(safe-area-inset-bottom)); }
+    .sponsor-availability-sheet h2 { margin: 0; color: #07132C; font-size: 23px; line-height: 1.14; font-weight: 830; letter-spacing: -.045em; }
+    .sponsor-availability-sheet-intro { margin: 8px 0 16px; color: #707992; font-size: 14px; line-height: 1.4; font-weight: 520; }
+    .sponsor-availability-anytime { min-height: 55px; display: grid; grid-template-columns: minmax(0, 1fr) 48px; align-items: center; gap: 10px; padding: 0 13px; border: 1px solid rgba(44, 46, 119, .08); border-radius: 16px; background: #FCF9FA; }
+    .sponsor-availability-anytime strong { display: block; color: #18243D; font-size: 15px; line-height: 1.15; font-weight: 730; letter-spacing: -.02em; }
+    .sponsor-availability-anytime small { display: block; margin-top: 3px; color: #7A8398; font-size: 11.5px; line-height: 1.15; font-weight: 560; }
+    .sponsor-availability-toggle { width: 42px; height: 25px; justify-self: end; position: relative; padding: 0; border: 0; border-radius: 999px; background: #C7C3D0; color: transparent; cursor: pointer; transition: background 160ms ease; }
+    .sponsor-availability-toggle::after { content: ""; width: 19px; height: 19px; position: absolute; top: 3px; left: 3px; border-radius: 50%; background: var(--white); box-shadow: 0 2px 5px rgba(32, 28, 62, .18); transition: transform 160ms ease; }
+    .sponsor-availability-toggle[aria-pressed="true"] { background: var(--hajnal-purple); }
+    .sponsor-availability-toggle[aria-pressed="true"]::after { transform: translateX(17px); }
+    .sponsor-availability-days { min-height: 0; display: grid; gap: 3px; overflow-y: auto; margin-top: 13px; padding-right: 2px; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
+    .sponsor-availability-day { min-height: 56px; display: grid; grid-template-columns: 72px minmax(0, 1fr) 42px; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid rgba(44, 46, 119, .065); }
+    .sponsor-availability-day:last-child { border-bottom: 0; }
+    .sponsor-availability-day > strong { color: #18243D; font-size: 15px; line-height: 1.15; font-weight: 700; }
+    .sponsor-availability-time-group { min-width: 0; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .sponsor-availability-time { width: 76px; height: 38px; min-width: 0; padding: 0 8px; border: 1px solid rgba(74, 55, 150, .12); border-radius: 12px; outline: 0; background: #F5F1F8; color: #34277E; font: inherit; font-size: 14px; font-weight: 680; }
+    .sponsor-availability-time:focus { border-color: rgba(106, 86, 180, .62); box-shadow: 0 0 0 3px rgba(106, 86, 180, .10); }
+    .sponsor-availability-time-separator { color: #8991A3; font-size: 15px; font-weight: 700; }
+    .sponsor-availability-unavailable { color: #9298A7; font-size: 14px; line-height: 1.2; font-weight: 580; }
+    .sponsor-availability-day.is-disabled > strong { color: #8D93A1; }
+    .sponsor-availability-day.is-disabled .sponsor-availability-toggle { opacity: .72; }
+    .sponsor-availability-validation { grid-column: 1 / -1; margin: -2px 0 3px 80px; color: #A25070; font-size: 11px; line-height: 1.2; font-weight: 650; }
+    .sponsor-availability-footer { position: sticky; bottom: 0; display: grid; gap: 8px; margin: 12px -24px 0; padding: 14px 24px 0; background: #FEFBFA; box-shadow: 0 -9px 16px rgba(254, 251, 250, .92); }
+    .sponsor-availability-done { width: 100%; min-height: 55px; border: 0; border-radius: 16px; background: var(--hajnal-purple); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .19); font: inherit; font-size: 16px; font-weight: 780; cursor: pointer; }
+    .sponsor-availability-done:disabled { background: #D9D3E5; box-shadow: none; color: #F9F7FB; cursor: default; }
+    .sponsor-availability-sheet button:focus-visible, .sponsor-availability-time:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+
+    /* Sponsor details — source of truth: /storage/emulated/0/hajnal/source of truth/sponsor3.png */
+    .sponsor-details-screen { background: var(--screen-background); color: #07132C; }
+    .sponsor-details-screen .status-bar { color: #07132C; text-shadow: none; }
+    .sponsor-detail-header { height: 62px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 0 18px 5px; }
+    .sponsor-detail-header h1 { margin: 0; color: #07132C; font-size: 23px; line-height: 1; font-weight: 840; letter-spacing: -.045em; text-align: center; }
+    .sponsor-detail-header button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #07132C; cursor: pointer; }
+    .sponsor-detail-header .icon { width: 28px; height: 28px; stroke-width: 2.2; }
+    .sponsor-more-button { justify-self: end; font-size: 31px; line-height: .55; font-weight: 800; letter-spacing: 1px; }
+    .sponsor-detail-content { position: absolute; top: 90px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 0 18px 16px; color: #07132C; scrollbar-width: none; }
+    .sponsor-detail-content::-webkit-scrollbar { display: none; }
+    .sponsor-detail-avatar-stage { height: 132px; display: grid; place-items: start center; position: relative; padding-top: 4px; }
+    .sponsor-detail-avatar-wrap { width: 113px; height: 113px; position: relative; }
+    .sponsor-detail-avatar { width: 113px; height: 113px; display: block; border-radius: 50%; object-fit: cover; object-position: center; }
+    .sponsor-avatar-edit { width: 39px; height: 39px; position: absolute; right: -2px; bottom: -1px; display: grid; place-items: center; padding: 0; border: 3px solid var(--screen-background); border-radius: 50%; background: var(--hajnal-purple); color: var(--white); box-shadow: 0 6px 13px rgba(74, 55, 150, .20); cursor: pointer; }
+    .sponsor-avatar-edit .icon { width: 20px; height: 20px; stroke-width: 2.25; }
+    .sponsor-detail-card { overflow: hidden; border: 1px solid rgba(44, 46, 119, .035); border-radius: 22px; background: #FEFBFA; box-shadow: 0 9px 20px rgba(44, 46, 119, .055); }
+    .sponsor-detail-field, .sponsor-detail-static-row { min-height: 67px; display: grid; grid-template-columns: minmax(0, 1fr) 48px; align-items: center; gap: 10px; margin: 0 18px; border-bottom: 1px solid rgba(44, 46, 119, .08); }
+    .sponsor-detail-field label, .sponsor-detail-static-row span { display: block; color: #707992; font-size: 15px; line-height: 1.15; font-weight: 590; }
+    .sponsor-detail-field input { width: 100%; min-width: 0; margin-top: 6px; padding: 0; border: 0; outline: 0; background: transparent; color: #07132C; font: inherit; font-size: 20px; line-height: 1.15; font-weight: 790; letter-spacing: -.035em; }
+    .sponsor-detail-field input:focus { color: var(--hajnal-purple); }
+    .sponsor-detail-phone-action, .sponsor-detail-date-action { width: 44px; height: 44px; display: grid; place-items: center; justify-self: end; padding: 0; border: 0; border-radius: 50%; background: #F4F0F5; color: #07132C; cursor: pointer; text-decoration: none; }
+    .sponsor-detail-phone-action .icon, .sponsor-detail-date-action .icon { width: 25px; height: 25px; stroke-width: 2.15; }
+    .sponsor-detail-availability-row { min-height: 98px; display: grid; grid-template-columns: minmax(0, 1fr) 48px; align-items: center; gap: 10px; margin: 0 18px; border-bottom: 1px solid rgba(44, 46, 119, .08); }
+    .sponsor-detail-availability-action { width: 100%; min-height: 98px; grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) 48px; align-items: center; gap: 10px; padding: 0; border: 0; background: transparent; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
+    .sponsor-detail-availability-copy { min-width: 0; display: grid; gap: 5px; }
+    .sponsor-detail-availability-copy > span { color: #707992; font-size: 15px; line-height: 1.15; font-weight: 590; }
+    .sponsor-detail-availability-copy strong { color: #07132C; font-size: 18px; line-height: 1.12; font-weight: 780; letter-spacing: -.03em; }
+    .sponsor-detail-availability-copy small { color: #7A8398; font-size: 14px; line-height: 1.1; font-weight: 570; }
+    .sponsor-detail-availability-copy small:empty { display: none; }
+    .sponsor-detail-availability-copy strong.is-empty { color: #7A8398; font-size: 16px; font-weight: 570; }
+    .sponsor-availability-icon { width: 44px; height: 44px; display: grid; place-items: center; justify-self: end; border-radius: 50%; background: #F4F0F5; color: var(--hajnal-purple); }
+    .sponsor-availability-icon .icon { width: 25px; height: 25px; stroke-width: 2.15; }
+    .sponsor-detail-availability-action:active { opacity: .82; }
+    .sponsor-detail-availability-action:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+    .sponsor-detail-date-action { grid-column: 1 / -1; width: 100%; height: 67px; grid-template-columns: minmax(0, 1fr) 48px; border-radius: 0; background: transparent; color: inherit; font: inherit; text-align: left; }
+    .sponsor-detail-date-action > span { display: grid; gap: 6px; }
+    .sponsor-detail-date-action strong { display: block; color: #07132C; font-size: 20px; line-height: 1.15; font-weight: 790; letter-spacing: -.035em; }
+    .sponsor-detail-date-action .sponsor-date-icon { width: 44px; height: 44px; display: grid; place-items: center; justify-self: end; border-radius: 50%; background: #F4F0F5; }
+    .sponsor-detail-contact-action { min-height: 62px; display: grid; grid-template-columns: 43px minmax(0, 1fr) 22px; align-items: center; gap: 12px; width: 100%; padding: 8px 18px; border: 0; background: transparent; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
+    .sponsor-detail-contact-symbol { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 50%; background: #F4F0F5; }
+    .sponsor-detail-contact-symbol .icon { width: 25px; height: 25px; stroke-width: 2.1; }
+    .sponsor-detail-contact-action strong { font-size: 15px; line-height: 1.2; font-weight: 690; letter-spacing: -.025em; }
+    .sponsor-detail-contact-chevron, .sponsor-detail-quote-chevron { color: #7D72A8; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; }
+    .sponsor-native-date { width: 1px; height: 1px; position: absolute; overflow: hidden; opacity: 0; pointer-events: none; }
+    .sponsor-detail-quote { min-height: 84px; display: grid; grid-template-columns: 51px minmax(0, 1fr) 22px; align-items: center; gap: 9px; margin-top: 16px; padding: 11px 16px; border-radius: 21px; background: #EEE8FA; color: #342477; }
+    .sponsor-detail-quote .quote-icon { width: 40px; height: 40px; display: grid; place-items: center; color: var(--hajnal-purple); }
+    .sponsor-detail-quote .quote-icon .icon { width: 33px; height: 33px; stroke-width: 1.75; }
+    .sponsor-detail-quote p { margin: 0; font-size: 14px; line-height: 1.28; font-weight: 560; letter-spacing: -.03em; }
+    .sponsor-detail-notes { margin: 18px -18px 0; padding: 14px 24px 0; border-top: 1px solid rgba(44, 46, 119, .10); }
+    .sponsor-detail-notes label { display: block; color: #07132C; font-size: 18px; line-height: 1.1; font-weight: 810; letter-spacing: -.035em; }
+    .sponsor-detail-notes label span { color: #788096; font-weight: 520; }
+    .sponsor-detail-notes textarea { width: 100%; height: 76px; display: block; margin-top: 12px; padding: 12px 14px; border: 1px solid rgba(44, 46, 119, .11); border-radius: 16px; outline: 0; background: #FCF9FA; color: #07132C; font: inherit; font-size: 14px; line-height: 1.35; resize: none; }
+    .sponsor-detail-notes textarea::placeholder { color: #9299AA; opacity: 1; }
+    .sponsor-detail-notes textarea:focus { border-color: rgba(106, 86, 180, .48); box-shadow: 0 0 0 3px rgba(106, 86, 180, .11); }
+    .sponsor-save-button { width: 100%; min-height: 56px; margin-top: 18px; border: 0; border-radius: 17px; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .20); font: inherit; font-size: 17px; font-weight: 790; cursor: pointer; }
+    .sponsor-save-button:active { opacity: .86; transform: scale(.99); }
+    .sponsor-detail-header button:focus-visible, .sponsor-avatar-edit:focus-visible, .sponsor-detail-phone-action:focus-visible, .sponsor-detail-date-action:focus-visible, .sponsor-detail-contact-action:focus-visible, .sponsor-save-button:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+
+    /* Sponsor takeaways — source of truth: /storage/emulated/0/hajnal/source of truth/sponsor4.png */
+    .sponsor-takeaway-preview { padding: 11px 14px 8px; }
+    .sponsor-takeaway-preview .sponsor-list-heading { min-height: 30px; align-items: center; padding-bottom: 2px; border-bottom: 0; }
+    .sponsor-takeaway-preview .sponsor-list-heading h2 { font-size: 18px; }
+    .sponsor-takeaway-heading-actions { display: inline-flex; align-items: center; gap: 8px; margin: -2px -5px 0 0; }
+    .sponsor-takeaway-count { min-width: 27px; height: 27px; display: grid; place-items: center; padding: 0 7px; border-radius: 999px; background: var(--hajnal-purple); color: var(--white); font-size: 13px; line-height: 1; font-weight: 800; }
+    .sponsor-takeaway-open { width: 32px !important; height: 32px !important; margin: 0 !important; color: var(--hajnal-purple) !important; font-size: 28px !important; }
+    .sponsor-takeaway-preview-list { display: grid; gap: 1px; margin-top: 3px; }
+    .sponsor-takeaway-preview-row { width: 100%; min-height: 34px; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 9px; padding: 1px 0; border: 0; background: transparent; color: #18243D; font: inherit; font-size: 14px; line-height: 1.2; font-weight: 570; text-align: left; cursor: pointer; }
+    .sponsor-takeaway-preview-row:focus-visible, .sponsor-takeaway-open:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
+    .sponsor-takeaway-preview-row:active { opacity: .76; }
+    .takeaway-icon { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 11px; background: #F1ECFA; color: var(--hajnal-purple); }
+    .takeaway-icon .icon { width: 20px; height: 20px; stroke-width: 2; }
+    .sponsor-takeaway-empty { min-height: 42px; display: grid; align-items: center; color: #747D94; font-size: 14px; font-weight: 560; }
+
+    .sponsor-takeaways-screen, .sponsor-takeaway-editor-screen { background: var(--screen-background); color: #07132C; }
+    .sponsor-takeaways-screen .status-bar, .sponsor-takeaway-editor-screen .status-bar { color: #07132C; text-shadow: none; }
+    .sponsor-takeaway-header { height: 62px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 0 18px 5px; }
+    .sponsor-takeaway-header h1 { margin: 0; color: #07132C; font-size: 17px; line-height: 1.08; font-weight: 830; letter-spacing: -.045em; text-align: center; }
+    .sponsor-takeaway-header button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #07132C; cursor: pointer; }
+    .sponsor-takeaway-header .icon { width: 26px; height: 26px; stroke-width: 2.2; }
+    .sponsor-takeaway-more { justify-self: end; font-size: 27px; line-height: .55; font-weight: 800; letter-spacing: 1px; }
+    .sponsor-takeaway-list-content { position: absolute; top: 94px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 12px 18px 23px; scrollbar-width: none; }
+    .sponsor-takeaway-list-content::-webkit-scrollbar { display: none; }
+    .sponsor-takeaway-info { min-height: 79px; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 12px; padding: 13px 15px; border-radius: 15px; background: #EEE8FA; color: #36267C; }
+    .sponsor-takeaway-info .icon { width: 31px; height: 31px; color: var(--hajnal-purple); stroke-width: 1.9; }
+    .sponsor-takeaway-info p { margin: 0; font-size: 11.5px; line-height: 1.34; font-weight: 580; letter-spacing: -.02em; }
+    .sponsor-takeaway-list { overflow: hidden; margin-top: 16px; border: 1px solid rgba(44, 46, 119, .04); border-radius: 17px; background: #FEFBFA; box-shadow: 0 8px 18px rgba(44, 46, 119, .045); }
+    .sponsor-takeaway-list-row { min-height: 55px; display: grid; grid-template-columns: minmax(0, 1fr) 43px; align-items: stretch; margin: 0 13px; border-bottom: 1px solid rgba(44, 46, 119, .075); }
+    .sponsor-takeaway-list-row:last-child { border-bottom: 0; }
+    .sponsor-takeaway-edit-row { min-width: 0; display: grid; grid-template-columns: 37px minmax(0, 1fr); align-items: center; gap: 9px; padding: 6px 0; border: 0; background: transparent; color: #13203A; font: inherit; font-size: 14px; line-height: 1.2; font-weight: 590; text-align: left; cursor: pointer; }
+    .sponsor-takeaway-edit-row:focus-visible, .sponsor-takeaway-add:focus-visible, .takeaway-icon-choice:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
+    .takeaway-drag-handle { width: 43px; height: 55px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: #A9AED0; cursor: grab; touch-action: none; }
+    .takeaway-drag-handle:active { cursor: grabbing; color: var(--hajnal-purple); }
+    .takeaway-drag-handle .icon { width: 22px; height: 22px; stroke-width: 2.2; }
+    .sponsor-takeaway-add { width: 100%; min-height: 47px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; border: 0; border-radius: 14px; background: #EEE8FA; color: var(--hajnal-purple); font: inherit; font-size: 14px; font-weight: 770; cursor: pointer; }
+    .sponsor-takeaway-add span { font-size: 26px; line-height: .7; font-weight: 380; }
+    .sponsor-takeaway-quote { min-height: 101px; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 12px; margin-top: 35px; padding: 16px 17px; border-radius: 18px; background: #EEE8FA; color: #332377; }
+    .sponsor-takeaway-quote > span { color: var(--hajnal-purple); font-family: Georgia, serif; font-size: 44px; line-height: .8; font-weight: 700; }
+    .sponsor-takeaway-quote p { margin: 0; font-size: 13px; line-height: 1.38; font-weight: 560; }
+    .sponsor-takeaway-quote small { display: block; margin-top: 5px; color: #8377AD; font-size: 11px; font-weight: 620; }
+
+    .sponsor-takeaway-editor-content { position: absolute; top: 94px; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; overflow-y: auto; padding: 16px 18px 23px; scrollbar-width: none; }
+    .sponsor-takeaway-editor-content::-webkit-scrollbar { display: none; }
+    /* The pending-topic path reuses the timeline event-detail hero verbatim. */
+    .sponsor-pending-editor-hero { flex: 0 0 164px; height: 164px; margin-bottom: 34px; }
+    .sponsor-takeaway-editor-form { padding: 13px 14px 15px; border: 1px solid rgba(44, 46, 119, .045); border-radius: 17px; background: #FEFBFA; box-shadow: 0 8px 18px rgba(44, 46, 119, .045); }
+    .takeaway-editor-label { display: block; color: #12203D; font-size: 13px; line-height: 1.2; font-weight: 770; }
+    .takeaway-editor-label span { color: #778096; font-weight: 530; }
+    .takeaway-title-input { width: 100%; height: 42px; display: block; margin-top: 9px; padding: 8px 11px; border: 1px solid rgba(44, 46, 119, .16); border-radius: 10px; outline: 0; background: #FFFEFE; color: #12203D; font: inherit; font-size: 14px; font-weight: 580; }
+    .takeaway-title-input::placeholder, .takeaway-note-input::placeholder { color: #9AA0B0; opacity: 1; }
+    .takeaway-title-input:focus, .takeaway-note-input:focus { border-color: rgba(106, 86, 180, .52); box-shadow: 0 0 0 3px rgba(106, 86, 180, .11); }
+    .takeaway-icon-label { margin-top: 20px; }
+    .takeaway-icon-selector { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .takeaway-icon-choice { min-height: 43px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 11px; background: #F4F1F6; color: #16233D; cursor: pointer; }
+    .takeaway-icon-choice .icon { width: 25px; height: 25px; stroke-width: 2.1; }
+    .takeaway-icon-choice[aria-pressed="true"] { background: #E5DAF8; color: var(--hajnal-purple); }
+    .takeaway-note-label { margin-top: 25px; }
+    .takeaway-note-input { width: 100%; height: 105px; display: block; margin-top: 10px; padding: 12px; border: 1px solid rgba(44, 46, 119, .15); border-radius: 11px; outline: 0; background: #FFFEFE; color: #12203D; font: inherit; font-size: 13px; line-height: 1.32; resize: none; }
+    .takeaway-editor-save { width: 100%; min-height: 52px; margin-top: auto; border: 0; border-radius: 14px; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 11px 21px rgba(74, 55, 150, .20); font: inherit; font-size: 16px; font-weight: 760; cursor: pointer; }
+    .takeaway-editor-overflow { position: relative; }
+    .takeaway-delete-menu { position: absolute; z-index: 4; top: 46px; right: 14px; min-width: 112px; padding: 7px; border: 1px solid rgba(44, 46, 119, .10); border-radius: 12px; background: #FFFCFD; box-shadow: 0 10px 24px rgba(44, 46, 119, .14); }
+    .takeaway-delete-menu[hidden] { display: none; }
+    .takeaway-delete-menu button { width: 100%; min-height: 34px; padding: 6px 9px; border: 0; border-radius: 8px; background: transparent; color: #B03D61; font: inherit; font-size: 12px; font-weight: 720; text-align: left; cursor: pointer; }
+    .sponsor-takeaway-editor-screen[data-editor-mode="create"] .takeaway-editor-overflow { visibility: hidden; }
 
     .timeline-header-row { display: grid; grid-template-columns: minmax(0, 1fr) 52px; align-items: start; gap: 14px; padding: 4px 0 15px; }
     .timeline-heading h2 { margin: 0; font-size: 25px; line-height: 1.08; font-weight: 880; letter-spacing: -.035em; }
@@ -561,6 +836,124 @@
     .meeting-distance { padding: 4px 7px; border-radius: 999px; background: #EEE8FA; color: var(--hajnal-purple); font-size: 9.5px; font-weight: 820; white-space: nowrap; }
     .meeting-search-button { width: 100%; min-height: 47px; margin-top: 16px; border: 0; border-radius: var(--radius-button); background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); font: inherit; font-size: 13px; font-weight: 840; box-shadow: 0 12px 22px rgba(74,55,150,.20); cursor: pointer; }
     .meeting-search-note { margin: 10px 2px 0; color: rgba(44,46,119,.62); font-size: 11px; line-height: 1.38; font-weight: 680; text-align: center; }
+
+    /* Meetings — calendar for planning, and a distinct attendance history. */
+    .meetings-screen, .meeting-detail-screen, .meeting-editor-screen { background: var(--screen-background); color: #07132C; }
+    .meetings-main-header { height: 71px; display: flex; align-items: center; justify-content: space-between; padding: 5px 20px 10px; }
+    .meetings-main-header h1 { margin: 0; color: #07132C; font-size: 32px; line-height: 1; font-weight: 850; letter-spacing: -.05em; }
+    .meetings-add-button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); font: inherit; font-size: 30px; line-height: 1; font-weight: 400; cursor: pointer; }
+    .meetings-add-button:active, .meeting-card:active, .meeting-past-card:active { opacity: .82; transform: scale(.99); }
+    .meetings-main-content { position: absolute; top: 101px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 6px 18px 26px; scrollbar-width: none; }
+    .meetings-main-content::-webkit-scrollbar, .meeting-detail-content::-webkit-scrollbar, .meeting-editor-content::-webkit-scrollbar { display: none; }
+    .meetings-segmented { min-height: 50px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 4px; padding: 4px; border-radius: 18px; background: rgba(106,86,180,.09); }
+    .meetings-segmented button { min-width: 0; min-height: 42px; border: 0; border-radius: 14px; background: transparent; color: #74718A; font: inherit; font-size: 13px; font-weight: 730; cursor: pointer; }
+    .meetings-segmented button[aria-pressed="true"] { background: #FEFBFA; color: var(--hajnal-purple); box-shadow: 0 4px 10px rgba(44,46,119,.06); }
+    .meetings-calendar-card, .meeting-card, .meeting-past-card, .meeting-context-card, .meeting-form-card { border: 1px solid rgba(44,46,119,.045); border-radius: 24px; background: #FEFBFA; box-shadow: 0 8px 18px rgba(44,46,119,.06); }
+    .meetings-calendar-card { margin-top: 14px; padding: 12px 12px 14px; }
+    .meeting-calendar-month { min-height: 44px; display: grid; grid-template-columns: 42px minmax(0,1fr) 42px; align-items: center; }
+    .meeting-calendar-month strong { color: #07132C; font-size: 17px; line-height: 1.1; font-weight: 820; text-align: center; }
+    .meeting-calendar-month button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #F2EDF8; color: var(--hajnal-purple); cursor: pointer; }
+    .meeting-calendar-month button:last-child .icon { transform: rotate(180deg); }
+    .meeting-calendar-weekdays, .meeting-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); }
+    .meeting-calendar-weekdays { padding: 10px 0 5px; color: #8C91A0; font-size: 10px; font-weight: 760; text-align: center; }
+    .meeting-calendar-grid { gap: 3px; }
+    .meeting-calendar-spacer { min-height: 42px; }
+    .meeting-calendar-day { min-height: 42px; position: relative; display: grid; place-items: center; padding: 0 0 4px; border: 2px solid transparent; border-radius: 50%; background: transparent; color: #1A2740; font: inherit; font-size: 13px; font-weight: 690; cursor: pointer; }
+    .meeting-calendar-day.has-meeting::after { content: ""; width: 4px; height: 4px; position: absolute; bottom: 4px; border-radius: 50%; background: var(--hajnal-purple); }
+    .meeting-calendar-day.is-planned { border-color: rgba(106,86,180,.42); }
+    .meeting-calendar-day.is-today:not(.is-selected) { border-color: rgba(106,86,180,.27); color: var(--hajnal-purple); }
+    .meeting-calendar-day.is-selected { border-color: var(--hajnal-purple); background: var(--hajnal-purple); color: #fff; box-shadow: 0 6px 13px rgba(74,55,150,.18); }
+    .meeting-calendar-day.is-selected::after { background: #fff; }
+    .meetings-day-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 20px 2px 10px; }
+    .meetings-day-heading h2 { margin: 0; color: #07132C; font-size: 20px; line-height: 1.15; font-weight: 830; letter-spacing: -.035em; }
+    .meetings-count-badge { padding: 6px 9px; border-radius: 999px; background: #EEE8FA; color: var(--hajnal-purple); font-size: 11px; font-weight: 790; white-space: nowrap; }
+    .meetings-day-list, .meetings-past-list { display: grid; gap: 10px; }
+    .meeting-card { width: 100%; display: grid; grid-template-columns: minmax(0,1fr); gap: 10px; padding: 15px; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
+    .meeting-card-main { width: 100%; min-width: 0; display: grid; grid-template-columns: 50px minmax(0,1fr); gap: 12px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .meeting-card-time { color: var(--hajnal-purple); font-size: 13px; line-height: 1.15; font-weight: 820; }
+    .meeting-card-time small { display: block; margin-top: 5px; color: #8A91A3; font-size: 10px; font-weight: 680; }
+    .meeting-card-copy { min-width: 0; }
+    .meeting-card-copy h3, .meeting-past-copy h3 { margin: 0; color: #07132C; font-size: 16px; line-height: 1.17; font-weight: 820; letter-spacing: -.025em; }
+    .meeting-card-copy p, .meeting-past-copy p { margin: 4px 0 0; color: #657087; font-size: 12px; line-height: 1.32; font-weight: 560; }
+    .meeting-card-meta { margin-top: 7px !important; color: #766E8E !important; font-size: 10.5px !important; font-weight: 670 !important; }
+    .meeting-card-actions { display: flex; align-items: center; justify-content: flex-end; gap: 9px; }
+    .meeting-attendance-action { min-height: 34px; padding: 0 12px; border: 1px solid rgba(106,86,180,.24); border-radius: 999px; background: #fff; color: var(--hajnal-purple); font: inherit; font-size: 11px; font-weight: 780; cursor: pointer; }
+    .meeting-attendance-action.is-selected { border-color: var(--hajnal-purple); background: #EEE8FA; }
+    .meeting-card-chevron { color: #777D8E; font-size: 26px; line-height: .8; }
+    .meetings-empty { display: grid; justify-items: center; gap: 9px; padding: 28px 20px; border-radius: 24px; background: rgba(255,255,255,.68); color: #778094; text-align: center; }
+    .meetings-empty .icon { width: 31px; height: 31px; color: #A193C6; }
+    .meetings-empty p { margin: 0; font-size: 13px; line-height: 1.4; font-weight: 620; }
+    .meetings-empty button { min-height: 38px; padding: 0 13px; border: 0; border-radius: 13px; background: #EEE8FA; color: var(--hajnal-purple); font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; }
+    .meetings-past-list { margin-top: 15px; }
+    .meeting-past-month { margin: 18px 2px 7px; color: #817B94; font-size: 11px; font-weight: 830; letter-spacing: .08em; }
+    .meeting-past-card { width: 100%; display: grid; grid-template-columns: 47px minmax(0,1fr) 20px; align-items: center; gap: 12px; padding: 13px; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .meeting-date-badge { min-height: 49px; display: grid; place-content: center; border-radius: 15px; background: #EEE8FA; color: var(--hajnal-purple); text-align: center; }
+    .meeting-date-badge strong { font-size: 14px; line-height: 1; font-weight: 850; }
+    .meeting-date-badge span { margin-top: 3px; font-size: 10px; line-height: 1; font-weight: 700; }
+    .meeting-past-copy small { display: block; margin-top: 5px; color: #7C8293; font-size: 11px; font-weight: 650; }
+    .meeting-past-copy p { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+    .meeting-nested-header { min-height: 76px; display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: start; padding: 12px 18px 8px; }
+    .meeting-nested-header button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(106,86,180,.12); border-radius: 50%; background: rgba(255,255,255,.76); color: var(--hajnal-purple); cursor: pointer; }
+    .meeting-nested-header h1 { margin: 5px 0 0; color: #07132C; font-size: 20px; line-height: 1.15; font-weight: 840; text-align: center; letter-spacing: -.03em; }
+    .meeting-detail-content, .meeting-editor-content { position: absolute; top: 100px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 0 18px 28px; scrollbar-width: none; }
+    .meeting-detail-identity { display: grid; justify-items: center; padding: 3px 20px 20px; text-align: center; }
+    .meeting-detail-icon { width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); }
+    .meeting-detail-icon .icon { width: 37px; height: 37px; }
+    .meeting-detail-identity h2 { margin: 15px 0 0; color: #07132C; font-size: 25px; line-height: 1.08; font-weight: 850; letter-spacing: -.045em; }
+    .meeting-detail-identity p { margin: 6px 0 0; color: #757C91; font-size: 13px; font-weight: 620; }
+    .meeting-context-card { overflow: hidden; padding: 4px 16px; }
+    .meeting-context-row { min-height: 63px; display: grid; grid-template-columns: 28px 82px minmax(0,1fr); align-items: center; gap: 8px; border-bottom: 1px solid rgba(44,46,119,.075); color: #7B8092; font-size: 12px; font-weight: 650; }
+    .meeting-context-row:last-child { border-bottom: 0; }
+    button.meeting-context-row { width: 100%; padding: 0; border-top: 0; border-right: 0; border-left: 0; background: transparent; font: inherit; text-align: left; cursor: pointer; }
+    .meeting-context-row .icon { width: 19px; height: 19px; color: var(--hajnal-purple); }
+    .meeting-context-row strong { color: #15223C; font-size: 12px; font-weight: 760; text-align: right; }
+    .meeting-context-row.location-row { cursor: pointer; }
+    .meeting-detail-actions { display: grid; gap: 10px; margin-top: 15px; }
+    .meeting-primary-button, .meeting-save-button { width: 100%; min-height: 54px; display: grid; place-items: center; padding: 0 18px; border: 0; border-radius: 17px; background: var(--hajnal-purple); color: #fff; box-shadow: 0 12px 22px rgba(74,55,150,.19); font: inherit; font-size: 15px; font-weight: 790; text-decoration: none; cursor: pointer; }
+    .meeting-secondary-button { width: 100%; min-height: 46px; display: grid; place-items: center; padding: 0 18px; border: 1px solid rgba(106,86,180,.20); border-radius: 16px; background: rgba(255,255,255,.72); color: var(--hajnal-purple); font: inherit; font-size: 13px; font-weight: 760; cursor: pointer; }
+    .meeting-editor-context { padding: 18px; border-radius: 23px; background: #EEE8FA; color: #2D2874; }
+    .meeting-memory-editor-hero { margin: 0 0 35px; }
+    .meeting-editor-context .meeting-detail-icon { width: 50px; height: 50px; margin-bottom: 11px; background: rgba(255,255,255,.68); }
+    .meeting-editor-context .meeting-detail-icon .icon { width: 25px; height: 25px; }
+    .meeting-editor-context h2 { margin: 0; font-size: 21px; line-height: 1.12; font-weight: 840; }
+    .meeting-editor-context p { margin: 5px 0 0; font-size: 12px; line-height: 1.35; font-weight: 630; }
+    .meeting-form-card { display: grid; gap: 0; padding: 3px 16px; }
+    .meeting-field { min-height: 73px; display: grid; align-content: center; gap: 6px; border-bottom: 1px solid rgba(44,46,119,.075); }
+    .meeting-field:last-child { border-bottom: 0; }
+    .meeting-field label, .meeting-field-label { color: #7A8192; font-size: 12px; font-weight: 690; }
+    .meeting-field input, .meeting-note-field textarea { width: 100%; padding: 0; border: 0; outline: 0; background: transparent; color: #142039; font: inherit; font-size: 16px; line-height: 1.25; font-weight: 710; }
+    .meeting-field input::placeholder, .meeting-note-field textarea::placeholder { color: #9A9EAC; opacity: 1; }
+    .meeting-field button { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0; border: 0; background: transparent; color: #142039; font: inherit; font-size: 16px; line-height: 1.25; font-weight: 710; text-align: left; cursor: pointer; }
+    .meeting-field button span:last-child { color: #7B8190; font-size: 25px; font-weight: 350; }
+    .meeting-time-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .meeting-mini-field { min-height: 44px; display: grid; align-content: center; gap: 4px; }
+    .meeting-mini-field button { color: var(--hajnal-purple); font-size: 15px; }
+    .meeting-format-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 4px; border-radius: 15px; background: #F1EDF6; }
+    .meeting-format-selector button { min-height: 37px; display: grid; place-items: center; border: 0; border-radius: 11px; background: transparent; color: #777B8C; font: inherit; font-size: 12px; font-weight: 740; cursor: pointer; }
+    .meeting-format-selector button[aria-pressed="true"] { background: #fff; color: var(--hajnal-purple); box-shadow: 0 3px 9px rgba(44,46,119,.06); }
+    .meeting-location-action { width: max-content !important; display: inline-flex !important; gap: 7px; margin-top: 2px; color: var(--hajnal-purple) !important; font-size: 12px !important; font-weight: 750 !important; }
+    .meeting-location-action .icon { width: 17px; height: 17px; }
+    .meeting-location-status { margin: 0; color: #806B9D; font-size: 11px; line-height: 1.35; font-weight: 620; }
+    .meeting-editor-error { margin: 12px 2px 0; color: #A05269; font-size: 12px; font-weight: 680; }
+    .meeting-attended-row { min-height: 56px; display: flex; align-items: center; justify-content: space-between; margin-top: 15px; padding: 0 15px; border-radius: 17px; background: #EEE8FA; color: #2E2878; font-size: 14px; font-weight: 780; }
+    .meeting-attended-row button { min-height: 32px; padding: 0 11px; border: 1px solid rgba(106,86,180,.28); border-radius: 999px; background: #fff; color: var(--hajnal-purple); font: inherit; font-size: 11px; font-weight: 760; cursor: pointer; }
+    .meeting-note-field { display: grid; gap: 9px; margin-top: 15px; padding: 16px; border-radius: 22px; background: #FEFBFA; box-shadow: 0 8px 18px rgba(44,46,119,.06); }
+    .meeting-note-field label { color: #17233C; font-size: 16px; font-weight: 820; }
+    .meeting-note-field textarea { min-height: 145px; resize: vertical; color: #273653; font-size: 14px; line-height: 1.45; font-weight: 570; }
+    .meeting-save-button { margin-top: 15px; }
+    .meeting-picker-sheet { min-height: 385px; }
+    .meeting-picker-sheet-handle { width: 42px; height: 5px; display: block; margin: 11px auto 10px; border-radius: 999px; background: #C9C3D6; }
+    .meeting-picker-header { min-height: 44px; display: grid; grid-template-columns: 42px minmax(0,1fr) 42px; align-items: center; padding: 0 15px; }
+    .meeting-picker-header h2 { margin: 0; color: #07132C; font-size: 19px; font-weight: 830; text-align: center; }
+    .meeting-picker-header button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--hajnal-purple); cursor: pointer; }
+    .meeting-picker-content { padding: 0 20px calc(18px + env(safe-area-inset-bottom)); }
+    .meeting-picker-intro { margin: 4px 0 14px; color: #737C92; font-size: 13px; line-height: 1.35; text-align: center; font-weight: 580; }
+    .meeting-picker-footer { margin-top: 15px; }
+    .meeting-time-options { max-height: 265px; overflow-y: auto; padding: 7px; border: 1px solid rgba(44,46,119,.08); border-radius: 20px; background: #FFFCFD; }
+    .meeting-time-options div { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 5px; }
+    .meeting-time-options button { min-height: 39px; border: 0; border-radius: 12px; background: transparent; color: #6F7686; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .meeting-time-options button[aria-pressed="true"] { background: #EEE8FA; color: var(--hajnal-purple); font-weight: 830; }
+    @media (prefers-reduced-motion: reduce) { .meeting-picker-sheet-backdrop, .meeting-picker-sheet { transition: none; } }
     .panic-why-screen { background: radial-gradient(circle at 85% 3%, rgba(255,205,147,.42), transparent 220px), linear-gradient(180deg, #FFF9F6, #F8EEF7); }
     .panic-child-header { min-height: 84px; position: relative; z-index: 2; display: grid; grid-template-columns: 42px minmax(0, 1fr) 42px; align-items: start; padding: 13px 18px 8px; }
     .panic-child-header .icon-button { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid rgba(106,86,180,.12); border-radius: 50%; background: rgba(255,255,255,.76); color: var(--hajnal-purple); }
@@ -691,6 +1084,7 @@
 <body>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
     <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></symbol><symbol id="icon-signal" viewBox="0 0 24 24"><path d="M5 18v-2M9 18v-5M13 18v-8M17 18V3"/></symbol><symbol id="icon-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9.5 15a4 4 0 0 1 5 0M12 19h.01"/></symbol><symbol id="icon-battery" viewBox="0 0 24 24"><rect x="3" y="7" width="17" height="10" rx="2"/><path d="M21 10v4M6 10h10v4H6z"/></symbol><symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-6h6v6"/></symbol><symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-8M22 19V3"/></symbol><symbol id="icon-path" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM5 9h14M12 4v16"/></symbol><symbol id="icon-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="10" r="3"/><path d="M2 21c1-5 11-5 12 0M13 21c.4-3 6.6-4 9 0"/></symbol><symbol id="icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-6 15-6 16 0"/></symbol><symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.8 9 3l2.1 5.3-2.3 1.4a15 15 0 0 0 5.5 5.5l1.4-2.3L21 15l-.8 2.4c-.4 1.3-1.8 2-3.1 1.7C9.5 17.2 6.8 14.5 4.9 6.9 4.6 5.6 5.3 4.2 6.6 3.8Z"/></symbol><symbol id="icon-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/><path d="M8 10h8M8 13h5"/></symbol><symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"/></symbol><symbol id="icon-back" viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7M8 12h11"/></symbol><symbol id="icon-progress" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-7"/></symbol><symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4.3 4.3L19 6.7"/></symbol><symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol><symbol id="icon-tools" viewBox="0 0 24 24"><path d="m14 6 4-4 4 4-4 4-2-2-7 7-3-3 7-7Z"/><path d="m5 19 4-4 3 3-4 4H5Z"/></symbol><symbol id="icon-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol><symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M20 4C11 4 5 8.6 5 15c0 2.8 2.2 5 5 5 6.4 0 10-6 10-16Z"/><path d="M4 20c3.2-3.4 7.1-6.5 12-9"/></symbol><symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H12v17H7.5A3.5 3.5 0 0 0 4 22Z"/><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H12v17h4.5A3.5 3.5 0 0 1 20 22Z"/></symbol><symbol id="icon-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.2 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol><symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></symbol><symbol id="icon-moon" viewBox="0 0 24 24"><path d="M19 15a8 8 0 1 1-10-10 7 7 0 0 0 10 10Z"/></symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></symbol><symbol id="icon-location" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
   </svg>
   <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
     <symbol id="source-character-llama" viewBox="0 0 112 180">
@@ -720,7 +1114,7 @@
       <section class="tasks-card"><div class="tasks-heading"><h1 id="checklist-title">Mai feladataim</h1><button type="button" data-action="edit-home-checklist">Szerkesztés</button></div><div class="task-list" aria-label="Mai feladatok listája"><label class="task-row" data-task-id="sponsor-call"><input class="native-control task-input" type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" data-task-icon="phone" aria-hidden="true"><use href="#icon-phone"/></svg></label><label class="task-row" data-task-id="meeting"><input class="native-control task-input" type="checkbox" aria-label="Menj el egy meetingre"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" data-task-icon="people" aria-hidden="true"><use href="#icon-people"/></svg></label><button class="task-row" type="button" data-task-id="evening-checkin" data-action="open-evening-checkin"><span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" data-task-icon="message" aria-hidden="true"><use href="#icon-message"/></svg></button></div></section>
       <div class="home-actions"><button class="help-button" type="button" data-action="open-panic"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Segítség kell</button></div>
     </section>
-    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
+    <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button" data-action="open-sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
 
     <section class="route-screen timeline-screen" id="home-statistics-timeline" data-route="timeline" data-screen="home-statistics-timeline" data-component="current-period-timeline" aria-labelledby="timeline-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
@@ -811,7 +1205,7 @@
       <main class="history-detail-content" aria-label="Az aktuális tiszta időszak idővonala">
         <nav class="period-detail-tabs" aria-label="Az időszak nézetei"><button type="button" data-history-detail-tab="timeline" data-action="open-history-detail" aria-pressed="true">Idővonal</button><button type="button" data-history-detail-tab="calendar" data-action="open-history-detail-calendar" aria-pressed="false">Naptár</button></nav>
         <div class="history-detail-panel-slot">
-          <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong>Február 2025</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list">
+          <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div data-component="meeting-timeline-events"></div><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong>Február 2025</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list">
             <button class="history-detail-event" type="button" data-action="open-timeline-event-detail" aria-label="Újrakezdtem esemény részletei"><time class="history-event-date">febr. 3.<small>H</small></time><span class="history-event-node"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span class="history-event-card"><h3>Újrakezdtem</h3><time>09:15</time><p>Ma újra elköteleztem magam.</p></span></button>
             <button class="history-detail-event" type="button" data-action="open-timeline-event-detail" aria-label="Irodalom esemény részletei"><time class="history-event-date">febr. 10.<small>H</small></time><span class="history-event-node book"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><span class="history-event-card"><h3>Irodalom</h3><time>20:00</time><p>Elolvastam a 2. fejezetet.</p></span></button>
             <button class="history-detail-event" type="button" data-action="open-timeline-event-detail" aria-label="Jobban vagyok esemény részletei"><time class="history-event-date">febr. 14.<small>P</small></time><span class="history-event-node heart"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><span class="history-event-card"><h3>Jobban vagyok</h3><img class="history-event-mini" src="assets/milestones/milestone-14.svg" alt=""><p>Rájöttem, hogy nem vagyok egyedül.</p></span></button>
@@ -873,9 +1267,30 @@
 
     <section class="route-screen meetings-screen" id="meetings" data-route="meetings" data-screen="meetings" data-component="meeting-finder" aria-labelledby="meetings-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="screen-header"><button class="icon-button" type="button" data-action="return-from-meetings" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="meetings-title">Következő meeting</h1><p>Találj közeli vagy online gyűlést.</p></div><span></span></header>
-      <main class="meetings-content" aria-label="Következő gyűlések"><section class="meeting-list"><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><span><strong>Ma 18:30 · Belvárosi csoport</strong><small>Közösségi ház · nyitott meeting</small></span><span class="meeting-distance">1.2 km</span></article><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg></span><span><strong>Ma 20:00 · Online gyűlés</strong><small>Zoom link hozzáadva</small></span><span class="meeting-distance">online</span></article><article class="meeting-row"><span class="meeting-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span><strong>Holnap 07:30 · Reggeli kör</strong><small>Csendes, rövid gyűlés</small></span><span class="meeting-distance">3.4 km</span></article></section><button class="meeting-search-button" type="button" data-action="show-meeting-search-note">Meeting keresése</button><p class="meeting-search-note" data-component="meeting-search-note" role="status" hidden>A térképes kereső a következő prototípus-körben nyílik meg.</p></main>
+      <header class="meetings-main-header"><h1 id="meetings-title">Gyűlések</h1><button class="meetings-add-button" type="button" data-action="open-new-meeting" aria-label="Új gyűlés hozzáadása">+</button></header>
+      <main class="meetings-main-content" data-component="meetings-main-content" aria-live="polite"></main>
     </section>
+
+    <section class="route-screen meeting-detail-screen" id="meeting-detail" data-route="meeting-detail" data-screen="meeting-detail" aria-labelledby="meeting-detail-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="meeting-nested-header"><button type="button" data-action="close-meeting-detail" aria-label="Vissza a Gyűlésekhez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="meeting-detail-title">Gyűlés</h1><span></span></header>
+      <main class="meeting-detail-content" data-component="meeting-detail-content"></main>
+    </section>
+
+    <section class="route-screen meeting-editor-screen" id="meeting-editor" data-route="meeting-editor" data-screen="meeting-editor" aria-labelledby="meeting-editor-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="meeting-nested-header"><button type="button" data-action="close-meeting-editor" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="meeting-editor-title" data-component="meeting-editor-title">Gyűlés</h1><span></span></header>
+      <main class="meeting-editor-content" data-component="meeting-editor-content"></main>
+    </section>
+
+    <div class="meeting-picker-sheet-host" data-component="meeting-picker-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="meeting-picker-sheet-backdrop" type="button" data-action="close-meeting-picker" aria-label="Dátum vagy időválasztó bezárása"></button>
+      <section class="meeting-picker-sheet" role="dialog" aria-modal="true" aria-labelledby="meeting-picker-title" tabindex="-1">
+        <span class="meeting-picker-sheet-handle" aria-hidden="true"></span>
+        <header class="meeting-picker-header"><span></span><h2 id="meeting-picker-title" data-component="meeting-picker-title">Dátum</h2><button type="button" data-action="close-meeting-picker" data-sheet-close aria-label="Bezárás">×</button></header>
+        <div class="meeting-picker-content" data-component="meeting-picker-content"></div>
+      </section>
+    </div>
 
     <section class="route-screen path-screen" id="path-root" data-route="path" data-screen="path-root" data-component="path-workspace" data-path-view="overview" data-path-read-only="false" aria-label="Ösvény">
       <main class="path-content" data-component="path-content" aria-live="polite"></main>
@@ -923,6 +1338,73 @@
       <main class="panic-child-content"><details class="contact-details" open><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button><button type="button" data-action="open-panic">Gyors üzenet kiválasztása</button></div></details><details class="contact-details"><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span><strong>Anya</strong><small>Tartalék kapcsolattartó<br>+36 30 987 6543</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button></div></details></main>
     </section>
 
+    <section class="route-screen sponsor-screen" id="sponsor" data-route="sponsor" data-screen="sponsor" data-component="sponsor-main-menu" aria-labelledby="sponsor-screen-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="sponsor-main-header"><h1 id="sponsor-screen-title">Sponzor</h1></header>
+      <main class="sponsor-content">
+        <button class="sponsor-profile-card" type="button" data-action="open-sponsor-details" data-sponsor-profile-link aria-label="Péter szponzor adatai"><img class="sponsor-avatar" data-sponsor-avatar src="assets/hero/hero_s.png" alt="Péter"><span class="sponsor-profile-copy"><strong data-sponsor-name-display>Péter</strong><span>Sponzorom</span><span data-sponsor-since-main>2024. május 14. óta</span></span><span class="sponsor-profile-chevron" aria-hidden="true">›</span></button>
+        <section class="sponsor-action-grid" aria-label="Gyors műveletek"><a class="sponsor-action" data-sponsor-call-link href="tel:+36701234567" aria-label="Péter hívása"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span class="sponsor-action-label">Hívás</span></a><a class="sponsor-action" data-sponsor-message-link href="sms:+36701234567" aria-label="Üzenet Péternek"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg></span><span class="sponsor-action-label">Üzenet</span></a><button class="sponsor-action" type="button" data-action="open-sponsor-message-sheet" aria-label="Üzenet küldése Péternek: beszélnem kell vele"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><span class="sponsor-action-label">Beszélnem<br>kell vele</span></button></section>
+        <button class="sponsor-next-card" type="button" data-action="open-sponsor-next-sheet" data-component="sponsor-next-card" aria-label="Következő kapcsolat: Ma este, 20:00 körül felhívni Pétert"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="sponsor-next-copy"><strong>Legközelebb</strong><span data-sponsor-next-date-display>Ma este</span><small data-sponsor-next-time-display>20:00 körül felhívni Pétert</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
+        <section class="sponsor-list-card sponsor-pending-card" data-component="sponsor-pending-topics" aria-labelledby="talk-about-title"></section>
+        <section class="sponsor-list-card sponsor-takeaway-preview" data-component="sponsor-takeaway-preview" aria-labelledby="take-away-title"></section>
+      </main>
+    </section>
+
+    <div class="sponsor-next-sheet-host" data-component="sponsor-next-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="sponsor-next-sheet-backdrop" type="button" data-action="close-sponsor-next-sheet" aria-label="Következő beszélgetés beállításainak bezárása"></button>
+      <section class="sponsor-next-sheet" role="dialog" aria-modal="true" aria-labelledby="sponsor-next-sheet-title">
+        <span class="sponsor-next-sheet-handle" aria-hidden="true"></span>
+        <header class="sponsor-next-sheet-header"><span></span><h2 id="sponsor-next-sheet-title">Következő beszélgetés</h2><button class="sponsor-next-sheet-close" type="button" data-action="close-sponsor-next-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
+        <div class="sponsor-next-sheet-content" data-component="sponsor-next-sheet-content"></div>
+      </section>
+    </div>
+
+    <div class="sponsor-message-sheet-host" data-component="sponsor-message-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="sponsor-message-sheet-backdrop" type="button" data-action="close-sponsor-message-sheet" aria-label="Üzenet bezárása"></button>
+      <section class="sponsor-message-sheet" role="dialog" aria-modal="true" aria-labelledby="sponsor-message-sheet-title" tabindex="-1">
+        <span class="sponsor-message-sheet-handle" aria-hidden="true"></span>
+        <div class="sponsor-message-sheet-content" data-component="sponsor-message-sheet-content"></div>
+      </section>
+    </div>
+
+    <div class="sponsor-availability-sheet-host" data-component="sponsor-availability-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="sponsor-availability-sheet-backdrop" type="button" data-action="close-sponsor-availability" aria-label="Elérhetőségi beállítások bezárása"></button>
+      <section class="sponsor-availability-sheet" role="dialog" aria-modal="true" aria-labelledby="sponsor-availability-sheet-title" tabindex="-1">
+        <span class="sponsor-availability-sheet-handle" aria-hidden="true"></span>
+        <div class="sponsor-availability-sheet-content" data-component="sponsor-availability-sheet-content"></div>
+      </section>
+    </div>
+
+    <section class="route-screen sponsor-details-screen" id="sponsor-details" data-route="sponsor-details" data-screen="sponsor-details" data-component="sponsor-details" aria-labelledby="sponsor-details-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="sponsor-detail-header"><button type="button" data-action="close-sponsor-details" aria-label="Vissza a Sponzor főoldalra"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-details-title">Sponzor adatai</h1><button class="sponsor-more-button" type="button" data-action="sponsor-placeholder" aria-label="További lehetőségek">⋮</button></header>
+      <main class="sponsor-detail-content">
+        <section class="sponsor-detail-avatar-stage" aria-label="Sponzor képe"><div class="sponsor-detail-avatar-wrap"><img class="sponsor-detail-avatar" data-sponsor-avatar src="assets/hero/hero_s.png" alt="Péter"><button class="sponsor-avatar-edit" type="button" data-action="sponsor-placeholder" aria-label="Profilkép szerkesztése"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m4 20 4-1 11-11-3-3L5 16zM13 6l3 3"/></svg></button></div></section>
+        <section class="sponsor-detail-card" aria-label="Sponzor adatai">
+          <div class="sponsor-detail-field"><label for="sponsor-name-input">Név<input id="sponsor-name-input" data-sponsor-name-input type="text" autocomplete="name" autocapitalize="words" value="Péter"></label><span aria-hidden="true"></span></div>
+          <div class="sponsor-detail-field"><label for="sponsor-phone-input">Telefonszám<input id="sponsor-phone-input" data-sponsor-phone-input type="tel" inputmode="tel" autocomplete="tel" value="+36 70 123 4567" required></label><a class="sponsor-detail-phone-action" data-sponsor-call-link href="tel:+36701234567" aria-label="Péter hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></a></div>
+          <div class="sponsor-detail-availability-row"><button class="sponsor-detail-availability-action" type="button" data-action="open-sponsor-availability" aria-label="Mikor kereshetem? szerkesztése"><span class="sponsor-detail-availability-copy"><span>Mikor kereshetem?</span><strong class="is-empty" data-sponsor-availability-primary>Nincs megadva</strong><small data-sponsor-availability-secondary></small></span><span class="sponsor-availability-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span></button></div>
+          <div class="sponsor-detail-static-row"><button class="sponsor-detail-date-action" type="button" data-action="open-sponsor-date-picker" aria-label="Sponzor kapcsolat kezdetének dátuma"><span><span>Sponzorom mióta</span><strong data-sponsor-since-display>2024. május 14.</strong></span><span class="sponsor-date-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></button><input class="sponsor-native-date" id="sponsor-date-input" data-sponsor-date-input type="date" value="2024-05-14"></div>
+          <button class="sponsor-detail-contact-action" type="button" data-action="sponsor-placeholder"><span class="sponsor-detail-contact-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-profile"/></svg></span><strong>Névjegyből hozzáadás / frissítés</strong><span class="sponsor-detail-contact-chevron" aria-hidden="true">›</span></button>
+        </section>
+        <section class="sponsor-detail-quote" aria-label="Emlékeztető"><span class="quote-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”</p><span class="sponsor-detail-quote-chevron" aria-hidden="true">›</span></section>
+        <section class="sponsor-detail-notes"><label for="sponsor-note-input">Megjegyzés <span>(opcionális)</span></label><textarea id="sponsor-note-input" data-sponsor-note-input placeholder="Bármi, ami fontos, és jó ha emlékszel rá..."></textarea></section>
+        <button class="sponsor-save-button" type="button" data-action="save-sponsor-details">Mentés</button>
+      </main>
+    </section>
+
+    <section class="route-screen sponsor-takeaways-screen" id="sponsor-takeaways" data-route="sponsor-takeaways" data-screen="sponsor-takeaways" data-component="sponsor-takeaways" aria-labelledby="sponsor-takeaways-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="sponsor-takeaway-header"><button type="button" data-action="close-sponsor-takeaways" aria-label="Vissza a Sponzor főoldalra"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-takeaways-title">Amit magammal viszek</h1><button class="sponsor-takeaway-more" type="button" data-action="sponsor-placeholder" aria-label="További lehetőségek">⋯</button></header>
+      <main class="sponsor-takeaway-list-content"><section class="sponsor-takeaway-info"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><p>A sponzorom javaslatai segítenek fókuszban maradni. Ez nem teendőlista, hanem emlékeztető arra, merre tartok.</p></section><section class="sponsor-takeaway-list" data-component="sponsor-takeaway-list" aria-label="Útravalók teljes listája"></section><button class="sponsor-takeaway-add" type="button" data-action="create-sponsor-takeaway"><span aria-hidden="true">+</span>Új javaslat hozzáadása</button><section class="sponsor-takeaway-quote" aria-label="Emlékeztető"><span aria-hidden="true">“</span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”<small>– NA</small></p></section></main>
+    </section>
+
+    <section class="route-screen sponsor-takeaway-editor-screen" id="sponsor-takeaway-editor" data-route="sponsor-takeaway-editor" data-screen="sponsor-takeaway-editor" data-component="sponsor-takeaway-editor" data-editor-mode="create" aria-labelledby="sponsor-takeaway-editor-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="sponsor-takeaway-header"><button type="button" data-action="close-sponsor-takeaway-editor" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-takeaway-editor-title" data-takeaway-editor-title>Új javaslat</h1><span class="takeaway-editor-overflow"><button class="sponsor-takeaway-more" type="button" data-action="toggle-takeaway-delete-menu" aria-label="További lehetőségek">⋯</button><span class="takeaway-delete-menu" data-takeaway-delete-menu hidden><button type="button" data-action="delete-sponsor-takeaway">Törlés</button></span></span></header>
+      <main class="sponsor-takeaway-editor-content"><section class="timeline-event-hero sponsor-pending-editor-hero" data-pending-takeaway-editor-hero hidden aria-hidden="true" aria-label="Beszélgetési téma képe"><img src="assets/hero/timelinehero.png" alt="Hegycsúcsok a naplementében"><span class="timeline-event-hero-icon" aria-hidden="true"><svg class="icon"><use href="#icon-progress"/></svg></span><span class="timeline-event-hero-photo" aria-hidden="true"><svg class="icon"><use href="#icon-path"/></svg></span></section><section class="sponsor-takeaway-editor-form"><label class="takeaway-editor-label" for="takeaway-title-input">Javaslat címe</label><input class="takeaway-title-input" id="takeaway-title-input" data-takeaway-title-input type="text" autocomplete="off" autocapitalize="sentences" placeholder="Pl. Napi 1 gyűlés" required><span class="takeaway-editor-label takeaway-icon-label">Ikon <span>(opcionális)</span></span><div class="takeaway-icon-selector" data-takeaway-icon-selector aria-label="Ikon kiválasztása"></div><label class="takeaway-editor-label takeaway-note-label" for="takeaway-note-input">Megjegyzés <span>(opcionális)</span></label><textarea class="takeaway-note-input" id="takeaway-note-input" data-takeaway-note-input placeholder="Részletek, emlékeztető, saját gondolat..."></textarea></section><button class="takeaway-editor-save" type="button" data-action="save-sponsor-takeaway">Mentés</button></main>
+    </section>
+
     <section class="route-screen initialization-screen" id="initialization" data-screen="initialization" data-component="initialization-flow" data-initialization-view="splash" aria-label="Splash és onboarding">
       <main class="initialization-content" data-component="initialization-content" aria-live="polite"></main>
     </section>
@@ -930,7 +1412,39 @@
   <script>
     (() => {
       const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);
-      const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic']);
+      const SPONSOR_INITIAL_STATE = Object.freeze({ name: 'Péter', phone: '+36 70 123 4567', since: '2024-05-14', note: '' });
+      const SPONSOR_AVAILABILITY_DAYS = Object.freeze([
+        { key: 1, label: 'Hétfő', enabled: true, start: '17:00', end: '21:00' },
+        { key: 2, label: 'Kedd', enabled: true, start: '17:00', end: '21:00' },
+        { key: 3, label: 'Szerda', enabled: true, start: '17:00', end: '21:00' },
+        { key: 4, label: 'Csütörtök', enabled: true, start: '17:00', end: '21:00' },
+        { key: 5, label: 'Péntek', enabled: true, start: '17:00', end: '21:00' },
+        { key: 6, label: 'Szombat', enabled: true, start: '10:00', end: '20:00' },
+        { key: 0, label: 'Vasárnap', enabled: false, start: '10:00', end: '20:00' }
+      ]);
+      const TAKEAWAY_ICON_IDS = Object.freeze(['leaf', 'people', 'book', 'heart', 'home']);
+      const TAKEAWAY_SEED_ITEMS = Object.freeze([
+        { id: 'takeaway-meeting', title: 'Napi 1 gyűlés ezen a héten', icon: 'leaf', note: '', createdAt: '2026-10-01T08:00:00.000Z', updatedAt: '2026-10-01T08:00:00.000Z', order: 0 },
+        { id: 'takeaway-call-friends', title: 'Felhívni két társat', icon: 'people', note: '', createdAt: '2026-10-01T08:01:00.000Z', updatedAt: '2026-10-01T08:01:00.000Z', order: 1 },
+        { id: 'takeaway-step-three', title: '3. lépés szövegét elolvasni', icon: 'book', note: '', createdAt: '2026-10-01T08:02:00.000Z', updatedAt: '2026-10-01T08:02:00.000Z', order: 2 },
+        { id: 'takeaway-gratitude', title: 'Este hálalista', icon: 'heart', note: '', createdAt: '2026-10-01T08:03:00.000Z', updatedAt: '2026-10-01T08:03:00.000Z', order: 3 },
+        { id: 'takeaway-mother', title: 'Beszélni anyámmal', icon: 'home', note: '', createdAt: '2026-10-01T08:04:00.000Z', updatedAt: '2026-10-01T08:04:00.000Z', order: 4 }
+      ]);
+      const PENDING_TOPIC_SEEDS = Object.freeze([
+        { id: 'pending-work-conflict', title: 'Munkahelyi konfliktus' },
+        { id: 'pending-step-four', title: '4. lépés – neheztelések' },
+        { id: 'pending-weekend', title: 'Hétvégi buli' },
+        { id: 'pending-meetings', title: 'Miért hagytam ki két gyűlést?' }
+      ]);
+      const MEETING_SEED_ITEMS = Object.freeze([
+        { id: 'meeting-new-beginning', title: 'Új Kezdet', date: '2026-10-06', start: '18:00', end: '19:00', format: 'in-person', venue: 'Közösségi Ház', address: '1082 Budapest, Baross utca 12.', url: '', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
+        { id: 'meeting-online-budapest', title: 'Online NA Budapest', date: '2026-10-06', start: '21:00', end: '22:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
+        { id: 'meeting-pure-path', title: 'Tiszta út', date: '2026-10-08', start: '19:30', end: '20:30', format: 'in-person', venue: 'Újbuda Közösségi Tér', address: '1117 Budapest, Karinthy Frigyes út 16.', url: '', openness: 'Zárt', planned: true, attended: false, note: '', own: false, coordinates: null },
+        { id: 'meeting-morning-circle', title: 'Reggeli kör', date: '2026-10-10', start: '10:00', end: '11:00', format: 'in-person', venue: 'Szent Imre Ház', address: '1024 Budapest, Keleti Károly utca 15.', url: '', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
+        { id: 'meeting-past-new-beginning', title: 'Új Kezdet', date: '2026-10-05', start: '18:00', end: '19:00', format: 'in-person', venue: 'Közösségi Ház', address: '1082 Budapest, Baross utca 12.', url: '', openness: 'Nyitott', planned: false, attended: true, note: 'Nehéz nap volt, de jó volt hallani mások megosztását. A 3. lépésről volt szó.', own: false, coordinates: null },
+        { id: 'meeting-past-online', title: 'Esti online kör', date: '2026-09-29', start: '20:00', end: '21:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', planned: false, attended: true, note: 'Jó volt hallani másokat. Nem kell egyedül végigcsinálnom.', own: false, coordinates: null }
+      ]);
+      const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor']);
       const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({
         '2025-02-03': Object.freeze(['mint']),
         '2025-02-05': Object.freeze(['violet']),
@@ -1036,6 +1550,8 @@
       }
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
+      function localDateIso(date = new Date()) { const local = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); return local.toISOString().slice(0, 10); }
+      function createSponsorAvailability(mode = 'unset') { return { mode, days: SPONSOR_AVAILABILITY_DAYS.map((day) => ({ ...day })) }; }
       function stepStatusLabel(status) { return status === 'closed' ? 'Lezárt munkakör' : status === 'in-progress' ? 'Folyamatban' : 'Még nem kezdted el'; }
       function stepMarker(status) { return status === 'closed' ? '✓' : status === 'in-progress' ? '◐' : '○'; }
 
@@ -1049,6 +1565,10 @@
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
           this.historyDetailScreen = root.querySelector('[data-component="current-period-detail"]');
+          this.meetingsContent = root.querySelector('[data-component="meetings-main-content"]');
+          this.meetingDetailContent = root.querySelector('[data-component="meeting-detail-content"]');
+          this.meetingEditorContent = root.querySelector('[data-component="meeting-editor-content"]');
+          this.meetingTimelineEvents = root.querySelector('[data-component="meeting-timeline-events"]');
           this.historyPresentationElements = {
             history: {
               screen: root.querySelector('[data-component="sobriety-batch-history"]'),
@@ -1073,7 +1593,6 @@
             }
           };
           this.survivalContent = root.querySelector('[data-component="survival-content"]');
-          this.meetingSearchNote = root.querySelector('[data-component="meeting-search-note"]');
           this.initializationScreen = root.querySelector('[data-component="initialization-flow"]');
           this.initializationContent = root.querySelector('[data-component="initialization-content"]');
           this.tasks = INITIAL_TASKS.map((task) => ({ ...task }));
@@ -1088,6 +1607,24 @@
             historyCalendarDate: '2025-02-14',
             survivalStep: 0,
             meetingOrigin: 'home',
+            meetings: MEETING_SEED_ITEMS.map((meeting) => ({ ...meeting })),
+            meetingsView: 'calendar',
+            meetingsSelectedDate: '2026-10-06',
+            meetingsCalendarMonth: '2026-10-01',
+            meetingDetailId: null,
+            meetingEditor: null,
+            meetingPicker: null,
+            sponsor: { ...SPONSOR_INITIAL_STATE },
+            sponsorDraft: null,
+            sponsorAvailability: createSponsorAvailability(),
+            sponsorAvailabilityDraft: null,
+            takeaways: TAKEAWAY_SEED_ITEMS.map((item) => ({ ...item })),
+            takeawayEditor: null,
+            pendingTopics: PENDING_TOPIC_SEEDS.map((topic) => ({ ...topic })),
+            pendingInlineTitle: null,
+            nextConversation: { date: localDateIso(), time: '20:00', isInitial: true },
+            sponsorNextSheet: null,
+            sponsorMessageSheet: null,
             initialization: {
               view: 'splash',
               startDate: 'Ma',
@@ -1103,6 +1640,12 @@
           this.render();
           this.renderHistoryPresentation('history');
           this.renderHistoryPresentation('timeline');
+          this.renderSponsorSurfaces();
+          this.renderSponsorNextCard();
+          this.renderPendingTopics();
+          this.renderTakeawayPreview();
+          this.renderTakeawayList();
+          this.renderMeetings();
           this.updateFullscreenButton();
           this.syncMainNavigation();
         }
@@ -1118,13 +1661,25 @@
           this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } });
           this.root.addEventListener('click', (event) => this.handleAction(event));
           this.root.addEventListener('input', (event) => this.handleInput(event));
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('focusout', (event) => { if (event.target.matches('[data-pending-inline-input]')) this.commitPendingTopic(); });
+          this.root.addEventListener('pointerdown', (event) => this.beginTakeawayReorder(event));
+          this.root.addEventListener('pointermove', (event) => this.updateTakeawayReorder(event));
+          this.root.addEventListener('pointerup', (event) => this.finishTakeawayReorder(event));
+          this.root.addEventListener('pointercancel', () => { this.takeawayDrag = null; });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
+          this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-note-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
         }
         handleAction(event) {
+          if (event.target.closest('[data-sponsor-placeholder]')) {
+            event.preventDefault();
+            return;
+          }
           const action = event.target.closest('[data-action]')?.dataset.action;
           switch (action) {
+            case 'sponsor-placeholder': break;
             case 'open-current-period-timeline': this.navigate('timeline'); break;
             case 'open-milestones': this.navigate('milestones'); break;
             case 'open-history': this.navigate('history'); break;
@@ -1143,8 +1698,67 @@
             case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;
             case 'return-to-history-detail': this.navigate('history-detail'); break;
             case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;
+            case 'open-sponsor': this.renderSponsorSurfaces(); this.navigate('sponsor'); break;
+            case 'open-sponsor-details': this.openSponsorDetails(); break;
+            case 'close-sponsor-details': this.closeSponsorDetails(); break;
+            case 'open-sponsor-date-picker': this.openSponsorDatePicker(); break;
+            case 'save-sponsor-details': this.saveSponsorDetails(); break;
+            case 'open-sponsor-availability': this.openSponsorAvailability(event.target.closest('[data-action="open-sponsor-availability"]')); break;
+            case 'close-sponsor-availability': this.closeSponsorAvailability(); break;
+            case 'toggle-sponsor-availability-anytime': this.toggleSponsorAvailabilityAnytime(); break;
+            case 'toggle-sponsor-availability-day': this.toggleSponsorAvailabilityDay(Number(event.target.closest('[data-availability-day]')?.dataset.availabilityDay)); break;
+            case 'save-sponsor-availability': this.saveSponsorAvailability(); break;
+            case 'open-sponsor-message-sheet': this.openSponsorMessageSheet(event.target.closest('[data-action="open-sponsor-message-sheet"]')); break;
+            case 'close-sponsor-message-sheet': this.closeSponsorMessageSheet(); break;
+            case 'show-sponsor-message-phone-warning': this.showSponsorMessagePhoneWarning(); break;
+            case 'open-sponsor-next-sheet': this.openSponsorNextSheet(event.target.closest('[data-action="open-sponsor-next-sheet"]')); break;
+            case 'close-sponsor-next-sheet': this.closeSponsorNextSheet(); break;
+            case 'sponsor-next-previous-month': this.moveSponsorNextMonth(-1); break;
+            case 'sponsor-next-next-month': this.moveSponsorNextMonth(1); break;
+            case 'select-sponsor-next-date': this.selectSponsorNextDate(event.target.closest('[data-next-date]')?.dataset.nextDate); break;
+            case 'sponsor-next-to-time': this.openSponsorNextTimeStep(); break;
+            case 'sponsor-next-to-date': this.openSponsorNextDateStep(); break;
+            case 'select-sponsor-next-time': this.selectSponsorNextTime(event.target.closest('[data-next-time]')?.dataset.nextTime); break;
+            case 'select-sponsor-next-hour': this.selectSponsorNextTimePart('hour', event.target.closest('[data-next-hour]')?.dataset.nextHour); break;
+            case 'select-sponsor-next-minute': this.selectSponsorNextTimePart('minute', event.target.closest('[data-next-minute]')?.dataset.nextMinute); break;
+            case 'save-sponsor-next': this.saveSponsorNextConversation(); break;
+            case 'clear-sponsor-next': this.clearSponsorNextConversation(); break;
+            case 'add-sponsor-pending-topic': this.startPendingTopic(); break;
+            case 'open-pending-topic-editor': event.preventDefault(); this.openPendingTopicEditor(event.target.closest('[data-pending-id]')?.dataset.pendingId); break;
+            case 'open-sponsor-takeaways': this.openSponsorTakeaways(); break;
+            case 'close-sponsor-takeaways': this.closeSponsorTakeaways(); break;
+            case 'open-sponsor-takeaway-editor': this.openTakeawayEditor(event.target.closest('[data-takeaway-id]')?.dataset.takeawayId, 'sponsor'); break;
+            case 'create-sponsor-takeaway': this.openTakeawayEditor(null, 'sponsor-takeaways'); break;
+            case 'close-sponsor-takeaway-editor': this.closeTakeawayEditor(); break;
+            case 'select-takeaway-icon': this.selectTakeawayIcon(event.target.closest('[data-takeaway-icon]')?.dataset.takeawayIcon); break;
+            case 'save-sponsor-takeaway': this.saveTakeaway(); break;
+            case 'toggle-takeaway-delete-menu': this.toggleTakeawayDeleteMenu(); break;
+            case 'delete-sponsor-takeaway': this.deleteTakeaway(); break;
             case 'return-from-meetings': this.returnFromMeetings(); break;
-            case 'show-meeting-search-note': this.showMeetingSearchNote(); break;
+            case 'switch-meetings-view': this.setMeetingsView(event.target.closest('[data-meetings-view]')?.dataset.meetingsView); break;
+            case 'meetings-previous-month': this.moveMeetingsMonth(-1); break;
+            case 'meetings-next-month': this.moveMeetingsMonth(1); break;
+            case 'select-meetings-date': this.selectMeetingsDate(event.target.closest('[data-meeting-date]')?.dataset.meetingDate); break;
+            case 'toggle-meeting-planned': event.stopPropagation(); this.toggleMeetingPlanned(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'confirm-meeting-attendance': event.stopPropagation(); this.confirmMeetingAttendance(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'open-meeting-detail': this.openMeetingDetail(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'close-meeting-detail': this.closeMeetingDetail(); break;
+            case 'open-meeting-map': this.openMeetingMap(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'open-meeting-editor': this.openMeetingEditor(event.target.closest('[data-meeting-id]')?.dataset.meetingId, event.target.closest('[data-meeting-editor-origin]')?.dataset.meetingEditorOrigin || 'meetings', event.target.closest('[data-meeting-editor-mode]')?.dataset.meetingEditorMode); break;
+            case 'open-new-meeting': this.openNewMeeting(this.state.meetingsSelectedDate); break;
+            case 'close-meeting-editor': this.closeMeetingEditor(); break;
+            case 'save-meeting-editor': this.saveMeetingEditor(); break;
+            case 'toggle-meeting-attendance-editor': this.toggleMeetingAttendanceFromEditor(); break;
+            case 'toggle-meeting-editor-planned': this.toggleMeetingEditorPlanned(); this.renderMeetingEditor(); break;
+            case 'select-meeting-format': this.selectMeetingFormat(event.target.closest('[data-meeting-format]')?.dataset.meetingFormat); break;
+            case 'open-meeting-picker': this.openMeetingPicker(event.target.closest('[data-meeting-picker-field]')?.dataset.meetingPickerField, event.target.closest('[data-action="open-meeting-picker"]')); break;
+            case 'close-meeting-picker': this.closeMeetingPicker(); break;
+            case 'meeting-picker-previous-month': this.moveMeetingPickerMonth(-1); break;
+            case 'meeting-picker-next-month': this.moveMeetingPickerMonth(1); break;
+            case 'select-meeting-picker-date': this.selectMeetingPickerDate(event.target.closest('[data-picker-date]')?.dataset.pickerDate); break;
+            case 'select-meeting-picker-time': this.selectMeetingPickerTime(event.target.closest('[data-picker-time]')?.dataset.pickerTime); break;
+            case 'save-meeting-picker': this.saveMeetingPicker(); break;
+            case 'use-current-meeting-location': this.useCurrentMeetingLocation(); break;
             case 'open-initialization': this.openInitialization('splash'); break;
             case 'open-initialization-why': this.openInitialization('why-started'); break;
             case 'initialization-next': this.advanceInitialization(1); break;
@@ -1187,11 +1801,575 @@
         }
         handleInput(event) {
           const target = event.target;
+          if (target.matches('[data-pending-inline-input]')) { this.state.pendingInlineTitle = target.value; return; }
+          if (target.matches('[data-sponsor-message-draft]')) { const sheet = this.state.sponsorMessageSheet; if (sheet) { sheet.message = target.value; this.updateSponsorMessageLink(); } return; }
+          if (target.matches('[data-sponsor-availability-time]')) { this.updateSponsorAvailabilityTime(Number(target.dataset.availabilityDay), target.dataset.availabilityPart, target.value); return; }
+          if (target.matches('[data-takeaway-title-input]')) { this.getTakeawayEditor().draft.title = target.value; target.setCustomValidity(''); return; }
+          if (target.matches('[data-takeaway-note-input]')) { this.getTakeawayEditor().draft.note = target.value; return; }
+          if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; return; }
+          if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); this.updateSponsorPhoneLinks(target.value); return; }
+          if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
+          if (target.matches('[data-sponsor-note-input]')) { this.getSponsorDraft().note = target.value; return; }
+          if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
           if (this.isPathReadOnly()) return;
           if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; }
           if (target.matches('[data-path-step-summary]')) { this.getCurrentStepWork().summary = target.value; }
           if (target.matches('[data-path-step-takeaway]')) { this.getCurrentStepWork().takeaway = target.value; }
+        }
+        renderPendingTopics() {
+          const host = this.root.querySelector('[data-component="sponsor-pending-topics"]');
+          if (!host) return;
+          const rows = this.state.pendingTopics.map((topic) => `<label class="sponsor-pending-row" data-action="open-pending-topic-editor" data-pending-id="${topic.id}"><input class="sponsor-checkbox" type="checkbox" aria-label="${escapeHtml(topic.title)} megbeszélve, útravaló rögzítése"><span>${escapeHtml(topic.title)}</span></label>`).join('');
+          const inlineRow = this.state.pendingInlineTitle === null ? '' : '<label class="sponsor-pending-row sponsor-pending-inline-row"><input class="sponsor-checkbox" type="checkbox" tabindex="-1" aria-hidden="true"><input class="sponsor-pending-inline-input" data-pending-inline-input type="text" autocomplete="off" placeholder="Miről szeretnél beszélni?" aria-label="Új beszélgetési téma"></label>';
+          host.innerHTML = `<div class="sponsor-list-heading"><h2 id="talk-about-title">Erről szeretnék beszélni</h2><button class="sponsor-pending-add" type="button" data-action="add-sponsor-pending-topic" aria-label="Új beszélgetési téma hozzáadása">+</button></div><div class="sponsor-pending-scroll" aria-label="Megbeszélendő témák">${rows || (this.state.pendingInlineTitle === null ? '<p class="sponsor-takeaway-empty">Minden fontos téma a helyére került.</p>' : '')}${inlineRow}</div>`;
+          if (this.state.pendingInlineTitle !== null) {
+            const input = host.querySelector('[data-pending-inline-input]');
+            if (input) input.value = this.state.pendingInlineTitle;
+          }
+        }
+        focusPendingTopicInput() {
+          requestAnimationFrame(() => {
+            const input = this.root.querySelector('[data-pending-inline-input]');
+            input?.focus();
+            input?.scrollIntoView({ block: 'nearest' });
+          });
+        }
+        startPendingTopic() {
+          if (this.state.pendingInlineTitle === null) {
+            this.state.pendingInlineTitle = '';
+            this.renderPendingTopics();
+          }
+          this.focusPendingTopicInput();
+        }
+        commitPendingTopic() {
+          if (this.state.pendingInlineTitle === null) return;
+          const title = this.state.pendingInlineTitle.trim();
+          this.state.pendingInlineTitle = null;
+          if (title) this.state.pendingTopics.push({ id: `pending-${Date.now()}`, title });
+          this.renderPendingTopics();
+        }
+        openPendingTopicEditor(id) {
+          const topic = this.state.pendingTopics.find((candidate) => candidate.id === id);
+          if (!topic) return;
+          this.state.takeawayEditor = { mode: 'create', itemId: null, pendingId: topic.id, returnRoute: 'sponsor', draft: { title: topic.title, icon: 'leaf', note: '' }, deleteMenuOpen: false };
+          this.renderTakeawayEditor();
+          this.navigate('sponsor-takeaway-editor');
+        }
+        takeawayIconSvg(icon) {
+          const iconId = TAKEAWAY_ICON_IDS.includes(icon) ? icon : 'leaf';
+          return `<svg class="icon" aria-hidden="true"><use href="#icon-${iconId}"/></svg>`;
+        }
+        takeawayItems() { return [...this.state.takeaways].sort((first, second) => first.order - second.order); }
+        normalizeTakeawayOrder() { this.state.takeaways = this.takeawayItems().map((item, index) => ({ ...item, order: index })); }
+        renderTakeawayPreview() {
+          const host = this.root.querySelector('[data-component="sponsor-takeaway-preview"]');
+          if (!host) return;
+          const items = this.takeawayItems();
+          const rows = items.slice(0, 3).map((item) => `<button class="sponsor-takeaway-preview-row" type="button" data-action="open-sponsor-takeaway-editor" data-takeaway-id="${item.id}"><span class="takeaway-icon">${this.takeawayIconSvg(item.icon)}</span><span>${escapeHtml(item.title)}</span></button>`).join('');
+          host.innerHTML = `<div class="sponsor-list-heading"><h2 id="take-away-title">Amit magammal viszek</h2><span class="sponsor-takeaway-heading-actions"><span class="sponsor-takeaway-count" aria-label="${items.length} javaslat">${items.length}</span><button class="sponsor-takeaway-open" type="button" data-action="open-sponsor-takeaways" aria-label="Amit magammal viszek teljes lista megnyitása">›</button></span></div><div class="sponsor-takeaway-preview-list">${rows || '<p class="sponsor-takeaway-empty">Még nincs útravaló.</p>'}</div>`;
+        }
+        renderTakeawayList() {
+          const host = this.root.querySelector('[data-component="sponsor-takeaway-list"]');
+          if (!host) return;
+          const items = this.takeawayItems();
+          host.innerHTML = items.length ? items.map((item) => `<div class="sponsor-takeaway-list-row" data-takeaway-row-id="${item.id}"><button class="sponsor-takeaway-edit-row" type="button" data-action="open-sponsor-takeaway-editor" data-takeaway-id="${item.id}"><span class="takeaway-icon">${this.takeawayIconSvg(item.icon)}</span><span>${escapeHtml(item.title)}</span></button><button class="takeaway-drag-handle" type="button" data-takeaway-drag-handle data-takeaway-id="${item.id}" aria-label="${escapeHtml(item.title)} átrendezése"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h10"/></svg></button></div>`).join('') : '<p class="sponsor-takeaway-empty">Még nincs útravaló. Adj hozzá egy javaslatot.</p>';
+        }
+        getTakeawayEditor() {
+          if (!this.state.takeawayEditor) this.state.takeawayEditor = { mode: 'create', itemId: null, returnRoute: 'sponsor-takeaways', draft: { title: '', icon: 'leaf', note: '' }, deleteMenuOpen: false };
+          return this.state.takeawayEditor;
+        }
+        renderTakeawayEditor() {
+          const editor = this.getTakeawayEditor();
+          const screen = this.root.querySelector('[data-component="sponsor-takeaway-editor"]');
+          const title = this.root.querySelector('[data-takeaway-editor-title]');
+          const titleInput = this.root.querySelector('[data-takeaway-title-input]');
+          const noteInput = this.root.querySelector('[data-takeaway-note-input]');
+          const selector = this.root.querySelector('[data-takeaway-icon-selector]');
+          const deleteMenu = this.root.querySelector('[data-takeaway-delete-menu]');
+          const pendingHero = this.root.querySelector('[data-pending-takeaway-editor-hero]');
+          if (screen) { screen.dataset.editorMode = editor.mode; screen.dataset.editorOrigin = editor.pendingId ? 'pending-topic' : 'takeaway'; }
+          if (pendingHero) { pendingHero.hidden = !editor.pendingId; pendingHero.setAttribute('aria-hidden', String(!editor.pendingId)); }
+          if (title) title.textContent = editor.mode === 'edit' ? 'Javaslat szerkesztése' : 'Új javaslat';
+          if (titleInput) titleInput.value = editor.draft.title;
+          if (noteInput) noteInput.value = editor.draft.note;
+          if (selector) selector.innerHTML = TAKEAWAY_ICON_IDS.map((icon) => `<button class="takeaway-icon-choice" type="button" data-action="select-takeaway-icon" data-takeaway-icon="${icon}" aria-label="${icon} ikon" aria-pressed="${editor.draft.icon === icon}">${this.takeawayIconSvg(icon)}</button>`).join('');
+          if (deleteMenu) deleteMenu.hidden = !editor.deleteMenuOpen;
+        }
+        openSponsorTakeaways() { this.renderTakeawayList(); this.navigate('sponsor-takeaways'); }
+        closeSponsorTakeaways() { this.navigate('sponsor'); }
+        openTakeawayEditor(id = null, returnRoute = 'sponsor-takeaways') {
+          const existing = id ? this.state.takeaways.find((item) => item.id === id) : null;
+          if (id && !existing) return;
+          this.state.takeawayEditor = { mode: existing ? 'edit' : 'create', itemId: existing?.id ?? null, returnRoute, draft: existing ? { title: existing.title, icon: existing.icon, note: existing.note } : { title: '', icon: 'leaf', note: '' }, deleteMenuOpen: false };
+          this.renderTakeawayEditor();
+          this.navigate('sponsor-takeaway-editor');
+        }
+        closeTakeawayEditor() {
+          const returnRoute = this.getTakeawayEditor().returnRoute;
+          this.state.takeawayEditor = null;
+          this.navigate(returnRoute);
+        }
+        selectTakeawayIcon(icon) {
+          if (!TAKEAWAY_ICON_IDS.includes(icon)) return;
+          this.getTakeawayEditor().draft.icon = icon;
+          this.renderTakeawayEditor();
+        }
+        saveTakeaway() {
+          const editor = this.getTakeawayEditor();
+          const titleInput = this.root.querySelector('[data-takeaway-title-input]');
+          const title = editor.draft.title.trim();
+          if (!title) {
+            titleInput?.setCustomValidity('Adj meg egy javaslatcímet.');
+            titleInput?.reportValidity();
+            titleInput?.focus();
+            return;
+          }
+          titleInput?.setCustomValidity('');
+          const timestamp = new Date().toISOString();
+          if (editor.mode === 'edit') {
+            const item = this.state.takeaways.find((candidate) => candidate.id === editor.itemId);
+            if (item) Object.assign(item, { title, icon: editor.draft.icon, note: editor.draft.note, updatedAt: timestamp });
+          } else {
+            this.state.takeaways.unshift({ id: `takeaway-${Date.now()}`, title, icon: editor.draft.icon, note: editor.draft.note, createdAt: timestamp, updatedAt: timestamp, order: 0 });
+            this.normalizeTakeawayOrder();
+          }
+          if (editor.pendingId) {
+            this.state.pendingTopics = this.state.pendingTopics.filter((topic) => topic.id !== editor.pendingId);
+            this.renderPendingTopics();
+          }
+          this.renderTakeawayPreview();
+          this.renderTakeawayList();
+          const returnRoute = editor.returnRoute;
+          this.state.takeawayEditor = null;
+          this.navigate(returnRoute);
+        }
+        toggleTakeawayDeleteMenu() {
+          const editor = this.getTakeawayEditor();
+          if (editor.mode !== 'edit') return;
+          editor.deleteMenuOpen = !editor.deleteMenuOpen;
+          const menu = this.root.querySelector('[data-takeaway-delete-menu]');
+          if (menu) menu.hidden = !editor.deleteMenuOpen;
+        }
+        deleteTakeaway() {
+          const editor = this.getTakeawayEditor();
+          if (editor.mode !== 'edit' || !editor.itemId || !window.confirm('Biztosan törlöd ezt a javaslatot?')) return;
+          this.state.takeaways = this.state.takeaways.filter((item) => item.id !== editor.itemId);
+          this.normalizeTakeawayOrder();
+          this.renderTakeawayPreview();
+          this.renderTakeawayList();
+          this.state.takeawayEditor = null;
+          this.navigate('sponsor-takeaways');
+        }
+        beginTakeawayReorder(event) {
+          const handle = event.target.closest('[data-takeaway-drag-handle]');
+          if (!handle || this.state.route !== 'sponsor-takeaways') return;
+          this.takeawayDrag = { id: handle.dataset.takeawayId, pointerId: event.pointerId, overId: null };
+          handle.setPointerCapture?.(event.pointerId);
+          event.preventDefault();
+        }
+        updateTakeawayReorder(event) {
+          if (!this.takeawayDrag || event.pointerId !== this.takeawayDrag.pointerId) return;
+          const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-takeaway-row-id]');
+          if (target && target.dataset.takeawayRowId !== this.takeawayDrag.id) this.takeawayDrag.overId = target.dataset.takeawayRowId;
+          event.preventDefault();
+        }
+        finishTakeawayReorder(event) {
+          const drag = this.takeawayDrag;
+          if (!drag || event.pointerId !== drag.pointerId) return;
+          this.takeawayDrag = null;
+          if (!drag.overId || drag.overId === drag.id) return;
+          const items = this.takeawayItems();
+          const fromIndex = items.findIndex((item) => item.id === drag.id);
+          const toIndex = items.findIndex((item) => item.id === drag.overId);
+          if (fromIndex < 0 || toIndex < 0) return;
+          const [moved] = items.splice(fromIndex, 1);
+          items.splice(toIndex, 0, moved);
+          this.state.takeaways = items.map((item, index) => ({ ...item, order: index, updatedAt: item.id === moved.id ? new Date().toISOString() : item.updatedAt }));
+          this.renderTakeawayPreview();
+          this.renderTakeawayList();
+        }
+        getSponsorDraft() { return this.state.sponsorDraft ||= { ...this.state.sponsor }; }
+        formatSponsorSince(value) {
+          const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+          if (!match) return '2024. május 14.';
+          const months = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          return `${match[1]}. ${months[Number(match[2]) - 1]} ${Number(match[3])}.`;
+        }
+        sponsorDialValue(phone) { return String(phone || '').trim().replace(/[^\d+]/g, '').replace(/(?!^)\+/g, ''); }
+        updateSponsorPhoneLinks(phone) {
+          const dialValue = this.sponsorDialValue(phone);
+          this.root.querySelectorAll('[data-sponsor-call-link]').forEach((link) => { link.setAttribute('href', `tel:${dialValue}`); });
+          this.root.querySelectorAll('[data-sponsor-message-link]').forEach((link) => { link.setAttribute('href', `sms:${dialValue}`); });
+        }
+        renderSponsorSurfaces() {
+          const sponsor = this.state.sponsor;
+          this.root.querySelectorAll('[data-sponsor-name-display]').forEach((element) => { element.textContent = sponsor.name; });
+          this.root.querySelectorAll('[data-sponsor-avatar]').forEach((image) => { image.alt = sponsor.name; });
+          this.root.querySelectorAll('[data-sponsor-profile-link]').forEach((element) => { element.setAttribute('aria-label', `${sponsor.name} szponzor adatai`); });
+          this.root.querySelectorAll('[data-sponsor-since-main]').forEach((element) => { element.textContent = `${this.formatSponsorSince(sponsor.since)} óta`; });
+          this.updateSponsorPhoneLinks(sponsor.phone);
+          this.renderSponsorNextCard();
+          this.renderSponsorAvailabilitySummary();
+        }
+        sponsorNextDateObject(value) {
+          const [year, month, day] = String(value || '').split('-').map(Number);
+          return year && month && day ? new Date(year, month - 1, day) : null;
+        }
+        sponsorNextMonthKey(value) {
+          const date = this.sponsorNextDateObject(value) || new Date();
+          return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-01`;
+        }
+        formatSponsorNextDate(value, { withWeekday = false } = {}) {
+          const date = this.sponsorNextDateObject(value);
+          if (!date) return '';
+          const months = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          const weekdays = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+          const label = `${date.getFullYear()}. ${months[date.getMonth()]} ${date.getDate()}.`;
+          return withWeekday ? `${label}, ${weekdays[date.getDay()]}` : label;
+        }
+        formatSponsorNextCardDate(value) {
+          const today = localDateIso();
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          if (value === today) return 'Ma';
+          if (value === localDateIso(tomorrow)) return 'Holnap';
+          const date = this.sponsorNextDateObject(value);
+          if (!date) return 'Nincs beállítva';
+          const months = ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'];
+          return `${months[date.getMonth()]} ${date.getDate()}.`;
+        }
+        renderSponsorNextCard() {
+          const card = this.root.querySelector('[data-component="sponsor-next-card"]');
+          const dateDisplay = this.root.querySelector('[data-sponsor-next-date-display]');
+          const timeDisplay = this.root.querySelector('[data-sponsor-next-time-display]');
+          if (!card || !dateDisplay || !timeDisplay) return;
+          const conversation = this.state.nextConversation;
+          if (!conversation) {
+            dateDisplay.textContent = 'Nincs beállítva';
+            timeDisplay.textContent = '+ Időpont beállítása';
+            card.setAttribute('aria-label', 'Következő kapcsolat: nincs beállítva. Időpont beállítása');
+            return;
+          }
+          if (conversation.isInitial) {
+            dateDisplay.textContent = 'Ma este';
+            timeDisplay.textContent = `${conversation.time} körül felhívni ${this.state.sponsor.name}`;
+            card.setAttribute('aria-label', `Következő kapcsolat: Ma este, ${conversation.time} körül felhívni ${this.state.sponsor.name}`);
+            return;
+          }
+          const dateLabel = this.formatSponsorNextCardDate(conversation.date);
+          dateDisplay.textContent = dateLabel;
+          timeDisplay.textContent = conversation.time;
+          card.setAttribute('aria-label', `Következő kapcsolat: ${dateLabel}, ${conversation.time}`);
+        }
+        getSponsorNextSheet() { return this.state.sponsorNextSheet; }
+        setAppOverlayBackgroundInert(value) {
+          const activeScreen = this.root.querySelector(`[data-route="${this.state.route}"]`);
+          [activeScreen, this.mainNavigation].filter(Boolean).forEach((element) => {
+            if (value) element.setAttribute('inert', ''); else element.removeAttribute('inert');
+          });
+        }
+        openAppOverlaySheet(host, trigger) {
+          if (!host) return;
+          clearTimeout(this.sponsorSheetCloseTimer);
+          this.sponsorSheetClosing = false;
+          this.sponsorSheetTrigger = trigger || document.activeElement;
+          host.hidden = false;
+          host.setAttribute('aria-hidden', 'false');
+          host.dataset.sheetState = 'closed';
+          this.setAppOverlayBackgroundInert(true);
+          requestAnimationFrame(() => {
+            if (!host.hidden) host.dataset.sheetState = 'open';
+            (host.querySelector('[data-sheet-close]') || host.querySelector('[role="dialog"]'))?.focus();
+          });
+        }
+        closeAppOverlaySheet(host) {
+          if (!host || host.hidden) return;
+          this.sponsorSheetClosing = true;
+          host.dataset.sheetState = 'closed';
+          const finish = () => {
+            host.hidden = true;
+            host.setAttribute('aria-hidden', 'true');
+            const anotherSheetOpen = this.root.querySelector('[data-app-overlay-sheet]:not([hidden])');
+            this.setAppOverlayBackgroundInert(Boolean(anotherSheetOpen));
+            this.sponsorSheetClosing = false;
+            if (!anotherSheetOpen) this.sponsorSheetTrigger?.focus?.();
+          };
+          clearTimeout(this.sponsorSheetCloseTimer);
+          this.sponsorSheetCloseTimer = globalThis.setTimeout(finish, this.motionReduced ? 0 : 190);
+        }
+        openSponsorNextSheet(trigger) {
+          const conversation = this.state.nextConversation;
+          const initialTime = conversation?.time || '20:00';
+          this.state.sponsorNextSheet = {
+            step: 'date',
+            selectedDate: conversation?.date && this.isSponsorNextDateAvailable(conversation.date) ? conversation.date : null,
+            time: initialTime,
+            calendarMonth: this.sponsorNextMonthKey(conversation?.date || localDateIso())
+          };
+          if (this.state.sponsorNextSheet.selectedDate) this.state.sponsorNextSheet.time = this.firstSponsorNextTimeForDate(this.state.sponsorNextSheet.selectedDate, initialTime);
+          const host = this.root.querySelector('[data-component="sponsor-next-sheet"]');
+          if (!host) return;
+          this.renderSponsorNextSheet();
+          this.openAppOverlaySheet(host, trigger);
+        }
+        closeSponsorNextSheet() {
+          const host = this.root.querySelector('[data-component="sponsor-next-sheet"]');
+          if (!host || host.hidden) return;
+          this.state.sponsorNextSheet = null;
+          this.closeAppOverlaySheet(host);
+        }
+        sponsorMessageDefaultCopy() { return 'Szia! Ha tudsz, kérlek hívj fel. Szeretnék beszélni veled.'; }
+        hasSponsorPhone() { return Boolean(this.sponsorDialValue(this.state.sponsor.phone).replace(/\D/g, '')); }
+        openSponsorMessageSheet(trigger) {
+          const host = this.root.querySelector('[data-component="sponsor-message-sheet"]');
+          if (!host) return;
+          this.state.sponsorMessageSheet = { message: this.sponsorMessageDefaultCopy(), phoneWarning: false };
+          this.renderSponsorMessageSheet();
+          this.openAppOverlaySheet(host, trigger);
+        }
+        closeSponsorMessageSheet() {
+          const host = this.root.querySelector('[data-component="sponsor-message-sheet"]');
+          if (!host || host.hidden) return;
+          this.state.sponsorMessageSheet = null;
+          this.closeAppOverlaySheet(host);
+        }
+        renderSponsorMessageSheet() {
+          const sheet = this.state.sponsorMessageSheet;
+          const content = this.root.querySelector('[data-component="sponsor-message-sheet-content"]');
+          if (!sheet || !content) return;
+          const sponsorName = escapeHtml(this.state.sponsor.name);
+          const hasPhone = this.hasSponsorPhone();
+          const dialValue = this.sponsorDialValue(this.state.sponsor.phone);
+          const href = `sms:${dialValue}?body=${encodeURIComponent(sheet.message)}`;
+          const primary = hasPhone
+            ? `<a class="sponsor-message-open" data-sponsor-need-message-link href="${href}" aria-label="Üzenet megnyitása ${sponsorName} számára">Üzenet megnyitása</a>`
+            : '<button class="sponsor-message-open" type="button" data-action="show-sponsor-message-phone-warning">Üzenet megnyitása</button>';
+          content.innerHTML = `<span class="sponsor-message-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><h2 id="sponsor-message-sheet-title">Beszélnem kell veled</h2><p class="sponsor-message-sheet-copy">Küldj egy rövid jelzést ${sponsorName}nek, hogy szeretnél vele beszélni.</p><textarea class="sponsor-message-field" data-sponsor-message-draft aria-label="Előre kitöltött üzenet ${sponsorName} számára" rows="2">${escapeHtml(sheet.message)}</textarea>${sheet.phoneWarning ? `<p class="sponsor-message-phone-warning" role="status">Előbb add meg ${sponsorName} telefonszámát.</p>` : ''}${primary}<button class="sponsor-message-cancel" type="button" data-action="close-sponsor-message-sheet">Mégse</button>`;
+        }
+        updateSponsorMessageLink() {
+          const sheet = this.state.sponsorMessageSheet;
+          const link = this.root.querySelector('[data-sponsor-need-message-link]');
+          if (!sheet || !link || !this.hasSponsorPhone()) return;
+          link.setAttribute('href', `sms:${this.sponsorDialValue(this.state.sponsor.phone)}?body=${encodeURIComponent(sheet.message)}`);
+        }
+        showSponsorMessagePhoneWarning() {
+          const sheet = this.state.sponsorMessageSheet;
+          if (!sheet) return;
+          sheet.phoneWarning = true;
+          this.renderSponsorMessageSheet();
+        }
+        renderSponsorNextSheet() {
+          const sheet = this.getSponsorNextSheet();
+          const host = this.root.querySelector('[data-component="sponsor-next-sheet"]');
+          const content = this.root.querySelector('[data-component="sponsor-next-sheet-content"]');
+          const leading = host?.querySelector('.sponsor-next-sheet-header > :first-child');
+          if (!sheet || !content) return;
+          if (leading) leading.innerHTML = sheet.step === 'time' ? '<button class="sponsor-next-step-back" type="button" data-action="sponsor-next-to-date" aria-label="Vissza a dátum választásához"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button>' : '';
+          content.innerHTML = sheet.step === 'time' ? this.renderSponsorNextTimeStep(sheet) : this.renderSponsorNextDateStep(sheet);
+          if (sheet.step === 'time') requestAnimationFrame(() => content.querySelector('.sponsor-next-time-option.is-selected')?.scrollIntoView({ block: 'center' }));
+        }
+        renderSponsorNextDateStep(sheet) {
+          const month = this.sponsorNextDateObject(sheet.calendarMonth);
+          const monthNames = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          const cells = this.renderMonthCalendarCells({ month, selectedValue: sheet.selectedDate, action: 'select-sponsor-next-date', dataAttribute: 'data-next-date', dayClass: 'sponsor-next-day', spacerClass: 'sponsor-next-day-spacer', selectable: (value) => this.isSponsorNextDateAvailable(value) });
+          return `<section class="sponsor-next-sheet-step" data-sheet-step="date"><h3>Dátum</h3><p class="sponsor-next-sheet-intro">Mikor beszéltek legközelebb?</p><section class="sponsor-next-calendar" aria-label="Dátum kiválasztása"><div class="sponsor-next-month-switch"><button type="button" data-action="sponsor-next-previous-month" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>${month.getFullYear()}. ${monthNames[month.getMonth()]}</strong><button type="button" data-action="sponsor-next-next-month" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="sponsor-next-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sze</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span></div><div class="sponsor-next-calendar-grid">${cells}</div></section><div class="sponsor-next-sheet-footer"><button class="sponsor-next-primary" type="button" data-action="sponsor-next-to-time"${sheet.selectedDate ? '' : ' disabled'}>Időpont kiválasztása</button>${this.state.nextConversation ? '<button class="sponsor-next-clear" type="button" data-action="clear-sponsor-next">Időpont törlése</button>' : ''}</div></section>`;
+        }
+        renderSponsorNextTimeStep(sheet) {
+          const slots = this.halfHourTimeSlots();
+          const options = slots.map((time) => {
+            const available = this.isSponsorNextTimeAvailable(sheet.selectedDate, time);
+            const selected = available && time === sheet.time;
+            return `<button class="sponsor-next-time-option${selected ? ' is-selected' : ''}" type="button" data-action="select-sponsor-next-time" data-next-time="${time}" aria-pressed="${selected}"${available ? '' : ' disabled aria-disabled="true"'}>${time}</button>`;
+          }).join('');
+          return `<section class="sponsor-next-sheet-step" data-sheet-step="time"><h3>Időpont</h3><p class="sponsor-next-time-date">${escapeHtml(this.formatSponsorNextDate(sheet.selectedDate, { withWeekday: true }))}</p><section class="sponsor-next-time-picker sponsor-next-slot-picker" aria-label="Időpont kiválasztása"><div class="sponsor-next-time-options">${options}</div></section><div class="sponsor-next-sheet-footer"><button class="sponsor-next-primary" type="button" data-action="save-sponsor-next">Mentés</button>${this.state.nextConversation ? '<button class="sponsor-next-clear" type="button" data-action="clear-sponsor-next">Időpont törlése</button>' : ''}</div></section>`;
+        }
+        moveSponsorNextMonth(direction) {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet) return;
+          const month = this.sponsorNextDateObject(sheet.calendarMonth);
+          month.setMonth(month.getMonth() + direction);
+          sheet.calendarMonth = localDateIso(new Date(month.getFullYear(), month.getMonth(), 1));
+          this.renderSponsorNextSheet();
+        }
+        selectSponsorNextDate(value) {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet || !this.sponsorNextDateObject(value) || !this.isSponsorNextDateAvailable(value)) return;
+          sheet.selectedDate = value;
+          sheet.time = this.firstSponsorNextTimeForDate(value, sheet.time);
+          this.renderSponsorNextSheet();
+        }
+        openSponsorNextTimeStep() {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet?.selectedDate) return;
+          sheet.step = 'time';
+          this.renderSponsorNextSheet();
+        }
+        openSponsorNextDateStep() {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet) return;
+          sheet.step = 'date';
+          this.renderSponsorNextSheet();
+        }
+        selectSponsorNextTimePart(part, value) {
+          const sheet = this.getSponsorNextSheet();
+          const numeric = Number(value);
+          if (!sheet || !Number.isInteger(numeric)) return;
+          const [hour, minute] = sheet.time.split(':').map(Number);
+          sheet.time = `${String(part === 'hour' ? Math.max(0, Math.min(23, numeric)) : hour).padStart(2, '0')}:${String(part === 'minute' ? Math.max(0, Math.min(59, numeric)) : minute).padStart(2, '0')}`;
+          this.renderSponsorNextSheet();
+        }
+        selectSponsorNextTime(value) {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet || !this.isSponsorNextTimeAvailable(sheet.selectedDate, value)) return;
+          sheet.time = value;
+          this.renderSponsorNextSheet();
+        }
+        saveSponsorNextConversation() {
+          const sheet = this.getSponsorNextSheet();
+          if (!sheet?.selectedDate) return;
+          this.state.nextConversation = { date: sheet.selectedDate, time: sheet.time, isInitial: false };
+          this.renderSponsorNextCard();
+          this.closeSponsorNextSheet();
+        }
+        clearSponsorNextConversation() {
+          this.state.nextConversation = null;
+          this.renderSponsorNextCard();
+          this.closeSponsorNextSheet();
+        }
+        cloneSponsorAvailability(availability = this.state.sponsorAvailability) { return { mode: availability.mode, days: availability.days.map((day) => ({ ...day })) }; }
+        availabilityDayIsValid(day) { return !day.enabled || (Boolean(day.start) && Boolean(day.end) && day.start < day.end); }
+        hasSponsorAvailabilityRestrictions(availability = this.state.sponsorAvailability) { return availability.mode === 'weekly'; }
+        formatSponsorAvailabilitySummary(availability = this.state.sponsorAvailability) {
+          if (availability.mode === 'unset') return { primary: 'Nincs megadva', secondary: '', empty: true };
+          if (availability.mode === 'anytime') return { primary: 'Bármikor', secondary: '', empty: false };
+          const weekdays = availability.days.filter((day) => day.key >= 1 && day.key <= 5);
+          const weekend = availability.days.filter((day) => day.key === 6 || day.key === 0);
+          const weekdayUniform = weekdays.length === 5 && weekdays.every((day) => day.enabled && day.start === weekdays[0].start && day.end === weekdays[0].end);
+          const weekendUniform = weekend.length === 2 && weekend.every((day) => day.enabled && day.start === weekend[0].start && day.end === weekend[0].end);
+          return { primary: weekdayUniform ? `H–P · ${weekdays[0].start}–${weekdays[0].end}` : 'Hétköznap · változó', secondary: weekendUniform ? `Hétvége · ${weekend[0].start}–${weekend[0].end}` : 'Hétvége · változó', empty: false };
+        }
+        renderSponsorAvailabilitySummary() {
+          const summary = this.formatSponsorAvailabilitySummary();
+          this.root.querySelectorAll('[data-sponsor-availability-primary]').forEach((element) => { element.textContent = summary.primary; element.classList.toggle('is-empty', summary.empty); });
+          this.root.querySelectorAll('[data-sponsor-availability-secondary]').forEach((element) => { element.textContent = summary.secondary; });
+        }
+        sponsorAvailabilityForDate(value, availability = this.state.sponsorAvailability) {
+          const date = this.sponsorNextDateObject(value);
+          if (!date || !this.hasSponsorAvailabilityRestrictions(availability)) return null;
+          return availability.days.find((day) => day.key === date.getDay()) || null;
+        }
+        isSponsorNextDateAvailable(value, availability = this.state.sponsorAvailability) {
+          const day = this.sponsorAvailabilityForDate(value, availability);
+          return !day || (day.enabled && this.availabilityDayIsValid(day));
+        }
+        isSponsorNextTimeAvailable(dateValue, time, availability = this.state.sponsorAvailability) {
+          const day = this.sponsorAvailabilityForDate(dateValue, availability);
+          return !day || (day.enabled && this.availabilityDayIsValid(day) && time >= day.start && time <= day.end);
+        }
+        firstSponsorNextTimeForDate(dateValue, preferredTime = '') {
+          if (preferredTime && this.isSponsorNextTimeAvailable(dateValue, preferredTime)) return preferredTime;
+          const day = this.sponsorAvailabilityForDate(dateValue);
+          return day?.start || '00:00';
+        }
+        openSponsorAvailability(trigger) {
+          const host = this.root.querySelector('[data-component="sponsor-availability-sheet"]');
+          if (!host) return;
+          this.state.sponsorAvailabilityDraft = this.cloneSponsorAvailability();
+          this.renderSponsorAvailabilitySheet();
+          this.openAppOverlaySheet(host, trigger);
+        }
+        closeSponsorAvailability() {
+          const host = this.root.querySelector('[data-component="sponsor-availability-sheet"]');
+          if (!host || host.hidden) return;
+          this.state.sponsorAvailabilityDraft = null;
+          this.closeAppOverlaySheet(host);
+        }
+        renderSponsorAvailabilitySheet() {
+          const draft = this.state.sponsorAvailabilityDraft;
+          const content = this.root.querySelector('[data-component="sponsor-availability-sheet-content"]');
+          if (!draft || !content) return;
+          const hasInvalidDays = draft.mode !== 'anytime' && draft.days.some((day) => !this.availabilityDayIsValid(day));
+          const rows = draft.days.map((day) => {
+            const invalid = !this.availabilityDayIsValid(day);
+            const timeControls = day.enabled
+              ? `<span class="sponsor-availability-time-group"><input class="sponsor-availability-time" data-sponsor-availability-time data-availability-day="${day.key}" data-availability-part="start" type="time" value="${day.start}" aria-label="${day.label} kezdő idő"><span class="sponsor-availability-time-separator" aria-hidden="true">–</span><input class="sponsor-availability-time" data-sponsor-availability-time data-availability-day="${day.key}" data-availability-part="end" type="time" value="${day.end}" aria-label="${day.label} záró idő"></span>`
+              : '<span class="sponsor-availability-unavailable">Nem elérhető</span>';
+            return `<div class="sponsor-availability-day${day.enabled ? '' : ' is-disabled'}" data-availability-row="${day.key}"><strong>${day.label}</strong>${timeControls}<button class="sponsor-availability-toggle" type="button" data-action="toggle-sponsor-availability-day" data-availability-day="${day.key}" aria-pressed="${day.enabled}" aria-label="${day.label} elérhetőségének kapcsolása">${day.enabled ? 'Be' : 'Ki'}</button>${invalid ? `<p class="sponsor-availability-validation" data-availability-validation="${day.key}">A záróidő legyen később.</p>` : `<p class="sponsor-availability-validation" data-availability-validation="${day.key}" hidden></p>`}</div>`;
+          }).join('');
+          content.innerHTML = `<h2 id="sponsor-availability-sheet-title">Mikor kereshetem?</h2><p class="sponsor-availability-sheet-intro">Add meg, mikor szoktad nyugodtan keresni ${escapeHtml(this.state.sponsor.name)}t.</p><section class="sponsor-availability-anytime" aria-label="Bármikori elérhetőség"><span><strong>Bármikor kereshetem</strong><small>Nem korlátozzuk a napokat és időpontokat.</small></span><button class="sponsor-availability-toggle" type="button" data-action="toggle-sponsor-availability-anytime" aria-pressed="${draft.mode === 'anytime'}" aria-label="Bármikor kereshetem kapcsoló">${draft.mode === 'anytime' ? 'Be' : 'Ki'}</button></section><section class="sponsor-availability-days"${draft.mode === 'anytime' ? ' hidden' : ''} aria-label="Heti elérhetőségi idősávok">${rows}</section><footer class="sponsor-availability-footer"><button class="sponsor-availability-done" type="button" data-action="save-sponsor-availability"${hasInvalidDays ? ' disabled' : ''}>Kész</button></footer>`;
+        }
+        toggleSponsorAvailabilityAnytime() {
+          const draft = this.state.sponsorAvailabilityDraft;
+          if (!draft) return;
+          draft.mode = draft.mode === 'anytime' ? 'weekly' : 'anytime';
+          this.renderSponsorAvailabilitySheet();
+        }
+        toggleSponsorAvailabilityDay(key) {
+          const draft = this.state.sponsorAvailabilityDraft;
+          const day = draft?.days.find((candidate) => candidate.key === key);
+          if (!day) return;
+          draft.mode = 'weekly';
+          day.enabled = !day.enabled;
+          this.renderSponsorAvailabilitySheet();
+        }
+        updateSponsorAvailabilityTime(key, part, value) {
+          const draft = this.state.sponsorAvailabilityDraft;
+          const day = draft?.days.find((candidate) => candidate.key === key);
+          if (!day || !['start', 'end'].includes(part)) return;
+          draft.mode = 'weekly';
+          day[part] = value;
+          const valid = this.availabilityDayIsValid(day);
+          const validation = this.root.querySelector(`[data-availability-validation="${key}"]`);
+          if (validation) { validation.hidden = valid; validation.textContent = valid ? '' : 'A záróidő legyen később.'; }
+          this.root.querySelectorAll(`[data-availability-day="${key}"][data-sponsor-availability-time]`).forEach((input) => input.setCustomValidity(valid ? '' : 'A záróidő legyen később.'));
+          const done = this.root.querySelector('[data-action="save-sponsor-availability"]');
+          if (done) done.disabled = draft.days.some((candidate) => !this.availabilityDayIsValid(candidate));
+        }
+        saveSponsorAvailability() {
+          const draft = this.state.sponsorAvailabilityDraft;
+          if (!draft || (draft.mode !== 'anytime' && draft.days.some((day) => !this.availabilityDayIsValid(day)))) return;
+          if (draft.mode === 'unset') draft.mode = 'weekly';
+          this.state.sponsorAvailability = this.cloneSponsorAvailability(draft);
+          this.renderSponsorAvailabilitySummary();
+          this.renderSponsorDetails();
+          this.closeSponsorAvailability();
+        }
+        renderSponsorDetails() {
+          const sponsor = this.getSponsorDraft();
+          const nameInput = this.root.querySelector('[data-sponsor-name-input]');
+          const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
+          const dateInput = this.root.querySelector('[data-sponsor-date-input]');
+          const noteInput = this.root.querySelector('[data-sponsor-note-input]');
+          if (nameInput) nameInput.value = sponsor.name;
+          if (phoneInput) phoneInput.value = sponsor.phone;
+          if (dateInput) dateInput.value = sponsor.since;
+          if (noteInput) noteInput.value = sponsor.note;
+          this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(sponsor.since); });
+          this.updateSponsorPhoneLinks(sponsor.phone);
+          this.renderSponsorAvailabilitySummary();
+        }
+        openSponsorDetails() { this.state.sponsorDraft = { ...this.state.sponsor }; this.renderSponsorDetails(); this.navigate('sponsor-details'); }
+        closeSponsorDetails() { this.state.sponsorDraft = null; this.renderSponsorSurfaces(); this.navigate('sponsor'); }
+        openSponsorDatePicker() {
+          const input = this.root.querySelector('[data-sponsor-date-input]');
+          if (!input) return;
+          if (typeof input.showPicker === 'function') input.showPicker(); else input.focus();
+        }
+        saveSponsorDetails() {
+          const draft = this.getSponsorDraft();
+          const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
+          if (!draft.phone.trim()) {
+            phoneInput?.setCustomValidity('Adj meg egy telefonszámot.');
+            phoneInput?.reportValidity();
+            phoneInput?.focus();
+            return;
+          }
+          phoneInput?.setCustomValidity('');
+          this.state.sponsor = { ...draft, name: draft.name.trim() || this.state.sponsor.name, phone: draft.phone.trim() };
+          this.state.sponsorDraft = { ...this.state.sponsor };
+          this.renderSponsorSurfaces();
+          this.renderSponsorDetails();
         }
         toggleFullscreen() { const operation = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); if (operation && typeof operation.catch === 'function') operation.catch(() => {}); }
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
@@ -1302,9 +2480,204 @@
           const metricsTitle = this.historyDetailScreen.querySelector?.('#timeline-number-title');
           if (metricsTitle) metricsTitle.textContent = view === 'calendar' ? 'Utam számokban' : 'Idővonalam számokban';
         }
-        openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.navigate('meetings'); }
+        meetingDateObject(value) {
+          const match = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/.exec(value || '');
+          return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null;
+        }
+        renderMonthCalendarCells({ month, selectedValue = '', action, dataAttribute, dayClass, spacerClass, selectable = () => true, extraClass = () => '', ariaLabel = (value) => value }) {
+          const firstWeekday = (new Date(month.getFullYear(), month.getMonth(), 1).getDay() + 6) % 7;
+          const dayCount = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+          return [
+            ...Array.from({ length: firstWeekday }, () => `<span class="${spacerClass}" aria-hidden="true"></span>`),
+            ...Array.from({ length: dayCount }, (_, index) => {
+              const value = localDateIso(new Date(month.getFullYear(), month.getMonth(), index + 1));
+              const canSelect = selectable(value);
+              const selected = canSelect && value === selectedValue;
+              const today = value === localDateIso();
+              return `<button class="${dayClass}${today ? ' is-today' : ''}${selected ? ' is-selected' : ''}${extraClass(value) ? ` ${extraClass(value)}` : ''}" type="button" data-action="${action}" ${dataAttribute}="${value}" aria-pressed="${selected}" aria-label="${escapeHtml(ariaLabel(value, index + 1))}"${canSelect ? '' : ' disabled aria-disabled="true"'}>${index + 1}</button>`;
+            })
+          ].join('');
+        }
+        halfHourTimeSlots() { return Array.from({ length: 48 }, (_, index) => `${String(Math.floor(index / 2)).padStart(2, '0')}:${index % 2 ? '30' : '00'}`); }
+        meetingMonthKey(value) {
+          const date = this.meetingDateObject(value) || new Date();
+          return localDateIso(new Date(date.getFullYear(), date.getMonth(), 1));
+        }
+        formatMeetingDate(value, { withWeekday = false, short = false } = {}) {
+          const date = this.meetingDateObject(value);
+          if (!date) return '';
+          const months = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          const weekdays = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+          if (short) return `${months[date.getMonth()].slice(0, 3)}. ${date.getDate()}.`;
+          return `${date.getFullYear()}. ${months[date.getMonth()]} ${date.getDate()}.${withWeekday ? `, ${weekdays[date.getDay()]}` : ''}`;
+        }
+        isMeetingPast(meeting) {
+          return new Date(`${meeting.date}T${meeting.end || meeting.start || '00:00'}:00`).getTime() < Date.now();
+        }
+        findMeeting(id) { return this.state.meetings.find((meeting) => meeting.id === id); }
+        meetingsForDate(date) { return this.state.meetings.filter((meeting) => meeting.date === date).sort((first, second) => first.start.localeCompare(second.start)); }
+        attendedMeetings() { return this.state.meetings.filter((meeting) => meeting.attended).sort((first, second) => `${second.date}${second.start}`.localeCompare(`${first.date}${first.start}`)); }
+        meetingFormatText(meeting) { return meeting.format === 'online' ? 'Online' : 'Személyes'; }
+        meetingLocationText(meeting) { return meeting.format === 'online' ? 'Online' : [meeting.venue, meeting.address].filter(Boolean).join(' · '); }
+        renderMeetings() {
+          this.renderMeetingsMain();
+          this.renderMeetingTimelineEvents();
+        }
+        renderMeetingsMain() {
+          if (!this.meetingsContent) return;
+          const view = this.state.meetingsView;
+          this.meetingsContent.innerHTML = `<nav class="meetings-segmented" aria-label="Gyűlések nézete"><button type="button" data-action="switch-meetings-view" data-meetings-view="calendar" aria-pressed="${view === 'calendar'}">Naptár</button><button type="button" data-action="switch-meetings-view" data-meetings-view="past" aria-pressed="${view === 'past'}">Korábbi gyűléseim</button></nav>${view === 'calendar' ? this.renderMeetingsCalendarView() : this.renderMeetingsPastView()}`;
+        }
+        renderMeetingsCalendarView() {
+          const month = this.meetingDateObject(this.state.meetingsCalendarMonth);
+          const monthNames = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          const days = this.renderMonthCalendarCells({
+            month,
+            selectedValue: this.state.meetingsSelectedDate,
+            action: 'select-meetings-date',
+            dataAttribute: 'data-meeting-date',
+            dayClass: 'meeting-calendar-day',
+            spacerClass: 'meeting-calendar-spacer',
+            extraClass: (date) => {
+              const meetings = this.meetingsForDate(date);
+              return `${meetings.length ? 'has-meeting' : ''}${meetings.some((meeting) => meeting.planned) ? ' is-planned' : ''}`.trim();
+            },
+            ariaLabel: (date) => {
+              const count = this.meetingsForDate(date).length;
+              return `${this.formatMeetingDate(date, { withWeekday: true })}${count ? `, ${count} gyűlés` : ''}`;
+            }
+          });
+          const selectedMeetings = this.meetingsForDate(this.state.meetingsSelectedDate);
+          return `<section class="meetings-calendar-card" aria-label="Havi naptár"><div class="meeting-calendar-month"><button type="button" data-action="meetings-previous-month" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>${month.getFullYear()}. ${monthNames[month.getMonth()]}</strong><button type="button" data-action="meetings-next-month" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="meeting-calendar-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sze</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span></div><div class="meeting-calendar-grid">${days}</div></section><div class="meetings-day-heading"><h2>${escapeHtml(this.formatMeetingDate(this.state.meetingsSelectedDate, { withWeekday: true }))}</h2>${selectedMeetings.length ? `<span class="meetings-count-badge">${selectedMeetings.length} gyűlés</span>` : ''}</div>${selectedMeetings.length ? `<section class="meetings-day-list" aria-label="Kiválasztott napi gyűlések">${selectedMeetings.map((meeting) => this.renderMeetingCard(meeting)).join('')}</section>` : `<section class="meetings-empty"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><p>Ezen a napon nincs gyűlés.</p><button type="button" data-action="open-new-meeting">+ Gyűlés hozzáadása</button></section>`}`;
+        }
+        renderMeetingCard(meeting) {
+          const past = this.isMeetingPast(meeting);
+          const attendance = past
+            ? (meeting.attended ? `<button class="meeting-attendance-action is-selected" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="meetings">✓ Ott voltam</button>` : `<button class="meeting-attendance-action" type="button" data-action="confirm-meeting-attendance" data-meeting-id="${meeting.id}">Ott voltam</button>`)
+            : `<button class="meeting-attendance-action${meeting.planned ? ' is-selected' : ''}" type="button" data-action="toggle-meeting-planned" data-meeting-id="${meeting.id}">${meeting.planned ? '✓ Ott leszek' : '○ Ott leszek'}</button>`;
+          return `<article class="meeting-card" data-action="open-meeting-detail" data-meeting-id="${meeting.id}"><button class="meeting-card-main" type="button" data-action="open-meeting-detail" data-meeting-id="${meeting.id}" aria-label="${escapeHtml(meeting.title)} részletei"><span class="meeting-card-time">${escapeHtml(meeting.start)}<small>${escapeHtml(meeting.end)}</small></span><span class="meeting-card-copy"><h3>${escapeHtml(meeting.title)}</h3><p>${escapeHtml(this.meetingLocationText(meeting))}</p><p class="meeting-card-meta">${escapeHtml(meeting.openness)} · ${escapeHtml(this.meetingFormatText(meeting))}</p></span></button><div class="meeting-card-actions">${attendance}<span class="meeting-card-chevron" aria-hidden="true">›</span></div></article>`;
+        }
+        renderMeetingsPastView() {
+          const meetings = this.attendedMeetings();
+          if (!meetings.length) return `<section class="meetings-empty" style="margin-top:18px"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><p>Még nincs rögzített gyűlésed.</p><p>Ha egy elmúlt gyűlésnél megjelölöd, hogy ott voltál, itt fog megjelenni.</p></section>`;
+          let lastMonth = '';
+          const rows = meetings.map((meeting) => {
+            const date = this.meetingDateObject(meeting.date);
+            const month = `${date.getFullYear()}. ${['JANUÁR', 'FEBRUÁR', 'MÁRCIUS', 'ÁPRILIS', 'MÁJUS', 'JÚNIUS', 'JÚLIUS', 'AUGUSZTUS', 'SZEPTEMBER', 'OKTÓBER', 'NOVEMBER', 'DECEMBER'][date.getMonth()]}`;
+            const heading = month === lastMonth ? '' : `<h2 class="meeting-past-month">${month}</h2>`;
+            lastMonth = month;
+            return `${heading}<button class="meeting-past-card" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="meetings" aria-label="${escapeHtml(meeting.title)} gyűlés emlékének szerkesztése"><span class="meeting-date-badge"><strong>${date.getDate()}.</strong><span>${['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'][date.getMonth()]}</span></span><span class="meeting-past-copy"><h3>${escapeHtml(meeting.title)}</h3><small>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)} · ${escapeHtml(meeting.format === 'online' ? 'Online' : (meeting.address.split(',')[0] || meeting.venue))}</small>${meeting.note ? `<p>„${escapeHtml(meeting.note)}”</p>` : ''}</span><span class="meeting-card-chevron" aria-hidden="true">›</span></button>`;
+          }).join('');
+          return `<section class="meetings-past-list" aria-label="Korábbi gyűléseim">${rows}</section>`;
+        }
+        renderMeetingTimelineEvents() {
+          if (!this.meetingTimelineEvents) return;
+          const meetings = this.attendedMeetings();
+          this.meetingTimelineEvents.innerHTML = meetings.length ? `<div class="history-detail-month"><span></span><strong>Gyűlések</strong><span></span></div><div class="history-detail-event-list">${meetings.map((meeting) => { const date = this.meetingDateObject(meeting.date); return `<button class="history-detail-event" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="timeline" aria-label="${escapeHtml(meeting.title)} gyűlés emlékének szerkesztése"><time class="history-event-date">${['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'][date.getMonth()]} ${date.getDate()}.<small>${['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'][date.getDay()]}</small></time><span class="history-event-node meeting"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="history-event-card"><h3>${escapeHtml(meeting.title)}</h3><time>${escapeHtml(meeting.start)}</time><p>${escapeHtml(meeting.note || 'Ott voltam ezen a gyűlésen.')}</p></span></button>`; }).join('')}</div>` : '';
+        }
+        setMeetingsView(view) { this.state.meetingsView = view === 'past' ? 'past' : 'calendar'; this.renderMeetingsMain(); }
+        moveMeetingsMonth(direction) { const month = this.meetingDateObject(this.state.meetingsCalendarMonth); month.setMonth(month.getMonth() + direction); this.state.meetingsCalendarMonth = localDateIso(new Date(month.getFullYear(), month.getMonth(), 1)); this.renderMeetingsMain(); }
+        selectMeetingsDate(date) { if (!this.meetingDateObject(date)) return; this.state.meetingsSelectedDate = date; this.state.meetingsCalendarMonth = this.meetingMonthKey(date); this.renderMeetingsMain(); }
+        toggleMeetingPlanned(id) { const meeting = this.findMeeting(id); if (!meeting || this.isMeetingPast(meeting)) return; meeting.planned = !meeting.planned; this.renderMeetings(); if (this.state.route === 'meeting-detail') this.renderMeetingDetail(); }
+        confirmMeetingAttendance(id) { const meeting = this.findMeeting(id); if (!meeting || !this.isMeetingPast(meeting)) return; meeting.attended = true; meeting.planned = false; this.renderMeetings(); if (this.state.route === 'meeting-detail') this.renderMeetingDetail(); }
+        openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.renderMeetings(); this.navigate('meetings'); }
         returnFromMeetings() { this.navigate(this.state.meetingOrigin === 'panic' ? 'panic' : 'home'); }
-        showMeetingSearchNote() { if (this.meetingSearchNote) this.meetingSearchNote.hidden = false; }
+        openMeetingDetail(id) { const meeting = this.findMeeting(id); if (!meeting) return; this.state.meetingDetailId = id; this.renderMeetingDetail(); this.navigate('meeting-detail'); }
+        closeMeetingDetail() { this.state.meetingDetailId = null; this.renderMeetings(); this.navigate('meetings'); }
+        renderMeetingDetail() {
+          const meeting = this.findMeeting(this.state.meetingDetailId);
+          if (!meeting || !this.meetingDetailContent) return;
+          const location = meeting.format === 'online'
+            ? `<div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg><span>Forma</span><strong>Online</strong></div>`
+            : `<button class="meeting-context-row location-row" type="button" data-action="open-meeting-map" data-meeting-id="${meeting.id}" aria-label="Térkép megnyitása: ${escapeHtml(meeting.address || meeting.venue)}"><svg class="icon" aria-hidden="true"><use href="#icon-location"/></svg><span>Helyszín</span><strong>${escapeHtml(meeting.venue || meeting.address || 'Nincs megadva')}</strong></button><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Forma</span><strong>Személyes</strong></div>`;
+          const mainAction = meeting.format === 'online'
+            ? `<a class="meeting-primary-button" href="${escapeHtml(meeting.url || '#')}" target="_blank" rel="noopener">Csatlakozás</a>`
+            : `<button class="meeting-primary-button" type="button" data-action="open-meeting-map" data-meeting-id="${meeting.id}">Térkép megnyitása</button>`;
+          const ownerAction = meeting.own ? '<button class="meeting-secondary-button" type="button" data-action="open-meeting-editor" data-meeting-id="' + meeting.id + '" data-meeting-editor-origin="detail" data-meeting-editor-mode="form">Szerkesztés</button>' : '';
+          const attendanceAction = this.isMeetingPast(meeting)
+            ? `<button class="meeting-secondary-button" type="button" data-action="${meeting.attended ? 'open-meeting-editor' : 'confirm-meeting-attendance'}" data-meeting-id="${meeting.id}" data-meeting-editor-origin="detail">${meeting.attended ? 'Saját megjegyzés szerkesztése' : 'Ott voltam'}</button>`
+            : `<button class="meeting-secondary-button" type="button" data-action="toggle-meeting-planned" data-meeting-id="${meeting.id}">${meeting.planned ? '✓ Ott leszek' : '○ Ott leszek'}</button>`;
+          this.meetingDetailContent.innerHTML = `<section class="meeting-detail-identity"><span class="meeting-detail-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><h2>${escapeHtml(meeting.title)}</h2><p>${escapeHtml(meeting.openness)} NA gyűlés</p></section><section class="meeting-context-card"><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><span>Dátum</span><strong>${escapeHtml(this.formatMeetingDate(meeting.date, { withWeekday: true }))}</strong></div><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg><span>Időpont</span><strong>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)}</strong></div>${location}</section><div class="meeting-detail-actions">${mainAction}${attendanceAction}${ownerAction}</div>`;
+        }
+        openMeetingMap(id) {
+          const meeting = this.findMeeting(id); if (!meeting) return;
+          const destination = meeting.coordinates ? `${meeting.coordinates.latitude},${meeting.coordinates.longitude}` : meeting.address || meeting.venue;
+          if (!destination) return;
+          const openMap = (origin = '') => { const params = new URLSearchParams({ api: '1', destination }); if (origin) params.set('origin', origin); window.open(`https://www.google.com/maps/dir/?${params.toString()}`, '_blank', 'noopener'); };
+          if (navigator.geolocation) navigator.geolocation.getCurrentPosition((position) => openMap(`${position.coords.latitude},${position.coords.longitude}`), () => openMap(), { enableHighAccuracy: false, timeout: 7000, maximumAge: 300000 }); else openMap();
+        }
+        createMeetingDraft(date = this.state.meetingsSelectedDate) { return { title: '', date, start: '18:00', end: '19:00', format: 'in-person', venue: '', address: '', url: '', openness: 'Nyitott', planned: true, attended: false, note: '', own: true, coordinates: null }; }
+        getMeetingEditor() { return this.state.meetingEditor; }
+        openNewMeeting(date) { this.state.meetingEditor = { mode: 'form', meetingId: null, returnRoute: 'meetings', draft: this.createMeetingDraft(date), error: '', locationMessage: '' }; this.renderMeetingEditor(); this.navigate('meeting-editor'); }
+        openMeetingEditor(id, origin = 'meetings', requestedMode = '') {
+          const meeting = this.findMeeting(id); if (!meeting) return;
+          const forcedForm = requestedMode === 'form';
+          const mode = forcedForm || (meeting.own && !meeting.attended) ? 'form' : 'memory';
+          this.state.meetingEditor = { mode, meetingId: id, returnRoute: origin === 'timeline' ? 'history-detail' : origin === 'detail' ? 'meeting-detail' : 'meetings', draft: { ...meeting, coordinates: meeting.coordinates ? { ...meeting.coordinates } : null }, error: '', locationMessage: '' };
+          this.renderMeetingEditor(); this.navigate('meeting-editor');
+        }
+        closeMeetingEditor() {
+          const editor = this.getMeetingEditor(); const route = editor?.returnRoute || 'meetings'; this.state.meetingEditor = null;
+          this.renderMeetings();
+          if (route === 'meeting-detail') { this.renderMeetingDetail(); this.navigate('meeting-detail'); } else { this.navigate(route); }
+        }
+        renderMeetingEditor() {
+          const editor = this.getMeetingEditor(); if (!editor || !this.meetingEditorContent) return;
+          const title = this.root.querySelector('[data-component="meeting-editor-title"]'); if (title) title.textContent = editor.mode === 'memory' ? 'Gyűlés' : (editor.meetingId ? 'Gyűlés szerkesztése' : 'Új gyűlés');
+          this.meetingEditorContent.innerHTML = editor.mode === 'memory' ? this.renderMeetingMemoryEditor(editor) : this.renderMeetingFormEditor(editor);
+        }
+        renderMeetingMemoryEditor(editor) {
+          const meeting = editor.draft;
+          return `<section class="timeline-event-hero meeting-memory-editor-hero" aria-label="Gyűlés emlékképe"><img src="assets/hero/timelinehero.png" alt="Hegycsúcsok a naplementében"><span class="timeline-event-hero-icon" aria-hidden="true"><svg class="icon"><use href="#icon-people"/></svg></span><span class="timeline-event-hero-photo" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></section><section class="meeting-editor-context"><span class="meeting-detail-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><h2>${escapeHtml(meeting.title)}</h2><p>${escapeHtml(this.formatMeetingDate(meeting.date, { withWeekday: true }))} · ${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)}</p><p>${escapeHtml(this.meetingLocationText(meeting))}</p></section><section class="meeting-attended-row"><span>✓ Ott voltam</span><button type="button" data-action="toggle-meeting-attendance-editor">Visszavonom</button></section><section class="meeting-note-field"><label for="meeting-note-input">Saját megjegyzés</label><textarea id="meeting-note-input" data-meeting-editor-input="note" placeholder="Mi maradt meg ebből a gyűlésből?">${escapeHtml(meeting.note)}</textarea></section><button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button>`;
+        }
+        renderMeetingFormEditor(editor) {
+          const meeting = editor.draft;
+          const personalFields = meeting.format === 'in-person'
+            ? `<div class="meeting-field"><label for="meeting-venue-input">Helyszín neve</label><input id="meeting-venue-input" data-meeting-editor-input="venue" type="text" value="${escapeHtml(meeting.venue)}" placeholder="Pl. Közösségi Ház"></div><div class="meeting-field"><label for="meeting-address-input">Cím</label><input id="meeting-address-input" data-meeting-editor-input="address" type="text" value="${escapeHtml(meeting.address)}" placeholder="Pl. 1082 Budapest, Baross utca 12."><button class="meeting-location-action" type="button" data-action="use-current-meeting-location"><svg class="icon" aria-hidden="true"><use href="#icon-location"/></svg>Jelenlegi hely használata</button>${editor.locationMessage ? `<p class="meeting-location-status" role="status">${escapeHtml(editor.locationMessage)}</p>` : ''}</div>`
+            : `<div class="meeting-field"><label for="meeting-url-input">Online link</label><input id="meeting-url-input" data-meeting-editor-input="url" type="url" value="${escapeHtml(meeting.url)}" placeholder="https://..."></div>`;
+          return `<section class="meeting-form-card"><div class="meeting-field"><label for="meeting-title-input">Gyűlés neve</label><input id="meeting-title-input" data-meeting-editor-input="title" type="text" autocomplete="off" autocapitalize="sentences" value="${escapeHtml(meeting.title)}" placeholder="Pl. Új Kezdet" required></div><div class="meeting-field"><span class="meeting-field-label">Dátum</span><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="date"><span>${escapeHtml(this.formatMeetingDate(meeting.date))}</span><span>›</span></button></div><div class="meeting-field"><span class="meeting-field-label">Időpont</span><div class="meeting-time-pair"><div class="meeting-mini-field"><label>Kezdés</label><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="start">${escapeHtml(meeting.start)}</button></div><div class="meeting-mini-field"><label>Befejezés</label><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="end">${escapeHtml(meeting.end)}</button></div></div></div><div class="meeting-field"><span class="meeting-field-label">Forma</span><div class="meeting-format-selector"><button type="button" data-action="select-meeting-format" data-meeting-format="in-person" aria-pressed="${meeting.format === 'in-person'}">Személyes</button><button type="button" data-action="select-meeting-format" data-meeting-format="online" aria-pressed="${meeting.format === 'online'}">Online</button></div></div>${personalFields}<div class="meeting-field"><span class="meeting-field-label">Ott leszek</span><button type="button" data-action="toggle-meeting-editor-planned"><span>${meeting.planned ? '✓ Igen' : '○ Még nem tudom'}</span><span>›</span></button></div></section><section class="meeting-note-field"><label for="meeting-form-note-input">Megjegyzés <span>(opcionális)</span></label><textarea id="meeting-form-note-input" data-meeting-editor-input="note" placeholder="Gondolatok, érzések, felismerések…">${escapeHtml(meeting.note)}</textarea></section>${editor.error ? `<p class="meeting-editor-error" role="alert">${escapeHtml(editor.error)}</p>` : ''}<button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button>`;
+        }
+        selectMeetingFormat(format) { const editor = this.getMeetingEditor(); if (!editor || editor.mode !== 'form') return; editor.draft.format = format === 'online' ? 'online' : 'in-person'; this.renderMeetingEditor(); }
+        toggleMeetingAttendanceFromEditor() {
+          const editor = this.getMeetingEditor(); if (!editor) return;
+          if (!window.confirm('Eltávolítod ezt a gyűlést a korábbi gyűléseid közül?')) return;
+          editor.draft.attended = false; const meeting = this.findMeeting(editor.meetingId); if (meeting) meeting.attended = false; this.state.meetingEditor = null; this.renderMeetings(); this.state.meetingsView = 'past'; this.navigate('meetings');
+        }
+        toggleMeetingEditorPlanned() { const editor = this.getMeetingEditor(); if (editor?.mode === 'form') editor.draft.planned = !editor.draft.planned; }
+        saveMeetingEditor() {
+          const editor = this.getMeetingEditor(); if (!editor) return;
+          const draft = editor.draft;
+          if (!draft.title.trim()) { editor.error = 'Adj meg egy gyűlésnevet.'; this.renderMeetingEditor(); return; }
+          if (editor.mode === 'form' && (!draft.start || !draft.end || draft.start >= draft.end)) { editor.error = 'A befejezés legyen később a kezdésnél.'; this.renderMeetingEditor(); return; }
+          if (editor.meetingId) { const index = this.state.meetings.findIndex((meeting) => meeting.id === editor.meetingId); if (index !== -1) this.state.meetings[index] = { ...this.state.meetings[index], ...draft, title: draft.title.trim() }; }
+          else { const id = `meeting-own-${Date.now()}`; this.state.meetings.push({ ...draft, id, title: draft.title.trim(), own: true }); editor.meetingId = id; }
+          const route = editor.returnRoute; this.state.meetingEditor = null; this.state.meetingsSelectedDate = draft.date; this.state.meetingsCalendarMonth = this.meetingMonthKey(draft.date); this.state.meetingsView = 'calendar'; this.renderMeetings();
+          if (route === 'meeting-detail') { this.state.meetingDetailId = editor.meetingId; this.renderMeetingDetail(); this.navigate('meeting-detail'); } else this.navigate(route === 'history-detail' ? 'history-detail' : 'meetings');
+        }
+        openMeetingPicker(field, trigger) {
+          const editor = this.getMeetingEditor(); if (!editor || !['date', 'start', 'end'].includes(field)) return;
+          this.state.meetingPicker = { field, value: field === 'date' ? editor.draft.date : editor.draft[field], calendarMonth: this.meetingMonthKey(editor.draft.date) };
+          const host = this.root.querySelector('[data-component="meeting-picker-sheet"]'); if (!host) return; this.renderMeetingPicker(); this.openAppOverlaySheet(host, trigger);
+        }
+        closeMeetingPicker() { const host = this.root.querySelector('[data-component="meeting-picker-sheet"]'); this.state.meetingPicker = null; this.closeAppOverlaySheet(host); }
+        renderMeetingPicker() {
+          const picker = this.state.meetingPicker; const content = this.root.querySelector('[data-component="meeting-picker-content"]'); const title = this.root.querySelector('[data-component="meeting-picker-title"]'); if (!picker || !content || !title) return;
+          const isDate = picker.field === 'date'; title.textContent = isDate ? 'Dátum' : (picker.field === 'start' ? 'Kezdés' : 'Befejezés');
+          if (!isDate) { const slots = this.halfHourTimeSlots(); content.innerHTML = `<p class="meeting-picker-intro">Válassz egy időpontot.</p><section class="meeting-time-options" aria-label="Időpont választása"><div>${slots.map((time) => `<button type="button" data-action="select-meeting-picker-time" data-picker-time="${time}" aria-pressed="${picker.value === time}">${time}</button>`).join('')}</div></section><div class="meeting-picker-footer"><button class="meeting-primary-button" type="button" data-action="save-meeting-picker">Kész</button></div>`; return; }
+          const month = this.meetingDateObject(picker.calendarMonth); const monthNames = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+          const cells = this.renderMonthCalendarCells({ month, selectedValue: picker.value, action: 'select-meeting-picker-date', dataAttribute: 'data-picker-date', dayClass: 'sponsor-next-day', spacerClass: 'sponsor-next-day-spacer' });
+          content.innerHTML = `<p class="meeting-picker-intro">Válassz egy napot.</p><section class="sponsor-next-calendar" aria-label="Dátum választása"><div class="sponsor-next-month-switch"><button type="button" data-action="meeting-picker-previous-month" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>${month.getFullYear()}. ${monthNames[month.getMonth()]}</strong><button type="button" data-action="meeting-picker-next-month" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="sponsor-next-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sze</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span></div><div class="sponsor-next-calendar-grid">${cells}</div></section><div class="meeting-picker-footer"><button class="meeting-primary-button" type="button" data-action="save-meeting-picker">Kész</button></div>`;
+        }
+        moveMeetingPickerMonth(direction) { const picker = this.state.meetingPicker; if (!picker) return; const month = this.meetingDateObject(picker.calendarMonth); month.setMonth(month.getMonth() + direction); picker.calendarMonth = localDateIso(new Date(month.getFullYear(), month.getMonth(), 1)); this.renderMeetingPicker(); }
+        selectMeetingPickerDate(value) { if (!this.state.meetingPicker || !this.meetingDateObject(value)) return; this.state.meetingPicker.value = value; this.renderMeetingPicker(); }
+        selectMeetingPickerTime(value) { if (!this.state.meetingPicker || !/^([01][0-9]|2[0-3]):(00|30)$/.test(value || '')) return; this.state.meetingPicker.value = value; this.renderMeetingPicker(); }
+        saveMeetingPicker() { const picker = this.state.meetingPicker; const editor = this.getMeetingEditor(); if (!picker || !editor) return; editor.draft[picker.field] = picker.value; this.closeMeetingPicker(); this.renderMeetingEditor(); }
+        useCurrentMeetingLocation() {
+          const editor = this.getMeetingEditor(); if (!editor) return;
+          if (!navigator.geolocation) { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.renderMeetingEditor(); return; }
+          editor.locationMessage = 'Helyzet lekérése…'; this.renderMeetingEditor();
+          navigator.geolocation.getCurrentPosition((position) => { editor.draft.coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude }; editor.locationMessage = `Helyzet rögzítve · ${position.coords.latitude.toFixed(3)}, ${position.coords.longitude.toFixed(3)}`; this.renderMeetingEditor(); }, () => { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.renderMeetingEditor(); }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+        }
         startSurvivalPack() { this.state.survivalStep = 0; this.navigate('survival'); }
         advanceSurvivalStep() {
           if (this.state.survivalStep >= SURVIVAL_STEPS.length - 1) { this.navigate('panic-contacts'); return; }
@@ -1405,8 +2778,8 @@
           const isPathFocus = this.state.route === 'path' && this.pathScreen?.classList.contains('path-focus');
           const isNavigationRoute = NAVIGATION_ROUTES.has(this.state.route) && !isPathFocus;
           if (this.mainNavigation) this.mainNavigation.hidden = !isNavigationRoute;
-          const action = this.state.route === 'path' ? 'open-path' : ['history', 'history-detail', 'timeline-event-detail'].includes(this.state.route) ? 'open-history' : this.state.route === 'meetings' ? 'open-meetings' : 'return-home';
-          this.root.querySelectorAll("button[data-action='return-home'], button[data-action='open-history'], button[data-action='open-path'], button[data-action='open-meetings']").forEach((button) => {
+          const action = this.state.route === 'path' ? 'open-path' : ['history', 'history-detail', 'timeline-event-detail'].includes(this.state.route) ? 'open-history' : this.state.route === 'meetings' ? 'open-meetings' : this.state.route === 'sponsor' ? 'open-sponsor' : 'return-home';
+          this.root.querySelectorAll("button[data-action='return-home'], button[data-action='open-history'], button[data-action='open-path'], button[data-action='open-meetings'], button[data-action='open-sponsor']").forEach((button) => {
             if (button.dataset.action === action) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
           });
         }
