@@ -236,7 +236,8 @@ controller.startSurvivalPack();
 assert.equal(root.dataset.route, 'survival', '15 perces csomag must open one data-driven survival route');
 assert.match(survivalContent.innerHTML, /1 \/ 5/, 'survival must begin at source 18A');
 for (let index = 0; index < 5; index += 1) controller.advanceSurvivalStep();
-assert.equal(root.dataset.route, 'panic-contacts', 'source 18E completion must resolve to source Screen 26');
+assert.equal(root.dataset.route, 'survival', 'the shared survival flow must stay on its own reassessment ending rather than forcing a contact route');
+assert.equal(controller.state.survivalSession.completed, true, 'the final survival step must expose an explicit reassessment state');
 
 controller.openMeetings('panic');
 assert.equal(root.dataset.route, 'meetings', 'Pánik and shared Gyűlések must resolve to one meetings route');

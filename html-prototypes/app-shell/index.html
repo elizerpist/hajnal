@@ -16,6 +16,7 @@
     button:focus-visible, .home-metrics:focus-visible, input:focus-visible + .task-check { outline: 3px solid rgba(106, 86, 180, .62); outline-offset: 3px; }
     .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
     .app-frame { width: var(--screen-w); height: var(--screen-h); position: relative; isolation: isolate; overflow: hidden; border-radius: 34px; color: var(--white); background: var(--screen-background); box-shadow: 0 24px 64px rgba(44, 46, 119, .18); }
+    @media (max-width: 411px) { .app-frame { width: 100vw; height: 100vh; border-radius: 0; } }
 
     .home-illustration { width: 100%; height: calc(var(--screen-h) - var(--bottom-nav-h)); position: absolute; inset: 0 0 auto 0; z-index: 1; overflow: hidden; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .home-hero-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
@@ -505,6 +506,55 @@
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2 { font-size: 16px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2::after { width: 17px; margin-right: 3px; margin-left: 5px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading p { font-size: 8.5px; }
+    /* Történetem comparison mode: borrows the Ösvény geometry, never its domain state. */
+    .history-overview-layout-toggle, .history-overview-density-toggle { width: 38px; height: 38px; position: absolute; z-index: 4; right: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(255,255,255,.76); color: #6950BE; box-shadow: 0 7px 16px rgba(55,34,117,.10); cursor: pointer; }
+    .history-overview-layout-toggle { top: 49px; }
+    .history-overview-density-toggle { top: 92px; }
+    .history-overview-layout-toggle .icon, .history-overview-density-toggle .icon { width: 19px; height: 19px; stroke-width: 1.9; }
+    .history-overview-layout-toggle[aria-pressed="true"], .history-overview-density-toggle[aria-pressed="true"] { background: #7650CC; color: #fff; box-shadow: 0 7px 16px rgba(89,54,175,.24); }
+    .history-overview-density-toggle:disabled { opacity: .46; cursor: default; }
+    .history-current-layout { display: contents; }
+    .history-path-overview { position: absolute; inset: 0; display: grid; grid-template-rows: 102px minmax(0, 1fr); gap: 11px; overflow: hidden; padding: 0 18px 10px; color: #352576; }
+    .history-path-overview[hidden] { display: none; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-content { top: 224px; grid-template-rows: minmax(0, 1fr) auto; padding: 0 0 17px; border-radius: 0; background: transparent; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero { height: 224px; background: #F2DDED; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero::after { background: linear-gradient(180deg, rgba(255,250,253,.02) 18%, rgba(255,247,252,.18) 56%, #FFF9FC 100%); }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-image { object-position: center 43%; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy { top: 51px; right: 94px; left: 20px; text-align: left; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy h1 { color: #352576; font-size: 33px; letter-spacing: -.065em; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-current-layout { display: none; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { z-index: 3; margin: 0 18px; }
+    .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 22px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
+    .history-path-current-card { min-height: 102px; display: grid; grid-template-columns: 111px minmax(0,1fr) 18px; align-items: center; gap: 7px; padding: 0 11px 0 0; }
+    .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 9px 10px 9px 14px; }
+    .history-path-current-card:focus-visible, .history-path-period-card:focus-visible { outline: 3px solid rgba(181,91,157,.42); outline-offset: 2px; }
+    .history-path-current-card:active, .history-path-period-card:active { transform: scale(.99); opacity: .86; }
+    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 0; left: 26px; width: 186px; height: 100%; overflow: hidden; opacity: .84; -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.42) 10%, #000 22%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.42) 10%, #000 22%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); }
+    .history-path-current-art img, .history-path-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .history-path-day-medallion { width: 54px; height: 54px; position: relative; z-index: 2; display: grid; place-items: center; justify-self: start; box-sizing: border-box; margin-left: -7px; padding: 3px; border: 4px solid #FFF9FC; border-radius: 50%; background: #E6D7F2; box-shadow: 0 6px 15px rgba(112,63,127,.10); color: #7B438E; font-size: 19px; line-height: 1; font-weight: 840; letter-spacing: -.06em; }
+    .history-path-day-medallion > span { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 50%; background: #F6EAF4; }
+    .history-path-copy { min-width: 0; position: relative; z-index: 2; }
+    .history-path-copy strong, .history-path-copy small { display: block; overflow: hidden; text-overflow: ellipsis; }
+    .history-path-copy strong { color: #352576; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
+    .history-path-copy small { margin-top: 4px; color: #8E78A5; font-size: 10.5px; line-height: 1.17; font-weight: 680; white-space: nowrap; }
+    .history-path-current-card .history-path-copy strong { font-size: 18px; }
+    .history-path-kicker { display: block; margin-bottom: 4px; color: #A367A3; font-size: 9px; line-height: 1; font-weight: 820; letter-spacing: .05em; text-transform: uppercase; }
+    .history-path-progress-meta { display: flex; justify-content: space-between; gap: 7px; margin-top: 5px; color: #8E78A5; font-size: 9.5px; font-weight: 760; }
+    .history-path-progress { height: 4px; overflow: hidden; margin-top: 5px; border-radius: 999px; background: rgba(198,139,183,.20); }
+    .history-path-progress span { width: calc(var(--history-period-progress) * 1%); height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #C66E9E, #8963C6); }
+    .history-path-chevron { position: relative; z-index: 2; color: #AD93B7; font-size: 25px; line-height: 1; }
+    .history-path-period-list-card { min-height: 0; overflow-y: auto; padding: 1px 0 8px; scrollbar-width: none; }
+    .history-path-period-list-card::-webkit-scrollbar { display: none; }
+    .history-path-period-list-title { margin: 1px 0 9px; color: #5A3A81; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1; font-weight: 700; }
+    .history-path-period-list { display: grid; gap: 8px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-overview { grid-template-rows: 90px minmax(0,1fr); }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: 90px; grid-template-columns: 101px minmax(0,1fr) 18px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 101px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-art, .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 168px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-day-medallion { width: 46px; height: 46px; padding: 5px; font-size: 17px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-copy strong { font-size: 16px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-copy strong { font-size: 13px; }
     .history-number-card strong { color: #3B2B7E; font-size: 13px; line-height: 1; font-weight: 850; letter-spacing: -.025em; }
     .history-number-card span { color: #8176A8; font-size: 7.5px; line-height: 1.12; font-weight: 720; }
 
@@ -544,6 +594,55 @@
     .panic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 18px; }
     .panic-grid button { min-height: 92px; display: grid; justify-items: center; align-content: center; gap: 8px; padding: 9px; border: 1px solid rgba(255, 255, 255, .10); border-radius: var(--radius-button); background: rgba(255, 255, 255, .10); color: var(--white); font: inherit; font-size: 10px; line-height: 1.22; font-weight: 720; text-align: center; }
     .panic-grid .icon { width: 24px; height: 24px; }
+    .panic-variant-toggle[aria-pressed="true"] { background: rgba(241,93,154,.42) !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.28), 0 8px 20px rgba(18,16,59,.22); }
+    .panic-content[data-panic-variant="alternative"] { padding-bottom: 18px; }
+    .panic-alternative { min-height: 100%; display: flex; flex-direction: column; animation: panic-variant-fade 210ms ease both; }
+    .panic-alternative .panic-center { margin-top: 8px; }
+    .panic-main-button--pulse { position: relative; isolation: isolate; cursor: pointer; transform: translateZ(0); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; }
+    .panic-main-button--pulse::before, .panic-main-button--pulse::after { content: ""; position: absolute; z-index: -1; border-radius: inherit; pointer-events: none; }
+    .panic-main-button--pulse::before { inset: -30px; background: radial-gradient(circle, rgba(241,93,154,.35) 0%, rgba(241,93,154,.18) 38%, rgba(241,93,154,0) 72%); animation: panic-help-glow 2.8s ease-in-out infinite; }
+    .panic-main-button--pulse::after { inset: -13px; border: 1px solid rgba(255,220,235,.55); background: radial-gradient(circle, rgba(241,93,154,.14), rgba(241,93,154,0) 70%); animation: panic-help-glow-inner 2.8s ease-in-out infinite; }
+    .panic-main-button--pulse:active { transform: scale(.98); }
+    .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse, .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse::before, .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse::after { animation-play-state: paused; }
+    .panic-alternative-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 28px 0 16px; }
+    .panic-alternative-grid button { min-height: 94px; display: grid; justify-items: center; align-content: center; gap: 7px; padding: 8px 5px; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-button); background: rgba(255,255,255,.10); color: var(--white); font: inherit; font-size: 10.5px; line-height: 1.18; font-weight: 760; text-align: center; cursor: pointer; }
+    .panic-alternative-grid button:active { transform: scale(.98); background: rgba(255,255,255,.18); }
+    .panic-alternative-grid .icon { width: 24px; height: 24px; }
+    .panic-motivation-card { width: 100%; min-height: 79px; display: grid; grid-template-columns: 31px minmax(0,1fr) 17px; align-items: center; gap: 8px; margin-top: auto; padding: 11px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.14); color: var(--white); font: inherit; text-align: left; backdrop-filter: blur(10px); cursor: pointer; }
+    .panic-motivation-card:active { transform: scale(.99); }
+    .panic-motivation-card .icon { width: 23px; height: 23px; color: #FFD9E9; }
+    .panic-motivation-card strong, .panic-motivation-card small { display: block; overflow: hidden; text-overflow: ellipsis; }
+    .panic-motivation-card strong { font-size: 13px; line-height: 1.15; font-weight: 830; }
+    .panic-motivation-card small { display: -webkit-box; margin-top: 3px; color: rgba(255,255,255,.78); font-size: 10.5px; line-height: 1.3; font-weight: 590; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .panic-motivation-card > span:last-child { color: rgba(255,255,255,.82); font-size: 23px; }
+    @keyframes panic-help-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+    @keyframes panic-help-glow { 0%, 100% { opacity: .58; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.07); } }
+    @keyframes panic-help-glow-inner { 0%, 100% { opacity: .5; transform: scale(.94); } 50% { opacity: .96; transform: scale(1.04); } }
+    @keyframes panic-variant-fade { from { opacity: .01; } to { opacity: 1; } }
+    .panic-help-sheet-host { position: absolute; z-index: 510; inset: 0; isolation: isolate; overscroll-behavior: contain; }
+    .panic-help-sheet-host[hidden] { display: none; }
+    .panic-help-sheet-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(12,13,39,.52); opacity: 0; transition: opacity 260ms ease-out; }
+    .panic-help-sheet { position: absolute; right: 0; bottom: 0; left: 0; max-height: calc(100% - 28px); overflow-y: auto; padding: 0 19px calc(19px + env(safe-area-inset-bottom)); border: 1px solid rgba(255,255,255,.18); border-bottom: 0; border-radius: 30px 30px 0 0; background: rgba(43,36,91,.96); box-shadow: 0 -16px 38px rgba(9,9,32,.34); color: #FFF; transform: translateY(104%); transition: transform 290ms cubic-bezier(.2,.8,.2,1); overscroll-behavior: contain; }
+    .panic-help-sheet-host[data-sheet-state="open"] .panic-help-sheet-backdrop { opacity: 1; }
+    .panic-help-sheet-host[data-sheet-state="open"] .panic-help-sheet { transform: translateY(0); }
+    .panic-help-sheet-handle { width: 42px; height: 5px; display: block; margin: 10px auto 11px; border-radius: 999px; background: rgba(255,255,255,.48); touch-action: none; cursor: grab; }
+    .panic-help-sheet-header { display: grid; grid-template-columns: minmax(0,1fr) 36px; gap: 8px; align-items: start; }
+    .panic-help-sheet-header h2 { margin: 0; color: #FFF; font-size: 22px; line-height: 1.1; font-weight: 850; letter-spacing: -.04em; }
+    .panic-help-sheet-header p { margin: 5px 0 0; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.32; font-weight: 590; }
+    .panic-help-sheet-close { width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.20); border-radius: 50%; background: rgba(255,255,255,.10); color: #FFF; font-size: 22px; line-height: 1; cursor: pointer; }
+    .panic-contact-card { margin-top: 18px; padding: 13px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.09); }
+    .panic-contact-card h3 { margin: 0; color: #FFF; font-size: 14px; line-height: 1.16; font-weight: 820; }
+    .panic-contact-card p { margin: 4px 0 0; color: rgba(255,255,255,.74); font-size: 11.5px; line-height: 1.35; font-weight: 590; }
+    .panic-contact-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 12px; }
+    .panic-contact-actions a, .panic-contact-actions button, .panic-contact-empty-link, .panic-emergency { min-height: 42px; display: grid; place-items: center; padding: 8px; border: 1px solid rgba(255,255,255,.20); border-radius: 13px; background: rgba(255,255,255,.13); color: #FFF; font: inherit; font-size: 12px; font-weight: 780; text-align: center; text-decoration: none; cursor: pointer; }
+    .panic-contact-actions a:first-child { background: #F15D9A; border-color: transparent; }
+    .panic-contact-empty-link { margin-top: 12px; }
+    .panic-backup-disclosure { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 13px; padding: 9px 0; border: 0; background: transparent; color: #FFF; font: inherit; font-size: 13px; font-weight: 760; text-align: left; cursor: pointer; }
+    .panic-backup-panel[hidden] { display: none; }
+    .panic-emergency { width: 100%; grid-template-columns: 37px minmax(0,1fr); justify-items: start; gap: 7px; margin: 13px 0 0; background: rgba(255,255,255,.07); }
+    .panic-emergency strong, .panic-emergency small { display: block; text-align: left; }
+    .panic-emergency small { margin-top: 2px; color: rgba(255,255,255,.67); font-size: 10px; font-weight: 560; }
+    @media (prefers-reduced-motion: reduce) { .panic-main-button--pulse, .panic-main-button--pulse::before, .panic-main-button--pulse::after, .panic-alternative { animation: none; } .panic-help-sheet, .panic-help-sheet-backdrop { transition: none; } }
 
     .daily-image-screen { background: #171848; color: var(--white); }
     .daily-image-carousel { position: absolute; inset: 0; z-index: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
@@ -1363,6 +1462,10 @@
     .survival-door-visual::after { content: ""; width: 7px; height: 7px; position: absolute; right: 10px; top: 48px; border-radius: 50%; background: currentColor; }
     .survival-note-visual { width: 82px; height: 94px; display: grid; align-content: center; gap: 9px; padding: 15px 13px; border-radius: 8px; background: #FFFDFE; box-shadow: 0 8px 17px rgba(44,46,119,.12); transform: rotate(-4deg); }
     .survival-note-visual span { height: 4px; border-radius: 999px; background: rgba(106,86,180,.38); }
+    .survival-help-link { margin-top: 19px; padding: 4px 9px; border: 0; background: transparent; color: var(--hajnal-purple); font: inherit; font-size: 12px; font-weight: 760; text-decoration: underline; cursor: pointer; }
+    .survival-outcomes { width: 100%; display: grid; gap: 9px; margin-top: auto; }
+    .survival-outcomes .survival-action { width: 100%; margin-top: 0; }
+    .survival-action.secondary { border: 1px solid rgba(106,86,180,.20); background: rgba(255,255,255,.68); color: var(--hajnal-purple); box-shadow: none; }
     .survival-action { margin-top: auto; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74,55,150,.20); }
     .panic-contacts-screen { background: linear-gradient(180deg, #FFF9FC, #F7EFF7); }
     .contact-details { margin-top: 12px; overflow: hidden; border: 1px solid rgba(106,86,180,.12); border-radius: 17px; background: rgba(255,255,255,.82); }
@@ -1539,24 +1642,16 @@
       <div class="daily-image-progress" role="progressbar" aria-label="24 nap a 90 napos úton" aria-valuemin="0" aria-valuemax="90" aria-valuenow="24"><span></span><span></span><span></span></div>
       <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
-    <section class="route-screen history-screen" id="home-statistics" data-route="history" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="false" aria-labelledby="history-screen-title">
-      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/timelinehero.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-hero-variant-toggle" type="button" data-action="toggle-history-hero-variant" data-component="history-hero-variant-toggle" aria-label="Kompakt Történetem nézet" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button><button class="history-body-presentation-toggle" type="button" data-action="toggle-history-body-presentation" data-history-presentation-surface="history" data-component="history-body-presentation-toggle" aria-label="Háttérbe olvadó Történetem body" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></section>
+    <section class="route-screen history-screen" id="home-statistics" data-route="history" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="false" data-history-overview-layout-mode="current" data-history-overview-density="roomy" aria-labelledby="history-screen-title">
+      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/timelinehero.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-overview-layout-toggle" type="button" data-action="toggle-history-overview-layout" data-component="history-overview-layout-toggle" aria-label="Új, Ösvény-alapú Történetem elrendezés" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button><button class="history-overview-density-toggle" type="button" data-action="toggle-history-overview-density" data-component="history-overview-density-toggle" aria-label="A sűrűség csak az új Történetem elrendezésben érhető el" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="history-content" aria-label="Józan időszakaim">
+        <div class="history-current-layout" data-component="history-current-layout">
         <p class="history-period-intro"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Minden időszak egy külön fejezet az utamból.</span></p>
-        <section class="history-period-scroll" aria-label="Józan időszakok"><div class="history-period-list">
-          <button class="history-period-card" type="button" data-history-batch="2024-05" data-action="open-history-detail" aria-label="Első időszak, 8 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-1.svg" alt=""></span><span class="history-period-copy"><h2>Első időszak</h2><p>2024. máj. 1. – 2024. máj. 8.</p><span class="history-period-badge">8 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2024-06" data-action="open-history-detail" aria-label="Júniusi folytatás, 15 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-3.svg" alt=""></span><span class="history-period-copy"><h2>Júniusi folytatás</h2><p>2024. jún. 2. – 2024. jún. 16.</p><span class="history-period-badge">15 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2024-08" data-action="open-history-detail" aria-label="Nyári szakasz, 37 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-3.svg" alt=""></span><span class="history-period-copy"><h2>Nyári szakasz</h2><p>2024. aug. – 2024. szept.</p><span class="history-period-badge">37 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2024-10" data-action="open-history-detail" aria-label="Őszi újrakezdés, 21 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-30.svg" alt=""></span><span class="history-period-copy"><h2>Őszi újrakezdés</h2><p>2024. okt. 4. – 2024. okt. 24.</p><span class="history-period-badge">21 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2025-01" data-action="open-history-detail" aria-label="Leghosszabb időszak, 89 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-7.svg" alt=""></span><span class="history-period-copy"><h2>Leghosszabb időszak</h2><p>2025. jan. – 2025. ápr.</p><span class="history-period-badge">89 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2025-05" data-action="open-history-detail" aria-label="Tavaszi újrakezdés, 18 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-45.svg" alt=""></span><span class="history-period-copy"><h2>Tavaszi újrakezdés</h2><p>2025. máj. 6. – 2025. máj. 23.</p><span class="history-period-badge">18 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2025-06" data-action="open-history-detail" aria-label="Rövid időszak, 4 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-14.svg" alt=""></span><span class="history-period-copy"><h2>Rövid időszak</h2><p>2025. jún.</p><span class="history-period-badge">4 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2025-08" data-action="open-history-detail" aria-label="Nyár végi időszak, 33 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-60.svg" alt=""></span><span class="history-period-copy"><h2>Nyár végi időszak</h2><p>2025. aug. 1. – 2025. szept. 2.</p><span class="history-period-badge">33 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="2025-11" data-action="open-history-detail" aria-label="Téli kitartás, 46 nap"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-90.svg" alt=""></span><span class="history-period-copy"><h2>Téli kitartás</h2><p>2025. nov. 10. – 2025. dec. 25.</p><span class="history-period-badge">46 nap</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-          <button class="history-period-card" type="button" data-history-batch="current" data-action="open-history-detail" aria-label="Jelenlegi időszak, 24 nap tiszta"><span class="history-period-art" aria-hidden="true"><img src="assets/milestones/milestone-21.svg" alt=""></span><span class="history-period-copy"><h2>Jelenlegi időszak</h2><p>2026. máj. 1. – jelenleg</p><span class="history-period-badge">24 nap tiszta</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>
-        </div></section>
-        <section class="history-number-summary" aria-labelledby="history-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" data-component="history-metrics-surface" aria-label="Utam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
+        <section class="history-period-scroll" aria-label="Józan időszakok"><div class="history-period-list" data-component="history-period-list"></div></section>
+        </div>
+        <section class="history-path-overview" data-component="history-path-overview" aria-label="Ösvény-alapú Történetem elrendezés" hidden></section>
+        <section class="history-number-summary" data-history-overview-footer-slot aria-labelledby="history-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" data-component="history-metrics-surface" aria-label="Utam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="history-number-title">Utam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid">
           <article class="history-number-card" data-history-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article>
           <article class="history-number-card" data-history-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article>
           <article class="history-number-card" data-history-stat="evening-reflections"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>19</strong><span>esti reflexió</span></article>
@@ -1679,10 +1774,10 @@
 
     <section class="route-screen panic-screen" id="panic-root" data-route="panic" data-screen="panic-root" data-component="panic-mode" aria-labelledby="panic-screen-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="panic-screen-title">Pánik mód</h1><p>Egy érintés, de nincs automatikus hívás.</p></div><button class="icon-button" type="button" data-action="return-home" aria-label="Bezárás">×</button></header>
-      <main class="panic-content"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók">
-        <button type="button" data-panic-option="call-sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button>
-        <button type="button" data-panic-option="call-backup"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button>
+      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="panic-screen-title">Pánik mód</h1><p>Egy érintés, de nincs automatikus hívás.</p></div><button class="icon-button panic-variant-toggle" type="button" data-action="toggle-panic-variant" data-component="panic-variant-toggle" aria-label="Alternatív Pánik mód megnyitása" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header>
+      <main class="panic-content" data-component="panic-content" data-panic-variant="classic"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók">
+        <button type="button" data-panic-option="call-sponsor" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button>
+        <button type="button" data-panic-option="call-backup" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button>
         <button type="button" data-panic-option="survival-pack" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg>15 perces túlélőcsomag</button>
         <button type="button" data-panic-option="why-started" data-action="open-panic-why"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Olvasd el, miért kezdted el</button>
         <button type="button" data-panic-option="meeting-finder" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button>
@@ -1690,16 +1785,25 @@
       </section></main>
     </section>
 
+    <div class="panic-help-sheet-host" data-component="panic-help-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="panic-help-sheet-backdrop" type="button" data-action="close-panic-help-sheet" aria-label="Segítségkérő panel bezárása"></button>
+      <section class="panic-help-sheet" role="dialog" aria-modal="true" aria-labelledby="panic-help-sheet-title" tabindex="-1">
+        <span class="panic-help-sheet-handle" data-panic-help-sheet-handle aria-hidden="true"></span>
+        <header class="panic-help-sheet-header"><div><h2 id="panic-help-sheet-title">Hívj fel valakit</h2><p>Nem indul automatikus hívás vagy üzenet.</p></div><button class="panic-help-sheet-close" type="button" data-action="close-panic-help-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
+        <div data-component="panic-help-sheet-content"></div>
+      </section>
+    </div>
+
     <section class="route-screen panic-why-screen" id="panic-why-started" data-route="panic-why" data-screen="panic-why-started" data-component="panic-why-started" aria-labelledby="panic-why-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="panic-child-header"><button class="icon-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div><h1 id="panic-why-title">Miért kezdtem el?</h1><p>Emlékeztető a saját szavaiddal.</p></div><span></span></header>
-      <main class="panic-child-content"><section class="panic-soft-card"><blockquote class="motivation-quote" data-component="panic-motivation-copy">„Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.”</blockquote><p>Ez a személyes motivációd az inicializálási flow-ban szerkeszthető, és itt ugyanaz a szöveg jelenik meg.</p></section><section class="panic-soft-card"><strong>Fontos emberek</strong><p>Kata · Anya · a keddi meeting csoport</p></section><button class="path-primary-button" type="button" data-action="open-initialization-why">Saját emlékeztető szerkesztése</button></main>
+      <main class="panic-child-content"><section class="panic-soft-card"><blockquote class="motivation-quote" data-component="panic-motivation-copy">„Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.”</blockquote><p>Ez a személyes motivációd az inicializálási flow-ban szerkeszthető, és itt ugyanaz a szöveg jelenik meg.</p></section><section class="panic-soft-card"><strong>Fontos emberek</strong><p>A saját támogató körödhöz bármikor visszatérhetsz a Pánik mód kapcsolati paneljében.</p></section><button class="path-primary-button" type="button" data-action="open-initialization-why">Saját emlékeztető szerkesztése</button></main>
     </section>
 
     <section class="route-screen relapse-screen source-relapse-screen" id="checkin-relapse" data-route="panic-relapse" data-screen="checkin-relapse" data-component="relapse-state" aria-labelledby="relapse-title">
       <img class="source-relapse-background" src="assets/milestones/milestone-60.svg" alt="" loading="eager">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <main class="source-relapse-content"><div class="source-relapse-top-actions"><button class="source-relapse-back-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><span aria-hidden="true"></span><span aria-hidden="true"></span></div><section class="source-relapse-copy" aria-label="Visszaesés utáni visszajelzés"><h3 id="relapse-title">Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3></section><div class="source-relapse-bottom-actions"><button class="source-relapse-action primary" type="button" data-action="return-home">Újrakezdem</button><button class="source-relapse-action outline" type="button" data-action="open-panic">Segítséget kérek</button></div></main>
+      <main class="source-relapse-content"><div class="source-relapse-top-actions"><button class="source-relapse-back-button" type="button" data-action="open-panic" aria-label="Vissza a Pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><span aria-hidden="true"></span><span aria-hidden="true"></span></div><section class="source-relapse-copy" aria-label="Visszaesés utáni visszajelzés"><h3 id="relapse-title">Köszönjük,<br>hogy őszinte voltál.<br><br>Holnap újra<br>indulhatunk.</h3></section><div class="source-relapse-bottom-actions"><button class="source-relapse-action primary" type="button" data-action="return-home">Újrakezdem</button><button class="source-relapse-action outline" type="button" data-action="open-panic">Segítséget kérek</button></div></main>
     </section>
 
     <section class="route-screen survival-screen" id="panic-survival" data-route="survival" data-screen="panic-survival" data-component="survival-pack" aria-labelledby="survival-title">
@@ -1710,7 +1814,7 @@
     <section class="route-screen panic-contacts-screen" id="panic-contacts" data-route="panic-contacts" data-screen="panic-contacts" data-component="panic-contacts" aria-labelledby="panic-contacts-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <header class="panic-child-header"><button class="icon-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div><h1 id="panic-contacts-title">Hívj fel valakit</h1><p>Nyisd le, akit most elérsz.</p></div><span></span></header>
-      <main class="panic-child-content"><details class="contact-details" open><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span><strong>Kata</strong><small>Szponzor · utolsó kapcsolat: tegnap<br>+36 30 123 4567</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button><button type="button" data-action="open-panic">Gyors üzenet kiválasztása</button></div></details><details class="contact-details"><summary><span class="contact-avatar"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span><strong>Anya</strong><small>Tartalék kapcsolattartó<br>+36 30 987 6543</small></span></summary><div class="contact-actions"><button type="button" data-action="open-panic">Hívás indítása</button></div></details></main>
+      <main class="panic-child-content"><section class="panic-soft-card"><strong>A kapcsolati lehetőségeket a Pánik mód Segítség kell gombja alatt találod.</strong><p>Itt nincs külön, második kapcsolattartó-adatbázis vagy minta telefonszám.</p></section><button class="path-primary-button" type="button" data-action="open-panic">Vissza a Pánik módhoz</button></main>
     </section>
 
     <section class="route-screen sponsor-screen" id="sponsor" data-route="sponsor" data-screen="sponsor" data-component="sponsor-main-menu" data-sponsor-layout="current" aria-labelledby="sponsor-screen-title">
@@ -1839,6 +1943,18 @@
       const HISTORY_CALENDAR_GRID_REFERENCE_DATE = '2025-02-14';
       const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;
       const HISTORY_PRESENTATION_HERO_ASSET = 'assets/hero/timelinehero.png';
+      const HISTORY_PERIODS = Object.freeze([
+        Object.freeze({ id: '2024-05', title: 'Első időszak', date: '2024. máj. 1. – 2024. máj. 8.', days: 8, art: 'assets/milestones/milestone-1.svg' }),
+        Object.freeze({ id: '2024-06', title: 'Júniusi folytatás', date: '2024. jún. 2. – 2024. jún. 16.', days: 15, art: 'assets/milestones/milestone-3.svg' }),
+        Object.freeze({ id: '2024-08', title: 'Nyári szakasz', date: '2024. aug. – 2024. szept.', days: 37, art: 'assets/milestones/milestone-3.svg' }),
+        Object.freeze({ id: '2024-10', title: 'Őszi újrakezdés', date: '2024. okt. 4. – 2024. okt. 24.', days: 21, art: 'assets/milestones/milestone-30.svg' }),
+        Object.freeze({ id: '2025-01', title: 'Leghosszabb időszak', date: '2025. jan. – 2025. ápr.', days: 89, art: 'assets/milestones/milestone-7.svg' }),
+        Object.freeze({ id: '2025-05', title: 'Tavaszi újrakezdés', date: '2025. máj. 6. – 2025. máj. 23.', days: 18, art: 'assets/milestones/milestone-45.svg' }),
+        Object.freeze({ id: '2025-06', title: 'Rövid időszak', date: '2025. jún.', days: 4, art: 'assets/milestones/milestone-14.svg' }),
+        Object.freeze({ id: '2025-08', title: 'Nyár végi időszak', date: '2025. aug. 1. – 2025. szept. 2.', days: 33, art: 'assets/milestones/milestone-60.svg' }),
+        Object.freeze({ id: '2025-11', title: 'Téli kitartás', date: '2025. nov. 10. – 2025. dec. 25.', days: 46, art: 'assets/milestones/milestone-90.svg' }),
+        Object.freeze({ id: 'current', title: 'Jelenlegi időszak', date: '2026. máj. 1. – jelenleg', days: 24, art: 'assets/milestones/milestone-21.svg', current: true })
+      ]);
       const HISTORY_CALENDAR_WEEKDAYS = Object.freeze(['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Sz']);
       const HISTORY_CALENDAR_MONTHS = Object.freeze(['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December']);
       const SURVIVAL_STEPS = Object.freeze([
@@ -1963,6 +2079,19 @@
           this.mainNavigation = root.querySelector('[data-component="bottom-navigation"]');
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
+          this.panicScreen = root.querySelector('[data-component="panic-mode"]');
+          this.panicContent = root.querySelector('[data-component="panic-content"]');
+          this.panicVariantToggle = root.querySelector('[data-component="panic-variant-toggle"]');
+          this.panicHelpSheetHost = root.querySelector('[data-component="panic-help-sheet"]');
+          this.panicHelpSheetContent = root.querySelector('[data-component="panic-help-sheet-content"]');
+          this.historyOverviewElements = {
+            screen: root.querySelector('[data-component="sobriety-batch-history"]'),
+            current: root.querySelector('[data-component="history-current-layout"]'),
+            alternative: root.querySelector('[data-component="history-path-overview"]'),
+            layoutToggle: root.querySelector('[data-component="history-overview-layout-toggle"]'),
+            densityToggle: root.querySelector('[data-component="history-overview-density-toggle"]')
+          };
+          this.historyPeriodList = root.querySelector('[data-component="history-period-list"]');
           this.historyDetailScreen = root.querySelector('[data-component="current-period-detail"]');
           this.meetingsContent = root.querySelector('[data-component="meetings-main-content"]');
           this.meetingDetailContent = root.querySelector('[data-component="meeting-detail-content"]');
@@ -2001,9 +2130,14 @@
             route: 'home',
             sheet: { progress: 0, settled: 'collapsed' },
             path: createPathState(),
+            panicVariant: this.readPanicVariant(),
+            panicHelpContact: 'sponsor',
+            panicHelpSheet: false,
+            survivalSession: null,
             historyDetailView: 'timeline',
             historySelectedPeriodTitle: 'Jelenlegi időszak',
             historyPresentation: { history: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, timeline: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, calendar: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false } },
+            historyOverview: { layoutMode: 'current', density: 'roomy' },
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
             survivalStep: 0,
@@ -2016,6 +2150,7 @@
             meetingEditor: null,
             meetingPicker: null,
             sponsor: { ...SPONSOR_INITIAL_STATE },
+            sponsorBackup: null,
             sponsorLayout: 'current',
             sponsorDraft: null,
             sponsorAvailability: createSponsorAvailability(),
@@ -2040,8 +2175,11 @@
           this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           this.bind();
           this.render();
+          this.renderLegacyHistoryPeriodCards();
           this.renderHistoryPresentation('history');
+          this.renderHistoryOverviewLayout();
           this.renderHistoryPresentation('timeline');
+          this.renderPanicVariant();
           this.renderSponsorSurfaces();
           this.renderSponsorNextCard();
           this.renderTakeawayPreview();
@@ -2067,10 +2205,15 @@
           this.root.addEventListener('pointermove', (event) => this.updateTakeawayReorder(event));
           this.root.addEventListener('pointerup', (event) => this.finishTakeawayReorder(event));
           this.root.addEventListener('pointercancel', () => { this.takeawayDrag = null; });
+          this.root.addEventListener('pointerdown', (event) => this.startPanicHelpSheetDrag(event));
+          this.root.addEventListener('pointermove', (event) => this.updatePanicHelpSheetDrag(event));
+          this.root.addEventListener('pointerup', (event) => this.finishPanicHelpSheetDrag(event));
+          this.root.addEventListener('pointercancel', () => { this.panicHelpDrag = null; });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-note-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+          window.addEventListener?.('popstate', () => this.handlePlatformBack());
           this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
         }
         handleAction(event) {
@@ -2084,14 +2227,24 @@
             case 'open-current-period-timeline': this.navigate('timeline'); break;
             case 'open-milestones': this.navigate('milestones'); break;
             case 'open-history': this.navigate('history'); break;
+            case 'toggle-history-overview-layout': this.toggleHistoryOverviewLayout(); break;
+            case 'toggle-history-overview-density': this.toggleHistoryOverviewDensity(); break;
             case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-body-presentation': this.toggleHistoryBodyPresentation(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'open-panic': this.navigate('panic'); break;
+            case 'toggle-panic-variant': this.togglePanicVariant(); break;
+            case 'open-panic-help-sheet': this.openPanicHelpSheet(event.target.closest('[data-action="open-panic-help-sheet"]')); break;
+            case 'close-panic-help-sheet': this.closePanicHelpSheet(); break;
+            case 'toggle-panic-backup': this.togglePanicBackup(); break;
+            case 'open-panic-contact-message': this.openPanicContactMessage(event.target.closest('[data-panic-contact-key]')?.dataset.panicContactKey, event.target.closest('[data-action="open-panic-contact-message"]')); break;
+            case 'open-panic-sponsor-setup': this.closePanicHelpSheet(); this.openSponsorDetails(); break;
             case 'open-panic-why': this.navigate('panic-why'); break;
             case 'open-panic-relapse': this.navigate('panic-relapse'); break;
             case 'start-survival-pack': this.startSurvivalPack(); break;
             case 'advance-survival-step': this.advanceSurvivalStep(); break;
+            case 'complete-survival-pack': this.completeSurvivalPack(event.target.closest('[data-survival-outcome]')?.dataset.survivalOutcome); break;
+            case 'survival-still-hard': this.extendSurvivalPack(); break;
             case 'open-panic-contacts': this.navigate('panic-contacts'); break;
             case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;
             case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;
@@ -2563,11 +2716,13 @@
           this.closeAppOverlaySheet(host);
         }
         sponsorMessageDefaultCopy() { return 'Szia! Ha tudsz, kérlek hívj fel. Szeretnék beszélni veled.'; }
-        hasSponsorPhone() { return Boolean(this.sponsorDialValue(this.state.sponsor.phone).replace(/\D/g, '')); }
-        openSponsorMessageSheet(trigger) {
+        messageContact(key = 'sponsor') { return key === 'backup' ? this.state.sponsorBackup : this.state.sponsor; }
+        hasSponsorPhone(key = 'sponsor') { return Boolean(this.sponsorDialValue(this.messageContact(key)?.phone).replace(/\D/g, '')); }
+        openSponsorMessageSheet(trigger, options = {}) {
           const host = this.root.querySelector('[data-component="sponsor-message-sheet"]');
           if (!host) return;
-          this.state.sponsorMessageSheet = { message: this.sponsorMessageDefaultCopy(), phoneWarning: false };
+          const contactKey = options.contactKey === 'backup' ? 'backup' : 'sponsor';
+          this.state.sponsorMessageSheet = { message: options.message || this.sponsorMessageDefaultCopy(), phoneWarning: false, contactKey, panicOrigin: Boolean(options.panicOrigin) };
           this.renderSponsorMessageSheet();
           this.openAppOverlaySheet(host, trigger);
         }
@@ -2581,9 +2736,10 @@
           const sheet = this.state.sponsorMessageSheet;
           const content = this.root.querySelector('[data-component="sponsor-message-sheet-content"]');
           if (!sheet || !content) return;
-          const sponsorName = escapeHtml(this.state.sponsor.name);
-          const hasPhone = this.hasSponsorPhone();
-          const dialValue = this.sponsorDialValue(this.state.sponsor.phone);
+          const contact = this.messageContact(sheet.contactKey);
+          const sponsorName = escapeHtml(contact?.name || 'kapcsolattartó');
+          const hasPhone = this.hasSponsorPhone(sheet.contactKey);
+          const dialValue = this.sponsorDialValue(contact?.phone);
           const href = `sms:${dialValue}?body=${encodeURIComponent(sheet.message)}`;
           const primary = hasPhone
             ? `<a class="sponsor-message-open" data-sponsor-need-message-link href="${href}" aria-label="Üzenet megnyitása ${sponsorName} számára">Üzenet megnyitása</a>`
@@ -2593,8 +2749,8 @@
         updateSponsorMessageLink() {
           const sheet = this.state.sponsorMessageSheet;
           const link = this.root.querySelector('[data-sponsor-need-message-link]');
-          if (!sheet || !link || !this.hasSponsorPhone()) return;
-          link.setAttribute('href', `sms:${this.sponsorDialValue(this.state.sponsor.phone)}?body=${encodeURIComponent(sheet.message)}`);
+          if (!sheet || !link || !this.hasSponsorPhone(sheet.contactKey)) return;
+          link.setAttribute('href', `sms:${this.sponsorDialValue(this.messageContact(sheet.contactKey)?.phone)}?body=${encodeURIComponent(sheet.message)}`);
         }
         showSponsorMessagePhoneWarning() {
           const sheet = this.state.sponsorMessageSheet;
@@ -2834,7 +2990,52 @@
           presentation.metricsExpanded = !presentation.metricsExpanded;
           this.renderHistoryPresentation(surface);
         }
-        renderHistoryLayout() { this.renderHistoryPresentation('history'); }
+        renderLegacyHistoryPeriodCards() {
+          if (!this.historyPeriodList) return;
+          this.historyPeriodList.innerHTML = HISTORY_PERIODS.map((period) => {
+            const badge = `${period.days} nap${period.current ? ' tiszta' : ''}`;
+            return `<button class="history-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-period-copy"><h2>${escapeHtml(period.title)}</h2><p>${escapeHtml(period.date)}</p><span class="history-period-badge">${badge}</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>`;
+          }).join('');
+        }
+        renderHistoryLayout() { this.renderLegacyHistoryPeriodCards(); this.renderHistoryPresentation('history'); this.renderHistoryOverviewLayout(); }
+        toggleHistoryOverviewLayout() {
+          this.state.historyOverview.layoutMode = this.state.historyOverview.layoutMode === 'path-inspired' ? 'current' : 'path-inspired';
+          this.renderHistoryOverviewLayout();
+        }
+        toggleHistoryOverviewDensity() {
+          if (this.state.historyOverview.layoutMode !== 'path-inspired') return;
+          this.state.historyOverview.density = this.state.historyOverview.density === 'roomy' ? 'compact' : 'roomy';
+          this.renderHistoryOverviewLayout();
+        }
+        renderHistoryPeriodCards() {
+          const current = HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[HISTORY_PERIODS.length - 1];
+          const priorPeriods = HISTORY_PERIODS.filter((period) => !period.current);
+          const periodCard = (period) => `<button class="history-path-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${period.days} tiszta nap"><span class="history-path-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-path-day-medallion" aria-hidden="true"><span>${period.days}</span></span><span class="history-path-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small></span><span class="history-path-chevron" aria-hidden="true">›</span></button>`;
+          return { current, priorPeriods, periodCard };
+        }
+        renderHistoryOverviewLayout() {
+          const elements = this.historyOverviewElements;
+          const overview = this.state.historyOverview;
+          if (!elements?.screen || !elements.alternative) return;
+          const alternative = overview.layoutMode === 'path-inspired';
+          const { current, priorPeriods, periodCard } = this.renderHistoryPeriodCards();
+          const currentProgress = Math.min(100, Math.round((current.days / 90) * 100));
+          elements.screen.dataset.historyOverviewLayoutMode = alternative ? 'path-inspired' : 'current';
+          elements.screen.dataset.historyOverviewDensity = overview.density;
+          elements.current?.setAttribute('aria-hidden', String(alternative));
+          if (alternative) elements.current?.setAttribute('inert', ''); else elements.current?.removeAttribute('inert');
+          elements.alternative.hidden = !alternative;
+          if (alternative) elements.alternative.innerHTML = `<button class="history-path-current-card" type="button" data-history-batch="${current.id}" data-action="open-history-detail" aria-label="Jelenlegi időszak: ${current.days} tiszta nap a 90 napos célból"><span class="history-path-current-art" aria-hidden="true"><img src="${current.art}" alt=""></span><span class="history-path-day-medallion" aria-hidden="true"><span>${current.days}</span></span><span class="history-path-copy"><span class="history-path-kicker">Jelenlegi időszak</span><strong>Jelenlegi időszak</strong><small>${escapeHtml(current.date)} · ${current.days} nap tiszta</small><span class="history-path-progress-meta"><span>${current.days} / 90 nap</span><span>90 napos cél</span></span><span class="history-path-progress" aria-label="${current.days} nap a 90 napos célból"><span style="--history-period-progress:${currentProgress}"></span></span></span><span class="history-path-chevron" aria-hidden="true">›</span></button><section class="history-path-period-list-card" aria-labelledby="history-path-period-list-title"><h2 class="history-path-period-list-title" id="history-path-period-list-title">Korábbi fejezeteim</h2><div class="history-path-period-list">${priorPeriods.map(periodCard).join('')}</div></section>`;
+          if (elements.layoutToggle) {
+            elements.layoutToggle.setAttribute('aria-pressed', String(alternative));
+            elements.layoutToggle.setAttribute('aria-label', alternative ? 'Jelenlegi Történetem elrendezés' : 'Új, Ösvény-alapú Történetem elrendezés');
+          }
+          if (elements.densityToggle) {
+            elements.densityToggle.disabled = !alternative;
+            elements.densityToggle.setAttribute('aria-pressed', String(alternative && overview.density === 'roomy'));
+            elements.densityToggle.setAttribute('aria-label', alternative ? (overview.density === 'roomy' ? 'Kompakt Történetem kártyák' : 'Tágas Történetem kártyák') : 'A sűrűség csak az új Történetem elrendezésben érhető el');
+          }
+        }
         renderCalendarGridPlacement(integrated) {
           const screen = this.historyDetailScreen;
           const monthCard = screen?.querySelector('.history-calendar-month-card');
@@ -3132,23 +3333,144 @@
           editor.locationMessage = 'Helyzet lekérése…'; this.renderMeetingEditor();
           navigator.geolocation.getCurrentPosition((position) => { editor.draft.coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude }; editor.locationMessage = `Helyzet rögzítve · ${position.coords.latitude.toFixed(3)}, ${position.coords.longitude.toFixed(3)}`; this.renderMeetingEditor(); }, () => { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.renderMeetingEditor(); }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
         }
-        startSurvivalPack() { this.state.survivalStep = 0; this.navigate('survival'); }
+        readPanicVariant() {
+          try { return window.localStorage?.getItem('hajnal.panicVariant') === 'alternative' ? 'alternative' : 'classic'; } catch (_) { return 'classic'; }
+        }
+        persistPanicVariant() {
+          try { window.localStorage?.setItem('hajnal.panicVariant', this.state.panicVariant); } catch (_) { /* local persistence is best-effort only */ }
+        }
+        togglePanicVariant() {
+          this.state.panicVariant = this.state.panicVariant === 'alternative' ? 'classic' : 'alternative';
+          this.persistPanicVariant();
+          this.renderPanicVariant();
+        }
+        panicMotivationExcerpt() {
+          const motivation = String(this.state.initialization?.motivation || '').trim();
+          return motivation || 'Írd le, miért fontos neked a felépülés.';
+        }
+        renderPanicClassic() {
+          return `<section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-panic-option="call-sponsor" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button><button type="button" data-panic-option="call-backup" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button><button type="button" data-panic-option="survival-pack" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg>15 perces túlélőcsomag</button><button type="button" data-panic-option="why-started" data-action="open-panic-why"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Olvasd el, miért kezdted el</button><button type="button" data-panic-option="meeting-finder" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button><button type="button" data-panic-option="report-relapse" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Visszaestem</button></section>`;
+        }
+        renderPanicAlternative() {
+          return `<section class="panic-alternative"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button panic-main-button--pulse" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell, kapcsolati lehetőségek megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><section class="panic-alternative-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>15 perces<br>túlélőcsomag</span></button><button type="button" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Következő<br>gyűlés</span></button><button type="button" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Visszaestem</span></button></section><button class="panic-motivation-card" type="button" data-action="open-panic-why" aria-label="Miért kezdtem el? megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span><strong>Miért kezdtem el?</strong><small>${escapeHtml(this.panicMotivationExcerpt())}</small></span><span aria-hidden="true">›</span></button></section>`;
+        }
+        renderPanicVariant() {
+          if (!this.panicContent || !this.panicScreen) return;
+          const alternative = this.state.panicVariant === 'alternative';
+          this.panicContent.dataset.panicVariant = alternative ? 'alternative' : 'classic';
+          this.panicScreen.dataset.panicVariant = alternative ? 'alternative' : 'classic';
+          this.panicContent.innerHTML = alternative ? this.renderPanicAlternative() : this.renderPanicClassic();
+          if (this.panicVariantToggle) {
+            this.panicVariantToggle.setAttribute('aria-pressed', String(alternative));
+            this.panicVariantToggle.setAttribute('aria-label', alternative ? 'Classic Pánik mód megnyitása' : 'Alternatív Pánik mód megnyitása');
+          }
+        }
+        getPanicContact(key = 'sponsor') { return key === 'backup' ? this.state.sponsorBackup : this.state.sponsor; }
+        hasPanicContact(key = 'sponsor') { return Boolean(String(this.getPanicContact(key)?.name || '').trim()); }
+        panicContactCard(key, heading, availability = '') {
+          const contact = this.getPanicContact(key);
+          if (!this.hasPanicContact(key)) return `<section class="panic-contact-card"><h3>${heading}</h3><p>Még nincs beállított kapcsolattartó.</p>${key === 'sponsor' ? '<button class="panic-contact-empty-link" type="button" data-action="open-panic-sponsor-setup">Szponzor hozzáadása</button>' : ''}</section>`;
+          const name = escapeHtml(contact.name);
+          const dial = this.sponsorDialValue(contact.phone);
+          const phone = dial ? escapeHtml(contact.phone) : 'Nincs telefonszám megadva';
+          const call = dial ? `<a href="tel:${dial}" aria-label="${name} hívása">Hívás</a>` : '<button type="button" data-action="open-panic-sponsor-setup">Telefonszám hozzáadása</button>';
+          return `<section class="panic-contact-card"><h3>${heading}</h3><p><strong>${name}</strong> · ${phone}${availability ? `<br>${escapeHtml(availability)}` : ''}</p><div class="panic-contact-actions">${call}<button type="button" data-action="open-panic-contact-message" data-panic-contact-key="${key}">Üzenet</button></div></section>`;
+        }
+        renderPanicHelpSheet() {
+          if (!this.panicHelpSheetContent) return;
+          const backupOpen = Boolean(this.state.panicHelpBackupExpanded);
+          const availability = this.formatSponsorAvailabilitySummary?.() || '';
+          const backup = this.hasPanicContact('backup');
+          this.panicHelpSheetContent.innerHTML = `${this.panicContactCard('sponsor', 'Szponzor', availability)}<button class="panic-backup-disclosure" type="button" data-action="toggle-panic-backup" aria-expanded="${backupOpen}"><span>Tartalék kapcsolattartó</span><span aria-hidden="true">${backupOpen ? '⌃' : '⌄'}</span></button><div class="panic-backup-panel"${backupOpen ? '' : ' hidden'}>${backup ? this.panicContactCard('backup', 'Tartalék kapcsolattartó') : '<section class="panic-contact-card"><p>Nincs beállított tartalék kapcsolattartó.</p></section>'}</div><a class="panic-emergency" href="tel:112" aria-label="112, sürgősségi segítség hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg><span><strong>112 – Sürgősségi segítség</strong><small>Közvetlen veszély esetén.</small></span></a>`;
+        }
+        openPanicHelpSheet(trigger) {
+          if (!this.panicHelpSheetHost) return;
+          this.state.panicHelpSheet = true;
+          this.state.panicHelpContact = 'sponsor';
+          this.panicScreen?.setAttribute('data-panic-help-open', 'true');
+          this.renderPanicHelpSheet();
+          this.openAppOverlaySheet(this.panicHelpSheetHost, trigger);
+        }
+        closePanicHelpSheet() {
+          if (!this.panicHelpSheetHost || this.panicHelpSheetHost.hidden) return;
+          this.state.panicHelpSheet = false;
+          this.panicScreen?.setAttribute('data-panic-help-open', 'false');
+          this.closeAppOverlaySheet(this.panicHelpSheetHost);
+        }
+        togglePanicBackup() { this.state.panicHelpBackupExpanded = !this.state.panicHelpBackupExpanded; this.renderPanicHelpSheet(); }
+        openPanicContactMessage(key = 'sponsor', trigger) {
+          if (!this.hasPanicContact(key)) return;
+          const message = 'Most nehéz helyzetben vagyok, szükségem lenne arra, hogy beszéljünk. Fel tudsz hívni?';
+          this.closePanicHelpSheet();
+          globalThis.setTimeout(() => this.openSponsorMessageSheet(trigger, { contactKey: key, message, panicOrigin: true }), this.motionReduced ? 0 : 200);
+        }
+        startPanicHelpSheetDrag(event) {
+          const handle = event.target.closest('[data-panic-help-sheet-handle]');
+          if (!handle || !this.state.panicHelpSheet) return;
+          this.panicHelpDrag = { pointerId: event.pointerId, startY: event.clientY, moved: false };
+          handle.setPointerCapture?.(event.pointerId);
+        }
+        updatePanicHelpSheetDrag(event) {
+          const drag = this.panicHelpDrag;
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          drag.moved ||= event.clientY - drag.startY > 8;
+          if (drag.moved) event.preventDefault();
+        }
+        finishPanicHelpSheetDrag(event) {
+          const drag = this.panicHelpDrag;
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          this.panicHelpDrag = null;
+          if (event.clientY - drag.startY > 54) this.closePanicHelpSheet();
+        }
+        handlePlatformBack() {
+          if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
+          if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic');
+        }
+        startSurvivalPack() {
+          if (!this.state.survivalSession || this.state.survivalSession.completed) this.state.survivalSession = { startedAt: Date.now(), step: 0, completed: false, extensionCount: 0 };
+          this.state.survivalStep = this.state.survivalSession.step;
+          this.startSurvivalClock();
+          this.navigate('survival');
+        }
+        startSurvivalClock() {
+          if (this.survivalClock || typeof globalThis.setInterval !== 'function') return;
+          this.survivalClock = globalThis.setInterval(() => this.syncSurvivalElapsedLabel(), 1000);
+        }
+        stopSurvivalClock() { if (this.survivalClock) { globalThis.clearInterval?.(this.survivalClock); this.survivalClock = null; } }
+        survivalElapsedSeconds() { return Math.max(0, Math.floor((Date.now() - (this.state.survivalSession?.startedAt || Date.now())) / 1000)); }
+        formatSurvivalElapsed() { const seconds = this.survivalElapsedSeconds(); return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')} / 15:00`; }
+        syncSurvivalElapsedLabel() { const label = this.survivalContent?.querySelector('[data-survival-elapsed]'); if (label) label.textContent = this.formatSurvivalElapsed(); }
         advanceSurvivalStep() {
-          if (this.state.survivalStep >= SURVIVAL_STEPS.length - 1) { this.navigate('panic-contacts'); return; }
-          this.state.survivalStep += 1;
+          const session = this.state.survivalSession;
+          if (!session) return this.startSurvivalPack();
+          if (session.step >= SURVIVAL_STEPS.length - 1) { session.completed = true; this.renderSurvival(); return; }
+          session.step += 1;
+          this.state.survivalStep = session.step;
+          this.renderSurvival();
+        }
+        completeSurvivalPack(outcome) {
+          if (outcome === 'help') return this.openPanicHelpSheet(this.survivalContent?.querySelector('[data-survival-outcome="help"]'));
+          if (outcome === 'hard') return this.extendSurvivalPack();
+          this.stopSurvivalClock();
+          if (this.state.survivalSession) this.state.survivalSession.completed = true;
+          this.navigate('panic');
+        }
+        extendSurvivalPack() {
+          const session = this.state.survivalSession;
+          if (!session) return this.startSurvivalPack();
+          session.completed = false;
+          session.extensionCount += 1;
+          session.step = Math.max(0, SURVIVAL_STEPS.length - 2);
+          this.state.survivalStep = session.step;
           this.renderSurvival();
         }
         renderSurvival() {
           if (!this.survivalContent) return;
-          const step = SURVIVAL_STEPS[this.state.survivalStep] || SURVIVAL_STEPS[0];
-          const visuals = {
-            calm: '<div class="survival-calm-mark"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></div>',
-            breathe: '<div class="survival-breath-visual">Kilégzés</div>',
-            water: '<div class="survival-water-visual" aria-hidden="true"></div>',
-            outside: '<div class="survival-door-visual" aria-hidden="true"></div>',
-            note: '<div class="survival-note-visual" aria-hidden="true"><span></span><span></span><span></span><span></span></div>'
-          };
-          this.survivalContent.innerHTML = `<button class="path-back-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button><section class="survival-card" data-survival-step="${this.state.survivalStep + 1} / ${SURVIVAL_STEPS.length}"><span class="survival-count">${this.state.survivalStep + 1} / ${SURVIVAL_STEPS.length}</span><h1 id="survival-title">${escapeHtml(step.title)}</h1><p>${escapeHtml(step.copy)}</p><div class="survival-visual">${visuals[step.visual] || visuals.calm}</div><button class="survival-action" type="button" data-action="advance-survival-step">${escapeHtml(step.action)}</button></section>`;
+          const session = this.state.survivalSession || { step: 0, completed: false };
+          const step = SURVIVAL_STEPS[session.step] || SURVIVAL_STEPS[0];
+          const visuals = { calm: '<div class="survival-calm-mark"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></div>', breathe: '<div class="survival-breath-visual">Kilégzés</div>', water: '<div class="survival-water-visual" aria-hidden="true"></div>', outside: '<div class="survival-door-visual" aria-hidden="true"></div>', note: '<div class="survival-note-visual" aria-hidden="true"><span></span><span></span><span></span><span></span></div>' };
+          const conclusion = `<section class="survival-card" data-survival-complete="true"><span class="survival-count" data-survival-elapsed>${this.formatSurvivalElapsed()}</span><h1 id="survival-title">Értékeld újra.</h1><p>Nem kell tökéletesen lenned. Válaszd azt, ami most a leginkább igaz rád.</p><div class="survival-visual">${visuals.calm}</div><div class="survival-outcomes"><button class="survival-action" type="button" data-action="complete-survival-pack" data-survival-outcome="better">Jobban vagyok</button><button class="survival-action secondary" type="button" data-action="survival-still-hard">Még nehéz</button><button class="survival-action secondary" type="button" data-action="complete-survival-pack" data-survival-outcome="help">Szeretnék segítséget kérni</button></div></section>`;
+          this.survivalContent.innerHTML = `<button class="path-back-button" type="button" data-action="open-panic" aria-label="Vissza a pánik módhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button>${session.completed ? conclusion : `<section class="survival-card" data-survival-step="${session.step + 1} / ${SURVIVAL_STEPS.length}"><span class="survival-count">${session.step + 1} / ${SURVIVAL_STEPS.length} · <span data-survival-elapsed>${this.formatSurvivalElapsed()}</span></span><h1 id="survival-title">${escapeHtml(step.title)}</h1><p>${escapeHtml(step.copy)}</p><div class="survival-visual">${visuals[step.visual] || visuals.calm}</div><button class="survival-help-link" type="button" data-action="open-panic-help-sheet">Segítséget kérek</button><button class="survival-action" type="button" data-action="advance-survival-step">${escapeHtml(step.action)}</button></section>`}`;
         }
         clearInitializationSplashTimer() { if (this.initializationSplashTimer) { globalThis.clearTimeout(this.initializationSplashTimer); this.initializationSplashTimer = null; } }
         scheduleInitializationSplash() {
@@ -3224,6 +3546,7 @@
           if (route === 'path') this.renderPath();
           if (route === 'history-detail') this.renderHistoryDetail();
           if (route === 'survival') this.renderSurvival();
+          if (route === 'panic') this.renderPanicVariant();
           if (route === 'panic-why') this.renderPanicMotivation();
           if (route === 'initialization') this.renderInitialization();
           this.syncMainNavigation();

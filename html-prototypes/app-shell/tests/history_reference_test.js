@@ -31,22 +31,20 @@ assert.equal(
   'class="history-hero"',
   'src="assets/hero/timelinehero.png"',
   'data-component="history-hero-image"',
-  'data-action="toggle-history-hero-variant"',
-  'data-component="history-hero-variant-toggle"',
+  'data-action="toggle-history-overview-layout"',
+  'data-action="toggle-history-overview-density"',
+  'data-component="history-overview-layout-toggle"',
+  'data-component="history-overview-density-toggle"',
   'Fejezeteim és emlékeim',
   'Minden időszak egy külön fejezet az utamból.',
   'Első időszak',
   '2024. máj. 1. – 2024. máj. 8.',
-  '8 nap',
   'Nyári szakasz',
   '2024. aug. – 2024. szept.',
-  '37 nap',
   'Leghosszabb időszak',
   '2025. jan. – 2025. ápr.',
-  '89 nap',
   'Jelenlegi időszak',
   '2026. máj. 1. – jelenleg',
-  '24 nap tiszta',
   'Júniusi folytatás',
   'Őszi újrakezdés',
   'Tavaszi újrakezdés',
@@ -60,19 +58,25 @@ assert.equal(
   'átlagos hangulat',
   'check-in arány',
   'data-action="open-history-detail"',
-].forEach((expected) => assert.ok(history.includes(expected), `history reference content is missing ${expected}`));
+].forEach((expected) => assert.ok(html.includes(expected), `history reference content is missing ${expected}`));
 
-assert.equal((history.match(/class="history-period-card"/g) || []).length, 10, 'History must provide ten tappable sobriety-period cards so its sole scroll region has meaningful test depth');
-assert.equal((history.match(/data-history-batch=/g) || []).length, 10, 'each of the ten history period cards must retain a semantic batch identity');
+const historyPeriodsMatch = html.match(/const HISTORY_PERIODS = Object\.freeze\((\[[\s\S]*?\])\);/);
+assert.ok(historyPeriodsMatch, 'one structured History period source must serve both presentation variants');
+const historyPeriods = new Function(`return (${historyPeriodsMatch[1]});`)();
+assert.equal(historyPeriods.length, 10, 'History must provide ten tappable sobriety-period cards so its sole scroll region has meaningful test depth');
+assert.equal(new Set(historyPeriods.map((period) => period.id)).size, 10, 'each of the ten history period cards must retain a semantic batch identity');
+assert.ok(historyPeriods.every((period) => period.title && period.date && period.days && period.art), 'all Legacy and path-inspired History cards must resolve from the same complete source');
+assert.deepEqual(historyPeriods.map((period) => period.days), [8, 15, 37, 21, 89, 18, 4, 33, 46, 24], 'the original clean-day values must remain exactly intact');
+assert.equal(historyPeriods.find((period) => period.current)?.days, 24, 'the current period source must preserve its 24 clean days');
 assert.equal((history.match(/data-history-stat=/g) || []).length, 5, 'the source lower section has exactly five history measures');
-assert.equal((history.match(/assets\/milestones\/milestone-[^" ]+\.svg/g) || []).length, 10, 'each of the ten period cards must use a local gallery artwork asset');
+assert.ok(historyPeriods.every((period) => /^assets\/milestones\/milestone-[^" ]+\.svg$/.test(period.art)), 'each of the ten period cards must use a local gallery artwork asset');
 assert.ok(history.includes('class="history-number-grid"'), 'the five measures must share one compact lower-row component');
 assert.equal((history.match(/class="history-number-grid"/g) || []).length, 1, 'the compact/expanded metric presentation must reuse the one existing metric payload');
 assert.ok(history.includes('data-action="toggle-history-metrics"'), 'the entire compact history footer must expose one semantic metric expansion control');
 assert.ok(history.includes('data-component="history-metrics-surface"'), 'the full History insight card must have a stable controller-owned tap-surface contract');
 assert.ok(!history.includes('history-metrics-toggle'), 'the History insight card must not retain a dedicated arrow trigger');
 assert.ok(history.includes('class="history-period-scroll"'), 'only the period-card list must own its own scroll area');
-assert.ok(history.includes('data-history-batch="2025-06"'), 'the recovered June 2025 period must remain available as the fifth card');
+assert.ok(historyPeriods.some((period) => period.id === '2025-06'), 'the recovered June 2025 period must remain available as the fifth card');
 assert.ok(history.indexOf('history-period-intro') < history.indexOf('history-period-scroll') && history.indexOf('history-period-scroll') < history.indexOf('history-number-summary'), 'the fixed quote, scrollable period list, and fixed number summary must stay in visual order');
 assert.ok(html.includes('grid-template-columns: repeat(5, minmax(0, 1fr));'), 'the lower history measures must use the source one-row five-column layout');
 assert.ok(html.includes('.history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 24px 18px 17px;'), 'the quote and number summary must be fixed by the History three-row layout');
