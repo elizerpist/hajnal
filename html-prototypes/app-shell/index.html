@@ -702,11 +702,11 @@
     .path-summary-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; padding: 13px; color: var(--hajnal-purple); font-size: 11px; font-weight: 800; }
     .path-read-only-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 13px; background: #F1ECF8; color: #5D4A9E; font-size: 11px; line-height: 1.35; font-weight: 720; }
 
-    /* Step 4 chapter submenu — source of truth: /storage/emulated/0/hajnal/source of truth/tema.png */
-    .path-screen[data-path-step="step-4"][data-path-view="step"], .path-screen[data-path-step="step-4"][data-path-view="topics"], .path-screen[data-path-step="step-4"][data-path-view="topic"], .path-screen[data-path-step="step-4"][data-path-view="question"], .path-screen[data-path-step="step-4"][data-path-view="answers"], .path-screen[data-path-step="step-4"][data-path-view="sponsor-review"], .path-screen[data-path-step="step-4"][data-path-view="step-summary"] { background: var(--screen-background); }
-    .path-screen[data-path-step="step-4"][data-path-view="step"].path-focus .path-content { top: 0; bottom: 0; padding: 0; }
+    /* Shared chapter submenu — source composition established by Step 4. */
+    .path-screen[data-path-view="step"], .path-screen[data-path-view="topics"], .path-screen[data-path-view="topic"], .path-screen[data-path-view="question"], .path-screen[data-path-view="answers"], .path-screen[data-path-view="sponsor-review"], .path-screen[data-path-view="step-summary"] { background: var(--screen-background); }
+    .path-screen[data-path-view="step"].path-focus .path-content { top: 0; bottom: 0; padding: 0; }
     .path-step-four-header { height: 46px; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; margin-bottom: 8px; }
-    .path-screen[data-path-step="step-4"][data-path-view="step"] .path-step-four-header { position: absolute; z-index: 2; top: 0; right: 0; left: 0; height: 61px; margin: 0; padding: 7px 18px 8px; background: linear-gradient(180deg, rgba(249, 243, 247, .94), rgba(249, 243, 247, 0)); }
+    .path-screen[data-path-view="step"] .path-step-four-header { position: absolute; z-index: 2; top: 0; right: 0; left: 0; height: 61px; margin: 0; padding: 7px 18px 8px; background: linear-gradient(180deg, rgba(249, 243, 247, .94), rgba(249, 243, 247, 0)); }
     .path-step-four-header h1 { margin: 0; overflow: hidden; color: #07132C; font-size: 17px; line-height: 1.1; font-weight: 820; letter-spacing: -.035em; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
     .path-step-four-header button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #07132C; cursor: pointer; }
     .path-step-four-header button .icon { width: 25px; height: 25px; stroke-width: 2.2; }
@@ -773,6 +773,128 @@
     .path-step-four-answer-row .path-chevron { align-self: center; }
     .path-step-four-empty { padding: 18px; border: 1px solid rgba(44, 46, 119, .045); border-radius: 20px; background: #FEFBFA; color: rgba(44, 46, 119, .62); font-size: 13px; line-height: 1.42; font-weight: 620; }
     .path-step-four-local-note { margin: 0 0 13px; padding: 11px 13px; border-radius: 16px; background: #EEE8FA; color: #544780; font-size: 11.5px; line-height: 1.38; font-weight: 670; }
+
+    /* Ösvény source of truth: /storage/emulated/0/hajnal/source of truth/osveny.png
+       The overview keeps its header/current-work composition fixed; only the twelve
+       chapter rows own a scroll container. */
+    .path-screen[data-path-view="overview"] { isolation: isolate; overflow: hidden; background: var(--screen-background); }
+    .path-screen[data-path-view="overview"]::before { content: ""; position: absolute; z-index: 0; top: 0; right: 0; left: 0; height: 238px; background: linear-gradient(180deg, rgba(249, 243, 247, .02) 0%, rgba(249, 243, 247, .14) 50%, var(--screen-background) 100%), url("assets/path-step-4/hero-onleltar-mobile.png") center 27% / cover no-repeat; opacity: .42; transform: scaleX(-1); transform-origin: center; pointer-events: none; }
+    .path-screen[data-path-view="overview"] .path-content { position: absolute; z-index: 1; top: 0; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: 32px 80px minmax(0, 1fr); overflow: hidden; padding: 0; }
+    .path-overview-status { position: relative; z-index: 1; }
+    .path-overview-header { height: 80px; position: relative; z-index: 1; align-items: start; padding: 4px 20px 6px; }
+    .path-overview-heading { min-width: 0; padding-top: 5px; }
+    .path-overview-header h1 { color: #07132C; font-family: Georgia, "Times New Roman", serif; font-size: 33px; font-weight: 700; letter-spacing: -.065em; }
+    .path-overview-heading p { max-width: 180px; margin: 7px 0 0; color: #8178AA; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
+    .path-overview-quote { align-self: end; max-width: 149px; margin: 0 4px 7px 0; color: #7267A3; font-family: Georgia, "Times New Roman", serif; font-size: 11px; line-height: 1.23; font-style: italic; font-weight: 600; text-align: right; }
+    .path-overview-actions { align-self: start; margin-top: 2px; }
+    .path-overview-history { width: 42px; height: 42px; border-radius: 50%; background: rgba(239, 232, 250, .90); color: var(--hajnal-purple); box-shadow: 0 5px 14px rgba(68, 47, 130, .07); }
+    .path-overview-height-toggle { width: 42px; height: 42px; position: absolute; z-index: 5; top: 40px; right: 67px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(239,232,250,.90); color: var(--hajnal-purple); box-shadow: 0 5px 14px rgba(68,47,130,.07); font: inherit; font-size: 22px; line-height: 1; cursor: pointer; }
+    .path-overview-height-toggle[aria-pressed="true"] { background: var(--hajnal-purple); color: #FFF; }
+    .path-overview-height-toggle:active { opacity: .82; transform: scale(.96); }
+    .path-overview-height-toggle:focus-visible { outline: 3px solid rgba(106,86,180,.48); outline-offset: 2px; }
+    .path-overview-content { --path-step-art-width: 186px; --path-step-art-mask: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.42) 10%, #000 22%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); height: auto; display: grid; grid-template-rows: 102px minmax(0, 1fr); gap: 11px; overflow: hidden; padding: 0 18px 10px; }
+    .path-overview-fast-card { min-height: 102px; position: relative; grid-template-columns: 125px minmax(0, 1fr) 18px; gap: 8px; overflow: hidden; padding: 0 12px 0 0; border-radius: 25px; background: rgba(254, 251, 250, .94); box-shadow: 0 10px 22px rgba(44, 46, 119, .06); }
+    .path-fast-visual { width: var(--path-step-art-width); height: 100%; position: absolute; z-index: 0; top: 0; left: 0; display: block; overflow: hidden; border-radius: 24px 0 0 24px; opacity: .92; -webkit-mask-image: var(--path-step-art-mask); mask-image: var(--path-step-art-mask); }
+    .path-fast-visual img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .path-fast-visual::after { display: none; }
+    /* One shared, layered medalion: opaque pink disc → variable purple ring
+       → deliberately thick card-surface outline. The opaque disc is critical:
+       it prevents the conic ring from reading as a pie chart. */
+    .path-fast-medallion, .path-step-card-number { width: 54px; height: 54px; display: grid; place-items: center; position: absolute; z-index: 2; box-sizing: border-box; padding: 3px; border: 4px solid #FEFBFA; border-radius: 50%; background: conic-gradient(rgba(106,86,180,.72) calc(var(--path-step-progress) * 1%), rgba(234,224,250,.56) 0); background-clip: padding-box; box-shadow: 0 6px 15px rgba(67, 49, 134, .07); color: rgba(106,86,180,.88); font-size: 28px; }
+    .path-fast-medallion { top: 23px; left: 48px; }
+    .path-fast-medallion > span, .path-step-card-number > span { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 50%; background: #EAE0FA; }
+    /* The fast card already has a linear progress bar. Its step number is a
+       quiet, constant disc — never a second circular progress indicator. */
+    .path-fast-medallion--static { padding: 0; border: 0; background: #EAE0FA; }
+    .path-fast-medallion--static > span { background: #EAE0FA; }
+    .path-fast-copy { position: relative; z-index: 1; grid-column: 2; grid-row: 1; padding-right: 1px; }
+    .path-fast-label { font-size: 9.5px; letter-spacing: .045em; }
+    .path-fast-copy strong { margin-top: 3px; font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: 700; letter-spacing: -.055em; }
+    .path-fast-meta { margin-top: 4px; color: #867DAE; font-size: 11.5px; }
+    .path-fast-progress { height: 6px; margin-top: 9px; background: #EAE3F7; }
+    .path-fast-chevron { position: relative; z-index: 1; grid-column: 3; grid-row: 1; color: #7467A9; font-size: 30px; }
+    .path-step-list-card { gap: 7px; }
+    .path-step-list-card h2 { margin: 1px 4px 0; font-family: Georgia, "Times New Roman", serif; font-size: 23px; font-weight: 700; letter-spacing: -.055em; }
+    .path-step-list { gap: 7px; padding: 2px 0 18px; }
+    .path-step-card { min-height: 76px; position: relative; grid-template-columns: 111px minmax(0, 1fr) 12px; gap: 6px; overflow: hidden; padding: 9px 10px 9px 14px; border-radius: 22px; background: rgba(254, 251, 250, .94); box-shadow: 0 7px 16px rgba(44, 46, 119, .04); }
+    .path-step-card-art { width: var(--path-step-art-width); height: 100%; position: absolute; z-index: 0; top: 0; left: 26px; overflow: hidden; opacity: .88; -webkit-mask-image: var(--path-step-art-mask); mask-image: var(--path-step-art-mask); }
+    /* Step 4's brighter lotus/lake scene needs the same visible rightward
+       falloff as the softer Step 5 reference, in both root placements. */
+    .path-step-card[data-step-id="step-4"] .path-step-card-art, .path-screen[data-path-view="overview"][data-path-step="step-4"] .path-fast-visual { --path-step-art-mask: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.42) 10%, #000 22%, #000 48%, rgba(0,0,0,.72) 64%, rgba(0,0,0,.24) 80%, transparent 100%); }
+    .path-step-card-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .path-step-card-art.is-mirrored img { transform: scaleX(-1); }
+    .path-step-card::before { display: none; }
+    .path-step-card > span { position: relative; z-index: 2; }
+    .path-step-card > .path-step-card-art { position: absolute; z-index: 0; }
+    .path-step-card-number { width: 54px; height: 54px; position: relative; justify-self: start; margin-left: -7px; font-size: 21px; }
+    .path-step-card-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
+    .path-step-card-copy small { margin-top: 4px; display: -webkit-box; font-size: 10.5px; line-height: 1.17; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .path-step-card-chevron { color: #9A90C1; font-size: 25px; }
+    /* Keep the active row on the same card surface as every other row: the
+       shared alpha mask must always dissolve into the same destination color. */
+    .path-step-card[data-path-current="true"] { border-color: rgba(44, 46, 119, .045); background: rgba(254, 251, 250, .94); box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
+    /* Reference-state progress preview: it is intentionally visual-only and
+       leaves the question-answer source state used by the nested screens intact. */
+    .path-step-card[data-step-id="step-1"] .path-step-card-number { --path-step-progress: 46 !important; }
+    .path-step-card[data-step-id="step-2"] .path-step-card-number { --path-step-progress: 64 !important; }
+    .path-step-card[data-step-id="step-3"] .path-step-card-number { --path-step-progress: 29 !important; }
+    .path-step-card[data-step-id="step-4"] .path-step-card-number { --path-step-progress: 12 !important; }
+    .path-step-card[data-step-id="step-5"] .path-step-card-number { --path-step-progress: 53 !important; }
+    .path-step-card[data-step-id="step-6"] .path-step-card-number, .path-step-card[data-step-id="step-7"] .path-step-card-number, .path-step-card[data-step-id="step-8"] .path-step-card-number, .path-step-card[data-step-id="step-9"] .path-step-card-number, .path-step-card[data-step-id="step-10"] .path-step-card-number, .path-step-card[data-step-id="step-11"] .path-step-card-number, .path-step-card[data-step-id="step-12"] .path-step-card-number { --path-step-progress: 0 !important; }
+    .path-screen[data-path-view="overview"][data-path-step="step-4"] .path-fast-medallion { --path-step-progress: 12 !important; }
+    .path-screen[data-path-view="overview"][data-path-step="step-4"] .path-fast-progress > span { width: 12% !important; }
+    /* The compact alternative is the prior low-height presentation. Its
+       number treatment is only a thicker progress ring, never a pie fill. */
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-overview-content { --path-step-art-width: 168px; grid-template-rows: 90px minmax(0, 1fr); }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-overview-fast-card { min-height: 90px; grid-template-columns: 109px minmax(0, 1fr) 18px; }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-fast-medallion { width: 46px; height: 46px; top: 22px; left: 52px; padding: 5px; font-size: 23px; }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-fast-copy strong { font-size: 18px; }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-step-card { min-height: 62px; grid-template-columns: 101px minmax(0, 1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-step-card-number { width: 46px; height: 46px; margin-left: -7px; padding: 5px; font-size: 19px; }
+    .path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-step-card-copy strong { font-size: 13px; }
+
+    /* Step 4 source of truth: /storage/emulated/0/hajnal/source of truth/onleltar.png */
+    .path-screen[data-path-view="step"] { background: var(--screen-background); }
+    .path-screen[data-path-view="step"] .path-content { top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; padding: 0; }
+    .path-step-four-menu-header { height: 66px !important; position: absolute !important; z-index: 4 !important; top: 0; right: 0; left: 0; display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 7px 18px !important; background: linear-gradient(180deg, rgba(255, 253, 254, .24), transparent) !important; }
+    .path-step-four-menu-header button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .74); border-radius: 50%; background: rgba(255, 255, 255, .80); color: #192060; box-shadow: 0 7px 18px rgba(50, 36, 106, .10); }
+    .path-step-four-menu-header button .icon { width: 25px; height: 25px; stroke-width: 2.25; }
+    .path-screen[data-path-view="step"] .path-step-four-scroll { height: calc(100% - var(--bottom-nav-h)); display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; overflow-y: auto; padding: 0; scrollbar-width: none; }
+    .path-step-four-scroll { height: 100%; overflow-y: auto; padding: 0 0 14px; scrollbar-width: none; }
+    .path-step-four-scroll::-webkit-scrollbar { display: none; }
+    .path-step-four-cover { position: relative; }
+    .path-step-four-art { height: 276px; background: #F2EAF4; }
+    .path-step-four-art img { object-fit: cover; object-position: center top; }
+    .path-step-four-art::after { z-index: 1; height: 78px; background: linear-gradient(transparent, var(--screen-background)); }
+    .path-step-four-hero-copy { z-index: 2; top: 48px; right: 23px; left: 23px; color: #11164D; text-shadow: 0 1px 0 rgba(255,255,255,.48); }
+    .path-step-four-hero-copy .path-step-four-hero-kicker { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 19px; line-height: 1.1; font-weight: 700; }
+    .path-step-four-hero-copy h2 { margin-top: 10px; color: #071344; font-size: 35px; line-height: .98; font-weight: 700; letter-spacing: -.055em; }
+    .path-step-four-hero-copy p { max-width: 326px; margin: 10px auto 0; color: #6760A3; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.23; font-weight: 600; }
+    .path-step-four-handwritten { position: absolute; z-index: 2; right: 30px; bottom: 34px; max-width: 96px; color: #7061B2; font-family: "Brush Script MT", "Segoe Script", cursive; font-size: 21px; line-height: .95; font-weight: 500; text-align: center; transform: rotate(-9deg); text-shadow: 0 1px 0 rgba(255,255,255,.72); }
+    .path-step-four-copy { position: relative; z-index: 3; margin: -30px 18px 0; padding: 14px 16px; border: 1px solid rgba(255,255,255,.86); border-radius: 24px; background: rgba(254, 251, 250, .94); box-shadow: 0 13px 25px rgba(45, 35, 104, .08); }
+    .path-step-four-progress { grid-template-columns: 78px minmax(0, 1fr); gap: 14px; margin-top: 0; }
+    .path-step-four-progress-ring { width: 72px; height: 72px; padding: 6px; box-shadow: none; }
+    .path-step-four-progress-ring strong { font-size: 16px; }
+    .path-step-four-progress-ring small { margin-top: 3px; font-size: 9px; }
+    .path-step-four-progress-copy strong { color: #11164D; font-family: Georgia, "Times New Roman", serif; font-size: 16px; line-height: 1.1; font-weight: 700; }
+    .path-step-four-progress-copy span { margin-top: 4px; color: #8A80B1; font-size: 12px; }
+    .path-step-four-progress-bar { height: 6px; margin-top: 10px; }
+    .path-step-four-quote { min-height: 70px; display: grid; grid-template-columns: 25px minmax(0, 1fr) 25px; align-items: center; gap: 7px; margin: 6px 28px 9px; color: #7161B1; text-align: center; }
+    .path-step-four-quote span { color: #BDADE1; font-size: 38px; line-height: .65; text-align: center; }
+    .path-step-four-quote p { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.14; font-style: italic; font-weight: 600; }
+    .path-step-four-quote::after { content: ""; width: 104px; height: 1px; grid-column: 2; justify-self: center; margin-top: 6px; background: #C9BEE7; box-shadow: -44px 0 0 -0.5px #C9BEE7, 44px 0 0 -0.5px #C9BEE7; }
+    .path-step-four-menu-grid { gap: 10px; margin: 0 18px; }
+    .path-step-four-menu-card { min-height: 132px; position: relative; display: block; overflow: hidden; padding: 13px; border-color: rgba(255,255,255,.84); border-radius: 24px; background: #FEFBFA; box-shadow: 0 10px 22px rgba(44, 46, 119, .055); }
+    .path-step-four-menu-card-bg { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+    .path-step-four-menu-card::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(254,251,250,1) 0%, rgba(254,251,250,.97) 38%, rgba(254,251,250,.23) 100%); pointer-events: none; }
+    .path-step-four-menu-card > * { position: relative; z-index: 2; }
+    .path-step-four-menu-card > .path-step-four-menu-card-bg { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; }
+    .path-step-four-menu-icon { width: 38px; height: 38px; border-radius: 13px; }
+    .path-step-four-menu-icon .icon { width: 22px; height: 22px; }
+    .path-step-four-menu-card strong { display: block; max-width: 120px; margin-top: 12px; color: #081240; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1.02; font-weight: 700; letter-spacing: -.05em; }
+    .path-step-four-menu-card small { display: block; max-width: 117px; margin-top: 5px; color: #8A80B1; font-size: 10.5px; line-height: 1.18; font-weight: 760; }
+    .path-step-four-menu-card em { display: block; max-width: 115px; margin-top: 10px; color: #7C73A7; font-size: 9.5px; line-height: 1.2; font-style: normal; font-weight: 630; }
+    .path-step-four-menu-arrow { width: 38px; height: 38px; position: absolute !important; z-index: 3 !important; right: 12px; bottom: 12px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.82); color: #5E49AF; font-size: 28px; line-height: 1; font-weight: 350; }
     .history-detail-screen, .meetings-screen { background: linear-gradient(180deg, #F1EAF9 0%, #FFF9FC 22%, #FFFDFE 100%); }
     .meetings-content, .panic-child-content, .initialization-content { position: absolute; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 0 18px 28px; color: var(--hajnal-navy); scrollbar-width: none; }
     .panic-why-screen .panic-child-content, .relapse-screen .panic-child-content, .survival-screen .panic-child-content, .panic-contacts-screen .panic-child-content, .initialization-screen .initialization-content { bottom: 0; }
@@ -1692,7 +1814,7 @@
         });
         current.steps['step-5'].topics['step-5-topic-2'] = { answers: { 'step-5-topic-2-question-1': createAnswer({ text: 'Ezt a félelmet szeretném majd elmondani egy bizalmi beszélgetésben.', discussWithSponsor: true }) } };
         current.steps['step-9'].topics['step-9-topic-4'] = { answers: { 'step-9-topic-4-question-1': createAnswer({ text: 'Előbb át szeretném beszélni, mi lenne biztonságos és nem okozna újabb kárt.', discussWithSponsor: true }) } };
-        return { currentCycleId: current.id, cycles: [historical, current], overviewLayout: 'current', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', notice: '' } };
+        return { currentCycleId: current.id, cycles: [historical, current], overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', notice: '' } };
       }
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
@@ -1968,7 +2090,7 @@
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
           if (this.isPathReadOnly()) return;
-          if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; }
+          if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; this.rememberLastPathWork(); }
           if (target.matches('[data-path-step-summary]')) { this.getCurrentStepWork().summary = target.value; }
           if (target.matches('[data-path-step-takeaway]')) { this.getCurrentStepWork().takeaway = target.value; }
         }
@@ -2994,6 +3116,8 @@
         getCurrentCycle() { return this.state.path.cycles.find((cycle) => cycle.id === this.state.path.currentCycleId); }
         getStep(stepId = this.getPathNavigation().stepId) { return PATH_STEPS.find((step) => step.id === stepId); }
         getTopic(topicId = this.getPathNavigation().topicId, step = this.getStep()) { return step?.themes.find((topic) => topic.id === topicId); }
+        rememberLastPathWork() { const navigation = this.getPathNavigation(); this.state.path.lastWorked = { cycleId: this.state.path.currentCycleId, stepId: navigation.stepId, topicId: navigation.topicId, questionIndex: navigation.questionIndex }; }
+        getLastPathWork() { const last = this.state.path.lastWorked; if (!last || last.cycleId !== this.state.path.currentCycleId) return null; const step = this.getStep(last.stepId); const topic = this.getTopic(last.topicId, step); if (!step || !topic || last.questionIndex < 0 || last.questionIndex >= topic.questions.length) return null; return { step, topic, questionIndex: last.questionIndex }; }
         getCurrentStepWork(stepId = this.getPathNavigation().stepId) { return this.getCurrentCycle().steps[stepId]; }
         getTopicWork(stepId = this.getPathNavigation().stepId, topicId = this.getPathNavigation().topicId) { const stepWork = this.getCurrentStepWork(stepId); return stepWork.topics[topicId] ||= { answers: {} }; }
         getCurrentQuestion() { const topic = this.getTopic(); return topic.questions[this.getPathNavigation().questionIndex] || topic.questions[0]; }
@@ -3023,7 +3147,7 @@
           this.navigate('path');
         }
         togglePathOverviewLayout() {
-          this.state.path.overviewLayout = this.state.path.overviewLayout === 'baseline' ? 'current' : 'baseline';
+          this.state.path.overviewLayout = this.state.path.overviewLayout === 'roomy' ? 'compact' : 'roomy';
           this.renderPath();
         }
         togglePathStepFourHeroVariant() {
@@ -3037,9 +3161,9 @@
         openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.view = 'step'; this.navigate('path'); }
         openPathTopics() { this.getPathNavigation().view = 'topics'; this.navigate('path'); }
         openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = 0; navigation.view = 'topic'; this.getCurrentStepWork().status = this.getCurrentStepWork().status === 'not-started' && !this.isPathReadOnly() ? 'in-progress' : this.getCurrentStepWork().status; this.navigate('path'); }
-        openPathQuestion() { this.getPathNavigation().view = 'question'; this.navigate('path'); }
-        movePathQuestion(delta) { const topic = this.getTopic(); const navigation = this.getPathNavigation(); navigation.questionIndex = Math.min(topic.questions.length - 1, Math.max(0, navigation.questionIndex + delta)); this.renderPath(); }
-        pathBack() { const view = this.getPathNavigation().view; const isStepFour = this.getPathNavigation().stepId === 'step-4'; if (view === 'question') this.getPathNavigation().view = 'topic'; else if (view === 'topic') this.getPathNavigation().view = isStepFour ? 'topics' : 'step'; else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') this.getPathNavigation().view = 'step'; else if (view === 'step' || view === 'cycles') this.getPathNavigation().view = 'overview'; else { this.navigate('home'); return; } this.renderPath(); }
+        openPathQuestion() { this.getPathNavigation().view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        movePathQuestion(delta) { const topic = this.getTopic(); const navigation = this.getPathNavigation(); navigation.questionIndex = Math.min(topic.questions.length - 1, Math.max(0, navigation.questionIndex + delta)); this.rememberLastPathWork(); this.renderPath(); }
+        pathBack() { const view = this.getPathNavigation().view; if (view === 'question') this.getPathNavigation().view = 'topic'; else if (view === 'topic') this.getPathNavigation().view = 'topics'; else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') this.getPathNavigation().view = 'step'; else if (view === 'step' || view === 'cycles') this.getPathNavigation().view = 'overview'; else { this.navigate('home'); return; } this.renderPath(); }
         togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; if (flag === 'discussWithSponsor') this.renderPendingTopics(); this.renderPath(); }
         sendPathQuestionToSponsorPending() {
           if (this.isPathReadOnly()) return;
@@ -3056,31 +3180,30 @@
         setPathAnswerFilter(filter) { this.getPathNavigation().answerFilter = filter; this.renderPath(); }
         closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.setPathNotice('A jelenlegi lépésmunkát lezártad. Ez később bármikor újra megnyitható.'); }
         openPathCycles() { this.getPathNavigation().view = 'cycles'; this.navigate('path'); }
-        openPathCycle(cycleId) { const cycle = this.state.path.cycles.find((item) => item.id === cycleId); if (!cycle) return; this.state.path.currentCycleId = cycle.id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-4'; navigation.topicId = 'step-4-topic-2'; navigation.questionIndex = 0; this.navigate('path'); }
-        startNewPathCycle() { const year = new Date().getFullYear(); const id = `cycle-${Date.now()}`; this.state.path.cycles.push(createCycle(id, String(year))); this.state.path.currentCycleId = id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-1'; navigation.topicId = 'step-1-topic-1'; navigation.questionIndex = 0; navigation.notice = 'Új lépésmunka indult. A korábbi válaszaid változatlanul megmaradtak.'; this.navigate('path'); }
+        openPathCycle(cycleId) { const cycle = this.state.path.cycles.find((item) => item.id === cycleId); if (!cycle) return; this.state.path.currentCycleId = cycle.id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-4'; navigation.topicId = 'step-4-topic-2'; navigation.questionIndex = 0; this.rememberLastPathWork(); this.navigate('path'); }
+        startNewPathCycle() { const year = new Date().getFullYear(); const id = `cycle-${Date.now()}`; this.state.path.cycles.push(createCycle(id, String(year))); this.state.path.currentCycleId = id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-1'; navigation.topicId = 'step-1-topic-1'; navigation.questionIndex = 0; navigation.notice = 'Új lépésmunka indult. A korábbi válaszaid változatlanul megmaradtak.'; this.rememberLastPathWork(); this.navigate('path'); }
         collectSponsorItems(stepId = null) { const items = []; const cycle = this.getCurrentCycle(); PATH_STEPS.filter((step) => !stepId || step.id === stepId).forEach((step) => step.themes.forEach((topic) => topic.questions.forEach((question, index) => { const answer = cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]; if (answer?.discussWithSponsor) items.push({ step, topic, question, answer, key: `${step.id}|${topic.id}|${index}` }); }))); return items; }
         markPathSponsorDiscussed(key) { if (this.isPathReadOnly()) return; const item = this.findReviewItem(key); if (item) item.answer.discussedWithSponsor = !item.answer.discussedWithSponsor; this.renderPath(); }
         findReviewItem(key) { return this.collectSponsorItems().find((item) => item.key === key); }
-        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.view = 'question'; this.navigate('path'); }
-        openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.view = 'question'; this.navigate('path'); }
+        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
         selectCurrentPathWork() {
+          const navigation = this.getPathNavigation(); const last = this.getLastPathWork();
+          if (last) { navigation.stepId = last.step.id; navigation.topicId = last.topic.id; navigation.questionIndex = last.questionIndex; return; }
           const cycle = this.getCurrentCycle();
           const step = PATH_STEPS.find((item) => cycle.steps[item.id].status === 'in-progress') || PATH_STEPS.find((item) => cycle.steps[item.id].status === 'not-started') || PATH_STEPS[0];
           const topic = step.themes.find((item) => Object.values(cycle.steps[step.id].topics[item.id]?.answers || {}).some((answer) => answer.text.trim())) || step.themes[0];
           const firstOpenQuestion = topic.questions.findIndex((question) => !cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]?.text.trim());
-          const navigation = this.getPathNavigation();
           navigation.stepId = step.id;
           navigation.topicId = topic.id;
           navigation.questionIndex = firstOpenQuestion < 0 ? topic.questions.length - 1 : firstOpenQuestion;
+          this.rememberLastPathWork();
         }
         resumePathCurrent() {
           this.selectCurrentPathWork();
           const step = this.getStep();
           const topic = this.getTopic();
           const navigation = this.getPathNavigation();
-          const firstOpenQuestion = topic.questions.findIndex((question) => !this.getTopicWork(step.id, topic.id).answers[question.id]?.text.trim());
-          if (firstOpenQuestion < 0) { navigation.view = 'topic'; this.navigate('path'); return; }
-          navigation.questionIndex = firstOpenQuestion;
           navigation.view = 'question';
           const work = this.getCurrentStepWork();
           if (work.status === 'not-started' && !this.isPathReadOnly()) work.status = 'in-progress';
@@ -3090,37 +3213,59 @@
           if (!this.pathScreen || !this.pathContent) return;
           const navigation = this.getPathNavigation();
           const view = PATH_VIEWS.includes(navigation.view) ? navigation.view : 'overview';
-          const isStepFourSubview = navigation.stepId === 'step-4' && view !== 'overview' && view !== 'cycles';
-          const focus = view === 'question' || view === 'step-summary' || isStepFourSubview;
+          const isPathSubview = view !== 'overview' && view !== 'cycles';
+          const focus = isPathSubview;
           this.pathScreen.dataset.pathView = view;
           this.pathScreen.dataset.pathStep = navigation.stepId;
-          this.pathScreen.dataset.pathOverviewLayout = view === 'overview' && this.state.path.overviewLayout === 'baseline' ? 'baseline' : 'current';
+          this.pathScreen.dataset.pathOverviewLayout = view === 'overview' && this.state.path.overviewLayout === 'compact' ? 'compact' : 'roomy';
           this.pathScreen.dataset.pathStepFourHeroVariant = this.state.path.stepFourHeroVariant === 'large' ? 'large' : 'compact';
           this.pathScreen.dataset.pathStepFourHeroCopyPlacement = this.state.path.stepFourHeroCopyPlacement === 'hero' ? 'hero' : 'body';
           this.pathScreen.setAttribute('data-path-read-only', String(this.isPathReadOnly()));
           this.pathScreen.classList.toggle('path-focus', focus);
-          this.pathContent.innerHTML = this[`renderPath${view.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')}`]();
+          const pathMarkup = this[`renderPath${view.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')}`]();
+          const overviewToggle = view === 'overview'
+            ? `<button class="path-overview-height-toggle" type="button" data-action="toggle-path-overview-layout" aria-pressed="${this.state.path.overviewLayout === 'roomy'}" aria-label="${this.state.path.overviewLayout === 'roomy' ? 'Alacsonyabb Ösvény-kártyák' : 'Magasabb Ösvény-kártyák'}" title="${this.state.path.overviewLayout === 'roomy' ? 'Alacsonyabb kártyák' : 'Magasabb kártyák'}">↕</button>`
+            : '';
+          this.pathContent.innerHTML = `${overviewToggle}${pathMarkup}`;
           this.syncMainNavigation();
         }
         pathHeader(title = 'Ösvény', eyebrow = '12 lépés', back = false) { return `<header class="path-header">${back ? '<button class="path-back-button" type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button>' : '<span class="path-kicker">12 lépés</span>'}<div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(eyebrow)}</p></div></header>`; }
         pathNotice() { const notice = this.getPathNavigation().notice; return notice ? `<p class="path-notice" role="status">${escapeHtml(notice)}</p>` : ''; }
         readOnlyNotice() { return this.isPathReadOnly() ? '<p class="path-read-only-note">Ez egy korábbi lépésmunka. A válaszokat itt csak vissza tudod nézni.</p>' : ''; }
+        pathStepArt(stepNumber) {
+          const art = [
+            'assets/path-step-4/tile-topics.png',
+            'assets/path-step-4/tile-sponsor-review.png',
+            'assets/path-step-4/tile-summary.png',
+            'assets/path-step-4/hero-onleltar-row.png',
+            'assets/path-step-4/step-5-seashore.png',
+            'assets/path-step-4/step-6-lake-stone.png',
+            'assets/path-step-4/tile-topics.png',
+            'assets/path-step-4/tile-answers.png',
+            'assets/path-step-4/tile-sponsor-review.png',
+            'assets/path-step-4/tile-summary.png',
+            'assets/path-step-4/step-11-teacups.png',
+            'assets/path-step-4/step-12-paper-boat.png'
+          ];
+          return art[stepNumber - 1] || art[0];
+        }
+        pathStepArtIsMirrored(stepNumber) { return [1, 2, 3, 7, 8, 9, 10].includes(Number(stepNumber)); }
+        pathChapterHeroAsset(step) { return step.number === 4 ? 'assets/path-step-4/hero-onleltar-mobile.png' : this.pathStepArt(step.number); }
+        pathChapterHeroQuote(step) { return step.number === 4 ? 'Bátran és félelem nélkül leltárt készítettünk magunkról.' : step.summary; }
+        pathChapterReflectionQuote(stepNumber) { return ['Az elfogadásban kezdődhet el a változás.', 'Van remény, amikor teret adok neki.', 'A bizalom apró döntésekben is növekedhet.', 'Az őszinteség nem mindig kényelmes, de mindig felszabadító.', 'A kimondott igazság közelebb visz a szabadsághoz.', 'A hajlandóság már maga is mozdulás.', 'Nem kell egyedül tökéletesnek lennem.', 'A felelősségből lehet gyógyulás.', 'Az őszinteséghez bátorság és gyengédség kell.', 'A mai napban is lehet új kezdet.', 'A csendben is találhatok irányt.', 'Amit kaptam, továbbadhatom.'][stepNumber - 1]; }
+        pathChapterHandwritten(stepNumber) { return stepNumber === 4 ? 'Nagyobb szabadság vár rád!' : 'Saját tempódban.'; }
         renderPathOverview() {
-          if (this.state.path.overviewLayout === 'baseline') return this.renderPathBaselineOverview();
           this.selectCurrentPathWork();
+          this.pathScreen.dataset.pathStep = this.getPathNavigation().stepId;
           const current = this.getCurrentCycle(); const currentStep = this.getStep(); const currentTopic = this.getTopic(); const answered = this.getAnsweredCount(currentTopic); const progress = Math.round((answered / currentTopic.questions.length) * 100);
-          return `<div class="path-overview-status" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div><header class="path-overview-header"><h1>Ösvény</h1><div class="path-overview-actions"><button class="path-overview-layout-toggle" type="button" data-action="toggle-path-overview-layout" aria-label="Alap Ösvény layout megtekintése">Alap</button><button class="path-overview-history" type="button" data-action="open-path-cycles" aria-label="Korábbi lépésmunkáim"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg></button></div></header><main class="path-overview-content"><button class="path-overview-fast-card" type="button" data-action="continue-path-current" aria-label="Jelenlegi lépésmunka folytatása: ${escapeHtml(currentStep.title)}, ${escapeHtml(currentTopic.title)}, ${answered} / ${currentTopic.questions.length} kérdés"><span class="path-fast-medallion" aria-hidden="true">${currentStep.number}</span><span class="path-fast-copy"><span class="path-fast-label">Jelenleg ezen dolgozol</span><strong>${escapeHtml(currentStep.title)}</strong><span class="path-fast-meta">${escapeHtml(currentTopic.title)} · ${answered} / ${currentTopic.questions.length} kérdés</span><span class="path-fast-progress" aria-hidden="true"><span style="--path-topic-progress: ${progress}%"></span></span></span><span class="path-fast-chevron" aria-hidden="true">›</span></button><section class="path-step-list-card" aria-labelledby="path-step-list-title"><h2 id="path-step-list-title">12 lépés</h2><div class="path-step-list">${PATH_STEPS.map((step) => { const stepWork = current.steps[step.id]; return `<button class="path-step-card" type="button" data-action="open-path-step" data-step-id="${step.id}" data-path-state="${stepWork.status}" data-path-current="${step.id === currentStep.id}" aria-label="${step.number}. lépés: ${escapeHtml(step.title)}, ${stepStatusLabel(stepWork.status)}"><span class="path-step-card-number" aria-hidden="true">${step.number}</span><span class="path-step-card-copy"><strong>${escapeHtml(step.title)}</strong><small>${escapeHtml(step.summary)}</small></span><span class="path-step-card-state" aria-hidden="true">${stepWork.status === 'closed' ? '✓' : ''}</span><span class="path-step-card-chevron" aria-hidden="true">›</span></button>`; }).join('')}</div></section></main>`;
+          return `<div class="path-overview-status" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div><header class="path-overview-header"><div class="path-overview-heading"><h1>Ösvény</h1><p>Lépésről lépésre közelebb önmagadhoz.</p></div><p class="path-overview-quote">„Egy nyugodtabb, őszintébb, szabadabb élet felé.”</p><div class="path-overview-actions"><button class="path-overview-history" type="button" data-action="open-path-cycles" aria-label="Korábbi lépésmunkáim"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg></button></div></header><main class="path-overview-content"><button class="path-overview-fast-card" type="button" data-action="continue-path-current" aria-label="Jelenlegi lépésmunka folytatása: ${escapeHtml(currentStep.title)}, ${escapeHtml(currentTopic.title)}, ${answered} / ${currentTopic.questions.length} kérdés"><span class="path-fast-visual" aria-hidden="true"><img src="${this.pathStepArt(currentStep.number)}" alt=""></span><span class="path-fast-medallion path-fast-medallion--static" aria-hidden="true"><span>${currentStep.number}</span></span><span class="path-fast-copy"><span class="path-fast-label">Jelenleg ezen dolgozol</span><strong>${escapeHtml(currentStep.title)}</strong><span class="path-fast-meta">${escapeHtml(currentTopic.title)} · ${answered} / ${currentTopic.questions.length} kérdés</span><span class="path-fast-progress" aria-hidden="true"><span style="--path-topic-progress: ${progress}%"></span></span></span><span class="path-fast-chevron" aria-hidden="true">›</span></button><section class="path-step-list-card" aria-labelledby="path-step-list-title"><h2 id="path-step-list-title">12 lépés</h2><div class="path-step-list">${PATH_STEPS.map((step) => { const stepWork = current.steps[step.id]; const stepProgress = this.getStepProgress(step.id); const artClass = this.pathStepArtIsMirrored(step.number) ? ' is-mirrored' : ''; return `<button class="path-step-card" type="button" data-action="open-path-step" data-step-id="${step.id}" data-path-state="${stepWork.status}" data-path-current="${step.id === currentStep.id}" aria-label="${step.number}. lépés: ${escapeHtml(step.title)}, ${stepStatusLabel(stepWork.status)}"><span class="path-step-card-art${artClass}" aria-hidden="true"><img src="${this.pathStepArt(step.number)}" alt=""></span><span class="path-step-card-number" style="--path-step-progress: ${stepProgress.percent}" aria-hidden="true"><span>${step.number}</span></span><span class="path-step-card-copy"><strong>${escapeHtml(step.title)}</strong><small>${escapeHtml(step.summary)}</small></span><span class="path-step-card-chevron" aria-hidden="true">›</span></button>`; }).join('')}</div></section></main>`;
         }
         renderPathBaselineOverview() {
           this.selectCurrentPathWork();
           const current = this.getCurrentCycle(); const currentStep = this.getStep(); const currentTopic = this.getTopic(); const work = this.getCurrentStepWork();
           return `<button class="path-baseline-layout-toggle" type="button" data-action="toggle-path-overview-layout" aria-label="Új Ösvény layout visszaállítása">Új</button>${this.pathHeader('Ösvény', '12 lépés')}<div class="path-baseline-overview-content"><section class="path-current-card"><span class="path-section-label">Jelenlegi munkám</span><h2>Jelenleg ezen dolgozol</h2><div class="path-current-row"><span class="path-current-number">${currentStep.number}. lépés</span><div><strong>${escapeHtml(currentStep.title)}</strong><span>${escapeHtml(currentTopic.title)}</span></div></div><div class="path-progress-line"><span>${this.getAnsweredCount(currentTopic)} / ${currentTopic.questions.length} kérdés</span><span>${stepStatusLabel(work.status)}</span></div><button class="path-primary-button" type="button" data-action="continue-path-current">Folytatás</button></section><div class="path-baseline-step-scroll">${this.pathNotice()}${this.readOnlyNotice()}<section class="path-stations" aria-labelledby="path-stations-title"><div class="path-section-heading"><h2 id="path-stations-title">A 12 lépés</h2><p>Mindegyik lépés bármikor megnyitható.</p></div>${PATH_STEPS.map((step) => { const stepWork = current.steps[step.id]; return `<button class="path-station" type="button" data-action="open-path-step" data-step-id="${step.id}" data-path-state="${stepWork.status}" aria-label="${step.number}. lépés: ${escapeHtml(step.title)}, ${stepStatusLabel(stepWork.status)}"><span class="path-station-marker" aria-hidden="true">${stepMarker(stepWork.status)}</span><span class="path-station-number">${step.number}</span><span class="path-station-copy"><strong>${escapeHtml(step.title)}</strong><small>${stepStatusLabel(stepWork.status)}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section><section class="path-root-actions"><button class="path-root-action" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="all"><span><strong>Szponzorral átbeszélendő</strong><small>${this.collectSponsorItems().length} feljegyzés · csak nálad marad</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-cycles"><span><strong>Korábbi lépésmunkáim</strong><small>${this.state.path.cycles.length} lépésmunka</small></span><span class="path-chevron" aria-hidden="true">›</span></button></section></div></div>`;
         }
-        renderPathStep() {
-          const step = this.getStep(); const work = this.getCurrentStepWork(); const flags = this.getFlagCounts();
-          if (step.number === 4) return this.renderPathStepFourMenu();
-          return `${this.pathHeader(`${step.number}. lépés`, step.title, true)}<div class="path-scroll">${this.pathNotice()}${this.readOnlyNotice()}<section class="path-section-card"><span class="path-section-label">${stepStatusLabel(work.status)}</span><h2>${escapeHtml(step.title)}</h2><p>${escapeHtml(step.summary)}</p></section><section class="path-topic-list" aria-label="Témák"><div class="path-section-heading"><h2>Témák</h2><p>Hajnal-témacsoportok, nem hivatalos NA-alépések.</p></div>${step.themes.map((topic) => `<button class="path-topic-row" type="button" data-action="open-path-topic" data-topic-id="${topic.id}"><span><strong>${escapeHtml(topic.title)}</strong><small>${this.getAnsweredCount(topic)} / ${topic.questions.length} kérdés</small></span><span class="path-row-meta">${this.getAnsweredCount(topic) ? '◐' : '○'}</span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section>${step.number === 10 ? '<section class="path-info-card"><strong>Napi gyakorlat</strong><p>A napi önleltár az Esti reflexió része.</p></section>' : ''}<section class="path-step-actions"><button class="path-root-action" type="button" data-action="open-path-answers"><span><strong>Válaszaim</strong><small>Csak ennek a lépésnek az írásai</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés ebben a lépésben</small></span><span class="path-chevron" aria-hidden="true">›</span></button><button class="path-root-action" type="button" data-action="open-path-summary"><span><strong>A lépés összegzése</strong><small>Nem értékelés, csak saját összefoglaló</small></span><span class="path-chevron" aria-hidden="true">›</span></button></section></div>`;
-        }
+        renderPathStep() { return this.renderPathChapterMenu(); }
         pathStepFourHeader(title, heroToggle = false) {
           const largeHero = this.state.path.stepFourHeroVariant === 'large';
           const heroCopy = this.state.path.stepFourHeroCopyPlacement === 'hero';
@@ -3129,21 +3274,15 @@
             : '<span aria-hidden="true"></span>';
           return `<header class="path-step-four-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1>${escapeHtml(title)}</h1>${trailing}</header>`;
         }
-        renderPathStepFourMenu() {
+        renderPathChapterMenu() {
           const step = this.getStep(); const progress = this.getStepProgress(step.id); const flags = this.getFlagCounts(step.id);
           const answerLabel = progress.answeredQuestions ? `${progress.answeredQuestions} megírt válasz` : 'Még nincs válasz';
-          const heroCopy = this.state.path.stepFourHeroCopyPlacement === 'hero';
-          const chapterCopy = heroCopy
-            ? `<div class="path-step-four-hero-copy"><h2 id="step-four-title">Őszinte önleltár</h2><p>„Bátran és félelem nélkül leltárt készítettünk magunkról.”</p></div>`
-            : '';
-          const bodyCopy = heroCopy
-            ? ''
-            : '<span class="path-step-four-kicker">4. lépés</span><h2 id="step-four-title">Őszinte önleltár</h2><blockquote>„Bátran és félelem nélkül leltárt készítettünk magunkról.”</blockquote>';
-          return `${this.pathStepFourHeader('4. lépés', true)}<main class="path-step-four-scroll"><section class="path-step-four-cover" aria-labelledby="step-four-title"><div class="path-step-four-art"><img src="assets/hero/path-step-4-hero.png" alt="Kőrakás és lótusz csendes, pasztelles hegyi tájban">${chapterCopy}</div><div class="path-step-four-copy ${heroCopy ? 'is-hero-copy' : ''}">${bodyCopy}<div class="path-step-four-progress"><span class="path-step-four-progress-ring" style="--chapter-progress: ${progress.percent}" aria-label="${progress.percent}% haladás"><span><strong>${progress.percent}%</strong><small>haladás</small></span></span><div class="path-step-four-progress-copy"><strong>${progress.answeredTopics} / ${progress.totalTopics} téma</strong><span>${progress.answeredQuestions} / ${progress.totalQuestions} kérdés</span><span class="path-step-four-progress-bar" aria-hidden="true"><span style="--chapter-progress: ${progress.percent}"></span></span></div></div></div></section>${this.readOnlyNotice()}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>Az őszinteség nem mindig kényelmes, de mindig felszabadító.</p></aside><section class="path-step-four-menu-grid" aria-label="4. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>Válaszaim</strong><small>${answerLabel}</small></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small></button></section>${this.pathNotice()}</main>`;
+          const heroAsset = this.pathChapterHeroAsset(step); const heroQuote = this.pathChapterHeroQuote(step); const reflectionQuote = this.pathChapterReflectionQuote(step.number);
+          return `<header class="path-step-four-header path-step-four-menu-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><button type="button" data-action="open-path" aria-label="Ösvény áttekintése"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header><main class="path-step-four-scroll"><section class="path-step-four-cover" aria-labelledby="path-chapter-title"><div class="path-step-four-art" data-path-chapter-art="${step.id}"><img src="${heroAsset}" alt="${escapeHtml(step.title)} fejezetképe"><div class="path-step-four-hero-copy"><span class="path-step-four-hero-kicker">${step.number}. lépés</span><h2 id="path-chapter-title">${escapeHtml(step.title)}</h2><p>„${escapeHtml(heroQuote)}”</p></div><span class="path-step-four-handwritten" aria-hidden="true">${escapeHtml(this.pathChapterHandwritten(step.number))}</span></div><div class="path-step-four-copy"><div class="path-step-four-progress"><span class="path-step-four-progress-ring" style="--chapter-progress: ${progress.percent}" aria-label="${progress.percent}% haladás"><span><strong>${progress.percent}%</strong><small>haladás</small></span></span><div class="path-step-four-progress-copy"><strong>${progress.answeredTopics} / ${progress.totalTopics} téma</strong><span>${progress.answeredQuestions} / ${progress.totalQuestions} kérdés</span><span class="path-step-four-progress-bar" aria-hidden="true"><span style="--chapter-progress: ${progress.percent}"></span></span></div></div></div></section><aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>${escapeHtml(reflectionQuote)}</p><span aria-hidden="true">”</span></aside><section class="path-step-four-menu-grid" aria-label="${step.number}. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><img class="path-step-four-menu-card-bg" src="assets/path-step-4/tile-topics.png" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small><em>Fedezd fel a lépés témáit, és haladj tovább.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><img class="path-step-four-menu-card-bg" src="assets/path-step-4/tile-answers.png" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>Válaszaim</strong><small>${answerLabel}</small><em>Gondolataid egy helyen, biztonságban.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><img class="path-step-four-menu-card-bg" src="assets/path-step-4/tile-sponsor-review.png" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small><em>Amit érdemes megosztanod.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><img class="path-step-four-menu-card-bg" src="assets/path-step-4/tile-summary.png" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small><em>Lásd, mennyit haladtál eddig.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button></section></main>`;
         }
         renderPathTopics() {
           const step = this.getStep(); const progress = this.getStepProgress(step.id);
-          return `${this.pathStepFourHeader('Témák')}<main class="path-step-four-scroll"><p class="path-step-four-subtitle">Őszinte önleltár · ${progress.answeredTopics} / ${progress.totalTopics} témában írtál már.</p><section class="path-step-four-topic-list" aria-label="4. lépés témái">${step.themes.map((topic, index) => { const answered = this.getAnsweredCount(topic, step.id); return `<button class="path-step-four-topic-row ${answered ? 'is-answered' : ''}" type="button" data-action="open-path-topic" data-topic-id="${topic.id}"><span class="path-step-four-topic-number" aria-hidden="true">${answered === topic.questions.length && answered ? '✓' : index + 1}</span><span><strong>${escapeHtml(topic.title)}</strong><small>${answered} / ${topic.questions.length} kérdés</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section></main>`;
+          return `${this.pathStepFourHeader('Témák')}<main class="path-step-four-scroll"><p class="path-step-four-subtitle">${escapeHtml(step.title)} · ${progress.answeredTopics} / ${progress.totalTopics} témában írtál már.</p><section class="path-step-four-topic-list" aria-label="${step.number}. lépés témái">${step.themes.map((topic, index) => { const answered = this.getAnsweredCount(topic, step.id); return `<button class="path-step-four-topic-row ${answered ? 'is-answered' : ''}" type="button" data-action="open-path-topic" data-topic-id="${topic.id}"><span class="path-step-four-topic-number" aria-hidden="true">${answered === topic.questions.length && answered ? '✓' : index + 1}</span><span><strong>${escapeHtml(topic.title)}</strong><small>${answered} / ${topic.questions.length} kérdés</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section></main>`;
         }
         renderPathTopic() {
           const step = this.getStep(); const topic = this.getTopic(); const count = this.getAnsweredCount(topic);
