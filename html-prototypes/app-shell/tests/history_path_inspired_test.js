@@ -21,5 +21,7 @@ assert.match(html, /data-history-overview-layout-mode/, 'the History root must d
 assert.match(html, /data-history-overview-density/, 'the History root must declare roomy versus compact state');
 assert.match(html, /history-overview-footer-slot/, 'the existing expandable footer must have one movable shared slot');
 assert.match(html, /renderHistoryPeriodCards\(/, 'both presentations must derive period cards through the same renderer');
+assert.match(html, /\.history-path-overview \{ position: relative; grid-row: 1; min-height: 0;/, 'the alternative list must remain a grid item so it reserves space above the footer');
+assert.match(html, /data-history-overview-layout-mode="path-inspired"\] \.history-number-summary \{ grid-row: 2;/, 'the shared expandable footer must remain in the bottom grid row in the alternative layout');
 
 console.log('PASS history path-inspired source contract');

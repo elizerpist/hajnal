@@ -33,6 +33,7 @@
 | HIS-03 | Történetem §6–7 | Path-inspired history renderer | A „Jelenlegi időszak” card Ösvény current-card geometriájú: napok a medalionban, dátum/meta, 24/90 progress bar és chevron; a medalion nem index/pie/százalék. | `alternative_runtime_test.js` + source test | DONE |
 | HIS-04 | Történetem §8 | Path-inspired history renderer/CSS | Minden korábbi fejezet Ösvény step-card geometriájú, a saját History assettel és tiszta nap-medallal; mindkét density mód csak a méretet/sűrűséget változtatja. | `alternative_runtime_test.js` + source test; screenshot nem elérhető | PARTIAL |
 | HIS-05 | Történetem §2, §9–10 | shared history footer/actions | Az egyetlen meglévő „Utam számokban” footer mindkét layoutban megmarad és azonos expand/collapse, period-tap/detail, route és adatlogikát használ. | `history_reference_test.js` + source review | DONE |
+| HIS-06 | 2026-10-10 Android screenshot regresszió | path-inspired History grid | Az alternatív Történetem lista a felső grid-sorban marad, az egyetlen közös „Utam számokban” footer pedig mindig az alsó grid-sorban marad; nem takarhatja ki a kártyákat. | `history_path_inspired_test.js` zöld; utólagos készülékes screenshot nem készíthető a rendszer `screencap` korlátozása miatt | PARTIAL |
 | REG-01 | mindkét brief §8/§10 | full shell | 320/360/390–412 szélességen nincs overflow vagy eltakart CTA; cél a 412×892 screenshotos validáció, ismert renderer-korlát őszinte jelzésével. | 320–411px responsive CSS/static check; local HTTP OK; Android `screencap` hibával leállt | PARTIAL |
 
 ## Validációs napló
@@ -41,3 +42,4 @@
 - 2026-10-10: inline JavaScript szintaxis és `git diff --check` sikeres.
 - 2026-10-10: a helyi HTTP szerver válaszolt a `http://127.0.0.1:4173/app-shell/index.html` címen.
 - 2026-10-10: az Androidos screenshot kísérlet a rendszer korlátozása miatt sikertelen: `screencap` státusz `-1`; ezért a képernyőképes elfogadási elemeket nem jelöltem késznek.
+- 2026-10-10: a felhasználó két Android screenshotja igazolta a path-inspired History footer regresszióját: az abszolút lista miatt a footer az első, teljes magasságú grid-sorba auto-placementtel került. A lista ismét normál, első grid-soros elem, a footer explicit második soros; az új regressziós source-teszt zöld. A friss screenshotot a rendszer eszközoldali korlátozása miatt nem lehetett rögzíteni.

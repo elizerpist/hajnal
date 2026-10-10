@@ -514,7 +514,7 @@
     .history-overview-layout-toggle[aria-pressed="true"], .history-overview-density-toggle[aria-pressed="true"] { background: #7650CC; color: #fff; box-shadow: 0 7px 16px rgba(89,54,175,.24); }
     .history-overview-density-toggle:disabled { opacity: .46; cursor: default; }
     .history-current-layout { display: contents; }
-    .history-path-overview { position: absolute; inset: 0; display: grid; grid-template-rows: 102px minmax(0, 1fr); gap: 11px; overflow: hidden; padding: 0 18px 10px; color: #352576; }
+    .history-path-overview { position: relative; grid-row: 1; min-height: 0; display: grid; grid-template-rows: 102px minmax(0, 1fr); gap: 11px; overflow: hidden; padding: 0 18px 10px; color: #352576; }
     .history-path-overview[hidden] { display: none; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-content { top: 224px; grid-template-rows: minmax(0, 1fr) auto; padding: 0 0 17px; border-radius: 0; background: transparent; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero { height: 224px; background: #F2DDED; }
@@ -524,7 +524,7 @@
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy h1 { color: #352576; font-size: 33px; letter-spacing: -.065em; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-current-layout { display: none; }
-    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { z-index: 3; margin: 0 18px; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { grid-row: 2; z-index: 3; margin: 0 18px; }
     .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 22px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
     .history-path-current-card { min-height: 102px; display: grid; grid-template-columns: 111px minmax(0,1fr) 18px; align-items: center; gap: 7px; padding: 0 11px 0 0; }
     .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 9px 10px 9px 14px; }
