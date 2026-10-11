@@ -1018,11 +1018,9 @@
     .path-step-card-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
     .path-step-card-copy small { margin-top: 4px; display: -webkit-box; font-size: 10.5px; line-height: 1.17; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .path-step-card-chevron { color: #9A90C1; font-size: 25px; }
-    /* A coloured artwork means the step has already begun. Those chapter rows
-       use the same soft lavender surface as the selected Őszinte önleltár
-       card; untouched rows remain white and grayscale. */
-    .path-step-card[data-path-state="in-progress"], .path-step-card[data-path-state="closed"] { border-color: transparent; background: #F1EBFC; box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
-    .path-step-card[data-path-current="true"] { border-color: transparent; box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
+    /* The chapter artwork alone signals whether work has begun; all rows keep
+       the same calm, light card surface for legibility. */
+    .path-step-card[data-path-current="true"] { border-color: rgba(44, 46, 119, .045); background: rgba(254, 251, 250, .94); box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
     /* Reference-state progress preview: it is intentionally visual-only and
        leaves the question-answer source state used by the nested screens intact. */
     .path-step-card[data-step-id="step-1"] .path-step-card-number { --path-step-progress: 46 !important; }
