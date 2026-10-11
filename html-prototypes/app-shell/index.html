@@ -530,12 +530,11 @@
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading h2::after { width: 17px; margin-right: 3px; margin-left: 5px; }
     .history-screen[data-history-hero-variant="compact"] .history-number-summary-heading p { font-size: 8.5px; }
     /* Történetem comparison mode: borrows the Ösvény geometry, never its domain state. */
-    .history-overview-layout-toggle, .history-overview-artwork-toggle, .history-overview-density-toggle { width: 38px; height: 38px; position: absolute; z-index: 4; right: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(255,255,255,.76); color: #6950BE; box-shadow: 0 7px 16px rgba(55,34,117,.10); cursor: pointer; }
+    .history-overview-layout-toggle, .history-overview-density-toggle { width: 38px; height: 38px; position: absolute; z-index: 4; right: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(255,255,255,.76); color: #6950BE; box-shadow: 0 7px 16px rgba(55,34,117,.10); cursor: pointer; }
     .history-overview-layout-toggle { top: 49px; }
-    .history-overview-artwork-toggle { top: 49px; right: 62px; }
     .history-overview-density-toggle { top: 92px; }
-    .history-overview-layout-toggle .icon, .history-overview-artwork-toggle .icon, .history-overview-density-toggle .icon { width: 19px; height: 19px; stroke-width: 1.9; }
-    .history-overview-layout-toggle[aria-pressed="true"], .history-overview-artwork-toggle[aria-pressed="true"], .history-overview-density-toggle[aria-pressed="true"] { background: #7650CC; color: #fff; box-shadow: 0 7px 16px rgba(89,54,175,.24); }
+    .history-overview-layout-toggle .icon, .history-overview-density-toggle .icon { width: 19px; height: 19px; stroke-width: 1.9; }
+    .history-overview-layout-toggle[aria-pressed="true"], .history-overview-density-toggle[aria-pressed="true"] { background: #7650CC; color: #fff; box-shadow: 0 7px 16px rgba(89,54,175,.24); }
     .history-overview-density-toggle:disabled { opacity: .46; cursor: default; }
     .history-current-layout { display: contents; }
     .history-path-overview { position: relative; grid-row: 1; min-height: 0; display: grid; grid-template-rows: var(--path-overview-current-card-height) minmax(0, 1fr); gap: 11px; overflow: hidden; padding: 0 18px 10px; color: #352576; }
@@ -544,17 +543,16 @@
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero { height: var(--path-overview-hero-height); background: #F2DDED; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero::after { background: linear-gradient(180deg, rgba(255,250,253,.02) 18%, rgba(255,247,252,.18) 56%, #FFF9FC 100%); }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-image { object-position: center 43%; }
-    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy { top: 41px; right: 110px; left: 20px; text-align: left; }
+    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy { top: 41px; right: 94px; left: 20px; text-align: left; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-overview-layout-toggle { top: 40px; }
-    .history-screen[data-history-overview-layout-mode="path-inspired"] .history-overview-artwork-toggle { top: 40px; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-overview-density-toggle { top: 83px; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy h1 { color: #352576; font-size: 33px; letter-spacing: -.065em; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-current-layout { display: none; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { grid-row: 2; z-index: 3; margin: 0 18px; }
     .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 22px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
-    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 125px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; border-radius: 25px; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
-    .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 9px 10px 9px 14px; }
+    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 148px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; border-radius: 25px; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
+    .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 152px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 9px 10px 9px 14px; }
     .history-path-current-card:focus-visible, .history-path-period-card:focus-visible { outline: 3px solid rgba(181,91,157,.42); outline-offset: 2px; }
     .history-path-current-card:active, .history-path-period-card:active { transform: scale(.99); opacity: .86; }
     .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 0; left: 0; width: 186px; height: 100%; overflow: hidden; opacity: .84; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); mask-image: linear-gradient(90deg, #000 0%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); }
@@ -565,7 +563,8 @@
     .history-path-copy strong, .history-path-copy small { display: block; overflow: hidden; text-overflow: ellipsis; }
     .history-path-copy strong { color: #352576; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
     .history-path-copy small { margin-top: 4px; color: #8E78A5; font-size: 10.5px; line-height: 1.17; font-weight: 680; white-space: nowrap; }
-    .history-path-current-card .history-path-current-art { left: 0; border-radius: 24px 0 0 24px; opacity: .92; }
+    .history-path-current-card .history-path-current-art { left: 0; width: 154px; border-radius: 24px 0 0 24px; opacity: .92; }
+    .history-path-period-card .history-path-period-art { width: 170px; }
     .history-path-current-card .history-path-day-medallion { position: absolute; top: 23px; left: 48px; margin-left: 0; padding: 0; border: 0; }
     .history-path-current-card .history-path-copy { grid-column: 2; grid-row: 1; padding-right: 1px; }
     .history-path-current-card .history-path-copy strong { margin-top: 3px; font-size: 20px; }
@@ -575,21 +574,15 @@
     .history-path-progress { height: 4px; overflow: hidden; margin-top: 5px; border-radius: 999px; background: rgba(198,139,183,.20); }
     .history-path-progress span { width: calc(var(--history-period-progress) * 1%); height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #C66E9E, #8963C6); }
     .history-path-chevron { position: relative; z-index: 2; color: #AD93B7; font-size: 25px; line-height: 1; }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-current-card, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-period-card { border-color: transparent; background: transparent; }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-current-art, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-period-art { width: 100%; border-radius: inherit; opacity: 1; -webkit-mask-image: none; mask-image: none; }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-current-card::after, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-period-card::after { content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(49,28,91,.56) 0%, rgba(64,35,102,.31) 60%, rgba(64,35,102,.16) 100%); }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-day-medallion { border-color: rgba(255,249,252,.78); background: rgba(96,60,136,.74); box-shadow: 0 6px 15px rgba(34,20,68,.25); color: #fff; }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-day-medallion > span { background: rgba(133,88,166,.78); }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-copy strong, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-copy small, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-kicker, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-progress-meta, .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-chevron { color: #fff; text-shadow: 0 1px 5px rgba(31,16,62,.30); }
-    .history-screen[data-history-overview-artwork-mode="full-bleed"] .history-path-progress { background: rgba(255,255,255,.34); }
     .history-path-period-list-card { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 7px; overflow: hidden; padding: 1px 0 8px; }
     .history-path-period-list-title { margin: 1px 4px 0; color: #5A3A81; font-family: Georgia, "Times New Roman", serif; font-size: 23px; line-height: 1.15; font-weight: 700; letter-spacing: -.055em; }
     .history-path-period-list { min-height: 0; display: grid; align-content: start; gap: 7px; overflow-y: auto; padding: 2px 0 18px; scrollbar-width: none; }
     .history-path-period-list::-webkit-scrollbar { display: none; }
     .history-screen[data-history-overview-density="compact"] .history-path-overview { grid-template-rows: var(--path-overview-current-card-height-compact) minmax(0,1fr); }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: var(--path-overview-current-card-height-compact); grid-template-columns: 109px minmax(0,1fr) 18px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 101px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-art, .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 168px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: var(--path-overview-current-card-height-compact); grid-template-columns: 136px minmax(0,1fr) 18px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 136px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-art { width: 142px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 150px; }
     .history-screen[data-history-overview-density="compact"] .history-path-day-medallion { width: 46px; height: 46px; padding: 5px; font-size: 17px; }
     .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-day-medallion { top: 22px; left: 52px; padding: 0; }
     .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-copy strong { font-size: 18px; }
@@ -1683,7 +1676,7 @@
       <div class="daily-image-day"><strong>24. nap</strong><span>a 90 napos úton</span></div>
     </section>
     <section class="route-screen history-screen" id="home-statistics" data-route="history" data-screen="home-statistics" data-component="sobriety-batch-history" data-history-hero-variant="large" data-history-metrics-expanded="false" data-history-overview-layout-mode="current" data-history-overview-density="roomy" aria-labelledby="history-screen-title">
-      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/timelinehero.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-overview-layout-toggle" type="button" data-action="toggle-history-overview-layout" data-component="history-overview-layout-toggle" aria-label="Új, Ösvény-alapú Történetem elrendezés" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button><button class="history-overview-artwork-toggle" type="button" data-action="toggle-history-overview-artwork" data-component="history-overview-artwork-toggle" aria-label="A teljes képes időszakkártyák csak az új Történetem elrendezésben érhetők el" aria-pressed="false" hidden><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></button><button class="history-overview-density-toggle" type="button" data-action="toggle-history-overview-density" data-component="history-overview-density-toggle" aria-label="A sűrűség csak az új Történetem elrendezésben érhető el" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
+      <section class="history-hero" aria-label="Történetem hero"><img class="history-hero-image" data-component="history-hero-image" src="assets/hero/timelinehero.png" alt=""><div class="history-hero-copy"><h1 id="history-screen-title">Történetem</h1><p>Fejezeteim és emlékeim</p></div><button class="history-overview-layout-toggle" type="button" data-action="toggle-history-overview-layout" data-component="history-overview-layout-toggle" aria-label="Új, Ösvény-alapú Történetem elrendezés" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button><button class="history-overview-density-toggle" type="button" data-action="toggle-history-overview-density" data-component="history-overview-density-toggle" aria-label="A sűrűség csak az új Történetem elrendezésben érhető el" aria-pressed="false" disabled><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></section>
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
       <main class="history-content" aria-label="Józan időszakaim">
         <div class="history-current-layout" data-component="history-current-layout">
@@ -2146,7 +2139,6 @@
             current: root.querySelector('[data-component="history-current-layout"]'),
             alternative: root.querySelector('[data-component="history-path-overview"]'),
             layoutToggle: root.querySelector('[data-component="history-overview-layout-toggle"]'),
-            artworkToggle: root.querySelector('[data-component="history-overview-artwork-toggle"]'),
             densityToggle: root.querySelector('[data-component="history-overview-density-toggle"]')
           };
           this.historyPeriodList = root.querySelector('[data-component="history-period-list"]');
@@ -2197,7 +2189,7 @@
             historyDetailView: 'timeline',
             historySelectedPeriodTitle: 'Jelenlegi időszak',
             historyPresentation: { history: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, timeline: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, calendar: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false } },
-            historyOverview: { layoutMode: 'current', density: 'roomy', artworkMode: 'edge-fade' },
+            historyOverview: { layoutMode: 'current', density: 'roomy' },
             historyCalendarView: 'grid',
             historyCalendarDate: '2025-02-14',
             survivalStep: 0,
@@ -2290,7 +2282,6 @@
             case 'open-milestones': this.navigate('milestones'); break;
             case 'open-history': this.navigate('history'); break;
             case 'toggle-history-overview-layout': this.toggleHistoryOverviewLayout(); break;
-            case 'toggle-history-overview-artwork': this.toggleHistoryOverviewArtwork(); break;
             case 'toggle-history-overview-density': this.toggleHistoryOverviewDensity(); break;
             case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-body-presentation': this.toggleHistoryBodyPresentation(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
@@ -3172,11 +3163,6 @@
           this.state.historyOverview.density = this.state.historyOverview.density === 'roomy' ? 'compact' : 'roomy';
           this.renderHistoryOverviewLayout();
         }
-        toggleHistoryOverviewArtwork() {
-          if (this.state.historyOverview.layoutMode !== 'path-inspired') return;
-          this.state.historyOverview.artworkMode = this.state.historyOverview.artworkMode === 'full-bleed' ? 'edge-fade' : 'full-bleed';
-          this.renderHistoryOverviewLayout();
-        }
         renderHistoryPeriodCards() {
           const current = HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[HISTORY_PERIODS.length - 1];
           const priorPeriods = HISTORY_PERIODS.filter((period) => !period.current);
@@ -3192,7 +3178,6 @@
           const currentProgress = Math.min(100, Math.round((current.days / 90) * 100));
           elements.screen.dataset.historyOverviewLayoutMode = alternative ? 'path-inspired' : 'current';
           elements.screen.dataset.historyOverviewDensity = overview.density;
-          elements.screen.dataset.historyOverviewArtworkMode = alternative && overview.artworkMode === 'full-bleed' ? 'full-bleed' : 'edge-fade';
           elements.current?.setAttribute('aria-hidden', String(alternative));
           if (alternative) elements.current?.setAttribute('inert', ''); else elements.current?.removeAttribute('inert');
           elements.alternative.hidden = !alternative;
@@ -3200,13 +3185,6 @@
           if (elements.layoutToggle) {
             elements.layoutToggle.setAttribute('aria-pressed', String(alternative));
             elements.layoutToggle.setAttribute('aria-label', alternative ? 'Jelenlegi Történetem elrendezés' : 'Új, Ösvény-alapú Történetem elrendezés');
-          }
-          if (elements.artworkToggle) {
-            const fullBleed = alternative && overview.artworkMode === 'full-bleed';
-            elements.artworkToggle.hidden = !alternative;
-            elements.artworkToggle.disabled = !alternative;
-            elements.artworkToggle.setAttribute('aria-pressed', String(fullBleed));
-            elements.artworkToggle.setAttribute('aria-label', fullBleed ? 'Áttűnő időszakkártya-képek használata' : 'Teljes képes időszakkártyák használata');
           }
           if (elements.densityToggle) {
             elements.densityToggle.disabled = !alternative;

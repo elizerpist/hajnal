@@ -36,7 +36,6 @@ const historyAlternative = element();
 historyAlternative.hidden = true;
 const historyPeriodList = element();
 const historyLayout = element();
-const historyArtwork = element();
 const historyDensity = element();
 const survival = element();
 
@@ -55,7 +54,6 @@ root.querySelector = (selector) => {
   if (selector === '[data-component="history-path-overview"]') return historyAlternative;
   if (selector === '[data-component="history-period-list"]') return historyPeriodList;
   if (selector === '[data-component="history-overview-layout-toggle"]') return historyLayout;
-  if (selector === '[data-component="history-overview-artwork-toggle"]') return historyArtwork;
   if (selector === '[data-component="history-overview-density-toggle"]') return historyDensity;
   if (selector === '[data-component="survival-content"]') return survival;
   if (selector === '[data-app-overlay-sheet]:not([hidden])') return helpHost.hidden ? null : helpHost;
@@ -108,16 +106,10 @@ assert.equal(controller.state.historyOverview.layoutMode, 'current', 'legacy His
 assert.equal((historyPeriodList.innerHTML.match(/history-period-card/g) || []).length, 10, 'the current History layout must receive the complete shared period source');
 controller.toggleHistoryOverviewLayout();
 assert.equal(historyScreen.dataset.historyOverviewLayoutMode, 'path-inspired', 'the History comparison toggle must select the new presentation');
-assert.equal(historyArtwork.hidden, false, 'the artwork-mode toggle must only become available in the new presentation');
 assert.equal(historyDensity.disabled, false, 'density must become available only in the path-inspired presentation');
 assert.match(historyAlternative.innerHTML, /history-path-current-card/, 'new History must render the current-period card');
 assert.match(historyAlternative.innerHTML, /history-path-day-medallion[^]*>24</, 'the current medalion must display clean days, not an index');
 assert.equal((historyAlternative.innerHTML.match(/history-path-period-card/g) || []).length, 9, 'new History must render all prior chapters exactly once');
-controller.toggleHistoryOverviewArtwork();
-assert.equal(historyScreen.dataset.historyOverviewArtworkMode, 'full-bleed', 'the artwork toggle must switch the same cards to full-bleed mode');
-assert.equal(historyArtwork.getAttribute('aria-pressed'), 'true', 'the artwork toggle state must be exposed accessibly');
-controller.toggleHistoryOverviewArtwork();
-assert.equal(historyScreen.dataset.historyOverviewArtworkMode, 'edge-fade', 'the artwork toggle must return to left-edge fade mode');
 controller.toggleHistoryOverviewDensity();
 assert.equal(historyScreen.dataset.historyOverviewDensity, 'compact', 'the density toggle must alter only the new presentation');
 
