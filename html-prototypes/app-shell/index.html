@@ -598,17 +598,15 @@
     .panic-content[data-panic-variant="alternative"] { padding-bottom: 18px; }
     .panic-alternative { min-height: 100%; display: flex; flex-direction: column; animation: panic-variant-fade 210ms ease both; }
     .panic-alternative .panic-center { margin-top: 8px; }
-    .panic-main-button--pulse { position: relative; isolation: isolate; cursor: pointer; transform: translateZ(0); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; }
-    .panic-main-button--pulse::before, .panic-main-button--pulse::after { content: ""; position: absolute; z-index: -1; border-radius: inherit; pointer-events: none; }
-    .panic-main-button--pulse::before { inset: -30px; background: radial-gradient(circle, rgba(241,93,154,.35) 0%, rgba(241,93,154,.18) 38%, rgba(241,93,154,0) 72%); animation: panic-help-glow 2.8s ease-in-out infinite; }
-    .panic-main-button--pulse::after { inset: -13px; border: 1px solid rgba(255,220,235,.55); background: radial-gradient(circle, rgba(241,93,154,.14), rgba(241,93,154,0) 70%); animation: panic-help-glow-inner 2.8s ease-in-out infinite; }
+    .panic-main-button--pulse { position: relative; isolation: isolate; cursor: pointer; transform: translateZ(0); box-shadow: 0 18px 38px rgba(239,85,145,.26); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; will-change: transform; }
+    .panic-main-button--pulse::before { content: ""; position: absolute; z-index: -1; inset: -42px; border-radius: inherit; background: radial-gradient(circle at center, rgba(241,93,154,.34) 0%, rgba(241,93,154,.22) 34%, rgba(241,93,154,.09) 58%, rgba(241,93,154,0) 78%); pointer-events: none; }
     .panic-main-button--pulse:active { transform: scale(.98); }
-    .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse, .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse::before, .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse::after { animation-play-state: paused; }
-    .panic-alternative-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 28px 0 16px; }
+    .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse { animation-play-state: paused; }
+    .panic-alternative-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 38px 0 16px; }
     .panic-alternative-grid button { min-height: 94px; display: grid; justify-items: center; align-content: center; gap: 7px; padding: 8px 5px; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-button); background: rgba(255,255,255,.10); color: var(--white); font: inherit; font-size: 10.5px; line-height: 1.18; font-weight: 760; text-align: center; cursor: pointer; }
     .panic-alternative-grid button:active { transform: scale(.98); background: rgba(255,255,255,.18); }
     .panic-alternative-grid .icon { width: 24px; height: 24px; }
-    .panic-motivation-card { width: 100%; min-height: 79px; display: grid; grid-template-columns: 31px minmax(0,1fr) 17px; align-items: center; gap: 8px; margin-top: auto; padding: 11px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.14); color: var(--white); font: inherit; text-align: left; backdrop-filter: blur(10px); cursor: pointer; }
+    .panic-motivation-card { width: 100%; min-height: 79px; display: grid; grid-template-columns: 31px minmax(0,1fr) 17px; align-items: center; gap: 8px; margin-top: 0; padding: 11px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.14); color: var(--white); font: inherit; text-align: left; backdrop-filter: blur(10px); cursor: pointer; }
     .panic-motivation-card:active { transform: scale(.99); }
     .panic-motivation-card .icon { width: 23px; height: 23px; color: #FFD9E9; }
     .panic-motivation-card strong, .panic-motivation-card small { display: block; overflow: hidden; text-overflow: ellipsis; }
@@ -616,8 +614,6 @@
     .panic-motivation-card small { display: -webkit-box; margin-top: 3px; color: rgba(255,255,255,.78); font-size: 10.5px; line-height: 1.3; font-weight: 590; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .panic-motivation-card > span:last-child { color: rgba(255,255,255,.82); font-size: 23px; }
     @keyframes panic-help-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
-    @keyframes panic-help-glow { 0%, 100% { opacity: .58; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.07); } }
-    @keyframes panic-help-glow-inner { 0%, 100% { opacity: .5; transform: scale(.94); } 50% { opacity: .96; transform: scale(1.04); } }
     @keyframes panic-variant-fade { from { opacity: .01; } to { opacity: 1; } }
     .panic-help-sheet-host { position: absolute; z-index: 510; inset: 0; isolation: isolate; overscroll-behavior: contain; }
     .panic-help-sheet-host[hidden] { display: none; }
@@ -642,7 +638,11 @@
     .panic-emergency { width: 100%; grid-template-columns: 37px minmax(0,1fr); justify-items: start; gap: 7px; margin: 13px 0 0; background: rgba(255,255,255,.07); }
     .panic-emergency strong, .panic-emergency small { display: block; text-align: left; }
     .panic-emergency small { margin-top: 2px; color: rgba(255,255,255,.67); font-size: 10px; font-weight: 560; }
-    @media (prefers-reduced-motion: reduce) { .panic-main-button--pulse, .panic-main-button--pulse::before, .panic-main-button--pulse::after, .panic-alternative { animation: none; } .panic-help-sheet, .panic-help-sheet-backdrop { transition: none; } }
+    .panic-motivation-sheet-content { display: grid; gap: 12px; padding: 19px 0 8px; }
+    .panic-motivation-sheet-content > .icon { width: 31px; height: 31px; color: #FFD9E9; }
+    .panic-motivation-sheet-content blockquote { margin: 0; color: #FFF; font-family: Georgia, "Times New Roman", serif; font-size: 22px; line-height: 1.28; font-weight: 700; }
+    .panic-motivation-sheet-content p { margin: 0; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.42; font-weight: 590; }
+    @media (prefers-reduced-motion: reduce) { .panic-main-button--pulse, .panic-alternative { animation: none; } .panic-help-sheet, .panic-help-sheet-backdrop { transition: none; } }
 
     .daily-image-screen { background: #171848; color: var(--white); }
     .daily-image-carousel { position: absolute; inset: 0; z-index: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
@@ -1772,9 +1772,9 @@
       <main class="hurray-content"><section class="hurray-copy" aria-label="Sikeres nap visszajelzés"><h1 id="hurray-screen-title">Megcsináltad!</h1><strong>25. nap</strong><p>Folytasd így holnap is!</p></section><section class="reflection-choice-sheet" aria-label="Esti reflexió választás"><span class="sheet-handle" aria-hidden="true"></span><span class="sheet-moon-badge" aria-hidden="true">☾</span><h2>Szeretnél pár percet szánni<br>az esti reflexióra?</h2><p>Segít lezárni a napot<br>és tisztábban látni holnap.</p><div class="sheet-actions"><button class="sheet-primary" type="button">Most, 2 percet rászánok</button><button class="sheet-secondary" type="button" data-action="return-home">Később</button></div></section></main>
     </section>
 
-    <section class="route-screen panic-screen" id="panic-root" data-route="panic" data-screen="panic-root" data-component="panic-mode" aria-labelledby="panic-screen-title">
+    <section class="route-screen panic-screen" id="panic-root" data-route="panic" data-screen="panic-root" data-component="panic-mode" aria-label="Pánik mód">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="panic-screen-title">Pánik mód</h1><p>Egy érintés, de nincs automatikus hívás.</p></div><button class="icon-button panic-variant-toggle" type="button" data-action="toggle-panic-variant" data-component="panic-variant-toggle" aria-label="Alternatív Pánik mód megnyitása" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header>
+      <header class="screen-header"><button class="icon-button" type="button" data-action="return-home" aria-label="Vissza a főmenübe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><span aria-hidden="true"></span><button class="icon-button panic-variant-toggle" type="button" data-action="toggle-panic-variant" data-component="panic-variant-toggle" aria-label="Alternatív Pánik mód megnyitása" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header>
       <main class="panic-content" data-component="panic-content" data-panic-variant="classic"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók">
         <button type="button" data-panic-option="call-sponsor" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button>
         <button type="button" data-panic-option="call-backup" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button>
@@ -1788,9 +1788,18 @@
     <div class="panic-help-sheet-host" data-component="panic-help-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
       <button class="panic-help-sheet-backdrop" type="button" data-action="close-panic-help-sheet" aria-label="Segítségkérő panel bezárása"></button>
       <section class="panic-help-sheet" role="dialog" aria-modal="true" aria-labelledby="panic-help-sheet-title" tabindex="-1">
-        <span class="panic-help-sheet-handle" data-panic-help-sheet-handle aria-hidden="true"></span>
+        <span class="panic-help-sheet-handle" data-panic-sheet-handle="help" aria-hidden="true"></span>
         <header class="panic-help-sheet-header"><div><h2 id="panic-help-sheet-title">Hívj fel valakit</h2><p>Nem indul automatikus hívás vagy üzenet.</p></div><button class="panic-help-sheet-close" type="button" data-action="close-panic-help-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
         <div data-component="panic-help-sheet-content"></div>
+      </section>
+    </div>
+
+    <div class="panic-help-sheet-host panic-motivation-sheet-host" data-component="panic-motivation-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="panic-help-sheet-backdrop" type="button" data-action="close-panic-motivation-sheet" aria-label="Miért kezdtem el? panel bezárása"></button>
+      <section class="panic-help-sheet panic-motivation-sheet" role="dialog" aria-modal="true" aria-labelledby="panic-motivation-sheet-title" tabindex="-1">
+        <span class="panic-help-sheet-handle" data-panic-sheet-handle="motivation" aria-hidden="true"></span>
+        <header class="panic-help-sheet-header"><div><h2 id="panic-motivation-sheet-title">Miért kezdtem el?</h2><p>Emlékeztető a saját szavaiddal.</p></div><button class="panic-help-sheet-close" type="button" data-action="close-panic-motivation-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
+        <div class="panic-motivation-sheet-content" data-component="panic-motivation-sheet-content"></div>
       </section>
     </div>
 
@@ -2084,6 +2093,8 @@
           this.panicVariantToggle = root.querySelector('[data-component="panic-variant-toggle"]');
           this.panicHelpSheetHost = root.querySelector('[data-component="panic-help-sheet"]');
           this.panicHelpSheetContent = root.querySelector('[data-component="panic-help-sheet-content"]');
+          this.panicMotivationSheetHost = root.querySelector('[data-component="panic-motivation-sheet"]');
+          this.panicMotivationSheetContent = root.querySelector('[data-component="panic-motivation-sheet-content"]');
           this.historyOverviewElements = {
             screen: root.querySelector('[data-component="sobriety-batch-history"]'),
             current: root.querySelector('[data-component="history-current-layout"]'),
@@ -2133,6 +2144,7 @@
             panicVariant: this.readPanicVariant(),
             panicHelpContact: 'sponsor',
             panicHelpSheet: false,
+            panicMotivationSheet: false,
             survivalSession: null,
             historyDetailView: 'timeline',
             historySelectedPeriodTitle: 'Jelenlegi időszak',
@@ -2205,13 +2217,13 @@
           this.root.addEventListener('pointermove', (event) => this.updateTakeawayReorder(event));
           this.root.addEventListener('pointerup', (event) => this.finishTakeawayReorder(event));
           this.root.addEventListener('pointercancel', () => { this.takeawayDrag = null; });
-          this.root.addEventListener('pointerdown', (event) => this.startPanicHelpSheetDrag(event));
-          this.root.addEventListener('pointermove', (event) => this.updatePanicHelpSheetDrag(event));
-          this.root.addEventListener('pointerup', (event) => this.finishPanicHelpSheetDrag(event));
-          this.root.addEventListener('pointercancel', () => { this.panicHelpDrag = null; });
+          this.root.addEventListener('pointerdown', (event) => this.startPanicSheetDrag(event));
+          this.root.addEventListener('pointermove', (event) => this.updatePanicSheetDrag(event));
+          this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
+          this.root.addEventListener('pointercancel', () => { this.panicSheetDrag = null; });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-note-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
           this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
@@ -2236,6 +2248,8 @@
             case 'toggle-panic-variant': this.togglePanicVariant(); break;
             case 'open-panic-help-sheet': this.openPanicHelpSheet(event.target.closest('[data-action="open-panic-help-sheet"]')); break;
             case 'close-panic-help-sheet': this.closePanicHelpSheet(); break;
+            case 'open-panic-motivation-sheet': this.openPanicMotivationSheet(event.target.closest('[data-action="open-panic-motivation-sheet"]')); break;
+            case 'close-panic-motivation-sheet': this.closePanicMotivationSheet(); break;
             case 'toggle-panic-backup': this.togglePanicBackup(); break;
             case 'open-panic-contact-message': this.openPanicContactMessage(event.target.closest('[data-panic-contact-key]')?.dataset.panicContactKey, event.target.closest('[data-action="open-panic-contact-message"]')); break;
             case 'open-panic-sponsor-setup': this.closePanicHelpSheet(); this.openSponsorDetails(); break;
@@ -3352,7 +3366,7 @@
           return `<section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-panic-option="call-sponsor" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>Hívd a szponzorod</button><button type="button" data-panic-option="call-backup" data-action="open-panic-help-sheet"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Hívd a tartalék kapcsolattartót</button><button type="button" data-panic-option="survival-pack" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg>15 perces túlélőcsomag</button><button type="button" data-panic-option="why-started" data-action="open-panic-why"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Olvasd el, miért kezdted el</button><button type="button" data-panic-option="meeting-finder" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Keresd meg a következő meetinget</button><button type="button" data-panic-option="report-relapse" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Visszaestem</button></section>`;
         }
         renderPanicAlternative() {
-          return `<section class="panic-alternative"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button panic-main-button--pulse" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell, kapcsolati lehetőségek megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><section class="panic-alternative-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>15 perces<br>túlélőcsomag</span></button><button type="button" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Következő<br>gyűlés</span></button><button type="button" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Visszaestem</span></button></section><button class="panic-motivation-card" type="button" data-action="open-panic-why" aria-label="Miért kezdtem el? megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span><strong>Miért kezdtem el?</strong><small>${escapeHtml(this.panicMotivationExcerpt())}</small></span><span aria-hidden="true">›</span></button></section>`;
+          return `<section class="panic-alternative"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button panic-main-button--pulse" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell, kapcsolati lehetőségek megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><section class="panic-alternative-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>15 perces<br>túlélőcsomag</span></button><button type="button" data-action="open-meetings" data-meetings-origin="panic"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Következő<br>gyűlés</span></button><button type="button" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Visszaestem</span></button></section><button class="panic-motivation-card" type="button" data-action="open-panic-motivation-sheet" aria-label="Miért kezdtem el? panel megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span><strong>Miért kezdtem el?</strong><small>${escapeHtml(this.panicMotivationExcerpt())}</small></span><span aria-hidden="true">›</span></button></section>`;
         }
         renderPanicVariant() {
           if (!this.panicContent || !this.panicScreen) return;
@@ -3397,6 +3411,21 @@
           this.panicScreen?.setAttribute('data-panic-help-open', 'false');
           this.closeAppOverlaySheet(this.panicHelpSheetHost);
         }
+        renderPanicMotivationSheet() {
+          if (!this.panicMotivationSheetContent) return;
+          this.panicMotivationSheetContent.innerHTML = `<svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><blockquote>„${escapeHtml(this.panicMotivationExcerpt())}”</blockquote><p>Ez a saját, elmentett emlékeztetőd. Itt maradsz a Pánik módban.</p>`;
+        }
+        openPanicMotivationSheet(trigger) {
+          if (!this.panicMotivationSheetHost) return;
+          this.state.panicMotivationSheet = true;
+          this.renderPanicMotivationSheet();
+          this.openAppOverlaySheet(this.panicMotivationSheetHost, trigger);
+        }
+        closePanicMotivationSheet() {
+          if (!this.panicMotivationSheetHost || this.panicMotivationSheetHost.hidden) return;
+          this.state.panicMotivationSheet = false;
+          this.closeAppOverlaySheet(this.panicMotivationSheetHost);
+        }
         togglePanicBackup() { this.state.panicHelpBackupExpanded = !this.state.panicHelpBackupExpanded; this.renderPanicHelpSheet(); }
         openPanicContactMessage(key = 'sponsor', trigger) {
           if (!this.hasPanicContact(key)) return;
@@ -3404,26 +3433,30 @@
           this.closePanicHelpSheet();
           globalThis.setTimeout(() => this.openSponsorMessageSheet(trigger, { contactKey: key, message, panicOrigin: true }), this.motionReduced ? 0 : 200);
         }
-        startPanicHelpSheetDrag(event) {
-          const handle = event.target.closest('[data-panic-help-sheet-handle]');
-          if (!handle || !this.state.panicHelpSheet) return;
-          this.panicHelpDrag = { pointerId: event.pointerId, startY: event.clientY, moved: false };
+        panicSheetIsOpen(sheet) { return sheet === 'motivation' ? this.state.panicMotivationSheet : this.state.panicHelpSheet; }
+        closePanicSheet(sheet) { if (sheet === 'motivation') this.closePanicMotivationSheet(); else this.closePanicHelpSheet(); }
+        startPanicSheetDrag(event) {
+          const handle = event.target.closest('[data-panic-sheet-handle]');
+          const sheet = handle?.dataset.panicSheetHandle;
+          if (!sheet || !this.panicSheetIsOpen(sheet)) return;
+          this.panicSheetDrag = { pointerId: event.pointerId, sheet, startY: event.clientY, moved: false };
           handle.setPointerCapture?.(event.pointerId);
         }
-        updatePanicHelpSheetDrag(event) {
-          const drag = this.panicHelpDrag;
+        updatePanicSheetDrag(event) {
+          const drag = this.panicSheetDrag;
           if (!drag || drag.pointerId !== event.pointerId) return;
           drag.moved ||= event.clientY - drag.startY > 8;
           if (drag.moved) event.preventDefault();
         }
-        finishPanicHelpSheetDrag(event) {
-          const drag = this.panicHelpDrag;
+        finishPanicSheetDrag(event) {
+          const drag = this.panicSheetDrag;
           if (!drag || drag.pointerId !== event.pointerId) return;
-          this.panicHelpDrag = null;
-          if (event.clientY - drag.startY > 54) this.closePanicHelpSheet();
+          this.panicSheetDrag = null;
+          if (event.clientY - drag.startY > 54) this.closePanicSheet(drag.sheet);
         }
         handlePlatformBack() {
           if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
+          if (this.state.panicMotivationSheet) { this.closePanicMotivationSheet(); return; }
           if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic');
         }
         startSurvivalPack() {
