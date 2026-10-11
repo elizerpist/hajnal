@@ -146,12 +146,13 @@
     .sponsor-checkbox:checked { border-color: var(--hajnal-purple); background: var(--hajnal-purple); box-shadow: inset 0 0 0 4px #FEFBFA; }
     .sponsor-pending-card { padding-bottom: 11px; }
     .sponsor-pending-card .sponsor-list-heading { min-height: 34px; }
-    .sponsor-pending-scroll { height: 105px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
+    .sponsor-pending-scroll { height: 105px; }
+    .sponsor-pending-scroll, .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-card { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); padding-bottom: 9px; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-scroll { min-height: 0; height: auto; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-row-copy small { display: none; }
-    .sponsor-pending-scroll::-webkit-scrollbar { width: 4px; }
-    .sponsor-pending-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(106, 86, 180, .28); }
+    .sponsor-pending-scroll::-webkit-scrollbar, .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list::-webkit-scrollbar { width: 4px; }
+    .sponsor-pending-scroll::-webkit-scrollbar-thumb, .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(106, 86, 180, .28); }
     .sponsor-pending-row { min-height: 35px; display: flex; align-items: center; gap: 16px; padding: 0 2px; border-bottom: 1px solid rgba(44, 46, 119, .075); color: #18243D; font-size: 14px; line-height: 1.2; font-weight: 520; letter-spacing: -.025em; cursor: pointer; transition: opacity 180ms ease, transform 180ms ease; }
     .sponsor-pending-row:last-child { border-bottom: 0; }
     .sponsor-pending-row:active { opacity: .74; }
@@ -2456,9 +2457,9 @@
           const host = this.root.querySelector('[data-component="sponsor-takeaway-preview"]');
           if (!host) return;
           const items = this.takeawayItems();
-          const previewLimit = this.state.sponsorLayout === 'alternative' ? 2 : 3;
+          const previewLimit = this.state.sponsorLayout === 'alternative' ? items.length : 3;
           const rows = items.slice(0, previewLimit).map((item) => `<button class="sponsor-takeaway-preview-row" type="button" data-action="open-sponsor-takeaway-editor" data-takeaway-id="${item.id}"><span class="takeaway-icon">${this.takeawayIconSvg(item.icon)}</span><span>${escapeHtml(item.title)}</span></button>`).join('');
-          host.innerHTML = `<div class="sponsor-list-heading"><h2 id="take-away-title">Amit magammal viszek</h2><span class="sponsor-takeaway-heading-actions"><span class="sponsor-takeaway-count" aria-label="${items.length} javaslat">${items.length}</span><button class="sponsor-takeaway-open" type="button" data-action="open-sponsor-takeaways" aria-label="Amit magammal viszek teljes lista megnyitása">›</button></span></div><div class="sponsor-takeaway-preview-list">${rows || '<p class="sponsor-takeaway-empty">Még nincs útravaló.</p>'}</div>`;
+          host.innerHTML = `<div class="sponsor-list-heading"><h2 id="take-away-title">Amit magammal viszek</h2><span class="sponsor-takeaway-heading-actions"><span class="sponsor-takeaway-count" aria-label="${items.length} javaslat">${items.length}</span><button class="sponsor-takeaway-open" type="button" data-action="open-sponsor-takeaways" aria-label="Amit magammal viszek teljes lista megnyitása">›</button></span></div><div class="sponsor-takeaway-preview-list" aria-label="Útravalók előnézete">${rows || '<p class="sponsor-takeaway-empty">Még nincs útravaló.</p>'}</div>`;
         }
         renderTakeawayList() {
           const host = this.root.querySelector('[data-component="sponsor-takeaway-list"]');
