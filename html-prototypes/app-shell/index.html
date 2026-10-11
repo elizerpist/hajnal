@@ -551,12 +551,12 @@
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-current-layout { display: none; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { grid-row: 2; z-index: 3; margin: 0 18px; }
-    .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 17px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
-    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 117px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
+    .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 22px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
+    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 117px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; border-radius: 25px; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
     .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 6px 10px 6px 0; }
     .history-path-current-card:focus-visible, .history-path-period-card:focus-visible { outline: 3px solid rgba(181,91,157,.42); outline-offset: 2px; }
     .history-path-current-card:active, .history-path-period-card:active { transform: scale(.99); opacity: .86; }
-    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 6px; bottom: 6px; left: 6px; width: 91px; height: auto; overflow: hidden; opacity: 1; border-radius: 12px; -webkit-mask-image: none; mask-image: none; }
+    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 6px; bottom: 6px; left: 6px; width: 91px; height: auto; overflow: hidden; opacity: 1; border-radius: 17px; -webkit-mask-image: none; mask-image: none; }
     .history-path-current-art img, .history-path-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
     .history-path-copy { min-width: 0; position: relative; z-index: 2; }
     .history-path-copy strong, .history-path-copy small { display: block; overflow: hidden; text-overflow: ellipsis; }
@@ -570,7 +570,7 @@
     .history-path-current-card .history-path-chevron { grid-column: 3; grid-row: 1; font-size: 30px; }
     .history-path-period-card .history-path-chevron { grid-column: 3; grid-row: 1; }
     .history-path-progress-meta { display: flex; justify-content: space-between; gap: 7px; margin-top: 5px; color: #8E78A5; font-size: 9.5px; font-weight: 760; }
-    .history-path-progress { height: 4px; overflow: hidden; margin-top: 5px; border-radius: 999px; background: rgba(198,139,183,.20); }
+    .history-path-progress { width: 100%; height: 5px; display: block; overflow: hidden; margin-top: 6px; border-radius: 999px; background: rgba(198,139,183,.20); }
     .history-path-progress span { width: calc(var(--history-period-progress) * 1%); height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #C66E9E, #8963C6); }
     .history-path-chevron { position: relative; z-index: 2; color: #AD93B7; font-size: 25px; line-height: 1; }
     .history-path-period-list-card { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 7px; overflow: hidden; padding: 1px 0 8px; }
