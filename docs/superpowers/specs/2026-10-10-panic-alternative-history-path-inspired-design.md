@@ -17,6 +17,7 @@
 | Túlélőcsomag | `HomeInteractionController` | meglévő survival route | második wizard vagy automatikus visszaesési/tiszta-nap logika |
 | Történetem presentation | `HomeInteractionController` | History route, period-detail action, Ösvény vizuális tokenek | Ösvény domain/progress state |
 | Sponzor tartalék kapcsolatok | `HomeInteractionController` | `sponsorBackups` state és egyetlen contact-key feloldó a Pánik/SMS adapterhez | második kapcsolat-adatbázis vagy párhuzamos Pánik-kapcsolat state |
+| Globális betűtípus-preferencia | `HomeInteractionController` | app-frame `data-typeface-mode` és a meglévő biztonságos `localStorage` minta | route-onkénti betűtípus-state vagy képernyőnkénti toggle |
 
 ## Követelmények
 
@@ -52,6 +53,7 @@
 | HIS-11 | 2026-10-11 History path-inspired radius egységesítés | path-inspired History card CSS | A korábbi 17px-es külső radius-kérés a HIS-13 által felülírva; a jelenlegi elfogadási értékek 22px fejezetcard / 25px felső card. | History source teszt + célzott CSS/source review | PARTIAL |
 | HIS-12 | 2026-10-11 History path-inspired belső képkártyák | path-inspired History card CSS | A belső képkártyák 6px belső margója megmarad; a korábbi 12px kép-radius kérés a HIS-13 által felülírva, a jelenlegi érték 17px. | History source teszt + célzott CSS/source review | PARTIAL |
 | HIS-13 | 2026-10-11 History path-inspired roundness + progress | path-inspired History card CSS | A korábbi kerekebb geometriát használja: minden fejezetcard 22px, a felső jelenlegi-időszak card 25px, a belső artworkök 17px radiusúak. A jelenlegi időszakban a 24/90 meta alatt tényleges, teljes szélességű 5px progress bar jelenik meg. | History source/runtime teszt + célzott CSS/source review; friss screenshot nem elérhető | PARTIAL |
+| TYP-01 | 2026-10-11 globális betűtípus-váltó | Főmenü header, `HomeInteractionController`, app-frame CSS | Kizárólag a Főmenüben van egy akadálymentes betűtípus-váltó. A választás a Sponzor-féle sans és az Ösvény-féle serif között vált, perzisztensen; az app-frame minden route-on ugyanazt a választott fontot kényszeríti. Más képernyőn nincs külön toggle. | `alternative_runtime_test.js` + CSS/source review | DONE |
 | REG-01 | mindkét brief §8/§10 | full shell | 320/360/390–412 szélességen nincs overflow vagy eltakart CTA; cél a 412×892 screenshotos validáció, ismert renderer-korlát őszinte jelzésével. | 320–411px responsive CSS/static check; local HTTP OK; Android `screencap` hibával leállt | PARTIAL |
 
 ## Validációs napló
@@ -70,3 +72,4 @@
 - 2026-10-11: History path-inspired radius egységesítés: ezt a 17px-es külső radius-kérést a későbbi, kerekebb HIS-13 értékek felülírták.
 - 2026-10-11: History path-inspired belső képkártyák: az artwork balra 6px, felül és alul 6px belső rést kapott; a korábbi 12px radius-kérést a későbbi HIS-13 17px-es képkártya-radius felülírta.
 - 2026-10-11: History path-inspired kerekebb cardok + progress: a külső cardok visszakapták a 22px / 25px értékeket, a belső képkártyák 17px-et. A jelenlegi időszak progress eleme block szintű, 100% széles 5px bar, így a 24/90 haladás valóban látható.
+- 2026-10-11: Globális betűtípus-váltó validáció: a Főmenüben pontosan egy `global-typeface-toggle` van. A controller runtime teszt igazolja a sans alapállapotot, az Ösvény-serif váltást, az app-frame attribútum frissülését, az ARIA állapotot és a `localStorage` perzisztenciát. Az app-frame utólagos, `!important` font-family szabálya minden meglévő, képernyőspecifikus betűtípus-deklarációt felülír.

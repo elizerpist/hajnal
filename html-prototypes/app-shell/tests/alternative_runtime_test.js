@@ -21,6 +21,7 @@ const root = element();
 const summary = element();
 const expand = element();
 const fullscreen = element();
+const typefaceToggle = element();
 const navigation = element();
 const panicScreen = element();
 const panicContent = element();
@@ -43,6 +44,7 @@ root.querySelector = (selector) => {
   if (selector === '[data-component="daily-summary-card"]') return summary;
   if (selector === '[data-action="expand-home-card"]') return expand;
   if (selector === '[data-action="toggle-fullscreen"]') return fullscreen;
+  if (selector === '[data-component="global-typeface-toggle"]') return typefaceToggle;
   if (selector === '[data-component="bottom-navigation"]') return navigation;
   if (selector === '[data-component="panic-mode"]' || selector === '[data-route="panic"]') return panicScreen;
   if (selector === '[data-component="panic-content"]') return panicContent;
@@ -74,6 +76,15 @@ const script = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/)[1]
   .replace("new HomeInteractionController(document.querySelector('.app-frame'));", "globalThis.__controller = new HomeInteractionController(document.querySelector('.app-frame'));");
 vm.runInNewContext(script, sandbox);
 const controller = globalThisStub.__controller;
+
+assert.equal(controller.state.typefaceMode, 'sponsor', 'the sponsor-style typeface must be the first-use default');
+assert.equal(root.dataset.typefaceMode, 'sponsor', 'the app frame must own the global default typeface');
+assert.equal(typefaceToggle.getAttribute('aria-pressed'), 'false', 'the home typeface control must expose its initial state');
+controller.toggleGlobalTypeface();
+assert.equal(controller.state.typefaceMode, 'path', 'one home action must select the Path typeface globally');
+assert.equal(root.dataset.typefaceMode, 'path', 'the selected typeface must apply through the shared app frame');
+assert.equal(storage.get('hajnal.typefaceMode'), 'path', 'the selected typeface must persist safely');
+assert.equal(typefaceToggle.getAttribute('aria-pressed'), 'true', 'the home typeface control must update its pressed state');
 
 assert.equal(controller.state.panicVariant, 'classic', 'Classic must be the first-use default');
 assert.match(panicContent.innerHTML, /panic-grid/, 'Classic must keep its six-tile grid');
