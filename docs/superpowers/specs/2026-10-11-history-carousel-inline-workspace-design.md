@@ -46,6 +46,15 @@ Az Ösvény meglévő listanézete nem változik.
 | HCW-07 | Az „Utam számokban” footer változatlanul működik a carouseles workspace-ben. | reusable template source contract | DONE |
 | HCW-08 | 320–412px szélességen nincs vízszintes overflow, a carousel és a body scrollja elkülönül. | snap/overflow CSS contract | DONE |
 
+## Javítási elfogadási lista – 2026-10-11
+
+| ID | Forrás | Követelmény | Kódbeli terület | Ellenőrzés | Állapot |
+| --- | --- | --- | --- | --- | --- |
+| HWF-01 | Legutóbbi Android screenshot + user feedback | A kisebb időszak-csempék a hero alsó sávjában maradnak, a hero magasságának növelése nélkül. | `history-period-carousel` CSS | célzott CSS contract + közvetlen CSS-ellenőrzés | DONE |
+| HWF-02 | Legutóbbi Android screenshot + user feedback | Az Idővonal/Naptár tabok a body legfelső, nem scrollozó sora. | inline `history-workspace` layout | célzott CSS contract + közvetlen CSS-ellenőrzés | DONE |
+| HWF-03 | Legutóbbi Android screenshot + user feedback | A tabok alatti Idővonal/Naptár tartalom önállóan scrollozható; nincs második, egymásra helyezett scroll owner. | existing `history-detail-events-scroll` / calendar scroll | source/runtime contract + közvetlen CSS-ellenőrzés | DONE |
+| HWF-04 | Legutóbbi Android screenshot + user feedback | Az összehajtható „Utam számokban” footer az inline workspace alsó, rögzített grid-sora. | shared `history-number-summary` | source/runtime contract + controller runtime teszt | DONE |
+
 ## Hibakezelés és akadálymentesség
 
 - Ha nincs érvényes kiválasztott period ID, a controller a `current` periodra áll vissza.

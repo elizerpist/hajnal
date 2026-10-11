@@ -25,5 +25,10 @@ assert.doesNotMatch(html, /data-component="history-overview-density-toggle"/, 't
 assert.match(html, /data-component="path-workspace"/, 'the unrelated Ösvény workspace must remain present');
 assert.match(html, /\.history-period-carousel \{[^}]*scroll-snap-type: x mandatory;/, 'carousel must use native horizontal snap');
 assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-hero \{ height: var\(--path-overview-hero-height\);/, 'the original 238px hero geometry must remain explicit');
+assert.match(html, /\.history-period-carousel-card \{ flex: 0 0 198px; min-height: 62px;/, 'period tiles must stay compact inside the fixed hero');
+assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-workspace \{[^}]*top: var\(--path-overview-hero-height\);/, 'the inline workspace must begin directly below the hero');
+assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-workspace \.history-detail-content \{[^}]*height: 100%;[^}]*position: relative;[^}]*grid-template-rows: 44px minmax\(0, 1fr\) auto;/, 'tabs, one scrollable content row, and the footer must share one stable workspace grid');
+assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-workspace \[data-history-detail-panel="timeline"\] \.history-detail-events-scroll \{ min-height: 0; overflow-y: auto;/, 'only the timeline content below the tabs may own vertical scrolling');
+assert.match(html, /<h2 id="timeline-number-title">Idővonalam számokban<\/h2>/, 'the shared expandable footer must remain visibly named in the inline workspace');
 
 console.log('PASS History carousel workspace source contract');

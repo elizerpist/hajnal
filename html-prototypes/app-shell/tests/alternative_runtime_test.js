@@ -123,6 +123,9 @@ assert.equal(controller.state.route, 'survival', 'survival completion may not fo
 assert.equal(controller.state.historySelectedPeriodId, 'current', 'the current period must seed the carousel selection');
 assert.match(historyCarousel.innerHTML, /Jelenlegi időszak/, 'the active carousel tile must render the current chapter');
 assert.match(historyWorkspace.innerHTML, /data-history-detail-tab="timeline"/, 'the existing Timeline markup must mount beneath the carousel');
+controller.toggleHistoryMetrics('timeline');
+assert.equal(controller.state.historyPresentation.timeline.metricsExpanded, true, 'the inline workspace must preserve the existing expandable History footer state');
+assert.match(historyWorkspace.innerHTML, /history-number-summary/, 'expanding the metrics footer must keep the shared footer mounted beneath the workspace content');
 controller.selectHistoryPeriod('2024-05');
 assert.equal(controller.state.historySelectedPeriodId, '2024-05', 'a carousel tap must update the sole selected period ID');
 assert.match(historyCarousel.innerHTML, /Első időszak/, 'the carousel must render the selected earlier period');
