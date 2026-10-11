@@ -16,6 +16,7 @@
 | Pánik segítségpanel | `HomeInteractionController` | app overlay, sponsor üzenetszerkesztő, kapcsolat-state | második SMS/hívás folyamat |
 | Túlélőcsomag | `HomeInteractionController` | meglévő survival route | második wizard vagy automatikus visszaesési/tiszta-nap logika |
 | Történetem presentation | `HomeInteractionController` | History route, period-detail action, Ösvény vizuális tokenek | Ösvény domain/progress state |
+| Sponzor tartalék kapcsolat | `HomeInteractionController` | `sponsorBackup` state, `sponsor-details` renderer és a meglévő full-width card primitive | második kapcsolat-adatbázis vagy külön részlet-route |
 
 ## Követelmények
 
@@ -30,6 +31,7 @@
 | PAN-07 | Pánik §7–10 | navigáció | Meeting, relapse, motivation és survival visszatérése megtartja a kiválasztott Pánik változatot; nincs fókuszálható inaktív változat vagy JS hiba. | controller + affected route checks | DONE |
 | PAN-08 | 2026-10-11 Pánik mód finomítás | Alternative Pánik CSS/header | A látható Pánik header-copy eltűnik; az Alternative segítségkörén nincs külön border-gyűrű vagy pulzáló külső kör, csak a gombbal együtt pulzáló, fokozatosan kifutó rózsaszín glow. A gyorscsempék lejjebb, a motivációs kártya közvetlenül alattuk van. | célzott source review | PARTIAL |
 | PAN-09 | 2026-10-11 Pánik mód finomítás | közös app overlay / Alternative renderer | A „Miért kezdtem el?” Alternative kártya route-váltás nélkül, a meglévő app-overlay core-t újrahasználó slide-up panelen jeleníti meg a mentett motivációt. Backdrop, bezáró gomb, Escape, Android-vissza és lehúzás visszavisz azonos Pánik nézetre. | célzott source review | PARTIAL |
+| SPN-01 | 2026-10-11 Sponzor Alternative | Sponsor renderer/CSS/detail state | Alternative nézetben a három gyorsművelet után egy teljes szélességű „Tartalék kapcsolattartó” card jelenik meg; a korábbi két lista kompakt. A card a meglévő Sponsor-adatok képernyőt használja a `sponsorBackup` rekord szerkesztésére, nem külön route-ot vagy adattárat. | célzott source review | PARTIAL |
 | HIS-01 | Történetem §1–4 | history state/header | A jelenlegi layout érintetlen alternatívaként megmarad; a két kör gomb a `current/path-inspired` layoutot, illetve csak az új layout `roomy/compact` sűrűségét vezérli, korrekt ARIA-val. | `alternative_runtime_test.js` | DONE |
 | HIS-02 | Történetem §5 | scoped History CSS | A path-inspired hero Ösvény-azonos geometriát, header-kompozíciót és fade-et használ, miközben a timelinehero és a rózsaszín–lila hangulat marad. | CSS/source teszt; Android screenshot kísérlet sikertelen (rendszer `screencap` tiltás) | PARTIAL |
 | HIS-03 | Történetem §6–7 | Path-inspired history renderer | A „Jelenlegi időszak” card Ösvény current-card geometriájú: napok a medalionban, dátum/meta, 24/90 progress bar és chevron; a medalion nem index/pie/százalék. | `alternative_runtime_test.js` + source test | DONE |
@@ -45,3 +47,4 @@
 - 2026-10-10: a helyi HTTP szerver válaszolt a `http://127.0.0.1:4173/app-shell/index.html` címen.
 - 2026-10-10: az Androidos screenshot kísérlet a rendszer korlátozása miatt sikertelen: `screencap` státusz `-1`; ezért a képernyőképes elfogadási elemeket nem jelöltem késznek.
 - 2026-10-10: a felhasználó két Android screenshotja igazolta a path-inspired History footer regresszióját: az abszolút lista miatt a footer az első, teljes magasságú grid-sorba auto-placementtel került. A lista ismét normál, első grid-soros elem, a footer explicit második soros; az új regressziós source-teszt zöld. A friss screenshotot a rendszer eszközoldali korlátozása miatt nem lehetett rögzíteni.
+- 2026-10-11: célzott source review: az Alternative Sponzor nézet három eredeti gyorsművelete megmarad, a valós „Legközelebb” card rejtett, a teljes szélességű tartalék-kapcsolat card a közös `sponsor-details` rendererrel nyílik meg, és a két lista kompakt. A Pánik Alternative segítségköre továbbra sem használ külön gyűrűt; a saját fade-je és árnyéka erősebb.

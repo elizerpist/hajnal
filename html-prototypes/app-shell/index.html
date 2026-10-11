@@ -121,18 +121,9 @@
     .sponsor-next-copy span { color: var(--hajnal-purple); font-size: 16px; line-height: 1.2; font-weight: 700; letter-spacing: -.025em; }
     .sponsor-next-copy small { color: #1A2740; font-size: 12.5px; line-height: 1.26; font-weight: 540; letter-spacing: -.025em; }
     .sponsor-chevron { color: #49546A; font-size: 36px; line-height: .7; font-weight: 350; text-align: right; }
-    /* The alternative main-menu composition reuses the one real next-conversation
-       card inside the action row; both lists receive the same extra vertical room. */
-    .sponsor-screen[data-sponsor-layout="alternative"] { --sponsor-layout-grow: 70px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] [data-sponsor-talk-action] { display: none; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card { min-width: 0; min-height: 104px; display: grid; grid-template-columns: 1fr; grid-template-rows: 42px auto; align-content: center; justify-items: center; gap: 5px; padding: 7px 4px 8px; border-radius: 21px; text-align: center; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-icon { width: 42px; height: 42px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-icon .icon { width: 24px; height: 24px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-copy { width: 100%; justify-items: center; gap: 1px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-copy strong { font-size: 13.5px; line-height: 1.1; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-copy span { font-size: 11.5px; line-height: 1.1; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-next-copy small { display: none; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > .sponsor-next-card .sponsor-chevron { display: none; }
+    .sponsor-backup-card { display: none; }
+    .sponsor-screen[data-sponsor-layout="alternative"] [data-component="sponsor-next-card"] { display: none; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-backup-card { display: grid; }
     .sponsor-list-card { overflow: hidden; padding: 14px 14px 10px; border-radius: 22px; }
     .sponsor-list-heading { min-height: 31px; display: flex; align-items: start; justify-content: space-between; gap: 12px; padding: 0 0 6px; border-bottom: 1px solid rgba(44, 46, 119, .075); }
     .sponsor-list-heading h2 { margin: 0; }
@@ -147,8 +138,8 @@
     .sponsor-pending-card { padding-bottom: 11px; }
     .sponsor-pending-card .sponsor-list-heading { min-height: 34px; }
     .sponsor-pending-scroll { height: 105px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-card { padding-bottom: 21px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-scroll { height: calc(105px + var(--sponsor-layout-grow)); }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-card { padding-bottom: 9px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-scroll { height: 74px; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-row-copy small { display: none; }
     .sponsor-pending-scroll::-webkit-scrollbar { width: 4px; }
     .sponsor-pending-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(106, 86, 180, .28); }
@@ -304,6 +295,7 @@
     .sponsor-detail-contact-action strong { font-size: 15px; line-height: 1.2; font-weight: 690; letter-spacing: -.025em; }
     .sponsor-detail-contact-chevron, .sponsor-detail-quote-chevron { color: #7D72A8; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; }
     .sponsor-native-date { width: 1px; height: 1px; position: absolute; overflow: hidden; opacity: 0; pointer-events: none; }
+    .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-availability], .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-since] { display: none; }
     .sponsor-detail-quote { min-height: 84px; display: grid; grid-template-columns: 51px minmax(0, 1fr) 22px; align-items: center; gap: 9px; margin-top: 16px; padding: 11px 16px; border-radius: 21px; background: #EEE8FA; color: #342477; }
     .sponsor-detail-quote .quote-icon { width: 40px; height: 40px; display: grid; place-items: center; color: var(--hajnal-purple); }
     .sponsor-detail-quote .quote-icon .icon { width: 33px; height: 33px; stroke-width: 1.75; }
@@ -326,8 +318,8 @@
     .sponsor-takeaway-count { min-width: 27px; height: 27px; display: grid; place-items: center; padding: 0 7px; border-radius: 999px; background: var(--hajnal-purple); color: var(--white); font-size: 13px; line-height: 1; font-weight: 800; }
     .sponsor-takeaway-open { width: 32px !important; height: 32px !important; margin: 0 !important; color: var(--hajnal-purple) !important; font-size: 28px !important; }
     .sponsor-takeaway-preview-list { display: grid; gap: 1px; margin-top: 3px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview { padding-bottom: 18px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list { min-height: calc(104px + var(--sponsor-layout-grow)); align-content: space-between; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview { padding-bottom: 8px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list { min-height: 68px; align-content: start; }
     .sponsor-takeaway-preview-row { width: 100%; min-height: 34px; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 9px; padding: 1px 0; border: 0; background: transparent; color: #18243D; font: inherit; font-size: 14px; line-height: 1.2; font-weight: 570; text-align: left; cursor: pointer; }
     .sponsor-takeaway-preview-row:focus-visible, .sponsor-takeaway-open:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
     .sponsor-takeaway-preview-row:active { opacity: .76; }
@@ -598,7 +590,7 @@
     .panic-content[data-panic-variant="alternative"] { padding-bottom: 18px; }
     .panic-alternative { min-height: 100%; display: flex; flex-direction: column; animation: panic-variant-fade 210ms ease both; }
     .panic-alternative .panic-center { margin-top: 8px; }
-    .panic-main-button--pulse { cursor: pointer; background: radial-gradient(circle at center, #F15D9A 0%, #F15D9A 46%, rgba(241,93,154,.82) 68%, rgba(241,93,154,0) 100%); box-shadow: 0 18px 38px rgba(239,85,145,.20); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; will-change: transform; }
+    .panic-main-button--pulse { cursor: pointer; background: radial-gradient(circle at center, #F15D9A 0%, #F15D9A 52%, rgba(241,93,154,.96) 70%, rgba(241,93,154,.47) 84%, rgba(241,93,154,0) 100%); box-shadow: 0 22px 48px rgba(239,85,145,.35); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; will-change: transform; }
     .panic-main-button--pulse:active { transform: scale(.98); }
     .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse { animation-play-state: paused; }
     .panic-alternative .panic-detail-intro { margin: 20px 12px 0; }
@@ -1833,6 +1825,7 @@
         <button class="sponsor-profile-card" type="button" data-action="open-sponsor-details" data-sponsor-profile-link aria-label="Péter szponzor adatai"><img class="sponsor-avatar" data-sponsor-avatar src="assets/hero/hero_s.png" alt="Péter"><span class="sponsor-profile-copy"><strong data-sponsor-name-display>Péter</strong><span>Sponzorom</span><span data-sponsor-since-main>2024. május 14. óta</span></span><span class="sponsor-profile-chevron" aria-hidden="true">›</span></button>
         <section class="sponsor-action-grid" data-component="sponsor-action-grid" aria-label="Gyors műveletek"><a class="sponsor-action" data-sponsor-call-link href="tel:+36701234567" aria-label="Péter hívása"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span class="sponsor-action-label">Hívás</span></a><a class="sponsor-action" data-sponsor-message-link href="sms:+36701234567" aria-label="Üzenet Péternek"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg></span><span class="sponsor-action-label">Üzenet</span></a><button class="sponsor-action" type="button" data-sponsor-talk-action data-action="open-sponsor-message-sheet" aria-label="Üzenet küldése Péternek: beszélnem kell vele"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><span class="sponsor-action-label">Beszélnem<br>kell vele</span></button></section>
         <button class="sponsor-next-card" type="button" data-action="open-sponsor-next-sheet" data-component="sponsor-next-card" aria-label="Következő kapcsolat: Ma este, 20:00 körül felhívni Pétert"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="sponsor-next-copy"><strong>Legközelebb</strong><span data-sponsor-next-date-display>Ma este</span><small data-sponsor-next-time-display>20:00 körül felhívni Pétert</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
+        <button class="sponsor-next-card sponsor-backup-card" type="button" data-action="open-sponsor-backup-details" data-component="sponsor-backup-card" aria-label="Tartalék kapcsolattartó adatainak megnyitása"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="sponsor-next-copy"><strong>Tartalék kapcsolattartó</strong><span data-sponsor-backup-name-display>Nincs még beállítva</span><small data-sponsor-backup-detail-display>Koppints a hozzáadásához.</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
         <section class="sponsor-list-card sponsor-pending-card" data-component="sponsor-pending-topics" aria-labelledby="talk-about-title"></section>
         <section class="sponsor-list-card sponsor-takeaway-preview" data-component="sponsor-takeaway-preview" aria-labelledby="take-away-title"></section>
       </main>
@@ -1863,16 +1856,16 @@
       </section>
     </div>
 
-    <section class="route-screen sponsor-details-screen" id="sponsor-details" data-route="sponsor-details" data-screen="sponsor-details" data-component="sponsor-details" aria-labelledby="sponsor-details-title">
+    <section class="route-screen sponsor-details-screen" id="sponsor-details" data-route="sponsor-details" data-screen="sponsor-details" data-component="sponsor-details" data-sponsor-detail-target="sponsor" aria-labelledby="sponsor-details-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="sponsor-detail-header"><button type="button" data-action="close-sponsor-details" aria-label="Vissza a Sponzor főoldalra"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-details-title">Sponzor adatai</h1><button class="sponsor-more-button" type="button" data-action="sponsor-placeholder" aria-label="További lehetőségek">⋮</button></header>
+      <header class="sponsor-detail-header"><button type="button" data-action="close-sponsor-details" aria-label="Vissza a Sponzor főoldalra"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-details-title" data-sponsor-details-title>Sponzor adatai</h1><button class="sponsor-more-button" type="button" data-action="sponsor-placeholder" aria-label="További lehetőségek">⋮</button></header>
       <main class="sponsor-detail-content">
-        <section class="sponsor-detail-avatar-stage" aria-label="Sponzor képe"><div class="sponsor-detail-avatar-wrap"><img class="sponsor-detail-avatar" data-sponsor-avatar src="assets/hero/hero_s.png" alt="Péter"><button class="sponsor-avatar-edit" type="button" data-action="sponsor-placeholder" aria-label="Profilkép szerkesztése"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m4 20 4-1 11-11-3-3L5 16zM13 6l3 3"/></svg></button></div></section>
+        <section class="sponsor-detail-avatar-stage" data-sponsor-detail-avatar-stage aria-label="Sponzor képe"><div class="sponsor-detail-avatar-wrap"><img class="sponsor-detail-avatar" data-sponsor-avatar data-sponsor-detail-avatar src="assets/hero/hero_s.png" alt="Péter"><button class="sponsor-avatar-edit" type="button" data-action="sponsor-placeholder" aria-label="Profilkép szerkesztése"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m4 20 4-1 11-11-3-3L5 16zM13 6l3 3"/></svg></button></div></section>
         <section class="sponsor-detail-card" aria-label="Sponzor adatai">
           <div class="sponsor-detail-field"><label for="sponsor-name-input">Név<input id="sponsor-name-input" data-sponsor-name-input type="text" autocomplete="name" autocapitalize="words" value="Péter"></label><span aria-hidden="true"></span></div>
-          <div class="sponsor-detail-field"><label for="sponsor-phone-input">Telefonszám<input id="sponsor-phone-input" data-sponsor-phone-input type="tel" inputmode="tel" autocomplete="tel" value="+36 70 123 4567" required></label><a class="sponsor-detail-phone-action" data-sponsor-call-link href="tel:+36701234567" aria-label="Péter hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></a></div>
-          <div class="sponsor-detail-availability-row"><button class="sponsor-detail-availability-action" type="button" data-action="open-sponsor-availability" aria-label="Mikor kereshetem? szerkesztése"><span class="sponsor-detail-availability-copy"><span>Mikor kereshetem?</span><strong class="is-empty" data-sponsor-availability-primary>Nincs megadva</strong><small data-sponsor-availability-secondary></small></span><span class="sponsor-availability-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span></button></div>
-          <div class="sponsor-detail-static-row"><button class="sponsor-detail-date-action" type="button" data-action="open-sponsor-date-picker" aria-label="Sponzor kapcsolat kezdetének dátuma"><span><span>Sponzorom mióta</span><strong data-sponsor-since-display>2024. május 14.</strong></span><span class="sponsor-date-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></button><input class="sponsor-native-date" id="sponsor-date-input" data-sponsor-date-input type="date" value="2024-05-14"></div>
+          <div class="sponsor-detail-field"><label for="sponsor-phone-input">Telefonszám<input id="sponsor-phone-input" data-sponsor-phone-input type="tel" inputmode="tel" autocomplete="tel" value="+36 70 123 4567" required></label><a class="sponsor-detail-phone-action" data-sponsor-detail-call-link href="tel:+36701234567" aria-label="Péter hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></a></div>
+          <div class="sponsor-detail-availability-row" data-sponsor-detail-availability><button class="sponsor-detail-availability-action" type="button" data-action="open-sponsor-availability" aria-label="Mikor kereshetem? szerkesztése"><span class="sponsor-detail-availability-copy"><span>Mikor kereshetem?</span><strong class="is-empty" data-sponsor-availability-primary>Nincs megadva</strong><small data-sponsor-availability-secondary></small></span><span class="sponsor-availability-icon" aria-hidden="true"><svg class="icon"><use href="#icon-clock"/></svg></span></button></div>
+          <div class="sponsor-detail-static-row" data-sponsor-detail-since><button class="sponsor-detail-date-action" type="button" data-action="open-sponsor-date-picker" aria-label="Sponzor kapcsolat kezdetének dátuma"><span><span>Sponzorom mióta</span><strong data-sponsor-since-display>2024. május 14.</strong></span><span class="sponsor-date-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></button><input class="sponsor-native-date" id="sponsor-date-input" data-sponsor-date-input type="date" value="2024-05-14"></div>
           <button class="sponsor-detail-contact-action" type="button" data-action="sponsor-placeholder"><span class="sponsor-detail-contact-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-profile"/></svg></span><strong>Névjegyből hozzáadás / frissítés</strong><span class="sponsor-detail-contact-chevron" aria-hidden="true">›</span></button>
         </section>
         <section class="sponsor-detail-quote" aria-label="Emlékeztető"><span class="quote-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”</p><span class="sponsor-detail-quote-chevron" aria-hidden="true">›</span></section>
@@ -2164,6 +2157,7 @@
             sponsor: { ...SPONSOR_INITIAL_STATE },
             sponsorBackup: null,
             sponsorLayout: 'current',
+            sponsorDetailTarget: 'sponsor',
             sponsorDraft: null,
             sponsorAvailability: createSponsorAvailability(),
             sponsorAvailabilityDraft: null,
@@ -2270,6 +2264,7 @@
             case 'open-sponsor': this.renderSponsorSurfaces(); this.navigate('sponsor'); break;
             case 'toggle-sponsor-layout': this.toggleSponsorLayout(); break;
             case 'open-sponsor-details': this.openSponsorDetails(); break;
+            case 'open-sponsor-backup-details': this.openSponsorDetails('backup'); break;
             case 'close-sponsor-details': this.closeSponsorDetails(); break;
             case 'open-sponsor-date-picker': this.openSponsorDatePicker(); break;
             case 'save-sponsor-details': this.saveSponsorDetails(); break;
@@ -2381,8 +2376,8 @@
           if (target.matches('[data-sponsor-availability-time]')) { this.updateSponsorAvailabilityTime(Number(target.dataset.availabilityDay), target.dataset.availabilityPart, target.value); return; }
           if (target.matches('[data-takeaway-title-input]')) { this.getTakeawayEditor().draft.title = target.value; target.setCustomValidity(''); return; }
           if (target.matches('[data-takeaway-note-input]')) { this.getTakeawayEditor().draft.note = target.value; return; }
-          if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; return; }
-          if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); this.updateSponsorPhoneLinks(target.value); return; }
+          if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(this.getSponsorDraft().phone, target.value); return; }
+          if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(target.value, this.getSponsorDraft().name); else this.updateSponsorPhoneLinks(target.value); return; }
           if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
           if (target.matches('[data-sponsor-note-input]')) { this.getSponsorDraft().note = target.value; return; }
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
@@ -2452,7 +2447,7 @@
           const host = this.root.querySelector('[data-component="sponsor-takeaway-preview"]');
           if (!host) return;
           const items = this.takeawayItems();
-          const previewLimit = this.state.sponsorLayout === 'alternative' ? 5 : 3;
+          const previewLimit = this.state.sponsorLayout === 'alternative' ? 2 : 3;
           const rows = items.slice(0, previewLimit).map((item) => `<button class="sponsor-takeaway-preview-row" type="button" data-action="open-sponsor-takeaway-editor" data-takeaway-id="${item.id}"><span class="takeaway-icon">${this.takeawayIconSvg(item.icon)}</span><span>${escapeHtml(item.title)}</span></button>`).join('');
           host.innerHTML = `<div class="sponsor-list-heading"><h2 id="take-away-title">Amit magammal viszek</h2><span class="sponsor-takeaway-heading-actions"><span class="sponsor-takeaway-count" aria-label="${items.length} javaslat">${items.length}</span><button class="sponsor-takeaway-open" type="button" data-action="open-sponsor-takeaways" aria-label="Amit magammal viszek teljes lista megnyitása">›</button></span></div><div class="sponsor-takeaway-preview-list">${rows || '<p class="sponsor-takeaway-empty">Még nincs útravaló.</p>'}</div>`;
         }
@@ -2580,7 +2575,15 @@
           this.renderTakeawayPreview();
           this.renderTakeawayList();
         }
-        getSponsorDraft() { return this.state.sponsorDraft ||= { ...this.state.sponsor }; }
+        sponsorDetailTarget() { return this.state.sponsorDetailTarget === 'backup' ? 'backup' : 'sponsor'; }
+        emptySponsorBackup() { return { name: '', phone: '', since: '', note: '' }; }
+        getSponsorDraft() {
+          if (!this.state.sponsorDraft) {
+            const contact = this.sponsorDetailTarget() === 'backup' ? (this.state.sponsorBackup || this.emptySponsorBackup()) : this.state.sponsor;
+            this.state.sponsorDraft = { ...contact };
+          }
+          return this.state.sponsorDraft;
+        }
         formatSponsorSince(value) {
           const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
           if (!match) return '2024. május 14.';
@@ -2593,6 +2596,24 @@
           this.root.querySelectorAll('[data-sponsor-call-link]').forEach((link) => { link.setAttribute('href', `tel:${dialValue}`); });
           this.root.querySelectorAll('[data-sponsor-message-link]').forEach((link) => { link.setAttribute('href', `sms:${dialValue}`); });
         }
+        updateSponsorDetailPhoneLink(phone, name = '') {
+          const link = this.root.querySelector('[data-sponsor-detail-call-link]');
+          if (!link) return;
+          link.setAttribute('href', `tel:${this.sponsorDialValue(phone)}`);
+          link.setAttribute('aria-label', `${String(name || 'Kapcsolattartó').trim()} hívása`);
+        }
+        renderSponsorBackupCard() {
+          const card = this.root.querySelector('[data-component="sponsor-backup-card"]');
+          const nameDisplay = this.root.querySelector('[data-sponsor-backup-name-display]');
+          const detailDisplay = this.root.querySelector('[data-sponsor-backup-detail-display]');
+          if (!card || !nameDisplay || !detailDisplay) return;
+          const backup = this.state.sponsorBackup;
+          const hasBackup = Boolean(backup?.name?.trim());
+          const name = hasBackup ? backup.name.trim() : 'Nincs még beállítva';
+          nameDisplay.textContent = name;
+          detailDisplay.textContent = hasBackup ? (backup.phone?.trim() || 'Telefonszám nincs megadva.') : 'Koppints a hozzáadásához.';
+          card.setAttribute('aria-label', hasBackup ? `${name} tartalék kapcsolattartó adatainak megnyitása` : 'Tartalék kapcsolattartó hozzáadása');
+        }
         renderSponsorSurfaces() {
           const sponsor = this.state.sponsor;
           this.renderSponsorLayout();
@@ -2601,6 +2622,7 @@
           this.root.querySelectorAll('[data-sponsor-profile-link]').forEach((element) => { element.setAttribute('aria-label', `${sponsor.name} szponzor adatai`); });
           this.root.querySelectorAll('[data-sponsor-since-main]').forEach((element) => { element.textContent = `${this.formatSponsorSince(sponsor.since)} óta`; });
           this.updateSponsorPhoneLinks(sponsor.phone);
+          this.renderSponsorBackupCard();
           this.renderSponsorNextCard();
           this.renderSponsorAvailabilitySummary();
           this.renderPendingTopics();
@@ -2613,7 +2635,7 @@
           if (!screen || !actionGrid || !nextCard || !toggle) return;
           const alternative = this.state.sponsorLayout === 'alternative';
           screen.dataset.sponsorLayout = alternative ? 'alternative' : 'current';
-          if (alternative) actionGrid.append(nextCard); else actionGrid.insertAdjacentElement('afterend', nextCard);
+          actionGrid.insertAdjacentElement('afterend', nextCard);
           toggle.setAttribute('aria-pressed', String(alternative));
           toggle.setAttribute('aria-label', alternative ? 'Jelenlegi Sponzor elrendezés' : 'Alternatív Sponzor elrendezés');
         }
@@ -2950,20 +2972,44 @@
         }
         renderSponsorDetails() {
           const sponsor = this.getSponsorDraft();
+          const target = this.sponsorDetailTarget();
+          const backup = target === 'backup';
+          const screen = this.root.querySelector('[data-component="sponsor-details"]');
+          const title = this.root.querySelector('[data-sponsor-details-title]');
+          const avatar = this.root.querySelector('[data-sponsor-detail-avatar]');
+          const avatarStage = this.root.querySelector('[data-sponsor-detail-avatar-stage]');
+          const detailCard = this.root.querySelector('.sponsor-detail-card');
           const nameInput = this.root.querySelector('[data-sponsor-name-input]');
           const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
           const dateInput = this.root.querySelector('[data-sponsor-date-input]');
           const noteInput = this.root.querySelector('[data-sponsor-note-input]');
+          const contactName = sponsor.name.trim() || 'Tartalék kapcsolattartó';
+          if (screen) screen.dataset.sponsorDetailTarget = target;
+          if (title) title.textContent = backup ? 'Tartalék kapcsolattartó' : 'Sponzor adatai';
+          if (avatar) avatar.alt = contactName;
+          if (avatarStage) avatarStage.setAttribute('aria-label', `${contactName} képe`);
+          if (detailCard) detailCard.setAttribute('aria-label', backup ? 'Tartalék kapcsolattartó adatai' : 'Sponzor adatai');
           if (nameInput) nameInput.value = sponsor.name;
           if (phoneInput) phoneInput.value = sponsor.phone;
-          if (dateInput) dateInput.value = sponsor.since;
+          if (dateInput) dateInput.value = sponsor.since || '';
           if (noteInput) noteInput.value = sponsor.note;
-          this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(sponsor.since); });
-          this.updateSponsorPhoneLinks(sponsor.phone);
-          this.renderSponsorAvailabilitySummary();
+          this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = backup ? '' : this.formatSponsorSince(sponsor.since); });
+          this.updateSponsorDetailPhoneLink(sponsor.phone, contactName);
+          if (!backup) this.renderSponsorAvailabilitySummary();
         }
-        openSponsorDetails() { this.state.sponsorDraft = { ...this.state.sponsor }; this.renderSponsorDetails(); this.navigate('sponsor-details'); }
-        closeSponsorDetails() { this.state.sponsorDraft = null; this.renderSponsorSurfaces(); this.navigate('sponsor'); }
+        openSponsorDetails(target = 'sponsor') {
+          this.state.sponsorDetailTarget = target === 'backup' ? 'backup' : 'sponsor';
+          const contact = this.sponsorDetailTarget() === 'backup' ? (this.state.sponsorBackup || this.emptySponsorBackup()) : this.state.sponsor;
+          this.state.sponsorDraft = { ...contact };
+          this.renderSponsorDetails();
+          this.navigate('sponsor-details');
+        }
+        closeSponsorDetails() {
+          this.state.sponsorDraft = null;
+          this.state.sponsorDetailTarget = 'sponsor';
+          this.renderSponsorSurfaces();
+          this.navigate('sponsor');
+        }
         openSponsorDatePicker() {
           const input = this.root.querySelector('[data-sponsor-date-input]');
           if (!input) return;
@@ -2971,7 +3017,16 @@
         }
         saveSponsorDetails() {
           const draft = this.getSponsorDraft();
+          const target = this.sponsorDetailTarget();
+          const nameInput = this.root.querySelector('[data-sponsor-name-input]');
           const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
+          if (target === 'backup' && !draft.name.trim()) {
+            nameInput?.setCustomValidity('Adj meg egy nevet.');
+            nameInput?.reportValidity();
+            nameInput?.focus();
+            return;
+          }
+          nameInput?.setCustomValidity('');
           if (!draft.phone.trim()) {
             phoneInput?.setCustomValidity('Adj meg egy telefonszámot.');
             phoneInput?.reportValidity();
@@ -2979,8 +3034,13 @@
             return;
           }
           phoneInput?.setCustomValidity('');
-          this.state.sponsor = { ...draft, name: draft.name.trim() || this.state.sponsor.name, phone: draft.phone.trim() };
-          this.state.sponsorDraft = { ...this.state.sponsor };
+          if (target === 'backup') {
+            this.state.sponsorBackup = { ...draft, name: draft.name.trim(), phone: draft.phone.trim() };
+            this.state.sponsorDraft = { ...this.state.sponsorBackup };
+          } else {
+            this.state.sponsor = { ...draft, name: draft.name.trim() || this.state.sponsor.name, phone: draft.phone.trim() };
+            this.state.sponsorDraft = { ...this.state.sponsor };
+          }
           this.renderSponsorSurfaces();
           this.renderSponsorDetails();
         }
