@@ -264,10 +264,10 @@
     /* Sponsor details — source of truth: /storage/emulated/0/hajnal/source of truth/sponsor3.png */
     .sponsor-details-screen { background: var(--screen-background); color: #07132C; }
     .sponsor-details-screen .status-bar { color: #07132C; text-shadow: none; }
-    .sponsor-detail-header { height: 62px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 0 18px 5px; }
-    .sponsor-detail-header h1 { margin: 0; color: #07132C; font-size: 23px; line-height: 1; font-weight: 840; letter-spacing: -.045em; text-align: center; }
-    .sponsor-detail-header button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #07132C; cursor: pointer; }
-    .sponsor-detail-header .icon { width: 28px; height: 28px; stroke-width: 2.2; }
+    .sponsor-detail-header, .sponsor-backups-header { height: 62px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; padding: 0 18px 5px; }
+    .sponsor-detail-header h1, .sponsor-backups-header h1 { margin: 0; color: #07132C; font-size: 23px; line-height: 1; font-weight: 840; letter-spacing: -.045em; text-align: center; }
+    .sponsor-detail-header button, .sponsor-backups-header button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #07132C; cursor: pointer; }
+    .sponsor-detail-header .icon, .sponsor-backups-header .icon { width: 28px; height: 28px; stroke-width: 2.2; }
     .sponsor-more-button { justify-self: end; font-size: 31px; line-height: .55; font-weight: 800; letter-spacing: 1px; }
     .sponsor-detail-content { position: absolute; top: 90px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 0 18px 16px; color: #07132C; scrollbar-width: none; }
     .sponsor-detail-content::-webkit-scrollbar { display: none; }
@@ -305,7 +305,6 @@
     .sponsor-detail-contact-action strong { font-size: 15px; line-height: 1.2; font-weight: 690; letter-spacing: -.025em; }
     .sponsor-detail-contact-chevron { color: #7D72A8; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; }
     .sponsor-native-date { width: 1px; height: 1px; position: absolute; overflow: hidden; opacity: 0; pointer-events: none; }
-    .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-availability], .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-since] { display: none; }
     .sponsor-detail-quote { min-height: 84px; display: grid; grid-template-columns: 51px minmax(0, 1fr); align-items: center; gap: 9px; margin-top: 16px; padding: 11px 16px; border-radius: 21px; background: #EEE8FA; color: #342477; }
     .sponsor-detail-quote .quote-icon { width: 40px; height: 40px; display: grid; place-items: center; color: var(--hajnal-purple); }
     .sponsor-detail-quote .quote-icon .icon { width: 33px; height: 33px; stroke-width: 1.75; }
@@ -313,6 +312,34 @@
     .sponsor-save-button { width: 100%; min-height: 56px; margin-top: 18px; border: 0; border-radius: 17px; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .20); font: inherit; font-size: 17px; font-weight: 790; cursor: pointer; }
     .sponsor-save-button:active { opacity: .86; transform: scale(.99); }
     .sponsor-detail-header button:focus-visible, .sponsor-avatar-edit:focus-visible, .sponsor-detail-phone-action:focus-visible, .sponsor-detail-date-action:focus-visible, .sponsor-detail-contact-action:focus-visible, .sponsor-save-button:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
+
+    .sponsor-backups-screen { background: var(--screen-background); color: #07132C; }
+    .sponsor-backups-content { position: absolute; top: 78px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 4px 18px 24px; scrollbar-width: none; }
+    .sponsor-backups-content::-webkit-scrollbar { display: none; }
+    .sponsor-backups-intro { margin: 0 2px 16px; color: #737C92; font-size: 14px; line-height: 1.38; font-weight: 570; }
+    .sponsor-backup-add { width: 100%; min-height: 57px; display: grid; grid-template-columns: 35px minmax(0, 1fr); align-items: center; gap: 5px; margin-bottom: 14px; padding: 9px 16px; border: 1px dashed rgba(106, 86, 180, .42); border-radius: 18px; background: rgba(238,232,250,.62); color: var(--hajnal-purple); font: inherit; font-size: 16px; font-weight: 790; text-align: left; cursor: pointer; }
+    .sponsor-backup-add span { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; background: var(--hajnal-purple); color: var(--white); font-size: 23px; line-height: 1; font-weight: 380; }
+    .sponsor-backup-add:active { transform: scale(.99); opacity: .84; }
+    .sponsor-backup-list { display: grid; gap: 11px; }
+    .sponsor-backup-empty { margin: 0; padding: 24px 18px; border: 1px solid rgba(44,46,119,.06); border-radius: 21px; background: #FEFBFA; color: #778096; font-size: 14px; line-height: 1.4; font-weight: 570; text-align: center; }
+    .sponsor-backup-entry { overflow: hidden; border: 1px solid rgba(44,46,119,.055); border-radius: 21px; background: #FEFBFA; box-shadow: 0 8px 18px rgba(44,46,119,.055); }
+    .sponsor-backup-summary { width: 100%; min-height: 82px; display: grid; grid-template-columns: 49px minmax(0, 1fr) 23px; align-items: center; gap: 12px; padding: 12px 15px; border: 0; background: transparent; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
+    .sponsor-backup-person-icon { width: 47px; height: 47px; display: grid; place-items: center; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); }
+    .sponsor-backup-person-icon .icon { width: 27px; height: 27px; stroke-width: 2.1; }
+    .sponsor-backup-summary-copy { min-width: 0; display: grid; gap: 3px; }
+    .sponsor-backup-summary-copy strong { overflow: hidden; color: #07132C; font-size: 17px; line-height: 1.15; font-weight: 800; letter-spacing: -.035em; text-overflow: ellipsis; white-space: nowrap; }
+    .sponsor-backup-summary-copy small { overflow: hidden; color: #727B91; font-size: 13px; line-height: 1.2; font-weight: 570; text-overflow: ellipsis; white-space: nowrap; }
+    .sponsor-backup-summary-chevron { color: #72689C; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; transition: transform 180ms ease; }
+    .sponsor-backup-entry[data-expanded="true"] .sponsor-backup-summary-chevron { transform: rotate(90deg); }
+    .sponsor-backup-editor { display: none; gap: 13px; padding: 2px 15px 15px; border-top: 1px solid rgba(44,46,119,.08); }
+    .sponsor-backup-entry[data-expanded="true"] .sponsor-backup-editor { display: grid; }
+    .sponsor-backup-field { display: grid; gap: 6px; color: #6C758C; font-size: 13px; font-weight: 650; }
+    .sponsor-backup-field input { width: 100%; min-height: 46px; padding: 0 13px; border: 1px solid rgba(44,46,119,.12); border-radius: 13px; outline: 0; background: #FCF9FA; color: #07132C; font: inherit; font-size: 16px; font-weight: 650; }
+    .sponsor-backup-field input:focus { border-color: rgba(106,86,180,.5); box-shadow: 0 0 0 3px rgba(106,86,180,.1); }
+    .sponsor-backup-contact-refresh { min-height: 45px; display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 7px; padding: 8px 3px; border: 0; background: transparent; color: var(--hajnal-purple); font: inherit; font-size: 14px; font-weight: 760; text-align: left; cursor: pointer; }
+    .sponsor-backup-contact-refresh .icon { width: 24px; height: 24px; stroke-width: 2.05; }
+    .sponsor-backup-import-note { margin: -4px 0 0; color: #7B729A; font-size: 12px; line-height: 1.35; font-weight: 560; }
+    .sponsor-backup-add:focus-visible, .sponsor-backup-summary:focus-visible, .sponsor-backup-contact-refresh:focus-visible { outline: 3px solid rgba(106,86,180,.46); outline-offset: 3px; }
 
     /* Sponsor takeaways — source of truth: /storage/emulated/0/hajnal/source of truth/sponsor4.png */
     .sponsor-takeaway-preview { padding: 11px 14px 8px; }
@@ -1829,7 +1856,7 @@
         <button class="sponsor-profile-card" type="button" data-action="open-sponsor-details" data-sponsor-profile-link aria-label="Péter szponzor adatai"><img class="sponsor-avatar" data-sponsor-avatar src="assets/hero/hero_s.png" alt="Péter"><span class="sponsor-profile-copy"><strong data-sponsor-name-display>Péter</strong><span>Sponzorom</span><span data-sponsor-since-main>2024. május 14. óta</span></span><span class="sponsor-profile-chevron" aria-hidden="true">›</span></button>
         <section class="sponsor-action-grid" data-component="sponsor-action-grid" aria-label="Gyors műveletek"><a class="sponsor-action" data-sponsor-call-link href="tel:+36701234567" aria-label="Péter hívása"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span><span class="sponsor-action-label">Hívás</span></a><a class="sponsor-action" data-sponsor-message-link href="sms:+36701234567" aria-label="Üzenet Péternek"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg></span><span class="sponsor-action-label">Üzenet</span></a><button class="sponsor-action" type="button" data-sponsor-talk-action data-action="open-sponsor-message-sheet" aria-label="Üzenet küldése Péternek: beszélnem kell vele"><span class="sponsor-action-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><span class="sponsor-action-label">Beszélnem<br>kell vele</span></button></section>
         <button class="sponsor-next-card" type="button" data-action="open-sponsor-next-sheet" data-component="sponsor-next-card" aria-label="Következő kapcsolat: Ma este, 20:00 körül felhívni Pétert"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="sponsor-next-copy"><strong>Legközelebb</strong><span data-sponsor-next-date-display>Ma este</span><small data-sponsor-next-time-display>20:00 körül felhívni Pétert</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
-        <button class="sponsor-next-card sponsor-backup-card" type="button" data-action="open-sponsor-backup-details" data-component="sponsor-backup-card" aria-label="Tartalék kapcsolattartó adatainak megnyitása"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="sponsor-next-copy"><strong>Tartalék kapcsolattartó</strong><span data-sponsor-backup-name-display>Nincs még beállítva</span><small data-sponsor-backup-detail-display>Koppints a hozzáadásához.</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
+        <button class="sponsor-next-card sponsor-backup-card" type="button" data-action="open-sponsor-backups" data-component="sponsor-backup-card" aria-label="Tartalék kapcsolattartók megnyitása"><span class="sponsor-next-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="sponsor-next-copy"><strong>Tartalék kapcsolattartók</strong><span data-sponsor-backup-name-display>Nincs még beállítva</span><small data-sponsor-backup-detail-display>Koppints a kezeléshez.</small></span><span class="sponsor-chevron" aria-hidden="true">›</span></button>
         <section class="sponsor-list-card sponsor-pending-card" data-component="sponsor-pending-topics" aria-labelledby="talk-about-title"></section>
         <section class="sponsor-list-card sponsor-takeaway-preview" data-component="sponsor-takeaway-preview" aria-labelledby="take-away-title"></section>
       </main>
@@ -1875,6 +1902,12 @@
         <section class="sponsor-detail-quote" aria-label="Emlékeztető"><span class="quote-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”</p></section>
         <button class="sponsor-save-button" type="button" data-action="save-sponsor-details">Mentés</button>
       </main>
+    </section>
+
+    <section class="route-screen sponsor-backups-screen" id="sponsor-backups" data-route="sponsor-backups" data-screen="sponsor-backups" data-component="sponsor-backups" aria-labelledby="sponsor-backups-title">
+      <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
+      <header class="sponsor-backups-header"><button type="button" data-action="close-sponsor-backups" aria-label="Vissza a Sponzor főoldalra"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1 id="sponsor-backups-title">Tartalék kapcsolattartók</h1><span aria-hidden="true"></span></header>
+      <main class="sponsor-backups-content"><p class="sponsor-backups-intro">Akiket szükség esetén gyorsan elérhetsz. Egy kapcsolatot a Pánik mód is felajánl.</p><button class="sponsor-backup-add" type="button" data-action="add-sponsor-backup"><span aria-hidden="true">+</span>Új kapcsolattartó</button><section class="sponsor-backup-list" data-component="sponsor-backup-list" aria-label="Tartalék kapcsolattartók"></section></main>
     </section>
 
     <section class="route-screen sponsor-takeaways-screen" id="sponsor-takeaways" data-route="sponsor-takeaways" data-screen="sponsor-takeaways" data-component="sponsor-takeaways" aria-labelledby="sponsor-takeaways-title">
@@ -2158,9 +2191,10 @@
             meetingEditor: null,
             meetingPicker: null,
             sponsor: { ...SPONSOR_INITIAL_STATE },
-            sponsorBackup: null,
+            sponsorBackups: [],
+            sponsorBackupExpandedId: null,
+            sponsorBackupImportNoticeId: null,
             sponsorLayout: 'current',
-            sponsorDetailTarget: 'sponsor',
             sponsorDraft: null,
             sponsorAvailability: createSponsorAvailability(),
             sponsorAvailabilityDraft: null,
@@ -2219,8 +2253,8 @@
           this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
           this.root.addEventListener('pointercancel', () => { this.panicSheetDrag = null; });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
-          this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
           this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
@@ -2267,7 +2301,11 @@
             case 'open-sponsor': this.renderSponsorSurfaces(); this.navigate('sponsor'); break;
             case 'toggle-sponsor-layout': this.toggleSponsorLayout(); break;
             case 'open-sponsor-details': this.openSponsorDetails(); break;
-            case 'open-sponsor-backup-details': this.openSponsorDetails('backup'); break;
+            case 'open-sponsor-backups': this.openSponsorBackups(); break;
+            case 'close-sponsor-backups': this.closeSponsorBackups(); break;
+            case 'add-sponsor-backup': this.addSponsorBackup(); break;
+            case 'toggle-sponsor-backup-card': this.toggleSponsorBackupCard(event.target.closest('[data-sponsor-backup-id]')?.dataset.sponsorBackupId); break;
+            case 'refresh-sponsor-backup-from-contacts': this.refreshSponsorBackupFromContacts(event.target.closest('[data-sponsor-backup-id]')?.dataset.sponsorBackupId); break;
             case 'close-sponsor-details': this.closeSponsorDetails(); break;
             case 'open-sponsor-date-picker': this.openSponsorDatePicker(); break;
             case 'save-sponsor-details': this.saveSponsorDetails(); break;
@@ -2379,8 +2417,9 @@
           if (target.matches('[data-sponsor-availability-time]')) { this.updateSponsorAvailabilityTime(Number(target.dataset.availabilityDay), target.dataset.availabilityPart, target.value); return; }
           if (target.matches('[data-takeaway-title-input]')) { this.getTakeawayEditor().draft.title = target.value; target.setCustomValidity(''); return; }
           if (target.matches('[data-takeaway-note-input]')) { this.getTakeawayEditor().draft.note = target.value; return; }
-          if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(this.getSponsorDraft().phone, target.value); return; }
-          if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(target.value, this.getSponsorDraft().name); else this.updateSponsorPhoneLinks(target.value); return; }
+          if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; this.updateSponsorDetailPhoneLink(this.getSponsorDraft().phone, target.value); return; }
+          if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); this.updateSponsorPhoneLinks(target.value); this.updateSponsorDetailPhoneLink(target.value, this.getSponsorDraft().name); return; }
+          if (target.matches('[data-sponsor-backup-input]')) { const contact = this.findSponsorBackup(target.closest('[data-sponsor-backup-id]')?.dataset.sponsorBackupId); const field = target.dataset.sponsorBackupInput; if (contact && ['name', 'phone'].includes(field)) { contact[field] = target.value; this.state.sponsorBackupImportNoticeId = null; this.renderSponsorSurfaces(); } return; }
           if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
@@ -2577,15 +2616,9 @@
           this.renderTakeawayPreview();
           this.renderTakeawayList();
         }
-        sponsorDetailTarget() { return this.state.sponsorDetailTarget === 'backup' ? 'backup' : 'sponsor'; }
-        emptySponsorBackup() { return { name: '', phone: '', since: '', note: '' }; }
-        getSponsorDraft() {
-          if (!this.state.sponsorDraft) {
-            const contact = this.sponsorDetailTarget() === 'backup' ? (this.state.sponsorBackup || this.emptySponsorBackup()) : this.state.sponsor;
-            this.state.sponsorDraft = { ...contact };
-          }
-          return this.state.sponsorDraft;
-        }
+        getSponsorDraft() { return this.state.sponsorDraft ||= { ...this.state.sponsor }; }
+        findSponsorBackup(id) { return this.state.sponsorBackups.find((contact) => contact.id === id) || null; }
+        firstSponsorBackup() { return this.state.sponsorBackups.find((contact) => Boolean(contact.name?.trim())) || null; }
         formatSponsorSince(value) {
           const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
           if (!match) return '2024. május 14.';
@@ -2609,12 +2642,58 @@
           const nameDisplay = this.root.querySelector('[data-sponsor-backup-name-display]');
           const detailDisplay = this.root.querySelector('[data-sponsor-backup-detail-display]');
           if (!card || !nameDisplay || !detailDisplay) return;
-          const backup = this.state.sponsorBackup;
-          const hasBackup = Boolean(backup?.name?.trim());
-          const name = hasBackup ? backup.name.trim() : 'Nincs még beállítva';
-          nameDisplay.textContent = name;
-          detailDisplay.textContent = hasBackup ? (backup.phone?.trim() || 'Telefonszám nincs megadva.') : 'Koppints a hozzáadásához.';
-          card.setAttribute('aria-label', hasBackup ? `${name} tartalék kapcsolattartó adatainak megnyitása` : 'Tartalék kapcsolattartó hozzáadása');
+          const contacts = this.state.sponsorBackups;
+          const primary = this.firstSponsorBackup();
+          nameDisplay.textContent = contacts.length ? `${contacts.length} kapcsolat` : 'Nincs még beállítva';
+          detailDisplay.textContent = primary ? `Elsőként: ${primary.name.trim()}` : 'Koppints a hozzáadásához.';
+          card.setAttribute('aria-label', contacts.length ? 'Tartalék kapcsolattartók kezelése' : 'Tartalék kapcsolattartó hozzáadása');
+        }
+        renderSponsorBackups() {
+          const host = this.root.querySelector('[data-component="sponsor-backup-list"]');
+          if (!host) return;
+          const contacts = this.state.sponsorBackups;
+          if (!contacts.length) {
+            host.innerHTML = '<p class="sponsor-backup-empty">Még nincs tartalék kapcsolattartód. Adj hozzá valakit, akit szükség esetén felhívhatsz.</p>';
+            return;
+          }
+          host.innerHTML = contacts.map((contact) => {
+            const expanded = this.state.sponsorBackupExpandedId === contact.id;
+            const name = String(contact.name || '').trim() || 'Új kapcsolattartó';
+            const phone = String(contact.phone || '').trim();
+            const importNote = this.state.sponsorBackupImportNoticeId === contact.id ? '<p class="sponsor-backup-import-note" role="status">A névjegyzék kiválasztó ezen a készüléken nem érhető el. Az adatokat kézzel is megadhatod.</p>' : '';
+            return `<article class="sponsor-backup-entry" data-sponsor-backup-id="${escapeHtml(contact.id)}" data-expanded="${expanded}"><button class="sponsor-backup-summary" type="button" data-action="toggle-sponsor-backup-card" data-sponsor-backup-id="${escapeHtml(contact.id)}" aria-expanded="${expanded}"><span class="sponsor-backup-person-icon" aria-hidden="true"><svg class="icon"><use href="#icon-profile"/></svg></span><span class="sponsor-backup-summary-copy"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(phone || 'Elérhetőség nincs megadva')}</small></span><span class="sponsor-backup-summary-chevron" aria-hidden="true">›</span></button><section class="sponsor-backup-editor" aria-label="${escapeHtml(name)} szerkesztése"><label class="sponsor-backup-field">Név<input type="text" data-sponsor-backup-input="name" data-sponsor-backup-id="${escapeHtml(contact.id)}" autocomplete="name" autocapitalize="words" value="${escapeHtml(contact.name || '')}" placeholder="Kapcsolattartó neve"></label><label class="sponsor-backup-field">Elérhetőség<input type="tel" data-sponsor-backup-input="phone" data-sponsor-backup-id="${escapeHtml(contact.id)}" inputmode="tel" autocomplete="tel" value="${escapeHtml(contact.phone || '')}" placeholder="Telefonszám"></label><button class="sponsor-backup-contact-refresh" type="button" data-action="refresh-sponsor-backup-from-contacts" data-sponsor-backup-id="${escapeHtml(contact.id)}"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg>Névjegyből frissítés</button>${importNote}</section></article>`;
+          }).join('');
+        }
+        openSponsorBackups() { this.renderSponsorBackups(); this.navigate('sponsor-backups'); }
+        closeSponsorBackups() { this.renderSponsorSurfaces(); this.navigate('sponsor'); }
+        addSponsorBackup() {
+          const id = `backup-${Date.now()}`;
+          this.state.sponsorBackups.push({ id, name: '', phone: '' });
+          this.state.sponsorBackupExpandedId = id;
+          this.state.sponsorBackupImportNoticeId = null;
+          this.renderSponsorBackups();
+          this.renderSponsorSurfaces();
+        }
+        toggleSponsorBackupCard(id) {
+          if (!this.findSponsorBackup(id)) return;
+          this.state.sponsorBackupExpandedId = this.state.sponsorBackupExpandedId === id ? null : id;
+          this.state.sponsorBackupImportNoticeId = null;
+          this.renderSponsorBackups();
+        }
+        async refreshSponsorBackupFromContacts(id) {
+          const backup = this.findSponsorBackup(id);
+          if (!backup) return;
+          try {
+            const selection = await navigator.contacts?.select?.(['name', 'tel'], { multiple: false });
+            const contact = selection?.[0];
+            if (contact) {
+              backup.name = Array.isArray(contact.name) ? (contact.name[0] || backup.name) : (contact.name || backup.name);
+              backup.phone = Array.isArray(contact.tel) ? (contact.tel[0] || backup.phone) : (contact.tel || backup.phone);
+              this.state.sponsorBackupImportNoticeId = null;
+            } else this.state.sponsorBackupImportNoticeId = id;
+          } catch (_) { this.state.sponsorBackupImportNoticeId = id; }
+          this.renderSponsorBackups();
+          this.renderSponsorSurfaces();
         }
         renderSponsorSurfaces() {
           const sponsor = this.state.sponsor;
@@ -2754,7 +2833,7 @@
           this.closeAppOverlaySheet(host);
         }
         sponsorMessageDefaultCopy() { return 'Szia! Ha tudsz, kérlek hívj fel. Szeretnék beszélni veled.'; }
-        messageContact(key = 'sponsor') { return key === 'backup' ? this.state.sponsorBackup : this.state.sponsor; }
+        messageContact(key = 'sponsor') { return key === 'backup' ? this.firstSponsorBackup() : this.state.sponsor; }
         hasSponsorPhone(key = 'sponsor') { return Boolean(this.sponsorDialValue(this.messageContact(key)?.phone).replace(/\D/g, '')); }
         openSponsorMessageSheet(trigger, options = {}) {
           const host = this.root.querySelector('[data-component="sponsor-message-sheet"]');
@@ -2974,8 +3053,6 @@
         }
         renderSponsorDetails() {
           const sponsor = this.getSponsorDraft();
-          const target = this.sponsorDetailTarget();
-          const backup = target === 'backup';
           const screen = this.root.querySelector('[data-component="sponsor-details"]');
           const title = this.root.querySelector('[data-sponsor-details-title]');
           const avatar = this.root.querySelector('[data-sponsor-detail-avatar]');
@@ -2984,29 +3061,26 @@
           const nameInput = this.root.querySelector('[data-sponsor-name-input]');
           const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
           const dateInput = this.root.querySelector('[data-sponsor-date-input]');
-          const contactName = sponsor.name.trim() || 'Tartalék kapcsolattartó';
-          if (screen) screen.dataset.sponsorDetailTarget = target;
-          if (title) title.textContent = backup ? 'Tartalék kapcsolattartó' : 'Sponzor adatai';
+          const contactName = sponsor.name.trim() || 'Sponzor';
+          if (screen) screen.dataset.sponsorDetailTarget = 'sponsor';
+          if (title) title.textContent = 'Sponzor adatai';
           if (avatar) avatar.alt = contactName;
           if (avatarStage) avatarStage.setAttribute('aria-label', `${contactName} képe`);
-          if (detailCard) detailCard.setAttribute('aria-label', backup ? 'Tartalék kapcsolattartó adatai' : 'Sponzor adatai');
+          if (detailCard) detailCard.setAttribute('aria-label', 'Sponzor adatai');
           if (nameInput) nameInput.value = sponsor.name;
           if (phoneInput) phoneInput.value = sponsor.phone;
           if (dateInput) dateInput.value = sponsor.since || '';
-          this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = backup ? '' : this.formatSponsorSince(sponsor.since); });
+          this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(sponsor.since); });
           this.updateSponsorDetailPhoneLink(sponsor.phone, contactName);
-          if (!backup) this.renderSponsorAvailabilitySummary();
+          this.renderSponsorAvailabilitySummary();
         }
-        openSponsorDetails(target = 'sponsor') {
-          this.state.sponsorDetailTarget = target === 'backup' ? 'backup' : 'sponsor';
-          const contact = this.sponsorDetailTarget() === 'backup' ? (this.state.sponsorBackup || this.emptySponsorBackup()) : this.state.sponsor;
-          this.state.sponsorDraft = { ...contact };
+        openSponsorDetails() {
+          this.state.sponsorDraft = { ...this.state.sponsor };
           this.renderSponsorDetails();
           this.navigate('sponsor-details');
         }
         closeSponsorDetails() {
           this.state.sponsorDraft = null;
-          this.state.sponsorDetailTarget = 'sponsor';
           this.renderSponsorSurfaces();
           this.navigate('sponsor');
         }
@@ -3017,15 +3091,8 @@
         }
         saveSponsorDetails() {
           const draft = this.getSponsorDraft();
-          const target = this.sponsorDetailTarget();
           const nameInput = this.root.querySelector('[data-sponsor-name-input]');
           const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
-          if (target === 'backup' && !draft.name.trim()) {
-            nameInput?.setCustomValidity('Adj meg egy nevet.');
-            nameInput?.reportValidity();
-            nameInput?.focus();
-            return;
-          }
           nameInput?.setCustomValidity('');
           if (!draft.phone.trim()) {
             phoneInput?.setCustomValidity('Adj meg egy telefonszámot.');
@@ -3034,13 +3101,8 @@
             return;
           }
           phoneInput?.setCustomValidity('');
-          if (target === 'backup') {
-            this.state.sponsorBackup = { ...draft, name: draft.name.trim(), phone: draft.phone.trim() };
-            this.state.sponsorDraft = { ...this.state.sponsorBackup };
-          } else {
-            this.state.sponsor = { ...draft, name: draft.name.trim() || this.state.sponsor.name, phone: draft.phone.trim() };
-            this.state.sponsorDraft = { ...this.state.sponsor };
-          }
+          this.state.sponsor = { ...draft, name: draft.name.trim() || this.state.sponsor.name, phone: draft.phone.trim() };
+          this.state.sponsorDraft = { ...this.state.sponsor };
           this.renderSponsorSurfaces();
           this.renderSponsorDetails();
         }
@@ -3439,7 +3501,7 @@
             this.panicVariantToggle.setAttribute('aria-label', alternative ? 'Classic Pánik mód megnyitása' : 'Alternatív Pánik mód megnyitása');
           }
         }
-        getPanicContact(key = 'sponsor') { return key === 'backup' ? this.state.sponsorBackup : this.state.sponsor; }
+        getPanicContact(key = 'sponsor') { return key === 'backup' ? this.firstSponsorBackup() : this.state.sponsor; }
         hasPanicContact(key = 'sponsor') { return Boolean(String(this.getPanicContact(key)?.name || '').trim()); }
         panicContactCard(key, heading, availability = '') {
           const contact = this.getPanicContact(key);
@@ -3517,6 +3579,7 @@
         handlePlatformBack() {
           if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
           if (this.state.panicMotivationSheet) { this.closePanicMotivationSheet(); return; }
+          if (this.state.route === 'sponsor-backups') { this.closeSponsorBackups(); return; }
           if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic');
         }
         startSurvivalPack() {
