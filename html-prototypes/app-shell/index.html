@@ -552,25 +552,21 @@
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-current-layout { display: none; }
     .history-screen[data-history-overview-layout-mode="path-inspired"] .history-number-summary { grid-row: 2; z-index: 3; margin: 0 18px; }
     .history-path-current-card, .history-path-period-card { width: 100%; position: relative; overflow: hidden; border: 1px solid rgba(44,46,119,.045); border-radius: 22px; background: rgba(255,251,253,.94); color: #352576; box-shadow: 0 7px 16px rgba(69,47,122,.055); font: inherit; text-align: left; cursor: pointer; }
-    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 148px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; border-radius: 25px; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
-    .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 152px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 9px 10px 9px 14px; }
+    .history-path-current-card { min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 117px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 0 12px 0 0; border-radius: 25px; box-shadow: 0 10px 22px rgba(69,47,122,.06); }
+    .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 6px 10px 6px 0; }
     .history-path-current-card:focus-visible, .history-path-period-card:focus-visible { outline: 3px solid rgba(181,91,157,.42); outline-offset: 2px; }
     .history-path-current-card:active, .history-path-period-card:active { transform: scale(.99); opacity: .86; }
-    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 0; left: 0; width: 186px; height: 100%; overflow: hidden; opacity: .84; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); mask-image: linear-gradient(90deg, #000 0%, #000 58%, rgba(0,0,0,.70) 73%, rgba(0,0,0,.22) 89%, transparent 100%); }
+    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 0; left: 0; width: 105px; height: 100%; overflow: hidden; opacity: 1; border-radius: 22px 0 0 22px; -webkit-mask-image: none; mask-image: none; }
     .history-path-current-art img, .history-path-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
-    .history-path-day-medallion { width: 54px; height: 54px; position: relative; z-index: 2; display: grid; place-items: center; justify-self: start; box-sizing: border-box; margin-left: -7px; padding: 3px; border: 4px solid #FFF9FC; border-radius: 50%; background: #E6D7F2; box-shadow: 0 6px 15px rgba(112,63,127,.10); color: #7B438E; font-size: 19px; line-height: 1; font-weight: 840; letter-spacing: -.06em; }
-    .history-path-day-medallion > span { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 50%; background: #F6EAF4; }
     .history-path-copy { min-width: 0; position: relative; z-index: 2; }
     .history-path-copy strong, .history-path-copy small { display: block; overflow: hidden; text-overflow: ellipsis; }
     .history-path-copy strong { color: #352576; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
     .history-path-copy small { margin-top: 4px; color: #8E78A5; font-size: 10.5px; line-height: 1.17; font-weight: 680; white-space: nowrap; }
-    .history-path-current-card .history-path-current-art { left: 0; width: 154px; border-radius: 24px 0 0 24px; opacity: .92; }
-    .history-path-period-card .history-path-period-art { width: 170px; }
-    .history-path-current-card .history-path-day-medallion { position: absolute; top: 23px; left: 48px; margin-left: 0; padding: 0; border: 0; }
+    .history-path-current-card .history-path-current-art { width: 116px; border-radius: 25px 0 0 25px; }
     .history-path-current-card .history-path-copy { grid-column: 2; grid-row: 1; padding-right: 1px; }
-    .history-path-current-card .history-path-copy strong { margin-top: 3px; font-size: 20px; }
+    .history-path-current-card .history-path-copy strong { margin-top: 0; font-size: 20px; }
+    .history-path-current-badge { margin: 0 0 3px; }
     .history-path-current-card .history-path-chevron { grid-column: 3; grid-row: 1; font-size: 30px; }
-    .history-path-kicker { display: block; margin-bottom: 4px; color: #A367A3; font-size: 9px; line-height: 1; font-weight: 820; letter-spacing: .05em; text-transform: uppercase; }
     .history-path-progress-meta { display: flex; justify-content: space-between; gap: 7px; margin-top: 5px; color: #8E78A5; font-size: 9.5px; font-weight: 760; }
     .history-path-progress { height: 4px; overflow: hidden; margin-top: 5px; border-radius: 999px; background: rgba(198,139,183,.20); }
     .history-path-progress span { width: calc(var(--history-period-progress) * 1%); height: 100%; display: block; border-radius: inherit; background: linear-gradient(90deg, #C66E9E, #8963C6); }
@@ -580,12 +576,12 @@
     .history-path-period-list { min-height: 0; display: grid; align-content: start; gap: 7px; overflow-y: auto; padding: 2px 0 18px; scrollbar-width: none; }
     .history-path-period-list::-webkit-scrollbar { display: none; }
     .history-screen[data-history-overview-density="compact"] .history-path-overview { grid-template-rows: var(--path-overview-current-card-height-compact) minmax(0,1fr); }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: var(--path-overview-current-card-height-compact); grid-template-columns: 136px minmax(0,1fr) 18px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 136px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-art { width: 142px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 150px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-day-medallion { width: 46px; height: 46px; padding: 5px; font-size: 17px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-day-medallion { top: 22px; left: 52px; padding: 0; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: var(--path-overview-current-card-height-compact); grid-template-columns: 105px minmax(0,1fr) 18px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 98px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-art { width: 104px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 92px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-period-card .history-path-copy small { display: none; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-badge { min-height: 20px; margin-bottom: 2px; padding: 3px 7px; font-size: 9.5px; }
     .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-copy strong { font-size: 18px; }
     .history-screen[data-history-overview-density="compact"] .history-path-copy strong { font-size: 13px; }
     .history-number-card strong { color: #3B2B7E; font-size: 13px; line-height: 1; font-weight: 850; letter-spacing: -.025em; }
@@ -3167,7 +3163,7 @@
         renderHistoryPeriodCards() {
           const current = HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[HISTORY_PERIODS.length - 1];
           const priorPeriods = HISTORY_PERIODS.filter((period) => !period.current);
-          const periodCard = (period) => `<button class="history-path-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${period.days} tiszta nap"><span class="history-path-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-path-day-medallion" aria-hidden="true"><span>${period.days}</span></span><span class="history-path-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small></span><span class="history-path-chevron" aria-hidden="true">›</span></button>`;
+          const periodCard = (period) => { const badge = `${period.days} nap${period.current ? ' tiszta' : ''}`; return `<button class="history-path-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-path-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-path-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small><span class="history-period-badge">${badge}</span></span><span class="history-path-chevron" aria-hidden="true">›</span></button>`; };
           return { current, priorPeriods, periodCard };
         }
         renderHistoryOverviewLayout() {
@@ -3182,7 +3178,7 @@
           elements.current?.setAttribute('aria-hidden', String(alternative));
           if (alternative) elements.current?.setAttribute('inert', ''); else elements.current?.removeAttribute('inert');
           elements.alternative.hidden = !alternative;
-          if (alternative) elements.alternative.innerHTML = `<button class="history-path-current-card" type="button" data-history-batch="${current.id}" data-action="open-history-detail" aria-label="Jelenlegi időszak: ${current.days} tiszta nap a 90 napos célból"><span class="history-path-current-art" aria-hidden="true"><img src="${current.art}" alt=""></span><span class="history-path-day-medallion" aria-hidden="true"><span>${current.days}</span></span><span class="history-path-copy"><span class="history-path-kicker">Jelenlegi időszak</span><strong>Jelenlegi időszak</strong><small>${escapeHtml(current.date)} · ${current.days} nap tiszta</small><span class="history-path-progress-meta"><span>${current.days} / 90 nap</span><span>90 napos cél</span></span><span class="history-path-progress" aria-label="${current.days} nap a 90 napos célból"><span style="--history-period-progress:${currentProgress}"></span></span></span><span class="history-path-chevron" aria-hidden="true">›</span></button><section class="history-path-period-list-card" aria-labelledby="history-path-period-list-title"><h2 class="history-path-period-list-title" id="history-path-period-list-title">Korábbi fejezeteim</h2><div class="history-path-period-list">${priorPeriods.map(periodCard).join('')}</div></section>`;
+          if (alternative) elements.alternative.innerHTML = `<button class="history-path-current-card" type="button" data-history-batch="${current.id}" data-action="open-history-detail" aria-label="Jelenlegi időszak: ${current.days} tiszta nap a 90 napos célból"><span class="history-path-current-art" aria-hidden="true"><img src="${current.art}" alt=""></span><span class="history-path-copy"><span class="history-period-badge history-path-current-badge">${current.days} nap tiszta</span><strong>Jelenlegi időszak</strong><small>${escapeHtml(current.date)}</small><span class="history-path-progress-meta"><span>${current.days} / 90 nap</span><span>90 napos cél</span></span><span class="history-path-progress" aria-label="${current.days} nap a 90 napos célból"><span style="--history-period-progress:${currentProgress}"></span></span></span><span class="history-path-chevron" aria-hidden="true">›</span></button><section class="history-path-period-list-card" aria-labelledby="history-path-period-list-title"><h2 class="history-path-period-list-title" id="history-path-period-list-title">Korábbi fejezeteim</h2><div class="history-path-period-list">${priorPeriods.map(periodCard).join('')}</div></section>`;
           if (elements.layoutToggle) {
             elements.layoutToggle.setAttribute('aria-pressed', String(alternative));
             elements.layoutToggle.setAttribute('aria-label', alternative ? 'Jelenlegi Történetem elrendezés' : 'Új, Ösvény-alapú Történetem elrendezés');
