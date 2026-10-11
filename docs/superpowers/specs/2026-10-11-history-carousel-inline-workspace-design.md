@@ -86,6 +86,19 @@ Az Ösvény meglévő listanézete nem változik.
 | HDS-02 | Aktuális user feedback | A felső tab-sor és az „Idővonalam számokban” expandable footer görgetés közben a helyén marad. | `history-detail-content` háromsoros grid | A középső row görget, a két szélső row nem. | source contract + közvetlen CSS-ellenőrzés | DONE |
 | HDS-03 | Aktuális user feedback | A carousel-card alapmagassága pontosan az Ösvény felső „Őszinte önleltár” / current-work card közös tokenjét használja. | `history-period-carousel` CSS | A card `min-height` a `--path-overview-current-card-height` értékére hivatkozik; a középső grow effekt csak transformmal nagyít. | RED/GREEN source contract + közvetlen CSS-ellenőrzés | DONE |
 
+## Mért root-cause korrekció – 2026-10-11
+
+### Bizonyíték és döntés
+
+- A friss Android screenshoton az eseménylista a bottom navigation alá fut, miközben a harmadik grid-sorban levő „Idővonalam számokban” footer sem látszik. Ez kizárja azt, hogy kizárólag egy esemény- vagy overlay-listener blokkolná a touchot: a teljes workspace grid nincs korlátos magasságra számolva.
+- A működő, önálló detail-route `history-detail-content` eleme abszolút `top`/`bottom` pozícióval kap definitív magasságot. Az inline variant ezt `position: relative; inset: auto; height: 100%` formára írja felül; ez az abszolút `history-workspace` százalékos magasságára támaszkodik, és a mobil böngészőben a klónozott subtree-nél nem képez stabil grid-limittet.
+- A root-cause javítás ezért nem új scroll-container: ugyanaz a shared detail markup kapja vissza a közvetlen, abszolút `inset: 0` határait a már korlátos inline workspace-ben. A középső grid-sor így valódi méretet kap; a meglévő `history-detail-panel-slot` marad az egyetlen scroll-owner.
+
+| ID | Forrás | Követelmény | Kódbeli terület | Elfogadási feltétel | Ellenőrzés | Állapot |
+| --- | --- | --- | --- | --- | --- | --- |
+| HRC-01 | Friss Android screenshot + user feedback | Az inline detail-content ugyanúgy definitív, abszolút réteghatárokat kap, mint a működő standalone detail-content. | scoped inline `.history-detail-content` | `position: absolute; inset: 0; height: auto`; nincs `position: relative`, `inset: auto` vagy százalékos magasság mint második méretforrás. | RED/GREEN regression contract + Android screenshot | NOT DONE |
+| HRC-02 | Friss Android screenshot + user feedback | A footer a harmadik grid-sorban marad, az eseménylista pedig nem futhat a bottom nav alá. | existing three-row grid + one panel scroll owner | A panel slot kerete és a footer egyaránt a workspace látható magasságán belül van. | Android screenshot + targeted source contract | NOT DONE |
+
 ## Hibakezelés és akadálymentesség
 
 - Ha nincs érvényes kiválasztott period ID, a controller a `current` periodra áll vissza.
