@@ -621,7 +621,8 @@
     .panic-content[data-panic-variant="alternative"] { padding-bottom: 18px; }
     .panic-alternative { min-height: 100%; display: flex; flex-direction: column; animation: panic-variant-fade 210ms ease both; }
     .panic-alternative .panic-center { margin-top: 8px; }
-    .panic-main-button--pulse { cursor: pointer; background: radial-gradient(circle at center, #F15D9A 0%, #F15D9A 52%, rgba(241,93,154,.96) 70%, rgba(241,93,154,.47) 84%, rgba(241,93,154,0) 100%); box-shadow: 0 22px 48px rgba(239,85,145,.35); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; will-change: transform; }
+    .panic-main-button--pulse { position: relative; z-index: 0; isolation: isolate; overflow: visible; cursor: pointer; background: #F15D9A; box-shadow: 0 0 19px rgba(241,93,154,.48), 0 0 43px rgba(241,93,154,.32); animation: panic-help-pulse 2.8s ease-in-out infinite; transition: transform 140ms ease; will-change: transform; }
+    .panic-main-button--pulse::before { content: ""; position: absolute; z-index: -1; inset: -42px; border-radius: 50%; background: radial-gradient(circle, rgba(241,93,154,.54) 0%, rgba(241,93,154,.39) 32%, rgba(241,93,154,.22) 53%, rgba(241,93,154,.09) 67%, rgba(241,93,154,0) 80%); pointer-events: none; }
     .panic-main-button--pulse:active { transform: scale(.98); }
     .panic-screen[data-panic-help-open="true"] .panic-main-button--pulse { animation-play-state: paused; }
     .panic-alternative .panic-detail-intro { margin: 20px 12px 0; }
@@ -636,7 +637,7 @@
     .panic-motivation-card strong { font-size: 13px; line-height: 1.15; font-weight: 830; }
     .panic-motivation-card small { display: -webkit-box; margin-top: 3px; color: rgba(255,255,255,.78); font-size: 10.5px; line-height: 1.3; font-weight: 590; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .panic-motivation-card > span:last-child { color: rgba(255,255,255,.82); font-size: 23px; }
-    @keyframes panic-help-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+    @keyframes panic-help-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.085); } }
     @keyframes panic-variant-fade { from { opacity: .01; } to { opacity: 1; } }
     .panic-help-sheet-host { position: absolute; z-index: 510; inset: 0; isolation: isolate; overscroll-behavior: contain; }
     .panic-help-sheet-host[hidden] { display: none; }
@@ -1017,9 +1018,11 @@
     .path-step-card-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
     .path-step-card-copy small { margin-top: 4px; display: -webkit-box; font-size: 10.5px; line-height: 1.17; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .path-step-card-chevron { color: #9A90C1; font-size: 25px; }
-    /* Keep the active row on the same card surface as every other row: the
-       shared alpha mask must always dissolve into the same destination color. */
-    .path-step-card[data-path-current="true"] { border-color: rgba(44, 46, 119, .045); background: rgba(254, 251, 250, .94); box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
+    /* A coloured artwork means the step has already begun. Those chapter rows
+       use the same soft lavender surface as the selected Őszinte önleltár
+       card; untouched rows remain white and grayscale. */
+    .path-step-card[data-path-state="in-progress"], .path-step-card[data-path-state="closed"] { border-color: transparent; background: #F1EBFC; box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
+    .path-step-card[data-path-current="true"] { border-color: transparent; box-shadow: 0 7px 17px rgba(74, 55, 150, .08); }
     /* Reference-state progress preview: it is intentionally visual-only and
        leaves the question-answer source state used by the nested screens intact. */
     .path-step-card[data-step-id="step-1"] .path-step-card-number { --path-step-progress: 46 !important; }
@@ -2173,6 +2176,7 @@
             panicVariant: this.readPanicVariant(),
             panicHelpContact: 'sponsor',
             panicHelpSheet: false,
+            panicHelpBackupExpanded: true,
             panicMotivationSheet: false,
             survivalSession: null,
             historyDetailView: 'timeline',
@@ -2284,6 +2288,7 @@
             case 'toggle-panic-backup': this.togglePanicBackup(); break;
             case 'open-panic-contact-message': this.openPanicContactMessage(event.target.closest('[data-panic-contact-key]')?.dataset.panicContactKey, event.target.closest('[data-action="open-panic-contact-message"]')); break;
             case 'open-panic-sponsor-setup': this.closePanicHelpSheet(); this.openSponsorDetails(); break;
+            case 'open-panic-backup-setup': this.closePanicHelpSheet(); this.openSponsorBackups(); break;
             case 'open-panic-why': this.navigate('panic-why'); break;
             case 'open-panic-relapse': this.navigate('panic-relapse'); break;
             case 'start-survival-pack': this.startSurvivalPack(); break;
@@ -2618,7 +2623,14 @@
         }
         getSponsorDraft() { return this.state.sponsorDraft ||= { ...this.state.sponsor }; }
         findSponsorBackup(id) { return this.state.sponsorBackups.find((contact) => contact.id === id) || null; }
-        firstSponsorBackup() { return this.state.sponsorBackups.find((contact) => Boolean(contact.name?.trim())) || null; }
+        namedSponsorBackups() { return this.state.sponsorBackups.filter((contact) => Boolean(contact.name?.trim())); }
+        firstSponsorBackup() { return this.namedSponsorBackups()[0] || null; }
+        sponsorContactForKey(key = 'sponsor') {
+          const contactKey = String(key || 'sponsor');
+          if (contactKey === 'sponsor') return this.state.sponsor;
+          if (contactKey === 'backup') return this.firstSponsorBackup();
+          return contactKey.startsWith('backup:') ? this.findSponsorBackup(contactKey.slice('backup:'.length)) : null;
+        }
         formatSponsorSince(value) {
           const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
           if (!match) return '2024. május 14.';
@@ -2833,12 +2845,13 @@
           this.closeAppOverlaySheet(host);
         }
         sponsorMessageDefaultCopy() { return 'Szia! Ha tudsz, kérlek hívj fel. Szeretnék beszélni veled.'; }
-        messageContact(key = 'sponsor') { return key === 'backup' ? this.firstSponsorBackup() : this.state.sponsor; }
+        messageContact(key = 'sponsor') { return this.sponsorContactForKey(key); }
         hasSponsorPhone(key = 'sponsor') { return Boolean(this.sponsorDialValue(this.messageContact(key)?.phone).replace(/\D/g, '')); }
         openSponsorMessageSheet(trigger, options = {}) {
           const host = this.root.querySelector('[data-component="sponsor-message-sheet"]');
           if (!host) return;
-          const contactKey = options.contactKey === 'backup' ? 'backup' : 'sponsor';
+          const requestedContactKey = String(options.contactKey || 'sponsor');
+          const contactKey = this.sponsorContactForKey(requestedContactKey) ? requestedContactKey : 'sponsor';
           this.state.sponsorMessageSheet = { message: options.message || this.sponsorMessageDefaultCopy(), phoneWarning: false, contactKey, panicOrigin: Boolean(options.panicOrigin) };
           this.renderSponsorMessageSheet();
           this.openAppOverlaySheet(host, trigger);
@@ -3501,7 +3514,7 @@
             this.panicVariantToggle.setAttribute('aria-label', alternative ? 'Classic Pánik mód megnyitása' : 'Alternatív Pánik mód megnyitása');
           }
         }
-        getPanicContact(key = 'sponsor') { return key === 'backup' ? this.firstSponsorBackup() : this.state.sponsor; }
+        getPanicContact(key = 'sponsor') { return this.sponsorContactForKey(key); }
         hasPanicContact(key = 'sponsor') { return Boolean(String(this.getPanicContact(key)?.name || '').trim()); }
         panicContactCard(key, heading, availability = '') {
           const contact = this.getPanicContact(key);
@@ -3509,20 +3522,25 @@
           const name = escapeHtml(contact.name);
           const dial = this.sponsorDialValue(contact.phone);
           const phone = dial ? escapeHtml(contact.phone) : 'Nincs telefonszám megadva';
-          const call = dial ? `<a href="tel:${dial}" aria-label="${name} hívása">Hívás</a>` : '<button type="button" data-action="open-panic-sponsor-setup">Telefonszám hozzáadása</button>';
+          const setupAction = key === 'sponsor' ? 'open-panic-sponsor-setup' : 'open-panic-backup-setup';
+          const call = dial ? `<a href="tel:${dial}" aria-label="${name} hívása">Hívás</a>` : `<button type="button" data-action="${setupAction}">Telefonszám hozzáadása</button>`;
           return `<section class="panic-contact-card"><h3>${heading}</h3><p><strong>${name}</strong> · ${phone}${availability ? `<br>${escapeHtml(availability)}` : ''}</p><div class="panic-contact-actions">${call}<button type="button" data-action="open-panic-contact-message" data-panic-contact-key="${key}">Üzenet</button></div></section>`;
         }
         renderPanicHelpSheet() {
           if (!this.panicHelpSheetContent) return;
           const backupOpen = Boolean(this.state.panicHelpBackupExpanded);
           const availability = this.formatSponsorAvailabilitySummary?.() || '';
-          const backup = this.hasPanicContact('backup');
-          this.panicHelpSheetContent.innerHTML = `${this.panicContactCard('sponsor', 'Szponzor', availability)}<button class="panic-backup-disclosure" type="button" data-action="toggle-panic-backup" aria-expanded="${backupOpen}"><span>Tartalék kapcsolattartó</span><span aria-hidden="true">${backupOpen ? '⌃' : '⌄'}</span></button><div class="panic-backup-panel"${backupOpen ? '' : ' hidden'}>${backup ? this.panicContactCard('backup', 'Tartalék kapcsolattartó') : '<section class="panic-contact-card"><p>Nincs beállított tartalék kapcsolattartó.</p></section>'}</div><a class="panic-emergency" href="tel:112" aria-label="112, sürgősségi segítség hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg><span><strong>112 – Sürgősségi segítség</strong><small>Közvetlen veszély esetén.</small></span></a>`;
+          const backups = this.namedSponsorBackups();
+          const backupCards = backups.length
+            ? backups.map((contact, index) => this.panicContactCard(`backup:${contact.id}`, `Tartalék kapcsolattartó ${index + 1}`)).join('')
+            : '<section class="panic-contact-card"><p>Nincs beállított tartalék kapcsolattartó.</p></section>';
+          this.panicHelpSheetContent.innerHTML = `${this.panicContactCard('sponsor', 'Szponzor', availability)}<button class="panic-backup-disclosure" type="button" data-action="toggle-panic-backup" aria-expanded="${backupOpen}"><span>Tartalék kapcsolattartók${backups.length ? ` · ${backups.length}` : ''}</span><span aria-hidden="true">${backupOpen ? '⌃' : '⌄'}</span></button><div class="panic-backup-panel"${backupOpen ? '' : ' hidden'}>${backupCards}</div><a class="panic-emergency" href="tel:112" aria-label="112, sürgősségi segítség hívása"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg><span><strong>112 – Sürgősségi segítség</strong><small>Közvetlen veszély esetén.</small></span></a>`;
         }
         openPanicHelpSheet(trigger) {
           if (!this.panicHelpSheetHost) return;
           this.state.panicHelpSheet = true;
           this.state.panicHelpContact = 'sponsor';
+          this.state.panicHelpBackupExpanded = true;
           this.panicScreen?.setAttribute('data-panic-help-open', 'true');
           this.renderPanicHelpSheet();
           this.openAppOverlaySheet(this.panicHelpSheetHost, trigger);
