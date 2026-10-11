@@ -55,6 +55,23 @@ Az Ösvény meglévő listanézete nem változik.
 | HWF-03 | Legutóbbi Android screenshot + user feedback | A tabok alatti Idővonal/Naptár tartalom önállóan scrollozható; nincs második, egymásra helyezett scroll owner. | existing `history-detail-events-scroll` / calendar scroll | source/runtime contract + közvetlen CSS-ellenőrzés | DONE |
 | HWF-04 | Legutóbbi Android screenshot + user feedback | Az összehajtható „Utam számokban” footer az inline workspace alsó, rögzített grid-sora. | shared `history-number-summary` | source/runtime contract + controller runtime teszt | DONE |
 
+## Carousel- és scroll-korrekció – 2026-10-11
+
+### Architektúra-kártya
+
+- **Tulajdonos:** `HomeInteractionController` és annak meglévő `historySelectedPeriodId` state-je.
+- **Egyetlen írási út:** `selectHistoryPeriod(periodId)`; a scroll csak ideiglenes vizuális középpontot számol, nem ír külön carousel-state-et.
+- **Meglévő mechanizmus bővítése:** a natív, snap-pontokat használó `history-period-carousel`; nem készül második carousel/router.
+- **Scroll-tulajdonos:** a timeline panel egyetlen függőleges scroll-tulajdonosa a meglévő `history-detail-events-scroll`; a közvetlen grid-szülő rögzített `minmax(0, 1fr)` pályát kap.
+- **Vizuális átmenet:** a controller a meglévő cardokon CSS custom propertyt frissít a card-középpont és a viewport-középpont távolsága alapján. Ez csak átmeneti presentation adat, nem tartós domain-state.
+
+| ID | Forrás | Követelmény | Kódbeli terület | Ellenőrzés | Állapot |
+| --- | --- | --- | --- | --- | --- |
+| HCS-01 | User feedback | A Timeline body valóban a panelen belül scrolloz, miközben a tabok és a footer rögzítve maradnak. | timeline panel grid + `history-detail-events-scroll` | célzott source contract | DONE |
+| HCS-02 | User feedback | Három kompakt carousel-slot látszik: középen nagyobb aktív card, két oldalt kisebb szomszéd. | carousel CSS | célzott source contract | DONE |
+| HCS-03 | User feedback | Scroll közben a card a középponthoz közeledve nő, távolodva zsugorodik; a megálló card lesz a kiválasztott időszak. | existing History carousel controller | controller runtime + source contract | DONE |
+| HCS-04 | Architekturális korlát | A selection state továbbra is csak `historySelectedPeriodId`; nem kerül be második carousel state vagy router. | `HomeInteractionController` | boundary/source contract | DONE |
+
 ## Hibakezelés és akadálymentesség
 
 - Ha nincs érvényes kiválasztott period ID, a controller a `current` periodra áll vissza.

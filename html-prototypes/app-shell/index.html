@@ -1204,8 +1204,8 @@
     .history-detail-panel-slot { min-height: 0; position: relative; }
     .history-detail-panel { display: none; min-height: 0; height: 100%; }
     .history-detail-screen[data-history-detail-view="timeline"] [data-history-detail-panel="timeline"], .history-detail-screen[data-history-detail-view="calendar"] [data-history-detail-panel="calendar"] { display: block; }
-    .history-detail-screen[data-history-detail-view="timeline"] [data-history-detail-panel="timeline"] { display: grid; }
-    .history-detail-events-scroll { min-height: 0; overflow-y: auto; padding: 0 0 5px; scrollbar-width: none; }
+    .history-detail-screen[data-history-detail-view="timeline"] [data-history-detail-panel="timeline"] { display: grid; grid-template-rows: minmax(0, 1fr); }
+    .history-detail-events-scroll { min-height: 0; height: 100%; overflow-y: auto; padding: 0 0 5px; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-detail-events-scroll::-webkit-scrollbar { display: none; }
     .history-detail-month { min-height: 35px; display: grid; grid-template-columns: 36px minmax(0, 1fr) 36px; align-items: center; margin: 1px 0 5px; }
     .history-detail-month button { width: 32px; height: 32px; display: grid; place-items: center; justify-self: start; padding: 0; border: 1px solid rgba(106,86,180,.10); border-radius: 50%; background: rgba(255,255,255,.72); color: #59429E; font-size: 22px; line-height: 1; }
@@ -1598,22 +1598,23 @@
     .history-screen[data-history-workspace="inline"] .history-hero-copy { top: 41px; right: 20px; left: 20px; text-align: left; }
     .history-screen[data-history-workspace="inline"] .history-hero-copy h1 { color: #352576; font-size: 33px; letter-spacing: -.065em; }
     .history-screen[data-history-workspace="inline"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
-    .history-period-carousel { width: 100%; position: absolute; z-index: 3; right: 0; bottom: 12px; left: 0; display: flex; gap: 8px; overflow-x: auto; padding: 0 calc(50% - 99px); scroll-padding-inline: calc(50% - 99px); scroll-snap-type: x mandatory; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .history-period-carousel { width: 100%; height: 70px; position: absolute; z-index: 3; right: 0; bottom: 3px; left: 0; display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 0 calc(50% - 60px); scroll-padding-inline: calc(50% - 60px); scroll-snap-type: x mandatory; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-period-carousel::-webkit-scrollbar { display: none; }
-    .history-period-carousel-card { flex: 0 0 198px; min-height: 62px; display: grid; grid-template-columns: 57px minmax(0, 1fr); align-items: stretch; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.72); border-radius: 17px; background: rgba(255,252,254,.82); color: #352576; box-shadow: 0 8px 20px rgba(69,47,122,.10); font: inherit; text-align: left; scroll-snap-align: center; cursor: pointer; opacity: .62; transform: scale(.94); transition: transform .18s ease, opacity .18s ease, border-color .18s ease, box-shadow .18s ease; }
-    .history-period-carousel-card[aria-current="true"] { border-color: rgba(120,80,190,.28); box-shadow: 0 11px 23px rgba(69,47,122,.16); opacity: 1; transform: scale(1); }
+    .history-period-carousel-card { --history-carousel-scale: .74; --history-carousel-opacity: .46; flex: 0 0 120px; min-height: 52px; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: stretch; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.72); border-radius: 15px; background: rgba(255,252,254,.82); color: #352576; box-shadow: 0 8px 20px rgba(69,47,122,.10); font: inherit; text-align: left; scroll-snap-align: center; scroll-snap-stop: always; cursor: pointer; opacity: var(--history-carousel-opacity); transform: scale(var(--history-carousel-scale)); transform-origin: center; will-change: transform, opacity; transition: transform 140ms linear, opacity 140ms linear, border-color 140ms linear, box-shadow 140ms linear; }
+    .history-period-carousel-card[aria-current="true"] { --history-carousel-scale: 1.14; --history-carousel-opacity: 1; border-color: rgba(120,80,190,.28); box-shadow: 0 11px 23px rgba(69,47,122,.16); }
     .history-period-carousel-card:focus-visible { outline: 3px solid rgba(106,86,180,.45); outline-offset: 2px; }
-    .history-period-carousel-art { overflow: hidden; border-radius: 16px 0 0 16px; background: #EADBEF; }
+    .history-period-carousel-art { overflow: hidden; border-radius: 14px 0 0 14px; background: #EADBEF; }
     .history-period-carousel-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
     .history-period-carousel-card:not([aria-current="true"]) .history-period-carousel-art img { filter: grayscale(1); opacity: .72; }
-    .history-period-carousel-copy { min-width: 0; display: grid; align-content: center; gap: 2px; padding: 7px 9px; }
+    .history-period-carousel-copy { min-width: 0; display: grid; align-content: center; gap: 2px; padding: 6px 7px; }
     .history-period-carousel-copy strong, .history-period-carousel-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .history-period-carousel-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 12px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; }
-    .history-period-carousel-copy small { color: #8575A8; font-size: 8px; line-height: 1.12; font-weight: 700; }
-    .history-period-carousel-days { color: #6E55B2; font-size: 9px; line-height: 1; font-weight: 820; }
+    .history-period-carousel-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 10px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; }
+    .history-period-carousel-copy small { color: #8575A8; font-size: 7px; line-height: 1.12; font-weight: 700; }
+    .history-period-carousel-days { color: #6E55B2; font-size: 8px; line-height: 1; font-weight: 820; }
     .history-screen[data-history-workspace="inline"] .history-workspace { position: absolute; z-index: 2; top: var(--path-overview-hero-height); right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; background: transparent; color: var(--hajnal-navy); }
     .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-content { width: 100%; height: 100%; min-height: 0; position: relative; z-index: 2; inset: auto; display: grid; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 10px 18px 17px; border-radius: 29px 29px 0 0; background: #FFFCFD; }
-    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] .history-detail-events-scroll { min-height: 0; overflow-y: auto; }
+    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] { min-height: 0; grid-template-rows: minmax(0, 1fr); }
+    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] .history-detail-events-scroll { min-height: 0; height: 100%; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { display: block; overflow-y: auto; padding: 24px 18px 14px; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .period-detail-tabs, .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-number-summary { display: none; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-panel-slot, .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-calendar { height: auto; min-height: 0; }
@@ -2278,9 +2279,8 @@
           this.root.addEventListener('pointermove', (event) => this.updatePanicSheetDrag(event));
           this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
           this.root.addEventListener('pointercancel', () => { this.panicSheetDrag = null; });
-          this.historyCarousel?.addEventListener('pointerdown', (event) => this.beginHistoryCarousel(event));
-          this.historyCarousel?.addEventListener('pointerup', (event) => this.finishHistoryCarousel(event));
-          this.historyCarousel?.addEventListener('pointercancel', () => { this.historyCarouselDrag = null; });
+          this.historyCarousel?.addEventListener('scroll', () => this.onHistoryCarouselScroll(), { passive: true });
+          this.historyCarousel?.addEventListener('scrollend', () => this.settleHistoryCarouselScroll());
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
@@ -3171,6 +3171,7 @@
           const selected = this.getSelectedHistoryPeriod();
           this.historyCarousel.innerHTML = HISTORY_PERIODS.map((period) => `<button class="history-period-carousel-card" type="button" role="listitem" data-action="select-history-period" data-history-period-id="${period.id}" aria-current="${period.id === selected.id}" aria-label="${escapeHtml(period.title)}, ${period.days} tiszta nap"><span class="history-period-carousel-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-period-carousel-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small><span class="history-period-carousel-days">${period.days} nap tiszta</span></span></button>`).join('');
           this.historyCarousel.querySelector?.('[aria-current="true"]')?.scrollIntoView?.({ inline: 'center', block: 'nearest', behavior: this.motionReduced ? 'auto' : 'smooth' });
+          requestAnimationFrame(() => this.syncHistoryCarouselPresentation());
         }
         ensureHistoryWorkspace() {
           if (!this.historyWorkspace || !this.historyWorkspaceTemplate?.innerHTML) return;
@@ -3210,18 +3211,43 @@
           this.state.historySelectedPeriodTitle = this.getSelectedHistoryPeriod().title;
           this.renderHistoryLayout();
         }
-        moveHistoryCarousel(direction) {
-          const currentIndex = HISTORY_PERIODS.findIndex((period) => period.id === this.state.historySelectedPeriodId);
-          const nextIndex = Math.max(0, Math.min(HISTORY_PERIODS.length - 1, currentIndex + (direction < 0 ? -1 : 1)));
-          this.selectHistoryPeriod(HISTORY_PERIODS[nextIndex]?.id);
+        historyCarouselScaleForDistance(distance, slotWidth) {
+          const progress = Math.min(1, Math.abs(distance) / Math.max(1, Number(slotWidth) || 1));
+          return { scale: Number((1.14 - (.40 * progress)).toFixed(3)), opacity: Number((1 - (.54 * progress)).toFixed(3)) };
         }
-        beginHistoryCarousel(event) { this.historyCarouselDrag = { pointerId: event.pointerId, startX: event.clientX }; }
-        finishHistoryCarousel(event) {
-          const drag = this.historyCarouselDrag;
-          this.historyCarouselDrag = null;
-          if (!drag || drag.pointerId !== event.pointerId) return;
-          const delta = event.clientX - drag.startX;
-          if (Math.abs(delta) >= 36) this.moveHistoryCarousel(delta < 0 ? 1 : -1);
+        syncHistoryCarouselPresentation() {
+          if (!this.historyCarousel?.getBoundingClientRect) return;
+          const carouselRect = this.historyCarousel.getBoundingClientRect();
+          if (!carouselRect.width) return;
+          const cards = [...this.historyCarousel.querySelectorAll('.history-period-carousel-card')];
+          const slotWidth = (cards[0]?.offsetWidth || 120) + 8;
+          const carouselCenter = carouselRect.left + (carouselRect.width / 2);
+          cards.forEach((card) => {
+            const cardRect = card.getBoundingClientRect();
+            const presentation = this.historyCarouselScaleForDistance((cardRect.left + (cardRect.width / 2)) - carouselCenter, slotWidth);
+            card.style.setProperty('--history-carousel-scale', String(presentation.scale));
+            card.style.setProperty('--history-carousel-opacity', String(presentation.opacity));
+          });
+        }
+        centeredHistoryCarouselPeriodId() {
+          if (!this.historyCarousel?.getBoundingClientRect) return '';
+          const carouselRect = this.historyCarousel.getBoundingClientRect();
+          const carouselCenter = carouselRect.left + (carouselRect.width / 2);
+          return [...this.historyCarousel.querySelectorAll('.history-period-carousel-card')]
+            .map((card) => ({ id: card.dataset.historyPeriodId, distance: Math.abs((card.getBoundingClientRect().left + (card.getBoundingClientRect().width / 2)) - carouselCenter) }))
+            .sort((first, second) => first.distance - second.distance)[0]?.id || '';
+        }
+        onHistoryCarouselScroll() {
+          this.syncHistoryCarouselPresentation();
+          clearTimeout(this.historyCarouselSettleTimer);
+          this.historyCarouselSettleTimer = setTimeout(() => this.settleHistoryCarouselScroll(), 110);
+        }
+        settleHistoryCarouselScroll() {
+          clearTimeout(this.historyCarouselSettleTimer);
+          this.historyCarouselSettleTimer = null;
+          this.syncHistoryCarouselPresentation();
+          const centeredPeriodId = this.centeredHistoryCarouselPeriodId();
+          if (centeredPeriodId && centeredPeriodId !== this.state.historySelectedPeriodId) this.selectHistoryPeriod(centeredPeriodId);
         }
         renderCalendarGridPlacement(integrated) {
           const screen = this.historyDetailScreen;
