@@ -115,6 +115,7 @@ assert.equal(controller.state.route, 'survival', 'survival completion may not fo
 
 assert.equal(controller.state.historyOverview.layoutMode, 'current', 'legacy History must remain the default presentation');
 assert.equal((historyPeriodList.innerHTML.match(/history-period-card/g) || []).length, 10, 'the current History layout must receive the complete shared period source');
+assert.equal((historyPeriodList.innerHTML.match(/history-period-art--past/g) || []).length, 9, 'only the current History period artwork may remain coloured in the legacy list');
 controller.toggleHistoryOverviewLayout();
 assert.equal(historyScreen.dataset.historyOverviewLayoutMode, 'path-inspired', 'the History comparison toggle must select the new presentation');
 assert.equal(historyDensity.disabled, false, 'density must become available only in the path-inspired presentation');
@@ -123,6 +124,8 @@ assert.doesNotMatch(historyAlternative.innerHTML, /history-path-day-medallion/, 
 assert.match(historyAlternative.innerHTML, /history-period-badge history-path-current-badge">24 nap tiszta</, 'the current period must render its clean-day value in the existing History chip');
 assert.match(historyAlternative.innerHTML, /history-path-period-card[^]*history-period-badge">8 nap</, 'prior periods must render their clean-day values in the existing History chip');
 assert.equal((historyAlternative.innerHTML.match(/history-path-period-card/g) || []).length, 9, 'new History must render all prior chapters exactly once');
+assert.equal((historyAlternative.innerHTML.match(/history-period-art--past/g) || []).length, 9, 'every prior chapter artwork must be grey in the Path-inspired list');
+assert.doesNotMatch(historyAlternative.innerHTML, /history-path-current-art history-period-art--past/, 'the top current-period artwork must stay coloured');
 controller.toggleHistoryOverviewDensity();
 assert.equal(historyScreen.dataset.historyOverviewDensity, 'compact', 'the density toggle must alter only the new presentation');
 

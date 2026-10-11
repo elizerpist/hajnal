@@ -496,6 +496,7 @@
     .history-period-card:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
     .history-period-art { width: 91px; height: 70px; display: block; overflow: hidden; border-radius: 12px; background: #EFE4F4; }
     .history-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .history-period-art--past img, .history-path-period-art--past img { filter: grayscale(1); }
     .history-period-copy { min-width: 0; align-self: center; }
     .history-period-card h2 { font-family: Georgia, "Times New Roman", serif; font-size: 15px; line-height: 1.05; font-weight: 700; letter-spacing: -.025em; margin: 0; color: #352576; }
     .history-period-card p { margin: 4px 0 0; color: #8176A8; font-size: 11px; line-height: 1.2; font-weight: 660; }
@@ -3160,7 +3161,8 @@
           if (!this.historyPeriodList) return;
           this.historyPeriodList.innerHTML = HISTORY_PERIODS.map((period) => {
             const badge = `${period.days} nap${period.current ? ' tiszta' : ''}`;
-            return `<button class="history-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-period-copy"><h2>${escapeHtml(period.title)}</h2><p>${escapeHtml(period.date)}</p><span class="history-period-badge">${badge}</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>`;
+            const artState = period.current ? '' : ' history-period-art--past';
+            return `<button class="history-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-period-art${artState}" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-period-copy"><h2>${escapeHtml(period.title)}</h2><p>${escapeHtml(period.date)}</p><span class="history-period-badge">${badge}</span></span><span class="history-period-chevron" aria-hidden="true">›</span></button>`;
           }).join('');
         }
         renderHistoryLayout() { this.renderLegacyHistoryPeriodCards(); this.renderHistoryPresentation('history'); this.renderHistoryOverviewLayout(); }
@@ -3176,7 +3178,7 @@
         renderHistoryPeriodCards() {
           const current = HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[HISTORY_PERIODS.length - 1];
           const priorPeriods = HISTORY_PERIODS.filter((period) => !period.current);
-          const periodCard = (period) => { const badge = `${period.days} nap${period.current ? ' tiszta' : ''}`; return `<button class="history-path-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-path-period-art" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-path-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small><span class="history-period-badge">${badge}</span></span><span class="history-path-chevron" aria-hidden="true">›</span></button>`; };
+          const periodCard = (period) => { const badge = `${period.days} nap${period.current ? ' tiszta' : ''}`; const artState = period.current ? '' : ' history-period-art--past'; return `<button class="history-path-period-card" type="button" data-history-batch="${period.id}" data-action="open-history-detail" aria-label="${escapeHtml(period.title)}, ${badge}"><span class="history-path-period-art${artState}" aria-hidden="true"><img src="${period.art}" alt=""></span><span class="history-path-copy"><strong>${escapeHtml(period.title)}</strong><small>${escapeHtml(period.date)}</small><span class="history-period-badge">${badge}</span></span><span class="history-path-chevron" aria-hidden="true">›</span></button>`; };
           return { current, priorPeriods, periodCard };
         }
         renderHistoryOverviewLayout() {
