@@ -21,9 +21,8 @@ assert.match(html, /history-path-period-card[\s\S]*?history-period-badge/, 'prio
 assert.match(html, /current\.days\}\s*\/\s*90/, 'the current period must derive its 90-day target progress from the current-period data');
 assert.match(html, /data-history-overview-layout-mode/, 'the History root must declare current versus path-inspired state');
 assert.match(html, /data-history-overview-density/, 'the History root must declare roomy versus compact state');
-assert.match(html, /\.history-path-current-art, \.history-path-period-art \{ position: absolute; z-index: 0; top: 0; left: 0;/, 'the default artwork must begin at the card left edge');
 assert.match(html, /\.history-path-current-card, \.history-path-period-card \{[^}]*border-radius: 17px;/, 'every path-inspired History card must use the original History card radius');
-assert.match(html, /\.history-path-current-art, \.history-path-period-art \{[^}]*opacity: 1;[^}]*border-radius: 17px 0 0 17px;[^}]*mask-image: none;/, 'artwork must match the original card radius on its left corners, with no fade mask');
+assert.match(html, /\.history-path-current-art, \.history-path-period-art \{[^}]*top: 6px; bottom: 6px; left: 6px; width: 91px;[^}]*border-radius: 12px;[^}]*mask-image: none;/, 'artwork must be an inset image card with rounded corners and no fade mask');
 assert.match(html, /\.history-path-current-card \{ min-height: var\(--path-overview-current-card-height\); display: grid; grid-template-columns: 117px minmax\(0,1fr\) 18px;/, 'current-period copy must begin after the sharp artwork panel');
 assert.match(html, /\.history-path-period-card \{ min-height: 76px; display: grid; grid-template-columns: 111px minmax\(0,1fr\) 12px;/, 'prior-period copy must begin after the sharp artwork panel');
 assert.match(html, /\.history-path-period-card \.history-path-copy \{ grid-column: 2; grid-row: 1; \}/, 'prior-period copy must stay in the second grid column, outside the absolute artwork');

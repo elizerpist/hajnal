@@ -556,13 +556,13 @@
     .history-path-period-card { min-height: 76px; display: grid; grid-template-columns: 111px minmax(0,1fr) 12px; align-items: center; gap: 6px; padding: 6px 10px 6px 0; }
     .history-path-current-card:focus-visible, .history-path-period-card:focus-visible { outline: 3px solid rgba(181,91,157,.42); outline-offset: 2px; }
     .history-path-current-card:active, .history-path-period-card:active { transform: scale(.99); opacity: .86; }
-    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 0; left: 0; width: 105px; height: 100%; overflow: hidden; opacity: 1; border-radius: 17px 0 0 17px; -webkit-mask-image: none; mask-image: none; }
+    .history-path-current-art, .history-path-period-art { position: absolute; z-index: 0; top: 6px; bottom: 6px; left: 6px; width: 91px; height: auto; overflow: hidden; opacity: 1; border-radius: 12px; -webkit-mask-image: none; mask-image: none; }
     .history-path-current-art img, .history-path-period-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
     .history-path-copy { min-width: 0; position: relative; z-index: 2; }
     .history-path-copy strong, .history-path-copy small { display: block; overflow: hidden; text-overflow: ellipsis; }
     .history-path-copy strong { color: #352576; font-family: Georgia, "Times New Roman", serif; font-size: 14px; line-height: 1.08; font-weight: 700; letter-spacing: -.035em; white-space: normal; }
     .history-path-copy small { margin-top: 4px; color: #8E78A5; font-size: 10.5px; line-height: 1.17; font-weight: 680; white-space: nowrap; }
-    .history-path-current-card .history-path-current-art { width: 116px; }
+    .history-path-current-card .history-path-current-art { width: 91px; }
     .history-path-current-card .history-path-copy { grid-column: 2; grid-row: 1; padding-right: 1px; }
     .history-path-period-card .history-path-copy { grid-column: 2; grid-row: 1; }
     .history-path-current-card .history-path-copy strong { margin-top: 0; font-size: 20px; }
@@ -580,8 +580,7 @@
     .history-screen[data-history-overview-density="compact"] .history-path-overview { grid-template-rows: var(--path-overview-current-card-height-compact) minmax(0,1fr); }
     .history-screen[data-history-overview-density="compact"] .history-path-current-card { min-height: var(--path-overview-current-card-height-compact); grid-template-columns: 105px minmax(0,1fr) 18px; }
     .history-screen[data-history-overview-density="compact"] .history-path-period-card { min-height: 62px; grid-template-columns: 98px minmax(0,1fr) 12px; padding-top: 7px; padding-bottom: 7px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-current-art { width: 104px; }
-    .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 92px; }
+    .history-screen[data-history-overview-density="compact"] .history-path-current-art, .history-screen[data-history-overview-density="compact"] .history-path-period-art { width: 80px; }
     .history-screen[data-history-overview-density="compact"] .history-path-period-card .history-path-copy small { display: none; }
     .history-screen[data-history-overview-density="compact"] .history-path-current-badge { min-height: 20px; margin-bottom: 2px; padding: 3px 7px; font-size: 9.5px; }
     .history-screen[data-history-overview-density="compact"] .history-path-current-card .history-path-copy strong { font-size: 18px; }
