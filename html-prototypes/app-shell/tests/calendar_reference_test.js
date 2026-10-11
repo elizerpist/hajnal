@@ -26,7 +26,7 @@ assert.ok(historyDetailStart >= 0, 'the existing current-period route must remai
   'data-history-presentation-surface="calendar"',
   'data-component="calendar-integrated-grid-slot"',
   'data-component="calendar-integrated-selected-slot"',
-  "calendar: { heroVariant: 'large', metricsExpanded: false }",
+  "calendar: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }",
   "const variants = surface === 'calendar' ? ['large', 'compact', 'integrated'] : ['large', 'compact'];",
   "renderCalendarGridPlacement(integrated) {",
   '.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .calendar-period-hero { display: block; }',
@@ -115,7 +115,7 @@ assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state 
   'const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;',
   "selectedButton?.scrollIntoView?.({ block: 'nearest', inline: 'center' });",
   'const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({',
-  'this.historyDetailScreen.dataset.historyCalendarView = calendarView;',
+  'this.historyWorkspace.dataset.historyCalendarView = calendarView;',
 ].forEach((value) => assert.ok(html.includes(value), `the existing controller must own ${value}`));
 assert.ok(!html.includes('HISTORY_CALENDAR_DAY_EVENTS'), 'the controller must not retain data for the removed Rail day Timeline');
 

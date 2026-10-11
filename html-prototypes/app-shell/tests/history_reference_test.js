@@ -7,92 +7,38 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const heroPath = path.join(root, 'assets', 'hero', 'hero_m.png');
-const compactHeroPath = path.join(root, 'assets', 'hero', 'hero_s.png');
+const timelineHero = path.join(root, 'assets', 'hero', 'timelinehero.png');
 const historyStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyStart);
 const history = html.slice(historyStart, historyEnd);
 
-assert.ok(historyStart >= 0 && historyEnd > historyStart, 'the Történetem route must remain one bounded screen');
-assert.ok(fs.existsSync(heroPath), 'the supplied history hero asset must be copied into the canonical app-shell assets');
+assert.ok(historyStart >= 0 && historyEnd > historyStart, 'the History route must remain one bounded screen');
 assert.equal(
-  crypto.createHash('sha256').update(fs.readFileSync(heroPath)).digest('hex'),
-  '91046d51167af3d1ec2395791788564c355b8c495f5cf6367e0032c90c7d855d',
-  'the retained legacy large hero asset must remain byte-identical to the supplied hero_m.png',
+  crypto.createHash('sha256').update(fs.readFileSync(timelineHero)).digest('hex'),
+  '796531a3c99b48936199e3355a3ba136b4a2483dab8dd5e27a506818b44268b0',
+  'the retained Történetem hero asset must remain source-faithful',
 );
-assert.ok(fs.existsSync(compactHeroPath), 'the supplied compact history hero asset must be copied into the canonical app-shell assets');
-assert.equal(
-  crypto.createHash('sha256').update(fs.readFileSync(compactHeroPath)).digest('hex'),
-  'a47180c7ef158ebcbf26cbee5a9792dc719365ddce4db9241fa8ff881861f5f0',
-  'the retained legacy compact hero asset must remain byte-identical to the supplied hero_s.png',
-);
+assert.match(history, /class="history-hero"/, 'the retained History hero must remain the visual top owner');
+assert.match(history, /src="assets\/hero\/timelinehero\.png"/, 'the History hero must retain its established artwork');
+assert.match(history, /data-component="history-period-carousel"/, 'period navigation must now live in the hero');
+assert.match(history, /data-component="history-workspace"/, 'the Timeline/Calendar body must live directly under the hero');
+assert.doesNotMatch(history, /history-period-list/, 'the previous vertical period list must not remain');
+assert.doesNotMatch(history, /history-overview-layout-toggle/, 'the old layout-comparison control must not remain');
+assert.doesNotMatch(history, /history-overview-density-toggle/, 'the old density control must not remain');
 
-[
-  'class="history-hero"',
-  'src="assets/hero/timelinehero.png"',
-  'data-component="history-hero-image"',
-  'data-action="toggle-history-overview-layout"',
-  'data-action="toggle-history-overview-density"',
-  'data-component="history-overview-layout-toggle"',
-  'data-component="history-overview-density-toggle"',
-  'Fejezeteim és emlékeim',
-  'Minden időszak egy külön fejezet az utamból.',
-  'Első időszak',
-  '2024. máj. 1. – 2024. máj. 8.',
-  'Nyári szakasz',
-  '2024. aug. – 2024. szept.',
-  'Leghosszabb időszak',
-  '2025. jan. – 2025. ápr.',
-  'Jelenlegi időszak',
-  '2026. máj. 1. – jelenleg',
-  'Júniusi folytatás',
-  'Őszi újrakezdés',
-  'Tavaszi újrakezdés',
-  'Nyár végi időszak',
-  'Téli kitartás',
-  'Utam számokban',
-  'Kisebb lépések. Nagyobb élet.',
-  'összes tiszta nap',
-  'NA részvétel',
-  'esti reflexió',
-  'átlagos hangulat',
-  'check-in arány',
-  'data-action="open-history-detail"',
-].forEach((expected) => assert.ok(html.includes(expected), `history reference content is missing ${expected}`));
+const periodsMatch = html.match(/const HISTORY_PERIODS = Object\.freeze\((\[[\s\S]*?\])\);/);
+assert.ok(periodsMatch, 'one structured period source must still serve the History carousel');
+const periods = new Function(`return (${periodsMatch[1]});`)();
+assert.equal(periods.length, 10, 'all ten real History periods must remain available');
+assert.equal(new Set(periods.map((period) => period.id)).size, 10, 'period selection must use stable IDs');
+assert.deepEqual(periods.map((period) => period.days), [8, 15, 37, 21, 89, 18, 4, 33, 46, 24], 'the existing clean-day data must remain intact');
+assert.equal(periods.find((period) => period.current)?.id, 'current', 'the current period must remain marked in the shared source');
+assert.ok(periods.every((period) => /^assets\/milestones\/milestone-[^" ]+\.svg$/.test(period.art)), 'the carousel must continue using local period artwork');
 
-const historyPeriodsMatch = html.match(/const HISTORY_PERIODS = Object\.freeze\((\[[\s\S]*?\])\);/);
-assert.ok(historyPeriodsMatch, 'one structured History period source must serve both presentation variants');
-const historyPeriods = new Function(`return (${historyPeriodsMatch[1]});`)();
-assert.equal(historyPeriods.length, 10, 'History must provide ten tappable sobriety-period cards so its sole scroll region has meaningful test depth');
-assert.equal(new Set(historyPeriods.map((period) => period.id)).size, 10, 'each of the ten history period cards must retain a semantic batch identity');
-assert.ok(historyPeriods.every((period) => period.title && period.date && period.days && period.art), 'all Legacy and path-inspired History cards must resolve from the same complete source');
-assert.deepEqual(historyPeriods.map((period) => period.days), [8, 15, 37, 21, 89, 18, 4, 33, 46, 24], 'the original clean-day values must remain exactly intact');
-assert.equal(historyPeriods.find((period) => period.current)?.days, 24, 'the current period source must preserve its 24 clean days');
-assert.equal((history.match(/data-history-stat=/g) || []).length, 5, 'the source lower section has exactly five history measures');
-assert.ok(historyPeriods.every((period) => /^assets\/milestones\/milestone-[^" ]+\.svg$/.test(period.art)), 'each of the ten period cards must use a local gallery artwork asset');
-assert.ok(history.includes('class="history-number-grid"'), 'the five measures must share one compact lower-row component');
-assert.equal((history.match(/class="history-number-grid"/g) || []).length, 1, 'the compact/expanded metric presentation must reuse the one existing metric payload');
-assert.ok(history.includes('data-action="toggle-history-metrics"'), 'the entire compact history footer must expose one semantic metric expansion control');
-assert.ok(history.includes('data-component="history-metrics-surface"'), 'the full History insight card must have a stable controller-owned tap-surface contract');
-assert.ok(!history.includes('history-metrics-toggle'), 'the History insight card must not retain a dedicated arrow trigger');
-assert.ok(history.includes('class="history-period-scroll"'), 'only the period-card list must own its own scroll area');
-assert.ok(historyPeriods.some((period) => period.id === '2025-06'), 'the recovered June 2025 period must remain available as the fifth card');
-assert.ok(history.indexOf('history-period-intro') < history.indexOf('history-period-scroll') && history.indexOf('history-period-scroll') < history.indexOf('history-number-summary'), 'the fixed quote, scrollable period list, and fixed number summary must stay in visual order');
-assert.ok(html.includes('grid-template-columns: repeat(5, minmax(0, 1fr));'), 'the lower history measures must use the source one-row five-column layout');
-assert.ok(html.includes('.history-content { position: absolute; z-index: 2; top: 224px; right: 0; bottom: var(--bottom-nav-h); left: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; padding: 24px 18px 17px;'), 'the quote and number summary must be fixed by the History three-row layout');
-assert.ok(html.includes('.history-period-scroll { min-height: 0; overflow-y: auto;'), 'the period list must be the sole scrolling History region');
-assert.ok(html.includes('--insight-rail-gap: 8px;'), 'the shared insight-rail breathing space must come from one semantic visual token');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }'), 'collapsed History metrics must leave persistent breathing room above the insight rail without adding a second scroll owner');
-assert.ok(html.includes('.history-hero-copy h1 { font-family: Georgia, "Times New Roman", serif; font-size: 30px;'), 'the history hero title must retain source serif typography');
-assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }'), 'the compact layout must retain its established smaller hero geometry while sharing the Rail image');
-assert.ok(html.includes('.history-screen[data-history-hero-variant="compact"] .history-content { top: 154px;'), 'the compact layout must raise the body card and grow its sole scroll area');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'all hero variants must share the collapsed metric-grid state through the neutral presentation primitive');
-assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid'), 'all hero variants must share the expanded metric-grid state through the neutral presentation primitive');
-assert.ok(html.includes('.history-period-card h2 { font-family: Georgia, "Times New Roman", serif;'), 'period card names must retain the source serif typography');
-assert.ok(!history.includes('history-batch-carousel'), 'the old horizontal batch circles must not remain in Történetem');
-assert.ok(!history.includes('history-current-card'), 'the old dashboard current-period card must not remain in Történetem');
-assert.ok(!history.includes('history-stat-grid'), 'the old two-column statistics dashboard must not remain in Történetem');
-assert.ok(!history.includes('Válaszd ki az időszakodat'), 'the old History subtitle must be replaced by source copy');
-assert.ok(!history.includes('direction-pill'), 'Történetem must not add a direction selector pill');
+assert.match(html, /<main class="history-detail-content" data-component="history-workspace-template"/, 'one existing Timeline/Calendar body must be the workspace source');
+assert.match(html, /data-history-detail-tab="timeline"/, 'the inline body must retain the Timeline tab');
+assert.match(html, /data-history-detail-tab="calendar"/, 'the inline body must retain the Calendar tab');
+assert.match(html, /class="history-number-summary"/, 'the existing expandable metrics footer must remain available');
+assert.doesNotMatch(html, /\bfetch\s*\(/, 'History must stay offline');
 
-console.log('PASS history source-reference contract');
+console.log('PASS History carousel source-reference contract');

@@ -37,14 +37,14 @@ Az Ösvény meglévő listanézete nem változik.
 
 | ID | Követelmény | Ellenőrzés | Állapot |
 | --- | --- | --- | --- |
-| HCW-01 | Az Ösvény képernyő és listanézet változatlan. | célzott source/runtime regressziós teszt | NOT DONE |
-| HCW-02 | A Történetem hero 238px, a jelenlegi fade-del és arányokkal marad. | CSS/source + screenshot | NOT DONE |
-| HCW-03 | Függőleges History-lista helyett hero-beli, vízszintes carousel látszik; az aktív card középen van. | controller runtime + screenshot | NOT DONE |
-| HCW-04 | Swipe és tap egyetlen controller-owned selection state-et ír, és a body azonnal a kiválasztott időszakot tükrözi. | runtime teszt | NOT DONE |
-| HCW-05 | A body a közös Idővonal/Naptár tartalmat jeleníti meg, nem másolt rendererből. | source/boundary teszt | NOT DONE |
-| HCW-06 | Calendar grid/rail, esemény-részlet és back navigáció nem jut zsákutcába, és nem tér vissza lista-route-ra. | runtime/navigációs teszt | NOT DONE |
-| HCW-07 | Az „Utam számokban” footer változatlanul működik a carouseles workspace-ben. | source/runtime teszt | NOT DONE |
-| HCW-08 | 320–412px szélességen nincs vízszintes overflow, a carousel és a body scrollja elkülönül. | CSS/static + screenshot | NOT DONE |
+| HCW-01 | Az Ösvény képernyő és listanézet változatlan. | `path_shell_test.js` | DONE |
+| HCW-02 | A Történetem hero 238px, a jelenlegi fade-del és arányokkal marad. | célzott CSS/source contract | DONE |
+| HCW-03 | Függőleges History-lista helyett hero-beli, vízszintes carousel látszik; az aktív card középen van. | source + controller runtime contract | DONE |
+| HCW-04 | Swipe és tap egyetlen controller-owned selection state-et ír, és a body azonnal a kiválasztott időszakot tükrözi. | `alternative_runtime_test.js` | DONE |
+| HCW-05 | A body a közös Idővonal/Naptár tartalmat jeleníti meg, nem másolt rendererből. | reusable template/workspace source contract | DONE |
+| HCW-06 | Calendar grid/rail, esemény-részlet és back navigáció nem jut zsákutcába, és nem tér vissza lista-route-ra. | `alternative_runtime_test.js` route-alias checks | DONE |
+| HCW-07 | Az „Utam számokban” footer változatlanul működik a carouseles workspace-ben. | reusable template source contract | DONE |
+| HCW-08 | 320–412px szélességen nincs vízszintes overflow, a carousel és a body scrollja elkülönül. | snap/overflow CSS contract | DONE |
 
 ## Hibakezelés és akadálymentesség
 

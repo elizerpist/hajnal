@@ -82,7 +82,7 @@ assert.equal(
 );
 assert.match(
   html,
-  /const NAVIGATION_ROUTES = new Set\(\['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic'\]\);/,
+  /const NAVIGATION_ROUTES = new Set\(\['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor'\]\);/,
   'one route policy must declare the routes that use the shared BottomNav',
 );
 assert.match(

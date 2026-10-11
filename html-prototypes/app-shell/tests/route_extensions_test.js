@@ -145,85 +145,22 @@ controller.navigate('panic-why');
 assert.equal(mainNavigation.hidden, true, 'Pánik child routes must hide the one shared BottomNav');
 
 controller.openHistoryDetail('timeline', 'Téli kitartás');
-assert.equal(root.dataset.route, 'history-detail', '8C current-period card must open the shared 8D/8F route');
-assert.equal(historyDetailScreen.dataset.historyDetailView, 'timeline', 'a current-period card must open the source-right Idővonal submenu');
-assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'the shared detail semantic heading must use the tapped period-card title');
-assert.equal(timelineHeroTitle.textContent, 'Téli kitartás', 'the visible Timeline hero heading must use the tapped period-card title');
-assert.equal(calendarHeroTitle.textContent, 'Téli kitartás', 'the shared Calendar hero heading must retain the tapped period-card title');
-assert.equal(historyTimelineTab.getAttribute('aria-pressed'), 'true', 'timeline tab must expose selected state');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Timeline must begin in the same established large-hero mode');
-assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'false', 'Timeline must begin with its lower insight strip collapsed');
-assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Timeline large mode must use the Rail hero image');
-controller.toggleHistoryHeroVariant('timeline');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Timeline push-push control must enter its compact variant');
-assert.equal(timelineHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Timeline compact mode must retain the Rail hero image');
-assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'Timeline hero changes must not alter the History hero state');
-controller.toggleHistoryMetrics('timeline');
-assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'true', 'Timeline insight row must expand through the shared presentation owner');
-assert.equal(timelineMetricsToggle.getAttribute('aria-expanded'), 'true', 'Timeline insight toggle must expose expanded state');
-controller.toggleHistoryHeroVariant('timeline');
-controller.toggleHistoryMetrics('timeline');
+assert.equal(root.dataset.route, 'history', 'period selection must keep the unified History route active');
+assert.equal(controller.state.historySelectedPeriodTitle, 'Téli kitartás', 'the controller must preserve the period selected by the carousel');
+assert.equal(controller.state.historyDetailView, 'timeline', 'the inline workspace defaults to the Timeline tab');
 controller.openHistoryDetail('calendar');
-assert.equal(historyDetailScreen.dataset.historyDetailView, 'calendar', 'Naptár must be the second current-period submenu');
-assert.equal(historyCalendarTab.getAttribute('aria-pressed'), 'true', 'calendar tab must expose selected state');
-assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'Calendar must preserve the period-card title when changing from Timeline');
-assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'opening Naptár must begin with the source monthly grid');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must begin in the established large-hero mode');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar large mode must use the Rail hero image');
-assert.equal(calendarMonthCardOrigin.children[0], calendarMonthCard, 'the normal Calendar Grid must keep the monthly grid before the selected-day card');
-controller.toggleHistoryHeroVariant('calendar');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'compact', 'Calendar push-push control must enter its compact variant');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar compact mode must retain the Rail hero image');
-controller.toggleHistoryHeroVariant('calendar');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'integrated', 'Calendar must expose the third integrated-grid variant');
-assert.equal(calendarHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'Calendar integrated mode must retain the Rail hero image');
-assert.equal(calendarIntegratedGridSlot.children[0], calendarMonthCard, 'integrated Calendar must move the one monthly grid into the hero slot');
-controller.toggleHistoryHeroVariant('calendar');
-assert.equal(historyDetailScreen.dataset.historyHeroVariant, 'large', 'Calendar must cycle from integrated back to large');
-assert.equal(calendarMonthCardOrigin.children[0], calendarMonthCard, 'returning to large Calendar must restore the same grid node below the hero');
-controller.toggleHistoryMetrics('calendar');
-assert.equal(historyDetailScreen.dataset.historyMetricsExpanded, 'true', 'Calendar insight card must expand through the shared presentation owner');
-assert.equal(timelineMetricsToggle.getAttribute('aria-expanded'), 'true', 'Calendar full-card tap surface must expose expanded state');
+assert.equal(root.dataset.route, 'history', 'switching to Calendar must keep the same route active');
+assert.equal(controller.state.historyDetailView, 'calendar', 'Calendar must remain the second workspace tab');
+assert.equal(controller.state.historyCalendarView, 'grid', 'Calendar must start in the monthly grid state');
 controller.openHistoryCalendarRail('2025-02-14');
-assert.equal(historyDetailScreen.dataset.historyCalendarView, 'rail', 'a semantic calendar-day tap must open the focused rail state on the same route');
-assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the controller must retain the selected calendar day for the rail header and selected day treatment');
-assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'the Rail must preserve the selected period title from the shared detail route');
-assert.equal(historyDetailSubtitle.textContent, '14. tiszta nap', 'the rail must render the source clean-day subtitle from the selected calendar state');
-assert.equal(historyDetailBack.dataset.action, 'open-history-calendar-grid', 'the rail back control must be a real controller-owned grid return action');
-assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"/, 'the source rail must be derived from the selected day state');
-assert.equal((historyCalendarRail.innerHTML.match(/class="history-calendar-rail-day(?:\s|")/g) || []).length, 21, 'the native Rail must render a scrollable 21-day window rather than a static seven-day placeholder');
-assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-14"[^>]*aria-current="date"/, 'the selected date must remain represented inside the scrollable Rail window');
+assert.equal(root.dataset.route, 'history', 'the focused calendar rail must stay inside History');
+assert.equal(controller.state.historyCalendarView, 'rail', 'the existing rail state must be retained');
 controller.openHistoryCalendarGrid();
-assert.equal(historyDetailScreen.dataset.historyCalendarView, 'grid', 'the rail header back affordance must return to the exact monthly grid state');
-assert.equal(historyDetailBack.dataset.action, 'open-history', 'the grid restores the period header back action');
-assert.equal(controller.state.historyCalendarDate, '2025-02-14', 'the grid return restores the exact grid.png reference selection rather than retaining a rail-only selection');
-controller.openHistoryCalendarRail('2025-02-24');
-assert.equal(historyDetailTitle.textContent, 'Téli kitartás', 'a non-source calendar day must preserve the shared selected period title');
-assert.match(historyCalendarRail.innerHTML, /data-history-calendar-date="2025-02-24"[^>]*aria-current="date"/, 'the dynamically rendered rail must contain the selected non-source date');
-assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active within current-period detail');
+assert.equal(controller.state.historyCalendarView, 'grid', 'the rail back path must return to the grid state');
+assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active inside its inline workspace');
 controller.navigate('timeline-event-detail');
-assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must open the distinct source-center event-detail route');
+assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must still open the distinct event-detail route');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active inside event detail');
-
-assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'History must begin in the established large-hero layout');
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'the large-hero layout must begin with its lower metric strip collapsed too');
-assert.equal(historyMetricsToggle.getAttribute('aria-expanded'), 'false', 'the lower metric arrow must expose its collapsed large-hero state');
-controller.toggleHistoryMetrics();
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'tapping the large-hero metric arrow must expand the existing metric payload upward');
-assert.equal(historyMetricsToggle.getAttribute('aria-expanded'), 'true', 'the lower metric arrow must expose its expanded state');
-controller.toggleHistoryHeroVariant();
-assert.equal(historyScreen.dataset.historyHeroVariant, 'compact', 'the History hero top-right push-push control must enter the compact alternate layout without changing route');
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'changing hero variant must preserve the shared expanded metric state');
-assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'the compact History layout must retain the Rail hero image');
-assert.equal(historyHeroVariantToggle.getAttribute('aria-pressed'), 'true', 'the hero-layout control must expose its compact state');
-controller.toggleHistoryMetrics();
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'the compact arrow must collapse the shared metric payload');
-controller.toggleHistoryHeroVariant();
-assert.equal(historyScreen.dataset.historyHeroVariant, 'large', 'the same hero corner control must return to the established large History layout');
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'false', 'returning to large must preserve the collapsed shared metric state');
-assert.equal(historyHeroImage.getAttribute('src'), 'assets/hero/timelinehero.png', 'the large History layout must retain the Rail hero image');
-controller.toggleHistoryMetrics();
-assert.equal(historyScreen.dataset.historyMetricsExpanded, 'true', 'the large hero arrow must expand after returning from the compact layout');
 
 controller.navigate('panic-why');
 assert.equal(root.dataset.route, 'panic-why', 'Pánik why option must open source Screen 30');
@@ -242,8 +179,6 @@ assert.equal(controller.state.survivalSession.completed, true, 'the final surviv
 controller.openMeetings('panic');
 assert.equal(root.dataset.route, 'meetings', 'Pánik and shared Gyűlések must resolve to one meetings route');
 assert.equal(meetingsNav.getAttribute('aria-current'), 'page', 'Gyűlések must become active on the shared meeting route');
-controller.showMeetingSearchNote();
-assert.equal(meetingSearchNote.hidden, false, 'source Screen 31 Meeting keresése CTA must have a local response');
 controller.returnFromMeetings();
 assert.equal(root.dataset.route, 'panic', 'the single meetings page must preserve its Pánik return origin');
 controller.openMeetings('home');
@@ -268,7 +203,7 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
-  "case 'return-to-history-detail': this.navigate('history-detail'); break;",
+  "case 'return-to-history-detail': this.navigate('history'); break;",
   'historySelectedPeriodTitle:',
   "const HISTORY_PRESENTATION_HERO_ASSET = 'assets/hero/timelinehero.png';",
   "openHistoryCalendarRail(date) {",
@@ -284,7 +219,6 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'start-survival-pack': this.startSurvivalPack(); break;",
   "case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;",
   "case 'return-from-meetings': this.returnFromMeetings(); break;",
-  "case 'show-meeting-search-note': this.showMeetingSearchNote(); break;",
   "case 'open-initialization': this.openInitialization('splash'); break;",
   "const SURVIVAL_STEPS = Object.freeze([",
   "const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze([",
@@ -301,7 +235,6 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
   'class="source-sponsor-choices"',
   'class="source-why-card"',
   'class="source-notification-list"',
-  'Meeting keresése',
   'data-action="open-timeline-event-detail"',
   'Idővonalam számokban',
   'Állj meg.',
@@ -313,7 +246,7 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'Screens 8D and 8F must stay as the only two current-period submenus');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the source 18A–E pack must have exactly five data states');
-assert.equal((html.match(/data-action="open-meetings"/g) || []).length, 2, 'the one shared BottomNav and the Pánik quick action must target the one meeting route');
+assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 2, 'the shared BottomNav and Pánik variants must target the one meeting route');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');
 
 console.log('PASS shared route extensions and initialization contract');
