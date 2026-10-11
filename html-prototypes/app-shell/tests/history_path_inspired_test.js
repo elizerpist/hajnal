@@ -25,6 +25,8 @@ assert.match(html, /\.history-path-current-art, \.history-path-period-art \{ pos
 assert.match(html, /\.history-path-current-art, \.history-path-period-art \{[^}]*opacity: 1;[^}]*border-radius: 22px 0 0 22px;[^}]*mask-image: none;/, 'artwork must have a sharp left-corner panel with no fade mask');
 assert.match(html, /\.history-path-current-card \{ min-height: var\(--path-overview-current-card-height\); display: grid; grid-template-columns: 117px minmax\(0,1fr\) 18px;/, 'current-period copy must begin after the sharp artwork panel');
 assert.match(html, /\.history-path-period-card \{ min-height: 76px; display: grid; grid-template-columns: 111px minmax\(0,1fr\) 12px;/, 'prior-period copy must begin after the sharp artwork panel');
+assert.match(html, /\.history-path-period-card \.history-path-copy \{ grid-column: 2; grid-row: 1; \}/, 'prior-period copy must stay in the second grid column, outside the absolute artwork');
+assert.match(html, /\.history-path-period-card \.history-path-chevron \{ grid-column: 3; grid-row: 1; \}/, 'prior-period chevrons must stay in the third grid column');
 assert.match(html, /history-overview-footer-slot/, 'the existing expandable footer must have one movable shared slot');
 assert.match(html, /renderHistoryPeriodCards\(/, 'both presentations must derive period cards through the same renderer');
 assert.match(html, /\.history-path-overview \{ position: relative; grid-row: 1; min-height: 0;/, 'the alternative list must remain a grid item so it reserves space above the footer');
