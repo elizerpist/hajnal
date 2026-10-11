@@ -124,6 +124,15 @@
     .sponsor-backup-card { display: none; }
     .sponsor-screen[data-sponsor-layout="alternative"] [data-component="sponsor-next-card"] { display: none; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-backup-card { display: grid; }
+    .sponsor-screen[data-sponsor-layout="alternative"] [data-sponsor-talk-action] { display: none; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] { min-width: 0; min-height: 104px; display: grid; grid-template-columns: 1fr; grid-template-rows: 42px auto; align-content: center; justify-items: center; gap: 5px; padding: 7px 4px 8px; border-radius: 21px; text-align: center; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-icon { width: 42px; height: 42px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-icon .icon { width: 24px; height: 24px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-copy { width: 100%; justify-items: center; gap: 1px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-copy strong { font-size: 13.5px; line-height: 1.1; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-copy span { font-size: 11.5px; line-height: 1.1; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-next-copy small, .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-action-grid > [data-component="sponsor-next-card"] .sponsor-chevron { display: none; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-content { grid-template-rows: auto auto auto minmax(120px, 1fr) minmax(110px, 1fr); align-content: stretch; }
     .sponsor-list-card { overflow: hidden; padding: 14px 14px 10px; border-radius: 22px; }
     .sponsor-list-heading { min-height: 31px; display: flex; align-items: start; justify-content: space-between; gap: 12px; padding: 0 0 6px; border-bottom: 1px solid rgba(44, 46, 119, .075); }
     .sponsor-list-heading h2 { margin: 0; }
@@ -138,8 +147,8 @@
     .sponsor-pending-card { padding-bottom: 11px; }
     .sponsor-pending-card .sponsor-list-heading { min-height: 34px; }
     .sponsor-pending-scroll { height: 105px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(106, 86, 180, .28) transparent; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-card { padding-bottom: 9px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-scroll { height: 74px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-card { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); padding-bottom: 9px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-scroll { min-height: 0; height: auto; }
     .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-pending-row-copy small { display: none; }
     .sponsor-pending-scroll::-webkit-scrollbar { width: 4px; }
     .sponsor-pending-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(106, 86, 180, .28); }
@@ -318,8 +327,8 @@
     .sponsor-takeaway-count { min-width: 27px; height: 27px; display: grid; place-items: center; padding: 0 7px; border-radius: 999px; background: var(--hajnal-purple); color: var(--white); font-size: 13px; line-height: 1; font-weight: 800; }
     .sponsor-takeaway-open { width: 32px !important; height: 32px !important; margin: 0 !important; color: var(--hajnal-purple) !important; font-size: 28px !important; }
     .sponsor-takeaway-preview-list { display: grid; gap: 1px; margin-top: 3px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview { padding-bottom: 8px; }
-    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list { min-height: 68px; align-content: start; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); padding-bottom: 8px; }
+    .sponsor-screen[data-sponsor-layout="alternative"] .sponsor-takeaway-preview-list { min-height: 0; align-content: start; }
     .sponsor-takeaway-preview-row { width: 100%; min-height: 34px; display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 9px; padding: 1px 0; border: 0; background: transparent; color: #18243D; font: inherit; font-size: 14px; line-height: 1.2; font-weight: 570; text-align: left; cursor: pointer; }
     .sponsor-takeaway-preview-row:focus-visible, .sponsor-takeaway-open:focus-visible { outline: 3px solid rgba(106, 86, 180, .45); outline-offset: 2px; }
     .sponsor-takeaway-preview-row:active { opacity: .76; }
@@ -2635,7 +2644,7 @@
           if (!screen || !actionGrid || !nextCard || !toggle) return;
           const alternative = this.state.sponsorLayout === 'alternative';
           screen.dataset.sponsorLayout = alternative ? 'alternative' : 'current';
-          actionGrid.insertAdjacentElement('afterend', nextCard);
+          if (alternative) actionGrid.append(nextCard); else actionGrid.insertAdjacentElement('afterend', nextCard);
           toggle.setAttribute('aria-pressed', String(alternative));
           toggle.setAttribute('aria-label', alternative ? 'Jelenlegi Sponzor elrendezés' : 'Alternatív Sponzor elrendezés');
         }
