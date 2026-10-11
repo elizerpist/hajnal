@@ -296,26 +296,20 @@
     .sponsor-detail-availability-action:active { opacity: .82; }
     .sponsor-detail-availability-action:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
     .sponsor-detail-date-action { grid-column: 1 / -1; width: 100%; height: 67px; grid-template-columns: minmax(0, 1fr) 48px; border-radius: 0; background: transparent; color: inherit; font: inherit; text-align: left; }
-    .sponsor-detail-date-action > span { display: grid; gap: 6px; }
+    .sponsor-detail-date-action > span { display: grid; justify-self: start; gap: 6px; text-align: left; }
     .sponsor-detail-date-action strong { display: block; color: #07132C; font-size: 20px; line-height: 1.15; font-weight: 790; letter-spacing: -.035em; }
     .sponsor-detail-date-action .sponsor-date-icon { width: 44px; height: 44px; display: grid; place-items: center; justify-self: end; border-radius: 50%; background: #F4F0F5; }
     .sponsor-detail-contact-action { min-height: 62px; display: grid; grid-template-columns: 43px minmax(0, 1fr) 22px; align-items: center; gap: 12px; width: 100%; padding: 8px 18px; border: 0; background: transparent; color: #07132C; font: inherit; text-align: left; cursor: pointer; }
     .sponsor-detail-contact-symbol { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 50%; background: #F4F0F5; }
     .sponsor-detail-contact-symbol .icon { width: 25px; height: 25px; stroke-width: 2.1; }
     .sponsor-detail-contact-action strong { font-size: 15px; line-height: 1.2; font-weight: 690; letter-spacing: -.025em; }
-    .sponsor-detail-contact-chevron, .sponsor-detail-quote-chevron { color: #7D72A8; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; }
+    .sponsor-detail-contact-chevron { color: #7D72A8; font-size: 31px; line-height: 1; font-weight: 350; text-align: right; }
     .sponsor-native-date { width: 1px; height: 1px; position: absolute; overflow: hidden; opacity: 0; pointer-events: none; }
     .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-availability], .sponsor-details-screen[data-sponsor-detail-target="backup"] [data-sponsor-detail-since] { display: none; }
-    .sponsor-detail-quote { min-height: 84px; display: grid; grid-template-columns: 51px minmax(0, 1fr) 22px; align-items: center; gap: 9px; margin-top: 16px; padding: 11px 16px; border-radius: 21px; background: #EEE8FA; color: #342477; }
+    .sponsor-detail-quote { min-height: 84px; display: grid; grid-template-columns: 51px minmax(0, 1fr); align-items: center; gap: 9px; margin-top: 16px; padding: 11px 16px; border-radius: 21px; background: #EEE8FA; color: #342477; }
     .sponsor-detail-quote .quote-icon { width: 40px; height: 40px; display: grid; place-items: center; color: var(--hajnal-purple); }
     .sponsor-detail-quote .quote-icon .icon { width: 33px; height: 33px; stroke-width: 1.75; }
     .sponsor-detail-quote p { margin: 0; font-size: 14px; line-height: 1.28; font-weight: 560; letter-spacing: -.03em; }
-    .sponsor-detail-notes { margin: 18px -18px 0; padding: 14px 24px 0; border-top: 1px solid rgba(44, 46, 119, .10); }
-    .sponsor-detail-notes label { display: block; color: #07132C; font-size: 18px; line-height: 1.1; font-weight: 810; letter-spacing: -.035em; }
-    .sponsor-detail-notes label span { color: #788096; font-weight: 520; }
-    .sponsor-detail-notes textarea { width: 100%; height: 76px; display: block; margin-top: 12px; padding: 12px 14px; border: 1px solid rgba(44, 46, 119, .11); border-radius: 16px; outline: 0; background: #FCF9FA; color: #07132C; font: inherit; font-size: 14px; line-height: 1.35; resize: none; }
-    .sponsor-detail-notes textarea::placeholder { color: #9299AA; opacity: 1; }
-    .sponsor-detail-notes textarea:focus { border-color: rgba(106, 86, 180, .48); box-shadow: 0 0 0 3px rgba(106, 86, 180, .11); }
     .sponsor-save-button { width: 100%; min-height: 56px; margin-top: 18px; border: 0; border-radius: 17px; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .20); font: inherit; font-size: 17px; font-weight: 790; cursor: pointer; }
     .sponsor-save-button:active { opacity: .86; transform: scale(.99); }
     .sponsor-detail-header button:focus-visible, .sponsor-avatar-edit:focus-visible, .sponsor-detail-phone-action:focus-visible, .sponsor-detail-date-action:focus-visible, .sponsor-detail-contact-action:focus-visible, .sponsor-save-button:focus-visible { outline: 3px solid rgba(106, 86, 180, .48); outline-offset: 2px; }
@@ -1878,8 +1872,7 @@
           <div class="sponsor-detail-static-row" data-sponsor-detail-since><button class="sponsor-detail-date-action" type="button" data-action="open-sponsor-date-picker" aria-label="Sponzor kapcsolat kezdetének dátuma"><span><span>Sponzorom mióta</span><strong data-sponsor-since-display>2024. május 14.</strong></span><span class="sponsor-date-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></button><input class="sponsor-native-date" id="sponsor-date-input" data-sponsor-date-input type="date" value="2024-05-14"></div>
           <button class="sponsor-detail-contact-action" type="button" data-action="sponsor-placeholder"><span class="sponsor-detail-contact-symbol" aria-hidden="true"><svg class="icon"><use href="#icon-profile"/></svg></span><strong>Névjegyből hozzáadás / frissítés</strong><span class="sponsor-detail-contact-chevron" aria-hidden="true">›</span></button>
         </section>
-        <section class="sponsor-detail-quote" aria-label="Emlékeztető"><span class="quote-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”</p><span class="sponsor-detail-quote-chevron" aria-hidden="true">›</span></section>
-        <section class="sponsor-detail-notes"><label for="sponsor-note-input">Megjegyzés <span>(opcionális)</span></label><textarea id="sponsor-note-input" data-sponsor-note-input placeholder="Bármi, ami fontos, és jó ha emlékszel rá..."></textarea></section>
+        <section class="sponsor-detail-quote" aria-label="Emlékeztető"><span class="quote-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><p>„Nem kell, hogy tökéletes legyek,<br>csak őszinte.”</p></section>
         <button class="sponsor-save-button" type="button" data-action="save-sponsor-details">Mentés</button>
       </main>
     </section>
@@ -2226,7 +2219,7 @@
           this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
           this.root.addEventListener('pointercancel', () => { this.panicSheetDrag = null; });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
-          this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-note-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
+          this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history-detail'); else if (this.state.route === 'history-detail' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'history-detail') this.navigate('history'); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
@@ -2389,7 +2382,6 @@
           if (target.matches('[data-sponsor-name-input]')) { this.getSponsorDraft().name = target.value; if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(this.getSponsorDraft().phone, target.value); return; }
           if (target.matches('[data-sponsor-phone-input]')) { this.getSponsorDraft().phone = target.value; target.setCustomValidity(''); if (this.sponsorDetailTarget() === 'backup') this.updateSponsorDetailPhoneLink(target.value, this.getSponsorDraft().name); else this.updateSponsorPhoneLinks(target.value); return; }
           if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
-          if (target.matches('[data-sponsor-note-input]')) { this.getSponsorDraft().note = target.value; return; }
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
           if (this.isPathReadOnly()) return;
@@ -2992,7 +2984,6 @@
           const nameInput = this.root.querySelector('[data-sponsor-name-input]');
           const phoneInput = this.root.querySelector('[data-sponsor-phone-input]');
           const dateInput = this.root.querySelector('[data-sponsor-date-input]');
-          const noteInput = this.root.querySelector('[data-sponsor-note-input]');
           const contactName = sponsor.name.trim() || 'Tartalék kapcsolattartó';
           if (screen) screen.dataset.sponsorDetailTarget = target;
           if (title) title.textContent = backup ? 'Tartalék kapcsolattartó' : 'Sponzor adatai';
@@ -3002,7 +2993,6 @@
           if (nameInput) nameInput.value = sponsor.name;
           if (phoneInput) phoneInput.value = sponsor.phone;
           if (dateInput) dateInput.value = sponsor.since || '';
-          if (noteInput) noteInput.value = sponsor.note;
           this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = backup ? '' : this.formatSponsorSince(sponsor.since); });
           this.updateSponsorDetailPhoneLink(sponsor.phone, contactName);
           if (!backup) this.renderSponsorAvailabilitySummary();
