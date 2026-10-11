@@ -1598,23 +1598,28 @@
     .history-screen[data-history-workspace="inline"] .history-hero-copy { top: 41px; right: 20px; left: 20px; text-align: left; }
     .history-screen[data-history-workspace="inline"] .history-hero-copy h1 { color: #352576; font-size: 33px; letter-spacing: -.065em; }
     .history-screen[data-history-workspace="inline"] .history-hero-copy p { max-width: 180px; color: #876EAE; font-family: Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.13; font-weight: 600; }
-    .history-period-carousel { width: 100%; height: 70px; position: absolute; z-index: 3; right: 0; bottom: 3px; left: 0; display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 0 calc(50% - 60px); scroll-padding-inline: calc(50% - 60px); scroll-snap-type: x mandatory; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .history-period-carousel { width: 100%; height: calc(var(--path-overview-current-card-height) + 12px); position: absolute; z-index: 3; right: 0; bottom: 0; left: 0; display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 0 calc(50% - 69px); scroll-padding-inline: calc(50% - 69px); scroll-snap-type: x mandatory; overscroll-behavior-x: contain; touch-action: pan-x; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-period-carousel::-webkit-scrollbar { display: none; }
-    .history-period-carousel-card { --history-carousel-scale: .74; --history-carousel-opacity: .46; flex: 0 0 120px; min-height: 52px; display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: stretch; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.72); border-radius: 15px; background: rgba(255,252,254,.82); color: #352576; box-shadow: 0 8px 20px rgba(69,47,122,.10); font: inherit; text-align: left; scroll-snap-align: center; scroll-snap-stop: always; cursor: pointer; opacity: var(--history-carousel-opacity); transform: scale(var(--history-carousel-scale)); transform-origin: center; will-change: transform, opacity; transition: transform 140ms linear, opacity 140ms linear, border-color 140ms linear, box-shadow 140ms linear; }
-    .history-period-carousel-card[aria-current="true"] { --history-carousel-scale: 1.14; --history-carousel-opacity: 1; border-color: rgba(120,80,190,.28); box-shadow: 0 11px 23px rgba(69,47,122,.16); }
+    .history-period-carousel-card { --history-carousel-scale: .65; --history-carousel-opacity: .46; flex: 0 0 138px; min-height: var(--path-overview-current-card-height); display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: stretch; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.72); border-radius: 20px; background: rgba(255,252,254,.82); color: #352576; box-shadow: 0 8px 20px rgba(69,47,122,.10); font: inherit; text-align: left; scroll-snap-align: center; scroll-snap-stop: always; cursor: pointer; opacity: var(--history-carousel-opacity); transform: scale(var(--history-carousel-scale)); transform-origin: center; will-change: transform, opacity; transition: transform 140ms linear, opacity 140ms linear, border-color 140ms linear, box-shadow 140ms linear; }
+    .history-period-carousel-card[aria-current="true"] { --history-carousel-scale: 1; --history-carousel-opacity: 1; border-color: rgba(120,80,190,.28); box-shadow: 0 11px 23px rgba(69,47,122,.16); }
     .history-period-carousel-card:focus-visible { outline: 3px solid rgba(106,86,180,.45); outline-offset: 2px; }
-    .history-period-carousel-art { overflow: hidden; border-radius: 14px 0 0 14px; background: #EADBEF; }
+    .history-period-carousel-art { overflow: hidden; border-radius: 19px 0 0 19px; background: #EADBEF; }
     .history-period-carousel-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
     .history-period-carousel-card:not([aria-current="true"]) .history-period-carousel-art img { filter: grayscale(1); opacity: .72; }
-    .history-period-carousel-copy { min-width: 0; display: grid; align-content: center; gap: 2px; padding: 6px 7px; }
+    .history-period-carousel-copy { min-width: 0; display: grid; align-content: center; gap: 3px; padding: 8px 8px; }
     .history-period-carousel-copy strong, .history-period-carousel-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .history-period-carousel-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 10px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; }
-    .history-period-carousel-copy small { color: #8575A8; font-size: 7px; line-height: 1.12; font-weight: 700; }
-    .history-period-carousel-days { color: #6E55B2; font-size: 8px; line-height: 1; font-weight: 820; }
+    .history-period-carousel-copy strong { font-family: Georgia, "Times New Roman", serif; font-size: 11px; line-height: 1.08; font-weight: 700; letter-spacing: -.025em; }
+    .history-period-carousel-copy small { color: #8575A8; font-size: 8px; line-height: 1.12; font-weight: 700; }
+    .history-period-carousel-days { color: #6E55B2; font-size: 9px; line-height: 1; font-weight: 820; }
     .history-screen[data-history-workspace="inline"] .history-workspace { position: absolute; z-index: 2; top: var(--path-overview-hero-height); right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; background: transparent; color: var(--hajnal-navy); }
     .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-content { width: 100%; height: 100%; min-height: 0; position: relative; z-index: 2; inset: auto; display: grid; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 10px 18px 17px; border-radius: 29px 29px 0 0; background: #FFFCFD; }
-    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] { min-height: 0; grid-template-rows: minmax(0, 1fr); }
-    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] .history-detail-events-scroll { min-height: 0; height: 100%; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
+    /* The direct middle grid row is deliberately the only inline Timeline scroll owner.
+       A nested 100%-height scroller becomes unreliable once this shared detail markup
+       is cloned into the History workspace on mobile Chrome. */
+    .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-panel-slot { min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-panel-slot::-webkit-scrollbar { display: none; }
+    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] { display: block; min-height: 100%; height: auto; }
+    .history-screen[data-history-workspace="inline"] .history-workspace [data-history-detail-panel="timeline"] .history-detail-events-scroll { min-height: 0; height: auto; overflow: visible; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { display: block; overflow-y: auto; padding: 24px 18px 14px; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .period-detail-tabs, .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-number-summary { display: none; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-panel-slot, .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-calendar { height: auto; min-height: 0; }
@@ -3213,7 +3218,7 @@
         }
         historyCarouselScaleForDistance(distance, slotWidth) {
           const progress = Math.min(1, Math.abs(distance) / Math.max(1, Number(slotWidth) || 1));
-          return { scale: Number((1.14 - (.40 * progress)).toFixed(3)), opacity: Number((1 - (.54 * progress)).toFixed(3)) };
+          return { scale: Number((1 - (.35 * progress)).toFixed(3)), opacity: Number((1 - (.54 * progress)).toFixed(3)) };
         }
         syncHistoryCarouselPresentation() {
           if (!this.historyCarousel?.getBoundingClientRect) return;

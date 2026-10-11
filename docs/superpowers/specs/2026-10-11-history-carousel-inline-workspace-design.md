@@ -67,10 +67,24 @@ Az Ösvény meglévő listanézete nem változik.
 
 | ID | Forrás | Követelmény | Kódbeli terület | Ellenőrzés | Állapot |
 | --- | --- | --- | --- | --- | --- |
-| HCS-01 | User feedback | A Timeline body valóban a panelen belül scrolloz, miközben a tabok és a footer rögzítve maradnak. | timeline panel grid + `history-detail-events-scroll` | célzott source contract | DONE |
+| HCS-01 | User feedback | A Timeline body valóban a panelen belül scrolloz, miközben a tabok és a footer rögzítve maradnak. | timeline panel grid + `history-detail-events-scroll` | célzott source contract | PARTIAL — a korábbi, egymásba ágyazott scroll-terület a készüléken továbbra sem görgethető. |
 | HCS-02 | User feedback | Három kompakt carousel-slot látszik: középen nagyobb aktív card, két oldalt kisebb szomszéd. | carousel CSS | célzott source contract | DONE |
 | HCS-03 | User feedback | Scroll közben a card a középponthoz közeledve nő, távolodva zsugorodik; a megálló card lesz a kiválasztott időszak. | existing History carousel controller | controller runtime + source contract | DONE |
 | HCS-04 | Architekturális korlát | A selection state továbbra is csak `historySelectedPeriodId`; nem kerül be második carousel state vagy router. | `HomeInteractionController` | boundary/source contract | DONE |
+
+## Mély scroll-korrekció – 2026-10-11
+
+### Diagnózis
+
+- Az inline Történetem workspace a közös detail markupot klónozza, majd egy rögzített háromsoros gridbe ágyazza.
+- Ebben a variánsban a Timeline függőleges scrollja két egymásba tett teljes magasságú grid-elem mélyére került (`panel-slot` → `panel` → `history-detail-events-scroll`). A készüléken ez nem ad megbízható, ténylegesen elérhető scroll-tartományt.
+- A javítás egyetlen közvetlen grid-gyerek scroll-tulajdonost használ: az inline `history-detail-panel-slot` lesz a függőleges scroll-container. A tab és az expandable footer marad a grid saját, rögzített sorában. A timeline eseménylista csak a scrollozott tartalom.
+
+| ID | Forrás | Követelmény | Kódbeli terület | Elfogadási feltétel | Ellenőrzés | Állapot |
+| --- | --- | --- | --- | --- | --- | --- |
+| HDS-01 | Aktuális user feedback: „még mindig nem lehet scrollozni az idővonalat” | A Timeline body a carousel alatti workspace-ben ténylegesen függőlegesen scrollozható. | scoped inline `.history-detail-panel-slot` | Pontosan egy közvetlen, korlátos scroll-owner van a tabok és footer között; az event lista nem kap második scroll-ownert. | RED/GREEN source contract; a friss, fizikai drag-eszközteszt a megnyitott helyi URL-en még visszaigazolásra vár. | PARTIAL |
+| HDS-02 | Aktuális user feedback | A felső tab-sor és az „Idővonalam számokban” expandable footer görgetés közben a helyén marad. | `history-detail-content` háromsoros grid | A középső row görget, a két szélső row nem. | source contract + közvetlen CSS-ellenőrzés | DONE |
+| HDS-03 | Aktuális user feedback | A carousel-card alapmagassága pontosan az Ösvény felső „Őszinte önleltár” / current-work card közös tokenjét használja. | `history-period-carousel` CSS | A card `min-height` a `--path-overview-current-card-height` értékére hivatkozik; a középső grow effekt csak transformmal nagyít. | RED/GREEN source contract + közvetlen CSS-ellenőrzés | DONE |
 
 ## Hibakezelés és akadálymentesség
 

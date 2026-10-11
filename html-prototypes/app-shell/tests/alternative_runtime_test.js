@@ -125,8 +125,8 @@ assert.match(historyCarousel.innerHTML, /Jelenlegi időszak/, 'the active carous
 assert.match(historyWorkspace.innerHTML, /data-history-detail-tab="timeline"/, 'the existing Timeline markup must mount beneath the carousel');
 const carouselCentre = controller.historyCarouselScaleForDistance(0, 128);
 const carouselEdge = controller.historyCarouselScaleForDistance(128, 128);
-assert.equal(carouselCentre.scale, 1.14, 'the card in the centre slot must be enlarged');
-assert.equal(carouselEdge.scale, .74, 'a neighbouring card must shrink at the side slot');
+assert.equal(carouselCentre.scale, 1, 'the centre card must stay at the shared Path current-card height');
+assert.equal(carouselEdge.scale, .65, 'a neighbouring card must shrink at the side slot');
 assert.ok(carouselCentre.opacity > carouselEdge.opacity, 'the centre card must remain visually primary while a neighbour is secondary');
 const carouselCards = ['2024-06', 'current', '2024-05'].map((id, index) => {
   const card = element();
@@ -139,8 +139,8 @@ const carouselCards = ['2024-06', 'current', '2024-05'].map((id, index) => {
 historyCarousel.getBoundingClientRect = () => ({ left: 0, width: 412 });
 historyCarousel.querySelectorAll = (selector) => selector === '.history-period-carousel-card' ? carouselCards : [];
 controller.syncHistoryCarouselPresentation();
-assert.equal(carouselCards[1].style.values['--history-carousel-scale'], '1.14', 'the card crossing the centre slot must receive the live large scale');
-assert.equal(carouselCards[0].style.values['--history-carousel-scale'], '0.74', 'a side card must receive the live small scale');
+assert.equal(carouselCards[1].style.values['--history-carousel-scale'], '1', 'the card crossing the centre slot must receive the exact shared current-card height');
+assert.equal(carouselCards[0].style.values['--history-carousel-scale'], '0.65', 'a side card must receive the live small scale');
 assert.equal(controller.centeredHistoryCarouselPeriodId(), 'current', 'the centred card must resolve through the existing selected-period identity');
 controller.toggleHistoryMetrics('timeline');
 assert.equal(controller.state.historyPresentation.timeline.metricsExpanded, true, 'the inline workspace must preserve the existing expandable History footer state');
