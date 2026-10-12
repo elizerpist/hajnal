@@ -355,7 +355,7 @@ expectContains('.path-fast-medallion > span, .path-step-card-number > span { wid
 expectAbsent(/\.path-fast-medallion > span, \.path-step-card-number > span \{[^}]*rgba\(/, 'the number-disc fill must be opaque, so the progress ring cannot appear as pie slices');
 expectContains('.path-fast-medallion--static { padding: 0; border: 0; background: #EAE0FA; }');
 expectContains('.path-step-card-number { width: 54px; height: 54px; position: relative; justify-self: start; margin-left: -7px; font-size: 21px; }');
-expectContains('.path-screen[data-path-view="step"] .path-step-four-scroll { height: calc(100% - var(--bottom-nav-h)); display: flex; flex-direction: column; justify-content: space-between;');
+expectContains('.path-screen[data-path-view="step"] .path-step-four-scroll { height: 100%; display: flex; flex-direction: column; justify-content: space-between;');
 expectContains('.path-step-card[data-path-current="true"] { border-color: rgba(44, 46, 119, .045); background: rgba(254, 251, 250, .94);');
 expectContains('.path-step-four-art { height: 276px; background: #F2EAF4; }');
 expectContains('.path-screen[data-path-step="step-4"][data-path-view="step"][data-path-step-four-hero-variant="large"] .path-step-four-art, .path-screen[data-path-step="step-4"][data-path-view="topics"][data-path-step-four-hero-variant="large"] .path-step-four-art { height: 270px; }');

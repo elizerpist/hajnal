@@ -16,6 +16,9 @@ const eventDetail = html.slice(eventDetailStart, eventDetailEnd === -1 ? html.le
 const timelinePanelStart = historyDetail.indexOf('data-history-detail-panel="timeline"');
 const calendarPanelStart = historyDetail.indexOf('data-history-detail-panel="calendar"');
 const timelinePanel = historyDetail.slice(timelinePanelStart, calendarPanelStart);
+const historyPeriodTimelinesStart = html.indexOf('const HISTORY_PERIOD_TIMELINES =');
+const historyPeriodTimelinesEnd = html.indexOf('const HISTORY_CALENDAR_WEEKDAYS =');
+const historyPeriodTimelines = html.slice(historyPeriodTimelinesStart, historyPeriodTimelinesEnd);
 
 assert.ok(fs.existsSync(timelineHero), 'the supplied timeline detail hero must be copied into the canonical app-shell assets');
 assert.equal(
@@ -36,10 +39,6 @@ assert.ok(historyDetailStart >= 0 && eventDetailStart > historyDetailStart, 'the
   'data-history-presentation-surface="timeline"',
   '24 nap tiszta',
   'Február 2025',
-  'Újrakezdtem',
-  'Irodalom',
-  'Jobban vagyok',
-  '60 nap',
   'Idővonalam számokban',
   'class="history-number-summary"',
   'data-component="history-metrics-surface"',
@@ -52,9 +51,14 @@ assert.ok(historyDetail.includes('src="assets/hero/timelinehero.png"'), 'the Tim
 assert.ok(historyDetail.includes('data-action="toggle-history-hero-variant"'), 'the Timeline hero needs the shared semantic push-push layout trigger');
 assert.ok(!timelinePanel.includes('history-clean-card'), '24 nap tiszta must not remain in a Timeline body clean-day card');
 assert.ok(!historyDetail.includes('history-metrics-toggle'), 'all Timeline insight cards must remove their dedicated arrow trigger');
-assert.equal((timelinePanel.match(/class="history-detail-event"/g) || []).length, 12, 'the Timeline must have twelve reusable event cards so its one internal scroll region can be exercised');
+assert.ok(timelinePanel.includes('data-component="history-period-timeline-events"'), 'the one stable Timeline event mount must remain inside its direct scroll region');
+assert.ok(historyPeriodTimelinesStart >= 0 && historyPeriodTimelinesEnd > historyPeriodTimelinesStart, 'period-specific Timeline event content must have one immutable data source');
+['Újrakezdtem', 'Irodalom', 'Jobban vagyok', '60 nap'].forEach((title) => assert.ok(historyPeriodTimelines.includes(title), `the current period data must retain ${title}`));
+const currentTimelineMatch = /['"]?current['"]?: Object\.freeze\(\{[^]*?events: freezeHistoryPeriodTimelineEvents\(\[([^]*?)\]\) \}\)/.exec(historyPeriodTimelines);
+assert.ok(currentTimelineMatch, 'the current period must keep an explicit immutable Timeline event collection');
+assert.equal((currentTimelineMatch[1].match(/id: 'current-/g) || []).length, 12, 'the current period data must retain twelve Timeline events for the one internal scroll region');
 assert.equal((timelinePanel.match(/class="history-detail-events-scroll"/g) || []).length, 1, 'the longer Timeline must retain exactly one internal scroll owner');
-assert.ok((historyDetail.match(/data-action="open-timeline-event-detail"/g) || []).length >= 12, 'every rendered Timeline event must remain a semantic event-detail trigger');
+assert.match(html, /renderSelectedHistoryTimeline\(selected\)[^]*?data-action="open-timeline-event-detail"/, 'every data-driven Timeline event must remain a semantic event-detail trigger');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto;'), 'the overlapping Timeline body card must retain only its tabs above the scroll panel, above the hero');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="timeline"][data-history-hero-variant="compact"] .history-detail-content { top: 154px;'), 'the compact Timeline hero must raise the body card and grow its sole event-list scroll area');
 assert.ok(html.includes(':is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid'), 'the Timeline insight payload must start from the shared collapsed metric primitive');

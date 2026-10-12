@@ -9,7 +9,7 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 function element() {
   return {
-    attributes: new Map(), dataset: {}, style: { setProperty() {} }, innerHTML: '', textContent: '', hidden: false,
+    attributes: new Map(), dataset: {}, style: { values: {}, setProperty(name, value) { this.values[name] = value; }, removeProperty(name) { delete this.values[name]; } }, innerHTML: '', textContent: '', hidden: false,
     classList: { add() {}, remove() {}, toggle() {}, contains() { return false; } },
     addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; }, focus() {},
     setAttribute(name, value) { this.attributes.set(name, String(value)); }, getAttribute(name) { return this.attributes.get(name); }, removeAttribute(name) { this.attributes.delete(name); },
@@ -37,9 +37,16 @@ const historyAlternative = element();
 historyAlternative.hidden = true;
 const historyPeriodList = element();
 const historyCarousel = element();
+const historyPager = element();
+const historyPagerTrack = element();
+historyPager.clientWidth = 412;
+historyPagerTrack.children = [];
 const historyWorkspace = element();
 const historyWorkspaceTemplate = element();
+const historyHero = element();
 historyWorkspaceTemplate.innerHTML = '<nav><button data-history-detail-tab="timeline">Idővonal</button><button data-history-detail-tab="calendar">Naptár</button></nav><section class="history-number-summary"></section>';
+historyHero.getBoundingClientRect = () => ({ top: 0, height: 238 });
+historyScreen.querySelector = (selector) => selector === '.history-hero' ? historyHero : null;
 const historyLayout = element();
 const historyDensity = element();
 const survival = element();
@@ -60,6 +67,8 @@ root.querySelector = (selector) => {
   if (selector === '[data-component="history-path-overview"]') return historyAlternative;
   if (selector === '[data-component="history-period-list"]') return historyPeriodList;
   if (selector === '[data-component="history-period-carousel"]') return historyCarousel;
+  if (selector === '[data-component="history-full-page-pager"]') return historyPager;
+  if (selector === '[data-component="history-full-page-pager-track"]') return historyPagerTrack;
   if (selector === '[data-component="history-workspace"]') return historyWorkspace;
   if (selector === '[data-component="history-workspace-template"]') return historyWorkspaceTemplate;
   if (selector === '[data-component="history-overview-layout-toggle"]') return historyLayout;
@@ -125,8 +134,8 @@ assert.match(historyCarousel.innerHTML, /Jelenlegi időszak/, 'the active carous
 assert.match(historyWorkspace.innerHTML, /data-history-detail-tab="timeline"/, 'the existing Timeline markup must mount beneath the carousel');
 const carouselCentre = controller.historyCarouselScaleForDistance(0, 128);
 const carouselEdge = controller.historyCarouselScaleForDistance(128, 128);
-assert.equal(carouselCentre.scale, 1, 'the centre card must stay at the shared Path current-card height');
-assert.equal(carouselEdge.scale, .65, 'a neighbouring card must shrink at the side slot');
+assert.equal(carouselCentre.scale, 1, 'the selected full-image card must preserve its source-matched centre size');
+assert.equal(carouselEdge.scale, .77, 'a neighbouring History2 card must retain the source-matched side-card proportion');
 assert.ok(carouselCentre.opacity > carouselEdge.opacity, 'the centre card must remain visually primary while a neighbour is secondary');
 const carouselCards = ['2024-06', 'current', '2024-05'].map((id, index) => {
   const card = element();
@@ -139,9 +148,36 @@ const carouselCards = ['2024-06', 'current', '2024-05'].map((id, index) => {
 historyCarousel.getBoundingClientRect = () => ({ left: 0, width: 412 });
 historyCarousel.querySelectorAll = (selector) => selector === '.history-period-carousel-card' ? carouselCards : [];
 controller.syncHistoryCarouselPresentation();
-assert.equal(carouselCards[1].style.values['--history-carousel-scale'], '1', 'the card crossing the centre slot must receive the exact shared current-card height');
-assert.equal(carouselCards[0].style.values['--history-carousel-scale'], '0.65', 'a side card must receive the live small scale');
+assert.equal(carouselCards[1].style.values['--history-carousel-scale'], '1', 'the card crossing the centre slot must retain the full source-matched emphasis');
+assert.equal(carouselCards[0].style.values['--history-carousel-scale'], '0.77', 'a side card must receive the live source-matched side scale');
 assert.equal(controller.centeredHistoryCarouselPeriodId(), 'current', 'the centred card must resolve through the existing selected-period identity');
+controller.selectHistoryPeriod('2024-05');
+controller.toggleHistoryPeriodPresentation();
+assert.equal(controller.state.historyPeriodPresentation, 'hero-swipe', 'the presentation toggle must select the controller-owned full-page pager state');
+assert.equal(controller.historyPagerDrag, null, 'entering the full-page pager must not leave a partial drag in state');
+assert.match(historyPagerTrack.innerHTML, /data-history-pager-role="current"[\s\S]*?Első döntés/, 'the currently selected period must bring its own Timeline body into the shared track');
+assert.match(historyPagerTrack.innerHTML, /data-history-pager-role="next"[\s\S]*?Első olvasmány/, 'the entering neighbouring period must already have its own body before a drag begins');
+historyPagerTrack.children = [
+  { dataset: { historyPeriodId: '2024-05' } },
+  { dataset: { historyPeriodId: '2024-06' } }
+];
+const pagerTarget = { closest() { return null; } };
+let horizontalPrevented = false;
+controller.historyPagerPointerDown({ pointerId: 9, button: 0, clientX: 350, clientY: 440, timeStamp: 10, target: pagerTarget });
+controller.historyPagerPointerMove({ pointerId: 9, clientX: 200, clientY: 444, timeStamp: 26, preventDefault() { horizontalPrevented = true; } });
+assert.equal(controller.historyPagerDrag.axis, 'horizontal', 'a mostly horizontal body gesture must lock to the full-page pager');
+assert.equal(historyPagerTrack.style.values['--history-pager-track-x'], '-150px', 'a partial left drag must move the one shared track by the matching pointer distance');
+assert.equal(horizontalPrevented, true, 'only the confirmed horizontal drag may suppress its native gesture');
+controller.historyPagerPointerEnd({ pointerId: 9, clientX: 200, clientY: 444, timeStamp: 42 });
+assert.equal(controller.state.historySelectedPeriodId, '2024-06', 'the next period must commit only at the horizontal settle boundary');
+const beforeVerticalPeriod = controller.state.historySelectedPeriodId;
+let verticalPrevented = false;
+controller.historyPagerPointerDown({ pointerId: 10, button: 0, clientX: 180, clientY: 320, timeStamp: 60, target: pagerTarget });
+controller.historyPagerPointerMove({ pointerId: 10, clientX: 186, clientY: 400, timeStamp: 76, preventDefault() { verticalPrevented = true; } });
+assert.equal(controller.historyPagerDrag.axis, 'vertical', 'a mostly vertical Timeline gesture must remain with the native scroll owner');
+controller.historyPagerPointerEnd({ pointerId: 10, clientX: 186, clientY: 400, timeStamp: 90 });
+assert.equal(verticalPrevented, false, 'vertical Timeline movement must not be prevented by the pager');
+assert.equal(controller.state.historySelectedPeriodId, beforeVerticalPeriod, 'vertical Timeline movement must not change the selected period');
 controller.toggleHistoryMetrics('timeline');
 assert.equal(controller.state.historyPresentation.timeline.metricsExpanded, true, 'the inline workspace must preserve the existing expandable History footer state');
 assert.match(historyWorkspace.innerHTML, /history-number-summary/, 'expanding the metrics footer must keep the shared footer mounted beneath the workspace content');
@@ -153,6 +189,8 @@ assert.equal(controller.state.historySelectedPeriodId, '2024-06', 'the single se
 controller.openHistoryDetail('calendar');
 assert.equal(root.dataset.route, 'history', 'the Timeline and Calendar workspace must remain on the History route');
 assert.equal(controller.state.historyDetailView, 'calendar', 'the existing calendar view must still be selectable from the inline workspace');
+assert.match(historyPagerTrack.innerHTML, /history-period-pager-calendar/, 'the full-page pager must render a period-specific calendar body when the floating Calendar control is selected');
+assert.match(historyPagerTrack.innerHTML, /data-history-pager-calendar-rail/, 'the period calendar must retain its own horizontal daily rail instead of delegating that gesture to chapter paging');
 controller.openHistoryCalendarRail('2025-02-14');
 assert.equal(root.dataset.route, 'history', 'the calendar rail must return to the same History workspace rather than an intermediate route');
 assert.equal(controller.state.historyCalendarView, 'rail', 'the inline workspace must preserve the existing calendar rail state');

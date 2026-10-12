@@ -205,7 +205,7 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
   "case 'open-timeline-event-detail': this.navigate('timeline-event-detail'); break;",
   "case 'return-to-history-detail': this.navigate('history'); break;",
   'historySelectedPeriodTitle:',
-  "const HISTORY_PRESENTATION_HERO_ASSET = 'assets/hero/timelinehero.png';",
+  "const HISTORY_PRESENTATION_HERO_ASSET = 'assets/history/history_hero_soft.png';",
   "openHistoryCalendarRail(date) {",
   "openHistoryCalendarGrid() {",
   "toggleHistoryHeroVariant(surface = 'history') {",
@@ -244,7 +244,7 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
   'Írj egy mondatot.',
 ].forEach((value) => assert.ok(html.includes(value), `dynamic route renderer must reuse a defined visual class: ${value}`));
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
-assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'Screens 8D and 8F must stay as the only two current-period submenus');
+assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must be bound in the floating hero switch and retained shared workspace template');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the source 18A–E pack must have exactly five data states');
 assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 2, 'the shared BottomNav and Pánik variants must target the one meeting route');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');

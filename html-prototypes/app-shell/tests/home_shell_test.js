@@ -182,7 +182,7 @@ assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visi
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.ok((html.match(/data-panic-option="/g) || []).length >= 6, 'Classic Pánik must retain its six quick options alongside the alternative renderer');
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'source 31 must have one shared screen owner for Pánik and Gyűlések');
-assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 2, 'source 8D and 8F must be two submenus of one period-detail screen');
+assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must have one visible hero switch and one retained shared workspace binding');
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the survival data model must retain all five source 18A–E states');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'Pánik must reuse the one app-frame-owned BottomNav rather than render a route-local copy');

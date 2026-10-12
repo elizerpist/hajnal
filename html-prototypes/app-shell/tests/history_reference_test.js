@@ -8,6 +8,7 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const timelineHero = path.join(root, 'assets', 'hero', 'timelinehero.png');
+const historyHero = path.join(root, 'assets', 'history', 'history_hero_soft.png');
 const historyStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyStart);
 const history = html.slice(historyStart, historyEnd);
@@ -18,8 +19,10 @@ assert.equal(
   '796531a3c99b48936199e3355a3ba136b4a2483dab8dd5e27a506818b44268b0',
   'the retained Történetem hero asset must remain source-faithful',
 );
+assert.ok(fs.existsSync(historyHero), 'the History2 hero must be a real project-local PNG asset');
+assert.deepEqual(fs.readFileSync(historyHero).subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), 'the soft History hero must be a genuine PNG, not a CSS or encoded substitute');
 assert.match(history, /class="history-hero"/, 'the retained History hero must remain the visual top owner');
-assert.match(history, /src="assets\/hero\/timelinehero\.png"/, 'the History hero must retain its established artwork');
+assert.match(history, /src="assets\/history\/history_hero_soft\.png"/, 'the History hero must use its dedicated low-contrast History2 artwork');
 assert.match(history, /data-component="history-period-carousel"/, 'period navigation must now live in the hero');
 assert.match(history, /data-component="history-workspace"/, 'the Timeline/Calendar body must live directly under the hero');
 assert.doesNotMatch(history, /history-period-list/, 'the previous vertical period list must not remain');
@@ -33,7 +36,7 @@ assert.equal(periods.length, 10, 'all ten real History periods must remain avail
 assert.equal(new Set(periods.map((period) => period.id)).size, 10, 'period selection must use stable IDs');
 assert.deepEqual(periods.map((period) => period.days), [8, 15, 37, 21, 89, 18, 4, 33, 46, 24], 'the existing clean-day data must remain intact');
 assert.equal(periods.find((period) => period.current)?.id, 'current', 'the current period must remain marked in the shared source');
-assert.ok(periods.every((period) => /^assets\/milestones\/milestone-[^" ]+\.svg$/.test(period.art)), 'the carousel must continue using local period artwork');
+assert.ok(periods.every((period) => /^assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png$/.test(period.art)), 'the carousel must only use the new local full-bleed History2 PNG artwork');
 
 assert.match(html, /<main class="history-detail-content" data-component="history-workspace-template"/, 'one existing Timeline/Calendar body must be the workspace source');
 assert.match(html, /data-history-detail-tab="timeline"/, 'the inline body must retain the Timeline tab');
