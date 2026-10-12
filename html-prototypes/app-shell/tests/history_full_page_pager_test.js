@@ -19,6 +19,16 @@ assert.match(html, /historyPagerTrackX/, 'Only the shared track transform should
 assert.match(html, /translate3d\(var\(--history-pager-track-x(?:,\s*-100%)?\)/, 'Pager motion must be transform-based.');
 assert.match(html, /data-history-pager-scroll-owner/, 'Each pager slide needs the one explicit vertical scroll owner.');
 assert.match(html, /historyPagerScrollPositions/, 'Period-local scroll positions must have one controller-owned map.');
+assert.match(html, /historyPeriodMetrics\(period\)/, 'Both History presentations must resolve each period’s metrics through one shared data helper.');
+assert.match(html, /renderHistoryMetricCards\(period\)/, 'The full-hero summary must reuse the same complete metric-card renderer as cards mode.');
+assert.match(html, /renderHistoryPeriodMetrics\(selected\)/, 'Cards mode must refresh its metric grid from the same selected-period data source.');
+assert.match(html, /data-component="history-period-metrics-grid"/, 'The cards-mode metric grid needs one stable targeted mount for period-specific values.');
+assert.match(html, /historyPeriodMetrics\(period\)\s*\{[\s\S]*?return this\.historyEventTypes\(\)\.map\(\(type\)/, 'one shared metric definition must derive every displayed card from the central event-type catalogue');
+assert.match(html, /value: events\.filter\(\(event\) => this\.historyEventTypeDefinition\(event\)\.id === type\.id\)\.length/, 'every period must expose the same event-type metrics, including an honest zero when it has no matching event');
+assert.match(html, /renderHistoryPagerSummary\(period\)[\s\S]*?renderHistoryMetricCards\(period\)/, 'the hero summary must render every shared metric card, not a smaller subset');
+assert.match(html, /renderHistoryWorkspace\(\)[\s\S]*?renderHistoryPeriodMetrics\(selected\)/, 'the cards-layout summary must receive the exact same selected-period metric cards');
+assert.doesNotMatch(html, /history-period-pager-dots|historyPagerDots\(/, 'The full-hero presentation must not render redundant carousel indicator dots.');
+assert.match(html, /data-history-period-presentation="hero-swipe"\] \.history-hero-copy\s*\{[^}]*display:\s*block;/, 'Full-hero mode must retain the static Történetem heading at the top left.');
 assert.match(html, /finishHistoryPagerSettle\(token = this\.historyPagerSettle\?\.token\)[\s\S]*?selectHistoryPeriod\(settle\.targetId,\s*\{\s*source:\s*'pager'\s*\}\)/, 'The selected period must commit only from the lifecycle-guarded pager settle.');
 assert.match(html, /history-period-pager-slide/, 'A slide must contain hero and body together, not two synchronized sibling animations.');
 assert.match(html, /data-history-pager-role="\$\{role\}"\$\{role === 'current' \? '' : ' aria-hidden="true" inert'\}/, 'Offscreen slides must be pre-rendered but neither focusable nor tappable.');
@@ -29,6 +39,7 @@ assert.match(html, /clearHistoryPagerTrackFrame\(\)[\s\S]*?cancelAnimationFrame/
 assert.match(html, /settleHistoryPager\(target\)[\s\S]*?clearHistoryPagerTrackFrame\(\)/, 'Settling must clear a stale drag frame before its final transform is written.');
 assert.match(html, /cancelHistoryPagerGesture\([\s\S]*?clearHistoryPagerTrackFrame\(\)/, 'Pointer cancellation must restore the track without a stale queued transform race.');
 assert.match(html, /historyPagerLostPointerCapture\(event\)[\s\S]*?!drag \|\| drag\.pointerId !== event\.pointerId \|\| this\.historyPagerLifecycle === 'settling'/, 'A normal post-pointerup lost capture must not cancel a release-owned settle.');
+assert.match(html, /historyPagerLostPointerCapture\(event\)[\s\S]*?hasPointerCapture\?\.\(event\.pointerId\)[\s\S]*?return/, 'A bubbling lostpointercapture from a nested implicit-capture target must be ignored after the pager has taken that pointer.');
 assert.match(html, /clearHistoryPagerSettle\(\)[\s\S]*?historyPagerSettleToken \+= 1[\s\S]*?historyPagerSettle = null/, 'Cancelling, resizing, or mode switching must invalidate stale settle callbacks.');
 assert.match(html, /historyPagerPointerCancel\(event\)[\s\S]*?drag\.axis === 'horizontal'[\s\S]*?historyPagerLifecycle = 'idle'/, 'Vertical native cancellation must not create a horizontal settling lock.');
 assert.match(html, /\.history-period-pager-scroll-owner \{ min-height: 0; overflow-y: auto;[^}]*touch-action: pan-y;/, 'The pager must preserve one native vertical Timeline scroll owner per active slide.');

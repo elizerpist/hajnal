@@ -513,19 +513,25 @@
     .history-number-summary { position: relative; }
     .history-metrics-surface { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
     .history-metrics-surface:focus-visible { outline: 3px solid rgba(106,86,180,.45); outline-offset: 2px; }
-    .history-number-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
-    .history-number-card { min-width: 0; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); text-align: center; }
-    .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 8px; background: #E3F6EF; color: #53AD89; }
+    .history-number-grid { display: flex; min-width: 0; gap: 7px; overflow-x: auto; overflow-y: hidden; padding: 1px 1px 4px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .history-number-grid::-webkit-scrollbar { display: none; }
+    .history-number-card { flex: 0 0 auto; width: 76px; min-width: 76px; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); scroll-snap-align: start; text-align: center; }
+    .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; padding: 0; border: 1px solid transparent; border-radius: 8px; background: #E3F6EF; color: #53AD89; cursor: pointer; }
     .history-number-icon .icon { width: 14px; height: 14px; stroke-width: 1.8; }
-    .history-number-card:nth-child(2) .history-number-icon { background: #E7EFFC; color: #5F83D2; }
-    .history-number-card:nth-child(3) .history-number-icon { background: #F0E9FA; color: #9975C1; }
-    .history-number-card:nth-child(4) .history-number-icon { background: #FFF0D9; color: #E6A340; }
-    .history-number-card:nth-child(5) .history-number-icon { background: #FDE7EF; color: #D4719D; }
+    .history-number-icon[data-history-event-type="book"], .history-number-icon[data-history-event-type="phone"] { background: #E7EFFC; color: #5F83D2; }
+    .history-number-icon[data-history-event-type="heart"], .history-number-icon[data-history-event-type="moon"] { background: #FDE7EF; color: #D4719D; }
+    .history-number-icon[data-history-event-type="people"] { background: #FFF0D9; color: #D7971B; }
+    .history-number-icon[data-history-event-type="tools"] { background: #F0E9FA; color: #9975C1; }
+    .history-number-icon[data-history-event-type="check"] { background: #DDF8E8; color: #23935A; }
+    .history-number-icon[aria-pressed="true"] { border-color: rgba(94,62,181,.42); background: #6A56B4; color: #fff; box-shadow: 0 3px 8px rgba(83,54,166,.25); transform: scale(1.08); }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-summary { min-height: 54px; padding: 9px 10px 8px; border: 1px solid rgba(131,105,173,.11); border-radius: 18px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(69,47,122,.045); }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"])[data-history-metrics-expanded="false"] .history-number-summary { margin-top: var(--insight-rail-gap); }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 94px; margin-top: 8px; opacity: 1; }
-    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"]) .history-number-grid { overflow: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 92px; margin-top: 8px; opacity: 1; }
+    :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"]) .history-number-grid { overflow-x: auto; overflow-y: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
+    /* Keep the existing summary heading as the collapse target without letting its
+       full-card overlay cover the interactive event-type icons below it. */
+    .history-number-summary[aria-expanded="true"] .history-metrics-surface { bottom: auto; height: 52px; }
     .history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-image { object-position: center center; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-copy { top: 48px; }
@@ -1241,21 +1247,23 @@
     .history-detail-month strong { color: #271A72; font-size: 15px; font-weight: 850; text-align: center; }
     .history-detail-event-list { position: relative; display: grid; gap: 3px; padding: 1px 0 12px; }
     .history-detail-event-list::before { content: ""; position: absolute; top: 23px; bottom: 26px; left: 65px; width: 2px; border-radius: 999px; background: linear-gradient(#7A50D8, #B9A0E8 88%, rgba(185,160,232,.1)); }
-    .history-detail-event { min-height: 68px; position: relative; z-index: 1; display: grid; grid-template-columns: 39px 44px minmax(0, 1fr); align-items: start; gap: 9px; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .history-detail-event { min-height: 68px; position: relative; z-index: 1; display: grid; grid-template-columns: 39px 44px minmax(0, 1fr); align-items: start; gap: 9px; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; }
     .history-event-date { padding-top: 8px; color: #7D72A8; font-size: 9.5px; line-height: 1.22; font-weight: 760; text-align: right; }
     .history-event-date small { display: block; margin-top: 2px; font-size: 8.5px; }
-    .history-event-node { width: 44px; height: 44px; display: grid; place-items: center; position: relative; border: 3px solid #FEFAFD; border-radius: 50%; background: #ECE5FC; color: #5C39BF; box-shadow: 0 5px 12px rgba(44,46,119,.09); }
+    .history-event-node { width: 44px; height: 44px; display: grid; place-items: center; position: relative; padding: 0; border: 3px solid #FEFAFD; border-radius: 50%; background: #ECE5FC; color: #5C39BF; box-shadow: 0 5px 12px rgba(44,46,119,.09); cursor: pointer; }
     .history-event-node .icon { width: 20px; height: 20px; stroke-width: 2.2; }
     .history-event-node.book { background: #E3EEFF; color: #4177D8; }
     .history-event-node.heart { background: #FFE6EC; color: #E5416C; }
     .history-event-node.meeting { background: #FFF1CF; color: #D7971B; }
     .history-event-node.milestone { background: #DDF8E8; color: #23935A; }
-    .history-event-card { min-width: 0; min-height: 58px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: center; gap: 4px 8px; padding: 9px 10px; border: 1px solid rgba(106,86,180,.07); border-radius: 17px; background: rgba(255,255,255,.86); box-shadow: 0 6px 16px rgba(44,46,119,.045); }
+    .history-event-node[aria-pressed="true"] { border-color: rgba(255,255,255,.96); background: #6A56B4; color: #fff; box-shadow: 0 0 0 2px rgba(106,86,180,.24), 0 7px 15px rgba(44,46,119,.16); transform: scale(1.04); }
+    .history-event-card { min-width: 0; min-height: 58px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: center; gap: 4px 8px; width: 100%; padding: 9px 10px; border: 1px solid rgba(106,86,180,.07); border-radius: 17px; background: rgba(255,255,255,.86); color: inherit; box-shadow: 0 6px 16px rgba(44,46,119,.045); font: inherit; text-align: left; cursor: pointer; }
     .history-event-card h3 { margin: 0; color: #251970; font-size: 14px; line-height: 1.08; font-weight: 850; letter-spacing: -.025em; }
     .history-event-card time { align-self: start; color: #7060A9; font-size: 9.5px; font-weight: 740; }
     .history-event-card p { grid-column: 1 / -1; margin: 0; color: #7669A7; font-size: 10.5px; line-height: 1.22; font-weight: 620; }
     .history-event-card .history-event-mini { width: 37px; height: 37px; grid-row: span 2; object-fit: cover; border-radius: 9px; }
     .history-event-badge { display: inline-flex; width: max-content; min-height: 18px; align-items: center; padding: 3px 7px; border-radius: 999px; background: #DDF8E8; color: #268D58; font-size: 8.5px; font-weight: 830; }
+    .history-event-filter-empty { margin: 18px 7px; padding: 14px; border: 1px dashed rgba(106,86,180,.25); border-radius: 16px; color: #7060A9; font-size: 12px; line-height: 1.35; text-align: center; }
     .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-clean-card { display: none; }
     .history-detail-screen[data-history-detail-view="calendar"] .history-number-summary { padding-top: 8px; }
@@ -1623,7 +1631,7 @@
     /* The layout hero remains 238px tall. Only its decorative image owner
        extends through the transparent workspace overlap, then fades into this
        exact same surface — matching the Ösvény background-layer model. */
-    .history-screen[data-history-workspace="inline"] { --history-inline-body-surface: #FFFCFD; --history-past-timeline-node-surface: #E6E6E6; --history-past-timeline-node-icon: #5F5F5F; --history-hero-swipe-indicator-top: 218px; --history-hero-swipe-indicator-height: 7px; --history-hero-swipe-workspace-gap: 14px; --history-hero-swipe-workspace-top: calc(var(--history-hero-swipe-indicator-top) + var(--history-hero-swipe-indicator-height) + var(--history-hero-swipe-workspace-gap)); --history-inline-hero-fade-extension: 80px; --history-inline-hero-fade-mask: linear-gradient(180deg, #000 0%, #000 58%, rgba(0,0,0,.82) 67%, rgba(0,0,0,.49) 79%, rgba(0,0,0,.18) 91%, transparent 100%); background: var(--history-inline-body-surface); }
+    .history-screen[data-history-workspace="inline"] { --history-inline-body-surface: var(--screen-background); --history-past-timeline-node-surface: #E6E6E6; --history-past-timeline-node-icon: #5F5F5F; --history-hero-swipe-indicator-top: 218px; --history-hero-swipe-indicator-height: 7px; --history-hero-swipe-workspace-gap: 14px; --history-hero-swipe-workspace-top: calc(var(--history-hero-swipe-indicator-top) + var(--history-hero-swipe-indicator-height) + var(--history-hero-swipe-workspace-gap)); --history-inline-hero-fade-extension: 80px; --history-inline-hero-fade-mask: linear-gradient(180deg, #000 0%, #000 58%, rgba(0,0,0,.82) 67%, rgba(0,0,0,.49) 79%, rgba(0,0,0,.18) 91%, transparent 100%); background: var(--history-inline-body-surface); }
     .history-screen[data-history-workspace="inline"] .history-hero { height: var(--path-overview-hero-height); overflow: visible; background: var(--history-inline-body-surface); }
     .history-screen[data-history-workspace="inline"] .history-hero::after { background: linear-gradient(180deg, rgba(255,252,253,.16) 0%, rgba(255,249,252,.06) 52%, transparent 100%); }
     .history-screen[data-history-workspace="inline"] .history-hero-image { height: calc(100% + var(--history-inline-hero-fade-extension)); object-position: center 51%; opacity: .78; filter: saturate(.72) contrast(.88); -webkit-mask-image: var(--history-inline-hero-fade-mask); mask-image: var(--history-inline-hero-fade-mask); }
@@ -1663,7 +1671,7 @@
        A nested 100%-height scroller becomes unreliable once this shared detail markup
        is cloned into the History workspace on mobile Chrome. */
     .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-panel-slot { min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-    .history-screen[data-history-workspace="inline"] .history-workspace[data-history-period-current="false"] .history-event-node { background: var(--history-past-timeline-node-surface); color: var(--history-past-timeline-node-icon); }
+    .history-screen[data-history-workspace="inline"] .history-workspace[data-history-period-current="false"] .history-event-node:not([aria-pressed="true"]) { background: var(--history-past-timeline-node-surface); color: var(--history-past-timeline-node-icon); }
     .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-panel-slot::-webkit-scrollbar { display: none; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="timeline"] [data-history-detail-panel="timeline"] { display: block; min-height: 100%; height: auto; }
     .history-screen[data-history-workspace="inline"] .history-workspace[data-history-detail-view="timeline"] [data-history-detail-panel="timeline"] .history-detail-events-scroll { min-height: 0; height: auto; overflow: visible; }
@@ -1675,7 +1683,10 @@
        independent rails. */
     .history-full-page-pager { display: none; }
     .history-screen[data-history-period-presentation="hero-swipe"] .history-hero { z-index: 12; background: transparent; pointer-events: none; }
-    .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-image, .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-copy, .history-screen[data-history-period-presentation="hero-swipe"] .history-period-carousel, .history-screen[data-history-period-presentation="hero-swipe"] .history-period-carousel-pagination { display: none; }
+    .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-image, .history-screen[data-history-period-presentation="hero-swipe"] .history-period-carousel, .history-screen[data-history-period-presentation="hero-swipe"] .history-period-carousel-pagination { display: none; }
+    .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-copy { display: block; z-index: 2; top: 51px; right: 104px; left: 22px; text-align: left; pointer-events: none; }
+    .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-copy h1 { color: #fff; text-shadow: 0 2px 10px rgba(29,17,78,.42); }
+    .history-screen[data-history-period-presentation="hero-swipe"] .history-hero-copy p { color: rgba(255,255,255,.88); text-shadow: 0 2px 10px rgba(29,17,78,.34); }
     .history-screen[data-history-period-presentation="hero-swipe"] .history-inline-view-switch, .history-screen[data-history-period-presentation="hero-swipe"] .history-period-presentation-toggle { pointer-events: auto; }
     .history-screen[data-history-period-presentation="hero-swipe"] .history-full-page-pager { position: absolute; z-index: 1; inset: 0 0 var(--bottom-nav-h) 0; display: block; overflow: hidden; touch-action: pan-y; background: var(--history-inline-body-surface); }
     .history-full-page-pager-track { width: 100%; height: 100%; display: flex; transform: translate3d(var(--history-pager-track-x, -100%), 0, 0); will-change: transform; }
@@ -1687,19 +1698,19 @@
     .history-period-pager-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,13,72,.18) 0%, rgba(33,22,85,.07) 43%, transparent 82%); pointer-events: none; }
     .history-period-pager-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 49%; }
     .history-period-pager-slide[data-history-period-current="false"] .history-period-pager-art img { filter: grayscale(1) contrast(.90) brightness(1.10); opacity: .64; }
+    .history-period-pager-slide[data-history-period-current="false"] .history-event-node:not([aria-pressed="true"]) { background: var(--history-past-timeline-node-surface); color: var(--history-past-timeline-node-icon); }
     .history-period-pager-copy { position: absolute; z-index: 1; right: 88px; bottom: 13px; left: 26px; display: grid; justify-items: start; gap: 5px; color: #fff; text-shadow: 0 2px 10px rgba(29,17,78,.54); }
     .history-period-pager-copy h2 { max-width: 300px; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 26px; line-height: 1.02; font-weight: 700; letter-spacing: -.052em; }
     .history-period-pager-copy p, .history-period-pager-copy strong { margin: 0; color: inherit; font-size: 12px; line-height: 1.12; font-weight: 720; }
     .history-period-pager-copy strong { font-size: 14px; font-weight: 850; }
-    .history-period-pager-dots { display: flex; align-items: center; gap: 5px; margin-top: 4px; min-height: 8px; }
-    .history-period-pager-dots span { width: 6px; height: 6px; display: block; border-radius: 50%; background: rgba(255,255,255,.58); box-shadow: 0 1px 5px rgba(38,21,91,.20); }
-    .history-period-pager-dots span.is-active { width: 14px; border-radius: 999px; background: #fff; }
     .history-period-pager-body { position: absolute; z-index: 1; top: 244px; right: 0; bottom: 0; left: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 18px 18px 17px; background: transparent; }
     .history-period-pager-scroll-owner { min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-period-pager-scroll-owner::-webkit-scrollbar { display: none; }
     .history-period-pager-timeline { min-height: 100%; }
-    .history-period-pager-timeline .history-detail-month { margin-top: 0; }
     .history-period-pager-calendar { display: grid; gap: 10px; min-height: 100%; }
+    .history-period-pager-calendar--grid { grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
+    .history-period-pager-calendar--grid .history-calendar-month-card { min-height: 0; height: 100%; display: grid; grid-template-rows: auto auto minmax(0, 1fr); }
+    .history-period-pager-calendar--grid .history-calendar-days { min-height: 0; height: 100%; grid-auto-rows: minmax(30px, 1fr); }
     .history-period-pager-calendar-rail { display: flex; gap: 6px; overflow-x: auto; padding: 7px; border: 1px solid rgba(106,86,180,.10); border-radius: 18px; background: rgba(255,255,255,.84); touch-action: pan-x; scrollbar-width: none; }
     .history-period-pager-calendar-rail::-webkit-scrollbar { display: none; }
     .history-period-pager-calendar-day { min-width: 46px; min-height: 50px; display: grid; place-items: center; gap: 2px; padding: 5px; border: 0; border-radius: 14px; background: transparent; color: #5C489F; font: inherit; font-size: 10px; font-weight: 760; cursor: pointer; }
@@ -1709,7 +1720,7 @@
     .history-period-pager-calendar-event small { color: #8174AE; font-size: 11px; }
     .history-period-pager-summary { margin: 0; }
     .history-period-pager-summary .history-number-grid { display: none; }
-    .history-period-pager-summary[aria-expanded="true"] .history-number-grid { display: grid; }
+    .history-period-pager-summary[aria-expanded="true"] .history-number-grid { display: flex; }
     .history-screen[data-history-period-presentation="hero-swipe"] .history-workspace { display: none; }
     html:fullscreen, html:fullscreen body { background: #FFFCFC; }
     html:fullscreen body { width: 100vw; min-height: 100dvh; height: 100dvh; }
@@ -1823,7 +1834,7 @@
       <main class="history-detail-content" data-component="history-workspace-template" aria-label="Az aktuális tiszta időszak idővonala">
         <nav class="period-detail-tabs" aria-label="Az időszak nézetei"><button type="button" data-history-detail-tab="timeline" data-action="open-history-detail" aria-pressed="true">Idővonal</button><button type="button" data-history-detail-tab="calendar" data-action="open-history-detail-calendar" aria-pressed="false">Naptár</button></nav>
         <div class="history-detail-panel-slot">
-          <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div data-component="meeting-timeline-events"></div><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong data-component="history-period-timeline-month">Február 2025</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list" data-component="history-period-timeline-events"></div></div></section>
+          <section class="history-detail-panel" data-history-detail-panel="timeline" aria-label="Idővonal"><div class="history-detail-events-scroll"><div data-component="meeting-timeline-events"></div><div class="history-detail-event-list" data-component="history-period-timeline-events"></div></div></section>
           <section class="history-detail-panel history-detail-calendar" data-history-detail-panel="calendar" aria-label="Naptár">
             <div class="history-calendar-grid-view" data-history-calendar-grid-view>
               <div class="history-calendar-grid-scroll" data-component="calendar-month-card-origin">
@@ -1853,7 +1864,7 @@
             </div>
           </section>
         </div>
-        <section class="history-number-summary" aria-labelledby="timeline-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="history-metrics-surface" aria-label="Idővonalam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid"><article class="history-number-card" data-timeline-stat="total-clean-days"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>162</strong><span>összes tiszta nap</span></article><article class="history-number-card" data-timeline-stat="na-participation"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>12</strong><span>NA részvétel</span></article><article class="history-number-card" data-timeline-stat="evening-reflection"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>19</strong><span>esti reflexió</span></article><article class="history-number-card" data-timeline-stat="average-mood"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-smile"/></svg></span><strong>3.8</strong><span>átlagos hangulat</span></article><article class="history-number-card" data-timeline-stat="checkin-rate"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></span><strong>82%</strong><span>check-in arány</span></article></div></section>
+        <section class="history-number-summary" aria-labelledby="timeline-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="history-metrics-surface" aria-label="Idővonalam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid" data-component="history-period-metrics-grid"></div></section>
       </main>
     </section>
 
@@ -2094,64 +2105,121 @@
       const HISTORY_CALENDAR_RAIL_DAY_COUNT = 21;
       const HISTORY_PRESENTATION_HERO_ASSET = 'assets/history/history_hero_soft.png';
       const HISTORY_PERIODS = Object.freeze([
-        Object.freeze({ id: '2024-05', title: 'Első időszak', date: '2024. máj. 1. – 2024. máj. 8.', days: 8, art: 'assets/history/history_period_card_side_2.png' }),
-        Object.freeze({ id: '2024-06', title: 'Júniusi folytatás', date: '2024. jún. 2. – 2024. jún. 16.', days: 15, art: 'assets/history/history_period_card_side_1.png' }),
-        Object.freeze({ id: '2024-08', title: 'Nyári szakasz', date: '2024. aug. – 2024. szept.', days: 37, art: 'assets/history/history_period_card_active_1.png' }),
-        Object.freeze({ id: '2024-10', title: 'Őszi újrakezdés', date: '2024. okt. 4. – 2024. okt. 24.', days: 21, art: 'assets/history/history_period_card_side_2.png' }),
-        Object.freeze({ id: '2025-01', title: 'Leghosszabb időszak', date: '2025. jan. – 2025. ápr.', days: 89, art: 'assets/history/history_period_card_side_1.png' }),
-        Object.freeze({ id: '2025-05', title: 'Tavaszi újrakezdés', date: '2025. máj. 6. – 2025. máj. 23.', days: 18, art: 'assets/history/history_period_card_active_1.png' }),
-        Object.freeze({ id: '2025-06', title: 'Rövid időszak', date: '2025. jún.', days: 4, art: 'assets/history/history_period_card_side_1.png' }),
-        Object.freeze({ id: '2025-08', title: 'Nyár végi időszak', date: '2025. aug. 1. – 2025. szept. 2.', days: 33, art: 'assets/history/history_period_card_side_2.png' }),
-        Object.freeze({ id: '2025-11', title: 'Téli kitartás', date: '2025. nov. 10. – 2025. dec. 25.', days: 46, art: 'assets/history/history_period_card_active_1.png' }),
-        Object.freeze({ id: 'current', title: 'Jelenlegi időszak', date: '2026. máj. 1. – jelenleg', days: 24, art: 'assets/history/history_period_card_active_1.png', current: true })
+        Object.freeze({ id: '2024-05', title: 'Első időszak', date: '2024. máj. 1. – 2024. máj. 8.', days: 8, art: 'assets/history/history_period_card_side_2.png', heroArt: 'assets/history/history_period_2024_05_flat.png' }),
+        Object.freeze({ id: '2024-06', title: 'Júniusi folytatás', date: '2024. jún. 2. – 2024. jún. 16.', days: 15, art: 'assets/history/history_period_card_side_1.png', heroArt: 'assets/history/history_period_2024_06_flat.png' }),
+        Object.freeze({ id: '2024-08', title: 'Nyári szakasz', date: '2024. aug. – 2024. szept.', days: 37, art: 'assets/history/history_period_card_active_1.png', heroArt: 'assets/history/history_period_2024_08_flat.png' }),
+        Object.freeze({ id: '2024-10', title: 'Őszi újrakezdés', date: '2024. okt. 4. – 2024. okt. 24.', days: 21, art: 'assets/history/history_period_card_side_2.png', heroArt: 'assets/history/history_period_2024_10_flat.png' }),
+        Object.freeze({ id: '2025-01', title: 'Leghosszabb időszak', date: '2025. jan. – 2025. ápr.', days: 89, art: 'assets/history/history_period_card_side_1.png', heroArt: 'assets/history/history_period_2025_01_flat.png' }),
+        Object.freeze({ id: '2025-05', title: 'Tavaszi újrakezdés', date: '2025. máj. 6. – 2025. máj. 23.', days: 18, art: 'assets/history/history_period_card_active_1.png', heroArt: 'assets/history/history_period_2025_05_flat.png' }),
+        Object.freeze({ id: '2025-06', title: 'Rövid időszak', date: '2025. jún.', days: 4, art: 'assets/history/history_period_card_side_1.png', heroArt: 'assets/history/history_period_2025_06_flat.png' }),
+        Object.freeze({ id: '2025-08', title: 'Nyár végi időszak', date: '2025. aug. 1. – 2025. szept. 2.', days: 33, art: 'assets/history/history_period_card_side_2.png', heroArt: 'assets/history/history_period_2025_08_flat.png' }),
+        Object.freeze({ id: '2025-11', title: 'Téli kitartás', date: '2025. nov. 10. – 2025. dec. 25.', days: 46, art: 'assets/history/history_period_card_active_1.png', heroArt: 'assets/history/history_period_2025_11_flat.png' }),
+        Object.freeze({ id: 'current', title: 'Jelenlegi időszak', date: '2026. máj. 1. – jelenleg', days: 24, art: 'assets/history/history_period_card_active_1.png', heroArt: 'assets/history/history_period_current_flat.png', current: true })
       ]);
+      /* Event data owns the stable type identity.  This optional presentation map only
+         provides human wording for the current mock icons; any later eventType/type
+         automatically remains filterable with a readable fallback label. */
+      const HISTORY_EVENT_TYPE_PRESENTATIONS = Object.freeze({
+        progress: Object.freeze({ label: 'Napi lépések', icon: 'progress' }),
+        heart: Object.freeze({ label: 'Napló és hála', icon: 'heart' }),
+        people: Object.freeze({ label: 'Kapcsolódások', icon: 'people' }),
+        book: Object.freeze({ label: 'Olvasás', icon: 'book' }),
+        phone: Object.freeze({ label: 'Hívások', icon: 'phone' }),
+        check: Object.freeze({ label: 'Mérföldkövek', icon: 'check' }),
+        moon: Object.freeze({ label: 'Esti reflexió', icon: 'moon' }),
+        tools: Object.freeze({ label: 'Tervek', icon: 'tools' })
+      });
       const freezeHistoryPeriodTimelineEvents = (events) => Object.freeze(events.map((event) => Object.freeze(event)));
       const HISTORY_PERIOD_TIMELINES = Object.freeze({
         '2024-05': Object.freeze({ month: 'Május 2024', events: freezeHistoryPeriodTimelineEvents([
           { id: '2024-05-start', date: 'máj. 1.', day: 'Sze', kind: 'step', icon: 'progress', title: 'Első döntés', time: '08:10', note: 'Ma kimondtam, hogy változást szeretnék.' },
+          { id: '2024-05-walk', date: 'máj. 2.', day: 'Cs', icon: 'progress', title: 'Rövid séta', time: '07:20', note: 'Tíz perc levegő segített megérkezni a napba.' },
+          { id: '2024-05-note', date: 'máj. 3.', day: 'P', kind: 'heart', icon: 'heart', title: 'Egy őszinte mondat', note: 'Leírtam, mi az, amitől ma félek.' },
           { id: '2024-05-meeting', date: 'máj. 4.', day: 'Szo', kind: 'meeting', icon: 'people', title: 'Első gyűlés', note: 'Csendben figyeltem, de jó volt ott lenni.' },
+          { id: '2024-05-reading', date: 'máj. 5.', day: 'V', kind: 'book', icon: 'book', title: 'Néhány oldal', time: '19:10', note: 'Egy gondolatot magammal vittem estére.' },
+          { id: '2024-05-call', date: 'máj. 6.', day: 'H', kind: 'book', icon: 'phone', title: 'Telefonhívás', time: '18:35', note: 'Nem kellett egyedül tartanom magamban a nehezebb részt.' },
+          { id: '2024-05-gratitude', date: 'máj. 7.', day: 'K', kind: 'heart', icon: 'heart', title: 'Hála-lista', note: 'Három apró kapaszkodót írtam fel.' },
           { id: '2024-05-eight-days', date: 'máj. 8.', day: 'Sze', kind: 'milestone', icon: 'check', title: '8 nap', note: 'Egy hét után először éreztem reményt.', image: 'assets/milestones/milestone-7.svg', badge: '8 nap', layout: 'milestone' }
         ]) }),
         '2024-06': Object.freeze({ month: 'Június 2024', events: freezeHistoryPeriodTimelineEvents([
           { id: '2024-06-book', date: 'jún. 3.', day: 'H', kind: 'book', icon: 'book', title: 'Első olvasmány', time: '19:30', note: 'Kijelöltem három mondatot, ami velem maradt.' },
+          { id: '2024-06-morning', date: 'jún. 4.', day: 'K', icon: 'progress', title: 'Reggeli terv', time: '07:40', note: 'Előre leírtam, mi segíthet a mai napon.' },
+          { id: '2024-06-reflection', date: 'jún. 6.', day: 'Cs', kind: 'heart', icon: 'moon', title: 'Esti reflexió', time: '21:00', note: 'Megálltam egy pillanatra, mielőtt reagáltam volna.' },
           { id: '2024-06-call', date: 'jún. 9.', day: 'V', kind: 'book', icon: 'phone', title: 'Segítséget kértem', time: '18:20', note: 'Nem kellett egyedül végigvinnem a nehéz estét.' },
+          { id: '2024-06-meeting', date: 'jún. 11.', day: 'K', kind: 'meeting', icon: 'people', title: 'Keddi gyűlés', time: '18:00', note: 'Egy megosztás sokáig velem maradt.' },
+          { id: '2024-06-gratitude', date: 'jún. 13.', day: 'Cs', kind: 'heart', icon: 'heart', title: 'Hála a hétért', note: 'Észrevettem, mi működött már ezen a héten.' },
+          { id: '2024-06-plan', date: 'jún. 15.', day: 'Szo', kind: 'step', icon: 'tools', title: 'Hétvégi terv', note: 'Kijelöltem egy nyugodt következő lépést.' },
           { id: '2024-06-fifteen-days', date: 'jún. 16.', day: 'V', kind: 'milestone', icon: 'check', title: '15 nap', note: 'Két hét új döntésekkel.', image: 'assets/milestones/milestone-14.svg', badge: '15 nap', layout: 'milestone' }
         ]) }),
         '2024-08': Object.freeze({ month: 'Augusztus–szeptember 2024', events: freezeHistoryPeriodTimelineEvents([
           { id: '2024-08-walk', date: 'aug. 6.', day: 'K', icon: 'progress', title: 'Reggeli séta', time: '07:00', note: 'Tíz perc friss levegővel indítottam a napot.' },
+          { id: '2024-08-journal', date: 'aug. 10.', day: 'Szo', kind: 'heart', icon: 'heart', title: 'Naplóbejegyzés', note: 'Szavakat találtam arra, ami bennem volt.' },
+          { id: '2024-08-call', date: 'aug. 13.', day: 'K', kind: 'book', icon: 'phone', title: 'Visszahívtam valakit', time: '17:45', note: 'Jólesett kapcsolódni egy nehezebb délutánon.' },
           { id: '2024-08-gratitude', date: 'aug. 19.', day: 'H', kind: 'heart', icon: 'heart', title: 'Hála-lista', note: 'Leírtam, mi tartott meg ezen a héten.' },
+          { id: '2024-08-reading', date: 'aug. 26.', day: 'H', kind: 'book', icon: 'book', title: 'Olvasás csendben', time: '20:10', note: 'Egy bekezdés új nézőpontot adott.' },
+          { id: '2024-08-plan', date: 'aug. 30.', day: 'P', kind: 'step', icon: 'tools', title: 'Szeptemberi terv', note: 'Előre megfogalmaztam, kitől kérek segítséget.' },
           { id: '2024-08-summer-meeting', date: 'szept. 4.', day: 'Sze', kind: 'meeting', icon: 'people', title: 'Nyári megosztás', time: '18:00', note: 'Most először én is megszólaltam.' },
           { id: '2024-08-thirty-seven-days', date: 'szept. 11.', day: 'Sze', kind: 'milestone', icon: 'check', title: '37 nap', note: 'A kitartás apró, ismételt döntésekből áll.', image: 'assets/milestones/milestone-30.svg', badge: '37 nap', layout: 'milestone' }
         ]) }),
         '2024-10': Object.freeze({ month: 'Október 2024', events: freezeHistoryPeriodTimelineEvents([
           { id: '2024-10-restart', date: 'okt. 4.', day: 'P', kind: 'step', icon: 'tools', title: 'Újraterveztem', time: '09:00', note: 'Kisebb, teljesíthető lépéseket írtam fel.' },
+          { id: '2024-10-walk', date: 'okt. 6.', day: 'V', icon: 'progress', title: 'Lassú séta', time: '08:15', note: 'Kint könnyebb volt rendezni a gondolataimat.' },
+          { id: '2024-10-note', date: 'okt. 9.', day: 'Sze', kind: 'heart', icon: 'heart', title: 'Őszinte jegyzet', note: 'Leírtam, mi az, amit nem akarok tovább elhallgatni.' },
           { id: '2024-10-sponsor', date: 'okt. 12.', day: 'Szo', kind: 'book', icon: 'phone', title: 'Szponzori beszélgetés', note: 'Őszintébben mondtam el, hol tartok.' },
+          { id: '2024-10-meeting', date: 'okt. 15.', day: 'K', kind: 'meeting', icon: 'people', title: 'Esti gyűlés', time: '19:00', note: 'Megértettem, hogy nem kell siettetnem magam.' },
+          { id: '2024-10-reading', date: 'okt. 18.', day: 'P', kind: 'book', icon: 'book', title: 'Visszaolvastam', note: 'Észrevettem egy ismétlődő mintát a jegyzeteimben.' },
+          { id: '2024-10-gratitude', date: 'okt. 22.', day: 'K', kind: 'heart', icon: 'heart', title: 'Hálás lezárás', note: 'Megköszöntem magamnak, hogy ma is figyeltem.' },
           { id: '2024-10-twenty-one-days', date: 'okt. 24.', day: 'Cs', kind: 'milestone', icon: 'check', title: '21 nap', note: 'Három hét, egy nap egyszerre.', image: 'assets/milestones/milestone-21.svg', badge: '21 nap', layout: 'milestone' }
         ]) }),
         '2025-01': Object.freeze({ month: 'Január–április 2025', events: freezeHistoryPeriodTimelineEvents([
           { id: '2025-01-winter-start', date: 'jan. 5.', day: 'V', icon: 'progress', title: 'Téli kezdet', time: '08:30', note: 'Ma csak a következő jó döntésre figyelek.' },
+          { id: '2025-01-journal', date: 'jan. 10.', day: 'P', kind: 'heart', icon: 'heart', title: 'Pénteki jegyzet', note: 'Nevet adtam annak, ami most a legnehezebb.' },
+          { id: '2025-01-call', date: 'jan. 17.', day: 'P', kind: 'book', icon: 'phone', title: 'Kapcsolódtam', time: '18:45', note: 'Egy rövid beszélgetés után könnyebb lett a nap.' },
           { id: '2025-01-reading', date: 'jan. 26.', day: 'V', kind: 'book', icon: 'book', title: 'Visszaolvastam', note: 'Láttam, mennyi minden változott már.' },
           { id: '2025-02-support', date: 'febr. 18.', day: 'K', kind: 'meeting', icon: 'people', title: 'Közösségi este', time: '19:00', note: 'Jó volt kérdezni és hallgatni is.' },
+          { id: '2025-03-walk', date: 'márc. 2.', day: 'V', icon: 'progress', title: 'Vasárnapi séta', time: '09:00', note: 'A saját tempómban indítottam el a napot.' },
+          { id: '2025-03-plan', date: 'márc. 20.', day: 'Cs', kind: 'step', icon: 'tools', title: 'Új heti ritmus', note: 'Előre helyet csináltam a pihenésnek is.' },
+          { id: '2025-03-gratitude', date: 'márc. 29.', day: 'Szo', kind: 'heart', icon: 'moon', title: 'Csendes este', note: 'Nem kellett megoldanom mindent egyetlen nap alatt.' },
           { id: '2025-04-eighty-nine-days', date: 'ápr. 3.', day: 'Cs', kind: 'milestone', icon: 'check', title: '89 nap', note: 'Egy hosszú időszak, sok csendes győzelemmel.', image: 'assets/milestones/milestone-90.svg', badge: '89 nap', layout: 'milestone' }
         ]) }),
         '2025-05': Object.freeze({ month: 'Május 2025', events: freezeHistoryPeriodTimelineEvents([
           { id: '2025-05-morning-note', date: 'máj. 6.', day: 'K', kind: 'heart', icon: 'heart', title: 'Új mondat magamnak', time: '07:45', note: 'Lehet újrakezdeni, nem kell tökéletesnek lennem.' },
+          { id: '2025-05-walk', date: 'máj. 7.', day: 'Sze', icon: 'progress', title: 'Rövid kör', time: '07:20', note: 'A mozgás segített elcsendesedni.' },
+          { id: '2025-05-call', date: 'máj. 9.', day: 'P', kind: 'book', icon: 'phone', title: 'Segítséget kértem', time: '18:10', note: 'Kimondtam, hogy most jól jönne egy beszélgetés.' },
           { id: '2025-05-book', date: 'máj. 12.', day: 'H', kind: 'book', icon: 'book', title: 'Irodalom', note: 'Egy fejezet most egészen másként szólt hozzám.' },
+          { id: '2025-05-meeting', date: 'máj. 16.', day: 'P', kind: 'meeting', icon: 'people', title: 'Pénteki gyűlés', time: '18:30', note: 'Jó volt végighallgatni a többieket.' },
+          { id: '2025-05-reflection', date: 'máj. 18.', day: 'V', kind: 'heart', icon: 'moon', title: 'Esti visszanézés', note: 'Megünnepeltem egy apró, nyugodt döntést.' },
+          { id: '2025-05-plan', date: 'máj. 20.', day: 'K', kind: 'step', icon: 'tools', title: 'Következő lépés', note: 'Egyetlen megvalósítható teendőt választottam ki.' },
           { id: '2025-05-eighteen-days', date: 'máj. 23.', day: 'P', kind: 'milestone', icon: 'check', title: '18 nap', note: 'Találtam ritmust a hétköznapokban.', image: 'assets/milestones/milestone-14.svg', badge: '18 nap', layout: 'milestone' }
         ]) }),
         '2025-06': Object.freeze({ month: 'Június 2025', events: freezeHistoryPeriodTimelineEvents([
           { id: '2025-06-call', date: 'jún. 2.', day: 'H', kind: 'book', icon: 'phone', title: 'Telefonáltam', time: '20:15', note: 'Már az is sokat számított, hogy kimondtam: nehéz.' },
+          { id: '2025-06-morning', date: 'jún. 2.', day: 'H', icon: 'progress', title: 'Reggeli indulás', time: '07:10', note: 'Csak a mai napra készítettem egy egyszerű tervet.' },
+          { id: '2025-06-reading', date: 'jún. 3.', day: 'K', kind: 'book', icon: 'book', title: 'Rövid olvasás', time: '19:20', note: 'Egy mondat segített másképp nézni erre a hétre.' },
+          { id: '2025-06-meeting', date: 'jún. 3.', day: 'K', kind: 'meeting', icon: 'people', title: 'Keddi kör', time: '20:00', note: 'Nem voltam egyedül a saját bizonytalanságommal.' },
           { id: '2025-06-reflection', date: 'jún. 4.', day: 'Sze', kind: 'heart', icon: 'moon', title: 'Esti reflexió', time: '21:10', note: 'Leírtam, mit szeretnék holnap másképp csinálni.' },
+          { id: '2025-06-gratitude', date: 'jún. 4.', day: 'Sze', kind: 'heart', icon: 'heart', title: 'Két apró jó dolog', note: 'Nem engedtem, hogy csak a nehéz részek maradjanak meg.' },
+          { id: '2025-06-plan', date: 'jún. 5.', day: 'Cs', kind: 'step', icon: 'tools', title: 'Délutáni terv', note: 'Biztonságos helyet kerestem magamnak estére.' },
           { id: '2025-06-four-days', date: 'jún. 5.', day: 'Cs', kind: 'milestone', icon: 'check', title: '4 nap', note: 'Ez a négy nap is számít.', badge: '4 nap', layout: 'badge' }
         ]) }),
         '2025-08': Object.freeze({ month: 'Augusztus–szeptember 2025', events: freezeHistoryPeriodTimelineEvents([
           { id: '2025-08-planning', date: 'aug. 1.', day: 'P', kind: 'step', icon: 'tools', title: 'Tervet készítettem', note: 'Előre leírtam, kit hívhatok fel nehéz helyzetben.' },
+          { id: '2025-08-morning', date: 'aug. 3.', day: 'V', icon: 'progress', title: 'Lassú reggel', time: '08:10', note: 'Nem siettettem magam, csak a következő feladatra figyeltem.' },
+          { id: '2025-08-journal', date: 'aug. 8.', day: 'P', kind: 'heart', icon: 'heart', title: 'Naplóztam', note: 'Leírtam, mi segít most megtartani az egyensúlyt.' },
+          { id: '2025-08-reading', date: 'aug. 12.', day: 'K', kind: 'book', icon: 'book', title: 'Visszaolvasás', time: '20:05', note: 'Emlékeztettem magam arra, honnan indultam.' },
           { id: '2025-08-meeting', date: 'aug. 16.', day: 'Szo', kind: 'meeting', icon: 'people', title: 'Délutáni gyűlés', time: '16:00', note: 'A megosztásokból magamra ismertem.' },
+          { id: '2025-08-call', date: 'aug. 23.', day: 'Szo', kind: 'book', icon: 'phone', title: 'Beszélgetés', time: '18:15', note: 'Jó volt őszintén elmondani, hogyan vagyok.' },
+          { id: '2025-08-gratitude', date: 'aug. 28.', day: 'Cs', kind: 'heart', icon: 'moon', title: 'Esti hála', note: 'Észrevettem a csendes eredményeket is.' },
           { id: '2025-09-thirty-three-days', date: 'szept. 2.', day: 'K', kind: 'milestone', icon: 'check', title: '33 nap', note: 'A hétköznapokban is tudtam kapaszkodót találni.', image: 'assets/milestones/milestone-30.svg', badge: '33 nap', layout: 'milestone' }
         ]) }),
         '2025-11': Object.freeze({ month: 'November–december 2025', events: freezeHistoryPeriodTimelineEvents([
           { id: '2025-11-leaves', date: 'nov. 10.', day: 'H', kind: 'heart', icon: 'heart', title: 'Csendes este', note: 'Nem oldottam meg mindent, de jelen tudtam maradni.' },
+          { id: '2025-11-walk', date: 'nov. 12.', day: 'Sze', icon: 'progress', title: 'Déli séta', time: '12:20', note: 'Kiszakadtam pár percre a nehéz gondolatokból.' },
+          { id: '2025-11-reading', date: 'nov. 18.', day: 'K', kind: 'book', icon: 'book', title: 'Egy fejezet', time: '19:40', note: 'Találtam benne egy mondatot, amihez visszatérhetek.' },
+          { id: '2025-11-plan', date: 'nov. 22.', day: 'Szo', kind: 'step', icon: 'tools', title: 'Biztonsági terv', note: 'Felírtam, mit tehetek, ha nagyon nehézzé válik.' },
           { id: '2025-11-sponsor', date: 'nov. 28.', day: 'P', kind: 'book', icon: 'phone', title: 'Szponzori hívás', time: '18:30', note: 'Egyenesen beszéltem a félelmeimről.' },
+          { id: '2025-12-gratitude', date: 'dec. 2.', day: 'K', kind: 'heart', icon: 'heart', title: 'Hála a kapcsolatokért', note: 'Észrevettem, ki volt mellettem ezen a héten.' },
+          { id: '2025-12-reflection', date: 'dec. 8.', day: 'H', kind: 'heart', icon: 'moon', title: 'Csendes visszanézés', note: 'Nem kell tökéletesnek lennem ahhoz, hogy tovább menjek.' },
           { id: '2025-12-holidays', date: 'dec. 14.', day: 'V', kind: 'meeting', icon: 'people', title: 'Ünnepi gyűlés', note: 'Jó volt nem egyedül lenni.' },
           { id: '2025-12-forty-six-days', date: 'dec. 25.', day: 'Cs', kind: 'milestone', icon: 'check', title: '46 nap', note: 'Az ünnepek alatt is figyeltem magamra.', image: 'assets/milestones/milestone-45.svg', badge: '46 nap', layout: 'milestone' }
         ]) }),
@@ -2313,6 +2381,8 @@
           this.historyPagerSettle = null;
           this.historyPagerSettleToken = 0;
           this.historyPagerLifecycle = 'idle';
+          this.historyPagerDebug = this.historyPagerDebugEnabled() ? { events: [], operations: [], mutations: [] } : null;
+          if (this.historyPagerDebug) window.__hajnalHistoryPagerDebug = this.historyPagerDebug;
           this.historyPagerSuppressClickUntil = 0;
           this.historyPagerTrackX = 0;
           this.historyPagerScrollPositions = new Map();
@@ -2369,6 +2439,7 @@
             historyDetailView: 'timeline',
             historySelectedPeriodId: 'current',
             historySelectedPeriodTitle: 'Jelenlegi időszak',
+            historyEventTypeFilter: null,
             historyPeriodPresentation: 'cards',
             historyPresentation: { history: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, timeline: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false }, calendar: { heroVariant: 'large', bodyPresentation: 'card', metricsExpanded: false } },
             historyCalendarView: 'grid',
@@ -2451,8 +2522,9 @@
           this.historyPager?.addEventListener('lostpointercapture', (event) => this.historyPagerLostPointerCapture(event));
           this.historyPagerTrack?.addEventListener('transitionend', (event) => this.historyPagerTrackTransitionEnd(event));
           this.historyPager?.addEventListener('scroll', (event) => this.captureHistoryPagerScroll(event), true);
-          window.addEventListener?.('resize', () => this.handleHistoryPagerResize());
-          window.visualViewport?.addEventListener?.('resize', () => this.handleHistoryPagerResize());
+          this.bindHistoryPagerDebug();
+          window.addEventListener?.('resize', () => { this.recordHistoryPagerDebugOperation('window-resize'); this.handleHistoryPagerResize(); });
+          window.visualViewport?.addEventListener?.('resize', () => { this.recordHistoryPagerDebugOperation('visual-viewport-resize'); this.handleHistoryPagerResize(); });
           window.addEventListener?.('blur', () => this.cancelHistoryPagerGesture({ immediate: true }));
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
@@ -2460,6 +2532,64 @@
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
           this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
+        }
+        historyPagerDebugEnabled() {
+          return Boolean(window.location?.search?.includes('history-pager-debug=1'));
+        }
+        historyPagerDebugSnapshot(event = null) {
+          const drag = this.historyPagerDrag;
+          const track = this.historyPagerTrack;
+          const target = event?.target;
+          const scrollOwner = target?.closest?.('[data-history-pager-scroll-owner]') || this.historyPager?.querySelector?.('[data-history-pager-scroll-owner]');
+          const transform = track && typeof getComputedStyle === 'function' ? getComputedStyle(track).transform : '';
+          const describe = (node) => node ? { tag: node.tagName || '', className: String(node.className || ''), component: node.dataset?.component || '', periodId: node.dataset?.historyPeriodId || '' } : null;
+          return {
+            now: typeof performance !== 'undefined' ? performance.now() : Date.now(),
+            pointerId: event?.pointerId ?? null,
+            pointerType: event?.pointerType || '',
+            isPrimary: event?.isPrimary ?? null,
+            cancelable: event?.cancelable ?? null,
+            defaultPrevented: event?.defaultPrevented ?? null,
+            target: describe(target),
+            currentTarget: describe(event?.currentTarget),
+            clientX: event?.clientX ?? null,
+            clientY: event?.clientY ?? null,
+            deltaX: drag && event ? event.clientX - drag.startX : null,
+            deltaY: drag && event ? event.clientY - drag.startY : null,
+            dragAxis: drag?.axis || '',
+            lifecycle: this.historyPagerLifecycle,
+            trackX: this.historyPagerTrackX,
+            trackTransform: transform,
+            settling: track?.dataset?.historyPagerSettling || '',
+            hasDrag: Boolean(drag),
+            pagerHasPointerCapture: event?.pointerId !== undefined ? Boolean(this.historyPager?.hasPointerCapture?.(event.pointerId)) : false,
+            activePeriodId: this.state?.historySelectedPeriodId || '',
+            pagerScrollLeft: this.historyPager?.scrollLeft || 0,
+            bodyScrollTop: scrollOwner?.scrollTop ?? null
+          };
+        }
+        recordHistoryPagerDebugEvent(event) {
+          if (!this.historyPagerDebug) return;
+          this.historyPagerDebug.events.push({ type: event.type, ...this.historyPagerDebugSnapshot(event) });
+          if (this.historyPagerDebug.events.length > 320) this.historyPagerDebug.events.shift();
+        }
+        recordHistoryPagerDebugOperation(type, detail = {}) {
+          if (!this.historyPagerDebug) return;
+          this.historyPagerDebug.operations.push({ type, ...this.historyPagerDebugSnapshot(), ...detail });
+          if (this.historyPagerDebug.operations.length > 160) this.historyPagerDebug.operations.shift();
+        }
+        bindHistoryPagerDebug() {
+          if (!this.historyPagerDebug || !this.historyPager || !this.historyPagerTrack) return;
+          for (const type of ['pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'gotpointercapture', 'lostpointercapture', 'touchstart', 'touchmove', 'touchend', 'touchcancel']) {
+            this.historyPager.addEventListener(type, (event) => this.recordHistoryPagerDebugEvent(event), { capture: true, passive: true });
+          }
+          if (typeof MutationObserver !== 'undefined') {
+            this.historyPagerDebugObserver = new MutationObserver((records) => {
+              this.historyPagerDebug.mutations.push(...records.map((record) => ({ type: record.type, added: record.addedNodes.length, removed: record.removedNodes.length, ...this.historyPagerDebugSnapshot() })));
+              if (this.historyPagerDebug.mutations.length > 80) this.historyPagerDebug.mutations.splice(0, this.historyPagerDebug.mutations.length - 80);
+            });
+            this.historyPagerDebugObserver.observe(this.historyPagerTrack, { childList: true, subtree: true });
+          }
         }
         handleAction(event) {
           if (Date.now() < this.historyPagerSuppressClickUntil && event.target.closest('[data-component="history-full-page-pager"]')) {
@@ -2481,6 +2611,7 @@
             case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-body-presentation': this.toggleHistoryBodyPresentation(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
+            case 'toggle-history-event-filter': this.toggleHistoryEventFilter(event.target.closest('[data-history-event-type]')?.dataset.historyEventType); break;
             case 'open-panic': this.navigate('panic'); break;
             case 'toggle-panic-variant': this.togglePanicVariant(); break;
             case 'open-panic-help-sheet': this.openPanicHelpSheet(event.target.closest('[data-action="open-panic-help-sheet"]')); break;
@@ -3331,7 +3462,9 @@
         toggleHistoryPeriodPresentation() {
           clearTimeout(this.historyCarouselSettleTimer);
           this.cancelHistoryPagerGesture({ immediate: true });
+          this.recordHistoryPagerDebugOperation('history-period-presentation-toggle', { from: this.state.historyPeriodPresentation });
           this.state.historyPeriodPresentation = this.state.historyPeriodPresentation === 'hero-swipe' ? 'cards' : 'hero-swipe';
+          this.recordHistoryPagerDebugOperation('history-period-presentation-changed', { to: this.state.historyPeriodPresentation });
           this.renderHistoryLayout();
         }
         renderHistoryPeriodPresentation() {
@@ -3365,22 +3498,78 @@
           else if (surface === 'timeline' || surface === 'calendar') this.renderHistoryWorkspace();
         }
         getSelectedHistoryPeriod() { return HISTORY_PERIODS.find((period) => period.id === this.state.historySelectedPeriodId) || HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[0]; }
+        historyEventTypeDefinition(event = {}) {
+          const rawType = String(event.eventType || event.type || event.icon || 'other').trim().toLowerCase();
+          const id = rawType.replace(/[^a-z0-9_-]+/g, '-') || 'other';
+          const presentation = HISTORY_EVENT_TYPE_PRESENTATIONS[id];
+          const fallbackLabel = id.replace(/[-_]+/g, ' ').replace(/(^|\s)\S/g, (letter) => letter.toUpperCase());
+          return {
+            id,
+            icon: String(event.typeIcon || event.icon || presentation?.icon || 'progress'),
+            label: String(event.typeLabel || presentation?.label || fallbackLabel)
+          };
+        }
+        historyEventTypes() {
+          const types = new Map();
+          Object.values(HISTORY_PERIOD_TIMELINES).forEach((timeline) => {
+            (timeline.events || []).forEach((event) => {
+              const type = this.historyEventTypeDefinition(event);
+              if (!types.has(type.id)) types.set(type.id, type);
+            });
+          });
+          return [...types.values()];
+        }
+        filteredHistoryTimelineEvents(events = []) {
+          const activeType = this.state.historyEventTypeFilter;
+          return activeType ? events.filter((event) => this.historyEventTypeDefinition(event).id === activeType) : events;
+        }
+        toggleHistoryEventFilter(eventType) {
+          const normalizedType = this.historyEventTypes().some((type) => type.id === eventType) ? eventType : null;
+          if (!normalizedType) return;
+          this.state.historyEventTypeFilter = this.state.historyEventTypeFilter === normalizedType ? null : normalizedType;
+          if (this.state.historyPeriodPresentation === 'hero-swipe') this.renderHistoryFullPagePager();
+          else this.renderHistoryWorkspace();
+        }
+        historyPeriodMetrics(period) {
+          const timeline = HISTORY_PERIOD_TIMELINES[period?.id] || { events: [] };
+          const events = timeline.events || [];
+          return this.historyEventTypes().map((type) => ({
+            ...type,
+            value: events.filter((event) => this.historyEventTypeDefinition(event).id === type.id).length
+          }));
+        }
+        renderHistoryMetricCards(period) {
+          return this.historyPeriodMetrics(period).map((metric) => `<article class="history-number-card" data-timeline-stat="${escapeHtml(metric.id)}"><button class="history-number-icon" type="button" data-action="toggle-history-event-filter" data-history-event-type="${escapeHtml(metric.id)}" aria-pressed="${String(metric.id === this.state.historyEventTypeFilter)}" aria-label="${escapeHtml(metric.label)} események ${metric.id === this.state.historyEventTypeFilter ? 'szűrésének feloldása' : 'szűrése'}"><svg class="icon" aria-hidden="true"><use href="#icon-${escapeHtml(metric.icon)}"/></svg></button><strong>${escapeHtml(String(metric.value))}</strong><span>${escapeHtml(metric.label)}</span></article>`).join('');
+        }
+        renderHistoryPeriodMetrics(period) {
+          if (!this.historyWorkspace || !period) return;
+          const markup = this.renderHistoryMetricCards(period);
+          this.historyWorkspace.querySelectorAll?.('[data-component="history-period-metrics-grid"]').forEach((target) => { target.innerHTML = markup; });
+        }
         renderSelectedHistoryTimeline(selected) {
           if (!this.historyWorkspace || !selected) return;
           const timeline = HISTORY_PERIOD_TIMELINES[selected.id] || HISTORY_PERIOD_TIMELINES.current;
-          const month = timeline?.month || '';
-          const events = timeline?.events || [];
+          const events = this.filteredHistoryTimelineEvents(timeline?.events || []);
           const markup = this.renderHistoryTimelineEventMarkup(events);
-          this.historyWorkspace.querySelectorAll?.('[data-component="history-period-timeline-month"]').forEach((heading) => { heading.textContent = month; });
           this.historyWorkspace.querySelectorAll?.('[data-component="history-period-timeline-events"]').forEach((target) => { target.innerHTML = markup; });
         }
         renderHistoryTimelineEventMarkup(events) {
+          if (!events.length) {
+            const activeType = this.historyEventTypes().find((type) => type.id === this.state.historyEventTypeFilter);
+            return `<p class="history-event-filter-empty">${activeType ? `Ebben az időszakban nincs ${escapeHtml(activeType.label.toLowerCase())} esemény. Az ikon újbóli megérintésével újra minden esemény látszik.` : 'Ebben az időszakban még nincs megjeleníthető esemény.'}</p>`;
+          }
           return events.map((event) => {
+            const type = this.historyEventTypeDefinition(event);
             const nodeClass = event.kind ? ` ${escapeHtml(event.kind)}` : '';
             const time = event.time ? `<time>${escapeHtml(event.time)}</time>` : '';
             const image = event.image ? `<img class="history-event-mini" src="${escapeHtml(event.image)}" alt="">` : '';
             const badge = event.badge ? `<span class="history-event-badge">${escapeHtml(event.badge)}</span>` : '';
-            return `<button class="history-detail-event" type="button" data-action="open-timeline-event-detail" data-history-timeline-event-id="${escapeHtml(event.id)}" aria-label="${escapeHtml(event.title)} esemény részletei"><time class="history-event-date">${escapeHtml(event.date)}<small>${escapeHtml(event.day)}</small></time><span class="history-event-node${nodeClass}"><svg class="icon" aria-hidden="true"><use href="#icon-${escapeHtml(event.icon || 'progress')}"/></svg></span><span class="history-event-card"><h3>${escapeHtml(event.title)}</h3>${image}${time}<p>${escapeHtml(event.note)}</p>${badge}</span></button>`;
+            const detailAction = event.timelineAction === 'open-meeting-editor' ? 'open-meeting-editor' : 'open-timeline-event-detail';
+            const detailData = detailAction === 'open-meeting-editor'
+              ? `data-meeting-id="${escapeHtml(event.meetingId || event.id)}" data-meeting-editor-origin="timeline"`
+              : `data-history-timeline-event-id="${escapeHtml(event.id)}"`;
+            const detailLabel = detailAction === 'open-meeting-editor' ? `${event.title} gyűlés emlékének szerkesztése` : `${event.title} esemény részletei`;
+            return `<article class="history-detail-event"><time class="history-event-date">${escapeHtml(event.date)}<small>${escapeHtml(event.day)}</small></time><button class="history-event-node${nodeClass}" type="button" data-action="toggle-history-event-filter" data-history-event-type="${escapeHtml(type.id)}" aria-pressed="${String(type.id === this.state.historyEventTypeFilter)}" aria-label="${escapeHtml(type.label)} események ${type.id === this.state.historyEventTypeFilter ? 'szűrésének feloldása' : 'szűrése'}"><svg class="icon" aria-hidden="true"><use href="#icon-${escapeHtml(type.icon)}"/></svg></button><button class="history-event-card" type="button" data-action="${detailAction}" ${detailData} aria-label="${escapeHtml(detailLabel)}"><h3>${escapeHtml(event.title)}</h3>${image}${time}<p>${escapeHtml(event.note)}</p>${badge}</button></article>`;
           }).join('');
         }
         renderHistoryCarousel() {
@@ -3423,6 +3612,8 @@
           this.historyPresentationElements.history.screen?.setAttribute('data-history-metrics-expanded', String(presentation.metricsExpanded));
           this.historyWorkspace.setAttribute('aria-label', `${selected.title} idővonala és naptára`);
           this.renderSelectedHistoryTimeline(selected);
+          this.renderHistoryPeriodMetrics(selected);
+          this.renderMeetingTimelineEvents();
           this.historyPresentationElements.history.screen?.querySelectorAll?.('[data-history-detail-tab]').forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.historyDetailTab === view)));
           this.historyWorkspace.querySelectorAll?.('[data-history-calendar-date]').forEach((day) => {
             const isSelected = day.dataset.historyCalendarDate === this.state.historyCalendarDate;
@@ -3435,10 +3626,12 @@
             surface.setAttribute('data-history-presentation-surface', view === 'calendar' ? 'calendar' : 'timeline');
             surface.setAttribute('aria-expanded', String(presentation.metricsExpanded));
             surface.setAttribute('aria-label', presentation.metricsExpanded ? 'Utam számokban összecsukása' : 'Utam számokban kibontása');
+            surface.closest('.history-number-summary')?.setAttribute('aria-expanded', String(presentation.metricsExpanded));
           });
           if (railActive) this.renderHistoryCalendarRail();
         }
         renderHistoryLayout() {
+          this.recordHistoryPagerDebugOperation('render-history-layout');
           this.renderHistoryPeriodPresentation();
           if (this.state.historyPeriodPresentation === 'hero-swipe') {
             this.renderHistoryFullPagePager();
@@ -3453,26 +3646,50 @@
         }
         historyPagerPreviousPeriod() { return this.historyPagerPeriodByOffset(-1); }
         historyPagerNextPeriod() { return this.historyPagerPeriodByOffset(1); }
-        historyPagerDots(activeId) { return HISTORY_PERIODS.map((period) => `<span class="${period.id === activeId ? 'is-active' : ''}"></span>`).join(''); }
         renderHistoryPagerSummary(period) {
           const expanded = this.getHistoryPresentation('history').metricsExpanded;
-          return `<section class="history-number-summary history-period-pager-summary" aria-expanded="${expanded}"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" aria-label="Utam számokban ${expanded ? 'összecsukása' : 'kibontása'}" aria-expanded="${expanded}"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2>Idővonalam számokban</h2><p>${period.days} nap egyben.</p></div><div class="history-number-grid"><article class="history-number-card"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>${period.days}</strong><span>tiszta nap</span></article><article class="history-number-card"><span class="history-number-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>${(HISTORY_PERIOD_TIMELINES[period.id]?.events || []).length}</strong><span>fontos pillanat</span></article></div></section>`;
+          return `<section class="history-number-summary history-period-pager-summary" aria-expanded="${expanded}"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" aria-label="Utam számokban ${expanded ? 'összecsukása' : 'kibontása'}" aria-expanded="${expanded}"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2>Idővonalam számokban</h2><p>${period.days} nap egyben.</p></div><div class="history-number-grid">${this.renderHistoryMetricCards(period)}</div></section>`;
         }
-        renderHistoryPagerCalendar(period, timeline) {
+        renderHistoryPagerCalendarGrid(period, timeline) {
+          const selectedDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE;
+          const selected = new Date(`${selectedDate}T00:00:00Z`);
+          const year = selected.getUTCFullYear();
+          const monthIndex = selected.getUTCMonth();
+          const monthStart = new Date(Date.UTC(year, monthIndex, 1));
+          const leadingDayCount = (monthStart.getUTCDay() + 6) % 7;
+          const monthDayCount = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+          const gridDayCount = Math.ceil((leadingDayCount + monthDayCount) / 7) * 7;
+          const dotsForDate = (iso) => (HISTORY_CALENDAR_DAY_DOTS[iso] || []).map((tone) => `<span${tone === 'mint' ? '' : ` class="${tone}"`}></span>`).join('');
+          const cells = Array.from({ length: gridDayCount }, (_, index) => {
+            const offset = index - leadingDayCount;
+            const date = new Date(Date.UTC(year, monthIndex, offset + 1));
+            const iso = date.toISOString().slice(0, 10);
+            const muted = date.getUTCMonth() !== monthIndex;
+            const isSelected = iso === selectedDate;
+            return `<button class="history-calendar-day${muted ? ' is-muted' : ''}${isSelected ? ' is-selected' : ''}" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="${iso}" aria-pressed="${String(isSelected)}"${isSelected ? ' aria-current="date"' : ''} aria-label="${escapeHtml(`${HISTORY_CALENDAR_MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}.`)}"><span class="history-calendar-day-number">${date.getUTCDate()}</span><span class="history-calendar-day-dots">${dotsForDate(iso)}</span></button>`;
+          }).join('');
+          return `<section class="history-period-pager-calendar history-period-pager-calendar--grid" data-history-pager-calendar-grid aria-label="${escapeHtml(period.title)} havi naptára"><section class="history-calendar-month-card" aria-labelledby="history-pager-calendar-${escapeHtml(period.id)}"><header class="history-calendar-month-header"><button type="button" disabled aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h2 id="history-pager-calendar-${escapeHtml(period.id)}">${escapeHtml(HISTORY_CALENDAR_MONTHS[monthIndex])} ${year}</h2><button type="button" disabled aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></header><div class="history-calendar-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sz</span><span>Cs</span><span>P</span><span>Sz</span><span>V</span></div><div class="history-calendar-days" aria-label="${escapeHtml(HISTORY_CALENDAR_MONTHS[monthIndex])} ${year} napi naptára">${cells}</div></section><button class="history-calendar-selected-day" type="button" data-action="open-history-calendar-rail" data-history-calendar-date="${selectedDate}" aria-label="${escapeHtml(`${HISTORY_CALENDAR_MONTHS[monthIndex]} ${selected.getUTCDate()}. napi idővonala`)}"><span class="history-calendar-selected-icon"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></span><span class="history-calendar-selected-copy"><strong>${escapeHtml(`${HISTORY_CALENDAR_MONTHS[monthIndex].slice(0, 4)}. ${selected.getUTCDate()}.`)}</strong><small>${(timeline.events || []).length} esemény • ${period.days} tiszta nap</small></span><span aria-hidden="true">›</span></button></section>`;
+        }
+        renderHistoryPagerCalendarRail(period, timeline) {
           const events = timeline.events || [];
           const rail = events.slice(0, 6).map((event, index) => `<button class="history-period-pager-calendar-day${index === 0 ? ' is-selected' : ''}" type="button" data-history-pager-calendar-rail data-action="open-timeline-event-detail" aria-label="${escapeHtml(event.date)}"><span>${escapeHtml(event.day)}</span><strong>${escapeHtml(event.date.replace(/[^0-9]/g, '') || String(index + 1))}</strong></button>`).join('');
           return `<section class="history-period-pager-calendar"><div class="history-period-pager-calendar-rail" data-history-pager-calendar-rail>${rail}</div>${events.map((event) => `<button class="history-period-pager-calendar-event" type="button" data-action="open-timeline-event-detail" data-history-timeline-event-id="${escapeHtml(event.id)}"><strong>${escapeHtml(event.title)}</strong><small>${escapeHtml(event.date)} · ${escapeHtml(event.note)}</small></button>`).join('')}</section>`;
+        }
+        renderHistoryPagerCalendar(period, timeline) {
+          const railActive = this.state.historyCalendarView === 'rail';
+          return railActive ? this.renderHistoryPagerCalendarRail(period, timeline) : this.renderHistoryPagerCalendarGrid(period, timeline);
         }
         renderHistoryPagerSlide(period, role) {
           const timeline = HISTORY_PERIOD_TIMELINES[period.id] || HISTORY_PERIOD_TIMELINES.current;
           const body = this.state.historyDetailView === 'calendar'
             ? this.renderHistoryPagerCalendar(period, timeline)
-            : `<section class="history-period-pager-timeline" data-history-detail-panel="timeline"><div class="history-detail-month"><button type="button" aria-label="Előző hónap">‹</button><strong>${escapeHtml(timeline.month || '')}</strong><button type="button" aria-label="Következő hónap">›</button></div><div class="history-detail-event-list">${this.renderHistoryTimelineEventMarkup(timeline.events || [])}</div></section>`;
+            : `<section class="history-period-pager-timeline" data-history-detail-panel="timeline"><div class="history-detail-event-list">${this.renderHistoryTimelineEventMarkup(this.filteredHistoryTimelineEvents(timeline.events || []))}</div></section>`;
           const scrollTop = this.historyPagerScrollPositions.get(period.id) || 0;
-          return `<article class="history-period-pager-slide" data-history-period-id="${escapeHtml(period.id)}" data-history-period-current="${Boolean(period.current)}" data-history-pager-role="${role}"${role === 'current' ? '' : ' aria-hidden="true" inert'}><header class="history-period-pager-hero"><span class="history-period-pager-art" aria-hidden="true"><img src="${escapeHtml(period.art)}" alt=""></span><div class="history-period-pager-copy"><h2>${escapeHtml(period.title)}</h2><p>${escapeHtml(period.date)}</p><strong>${period.days} nap tiszta</strong><span class="history-period-pager-dots" aria-hidden="true">${this.historyPagerDots(period.id)}</span></div></header><section class="history-period-pager-body"><div class="history-period-pager-scroll-owner" data-history-pager-scroll-owner data-history-period-id="${escapeHtml(period.id)}" data-history-scroll-top="${scrollTop}">${body}</div>${this.renderHistoryPagerSummary(period)}</section></article>`;
+          return `<article class="history-period-pager-slide" data-history-period-id="${escapeHtml(period.id)}" data-history-period-current="${Boolean(period.current)}" data-history-pager-role="${role}"${role === 'current' ? '' : ' aria-hidden="true" inert'}><header class="history-period-pager-hero"><span class="history-period-pager-art" aria-hidden="true"><img src="${escapeHtml(period.heroArt)}" alt=""></span><div class="history-period-pager-copy"><h2>${escapeHtml(period.title)}</h2><p>${escapeHtml(period.date)}</p><strong>${period.days} nap tiszta</strong></div></header><section class="history-period-pager-body"><div class="history-period-pager-scroll-owner" data-history-pager-scroll-owner data-history-period-id="${escapeHtml(period.id)}" data-history-scroll-top="${scrollTop}">${body}</div>${this.renderHistoryPagerSummary(period)}</section></article>`;
         }
         renderHistoryFullPagePager() {
           if (!this.historyPager || !this.historyPagerTrack) return;
+          this.recordHistoryPagerDebugOperation('render-history-full-page-pager', { phase: 'before' });
           const current = this.getSelectedHistoryPeriod();
           const previous = this.historyPagerPreviousPeriod();
           const next = this.historyPagerNextPeriod();
@@ -3488,6 +3705,7 @@
             const top = Number(owner.dataset.historyScrollTop || 0);
             if (top > 0) owner.scrollTop = top;
           });
+          this.recordHistoryPagerDebugOperation('render-history-full-page-pager', { phase: 'after', slideCount: slides.length });
         }
         writeHistoryPagerTrack(dragX = 0, { immediate = false } = {}) {
           if (!this.historyPagerTrack || !this.historyPager) return;
@@ -3559,11 +3777,17 @@
           // A browser emits this normally after pointerup. That release already
           // owns the settle, so only an actually active matching drag may cancel.
           if (!drag || drag.pointerId !== event.pointerId || this.historyPagerLifecycle === 'settling') return;
+          // Touch pointers begin with implicit capture on the nested event card.
+          // Once this pager takes capture, that old target emits a bubbling
+          // lostpointercapture even though the same pointer is now correctly
+          // captured by this pager. It is a hand-off, not an interruption.
+          if (this.historyPager?.hasPointerCapture?.(event.pointerId)) return;
           if (drag.axis === 'horizontal') this.cancelHistoryPagerGesture({ expectedPointerId: event.pointerId });
           else { this.historyPagerDrag = null; this.historyPagerLifecycle = 'idle'; }
         }
         settleHistoryPager(target) {
           if (!this.historyPagerTrack || !this.historyPager) return;
+          this.recordHistoryPagerDebugOperation('settle-history-pager', { targetId: target?.id || '' });
           this.clearHistoryPagerTrackFrame();
           this.clearHistoryPagerSettle();
           const width = this.historyPager.clientWidth || 412;
@@ -3590,6 +3814,7 @@
           else { this.historyPagerTrack.dataset.historyPagerSettling = 'false'; this.writeHistoryPagerTrack(0, { immediate: true }); }
         }
         cancelHistoryPagerGesture({ immediate = false, expectedPointerId = null } = {}) {
+          this.recordHistoryPagerDebugOperation('cancel-history-pager-gesture', { immediate, expectedPointerId });
           const drag = this.historyPagerDrag;
           if (expectedPointerId !== null && (!drag || drag.pointerId !== expectedPointerId)) return;
           const horizontal = drag?.axis === 'horizontal';
@@ -3847,7 +4072,26 @@
         }
         renderMeetingTimelineEvents() {
           const meetings = this.attendedMeetings();
-          const markup = meetings.length ? `<div class="history-detail-month"><span></span><strong>Gyűlések</strong><span></span></div><div class="history-detail-event-list">${meetings.map((meeting) => { const date = this.meetingDateObject(meeting.date); return `<button class="history-detail-event" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="timeline" aria-label="${escapeHtml(meeting.title)} gyűlés emlékének szerkesztése"><time class="history-event-date">${['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'][date.getMonth()]} ${date.getDate()}.<small>${['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'][date.getDay()]}</small></time><span class="history-event-node meeting"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><span class="history-event-card"><h3>${escapeHtml(meeting.title)}</h3><time>${escapeHtml(meeting.start)}</time><p>${escapeHtml(meeting.note || 'Ott voltam ezen a gyűlésen.')}</p></span></button>`; }).join('')}</div>` : '';
+          const monthNames = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'];
+          const weekdayNames = ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'];
+          const events = meetings.map((meeting) => {
+            const date = this.meetingDateObject(meeting.date);
+            return {
+              id: `meeting-${meeting.id}`,
+              meetingId: meeting.id,
+              timelineAction: 'open-meeting-editor',
+              eventType: 'people',
+              kind: 'meeting',
+              icon: 'people',
+              date: `${monthNames[date.getMonth()]} ${date.getDate()}.`,
+              day: weekdayNames[date.getDay()],
+              title: meeting.title,
+              time: meeting.start,
+              note: meeting.note || 'Ott voltam ezen a gyűlésen.'
+            };
+          });
+          const visibleEvents = this.filteredHistoryTimelineEvents(events);
+          const markup = visibleEvents.length ? `<div class="history-detail-month"><span></span><strong>Gyűlések</strong><span></span></div><div class="history-detail-event-list">${this.renderHistoryTimelineEventMarkup(visibleEvents)}</div>` : '';
           const targets = new Set([
             this.meetingTimelineEvents,
             ...(this.historyWorkspace?.querySelectorAll?.('[data-component="meeting-timeline-events"]') || [])

@@ -11,7 +11,8 @@ assert.match(html, /getSelectedHistoryPeriod\(\)/, 'the selected period must res
 assert.match(html, /selectHistoryPeriod\(periodId(?:, \{ source = 'tap' \} = \{\})?\) \{/, 'tap and gesture selection must use the one controller-owned finite-track write path');
 assert.match(html, /historyWorkspace\.dataset\.historyPeriodCurrent = String\(Boolean\(selected\.current\)\);/, 'the inline workspace must expose the selected period’s existing current flag for visual state only');
 assert.match(html, /--history-past-timeline-node-surface:\s*#E6E6E6;/, 'one scoped semantic surface token must own the gray earlier-period Timeline-node background');
-assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-workspace\[data-history-period-current="false"\] \.history-event-node\s*\{[^}]*background:\s*var\(--history-past-timeline-node-surface\);[^}]*color:\s*var\(--history-past-timeline-node-icon\);/, 'Timeline node background and icon must both be neutral gray only for a selected earlier History period');
+assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-workspace\[data-history-period-current="false"\] \.history-event-node:not\(\[aria-pressed="true"\]\)\s*\{[^}]*background:\s*var\(--history-past-timeline-node-surface\);[^}]*color:\s*var\(--history-past-timeline-node-icon\);/, 'Timeline node background and icon must both be neutral gray only for a selected earlier History period while an actively filtered type keeps its clear selected treatment');
+assert.match(html, /\.history-period-pager-slide\[data-history-period-current="false"\] \.history-event-node:not\(\[aria-pressed="true"\]\)\s*\{[^}]*background:\s*var\(--history-past-timeline-node-surface\);[^}]*color:\s*var\(--history-past-timeline-node-icon\);/, 'earlier-period Timeline nodes in the full-hero pager must restore the same gray surface and darker gray icon treatment');
 assert.match(html, /const HISTORY_PERIOD_TIMELINES = Object\.freeze\(/, 'all History chapter Timeline content must have one immutable period-keyed data owner');
 assert.match(html, /renderSelectedHistoryTimeline\(selected\)\s*\{/, 'the existing History controller needs one neutral renderer for period-specific Timeline events');
 assert.match(html, /this\.renderSelectedHistoryTimeline\(selected\);/, 'the selected period must update the already-mounted Timeline through the one renderer');
@@ -19,6 +20,19 @@ assert.match(html, /data-component="history-period-timeline-events"/, 'the share
 ['2024-05', '2024-06', '2024-08', '2024-10', '2025-01', '2025-05', '2025-06', '2025-08', '2025-11', 'current'].forEach((periodId) => {
   assert.match(html, new RegExp(`'${periodId}': Object\\.freeze\\(\\{[\\s\\S]{0,120}events: freezeHistoryPeriodTimelineEvents\\(\\[`), `period ${periodId} must own distinct immutable Timeline prototype data`);
 });
+const timelinePeriodIds = ['2024-05', '2024-06', '2024-08', '2024-10', '2025-01', '2025-05', '2025-06', '2025-08', '2025-11', 'current'];
+const timelineSource = html.slice(html.indexOf('const HISTORY_PERIOD_TIMELINES ='), html.indexOf('const HISTORY_CALENDAR_WEEKDAYS ='));
+timelinePeriodIds.forEach((periodId, index) => {
+  const start = timelineSource.indexOf(`'${periodId}': Object.freeze({`);
+  const nextPeriodId = timelinePeriodIds[index + 1];
+  const end = nextPeriodId ? timelineSource.indexOf(`'${nextPeriodId}': Object.freeze({`, start + 1) : timelineSource.length;
+  const periodSource = timelineSource.slice(start, end);
+  const eventCount = (periodSource.match(/\{ id: '/g) || []).length;
+  assert.ok(eventCount >= 8, `period ${periodId} must provide at least eight real Timeline events so its Timeline has a meaningful vertical scroll range`);
+});
+assert.doesNotMatch(html, /data-component="history-period-timeline-month"/, 'History Timeline bodies must not include a redundant period/month heading');
+const historyPagerSlideRenderer = html.slice(html.indexOf('renderHistoryPagerSlide(period, role)'), html.indexOf('renderHistoryFullPagePager()', html.indexOf('renderHistoryPagerSlide(period, role)')));
+assert.doesNotMatch(historyPagerSlideRenderer, /history-detail-month|aria-label="Előző hónap"|aria-label="Következő hónap"/, 'full-hero Timeline bodies must start directly with events, without month chevrons');
 assert.doesNotMatch(html, /beginHistoryCarousel\(/, 'the carousel must not retain a second pointer-swipe state machine beside native scrolling');
 assert.match(html, /data-component="history-period-carousel"/, 'History must contain one carousel boundary');
 assert.match(html, /data-action="select-history-period"/, 'carousel cards must be tappable buttons');
@@ -66,16 +80,24 @@ assert.match(html, /<h2 id="timeline-number-title">Idővonalam számokban<\/h2>/
 const historyAssetDirectory = path.join(__dirname, '..', 'assets', 'history');
 const requiredHistoryArtwork = [
   'history_hero_soft.png',
-  'history_period_card_active_1.png',
-  'history_period_card_side_1.png',
-  'history_period_card_side_2.png'
+  'history_period_2024_05_flat.png',
+  'history_period_2024_06_flat.png',
+  'history_period_2024_08_flat.png',
+  'history_period_2024_10_flat.png',
+  'history_period_2025_01_flat.png',
+  'history_period_2025_05_flat.png',
+  'history_period_2025_06_flat.png',
+  'history_period_2025_08_flat.png',
+  'history_period_2025_11_flat.png',
+  'history_period_current_flat.png'
 ];
 requiredHistoryArtwork.forEach((assetName) => {
   assert.ok(fs.existsSync(path.join(historyAssetDirectory, assetName)), `the History2 visual source requires a real local PNG asset: ${assetName}`);
 });
 assert.match(html, /const HISTORY_PRESENTATION_HERO_ASSET = 'assets\/history\/history_hero_soft\.png';/, 'the History hero must bind the dedicated soft PNG asset instead of the generic timeline artwork');
 assert.match(html, /\.history-screen\[data-history-workspace="inline"\] \.history-hero-image \{[^}]*opacity: \.78;[^}]*filter: saturate\(\.72\) contrast\(\.88\);/, 'the generated hero must stay visibly atmospheric while remaining less vivid than the card artwork');
-assert.match(html, /art: 'assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png'/, 'History periods must consume generated project-local PNG artwork');
+assert.match(html, /art: 'assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png'/, 'the small History carousel must retain its established project-local PNG artwork');
+assert.match(html, /heroArt: 'assets\/history\/history_period_(?:\d{4}_\d{2}|current)_flat\.png'/, 'full History heroes must consume their dedicated generated project-local PNG artwork');
 const historyPeriodsSource = html.slice(html.indexOf('const HISTORY_PERIODS ='), html.indexOf('const freezeHistoryPeriodTimelineEvents ='));
 assert.doesNotMatch(historyPeriodsSource, /assets\/milestones\//, 'the History carousel must not keep milestone SVG art as its card artwork source');
 assert.match(html, /\.history-period-carousel-card \{[^}]*position: relative;[^}]*overflow: hidden;/, 'a History2 carousel card must be one full-bleed visual surface, not a split image/text card');

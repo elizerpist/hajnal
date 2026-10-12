@@ -222,24 +222,28 @@ async function carouselTouchSwipe(cdp, page) {
   await page.waitForTimeout(340);
 }
 
-async function heroCarouselTouchSwipe(cdp, page) {
-  const box = await page.locator('.history-period-carousel').boundingBox();
-  const range = await page.evaluate(() => {
-    const carousel = document.querySelector('.history-period-carousel');
-    return { left: carousel.scrollLeft, maximum: carousel.scrollWidth - carousel.clientWidth };
+async function heroPagerTouchSwipe(cdp, page) {
+  const direction = await page.evaluate(() => {
+    const current = document.querySelector('[data-history-pager-role="current"]');
+    if (document.querySelector('[data-history-pager-role="next"]')) return 'left';
+    if (document.querySelector('[data-history-pager-role="previous"]')) return 'right';
+    return null;
   });
+  assert.ok(direction, 'Hero-swipe needs an adjacent, pre-rendered full-page period slide to exercise the real pager.');
+  const box = await page.locator('[data-history-pager-role="current"] .history-detail-event').first().boundingBox();
+  assert.ok(box, 'The current full-page period needs an event card that can originate a body swipe.');
   const y = Math.round(box.y + (box.height / 2));
-  const delta = Math.round(box.width * .72);
-  const moveTowardNext = range.left < range.maximum - 1;
-  const startX = Math.round(box.x + (moveTowardNext ? box.width * .84 : box.width * .16));
-  const endX = startX + (moveTowardNext ? -delta : delta);
+  const startX = Math.round(box.x + (box.width / 2));
+  const delta = Math.round(Math.min(260, box.width * .70));
+  const endX = startX + (direction === 'left' ? -delta : delta);
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: startX, y, id: 3 }] });
   for (let index = 1; index <= 10; index += 1) {
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: Math.round(startX + (((endX - startX) * index) / 10)), y, id: 3 }] });
     await page.waitForTimeout(18);
   }
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(420);
+  return direction;
 }
 
 async function measurePathOverviewReference(page) {
@@ -399,36 +403,33 @@ async function runViewport(browser, baseUrl, viewport) {
   await page.waitForTimeout(120);
   const heroSwipeBefore = await page.evaluate(() => {
     const screen = document.querySelector('[data-component="sobriety-batch-history"]');
-    const carousel = document.querySelector('.history-period-carousel');
-    const slide = carousel?.querySelector('.history-period-carousel-card[aria-current="true"]');
+    const pager = document.querySelector('[data-component="history-full-page-pager"]');
+    const track = document.querySelector('[data-component="history-full-page-pager-track"]');
+    const slide = track?.querySelector('[data-history-pager-role="current"]');
     const image = document.querySelector('[data-component="history-hero-image"]');
-    const indicators = [...document.querySelectorAll('.history-period-carousel-indicator')];
-    const artwork = slide?.querySelector('.history-period-carousel-art');
+    const artwork = slide?.querySelector('.history-period-pager-art');
     return {
       presentation: screen?.dataset.historyPeriodPresentation || '',
       togglePressed: document.querySelector('[data-component="history-period-presentation-toggle"]')?.getAttribute('aria-pressed') || '',
-      carouselHeight: carousel?.getBoundingClientRect().height || 0,
-      carouselWidth: carousel?.getBoundingClientRect().width || 0,
+      pagerHeight: pager?.getBoundingClientRect().height || 0,
+      pagerWidth: pager?.getBoundingClientRect().width || 0,
       slideHeight: slide?.getBoundingClientRect().height || 0,
       slideWidth: slide?.getBoundingClientRect().width || 0,
       slideRadius: slide ? getComputedStyle(slide).borderRadius : '',
-      scrollLeft: carousel?.scrollLeft || 0,
-      maximumScrollLeft: Math.max(0, (carousel?.scrollWidth || 0) - (carousel?.clientWidth || 0)),
-      cardCount: carousel?.querySelectorAll('.history-period-carousel-card').length || 0,
-      sourcePeriodCount: new Set([...carousel?.querySelectorAll('.history-period-carousel-card') || []].map((card) => card.dataset.historyPeriodId)).size,
+      trackTransform: track ? getComputedStyle(track).transform : '',
+      slideCount: track?.querySelectorAll('.history-period-pager-slide').length || 0,
       selectedPeriodId: slide?.dataset.historyPeriodId || '',
-      activeIndicatorPeriodId: indicators.find((indicator) => indicator.classList.contains('is-active'))?.dataset.historyPeriodId || '',
-      backgroundImageOpacity: image ? getComputedStyle(image).opacity : '',
-      artworkFade: artwork ? getComputedStyle(artwork, '::after').backgroundImage : ''
+      pagerDotCount: slide?.querySelectorAll('.history-period-pager-dots span').length || 0,
+      backgroundImageDisplay: image ? getComputedStyle(image).display : '',
+      artworkMask: artwork ? (getComputedStyle(artwork).maskImage || getComputedStyle(artwork).webkitMaskImage) : ''
     };
   });
   await page.screenshot({ path: path.join(artifactDirectory, `history-hero-swipe-${viewport.width}x${viewport.height}.png`), fullPage: false });
-  await heroCarouselTouchSwipe(cdp, page);
+  const heroSwipeDirection = await heroPagerTouchSwipe(cdp, page);
   const heroSwipeAfter = await page.evaluate(() => ({
-    scrollLeft: document.querySelector('.history-period-carousel')?.scrollLeft || 0,
-    maximumScrollLeft: Math.max(0, (document.querySelector('.history-period-carousel')?.scrollWidth || 0) - (document.querySelector('.history-period-carousel')?.clientWidth || 0)),
-    selectedPeriodId: document.querySelector('.history-period-carousel-card[aria-current="true"]')?.dataset.historyPeriodId || '',
-    activeIndicatorPeriodId: document.querySelector('.history-period-carousel-indicator.is-active')?.dataset.historyPeriodId || ''
+    selectedPeriodId: document.querySelector('[data-history-pager-role="current"]')?.dataset.historyPeriodId || '',
+    pagerDotCount: document.querySelectorAll('[data-history-pager-role="current"] .history-period-pager-dots span').length,
+    trackTransform: getComputedStyle(document.querySelector('[data-component="history-full-page-pager-track"]')).transform
   }));
   await page.locator('[data-component="history-period-presentation-toggle"]').click();
   await page.waitForTimeout(120);
@@ -456,7 +457,7 @@ async function runViewport(browser, baseUrl, viewport) {
   await page.screenshot({ path: path.join(artifactDirectory, `history-timeline-${viewport.width}x${viewport.height}.png`), fullPage: false });
   console.error(`History runtime: ${viewport.width}x${viewport.height} complete`);
   await context.close();
-  return { viewport, pathReference, pathAlignment, before, programmatic, afterTouch, activeBeforeTouch, activeAfterTouch, fixedBefore, fixedAfter, expanded, expandedSamples, calendarState, afterTabs, tabSamples, lastEvent, footerBox, carouselBefore, carouselAfter, afterCarousel, carouselSamples, heroSwipeBefore, heroSwipeAfter, cardsRestored, probe };
+  return { viewport, pathReference, pathAlignment, before, programmatic, afterTouch, activeBeforeTouch, activeAfterTouch, fixedBefore, fixedAfter, expanded, expandedSamples, calendarState, afterTabs, tabSamples, lastEvent, footerBox, carouselBefore, carouselAfter, afterCarousel, carouselSamples, heroSwipeBefore, heroSwipeDirection, heroSwipeAfter, cardsRestored, probe };
 }
 
 (async () => {
@@ -521,7 +522,7 @@ async function runViewport(browser, baseUrl, viewport) {
       assert.ok(result.pathReference.currentCard && result.pathReference.stepHeading, `${result.viewport.width}×${result.viewport.height}: Path overview must remain available as an unrelated control surface`);
       assert.ok(result.pathAlignment.activePeriodCard && result.pathAlignment.floatingViewSwitch, `${result.viewport.width}×${result.viewport.height}: History must expose its centred period-card and floating view switch`);
       assert.equal(result.pathAlignment.heroArtwork, 'assets/history/history_hero_soft.png', `${result.viewport.width}×${result.viewport.height}: the quiet History2 hero must use its dedicated generated PNG`);
-      assert.match(result.pathAlignment.activeCardArtwork, /^assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png$/, `${result.viewport.width}×${result.viewport.height}: the active card must use generated full-image History artwork`);
+      assert.match(result.pathAlignment.activeCardArtwork, /^assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png$/, `${result.viewport.width}×${result.viewport.height}: the active card must preserve its established full-image History artwork`);
       assert.equal(result.pathAlignment.activeCardCopyColor, 'rgb(255, 255, 255)', `${result.viewport.width}×${result.viewport.height}: the active card's semantic UI overlay must be white`);
       assert.equal(result.pathAlignment.activePeriodCard.cssHeight, 120, `${result.viewport.width}×${result.viewport.height}: the selected source-matched chapter card must be 120px tall`);
       assert.ok(Math.abs(result.pathAlignment.activePeriodCard.height - 120) <= 2, `${result.viewport.width}×${result.viewport.height}: the selected source-matched chapter card must retain its full 120px visual height`);
@@ -555,16 +556,17 @@ async function runViewport(browser, baseUrl, viewport) {
       assert.equal(result.carouselAfter.activeIndicatorPeriodId, result.carouselAfter.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: a horizontal carousel selection must update its active dot`);
       assert.equal(result.heroSwipeBefore.presentation, 'hero-swipe', `${result.viewport.width}×${result.viewport.height}: the right-corner toggle must switch History into hero-swipe presentation`);
       assert.equal(result.heroSwipeBefore.togglePressed, 'true', `${result.viewport.width}×${result.viewport.height}: the presentation toggle must expose its active state`);
-      assert.equal(result.heroSwipeBefore.cardCount, result.heroSwipeBefore.sourcePeriodCount, `${result.viewport.width}×${result.viewport.height}: hero-swipe must reuse the one finite period track without duplicated cards`);
-      assert.ok(Math.abs(result.heroSwipeBefore.slideWidth - result.heroSwipeBefore.carouselWidth) <= 2, `${result.viewport.width}×${result.viewport.height}: hero-swipe must render one full-width selected slide, not a card`);
-      assert.ok(Math.abs(result.heroSwipeBefore.slideHeight - result.heroSwipeBefore.carouselHeight) <= 2, `${result.viewport.width}×${result.viewport.height}: hero-swipe slide must fill the dedicated hero swipe rail`);
+      assert.ok(result.heroSwipeBefore.slideCount >= 2 && result.heroSwipeBefore.slideCount <= 3, `${result.viewport.width}×${result.viewport.height}: hero-swipe must pre-render only the adjacent full-page slides, not reuse the hidden cards carousel`);
+      assert.ok(Math.abs(result.heroSwipeBefore.slideWidth - result.heroSwipeBefore.pagerWidth) <= 2, `${result.viewport.width}×${result.viewport.height}: hero-swipe must render one full-width selected slide, not a card`);
+      assert.ok(Math.abs(result.heroSwipeBefore.slideHeight - result.heroSwipeBefore.pagerHeight) <= 2, `${result.viewport.width}×${result.viewport.height}: hero-swipe slide must fill the dedicated full-page pager viewport`);
       assert.equal(result.heroSwipeBefore.slideRadius, '0px', `${result.viewport.width}×${result.viewport.height}: hero-swipe must remove card corner geometry`);
-      assert.equal(result.heroSwipeBefore.backgroundImageOpacity, '0', `${result.viewport.width}×${result.viewport.height}: hero-swipe must use the selected period PNG rather than stacking the static History artwork beneath it`);
-      assert.match(result.heroSwipeBefore.artworkFade, /rgb\(255, 249, 252\)/, `${result.viewport.width}×${result.viewport.height}: hero-swipe artwork must fade into the shared body colour instead of ending at a hard seam`);
+      assert.equal(result.heroSwipeBefore.backgroundImageDisplay, 'none', `${result.viewport.width}×${result.viewport.height}: hero-swipe must use the selected period PNG rather than stacking the static History artwork beneath it`);
+      assert.match(result.heroSwipeBefore.artworkMask, /linear-gradient/, `${result.viewport.width}×${result.viewport.height}: hero-swipe artwork must alpha-fade into the shared body surface instead of ending at a hard seam`);
       assert.equal(result.heroSwipeBefore.selectedPeriodId, result.carouselAfter.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: changing presentation may not change the selected period`);
-      assert.equal(result.heroSwipeBefore.activeIndicatorPeriodId, result.heroSwipeBefore.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: hero-swipe dot must match its selected period`);
-      assert.notEqual(result.heroSwipeAfter.selectedPeriodId, result.heroSwipeBefore.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: a native horizontal swipe in hero mode must choose another period`);
-      assert.equal(result.heroSwipeAfter.activeIndicatorPeriodId, result.heroSwipeAfter.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: a hero-swipe selection must update the same finite indicator state`);
+      assert.equal(result.heroSwipeBefore.pagerDotCount, 0, `${result.viewport.width}×${result.viewport.height}: hero-swipe must not duplicate cards-layout carousel dots`);
+      assert.ok(['left', 'right'].includes(result.heroSwipeDirection), `${result.viewport.width}×${result.viewport.height}: the full-page pager must choose a valid neighbor direction`);
+      assert.notEqual(result.heroSwipeAfter.selectedPeriodId, result.heroSwipeBefore.selectedPeriodId, `${result.viewport.width}×${result.viewport.height}: a full-page body swipe in hero mode must choose another period`);
+      assert.equal(result.heroSwipeAfter.pagerDotCount, 0, `${result.viewport.width}×${result.viewport.height}: a hero-swipe selection must retain the dot-free full-page presentation`);
       assert.equal(result.cardsRestored.presentation, 'cards', `${result.viewport.width}×${result.viewport.height}: the same toggle must restore the original cards presentation`);
       assert.equal(result.cardsRestored.togglePressed, 'false', `${result.viewport.width}×${result.viewport.height}: the restored cards presentation must expose the inactive toggle state`);
       assert.ok(Math.abs(result.cardsRestored.activeCardHeight - 120) <= 2, `${result.viewport.width}×${result.viewport.height}: restoring cards must restore the original card geometry`);

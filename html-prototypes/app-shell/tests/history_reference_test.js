@@ -36,7 +36,8 @@ assert.equal(periods.length, 10, 'all ten real History periods must remain avail
 assert.equal(new Set(periods.map((period) => period.id)).size, 10, 'period selection must use stable IDs');
 assert.deepEqual(periods.map((period) => period.days), [8, 15, 37, 21, 89, 18, 4, 33, 46, 24], 'the existing clean-day data must remain intact');
 assert.equal(periods.find((period) => period.current)?.id, 'current', 'the current period must remain marked in the shared source');
-assert.ok(periods.every((period) => /^assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png$/.test(period.art)), 'the carousel must only use the new local full-bleed History2 PNG artwork');
+assert.ok(periods.every((period) => /^assets\/history\/history_period_card_(?:active_1|side_1|side_2)\.png$/.test(period.art)), 'the small History carousel must retain its existing local full-bleed card artwork');
+assert.ok(periods.every((period) => /^assets\/history\/history_period_(?:\d{4}_\d{2}|current)_flat\.png$/.test(period.heroArt)), 'each period’s full hero must use its own local flat-vector PNG artwork');
 
 assert.match(html, /<main class="history-detail-content" data-component="history-workspace-template"/, 'one existing Timeline/Calendar body must be the workspace source');
 assert.match(html, /data-history-detail-tab="timeline"/, 'the inline body must retain the Timeline tab');
