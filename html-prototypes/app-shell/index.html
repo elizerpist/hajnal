@@ -2310,6 +2310,9 @@
           this.historyPagerDrag = null;
           this.historyPagerFrame = null;
           this.historyPagerSettleTimer = null;
+          this.historyPagerSettle = null;
+          this.historyPagerSettleToken = 0;
+          this.historyPagerLifecycle = 'idle';
           this.historyPagerSuppressClickUntil = 0;
           this.historyPagerTrackX = 0;
           this.historyPagerScrollPositions = new Map();
@@ -2444,12 +2447,13 @@
           this.historyPager?.addEventListener('pointerdown', (event) => this.historyPagerPointerDown(event));
           this.historyPager?.addEventListener('pointermove', (event) => this.historyPagerPointerMove(event));
           this.historyPager?.addEventListener('pointerup', (event) => this.historyPagerPointerEnd(event));
-          this.historyPager?.addEventListener('pointercancel', () => this.cancelHistoryPagerGesture());
-          this.historyPager?.addEventListener('lostpointercapture', () => this.cancelHistoryPagerGesture());
+          this.historyPager?.addEventListener('pointercancel', (event) => this.historyPagerPointerCancel(event));
+          this.historyPager?.addEventListener('lostpointercapture', (event) => this.historyPagerLostPointerCapture(event));
+          this.historyPagerTrack?.addEventListener('transitionend', (event) => this.historyPagerTrackTransitionEnd(event));
           this.historyPager?.addEventListener('scroll', (event) => this.captureHistoryPagerScroll(event), true);
           window.addEventListener?.('resize', () => this.handleHistoryPagerResize());
           window.visualViewport?.addEventListener?.('resize', () => this.handleHistoryPagerResize());
-          window.addEventListener?.('blur', () => this.cancelHistoryPagerGesture());
+          window.addEventListener?.('blur', () => this.cancelHistoryPagerGesture({ immediate: true }));
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
@@ -3477,6 +3481,7 @@
           this.historyPagerTrack.innerHTML = slides.map(([period, role]) => this.renderHistoryPagerSlide(period, role)).join('');
           this.historyPresentationElements.history.screen?.querySelectorAll?.('[data-history-detail-tab]').forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.historyDetailTab === this.state.historyDetailView)));
           if (typeof Image !== 'undefined') [previous, next].filter(Boolean).forEach((period) => { const image = new Image(); image.src = period.art; });
+          this.historyPagerLifecycle = 'idle';
           this.historyPagerTrack.dataset.historyPagerSettling = 'false';
           this.writeHistoryPagerTrack(0, { immediate: true });
           this.historyPager.querySelectorAll?.('[data-history-pager-scroll-owner]').forEach((owner) => {
@@ -3502,18 +3507,25 @@
           this.historyPagerFrame = null;
           this.historyPagerQueuedDragX = 0;
         }
+        clearHistoryPagerSettle() {
+          this.historyPagerSettleToken += 1;
+          if (this.historyPagerSettleTimer !== null) clearTimeout(this.historyPagerSettleTimer);
+          this.historyPagerSettleTimer = null;
+          this.historyPagerSettle = null;
+        }
         historyPagerPointerDown(event) {
-          if (this.state.historyPeriodPresentation !== 'hero-swipe' || event.button > 0 || this.historyPagerTrack?.dataset.historyPagerSettling === 'true') return;
+          if (this.state.historyPeriodPresentation !== 'hero-swipe' || event.button > 0 || this.historyPagerLifecycle === 'settling' || this.historyPagerTrack?.dataset.historyPagerSettling === 'true') return;
           if (event.target.closest('[data-history-pager-calendar-rail], .history-inline-view-switch, .history-period-presentation-toggle')) return;
           this.historyPagerDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, previousX: event.clientX, startedAt: event.timeStamp || Date.now(), lastAt: event.timeStamp || Date.now(), axis: 'pending', width: this.historyPager?.clientWidth || 412 };
+          this.historyPagerLifecycle = 'pending';
         }
         historyPagerPointerMove(event) {
           const drag = this.historyPagerDrag;
           if (!drag || drag.pointerId !== event.pointerId) return;
           const deltaX = event.clientX - drag.startX; const deltaY = event.clientY - drag.startY;
           if (drag.axis === 'pending' && Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 12) {
-            if (Math.abs(deltaX) > Math.abs(deltaY) * 1.25) { drag.axis = 'horizontal'; this.historyPager?.setPointerCapture?.(event.pointerId); }
-            else if (Math.abs(deltaY) > Math.abs(deltaX) * 1.25) { drag.axis = 'vertical'; return; }
+            if (Math.abs(deltaX) > Math.abs(deltaY) * 1.25) { drag.axis = 'horizontal'; this.historyPagerLifecycle = 'horizontal-dragging'; this.historyPager?.setPointerCapture?.(event.pointerId); }
+            else if (Math.abs(deltaY) > Math.abs(deltaX) * 1.25) { drag.axis = 'vertical'; this.historyPagerLifecycle = 'vertical-native-scroll'; return; }
           }
           if (drag.axis !== 'horizontal') return;
           event.preventDefault();
@@ -3526,7 +3538,7 @@
           const drag = this.historyPagerDrag;
           if (!drag || drag.pointerId !== event.pointerId) return;
           this.historyPagerDrag = null;
-          if (drag.axis !== 'horizontal') return;
+          if (drag.axis !== 'horizontal') { this.historyPagerLifecycle = 'idle'; return; }
           const deltaX = event.clientX - drag.startX;
           const elapsed = Math.max(1, (event.timeStamp || Date.now()) - drag.lastAt);
           const velocity = (event.clientX - drag.previousX) / elapsed;
@@ -3536,29 +3548,62 @@
           this.historyPagerSuppressClickUntil = Date.now() + 360;
           this.settleHistoryPager(commit ? target : null);
         }
+        historyPagerPointerCancel(event) {
+          const drag = this.historyPagerDrag;
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          if (drag.axis === 'horizontal') this.cancelHistoryPagerGesture({ expectedPointerId: event.pointerId });
+          else { this.historyPagerDrag = null; this.historyPagerLifecycle = 'idle'; }
+        }
+        historyPagerLostPointerCapture(event) {
+          const drag = this.historyPagerDrag;
+          // A browser emits this normally after pointerup. That release already
+          // owns the settle, so only an actually active matching drag may cancel.
+          if (!drag || drag.pointerId !== event.pointerId || this.historyPagerLifecycle === 'settling') return;
+          if (drag.axis === 'horizontal') this.cancelHistoryPagerGesture({ expectedPointerId: event.pointerId });
+          else { this.historyPagerDrag = null; this.historyPagerLifecycle = 'idle'; }
+        }
         settleHistoryPager(target) {
           if (!this.historyPagerTrack || !this.historyPager) return;
           this.clearHistoryPagerTrackFrame();
+          this.clearHistoryPagerSettle();
           const width = this.historyPager.clientWidth || 412;
           const targetSlot = target ? Array.from(this.historyPagerTrack.children).findIndex((slide) => slide.dataset.historyPeriodId === target.id) : this.historyPagerCurrentSlot;
+          const token = this.historyPagerSettleToken;
+          this.historyPagerLifecycle = 'settling';
+          this.historyPagerSettle = { token, targetId: target?.id || null };
           this.historyPagerTrack.dataset.historyPagerSettling = 'true';
           this.historyPagerTrack.style.setProperty('--history-pager-track-x', `${-Math.max(0, targetSlot) * width}px`);
-          clearTimeout(this.historyPagerSettleTimer);
-          this.historyPagerSettleTimer = setTimeout(() => {
-            if (target) this.selectHistoryPeriod(target.id, { source: 'pager' });
-            else { this.historyPagerTrack.dataset.historyPagerSettling = 'false'; this.writeHistoryPagerTrack(0, { immediate: true }); }
-          }, this.motionReduced ? 0 : 280);
+          this.historyPagerSettleTimer = setTimeout(() => this.finishHistoryPagerSettle(token), this.motionReduced ? 0 : 280);
         }
-        cancelHistoryPagerGesture({ immediate = false } = {}) {
+        historyPagerTrackTransitionEnd(event) {
+          if (event.target !== this.historyPagerTrack || (event.propertyName && event.propertyName !== 'transform')) return;
+          this.finishHistoryPagerSettle();
+        }
+        finishHistoryPagerSettle(token = this.historyPagerSettle?.token) {
+          const settle = this.historyPagerSettle;
+          if (!settle || settle.token !== token || this.historyPagerLifecycle !== 'settling' || this.state.historyPeriodPresentation !== 'hero-swipe') return;
+          if (this.historyPagerSettleTimer !== null) clearTimeout(this.historyPagerSettleTimer);
+          this.historyPagerSettleTimer = null;
+          this.historyPagerSettle = null;
+          this.historyPagerLifecycle = 'idle';
+          if (settle.targetId) this.selectHistoryPeriod(settle.targetId, { source: 'pager' });
+          else { this.historyPagerTrack.dataset.historyPagerSettling = 'false'; this.writeHistoryPagerTrack(0, { immediate: true }); }
+        }
+        cancelHistoryPagerGesture({ immediate = false, expectedPointerId = null } = {}) {
           const drag = this.historyPagerDrag;
-          if (drag?.pointerId !== undefined) { try { this.historyPager?.releasePointerCapture?.(drag.pointerId); } catch (_) {} }
+          if (expectedPointerId !== null && (!drag || drag.pointerId !== expectedPointerId)) return;
+          const horizontal = drag?.axis === 'horizontal';
+          const pointerId = drag?.pointerId;
           this.historyPagerDrag = null;
+          if (pointerId !== undefined) { try { this.historyPager?.releasePointerCapture?.(pointerId); } catch (_) {} }
           this.clearHistoryPagerTrackFrame();
-          if (this.historyPagerTrack && this.state?.historyPeriodPresentation === 'hero-swipe') {
-            this.historyPagerTrack.dataset.historyPagerSettling = immediate ? 'false' : 'true';
-            this.writeHistoryPagerTrack(0, { immediate });
-            if (!immediate) setTimeout(() => { if (this.historyPagerTrack) this.historyPagerTrack.dataset.historyPagerSettling = 'false'; }, this.motionReduced ? 0 : 180);
-          }
+          this.clearHistoryPagerSettle();
+          if (!this.historyPagerTrack || this.state?.historyPeriodPresentation !== 'hero-swipe') { this.historyPagerLifecycle = 'idle'; return; }
+          if (horizontal && !immediate) { this.settleHistoryPager(null); return; }
+          this.historyPagerLifecycle = immediate ? 'cancelled' : 'idle';
+          this.historyPagerTrack.dataset.historyPagerSettling = 'false';
+          this.writeHistoryPagerTrack(0, { immediate: true });
+          this.historyPagerLifecycle = 'idle';
         }
         captureHistoryPagerScroll(event) {
           const owner = event.target.closest?.('[data-history-pager-scroll-owner]');

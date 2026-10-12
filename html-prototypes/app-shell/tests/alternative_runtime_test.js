@@ -8,10 +8,12 @@ const vm = require('node:vm');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 function element() {
+  const listeners = new Map();
   return {
     attributes: new Map(), dataset: {}, style: { values: {}, setProperty(name, value) { this.values[name] = value; }, removeProperty(name) { delete this.values[name]; } }, innerHTML: '', textContent: '', hidden: false,
     classList: { add() {}, remove() {}, toggle() {}, contains() { return false; } },
-    addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; }, focus() {},
+    addEventListener(type, listener) { const handlers = listeners.get(type) || []; handlers.push(listener); listeners.set(type, handlers); }, querySelector() { return null; }, querySelectorAll() { return []; }, focus() {},
+    dispatch(type, event = {}) { (listeners.get(type) || []).forEach((listener) => listener({ target: this, currentTarget: this, ...event })); },
     setAttribute(name, value) { this.attributes.set(name, String(value)); }, getAttribute(name) { return this.attributes.get(name); }, removeAttribute(name) { this.attributes.delete(name); },
     setPointerCapture() {}, releasePointerCapture() {},
   };
@@ -198,5 +200,79 @@ controller.navigate('timeline-event-detail');
 controller.navigate('history-detail');
 assert.equal(root.dataset.route, 'history', 'returning from an event detail must resolve to the inline History workspace');
 assert.equal(controller.state.historySelectedPeriodId, '2024-06', 'the selected carousel period must survive detail-route compatibility navigation');
+
+// Regression: a browser normally emits lostpointercapture after pointerup. The
+// release-owned settle must remain at the neighboring slot instead of being
+// cancelled back to the original slide before its completion callback runs.
+const pagerTimers = new Map();
+let nextPagerTimerId = 1;
+const deferPagerTimer = (callback) => {
+  const id = nextPagerTimerId++;
+  pagerTimers.set(id, callback);
+  return id;
+};
+const clearDeferredPagerTimer = (id) => pagerTimers.delete(id);
+const flushPagerTimers = () => {
+  while (pagerTimers.size) {
+    const pending = [...pagerTimers.values()];
+    pagerTimers.clear();
+    pending.forEach((callback) => callback());
+  }
+};
+sandbox.setTimeout = deferPagerTimer;
+sandbox.clearTimeout = clearDeferredPagerTimer;
+sandbox.globalThis.setTimeout = deferPagerTimer;
+sandbox.globalThis.clearTimeout = clearDeferredPagerTimer;
+controller.state.historyDetailView = 'timeline';
+controller.state.historySelectedPeriodId = 'current';
+controller.state.historyPeriodPresentation = 'hero-swipe';
+controller.renderHistoryFullPagePager();
+historyPagerTrack.children = [
+  { dataset: { historyPeriodId: '2025-11' } },
+  { dataset: { historyPeriodId: 'current' } }
+];
+historyPager.dispatch('pointerdown', { pointerId: 41, button: 0, clientX: 190, clientY: 420, timeStamp: 100, target: pagerTarget });
+historyPager.dispatch('pointermove', { pointerId: 41, clientX: 350, clientY: 424, timeStamp: 120, preventDefault() {} });
+historyPager.dispatch('pointerup', { pointerId: 41, clientX: 350, clientY: 424, timeStamp: 140 });
+assert.equal(historyPagerTrack.style.values['--history-pager-track-x'], '0px', 'a right drag from the latest period must preview the already-rendered previous slide before completion');
+historyPager.dispatch('lostpointercapture', { pointerId: 41 });
+assert.equal(historyPagerTrack.style.values['--history-pager-track-x'], '0px', 'normal lostpointercapture after pointerup must not cancel the completed slide-in');
+historyPagerTrack.dispatch('transitionend', { propertyName: 'transform' });
+assert.equal(controller.state.historySelectedPeriodId, '2025-11', 'the release-owned settle must commit exactly the previously previewed period');
+flushPagerTimers();
+assert.equal(controller.state.historySelectedPeriodId, '2025-11', 'the fallback timer must be harmless after transition completion has already committed the period');
+
+// A native vertical scroll/cancel must not put the pager into a settling lock
+// that rejects the next genuine horizontal drag.
+controller.state.historySelectedPeriodId = 'current';
+controller.state.historyPeriodPresentation = 'hero-swipe';
+controller.renderHistoryFullPagePager();
+historyPagerTrack.children = [
+  { dataset: { historyPeriodId: '2025-11' } },
+  { dataset: { historyPeriodId: 'current' } }
+];
+historyPager.dispatch('pointerdown', { pointerId: 42, button: 0, clientX: 200, clientY: 380, timeStamp: 200, target: pagerTarget });
+historyPager.dispatch('pointermove', { pointerId: 42, clientX: 204, clientY: 452, timeStamp: 220, preventDefault() {} });
+historyPager.dispatch('pointercancel', { pointerId: 42 });
+assert.equal(historyPagerTrack.dataset.historyPagerSettling, 'false', 'vertical native scroll cancellation must not start a horizontal settle');
+historyPager.dispatch('pointerdown', { pointerId: 43, button: 0, clientX: 190, clientY: 400, timeStamp: 240, target: pagerTarget });
+assert.equal(controller.historyPagerDrag?.pointerId, 43, 'a new horizontal gesture must be accepted immediately after native vertical scrolling');
+controller.cancelHistoryPagerGesture({ immediate: true });
+
+// Mode changes invalidate a settle callback that was already queued.
+controller.state.historySelectedPeriodId = 'current';
+controller.state.historyPeriodPresentation = 'hero-swipe';
+controller.renderHistoryFullPagePager();
+historyPagerTrack.children = [
+  { dataset: { historyPeriodId: '2025-11' } },
+  { dataset: { historyPeriodId: 'current' } }
+];
+historyPager.dispatch('pointerdown', { pointerId: 44, button: 0, clientX: 190, clientY: 420, timeStamp: 300, target: pagerTarget });
+historyPager.dispatch('pointermove', { pointerId: 44, clientX: 350, clientY: 424, timeStamp: 320, preventDefault() {} });
+historyPager.dispatch('pointerup', { pointerId: 44, clientX: 350, clientY: 424, timeStamp: 340 });
+controller.toggleHistoryPeriodPresentation();
+flushPagerTimers();
+assert.equal(controller.state.historyPeriodPresentation, 'cards', 'the explicit presentation toggle must still complete while a settle is pending');
+assert.equal(controller.state.historySelectedPeriodId, 'current', 'an obsolete settle callback must not mutate selection after a presentation change');
 
 console.log('PASS alternative controller runtime contract');
