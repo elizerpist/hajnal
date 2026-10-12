@@ -339,6 +339,11 @@ async function runViewport(browser, baseUrl, viewport) {
   await page.waitForTimeout(360);
   const expanded = await inspect(page);
   const expandedSamples = await programmedScroll(page);
+  await page.evaluate(() => { document.querySelector('[data-component="history-workspace"] .history-detail-panel-slot').scrollTop = 0; });
+  const expandedActiveBeforeTouch = await page.locator('.history-period-carousel-card[aria-current="true"]').getAttribute('data-history-period-id');
+  await touchSwipe(cdp, page, 'vertical');
+  const expandedAfterTouch = await inspect(page);
+  const expandedActiveAfterTouch = await page.locator('.history-period-carousel-card[aria-current="true"]').getAttribute('data-history-period-id');
   console.error(`History runtime: ${viewport.width}x${viewport.height} expanded footer sampled`);
 
   await page.locator('[data-component="history-view-switch"] [data-history-detail-tab="calendar"]').click();
@@ -457,7 +462,7 @@ async function runViewport(browser, baseUrl, viewport) {
   await page.screenshot({ path: path.join(artifactDirectory, `history-timeline-${viewport.width}x${viewport.height}.png`), fullPage: false });
   console.error(`History runtime: ${viewport.width}x${viewport.height} complete`);
   await context.close();
-  return { viewport, pathReference, pathAlignment, before, programmatic, afterTouch, activeBeforeTouch, activeAfterTouch, fixedBefore, fixedAfter, expanded, expandedSamples, calendarState, afterTabs, tabSamples, lastEvent, footerBox, carouselBefore, carouselAfter, afterCarousel, carouselSamples, heroSwipeBefore, heroSwipeDirection, heroSwipeAfter, cardsRestored, probe };
+  return { viewport, pathReference, pathAlignment, before, programmatic, afterTouch, activeBeforeTouch, activeAfterTouch, fixedBefore, fixedAfter, expanded, expandedSamples, expandedAfterTouch, expandedActiveBeforeTouch, expandedActiveAfterTouch, calendarState, afterTabs, tabSamples, lastEvent, footerBox, carouselBefore, carouselAfter, afterCarousel, carouselSamples, heroSwipeBefore, heroSwipeDirection, heroSwipeAfter, cardsRestored, probe };
 }
 
 (async () => {
@@ -535,6 +540,8 @@ async function runViewport(browser, baseUrl, viewport) {
       assert.deepEqual(result.fixedAfter, result.fixedBefore, `${result.viewport.width}×${result.viewport.height}: hero, carousel, tabs, footer and navigation must stay fixed while Timeline scrolls`);
       assert.ok(result.expanded.elements.slot.scrollHeight > result.expanded.elements.slot.clientHeight, `${result.viewport.width}×${result.viewport.height}: opening the footer must retain a scroll range`);
       assert.ok(result.expandedSamples.at(-1).scrollTop > 0, `${result.viewport.width}×${result.viewport.height}: Timeline must scroll while footer is expanded`);
+      assert.ok(result.expandedAfterTouch.elements.slot.scrollTop > 0, `${result.viewport.width}×${result.viewport.height}: a CDP mobile touch swipe must move Timeline scrollTop while the footer is expanded`);
+      assert.equal(result.expandedActiveAfterTouch, result.expandedActiveBeforeTouch, `${result.viewport.width}×${result.viewport.height}: an expanded-footer vertical Timeline gesture may not change the carousel chapter`);
       assert.equal(result.calendarState.workspaceView, 'calendar', `${result.viewport.width}×${result.viewport.height}: Naptár tab must set the shared workspace state to calendar`);
       assert.equal(result.calendarState.timelineDisplay, 'none', `${result.viewport.width}×${result.viewport.height}: Timeline panel must not occupy the inline workspace while Naptár is selected`);
       assert.notEqual(result.calendarState.calendarDisplay, 'none', `${result.viewport.width}×${result.viewport.height}: Naptár panel must become visible when its tab is selected`);

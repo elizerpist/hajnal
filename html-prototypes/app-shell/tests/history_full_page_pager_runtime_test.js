@@ -218,8 +218,26 @@ async function touchDrag(cdp, page, {
     });
     const afterVertical = await pagerSnapshot(page, 'after-vertical-scroll-settle');
 
+    await page.locator('[data-history-pager-role="current"] [data-action="toggle-history-metrics"]').click();
+    await page.waitForTimeout(120);
+    const beforeExpandedMetricsVertical = await pagerSnapshot(page, 'before-expanded-metrics-vertical-scroll');
+    await touchDrag(cdp, page, {
+      selector: '[data-history-pager-role="current"] [data-history-pager-scroll-owner]',
+      deltaY: -180,
+      pointerId: 15,
+      steps: 8,
+      snapshotLabel: 'after-expanded-metrics-vertical-scroll'
+    });
+    const afterExpandedMetricsVertical = await pagerSnapshot(page, 'after-expanded-metrics-vertical-scroll-settle');
+    await page.locator('[data-history-pager-role="current"] [data-action="toggle-history-metrics"]').click();
+    await page.waitForTimeout(120);
+
     await page.locator('[data-component="history-view-switch"] [data-history-detail-tab="calendar"]').click();
     await page.waitForTimeout(120);
+    await page.locator('[data-history-pager-role="current"] [data-history-pager-calendar-grid]').waitFor();
+    const calendarGridVisible = await page.locator('[data-history-pager-role="current"] [data-history-pager-calendar-grid]').isVisible();
+    await page.locator('[data-history-pager-role="current"] .history-calendar-selected-day').click();
+    await page.locator('[data-history-pager-role="current"] .history-period-pager-calendar-rail').waitFor();
     const beforeRail = await pagerSnapshot(page, 'before-calendar-rail');
     await touchDrag(cdp, page, {
       selector: '[data-history-pager-role="current"] [data-history-pager-calendar-rail]',
@@ -230,6 +248,8 @@ async function touchDrag(cdp, page, {
     const afterRail = await pagerSnapshot(page, 'after-calendar-rail-settle');
     await page.locator('[data-component="history-view-switch"] [data-history-detail-tab="timeline"]').click();
     await page.waitForTimeout(120);
+    await page.locator('[data-history-pager-role="current"] [data-history-pager-scroll-owner]').evaluate((owner) => { owner.scrollTop = 0; });
+    await page.waitForTimeout(40);
 
     const beforeModeRace = await pagerSnapshot(page, 'before-mode-toggle-race');
     const raceBox = await page.locator('[data-history-pager-role="current"] .history-detail-event').first().boundingBox();
@@ -240,6 +260,13 @@ async function touchDrag(cdp, page, {
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: raceX + 176, y: raceY, id: 14 }] });
     await page.waitForTimeout(35);
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    const beforeModeToggleClick = await page.evaluate(() => ({
+      route: document.querySelector('.app-frame')?.dataset.route || '',
+      toggleCount: document.querySelectorAll('[data-component="history-period-presentation-toggle"]').length,
+      selectedPeriodId: document.querySelector('[data-history-pager-role="current"]')?.dataset.historyPeriodId || ''
+    }));
+    assert.equal(beforeModeToggleClick.route, 'history', `The mode-switch race may not navigate away from History: ${JSON.stringify(beforeModeToggleClick)}`);
+    assert.equal(beforeModeToggleClick.toggleCount, 1, `The mode-switch race requires the static History presentation toggle: ${JSON.stringify(beforeModeToggleClick)}`);
     await page.locator('[data-component="history-period-presentation-toggle"]').click();
     await page.waitForTimeout(420);
     const afterModeRace = await page.evaluate(() => ({
@@ -251,7 +278,7 @@ async function touchDrag(cdp, page, {
 
     const diagnostics = await page.evaluate(() => window.__hajnalHistoryPagerDebug);
     const trace = await page.evaluate(() => window.__hajnalHistoryPagerTrace);
-    fs.writeFileSync(path.join(artifactDirectory, 'history-pager-touch-trace.json'), JSON.stringify({ expectedHash, before, partial, after, reversePartial, afterReverse, beforeShortDrag, afterShortDrag, beforeVertical, afterVertical, beforeRail, afterRail, beforeModeRace, afterModeRace, diagnostics, trace }, null, 2));
+    fs.writeFileSync(path.join(artifactDirectory, 'history-pager-touch-trace.json'), JSON.stringify({ expectedHash, before, partial, after, reversePartial, afterReverse, beforeShortDrag, afterShortDrag, beforeVertical, afterVertical, beforeExpandedMetricsVertical, afterExpandedMetricsVertical, calendarGridVisible, beforeRail, afterRail, beforeModeRace, afterModeRace, diagnostics, trace }, null, 2));
 
     const previous = partial.slides.find((slide) => slide.role === 'previous');
     const current = partial.slides.find((slide) => slide.role === 'current');
@@ -271,6 +298,10 @@ async function touchDrag(cdp, page, {
     assert.equal(afterVertical.activePeriodId, beforeVertical.activePeriodId, 'A vertical Timeline gesture may not change the selected period.');
     assert.ok(afterVertical.bodyScrollTop > beforeVertical.bodyScrollTop, 'A vertical Timeline gesture must move the one period-local native scroll owner.');
     assert.ok(Math.abs(afterVertical.trackX - beforeVertical.trackX) < 2, 'A vertical Timeline gesture may not displace the full-page track.');
+    assert.equal(afterExpandedMetricsVertical.activePeriodId, beforeExpandedMetricsVertical.activePeriodId, 'An expanded metrics panel may not let a vertical Timeline gesture change the selected period.');
+    assert.ok(afterExpandedMetricsVertical.bodyScrollTop > beforeExpandedMetricsVertical.bodyScrollTop, 'With metrics expanded, a vertical Timeline gesture must still move its native period-local scroll owner.');
+    assert.ok(Math.abs(afterExpandedMetricsVertical.trackX - beforeExpandedMetricsVertical.trackX) < 2, 'With metrics expanded, a vertical Timeline gesture may not displace the full-page track.');
+    assert.equal(calendarGridVisible, true, 'The full-hero Calendar must first render its shared month grid before a date opens the rail.');
     assert.equal(afterRail.activePeriodId, beforeRail.activePeriodId, 'The calendar rail must keep priority over the outer full-page pager.');
     assert.ok(Math.abs(afterRail.trackX - beforeRail.trackX) < 2, 'A calendar-rail pan may not displace the outer full-page track.');
     assert.equal(afterModeRace.presentation, 'cards', 'Changing presentation during an in-flight settle must leave the requested cards presentation active.');

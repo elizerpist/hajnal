@@ -41,7 +41,8 @@ assert.ok(historyDetailStart >= 0, 'the existing current-period route must remai
 assert.ok(!historyDetail.includes('history-metrics-toggle'), 'the Calendar insight card must no longer contain a dedicated arrow button');
 assert.ok(historyDetail.includes('data-component="history-metrics-surface"'), 'the Calendar insight card must expose its full-card semantic tap target');
 assert.equal((historyDetail.match(/class="history-calendar-month-card"/g) || []).length, 1, 'the integrated Calendar variant must move one monthly grid node rather than duplicate it');
-assert.ok(html.includes('.history-metrics-surface { position: absolute; inset: 0; z-index: 3;'), 'the full insight card must own the semantic tap overlay rather than a dedicated arrow');
+assert.ok(html.includes('.history-number-summary[aria-expanded="false"] .history-metrics-surface { position: absolute; inset: 0; height: 100%;'), 'the collapsed insight card must retain its full-card semantic expand target');
+assert.ok(html.includes('.history-number-summary[aria-expanded="true"] .history-metrics-surface { position: relative; inset: auto; height: auto; }'), 'the expanded insight card must limit its semantic collapse target to the natural heading height, not an overlay above its rail');
 assert.ok(!historyDetail.includes('history-timeline-filters'), 'the Calendar must not retain the shared removed filter-pill row');
 assert.ok(!historyDetail.includes('data-history-timeline-filter'), 'the Calendar must not retain Timeline filter-pill interactions');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"] .history-detail-content { z-index: 2; top: 224px; grid-template-rows: 44px minmax(0, 1fr) auto; gap: 8px;'), 'the Calendar grid must use the taller shared Timeline tab geometry above the calendar scroll panel');

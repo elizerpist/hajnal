@@ -25,6 +25,60 @@ assert.match(
 );
 assert.match(
   html,
+  /\.history-number-summary\s*\{[^}]*min-width:\s*0;[^}]*max-width:\s*100%;/,
+  'The shared metrics footer must opt out of the grid item min-content width that can grow it past the screen.'
+);
+assert.match(
+  html,
+  /\.history-period-pager-summary\s*\{[^}]*min-width:\s*0;[^}]*max-width:\s*100%;/,
+  'The full-hero pager summary must be constrained by its body grid, never by its rail children.'
+);
+const metricsRailRule = html.match(/\.history-number-grid\s*\{[^}]*\}/)?.[0] || '';
+assert.match(metricsRailRule, /min-width:\s*0;/, 'The metric rail must opt out of min-content expansion.');
+assert.match(metricsRailRule, /width:\s*100%;/, 'The metric rail must fill its constrained parent width.');
+assert.match(metricsRailRule, /max-width:\s*100%;/, 'The metric rail may not widen its parent.');
+assert.match(metricsRailRule, /touch-action:\s*pan-y;/, 'The rail must preserve native vertical scrolling while its scoped controller owns horizontal dragging.');
+assert.match(
+  html,
+  /data-history-metrics-rail/,
+  'Metrics rails need a semantic marker so the outer History pager can yield horizontal gestures to them.'
+);
+assert.match(
+  html,
+  /event\.target\.closest\([^)]*data-history-metrics-rail[^)]*\)\) return;/,
+  'The full-page History pager must explicitly yield a gesture that starts on a metrics rail.'
+);
+assert.ok(
+  !/\.history-number-summary\[aria-expanded="true"\]\s+\.history-metrics-surface\s*\{[^}]*height:\s*52px;/.test(html),
+  'Expanded metrics must not use an arbitrary 52px transparent overlay that can cover the rail.'
+);
+assert.match(
+  html,
+  /<button class="history-metrics-surface"[^>]*>[\s\S]*?<div class="history-number-summary-heading">/,
+  'The metrics heading must be inside its real collapse button so its expanded hit area follows the heading rather than an overlay.'
+);
+assert.match(
+  html,
+  /captureHistoryMetricsRailScrollPositions\(\)[\s\S]*?restoreHistoryMetricsRailScrollPositions\(\)/,
+  'Controller-owned metrics rail positions must be captured and restored around History rerenders.'
+);
+assert.match(
+  html,
+  /historyMetricsRailPointerDown\(event\)[\s\S]*?data-history-metrics-rail[\s\S]*?historyMetricsRailPointerMove\(event\)[\s\S]*?Math\.abs\(deltaX\).*1\.25/,
+  'A scoped metrics-rail drag guard must distinguish a horizontal rail drag from an icon tap.'
+);
+assert.match(
+  html,
+  /consumeHistoryMetricsRailClick\(event\)[\s\S]*?event\.preventDefault\(\);[\s\S]*?event\.stopPropagation\(\);/,
+  'A genuine metrics rail drag must suppress its synthetic icon click without installing a second global gesture engine.'
+);
+assert.match(
+  html,
+  /historyMetricsRailPointerMove\(event\)[\s\S]*?drag\.rail\.scrollLeft\s*=\s*Math\.max\(/,
+  'The scoped rail gesture must move only the rail scroll position when the ancestor pager reserves horizontal gestures.'
+);
+assert.match(
+  html,
   /data-history-metrics-expanded="true"\][^{}]*\.history-number-grid\s*\{[^}]*max-height:\s*(?:8[0-9]|9[0-9])px;/,
   'The expanded metrics summary must reserve only one card-row height.'
 );

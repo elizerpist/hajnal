@@ -503,7 +503,7 @@
     .history-period-badge { min-height: 24px; display: inline-flex; align-items: center; margin-top: 6px; padding: 3px 9px; border-radius: 999px; background: #EFE9FA; color: #7056B3; font-size: 10.5px; line-height: 1; font-weight: 820; }
     .history-period-card[data-history-batch="current"] .history-period-badge { background: #DCF5E8; color: #2E9A62; }
     .history-period-chevron { align-self: center; color: #A89ABF; font-size: 21px; line-height: 1; font-weight: 400; }
-    .history-number-summary { margin: 0; padding-top: 13px; }
+    .history-number-summary { min-width: 0; max-width: 100%; margin: 0; padding-top: 13px; }
     .history-number-summary-heading { display: grid; grid-template-columns: 22px minmax(0, 1fr) minmax(0, 110px); align-items: center; gap: 5px; margin-bottom: 9px; }
     .history-number-summary-heading > .icon { width: 18px; height: 18px; color: #D07CAC; stroke-width: 1.55; }
     .history-number-summary-heading h2 { min-width: 0; margin: 0; color: #3B2B7E; font-family: Georgia, "Times New Roman", serif; font-size: 17px; line-height: 1; font-weight: 700; letter-spacing: -.025em; white-space: nowrap; }
@@ -511,9 +511,10 @@
     .history-number-summary-heading p { margin: 0; color: #8A7BB5; font-family: Georgia, "Times New Roman", serif; font-size: 9px; font-style: italic; line-height: 1.12; text-align: right; }
     .history-number-summary-heading p::after { content: "♥"; margin-left: 3px; color: #D07CAC; font-size: 10px; }
     .history-number-summary { position: relative; }
-    .history-metrics-surface { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+    .history-metrics-surface { width: 100%; position: relative; z-index: 3; display: block; padding: 0; border: 0; border-radius: inherit; background: transparent; color: inherit; cursor: pointer; text-align: left; }
+    .history-metrics-surface .history-number-summary-heading { pointer-events: none; }
     .history-metrics-surface:focus-visible { outline: 3px solid rgba(106,86,180,.45); outline-offset: 2px; }
-    .history-number-grid { display: flex; min-width: 0; gap: 7px; overflow-x: auto; overflow-y: hidden; padding: 1px 1px 4px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .history-number-grid { width: 100%; max-width: 100%; position: relative; z-index: 2; display: flex; min-width: 0; gap: 7px; overflow-x: auto; overflow-y: hidden; padding: 1px 1px 4px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; /* The full-page pager reserves horizontal drags with pan-y. Keeping pan-y here lets the local controller receive only the rail's x drag while native vertical scrolling remains available to the screen. */ touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-number-grid::-webkit-scrollbar { display: none; }
     .history-number-card { flex: 0 0 auto; width: 76px; min-width: 76px; min-height: 83px; display: grid; justify-items: center; align-content: start; gap: 5px; padding: 8px 2px 6px; border: 1px solid rgba(131, 105, 173, .10); border-radius: 13px; background: #FFF; box-shadow: 0 5px 12px rgba(69, 47, 122, .04); scroll-snap-align: start; text-align: center; }
     .history-number-icon { width: 22px; height: 22px; display: grid; place-items: center; padding: 0; border: 1px solid transparent; border-radius: 8px; background: #E3F6EF; color: #53AD89; cursor: pointer; }
@@ -529,9 +530,10 @@
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="false"] .history-number-grid { max-height: 0; margin-top: 0; overflow: hidden; opacity: 0; pointer-events: none; }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"])[data-history-metrics-expanded="true"] .history-number-grid { max-height: 92px; margin-top: 8px; opacity: 1; }
     :is(.history-screen, .history-detail-screen[data-history-detail-view="timeline"], .history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="grid"]) .history-number-grid { overflow-x: auto; overflow-y: hidden; transition: max-height .28s ease, margin-top .28s ease, opacity .20s ease; }
-    /* Keep the existing summary heading as the collapse target without letting its
-       full-card overlay cover the interactive event-type icons below it. */
-    .history-number-summary[aria-expanded="true"] .history-metrics-surface { bottom: auto; height: 52px; }
+    /* Collapsed, the complete card expands. Expanded, this same semantic button
+       has only the natural heading height, so it can never overlap the rail. */
+    .history-number-summary[aria-expanded="false"] .history-metrics-surface { position: absolute; inset: 0; height: 100%; padding: 9px 10px 8px; }
+    .history-number-summary[aria-expanded="true"] .history-metrics-surface { position: relative; inset: auto; height: auto; }
     .history-screen[data-history-hero-variant="compact"] .history-hero { height: 185px; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-image { object-position: center center; }
     .history-screen[data-history-hero-variant="compact"] .history-hero-copy { top: 48px; }
@@ -1665,7 +1667,7 @@
     .history-period-carousel-copy small { color: currentColor; font-size: 8.5px; line-height: 1.12; font-weight: 700; }
     .history-period-carousel-days { color: currentColor; font-size: 10px; line-height: 1; font-weight: 820; }
     .history-screen[data-history-workspace="inline"] .history-workspace { position: absolute; z-index: 2; top: calc(var(--path-overview-hero-height) - var(--history-inline-workspace-overlap)); right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; background: transparent; color: var(--hajnal-navy); }
-    .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-content { width: 100%; min-height: 0; position: absolute; z-index: 2; inset: 0; height: auto; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 18px 18px 17px; border-radius: 0; background: transparent; }
+    .history-screen[data-history-workspace="inline"] .history-workspace .history-detail-content { width: 100%; min-width: 0; min-height: 0; position: absolute; z-index: 2; inset: 0; height: auto; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 18px 18px 17px; border-radius: 0; background: transparent; }
     .history-screen[data-history-workspace="inline"] .period-detail-tabs { display: none; }
     /* The direct middle grid row is deliberately the only inline Timeline scroll owner.
        A nested 100%-height scroller becomes unreliable once this shared detail markup
@@ -1703,7 +1705,7 @@
     .history-period-pager-copy h2 { max-width: 300px; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 26px; line-height: 1.02; font-weight: 700; letter-spacing: -.052em; }
     .history-period-pager-copy p, .history-period-pager-copy strong { margin: 0; color: inherit; font-size: 12px; line-height: 1.12; font-weight: 720; }
     .history-period-pager-copy strong { font-size: 14px; font-weight: 850; }
-    .history-period-pager-body { position: absolute; z-index: 1; top: 244px; right: 0; bottom: 0; left: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 18px 18px 17px; background: transparent; }
+    .history-period-pager-body { position: absolute; z-index: 1; top: 244px; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; padding: 18px 18px 17px; background: transparent; }
     .history-period-pager-scroll-owner { min-height: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .history-period-pager-scroll-owner::-webkit-scrollbar { display: none; }
     .history-period-pager-timeline { min-height: 100%; }
@@ -1718,7 +1720,7 @@
     .history-period-pager-calendar-event { display: grid; gap: 3px; padding: 13px 14px; border: 1px solid rgba(106,86,180,.09); border-radius: 18px; background: rgba(255,255,255,.82); color: #3B2B7E; }
     .history-period-pager-calendar-event strong { font-family: Georgia, "Times New Roman", serif; font-size: 17px; }
     .history-period-pager-calendar-event small { color: #8174AE; font-size: 11px; }
-    .history-period-pager-summary { margin: 0; }
+    .history-period-pager-summary { min-width: 0; max-width: 100%; margin: 0; }
     .history-period-pager-summary .history-number-grid { display: none; }
     .history-period-pager-summary[aria-expanded="true"] .history-number-grid { display: flex; }
     .history-screen[data-history-period-presentation="hero-swipe"] .history-workspace { display: none; }
@@ -1864,7 +1866,7 @@
             </div>
           </section>
         </div>
-        <section class="history-number-summary" aria-labelledby="timeline-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="history-metrics-surface" aria-label="Idővonalam számokban kibontása" aria-expanded="false"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div><div class="history-number-grid" data-component="history-period-metrics-grid"></div></section>
+        <section class="history-number-summary" aria-labelledby="timeline-number-title"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="timeline" data-component="history-metrics-surface" aria-label="Idővonalam számokban kibontása" aria-expanded="false"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2 id="timeline-number-title">Idővonalam számokban</h2><p>Kisebb lépések. Nagyobb élet.</p></div></button><div class="history-number-grid" data-component="history-period-metrics-grid" data-history-metrics-rail></div></section>
       </main>
     </section>
 
@@ -2386,6 +2388,9 @@
           this.historyPagerSuppressClickUntil = 0;
           this.historyPagerTrackX = 0;
           this.historyPagerScrollPositions = new Map();
+          this.historyMetricsRailScrollPositions = new Map();
+          this.historyMetricsRailDrag = null;
+          this.historyMetricsRailSuppressClick = null;
           this.historyWorkspace = root.querySelector('[data-component="history-workspace"]');
           this.historyWorkspaceTemplate = root.querySelector('[data-component="history-workspace-template"]');
           this.historyWorkspaceRenderCount = 0;
@@ -2503,12 +2508,17 @@
           this.expandHotspot.addEventListener('click', () => this.settle('expanded'));
           this.summary.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.settle('expanded'); } });
           this.root.addEventListener('click', (event) => this.handleAction(event));
+          this.root.addEventListener('click', (event) => this.consumeHistoryMetricsRailClick(event), true);
           this.root.addEventListener('input', (event) => this.handleInput(event));
           this.root.addEventListener('focusout', (event) => { if (event.target.matches('[data-pending-inline-input]')) this.commitPendingTopic(); });
           this.root.addEventListener('pointerdown', (event) => this.beginTakeawayReorder(event));
           this.root.addEventListener('pointermove', (event) => this.updateTakeawayReorder(event));
           this.root.addEventListener('pointerup', (event) => this.finishTakeawayReorder(event));
           this.root.addEventListener('pointercancel', () => { this.takeawayDrag = null; });
+          this.root.addEventListener('pointerdown', (event) => this.historyMetricsRailPointerDown(event), true);
+          this.root.addEventListener('pointermove', (event) => this.historyMetricsRailPointerMove(event), true);
+          this.root.addEventListener('pointerup', (event) => this.historyMetricsRailPointerEnd(event), true);
+          this.root.addEventListener('pointercancel', (event) => this.historyMetricsRailPointerCancel(event), true);
           this.root.addEventListener('pointerdown', (event) => this.startPanicSheetDrag(event));
           this.root.addEventListener('pointermove', (event) => this.updatePanicSheetDrag(event));
           this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
@@ -3460,6 +3470,7 @@
         updateFullscreenButton() { if (this.fullscreenButton) this.fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Kilépés teljes képernyőből' : 'Teljes képernyő'); }
         getHistoryPresentation(surface = 'history') { return this.state.historyPresentation[surface] || this.state.historyPresentation.history; }
         toggleHistoryPeriodPresentation() {
+          this.captureHistoryMetricsRailScrollPositions();
           clearTimeout(this.historyCarouselSettleTimer);
           this.cancelHistoryPagerGesture({ immediate: true });
           this.recordHistoryPagerDebugOperation('history-period-presentation-toggle', { from: this.state.historyPeriodPresentation });
@@ -3491,11 +3502,13 @@
           this.renderHistoryPresentation(surface);
         }
         toggleHistoryMetrics(surface = 'history') {
+          this.captureHistoryMetricsRailScrollPositions();
           const presentation = this.getHistoryPresentation(surface);
           presentation.metricsExpanded = !presentation.metricsExpanded;
           this.renderHistoryPresentation(surface);
           if (surface === 'history' && this.state.historyPeriodPresentation === 'hero-swipe') this.renderHistoryFullPagePager();
           else if (surface === 'timeline' || surface === 'calendar') this.renderHistoryWorkspace();
+          this.restoreHistoryMetricsRailScrollPositions();
         }
         getSelectedHistoryPeriod() { return HISTORY_PERIODS.find((period) => period.id === this.state.historySelectedPeriodId) || HISTORY_PERIODS.find((period) => period.current) || HISTORY_PERIODS[0]; }
         historyEventTypeDefinition(event = {}) {
@@ -3526,9 +3539,11 @@
         toggleHistoryEventFilter(eventType) {
           const normalizedType = this.historyEventTypes().some((type) => type.id === eventType) ? eventType : null;
           if (!normalizedType) return;
+          this.captureHistoryMetricsRailScrollPositions();
           this.state.historyEventTypeFilter = this.state.historyEventTypeFilter === normalizedType ? null : normalizedType;
           if (this.state.historyPeriodPresentation === 'hero-swipe') this.renderHistoryFullPagePager();
           else this.renderHistoryWorkspace();
+          this.restoreHistoryMetricsRailScrollPositions();
         }
         historyPeriodMetrics(period) {
           const timeline = HISTORY_PERIOD_TIMELINES[period?.id] || { events: [] };
@@ -3543,8 +3558,10 @@
         }
         renderHistoryPeriodMetrics(period) {
           if (!this.historyWorkspace || !period) return;
+          this.captureHistoryMetricsRailScrollPositions(this.historyWorkspace);
           const markup = this.renderHistoryMetricCards(period);
           this.historyWorkspace.querySelectorAll?.('[data-component="history-period-metrics-grid"]').forEach((target) => { target.innerHTML = markup; });
+          this.restoreHistoryMetricsRailScrollPositions(this.historyWorkspace);
         }
         renderSelectedHistoryTimeline(selected) {
           if (!this.historyWorkspace || !selected) return;
@@ -3596,6 +3613,7 @@
           return this.historyWorkspace.querySelector?.('[data-component="history-workspace-mounted"]') || null;
         }
         renderHistoryWorkspace() {
+          this.captureHistoryMetricsRailScrollPositions(this.historyWorkspace);
           this.ensureHistoryWorkspace();
           if (!this.historyWorkspace) return;
           this.historyWorkspaceRenderCount += 1;
@@ -3629,6 +3647,7 @@
             surface.closest('.history-number-summary')?.setAttribute('aria-expanded', String(presentation.metricsExpanded));
           });
           if (railActive) this.renderHistoryCalendarRail();
+          this.restoreHistoryMetricsRailScrollPositions(this.historyWorkspace);
         }
         renderHistoryLayout() {
           this.recordHistoryPagerDebugOperation('render-history-layout');
@@ -3648,7 +3667,7 @@
         historyPagerNextPeriod() { return this.historyPagerPeriodByOffset(1); }
         renderHistoryPagerSummary(period) {
           const expanded = this.getHistoryPresentation('history').metricsExpanded;
-          return `<section class="history-number-summary history-period-pager-summary" aria-expanded="${expanded}"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" aria-label="Utam számokban ${expanded ? 'összecsukása' : 'kibontása'}" aria-expanded="${expanded}"></button><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2>Idővonalam számokban</h2><p>${period.days} nap egyben.</p></div><div class="history-number-grid">${this.renderHistoryMetricCards(period)}</div></section>`;
+          return `<section class="history-number-summary history-period-pager-summary" aria-expanded="${expanded}"><button class="history-metrics-surface" type="button" data-action="toggle-history-metrics" data-history-presentation-surface="history" aria-label="Utam számokban ${expanded ? 'összecsukása' : 'kibontása'}" aria-expanded="${expanded}"><div class="history-number-summary-heading"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><h2>Idővonalam számokban</h2><p>${period.days} nap egyben.</p></div></button><div class="history-number-grid" data-history-metrics-rail>${this.renderHistoryMetricCards(period)}</div></section>`;
         }
         renderHistoryPagerCalendarGrid(period, timeline) {
           const selectedDate = HISTORY_CALENDAR_GRID_REFERENCE_DATE;
@@ -3689,6 +3708,7 @@
         }
         renderHistoryFullPagePager() {
           if (!this.historyPager || !this.historyPagerTrack) return;
+          this.captureHistoryMetricsRailScrollPositions(this.historyPager);
           this.recordHistoryPagerDebugOperation('render-history-full-page-pager', { phase: 'before' });
           const current = this.getSelectedHistoryPeriod();
           const previous = this.historyPagerPreviousPeriod();
@@ -3705,6 +3725,7 @@
             const top = Number(owner.dataset.historyScrollTop || 0);
             if (top > 0) owner.scrollTop = top;
           });
+          this.restoreHistoryMetricsRailScrollPositions(this.historyPager);
           this.recordHistoryPagerDebugOperation('render-history-full-page-pager', { phase: 'after', slideCount: slides.length });
         }
         writeHistoryPagerTrack(dragX = 0, { immediate = false } = {}) {
@@ -3731,9 +3752,73 @@
           this.historyPagerSettleTimer = null;
           this.historyPagerSettle = null;
         }
+        historyMetricsRailScrollKey(periodId = this.getSelectedHistoryPeriod().id) {
+          return [this.state.historyDetailView, this.state.historyCalendarView, periodId].join('|');
+        }
+        historyMetricsRailPeriodId(rail) {
+          return rail?.closest?.('[data-history-period-id]')?.dataset.historyPeriodId || this.getSelectedHistoryPeriod().id;
+        }
+        captureHistoryMetricsRailScrollPositions(scope = this.root) {
+          scope?.querySelectorAll?.('[data-history-metrics-rail]').forEach((rail) => {
+            if (!rail.getClientRects?.().length) return;
+            this.historyMetricsRailScrollPositions.set(this.historyMetricsRailScrollKey(this.historyMetricsRailPeriodId(rail)), rail.scrollLeft);
+          });
+        }
+        restoreHistoryMetricsRailScrollPositions(scope = this.root) {
+          scope?.querySelectorAll?.('[data-history-metrics-rail]').forEach((rail) => {
+            if (!rail.getClientRects?.().length) return;
+            const saved = this.historyMetricsRailScrollPositions.get(this.historyMetricsRailScrollKey(this.historyMetricsRailPeriodId(rail)));
+            if (saved === undefined) return;
+            rail.scrollLeft = Math.max(0, Math.min(saved, Math.max(0, rail.scrollWidth - rail.clientWidth)));
+          });
+        }
+        historyMetricsRailPointerDown(event) {
+          const rail = event.target.closest?.('[data-history-metrics-rail]');
+          if (!rail || event.button > 0) return;
+          this.historyMetricsRailDrag = {
+            pointerId: event.pointerId,
+            rail,
+            startX: event.clientX,
+            startY: event.clientY,
+            startScrollLeft: rail.scrollLeft,
+            horizontal: false
+          };
+        }
+        historyMetricsRailPointerMove(event) {
+          const drag = this.historyMetricsRailDrag;
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          const deltaX = event.clientX - drag.startX;
+          const deltaY = event.clientY - drag.startY;
+          if (!drag.horizontal && Math.abs(deltaX) >= 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25) {
+            drag.horizontal = true;
+            drag.rail.setPointerCapture?.(event.pointerId);
+          }
+          if (!drag.horizontal) return;
+          event.preventDefault();
+          const maxScrollLeft = Math.max(0, drag.rail.scrollWidth - drag.rail.clientWidth);
+          drag.rail.scrollLeft = Math.max(0, Math.min(maxScrollLeft, drag.startScrollLeft - deltaX));
+          this.historyMetricsRailScrollPositions.set(this.historyMetricsRailScrollKey(this.historyMetricsRailPeriodId(drag.rail)), drag.rail.scrollLeft);
+        }
+        finishHistoryMetricsRailDrag(event) {
+          const drag = this.historyMetricsRailDrag;
+          if (!drag || drag.pointerId !== event.pointerId) return;
+          if (drag.horizontal) this.historyMetricsRailSuppressClick = { rail: drag.rail, until: Date.now() + 360 };
+          this.historyMetricsRailDrag = null;
+        }
+        historyMetricsRailPointerEnd(event) { this.finishHistoryMetricsRailDrag(event); }
+        historyMetricsRailPointerCancel(event) { this.finishHistoryMetricsRailDrag(event); }
+        consumeHistoryMetricsRailClick(event) {
+          const guard = this.historyMetricsRailSuppressClick;
+          if (!guard) return;
+          if (Date.now() >= guard.until) { this.historyMetricsRailSuppressClick = null; return; }
+          if (!event.target.closest?.('[data-history-metrics-rail]')) return;
+          event.preventDefault();
+          event.stopPropagation();
+          this.historyMetricsRailSuppressClick = null;
+        }
         historyPagerPointerDown(event) {
           if (this.state.historyPeriodPresentation !== 'hero-swipe' || event.button > 0 || this.historyPagerLifecycle === 'settling' || this.historyPagerTrack?.dataset.historyPagerSettling === 'true') return;
-          if (event.target.closest('[data-history-pager-calendar-rail], .history-inline-view-switch, .history-period-presentation-toggle')) return;
+          if (event.target.closest('[data-history-pager-calendar-rail], [data-history-metrics-rail], .history-inline-view-switch, .history-period-presentation-toggle')) return;
           this.historyPagerDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, lastX: event.clientX, lastY: event.clientY, previousX: event.clientX, startedAt: event.timeStamp || Date.now(), lastAt: event.timeStamp || Date.now(), axis: 'pending', width: this.historyPager?.clientWidth || 412 };
           this.historyPagerLifecycle = 'pending';
         }
