@@ -7,7 +7,7 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --screen-background-original: #F9F3F7; --screen-background-index: #FDF5F8; --screen-background-blush: #F4E8F1; --screen-background-mauve: #ECD9E9; --screen-background-lavender: #E0C9E2; --screen-background: var(--screen-background-original); --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --path-overview-hero-height: 238px; --path-overview-header-stack: 112px; --path-overview-current-card-height: 102px; --path-overview-current-card-height-compact: 90px; --history-inline-workspace-overlap: 22px; --hero-art-vertical-fade-mask: linear-gradient(180deg, #000 0%, rgba(0,0,0,.98) 22%, rgba(0,0,0,.88) 43%, rgba(0,0,0,.62) 63%, rgba(0,0,0,.28) 82%, transparent 100%); --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
+    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --screen-background-original: #F9F3F7; --screen-background-index: #FDF5F8; --screen-background-blush: #F4E8F1; --screen-background-mauve: #ECD9E9; --screen-background-lavender: #E0C9E2; --screen-background: var(--screen-background-original); --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --path-overview-hero-height: 238px; --path-overview-header-stack: 112px; --path-overview-current-card-height: 102px; --path-overview-current-card-height-compact: 90px; --path-compact-hero-height: 194px; --history-inline-workspace-overlap: 22px; --hero-art-vertical-fade-mask: linear-gradient(180deg, #000 0%, rgba(0,0,0,.98) 22%, rgba(0,0,0,.88) 43%, rgba(0,0,0,.62) 63%, rgba(0,0,0,.28) 82%, transparent 100%); --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
     html { color-scheme: light; }
     body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -933,7 +933,7 @@
     @keyframes path-question-slide-previous-in { from { opacity: .28; transform: translateX(-34px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes path-question-slide-next-out { to { opacity: .16; transform: translateX(-34px); } }
     @keyframes path-question-slide-previous-out { to { opacity: .16; transform: translateX(34px); } }
-    .path-question-editor-hero { height: 194px; position: relative; z-index: 0; isolation: isolate; overflow: visible; padding: 16px 18px 0; color: #241A59; }
+    .path-question-editor-hero { height: var(--path-compact-hero-height); position: relative; z-index: 0; isolation: isolate; overflow: visible; padding: 16px 18px 0; color: #241A59; }
     .path-question-editor-hero-art { height: 286px; position: absolute; z-index: -2; top: 0; right: 0; left: 0; overflow: hidden; background: #F2EAF3; -webkit-mask-image: var(--hero-art-vertical-fade-mask); mask-image: var(--hero-art-vertical-fade-mask); }
     .path-question-editor-hero-art::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,252,254,.04) 46%, var(--screen-background) 100%); pointer-events: none; }
     .path-question-editor-hero-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
@@ -953,6 +953,56 @@
     .path-question-editor-ring { width: 47px; height: 47px; display: grid; place-items: center; padding: 4px; border-radius: 50%; background: conic-gradient(#6951B4 calc(var(--path-question-progress) * 1%), rgba(255,255,255,.62) 0); box-shadow: 0 5px 13px rgba(68,48,142,.12); }
     .path-question-editor-ring span { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 50%; background: rgba(255,253,254,.94); color: #57449C; font-size: 10px; font-weight: 850; }
     .path-question-editor-hero > p { position: absolute; right: 28px; bottom: 29px; left: 28px; margin: 0; color: rgba(56,43,119,.72); font-family: Georgia, "Times New Roman", serif; font-size: 11.5px; font-style: italic; font-weight: 600; text-align: center; }
+
+    /* Fontos nekem is a compact question-editor hero geometry. The screen itself
+       never scrolls: only the final collection list owns a vertical scroll axis. */
+    .path-screen[data-path-view="answers"].path-focus .path-content { top: 0; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; padding: 0; }
+    .path-important-screen { width: 100%; height: 100%; min-height: 0; display: grid; grid-template-rows: var(--path-compact-hero-height) minmax(0, 1fr); overflow: hidden; }
+    .path-important-hero { height: var(--path-compact-hero-height); position: relative; z-index: 0; isolation: isolate; overflow: visible; padding: 16px 18px 0; color: #241A59; }
+    .path-important-hero-art { height: 286px; position: absolute; z-index: -2; top: 0; right: 0; left: 0; overflow: hidden; background: #F2EAF3; -webkit-mask-image: var(--hero-art-vertical-fade-mask); mask-image: var(--hero-art-vertical-fade-mask); pointer-events: none; }
+    .path-important-hero-art::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,252,254,.04) 46%, var(--screen-background) 100%); pointer-events: none; }
+    .path-important-hero-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .path-important-hero-back { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(106,86,180,.13); border-radius: 50%; background: rgba(255,255,255,.82); color: var(--hajnal-purple); box-shadow: 0 8px 20px rgba(44,46,119,.06); cursor: pointer; }
+    .path-important-hero-back .icon { width: 22px; height: 22px; }
+    .path-important-hero-copy { position: absolute; right: 25px; bottom: 26px; left: 25px; }
+    .path-important-hero-copy span, .path-important-hero-copy strong, .path-important-hero-copy small { display: block; }
+    .path-important-hero-copy span { color: rgba(74,55,150,.75); font-size: 10.5px; line-height: 1.15; font-weight: 810; letter-spacing: .055em; text-transform: uppercase; }
+    .path-important-hero-copy strong { margin-top: 5px; color: #241A59; font-family: Georgia, "Times New Roman", serif; font-size: 29px; line-height: .98; font-weight: 700; letter-spacing: -.055em; }
+    .path-important-hero-copy small { margin-top: 6px; color: rgba(56,43,119,.68); font-size: 11px; line-height: 1.2; font-weight: 710; }
+    .path-important-body { min-height: 0; display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: 10px; overflow: hidden; padding: 2px 18px 0; }
+    .path-important-carousel { min-width: 0; display: flex; gap: 0; overflow-x: auto; overflow-y: hidden; padding: 3px 0 5px; overscroll-behavior-x: contain; scrollbar-width: none; scroll-behavior: smooth; touch-action: pan-x; }
+    .path-important-carousel::-webkit-scrollbar { display: none; }
+    .path-important-carousel-segment { display: flex; gap: 9px; padding-right: 9px; }
+    .path-important-topic-tile { width: 104px; min-width: 104px; height: 106px; position: relative; isolation: isolate; display: grid; align-content: end; gap: 3px; overflow: hidden; padding: 11px 10px; border: 1px solid rgba(255,255,255,.78); border-radius: 20px; background: #EEE8FA; color: #241A59; box-shadow: 0 6px 15px rgba(44,46,119,.055); font: inherit; text-align: left; cursor: pointer; }
+    .path-important-topic-tile > img { width: 100%; height: 100%; position: absolute; z-index: -2; inset: 0; display: block; object-fit: cover; object-position: var(--path-important-art-position, center); }
+    .path-important-topic-tile::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.04) 12%, rgba(255,253,254,.15) 42%, rgba(255,252,254,.94) 100%); pointer-events: none; }
+    .path-important-topic-tile strong, .path-important-topic-tile small { position: relative; z-index: 1; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .path-important-topic-tile strong { color: #241A59; font-size: 10.5px; line-height: 1.12; font-weight: 850; letter-spacing: .02em; text-transform: uppercase; }
+    .path-important-topic-tile small { color: rgba(56,43,119,.66); font-size: 10px; line-height: 1.1; font-weight: 710; }
+    .path-important-topic-tile[aria-pressed="true"] { border-color: rgba(106,86,180,.68); box-shadow: 0 0 0 2px rgba(106,86,180,.16), 0 8px 18px rgba(74,55,150,.10); }
+    .path-important-topic-tile:focus-visible, .path-important-question-card:focus-visible, .path-important-hero-back:focus-visible, .path-important-search-clear:focus-visible { outline: 3px solid rgba(106,86,180,.48); outline-offset: 2px; }
+    .path-important-search { height: 47px; display: grid; grid-template-columns: 20px minmax(0, 1fr) 27px; align-items: center; gap: 8px; padding: 0 10px 0 14px; border: 1px solid rgba(106,86,180,.12); border-radius: 16px; background: rgba(255,255,255,.84); box-shadow: 0 5px 13px rgba(44,46,119,.035); color: #807797; }
+    .path-important-search .icon { width: 19px; height: 19px; color: #8275AB; }
+    .path-important-search input { min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: #241A59; font-size: 12px; font-weight: 650; }
+    .path-important-search input::placeholder { color: #9C95AE; opacity: 1; }
+    .path-important-search-clear { width: 27px; height: 27px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #EEE8FA; color: #735EA4; font-size: 18px; line-height: 1; cursor: pointer; }
+    .path-important-search-clear[hidden] { display: none; }
+    .path-important-list-scroll { min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 2px 1px calc(22px + var(--bottom-safe-area)); overscroll-behavior-y: contain; scrollbar-width: none; touch-action: pan-y; }
+    .path-important-list-scroll::-webkit-scrollbar { display: none; }
+    .path-important-question-list { display: grid; gap: 10px; }
+    .path-important-question-card { width: 100%; min-height: 72px; display: grid; grid-template-columns: 45px minmax(0, 1fr) 18px; align-items: center; gap: 12px; padding: 12px 13px; border: 1px solid rgba(44,46,119,.055); border-radius: 20px; background: rgba(255,255,255,.88); box-shadow: 0 7px 17px rgba(44,46,119,.045); color: #18243D; font: inherit; text-align: left; cursor: pointer; }
+    .path-important-question-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: var(--path-important-icon-bg); color: var(--path-important-icon-fg); }
+    .path-important-question-icon .icon { width: 20px; height: 20px; }
+    .path-important-question-copy { min-width: 0; }
+    .path-important-question-copy strong { display: -webkit-box; overflow: hidden; color: #18243D; font-size: 12.5px; line-height: 1.27; font-weight: 790; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .path-important-question-copy small { display: block; overflow: hidden; margin-top: 4px; color: rgba(44,46,119,.55); font-size: 10.5px; line-height: 1.18; font-weight: 640; text-overflow: ellipsis; white-space: nowrap; }
+    .path-important-question-chevron { color: #877CB0; font-size: 24px; line-height: 1; text-align: right; }
+    .path-important-result-count { margin: 0 2px 9px; color: rgba(56,43,119,.58); font-size: 10.5px; font-weight: 720; }
+    .path-important-empty { display: grid; justify-items: center; gap: 8px; padding: 30px 18px; border-radius: 22px; background: rgba(255,255,255,.52); color: #827A9C; text-align: center; }
+    .path-important-empty .icon { width: 30px; height: 30px; color: #AD97D2; }
+    .path-important-empty strong { color: #51457D; font-size: 14px; line-height: 1.2; font-weight: 800; }
+    .path-important-empty p { max-width: 260px; margin: 0; font-size: 11.5px; line-height: 1.4; font-weight: 620; }
+    @media (prefers-reduced-motion: reduce) { .path-important-carousel { scroll-behavior: auto; } }
     .path-question-editor-body { position: relative; z-index: 1; display: grid; gap: 12px; padding: 0 18px calc(25px + env(safe-area-inset-bottom, 0px)); background: transparent; }
     .path-question-editor-card { overflow: hidden; border: 1px solid rgba(106,86,180,.14); border-radius: 23px; background: rgba(255,253,254,.94); box-shadow: 0 10px 25px rgba(44,46,119,.07); }
     .path-question-editor-label { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 16px 0; color: #705BB5; font-size: 10px; line-height: 1.15; font-weight: 840; letter-spacing: .04em; text-transform: uppercase; }
@@ -2537,6 +2587,16 @@
 
       function createAnswer(seed = {}) { return { text: '', important: false, discussWithSponsor: false, discussedWithSponsor: false, voiceMemoState: 'none', ...seed }; }
       const SURFACE_TONE_IDS = Object.freeze(['index', 'original', 'blush', 'mauve', 'lavender']);
+      const PATH_IMPORTANT_PRESENTATIONS = Object.freeze([
+        Object.freeze({ background: '#F0E8FB', foreground: '#7353AF', icon: 'heart' }),
+        Object.freeze({ background: '#E4F4EA', foreground: '#39835A', icon: 'leaf' }),
+        Object.freeze({ background: '#FBE8F0', foreground: '#BA5E88', icon: 'message' }),
+        Object.freeze({ background: '#FFF2D9', foreground: '#B47B20', icon: 'progress' }),
+        Object.freeze({ background: '#E7F0FC', foreground: '#477AB7', icon: 'book' }),
+        Object.freeze({ background: '#FCECE5', foreground: '#B86E50', icon: 'people' })
+      ]);
+      function stableStringHash(value) { return [...String(value || '')].reduce((hash, character) => ((hash * 31) + character.charCodeAt(0)) | 0, 0); }
+      function normalizeSearchText(value) { return String(value || '').toLocaleLowerCase('hu-HU').normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
       function createTopicWork(status = 'not-started') { return { status, answers: {} }; }
       function createStepWork(step) {
         const startedTopicCount = Math.ceil(step.themes.length / 2);
@@ -2548,6 +2608,24 @@
         };
       }
       function createCycle(id, startedAt, readOnly = false) { return { id, startedAt, readOnly, status: 'active', steps: Object.fromEntries(PATH_STEPS.map((step) => [step.id, createStepWork(step)])) }; }
+      function seedPathImportantDemo(cycle) {
+        PATH_STEPS.forEach((step) => {
+          const topics = step.themes.slice(0, Math.ceil(step.themes.length / 2));
+          const selectedTopicIndexes = [...new Set([0, Math.floor(topics.length / 2), topics.length - 1])];
+          const candidates = [];
+          selectedTopicIndexes.forEach((topicIndex) => { const topic = topics[topicIndex]; if (topic?.questions[0]) candidates.push({ topic, question: topic.questions[0] }); });
+          selectedTopicIndexes.forEach((topicIndex) => topics[topicIndex]?.questions.slice(1).forEach((question) => candidates.push({ topic: topics[topicIndex], question })));
+          topics.forEach((topic) => topic.questions.forEach((question) => candidates.push({ topic, question })));
+          let seeded = 0;
+          candidates.some(({ topic, question }) => {
+            const answers = cycle.steps[step.id].topics[topic.id].answers;
+            if (answers[question.id]) return false;
+            answers[question.id] = createAnswer({ important: true, text: `Minta gondolat · ${step.number}. lépés · ${topic.title}` });
+            seeded += 1;
+            return seeded >= 6;
+          });
+        });
+      }
       function createPathState() {
         const historical = createCycle('cycle-2024', '2024', true);
         historical.status = 'closed';
@@ -2562,7 +2640,9 @@
         });
         current.steps['step-5'].topics['step-5-topic-2'].answers = { 'step-5-topic-2-question-1': createAnswer({ text: 'Ezt a félelmet szeretném majd elmondani egy bizalmi beszélgetésben.', discussWithSponsor: true }) };
         current.steps['step-9'].topics['step-9-topic-4'].answers = { 'step-9-topic-4-question-1': createAnswer({ text: 'Előbb át szeretném beszélni, mi lenne biztonságos és nem okozna újabb kárt.', discussWithSponsor: true }) };
-        return { currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', notice: '' } };
+        seedPathImportantDemo(historical);
+        seedPathImportantDemo(current);
+        return { currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', importantCollection: { selectedTopicId: 'all', query: '', carouselScrollLeft: null, listScrollTop: 0 }, lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', questionReturn: null, notice: '' } };
       }
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
@@ -2725,6 +2805,7 @@
           this.root.addEventListener('click', (event) => this.handleAction(event));
           this.root.addEventListener('click', (event) => this.consumeHistoryMetricsRailClick(event), true);
           this.root.addEventListener('input', (event) => this.handleInput(event));
+          this.root.addEventListener('scroll', (event) => this.capturePathImportantCollectionScroll(event), true);
           this.root.addEventListener('pointerdown', (event) => this.pathQuestionPointerDown(event));
           this.root.addEventListener('pointermove', (event) => this.pathQuestionPointerMove(event));
           this.root.addEventListener('pointerup', (event) => this.pathQuestionPointerEnd(event));
@@ -2758,6 +2839,7 @@
           window.visualViewport?.addEventListener?.('resize', () => { this.recordHistoryPagerDebugOperation('visual-viewport-resize'); this.handleHistoryPagerResize(); });
           window.addEventListener?.('blur', () => this.cancelHistoryPagerGesture({ immediate: true }));
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
+          this.root.addEventListener('keydown', (event) => this.handlePathImportantCarouselKeydown(event));
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
@@ -2970,6 +3052,9 @@
             case 'path-dictation': this.setPathNotice('A diktálás a készülék hangfelismerésével kapcsolódhat majd ide.'); break;
             case 'open-path-sponsor-review': this.openPathSponsorReview(event.target.closest('[data-path-sponsor-scope]')?.dataset.pathSponsorScope || 'all'); break;
             case 'open-path-answers': this.openPathAnswers(); break;
+            case 'select-path-important-topic': this.selectPathImportantTopic(event.target.closest('[data-path-important-topic-id]')?.dataset.pathImportantTopicId); break;
+            case 'clear-path-important-search': this.clearPathImportantSearch(); break;
+            case 'open-path-important-answer': this.openPathImportantQuestion(event.target.closest('[data-topic-id]')?.dataset.topicId, event.target.closest('[data-question-id]')?.dataset.questionId); break;
             case 'set-path-answer-filter': this.setPathAnswerFilter(event.target.closest('[data-filter]').dataset.filter); break;
             case 'open-path-summary': this.openPathSummary(); break;
             case 'close-path-step': this.closePathStep(); break;
@@ -2997,6 +3082,7 @@
           if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
+          if (target.matches('[data-path-important-search]')) { this.setPathImportantSearch(target.value); return; }
           if (this.isPathReadOnly()) return;
           if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; this.rememberLastPathWork(); }
           if (target.matches('[data-path-step-summary]')) { this.getCurrentStepWork().summary = target.value; }
@@ -4834,6 +4920,123 @@
           return answered || this.getTopicWork(stepId, topic.id).status === 'in-progress' ? 'in-progress' : 'not-started';
         }
         getFlagCounts(stepId = this.getPathNavigation().stepId) { const step = this.getStep(stepId); const work = this.getCurrentStepWork(stepId); const all = step.themes.flatMap((topic) => Object.values(work.topics[topic.id]?.answers || {})); return { important: all.filter((answer) => answer.important).length, sponsor: all.filter((answer) => answer.discussWithSponsor).length }; }
+        getPathImportantCollectionState() { return this.state.path.importantCollection ||= { selectedTopicId: 'all', query: '', carouselScrollLeft: null, listScrollTop: 0 }; }
+        getPathImportantItems(stepId = this.getPathNavigation().stepId) {
+          const step = this.getStep(stepId);
+          if (!step) return [];
+          return step.themes.flatMap((topic) => {
+            const answers = this.getTopicWork(step.id, topic.id).answers;
+            return topic.questions.map((question, questionIndex) => ({ step, topic, question, questionIndex, answer: answers[question.id] })).filter((item) => item.answer?.important === true);
+          });
+        }
+        getPathImportantTopics(stepId = this.getPathNavigation().stepId) {
+          const step = this.getStep(stepId);
+          if (!step) return [];
+          const countByTopic = new Map();
+          this.getPathImportantItems(step.id).forEach((item) => countByTopic.set(item.topic.id, (countByTopic.get(item.topic.id) || 0) + 1));
+          return step.themes.filter((topic) => countByTopic.has(topic.id)).map((topic, index) => ({ topic, index, count: countByTopic.get(topic.id) || 0 }));
+        }
+        normalizePathImportantCollectionSelection() {
+          const collection = this.getPathImportantCollectionState();
+          const available = new Set(this.getPathImportantTopics().map((item) => item.topic.id));
+          if (collection.selectedTopicId !== 'all' && !available.has(collection.selectedTopicId)) collection.selectedTopicId = 'all';
+          return collection;
+        }
+        getFilteredPathImportantItems() {
+          const collection = this.normalizePathImportantCollectionSelection();
+          const query = normalizeSearchText(collection.query.trim());
+          return this.getPathImportantItems().filter((item) => {
+            if (collection.selectedTopicId !== 'all' && item.topic.id !== collection.selectedTopicId) return false;
+            if (!query) return true;
+            return [item.question.text, item.answer.text, item.topic.title].some((value) => normalizeSearchText(value).includes(query));
+          });
+        }
+        getPathImportantQuestionPresentation(questionId) { return PATH_IMPORTANT_PRESENTATIONS[Math.abs(stableStringHash(questionId)) % PATH_IMPORTANT_PRESENTATIONS.length]; }
+        renderPathImportantQuestionRows() {
+          const items = this.getFilteredPathImportantItems();
+          if (!items.length) {
+            const hasAny = this.getPathImportantItems().length > 0;
+            return `<section class="path-important-empty"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><strong>${hasAny ? 'Nincs találat.' : 'Még nincs fontosnak jelölt kérdésed.'}</strong><p>${hasAny ? 'Próbálj más keresőkifejezést, vagy válaszd az Összes témát.' : 'A kérdéswizardban a Fontos nekem jelöléssel ide gyűjtheted a számodra fontos gondolatokat.'}</p></section>`;
+          }
+          return items.map((item) => {
+            const presentation = this.getPathImportantQuestionPresentation(item.question.id);
+            const answerPreview = item.answer.text.trim() || 'Még nem írtál választ ehhez a kérdéshez.';
+            return `<button class="path-important-question-card" type="button" data-action="open-path-important-answer" data-topic-id="${item.topic.id}" data-question-id="${item.question.id}" aria-label="${escapeHtml(item.topic.title)}: ${escapeHtml(item.question.text)}"><span class="path-important-question-icon" style="--path-important-icon-bg: ${presentation.background}; --path-important-icon-fg: ${presentation.foreground}" aria-hidden="true"><svg class="icon"><use href="#icon-${presentation.icon}"/></svg></span><span class="path-important-question-copy"><strong>${escapeHtml(item.question.text)}</strong><small>${escapeHtml(answerPreview)}</small></span><span class="path-important-question-chevron" aria-hidden="true">›</span></button>`;
+          }).join('');
+        }
+        renderPathImportantTopicTiles() {
+          const step = this.getStep(); const collection = this.normalizePathImportantCollectionSelection();
+          const filters = [{ id: 'all', title: 'Összes', count: this.getPathImportantItems().length, asset: this.pathChapterHeroAsset(step), position: 'center' }, ...this.getPathImportantTopics().map(({ topic, index, count }) => {
+            const visual = this.getPathTopicCardVisual(step, topic, index);
+            return { id: topic.id, title: topic.title, count, asset: visual.asset, position: visual.position };
+          })];
+          return [0, 1, 2].map((segment) => `<span class="path-important-carousel-segment"${segment === 1 ? '' : ' aria-hidden="true"'}>${filters.map((filter) => `<button class="path-important-topic-tile" type="button" data-action="select-path-important-topic" data-path-important-topic-id="${filter.id}" aria-pressed="${collection.selectedTopicId === filter.id}"${segment === 1 ? '' : ' tabindex="-1"'} style="--path-important-art-position: ${escapeHtml(filter.position)}"><img src="${escapeHtml(filter.asset)}" alt="" aria-hidden="true"><strong>${escapeHtml(filter.title)}</strong><small>${filter.count} fontos</small></button>`).join('')}</span>`).join('');
+        }
+        renderPathImportantCollection() {
+          const step = this.getStep(); const collection = this.normalizePathImportantCollectionSelection(); const count = this.getPathImportantItems(step.id).length; const heroAsset = this.pathChapterHeroAsset(step);
+          return `<main class="path-important-screen" data-component="path-important-screen"><header class="path-important-hero"><span class="path-important-hero-art" aria-hidden="true"><img src="${escapeHtml(heroAsset)}" alt=""></span><button class="path-important-hero-back" type="button" data-action="path-back" aria-label="Vissza a ${step.number}. lépés főmenüjébe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="path-important-hero-copy"><span>${step.number}. lépés · ${escapeHtml(step.title)}</span><strong>Fontos nekem</strong><small>${count} fontos gondolat</small></div></header><section class="path-important-body"><nav class="path-important-carousel" data-component="path-important-carousel" aria-label="Fontos kérdések témák szerint" tabindex="0">${this.renderPathImportantTopicTiles()}</nav><label class="path-important-search"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><input type="search" data-path-important-search value="${escapeHtml(collection.query)}" placeholder="Keresés a fontos kérdések között..." aria-label="Keresés a fontos kérdések között"><button class="path-important-search-clear" type="button" data-action="clear-path-important-search" aria-label="Keresés törlése"${collection.query ? '' : ' hidden'}>×</button></label><section class="path-important-list-scroll" data-component="path-important-list-scroll" aria-label="Fontos kérdések"><p class="path-important-result-count" data-component="path-important-result-count">${this.getFilteredPathImportantItems().length} fontos kérdés</p><div class="path-important-question-list" data-component="path-important-question-list">${this.renderPathImportantQuestionRows()}</div></section></section></main>`;
+        }
+        positionPathImportantCarousel({ restore = false } = {}) {
+          const carousel = this.root.querySelector('[data-component="path-important-carousel"]');
+          if (!carousel || !Number.isFinite(carousel.scrollWidth) || !carousel.scrollWidth) return;
+          const collection = this.getPathImportantCollectionState(); const segmentWidth = carousel.scrollWidth / 3;
+          carousel.scrollLeft = restore && Number.isFinite(collection.carouselScrollLeft) ? collection.carouselScrollLeft : segmentWidth;
+        }
+        capturePathImportantCollectionState() {
+          const collection = this.getPathImportantCollectionState();
+          const carousel = this.root.querySelector('[data-component="path-important-carousel"]'); const list = this.root.querySelector('[data-component="path-important-list-scroll"]');
+          if (carousel && Number.isFinite(carousel.scrollLeft)) collection.carouselScrollLeft = carousel.scrollLeft;
+          if (list && Number.isFinite(list.scrollTop)) collection.listScrollTop = list.scrollTop;
+          return collection;
+        }
+        capturePathImportantCollectionScroll(event) {
+          if (this.state.route !== 'path' || this.getPathNavigation().view !== 'answers') return;
+          const target = event.target;
+          const collection = this.getPathImportantCollectionState();
+          if (target?.matches?.('[data-component="path-important-list-scroll"]')) { collection.listScrollTop = target.scrollTop; return; }
+          if (!target?.matches?.('[data-component="path-important-carousel"]')) return;
+          const segmentWidth = target.scrollWidth / 3;
+          if (Number.isFinite(segmentWidth) && segmentWidth > 0) {
+            if (target.scrollLeft < segmentWidth * .28) target.scrollLeft += segmentWidth;
+            else if (target.scrollLeft > segmentWidth * 1.72) target.scrollLeft -= segmentWidth;
+          }
+          collection.carouselScrollLeft = target.scrollLeft;
+        }
+        handlePathImportantCarouselKeydown(event) {
+          const carousel = event.target.closest?.('[data-component="path-important-carousel"]');
+          if (!carousel || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+          event.preventDefault();
+          const delta = event.key === 'ArrowLeft' ? -122 : 122;
+          if (carousel.scrollBy) carousel.scrollBy({ left: delta, behavior: this.motionReduced ? 'auto' : 'smooth' }); else carousel.scrollLeft += delta;
+        }
+        updatePathImportantQuestionList({ resetScroll = false } = {}) {
+          const list = this.root.querySelector('[data-component="path-important-question-list"]');
+          const count = this.root.querySelector('[data-component="path-important-result-count"]');
+          if (list) list.innerHTML = this.renderPathImportantQuestionRows();
+          if (count) count.textContent = `${this.getFilteredPathImportantItems().length} fontos kérdés`;
+          const scroll = this.root.querySelector('[data-component="path-important-list-scroll"]');
+          if (resetScroll && scroll) { scroll.scrollTop = 0; this.getPathImportantCollectionState().listScrollTop = 0; }
+        }
+        setPathImportantSearch(query) { this.getPathImportantCollectionState().query = query; this.updatePathImportantQuestionList({ resetScroll: true }); const clear = this.root.querySelector('[data-action="clear-path-important-search"]'); if (clear) clear.hidden = !query; }
+        clearPathImportantSearch() { const collection = this.getPathImportantCollectionState(); collection.query = ''; const input = this.root.querySelector('[data-path-important-search]'); if (input) { input.value = ''; input.focus(); } this.updatePathImportantQuestionList({ resetScroll: true }); const clear = this.root.querySelector('[data-action="clear-path-important-search"]'); if (clear) clear.hidden = true; }
+        selectPathImportantTopic(topicId) {
+          const collection = this.getPathImportantCollectionState(); const available = new Set(['all', ...this.getPathImportantTopics().map((item) => item.topic.id)]);
+          if (!available.has(topicId) || collection.selectedTopicId === topicId) return;
+          this.capturePathImportantCollectionState(); collection.selectedTopicId = topicId;
+          const carousel = this.root.querySelector('[data-component="path-important-carousel"]');
+          if (carousel) { carousel.innerHTML = this.renderPathImportantTopicTiles(); this.positionPathImportantCarousel(); }
+          this.updatePathImportantQuestionList({ resetScroll: true });
+        }
+        restorePathImportantCollectionState() {
+          const collection = this.normalizePathImportantCollectionSelection();
+          const restore = () => {
+            const input = this.root.querySelector('[data-path-important-search]'); const list = this.root.querySelector('[data-component="path-important-list-scroll"]');
+            if (input) input.value = collection.query;
+            this.positionPathImportantCarousel({ restore: true });
+            if (list && Number.isFinite(collection.listScrollTop)) list.scrollTop = collection.listScrollTop;
+          };
+          if (typeof requestAnimationFrame === 'function') requestAnimationFrame(restore); else restore();
+        }
         getStepProgress(stepId = this.getPathNavigation().stepId) {
           const step = this.getStep(stepId);
           const counts = step.themes.map((topic) => ({ answered: this.getAnsweredCount(topic, stepId), total: topic.questions.length }));
@@ -4871,10 +5074,10 @@
           this.state.path.stepFourHeroCopyPlacement = this.state.path.stepFourHeroCopyPlacement === 'hero' ? 'body' : 'hero';
           this.renderPath();
         }
-        openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.view = 'step'; this.navigate('path'); }
+        openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.questionReturn = null; navigation.view = 'step'; this.navigate('path'); }
         openPathTopics() { this.getPathNavigation().view = 'topics'; this.navigate('path'); }
-        openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = this.getTopicResumeQuestionIndex(topic, step.id); navigation.view = 'question'; this.getCurrentStepWork().status = this.getCurrentStepWork().status === 'not-started' && !this.isPathReadOnly() ? 'in-progress' : this.getCurrentStepWork().status; const topicWork = this.getTopicWork(step.id, topic.id); if (topicWork.status === 'not-started' && !this.isPathReadOnly()) topicWork.status = 'in-progress'; this.rememberLastPathWork(); this.navigate('path'); }
-        openPathQuestion() { this.getPathNavigation().view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = this.getTopicResumeQuestionIndex(topic, step.id); navigation.questionReturn = null; navigation.view = 'question'; this.getCurrentStepWork().status = this.getCurrentStepWork().status === 'not-started' && !this.isPathReadOnly() ? 'in-progress' : this.getCurrentStepWork().status; const topicWork = this.getTopicWork(step.id, topic.id); if (topicWork.status === 'not-started' && !this.isPathReadOnly()) topicWork.status = 'in-progress'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathQuestion() { const navigation = this.getPathNavigation(); navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
         commitPathQuestionAnswer() { const input = this.root.querySelector('[data-path-answer-text]'); if (input && !this.isPathReadOnly()) this.getCurrentPathAnswer().text = input.value; this.rememberLastPathWork(); }
         isPathQuestionNavigatorOpen() { return Boolean(this.pathQuestionNavigatorOpen && this.pathQuestionNavigatorHost && !this.pathQuestionNavigatorHost.hidden); }
         pathQuestionNavigatorContext() {
@@ -4949,11 +5152,22 @@
           } else applyQuestion();
           return true;
         }
-        pathBack() { const view = this.getPathNavigation().view; if (view === 'question' || view === 'topic') this.getPathNavigation().view = 'topics'; else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') this.getPathNavigation().view = 'step'; else if (view === 'step' || view === 'cycles') this.getPathNavigation().view = 'overview'; else { this.navigate('home'); return; } this.renderPath(); }
-        togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; if (flag === 'discussWithSponsor') this.renderPendingTopics(); this.renderPath(); }
+        pathBack() {
+          const navigation = this.getPathNavigation(); const view = navigation.view;
+          if (view === 'question' && navigation.questionReturn?.view === 'answers') {
+            this.commitPathQuestionAnswer();
+            const returnContext = navigation.questionReturn;
+            navigation.stepId = returnContext.stepId; navigation.topicId = returnContext.topicId; navigation.view = 'answers'; navigation.questionReturn = null;
+            this.renderPath(); this.restorePathImportantCollectionState(); return;
+          }
+          if (view === 'question' || view === 'topic') navigation.view = 'topics'; else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') navigation.view = 'step'; else if (view === 'step' || view === 'cycles') navigation.view = 'overview'; else { this.navigate('home'); return; }
+          navigation.questionReturn = null;
+          this.renderPath();
+        }
+        togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; if (flag === 'important') this.normalizePathImportantCollectionSelection(); if (flag === 'discussWithSponsor') this.renderPendingTopics(); this.renderPath(); }
         togglePathVoiceMemo() { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer.voiceMemoState = answer.voiceMemoState === 'recorded' ? 'none' : 'recorded'; this.renderPath(); }
         openPathSponsorReview(scope = 'all') { this.getPathNavigation().sponsorScope = scope; this.getPathNavigation().view = 'sponsor-review'; this.navigate('path'); }
-        openPathAnswers() { this.getPathNavigation().view = 'answers'; this.navigate('path'); }
+        openPathAnswers() { const navigation = this.getPathNavigation(); navigation.questionReturn = null; navigation.view = 'answers'; this.navigate('path'); }
         openPathSummary() { this.getPathNavigation().view = 'step-summary'; this.navigate('path'); }
         setPathAnswerFilter(filter) { this.getPathNavigation().answerFilter = filter; this.renderPath(); }
         closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.setPathNotice('A jelenlegi lépésmunkát lezártad. Ez később bármikor újra megnyitható.'); }
@@ -4963,8 +5177,17 @@
         collectSponsorItems(stepId = null) { const items = []; const cycle = this.getCurrentCycle(); PATH_STEPS.filter((step) => !stepId || step.id === stepId).forEach((step) => step.themes.forEach((topic) => topic.questions.forEach((question, index) => { const answer = cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]; if (answer?.discussWithSponsor) items.push({ step, topic, question, answer, key: `${step.id}|${topic.id}|${index}` }); }))); return items; }
         markPathSponsorDiscussed(key) { if (this.isPathReadOnly()) return; const item = this.findReviewItem(key); if (item) item.answer.discussedWithSponsor = !item.answer.discussedWithSponsor; this.renderPath(); }
         findReviewItem(key) { return this.collectSponsorItems().find((item) => item.key === key); }
-        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
-        openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathImportantQuestion(topicId, questionId) {
+          const step = this.getStep(); const topic = this.getTopic(topicId, step); const questionIndex = topic?.questions.findIndex((question) => question.id === questionId);
+          if (!topic || questionIndex < 0) return;
+          this.capturePathImportantCollectionState();
+          const navigation = this.getPathNavigation();
+          navigation.questionReturn = { view: 'answers', stepId: step.id, topicId: navigation.topicId, questionId };
+          navigation.topicId = topic.id; navigation.questionIndex = questionIndex; navigation.view = 'question';
+          this.rememberLastPathWork(); this.navigate('path');
+        }
         selectCurrentPathWork() {
           const navigation = this.getPathNavigation(); const last = this.getLastPathWork();
           if (last) { navigation.stepId = last.step.id; navigation.topicId = last.topic.id; navigation.questionIndex = last.questionIndex; return; }
@@ -5011,6 +5234,7 @@
             : '';
           this.pathContent.innerHTML = `${overviewToggle}${pathMarkup}`;
           this.syncMainNavigation();
+          if (view === 'answers') this.restorePathImportantCollectionState();
         }
         pathHeader(title = 'Ösvény', eyebrow = '12 lépés', back = false) { return `<header class="path-header">${back ? '<button class="path-back-button" type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button>' : '<span class="path-kicker">12 lépés</span>'}<div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(eyebrow)}</p></div></header>`; }
         pathNotice() { const notice = this.getPathNavigation().notice; return notice ? `<p class="path-notice" role="status">${escapeHtml(notice)}</p>` : ''; }
@@ -5087,10 +5311,10 @@
         }
         renderPathChapterMenu() {
           const step = this.getStep(); const progress = this.getStepProgress(step.id); const flags = this.getFlagCounts(step.id);
-          const answerLabel = progress.answeredQuestions ? `${progress.answeredQuestions} megírt válasz` : 'Még nincs válasz';
+          const importantLabel = `${flags.important} fontos gondolat`;
           const reflectionQuote = this.pathChapterReflectionQuote(step.number);
           const cards = this.getPathChapterMenuAssets(step);
-          return `<header class="path-step-four-header path-step-four-menu-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><button type="button" data-action="open-path" aria-label="Ösvény áttekintése"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header><main class="path-step-four-scroll">${this.renderPathChapterIdentity(step, progress)}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>${escapeHtml(reflectionQuote)}</p><span aria-hidden="true">”</span></aside><section class="path-step-four-menu-grid" aria-label="${step.number}. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><img class="path-step-four-menu-card-bg" src="${cards.topics}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small><em>Fedezd fel a lépés témáit, és haladj tovább.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><img class="path-step-four-menu-card-bg" src="${cards.answers}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><strong>Válaszaim</strong><small>${answerLabel}</small><em>Gondolataid egy helyen, biztonságban.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><img class="path-step-four-menu-card-bg" src="${cards.sponsorReview}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small><em>Amit érdemes megosztanod.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><img class="path-step-four-menu-card-bg" src="${cards.summary}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small><em>Lásd, mennyit haladtál eddig.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button></section></main>`;
+          return `<header class="path-step-four-header path-step-four-menu-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><button type="button" data-action="open-path" aria-label="Ösvény áttekintése"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header><main class="path-step-four-scroll">${this.renderPathChapterIdentity(step, progress)}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>${escapeHtml(reflectionQuote)}</p><span aria-hidden="true">”</span></aside><section class="path-step-four-menu-grid" aria-label="${step.number}. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><img class="path-step-four-menu-card-bg" src="${cards.topics}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small><em>Fedezd fel a lépés témáit, és haladj tovább.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><img class="path-step-four-menu-card-bg" src="${cards.answers}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>Fontos nekem</strong><small>${importantLabel}</small><em>A gondolatok, amelyekhez később is visszatérnél.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><img class="path-step-four-menu-card-bg" src="${cards.sponsorReview}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small><em>Amit érdemes megosztanod.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><img class="path-step-four-menu-card-bg" src="${cards.summary}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small><em>Lásd, mennyit haladtál eddig.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button></section></main>`;
         }
         renderPathTopics() {
           const step = this.getStep();
@@ -5111,7 +5335,7 @@
         }
         renderPathTopic() {
           const step = this.getStep(); const topic = this.getTopic(); const count = this.getAnsweredCount(topic);
-          return `${this.pathHeader(topic.title, `${step.number}. lépés`, true)}<div class="path-scroll">${this.readOnlyNotice()}<section class="path-topic-card"><h2>${escapeHtml(topic.title)}</h2><p>${escapeHtml(topic.summary)}</p><span class="path-topic-count">${topic.questions.length} kérdés · ${count} megválaszolva</span><button class="path-primary-button" type="button" data-action="open-path-question">${count ? 'Folytatom' : 'Elkezdés'}</button><button class="path-secondary-button" type="button" data-action="open-path-answers">Korábbi válaszaim</button></section></div>`;
+          return `${this.pathHeader(topic.title, `${step.number}. lépés`, true)}<div class="path-scroll">${this.readOnlyNotice()}<section class="path-topic-card"><h2>${escapeHtml(topic.title)}</h2><p>${escapeHtml(topic.summary)}</p><span class="path-topic-count">${topic.questions.length} kérdés · ${count} megválaszolva</span><button class="path-primary-button" type="button" data-action="open-path-question">${count ? 'Folytatom' : 'Elkezdés'}</button><button class="path-secondary-button" type="button" data-action="open-path-answers">Fontos nekem</button></section></div>`;
         }
         renderPathQuestion() {
           const step = this.getStep(); const topic = this.getTopic(); const question = this.getCurrentQuestion(); const answer = this.getCurrentPathAnswer(false); const navigation = this.getPathNavigation(); const readOnly = this.isPathReadOnly();
@@ -5130,19 +5354,7 @@
           return `<main class="path-question-editor-stage" data-component="path-question-editor-stage" data-path-question-slide="${slideDirection}"><header class="path-question-editor-hero"><span class="path-question-editor-hero-art" aria-hidden="true"><img class="${visual.mirror ? 'is-mirrored' : ''}" src="${escapeHtml(visual.asset)}" alt=""></span><button class="path-question-editor-back" type="button" data-action="path-back" aria-label="Vissza a Témák listához"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="path-question-editor-context"><div><span>${step.number}. lépés · ${escapeHtml(topic.title)}</span><button class="path-question-count-trigger" type="button" data-action="open-path-question-navigator" data-path-question-count-trigger aria-haspopup="dialog" aria-controls="path-question-navigator" aria-label="${questionNumber} / ${total} kérdés. Kérdésválasztó megnyitása."><strong>${questionNumber} / ${total}</strong><span class="path-question-count-chevron" aria-hidden="true">⌄</span></button></div><span class="path-question-editor-ring" style="--path-question-progress: ${questionProgress}" aria-label="${questionProgress}% kérdéshaladás"><span>${questionProgress}%</span></span></div><p>Lassan, a saját ritmusodban.</p></header><section class="path-question-editor-body"><article class="path-question-editor-card"><div class="path-question-editor-label"><span>Önreflexiós kérdés</span><small>Automatikusan mentve</small></div><h1>${escapeHtml(question.text)}</h1><p class="path-question-editor-helper">Írj szabadon, nem kell tökéletes mondatokban.</p>${this.readOnlyNotice()}<label class="path-question-answer-label" for="path-answer">A saját válaszod<textarea id="path-answer" data-path-answer-text placeholder="Írd ide a gondolataidat…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea></label><nav class="path-question-formatting-rail" data-component="path-question-formatting-rail" aria-label="Szerkesztési eszközök hamarosan"><button type="button" disabled aria-label="Félköv formázás hamarosan">B</button><button type="button" disabled aria-label="Dőlt formázás hamarosan"><i>I</i></button><button type="button" disabled aria-label="Felsorolás hamarosan">•</button><button type="button" disabled aria-label="Számozott lista hamarosan">1.</button><button type="button" disabled aria-label="Jelölőlista hamarosan">☑</button><button type="button" disabled aria-label="Idézet hamarosan">“</button><button type="button" disabled aria-label="Visszavonás hamarosan">↶</button><button type="button" disabled aria-label="Újra hamarosan">↷</button><button type="button" disabled aria-label="Hangból szöveg hamarosan">●</button></nav></article>${this.pathNotice()}<section class="path-question-permanent-actions" aria-label="Válaszhoz kapcsolódó műveletek"><button class="path-question-voice-memo" type="button" data-action="toggle-path-voice-memo" aria-pressed="${voiceRecorded}" ${readOnly ? 'disabled' : ''}><span class="path-question-action-icon" aria-hidden="true"><svg class="icon"><use href="#icon-message"/></svg></span><span><strong>${voiceRecorded ? 'Hangjegyzet rögzítve' : 'Hangjegyzet rögzítése'}</strong><small>${voiceRecorded ? 'A válaszodhoz csatolva · 0:18' : 'Kattints a felvételhez · 0:00'}</small></span><em>${voiceRecorded ? 'Lejátszás' : 'Felvétel'}</em></button><div class="path-question-container-actions"><button class="path-question-container-action" type="button" data-action="toggle-path-important" aria-pressed="${answer.important}" ${readOnly ? 'disabled' : ''}><img src="${escapeHtml(cards.answers)}" alt="" aria-hidden="true"><span class="path-question-action-icon" aria-hidden="true"><svg class="icon"><use href="#icon-heart"/></svg></span><strong>Fontos nekem</strong><small>Később is könnyen visszatalálsz hozzá.</small></button><button class="path-question-container-action" type="button" data-action="toggle-path-sponsor" aria-pressed="${answer.discussWithSponsor}" ${readOnly ? 'disabled' : ''}><img src="${escapeHtml(cards.sponsorReview)}" alt="" aria-hidden="true"><span class="path-question-action-icon" aria-hidden="true"><svg class="icon"><use href="#icon-people"/></svg></span><strong>Megbeszélem a szponzorommal</strong><small>Megjelenik a szponzor listáján.</small></button></div><p class="path-question-swipe-hint" aria-hidden="true"><span></span><span class="is-current"></span><span></span> Lapozz a kérdések között</p></section></section></main>`;
         }
         renderPathAnswers() {
-          const step = this.getStep(); const filter = this.getPathNavigation().answerFilter; const filterLabel = { all: 'Összes', important: 'Fontos', sponsor: 'Szponzorral átbeszélendő' };
-          if (step.number === 4) return this.renderPathStepFourAnswers();
-          const rows = step.themes.map((topic) => { const answers = Object.entries(this.getTopicWork(step.id, topic.id).answers).filter(([, answer]) => answer.text.trim() && (filter === 'all' || filter === 'important' && answer.important || filter === 'sponsor' && answer.discussWithSponsor)); if (!answers.length) return ''; return `<section class="path-review-list"><h2>${escapeHtml(topic.title)}</h2>${answers.map(([questionId, answer]) => { const questionIndex = topic.questions.findIndex((question) => question.id === questionId); return `<button class="path-review-row" type="button" data-action="open-path-answer" data-topic-id="${topic.id}" data-question-index="${questionIndex}"><span><strong>${questionIndex + 1}. válasz</strong><small>${escapeHtml(answer.text.slice(0, 92))}${answer.text.length > 92 ? '…' : ''}</small></span><span class="path-row-meta">${answer.important ? '♡' : answer.discussWithSponsor ? '◐' : ''}</span><span class="path-chevron" aria-hidden="true">›</span></button>`; }).join('')}</section>`; }).join('');
-          return `${this.pathHeader('Válaszaim', `${step.number}. lépés`, true)}<div class="path-scroll">${this.readOnlyNotice()}<div class="path-filter-row" aria-label="Válaszok szűrése">${Object.entries(filterLabel).map(([key, label]) => `<button class="path-filter" type="button" data-action="set-path-answer-filter" data-filter="${key}" aria-pressed="${filter === key}">${label}</button>`).join('')}</div>${rows || '<section class="path-section-card"><h2>Még nincs ilyen válasz</h2><p>A kérdésekre saját ritmusodban térhetsz vissza.</p></section>'}</div>`;
-        }
-        renderPathStepFourAnswers() {
-          const step = this.getStep();
-          const groups = step.themes.map((topic) => {
-            const rows = topic.questions.map((question, questionIndex) => ({ question, questionIndex, answer: this.getTopicWork(step.id, topic.id).answers[question.id] })).filter((item) => item.answer?.text.trim());
-            if (!rows.length) return '';
-            return `<section class="path-step-four-answer-group"><h2>${escapeHtml(topic.title)}</h2>${rows.map((item) => `<button class="path-step-four-answer-row" type="button" data-action="open-path-answer" data-topic-id="${topic.id}" data-question-index="${item.questionIndex}"><span><strong>${escapeHtml(item.question.text)}</strong><small>${escapeHtml(item.answer.text)}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section>`;
-          }).join('');
-          return `${this.pathStepFourHeader('Válaszaim')}<main class="path-step-four-scroll"><p class="path-step-four-subtitle">A 4. lépésben megírt válaszaid témák szerint.</p><div class="path-step-four-answer-list">${groups || '<p class="path-step-four-empty">Még nincs megírt válaszod. A témák közül bármikor elkezdheted azt, amelyik most közel van hozzád.</p>'}</div></main>`;
+          return this.renderPathImportantCollection();
         }
         renderPathSponsorReview() {
           const step = this.getStep(); const scoped = this.getPathNavigation().sponsorScope === 'step'; const items = this.collectSponsorItems(scoped ? step.id : null);
