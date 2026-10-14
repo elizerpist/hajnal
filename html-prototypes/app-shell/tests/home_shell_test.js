@@ -104,7 +104,7 @@ function expectAbsent(pattern, message) {
   'html:fullscreen .app-frame',
   'height: 100dvh;',
   'html:fullscreen .home-illustration',
-  "case 'mark-clean-today': this.navigate('clean-reward'); break;",
+  "case 'mark-clean-today': this.markCleanToday(); break;",
   "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
   "case 'open-panic-why': this.navigate('panic-why'); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
@@ -133,15 +133,9 @@ function expectAbsent(pattern, message) {
   'Ösvény',
   'Gyűlések',
   'Szponzor',
-  'data-task-id="sponsor-call"',
-  'data-task-id="meeting"',
-  'data-task-id="evening-checkin"',
-  'Hívd fel a szponzorod',
-  'Menj el egy meetingre',
-  'Esti check-in',
-  'data-task-icon="phone"',
-  'data-task-icon="people"',
-  'data-task-icon="message"',
+  'data-component="home-practice-block"',
+  'Ezt szeretném gyakorolni',
+  'Megfogalmazom',
   'type="checkbox"',
   'Segítség kell',
   'Nem vagy egyedül.',
@@ -154,11 +148,10 @@ function expectAbsent(pattern, message) {
   'Fejezeteim és emlékeim',
   'Jelenlegi időszak',
   'Utam számokban',
-  'Megcsináltad!',
-  '25. nap',
-  'Szeretnél pár percet szánni',
-  'Most, 2 percet rászánok',
-  'assets/milestones/milestone-45.svg',
+  'data-component="evening-wizard"',
+  'Ma is tettél egy lépést.',
+  'Mi volt ma a legjobb?',
+  'A mai reflexiód mentve.',
   'A következő kapu már látszik.',
   'A türelem is haladás.',
   'Nem siettetjük a fényt.',
@@ -173,11 +166,11 @@ assert.equal(
   'ca7d0ef0156c39c2d6ebb09e838f5da1de3e86c7f45d20a428ecd595ae8a61a9',
   'the local hero asset must remain byte-identical to the approved 8A/8B asset',
 );
-assert.equal((html.match(/data-task-id="/g) || []).length, 3, '8B must contain exactly the three source-of-truth checklist rows');
 const homeMarkupStart = html.indexOf('<section class="home-body"');
 const homeMarkupEnd = html.indexOf('<nav class="bottom-nav"', homeMarkupStart);
-const homeChecklistMarkup = html.slice(homeMarkupStart, homeMarkupEnd);
-assert.equal((homeChecklistMarkup.match(/type="checkbox"/g) || []).length, 2, 'only the first two source-of-truth checklist rows are checkbox controls');
+const homePracticeMarkup = html.slice(homeMarkupStart, homeMarkupEnd);
+assert.match(homePracticeMarkup, /Ezt szeretném gyakorolni/, '8B must contain the user-authored practice block');
+assert.doesNotMatch(homePracticeMarkup, /Mai feladataim|data-task-id=|type="checkbox"/, '8B must not retain checklist rows after the practice replacement');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.ok((html.match(/data-panic-option="/g) || []).length >= 6, 'Classic Pánik must retain its six quick options alongside the alternative renderer');

@@ -73,20 +73,18 @@
     .home-expand-hotspot { position: absolute; z-index: 22; top: 732px; right: 0; bottom: var(--bottom-nav-h); left: 0; padding: 0; border: 0; background: transparent; cursor: pointer; }
     .app-frame[data-screen-state="8b-expanded"] .home-expand-hotspot { pointer-events: none; }
 
-    .tasks-card { display: flex; flex-direction: column; height: 126px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
-    .tasks-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-    .tasks-heading h1 { margin: 0; font-size: 12.5px; font-weight: 800; }
-    .tasks-heading button { padding: 4px; border: 0; background: transparent; color: var(--hajnal-purple); font-size: 10.5px; font-weight: 650; }
-    .task-list { display: grid; gap: 0; }
-    .task-row { min-height: 24px; display: grid; grid-template-columns: 17px minmax(0, 1fr) 20px; align-items: center; gap: 9px; color: var(--hajnal-navy); font-size: 10.8px; line-height: 1.12; font-weight: 620; cursor: pointer; }
-    button.task-row { width: 100%; padding: 0; border: 0; background: transparent; text-align: left; }
-    .task-row > span:not(.task-check) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .home-practice-block { min-height: 126px; display: grid; align-content: start; gap: 9px; padding: 0; color: var(--hajnal-navy); }
+    .home-practice-block h1 { margin: 0; color: var(--hajnal-navy); font-size: 12.5px; line-height: 1.2; font-weight: 800; }
+    .home-practice-empty { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 13px; border: 1px solid rgba(106, 86, 180, .12); border-radius: 18px; background: rgba(255, 255, 255, .56); }
+    .home-practice-empty p { margin: 0; color: rgba(44, 46, 119, .64); font-size: 12px; line-height: 1.34; font-weight: 630; }
+    .home-practice-open { border: 0; background: transparent; color: var(--hajnal-purple); font: inherit; font-size: 11px; font-weight: 810; cursor: pointer; }
+    .home-practice-open { min-height: 34px; padding: 8px 10px; border: 1px solid rgba(106, 86, 180, .18); border-radius: 13px; background: rgba(255,255,255,.78); white-space: nowrap; }
+    .home-practice-active { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center; gap: 10px; padding: 12px 0 8px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .home-practice-active strong, .home-practice-active small, .home-practice-active span { display: block; }
+    .home-practice-active strong { overflow: hidden; color: #231954; font-size: 14px; line-height: 1.26; font-weight: 810; text-overflow: ellipsis; white-space: nowrap; }
+    .home-practice-active small { margin-top: 5px; color: rgba(44,46,119,.58); font-size: 10.5px; line-height: 1.24; font-weight: 670; }
+    .home-practice-active span { color: var(--hajnal-purple); font-size: 25px; line-height: 1; text-align: right; }
     .native-control { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-    .task-check { width: 15px; height: 15px; display: grid; place-items: center; border: 1.5px solid rgba(106, 86, 180, .50); border-radius: 50%; background: rgba(255, 255, 255, .78); }
-    .task-check::after { content: ""; width: 7px; height: 4px; margin-top: -2px; opacity: 0; border-bottom: 1.7px solid var(--white); border-left: 1.7px solid var(--white); transform: rotate(-45deg); }
-    .task-input:checked ~ .task-check { border-color: var(--hajnal-purple); background: var(--hajnal-purple); }
-    .task-input:checked ~ .task-check::after { opacity: 1; }
-    .task-action-icon { width: 17px; height: 17px; justify-self: end; color: rgba(106, 86, 180, .62); }
     .home-actions { display: grid; margin-top: auto; }
     .help-button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--radius-button); background: linear-gradient(160deg, #FF78A8, #E04D86); color: var(--white); box-shadow: 0 18px 38px rgba(239, 85, 145, .26); font-size: 13px; font-weight: 840; cursor: pointer; }
 
@@ -625,19 +623,51 @@
     .hurray-screen .status-bar { color: var(--white); text-shadow: 0 2px 8px rgba(14, 14, 47, .36); }
     .hurray-background { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center top; }
     .hurray-content { min-height: calc(var(--screen-h) - 32px); position: relative; z-index: 3; display: flex; flex-direction: column; }
-    .hurray-copy { margin: 126px 34px 0; text-align: center; text-shadow: 0 3px 12px rgba(15, 15, 52, .34); }
-    .hurray-copy h1 { margin: 0; color: var(--white); font-family: Georgia, "Times New Roman", serif; font-size: 27px; line-height: 1.16; font-weight: 700; }
-    .hurray-copy strong { display: block; margin-top: 12px; color: var(--white); font-size: 31px; line-height: 1; font-weight: 860; }
-    .hurray-copy p { margin: 10px 0 0; color: rgba(255, 255, 255, .86); font-size: 13px; font-weight: 620; }
-    .reflection-choice-sheet { position: absolute; z-index: 4; right: 24px; bottom: 28px; left: 24px; display: grid; gap: 14px; padding: 29px 18px 20px; border: 1px solid rgba(106, 86, 180, .14); border-radius: 32px; background: rgba(255, 255, 255, .96); color: var(--hajnal-navy); box-shadow: 0 24px 42px rgba(34, 26, 82, .18); }
+    .evening-wizard { min-height: calc(var(--screen-h) - 32px); position: relative; z-index: 3; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+    .evening-wizard-copy { align-self: start; margin: 126px 34px 0; text-align: center; text-shadow: 0 3px 12px rgba(15, 15, 52, .34); }
+    .evening-wizard-copy h1 { margin: 0; color: var(--white); font-family: Georgia, "Times New Roman", serif; font-size: 27px; line-height: 1.16; font-weight: 700; }
+    .evening-wizard-copy strong { display: block; margin-top: 12px; color: var(--white); font-size: 31px; line-height: 1; font-weight: 860; }
+    .evening-wizard-copy p { margin: 10px 0 0; color: rgba(255, 255, 255, .86); font-size: 13px; font-weight: 620; }
+    .evening-wizard-panel { max-height: min(66dvh, 548px); display: grid; gap: 13px; overflow-y: auto; margin: 0 18px calc(20px + var(--bottom-safe-area)); padding: 23px 18px 18px; border: 1px solid rgba(106, 86, 180, .14); border-radius: 30px; background: rgba(255, 255, 255, .97); color: var(--hajnal-navy); box-shadow: 0 24px 42px rgba(34, 26, 82, .18); scrollbar-width: none; }
+    .evening-wizard-panel::-webkit-scrollbar { display: none; }
+    .evening-wizard-panel h2 { margin: -4px 0 0; color: var(--hajnal-navy); font-size: 17px; line-height: 1.28; font-weight: 840; text-align: center; }
+    .evening-wizard-panel > p { margin: -7px 0 0; color: rgba(44, 46, 119, .58); font-size: 12px; line-height: 1.38; font-weight: 600; text-align: center; }
+    .evening-prompt-tabs, .evening-observation-options, .evening-media-tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .evening-prompt-tabs button, .evening-observation-options button, .evening-media-tools button { min-height: 36px; padding: 7px 10px; border: 1px solid rgba(106,86,180,.16); border-radius: 12px; background: #FCFAFE; color: #655392; font: inherit; font-size: 10.5px; line-height: 1.18; font-weight: 770; cursor: pointer; }
+    .evening-prompt-tabs button[aria-pressed="true"], .evening-observation-options button[aria-pressed="true"] { border-color: rgba(106,86,180,.48); background: #EEE8FA; color: #4B3987; }
+    .evening-writing-label { display: grid; gap: 7px; color: #312769; font-size: 12px; line-height: 1.28; font-weight: 820; }
+    .evening-writing-label textarea { min-height: 128px; resize: vertical; padding: 12px; border: 1px solid rgba(106,86,180,.16); border-radius: 15px; outline: 0; background: #FCFAFE; color: #1C2946; font: inherit; font-size: 13px; line-height: 1.48; }
+    .evening-writing-label textarea:focus { border-color: rgba(106,86,180,.48); box-shadow: 0 0 0 3px rgba(106,86,180,.12); }
+    .evening-step-dots { display: flex; justify-content: center; gap: 5px; }
+    .evening-step-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(106,86,180,.22); }
+    .evening-step-dots span[data-active="true"] { width: 18px; border-radius: 999px; background: var(--hajnal-purple); }
+    .evening-wizard-actions { display: grid; gap: 9px; }
+    .evening-wizard-actions button { min-height: 48px; border-radius: 17px; font: inherit; font-size: 12px; font-weight: 820; cursor: pointer; }
+    .evening-primary { border: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .22); }
+    .evening-secondary { border: 1px solid rgba(106, 86, 180, .16); background: transparent; color: var(--hajnal-purple); }
     .sheet-handle { width: 44px; height: 4px; justify-self: center; margin: -16px 0 0; border-radius: 999px; background: rgba(106, 86, 180, .22); }
     .sheet-moon-badge { width: 36px; height: 36px; display: grid; place-items: center; justify-self: center; margin-top: -2px; border-radius: 50%; background: #EEE8FA; color: var(--hajnal-purple); font-size: 23px; }
-    .reflection-choice-sheet h2 { margin: -4px 0 0; color: var(--hajnal-navy); font-size: 17px; line-height: 1.28; font-weight: 840; text-align: center; }
-    .reflection-choice-sheet p { margin: -7px 0 0; color: rgba(44, 46, 119, .58); font-size: 12px; line-height: 1.38; font-weight: 600; text-align: center; }
-    .sheet-actions { display: grid; gap: 9px; }
-    .sheet-actions button { min-height: 48px; border-radius: 17px; font: inherit; font-size: 12px; font-weight: 820; cursor: pointer; }
-    .sheet-primary { border: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: var(--white); box-shadow: 0 12px 22px rgba(74, 55, 150, .22); }
-    .sheet-secondary { border: 1px solid rgba(106, 86, 180, .16); background: transparent; color: var(--hajnal-purple); }
+    .practice-sheet-host { position: absolute; z-index: 130; inset: 0; display: grid; align-items: end; background: rgba(22, 17, 61, .36); opacity: 0; transition: opacity 220ms ease; }
+    .practice-sheet-host[hidden] { display: none; }
+    .practice-sheet-host[data-sheet-state="open"] { opacity: 1; }
+    .practice-sheet { max-height: min(80dvh, 680px); display: grid; gap: 15px; overflow-y: auto; padding: 17px 20px calc(22px + var(--bottom-safe-area)); border-radius: 28px 28px 0 0; background: #FCFBFE; color: var(--hajnal-navy); box-shadow: 0 -16px 44px rgba(22,17,61,.15); transform: translateY(100%); transition: transform 260ms cubic-bezier(.2,.85,.25,1); scrollbar-width: none; }
+    .practice-sheet::-webkit-scrollbar { display: none; }
+    .practice-sheet-host[data-sheet-state="open"] .practice-sheet { transform: translateY(0); }
+    .practice-sheet-header { display: grid; grid-template-columns: 1fr 32px; gap: 10px; align-items: start; }
+    .practice-sheet-header h2 { margin: 5px 0 0; font-size: 19px; line-height: 1.18; font-weight: 850; }
+    .practice-sheet-close { width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #F0EBFC; color: var(--hajnal-purple); font-size: 22px; cursor: pointer; }
+    .practice-source { display: grid; gap: 5px; padding: 12px; border-radius: 16px; background: #F1ECFA; color: #564783; }
+    .practice-source small { color: rgba(72,57,132,.72); font-size: 10px; font-weight: 770; }
+    .practice-source p { margin: 0; font-size: 12px; line-height: 1.42; font-weight: 620; }
+    .practice-field { display: grid; gap: 7px; color: #4B3E79; font-size: 11px; font-weight: 830; letter-spacing: .04em; }
+    .practice-field textarea { min-height: 92px; resize: vertical; padding: 12px; border: 1px solid rgba(106,86,180,.18); border-radius: 15px; background: #FFF; color: #1C2946; font: inherit; font-size: 13px; line-height: 1.42; }
+    .practice-field textarea[data-invalid="true"] { border-color: #BF6985; box-shadow: 0 0 0 3px rgba(191,105,133,.12); }
+    .practice-actions { display: grid; gap: 9px; }
+    .practice-actions button { min-height: 47px; border-radius: 15px; font: inherit; font-size: 12px; font-weight: 810; cursor: pointer; }
+    .practice-actions-primary { border: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: #FFF; }
+    .practice-actions-secondary { border: 1px solid rgba(106,86,180,.16); background: #FFF; color: var(--hajnal-purple); }
+    .practice-detail-row { width: 100%; display: grid; grid-template-columns: minmax(0,1fr) 18px; gap: 10px; align-items: center; padding: 10px 0; border: 0; border-top: 1px solid rgba(106,86,180,.10); background: transparent; color: #302661; font: inherit; text-align: left; font-size: 13px; font-weight: 770; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) { .practice-sheet-host, .practice-sheet { transition: none; } }
 
     .panic-screen { color: var(--white); background-color: #171848; background-image: url("assets/backgrounds/panik1.png"); background-repeat: no-repeat; background-size: cover; background-position: center top; }
     .panic-screen .status-bar { color: var(--white); }
@@ -1046,6 +1076,7 @@
     .path-summary-question textarea { width: 100%; min-height: 116px; display: block; box-sizing: border-box; resize: vertical; padding: 12px; border: 1px solid rgba(106,86,180,.16); border-radius: 15px; outline: 0; background: #FCFAFE; color: #1C2946; font: inherit; font-size: 13px; line-height: 1.48; }
     .path-summary-question textarea:focus { border-color: rgba(106,86,180,.48); box-shadow: 0 0 0 3px rgba(106,86,180,.12); }
     .path-summary-question textarea[readonly] { background: rgba(247,244,250,.76); color: rgba(28,41,70,.74); }
+    .path-summary-practice-action { min-height: 31px; margin-top: 8px; padding: 6px 9px; border: 1px solid rgba(106,86,180,.16); border-radius: 11px; background: rgba(255,255,255,.76); color: #654F9E; font: inherit; font-size: 10px; line-height: 1.15; font-weight: 780; cursor: pointer; }
     .path-summary-close-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 15px 17px; }
     .path-summary-close-actions .path-secondary-button { margin: 0; font-size: 11px; }
     .path-question-editor-body { position: relative; z-index: 1; display: grid; gap: 12px; padding: 0 18px calc(25px + env(safe-area-inset-bottom, 0px)); background: transparent; }
@@ -1978,12 +2009,12 @@
     <button class="home-illustration" type="button" aria-label="Mérföldkövek megnyitása" data-action="open-milestones"><img class="home-hero-image" src="assets/backgrounds/index1.png" alt="" loading="eager"></button>
     <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
     <header class="home-topbar"><button class="icon-button" type="button" data-action="open-initialization" aria-label="Inicializálás bemutatása"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button><div class="home-day"><strong>24. nap</strong><span class="home-subtitle">a 90 napos úton</span><span class="home-tagline">Minden nap<br>egy lépés.</span></div><div class="home-top-actions"><button class="icon-button home-typeface-toggle" type="button" data-action="toggle-global-typeface" data-component="global-typeface-toggle" aria-label="Ösvény betűtípus használata az egész alkalmazásban" aria-pressed="false" title="Ösvény betűtípus"><span class="home-typeface-mark" aria-hidden="true">Aa</span></button><button class="icon-button" type="button" data-action="toggle-fullscreen" aria-label="Teljes képernyő"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button></div><div class="home-surface-tone-palette" data-component="global-surface-tone-palette" role="radiogroup" aria-label="Alkalmazás háttérárnyalata"><button class="home-surface-tone-option" type="button" role="radio" data-action="select-global-surface-tone" data-surface-tone-option data-surface-tone="index" aria-checked="false" aria-label="Index háttérárnyalat" title="Index háttérárnyalat"></button><button class="home-surface-tone-option" type="button" role="radio" data-action="select-global-surface-tone" data-surface-tone-option data-surface-tone="original" aria-checked="true" aria-label="Eredeti háttérárnyalat" title="Eredeti háttérárnyalat"></button><button class="home-surface-tone-option" type="button" role="radio" data-action="select-global-surface-tone" data-surface-tone-option data-surface-tone="blush" aria-checked="false" aria-label="Finom rózsás háttérárnyalat" title="Finom rózsás háttérárnyalat"></button><button class="home-surface-tone-option" type="button" role="radio" data-action="select-global-surface-tone" data-surface-tone-option data-surface-tone="mauve" aria-checked="false" aria-label="Mauve háttérárnyalat" title="Mauve háttérárnyalat"></button><button class="home-surface-tone-option" type="button" role="radio" data-action="select-global-surface-tone" data-surface-tone-option data-surface-tone="lavender" aria-checked="false" aria-label="Telítettebb lila háttérárnyalat" title="Telítettebb lila háttérárnyalat"></button></div></header>
-    <div class="home-metrics" data-component="daily-summary-card" tabindex="0" aria-label="Napi összegzés. Húzd felfelé a mai feladatok megnyitásához.">
-      <button class="metric clean-days-metric" type="button" data-action="open-current-period-timeline" aria-label="Az aktuális időszak timeline-jának megnyitása"><small>Tiszta napok</small><strong>24</strong><em>nap</em><span class="segmented-progress" role="img" aria-label="24 nap a 90 napból"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span></span><span class="progress-note">a 90 napból</span></button><span class="dashboard-separator" aria-hidden="true"></span><button class="clean-today-button" type="button" data-action="mark-clean-today"><span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8"/></svg></span><span>Ma tiszta<br>maradtam</span></button>
+    <div class="home-metrics" data-component="daily-summary-card" tabindex="0" aria-label="Napi összegzés. Húzd felfelé a személyes gyakorlat megnyitásához.">
+      <button class="metric clean-days-metric" type="button" data-action="open-current-period-timeline" aria-label="Az aktuális időszak timeline-jának megnyitása"><small>Tiszta napok</small><strong data-component="home-clean-day-count">24</strong><em>nap</em><span class="segmented-progress" role="img" aria-label="24 nap a 90 napból"><span class="filled"></span><span class="filled"></span><span></span><span></span><span></span><span></span></span><span class="progress-note">a 90 napból</span></button><span class="dashboard-separator" aria-hidden="true"></span><button class="clean-today-button" type="button" data-action="mark-clean-today"><span class="clean-check-icon" aria-hidden="true"><svg class="icon"><path d="m6 12 4 4 8-8"/></svg></span><span>Ma tiszta<br>maradtam</span></button>
     </div>
     <button class="home-expand-hotspot" type="button" data-action="expand-home-card" aria-label="Főmenü kártya kinyitása"></button>
-    <section class="home-body" id="daily-checklist" data-component="checklist-sheet" aria-labelledby="checklist-title">
-      <section class="tasks-card"><div class="tasks-heading"><h1 id="checklist-title">Mai feladataim</h1><button type="button" data-action="edit-home-checklist">Szerkesztés</button></div><div class="task-list" aria-label="Mai feladatok listája"><label class="task-row" data-task-id="sponsor-call"><input class="native-control task-input" type="checkbox" aria-label="Hívd fel a szponzorod"><span class="task-check" aria-hidden="true"></span><span>Hívd fel a szponzorod</span><svg class="icon task-action-icon" data-task-icon="phone" aria-hidden="true"><use href="#icon-phone"/></svg></label><label class="task-row" data-task-id="meeting"><input class="native-control task-input" type="checkbox" aria-label="Menj el egy meetingre"><span class="task-check" aria-hidden="true"></span><span>Menj el egy meetingre</span><svg class="icon task-action-icon" data-task-icon="people" aria-hidden="true"><use href="#icon-people"/></svg></label><button class="task-row" type="button" data-task-id="evening-checkin" data-action="open-evening-checkin"><span class="task-check" aria-hidden="true"></span><span>Esti check-in</span><svg class="icon task-action-icon" data-task-icon="message" aria-hidden="true"><use href="#icon-message"/></svg></button></div></section>
+    <section class="home-body" id="daily-practice" data-component="checklist-sheet" aria-labelledby="home-practice-title">
+      <section class="home-practice-block" data-component="home-practice-block"><h1 id="home-practice-title">Ezt szeretném gyakorolni</h1><div class="home-practice-empty"><p>Van valami, amin szeretnél most tudatosan dolgozni?</p><button class="home-practice-open" type="button" data-action="open-practice-editor">Megfogalmazom</button></div></section>
       <div class="home-actions"><button class="help-button" type="button" data-action="open-panic"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>Segítség kell</button></div>
     </section>
     <nav class="bottom-nav" data-component="bottom-navigation" aria-label="Fő navigáció"><button class="bottom-nav-item" type="button" data-action="return-home" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Főmenü</span></button><button class="bottom-nav-item" type="button" data-action="open-history"><svg class="icon" aria-hidden="true"><use href="#icon-history"/></svg><span>Történetem</span></button><button class="bottom-nav-item" type="button" data-action="open-path"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Ösvény</span></button><button class="bottom-nav-item" type="button" data-action="open-meetings"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Gyűlések</span></button><button class="bottom-nav-item" type="button" data-action="open-sponsor"><svg class="icon" aria-hidden="true"><use href="#icon-profile"/></svg><span>Szponzor</span></button></nav>
@@ -2147,10 +2178,12 @@
       </section>
     </div>
 
-    <section class="route-screen hurray-screen" id="checkin-clean" data-screen="checkin-clean" data-component="clean-day-reward" aria-labelledby="hurray-screen-title">
-      <img class="hurray-background" src="assets/milestones/milestone-45.svg" alt="" loading="eager">
+    <div class="practice-sheet-host" data-component="practice-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true"></div>
+
+    <section class="route-screen hurray-screen" id="checkin-clean" data-screen="checkin-clean" data-component="clean-day-reward" aria-label="Esti reflexió">
+      <img class="hurray-background" data-component="evening-reward-artwork" src="assets/milestones/milestone-21.svg" alt="" loading="eager">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <main class="hurray-content"><section class="hurray-copy" aria-label="Sikeres nap visszajelzés"><h1 id="hurray-screen-title">Megcsináltad!</h1><strong>25. nap</strong><p>Folytasd így holnap is!</p></section><section class="reflection-choice-sheet" aria-label="Esti reflexió választás"><span class="sheet-handle" aria-hidden="true"></span><span class="sheet-moon-badge" aria-hidden="true">☾</span><h2>Szeretnél pár percet szánni<br>az esti reflexióra?</h2><p>Segít lezárni a napot<br>és tisztábban látni holnap.</p><div class="sheet-actions"><button class="sheet-primary" type="button">Most, 2 percet rászánok</button><button class="sheet-secondary" type="button" data-action="return-home">Később</button></div></section></main>
+      <main class="hurray-content" data-component="evening-wizard"></main>
     </section>
 
     <section class="route-screen panic-screen" id="panic-root" data-route="panic" data-screen="panic-root" data-component="panic-mode" aria-label="Pánik mód">
@@ -2286,7 +2319,6 @@
   </div>
   <script>
     (() => {
-      const INITIAL_TASKS = Object.freeze([{ id: 'sponsor-call', label: 'Hívd fel a szponzorod', done: false }, { id: 'meeting', label: 'Menj el egy meetingre', done: false }, { id: 'evening-checkin', label: 'Esti check-in', done: false }]);
       const SPONSOR_INITIAL_STATE = Object.freeze({ name: 'Péter', phone: '+36 70 123 4567', since: '2024-05-14', note: '' });
       const SPONSOR_AVAILABILITY_DAYS = Object.freeze([
         { key: 1, label: 'Hétfő', enabled: true, start: '17:00', end: '21:00' },
@@ -2892,6 +2924,85 @@
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
       function localDateIso(date = new Date()) { const local = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); return local.toISOString().slice(0, 10); }
+      const HOME_PRACTICE_EVENING_STORAGE_KEY = 'hajnal-home-practice-evening-v1';
+      const PRACTICE_STATUSES = Object.freeze(['active', 'paused', 'archived']);
+      const EVENING_PROMPTS = Object.freeze([
+        Object.freeze({ id: 'best', text: 'Mi volt ma a legjobb?' }),
+        Object.freeze({ id: 'hardest', text: 'Mi volt ma a legnehezebb?' }),
+        Object.freeze({ id: 'keep', text: 'Van valami, amit szeretnél megőrizni ebből a napból?' })
+      ]);
+      const REWARD_ARTWORKS = Object.freeze([
+        Object.freeze({ day: 1, asset: 'assets/milestones/milestone-1.svg' }),
+        Object.freeze({ day: 3, asset: 'assets/milestones/milestone-3.svg' }),
+        Object.freeze({ day: 7, asset: 'assets/milestones/milestone-7.svg' }),
+        Object.freeze({ day: 14, asset: 'assets/milestones/milestone-14.svg' }),
+        Object.freeze({ day: 21, asset: 'assets/milestones/milestone-21.svg' }),
+        Object.freeze({ day: 30, asset: 'assets/milestones/milestone-30.svg' }),
+        Object.freeze({ day: 45, asset: 'assets/milestones/milestone-45.svg' }),
+        Object.freeze({ day: 60, asset: 'assets/milestones/milestone-60.svg' }),
+        Object.freeze({ day: 90, asset: 'assets/milestones/milestone-90.svg' })
+      ]);
+      function isoDaysBetween(startDate, endDate) { const start = new Date(`${startDate}T12:00:00`); const end = new Date(`${endDate}T12:00:00`); return Math.max(0, Math.floor((end - start) / 86400000)); }
+      function resolveRewardArtwork(dayNumber) {
+        const cappedDay = Math.max(1, Math.min(90, Number(dayNumber) || 1));
+        return [...REWARD_ARTWORKS].reverse().find((item) => item.day <= cappedDay) || REWARD_ARTWORKS[0];
+      }
+      function createPractice(seed = {}) {
+        const now = new Date().toISOString();
+        return {
+          id: seed.id || `practice-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          source: seed.source || null,
+          sourceTextSnapshot: seed.sourceTextSnapshot || '',
+          triggerText: seed.triggerText || '',
+          intentionText: seed.intentionText || '',
+          status: PRACTICE_STATUSES.includes(seed.status) ? seed.status : 'paused',
+          createdAt: seed.createdAt || now,
+          updatedAt: seed.updatedAt || now,
+          activatedAt: seed.activatedAt || null,
+          isDemo: Boolean(seed.isDemo),
+          reflections: Array.isArray(seed.reflections) ? seed.reflections : []
+        };
+      }
+      function createPracticeState() {
+        const demo = createPractice({
+          id: 'demo-practice-listening',
+          source: { type: 'path-summary', cycleId: 'cycle-2026', stepId: 'step-4', topicId: 'step-4-topic-2', summaryQuestionId: 'step-4-topic-2-summary-2' },
+          sourceTextSnapshot: 'Észrevettem, hogy feszültségben könnyen irányítani szeretnék másokat.',
+          triggerText: 'Észreveszem, hogy feszült vagyok, és irányítani szeretnék másokat.',
+          intentionText: 'Megállok egy pillanatra, és előbb meghallgatom a másikat.',
+          status: 'active',
+          activatedAt: new Date().toISOString(),
+          isDemo: true
+        });
+        return { practices: [demo], activePracticeId: demo.id, editor: null, detailPracticeId: null, replacementCandidate: null, saveState: 'saved' };
+      }
+      function createEveningSession({ sobrietyCycleId, date, dayNumber, rewardArtworkId, practiceSnapshot = null }) {
+        const now = new Date().toISOString();
+        return {
+          id: `${sobrietyCycleId}:${date}`,
+          sobrietyCycleId,
+          localDate: date,
+          cleanDayRecorded: true,
+          dayNumber,
+          rewardArtworkId,
+          mood: null,
+          activePromptId: EVENING_PROMPTS[0].id,
+          answers: Object.fromEntries(EVENING_PROMPTS.map((prompt) => [prompt.id, ''])),
+          attachments: { gratitudes: [], photos: [], voiceMemos: [] },
+          practiceSnapshot,
+          practiceReflection: practiceSnapshot ? { id: `practice-reflection-${sobrietyCycleId}-${date}`, practiceId: practiceSnapshot.id, eveningSessionId: `${sobrietyCycleId}:${date}`, date, observationType: null, note: '', createdAt: now, updatedAt: now } : null,
+          wizardStep: 'reward',
+          status: 'draft',
+          createdAt: now,
+          updatedAt: now,
+          savedAt: now
+        };
+      }
+      function createEveningState() {
+        const today = localDateIso();
+        const start = new Date(`${today}T12:00:00`); start.setDate(start.getDate() - 23);
+        return { sobrietyCycleId: 'sobriety-cycle-demo-2026', startedAt: localDateIso(start), cleanDates: {}, sessions: {}, activeSessionId: null };
+      }
       function createSponsorAvailability(mode = 'unset') { return { mode, days: SPONSOR_AVAILABILITY_DAYS.map((day) => ({ ...day })) }; }
       function stepStatusLabel(status) { return status === 'closed' ? 'Lezárt lépésmunka' : status === 'in-progress' ? 'Folyamatban' : 'Még nem kezdted el'; }
       function stepMarker(status) { return status === 'closed' ? '✓' : status === 'in-progress' ? '◐' : '○'; }
@@ -2908,6 +3019,9 @@
           this.pathScreen = root.querySelector('[data-component="path-workspace"]');
           this.pathContent = root.querySelector('[data-component="path-content"]');
           this.pathQuestionNavigatorHost = root.querySelector('[data-component="path-question-navigator-sheet"]');
+          this.practiceSheetHost = root.querySelector('[data-component="practice-sheet"]');
+          this.eveningWizardHost = root.querySelector('[data-component="evening-wizard"]');
+          this.eveningRewardArtwork = root.querySelector('[data-component="evening-reward-artwork"]');
           this.pathQuestionNavigatorOpen = false;
           this.pathQuestionNavigatorDrag = null;
           this.panicScreen = root.querySelector('[data-component="panic-mode"]');
@@ -2967,11 +3081,12 @@
           this.survivalContent = root.querySelector('[data-component="survival-content"]');
           this.initializationScreen = root.querySelector('[data-component="initialization-flow"]');
           this.initializationContent = root.querySelector('[data-component="initialization-content"]');
-          this.tasks = INITIAL_TASKS.map((task) => ({ ...task }));
           this.state = {
             route: 'home',
             sheet: { progress: 0, settled: 'collapsed' },
             path: createPathState(),
+            practice: createPracticeState(),
+            evening: createEveningState(),
             surfaceTone: this.readSurfaceTone(),
             typefaceMode: this.readTypefaceMode(),
             panicVariant: this.readPanicVariant(),
@@ -3033,6 +3148,9 @@
           this.renderSponsorNextCard();
           this.renderTakeawayPreview();
           this.renderTakeawayList();
+          this.restorePracticeEveningState();
+          this.renderHomePracticeBlock();
+          this.renderHomeCleanSummary();
           this.renderMeetings();
           this.updateFullscreenButton();
           this.syncMainNavigation();
@@ -3086,10 +3204,9 @@
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('keydown', (event) => this.handlePathCollectionCarouselKeydown(event));
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.navigate('home'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
-          this.root.querySelectorAll('[data-task-id] input').forEach((input) => input.addEventListener('change', () => this.updateTask(input.closest('[data-task-id]').dataset.taskId, input.checked)));
         }
         historyPagerDebugEnabled() {
           return Boolean(window.location?.search?.includes('history-pager-debug=1'));
@@ -3271,7 +3388,26 @@
             case 'select-initialization-sponsor': this.setInitializationChoice('sponsorState', event.target.closest('[data-initialization-value]')?.dataset.initializationValue); break;
             case 'open-daily-image': this.navigate('daily-image'); break;
             case 'return-to-milestones': this.navigate('milestones'); break;
-            case 'mark-clean-today': this.navigate('clean-reward'); break;
+            case 'mark-clean-today': this.markCleanToday(); break;
+            case 'open-practice-editor': this.openPracticeEditor(this.practiceSourceFromAction(event.target.closest('[data-action="open-practice-editor"]'))); break;
+            case 'create-practice-from-summary': this.openPracticeEditor(this.practiceSourceFromAction(event.target.closest('[data-action="create-practice-from-summary"]'))); break;
+            case 'open-practice-details': this.openPracticeDetails(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
+            case 'close-practice-sheet': this.closePracticeSheet(); break;
+            case 'save-practice-editor': this.savePracticeEditor(); break;
+            case 'edit-practice': this.openPracticeEditor(null, event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
+            case 'pause-practice': this.setPracticeStatus(event.target.closest('[data-practice-id]')?.dataset.practiceId, 'paused'); break;
+            case 'resume-practice': this.setPracticeStatus(event.target.closest('[data-practice-id]')?.dataset.practiceId, 'active'); break;
+            case 'archive-practice': this.setPracticeStatus(event.target.closest('[data-practice-id]')?.dataset.practiceId, 'archived'); break;
+            case 'open-practice-history': this.renderPracticeDetailsHistory(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
+            case 'confirm-practice-replace': this.confirmPracticeReplacement(); break;
+            case 'cancel-practice-replace': this.cancelPracticeReplacement(); break;
+            case 'evening-next': this.advanceEveningWizard(1); break;
+            case 'evening-back': this.advanceEveningWizard(-1); break;
+            case 'evening-later': this.flushEveningDraft(); this.navigate('home'); break;
+            case 'complete-evening': this.completeEveningWizard(); break;
+            case 'select-evening-prompt': this.setEveningPrompt(event.target.closest('[data-evening-prompt-id]')?.dataset.eveningPromptId); break;
+            case 'set-evening-mood': this.setEveningMood(Number(event.target.closest('[data-evening-mood]')?.dataset.eveningMood)); break;
+            case 'select-practice-observation': this.setPracticeObservation(event.target.closest('[data-practice-observation]')?.dataset.practiceObservation); break;
             case 'return-home': this.navigate('home'); break;
             case 'toggle-fullscreen': this.toggleFullscreen(); break;
             case 'toggle-global-typeface': this.toggleGlobalTypeface(); break;
@@ -3329,6 +3465,9 @@
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
           if (target.matches('[data-path-collection-search]')) { this.setPathCollectionSearch(target.dataset.pathCollectionKind, target.value); return; }
+          if (target.matches('[data-practice-input]')) { this.updatePracticeDraft(target.dataset.practiceInput, target.value); return; }
+          if (target.matches('[data-evening-answer]')) { this.updateEveningAnswer(target.dataset.eveningAnswer, target.value); return; }
+          if (target.matches('[data-evening-practice-note]')) { this.updateEveningPracticeNote(target.value); return; }
           if (this.isPathReadOnly()) return;
           if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; this.rememberLastPathWork(); }
           if (target.matches('[data-path-summary-answer]')) this.savePathSummaryAnswer(target);
@@ -3754,7 +3893,8 @@
         getSponsorNextSheet() { return this.state.sponsorNextSheet; }
         setAppOverlayBackgroundInert(value) {
           const activeScreen = this.root.querySelector(`[data-route="${this.state.route}"]`);
-          [activeScreen, this.mainNavigation].filter(Boolean).forEach((element) => {
+          const homeSurface = this.state.route === 'home' ? [...this.root.querySelectorAll('.home-illustration, .home-topbar, .home-body, .home-metrics, .home-expand-hotspot')] : [];
+          [activeScreen, this.mainNavigation, ...homeSurface].filter(Boolean).forEach((element) => {
             if (value) element.setAttribute('inert', ''); else element.removeAttribute('inert');
           });
         }
@@ -4995,10 +5135,12 @@
           if (event.clientY - drag.startY > 54) this.closePanicSheet(drag.sheet);
         }
         handlePlatformBack() {
+          if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; }
           if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; }
           if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
           if (this.state.panicMotivationSheet) { this.closePanicMotivationSheet(); return; }
           if (this.state.route === 'sponsor-backups') { this.closeSponsorBackups(); return; }
+          if (this.state.route === 'clean-reward') { this.flushEveningDraft(); this.navigate('home'); return; }
           if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic');
         }
         startSurvivalPack() {
@@ -5124,7 +5266,243 @@
           if (route === 'panic') this.renderPanicVariant();
           if (route === 'panic-why') this.renderPanicMotivation();
           if (route === 'initialization') this.renderInitialization();
+          if (route === 'clean-reward') this.renderEveningWizard();
           this.syncMainNavigation();
+        }
+        restorePracticeEveningState() {
+          try {
+            const raw = globalThis.localStorage?.getItem(HOME_PRACTICE_EVENING_STORAGE_KEY);
+            if (!raw) return;
+            const saved = JSON.parse(raw);
+            if (saved?.practice?.practices && saved?.evening?.sobrietyCycleId) {
+              this.state.practice = {
+                ...createPracticeState(),
+                ...saved.practice,
+                practices: saved.practice.practices.map((practice) => createPractice(practice)),
+                editor: null,
+                detailPracticeId: null,
+                replacementCandidate: null
+              };
+              this.state.evening = { ...createEveningState(), ...saved.evening, activeSessionId: null };
+            }
+          } catch (_) { /* A prototípus működik böngészőtárolás nélkül is, de nem állít tartós mentést. */ }
+        }
+        persistPracticeEveningState() {
+          const practice = this.state.practice;
+          const evening = this.state.evening;
+          try {
+            globalThis.localStorage?.setItem(HOME_PRACTICE_EVENING_STORAGE_KEY, JSON.stringify({
+              practice: { practices: practice.practices, activePracticeId: practice.activePracticeId },
+              evening: { sobrietyCycleId: evening.sobrietyCycleId, startedAt: evening.startedAt, cleanDates: evening.cleanDates, sessions: evening.sessions }
+            }));
+            practice.saveState = 'saved';
+            return true;
+          } catch (_) {
+            practice.saveState = 'error';
+            return false;
+          }
+        }
+        getActivePractice() {
+          const practice = this.state.practice;
+          const active = practice.practices.find((item) => item.id === practice.activePracticeId && item.status === 'active');
+          if (active) return active;
+          const fallback = practice.practices.find((item) => item.status === 'active') || null;
+          practice.activePracticeId = fallback?.id || null;
+          return fallback;
+        }
+        getPracticeById(id) { return this.state.practice.practices.find((practice) => practice.id === id) || null; }
+        formatPracticeSource(practice) {
+          const source = practice?.source;
+          if (!source?.stepId) return '';
+          const step = this.getStep(source.stepId);
+          const topic = step?.themes.find((item) => item.id === source.topicId);
+          return [step ? `${step.number}. lépés` : '', topic?.title || ''].filter(Boolean).join(' · ');
+        }
+        renderHomePracticeBlock() {
+          const host = this.root.querySelector('[data-component="home-practice-block"]');
+          if (!host) return;
+          const practice = this.getActivePractice();
+          if (!practice) {
+            host.innerHTML = '<h1 id="home-practice-title">Ezt szeretném gyakorolni</h1><div class="home-practice-empty"><p>Van valami, amin szeretnél most tudatosan dolgozni?</p><button class="home-practice-open" type="button" data-action="open-practice-editor">Megfogalmazom</button></div>';
+            return;
+          }
+          const source = this.formatPracticeSource(practice);
+          host.innerHTML = `<h1 id="home-practice-title">Ezt szeretném gyakorolni</h1><button class="home-practice-active" type="button" data-action="open-practice-details" data-practice-id="${escapeHtml(practice.id)}" aria-label="A jelenlegi gyakorlat részletei"><span><strong>${escapeHtml(practice.intentionText)}</strong>${source ? `<small>${escapeHtml(source)}</small>` : ''}</span><span aria-hidden="true">›</span></button>`;
+        }
+        practiceSourceFromAction(target) {
+          if (!target?.dataset?.practiceSource) return null;
+          try { return { ...JSON.parse(target.dataset.practiceSource), sourceTextSnapshot: target.dataset.practiceSourceText || '' }; } catch (_) { return null; }
+        }
+        isPracticeSheetOpen() { return Boolean(this.practiceSheetHost && !this.practiceSheetHost.hidden); }
+        renderPracticeSheet() {
+          const host = this.practiceSheetHost;
+          if (!host) return;
+          const practiceState = this.state.practice;
+          const editor = practiceState.editor;
+          const detail = this.getPracticeById(practiceState.detailPracticeId);
+          const candidate = practiceState.replacementCandidate;
+          if (candidate) {
+            host.innerHTML = `<section class="practice-sheet" role="dialog" aria-modal="true" aria-labelledby="practice-replace-title" tabindex="-1"><span class="sheet-handle" aria-hidden="true"></span><header class="practice-sheet-header"><h2 id="practice-replace-title">Gyakorlat váltása</h2><button class="practice-sheet-close" type="button" data-action="cancel-practice-replace" data-sheet-close aria-label="Bezárás">×</button></header><p>Az előző gyakorlatod megmarad, és szüneteltetve lesz. Szeretnél erre váltani?</p><div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="confirm-practice-replace">Erre váltok</button><button class="practice-actions-secondary" type="button" data-action="cancel-practice-replace">Mégse</button></div></section>`;
+            return;
+          }
+          if (detail) {
+            const source = this.formatPracticeSource(detail);
+            const reflections = detail.reflections?.length ? detail.reflections.map((reflection) => `<p>${escapeHtml(reflection.date)} · ${escapeHtml(reflection.note || 'Rövid visszatekintés')}</p>`).join('') : '<p>Még nincs rögzített tapasztalat.</p>';
+            host.innerHTML = `<section class="practice-sheet" role="dialog" aria-modal="true" aria-labelledby="practice-detail-title" tabindex="-1"><span class="sheet-handle" aria-hidden="true"></span><header class="practice-sheet-header"><h2 id="practice-detail-title">Ezt szeretném gyakorolni</h2><button class="practice-sheet-close" type="button" data-action="close-practice-sheet" data-sheet-close aria-label="Bezárás">×</button></header>${detail.sourceTextSnapshot ? `<section class="practice-source"><small>${escapeHtml(source || 'Saját felismerés')}</small><p>„${escapeHtml(detail.sourceTextSnapshot)}”</p></section>` : ''}<section class="practice-source"><small>AMIKOR</small><p>${escapeHtml(detail.triggerText)}</p><small>AKKOR MEGPRÓBÁLOM</small><p>${escapeHtml(detail.intentionText)}</p></section><section aria-label="Gyakorlat műveletei"><button class="practice-detail-row" type="button" data-action="edit-practice" data-practice-id="${escapeHtml(detail.id)}"><span>Szerkesztés</span><span>›</span></button><button class="practice-detail-row" type="button" data-action="${detail.status === 'active' ? 'pause-practice' : 'resume-practice'}" data-practice-id="${escapeHtml(detail.id)}"><span>${detail.status === 'active' ? 'Szüneteltetés' : 'Újraaktiválás'}</span><span>›</span></button><button class="practice-detail-row" type="button" data-action="open-practice-editor"><span>Másikat választok</span><span>›</span></button><button class="practice-detail-row" type="button" data-action="archive-practice" data-practice-id="${escapeHtml(detail.id)}"><span>Megőrzöm későbbre</span><span>›</span></button><button class="practice-detail-row" type="button" data-action="open-practice-history" data-practice-id="${escapeHtml(detail.id)}"><span>Korábbi tapasztalataim</span><span>›</span></button></section><section class="practice-source" data-component="practice-history" hidden>${reflections}</section></section>`;
+            return;
+          }
+          if (!editor) return;
+          const sourceLabel = editor.source ? this.formatPracticeSource({ source: editor.source }) : '';
+          const sourceBlock = editor.sourceTextSnapshot ? `<section class="practice-source"><small>${escapeHtml(sourceLabel || 'Saját felismerésem')}</small><p>„${escapeHtml(editor.sourceTextSnapshot)}”</p></section>` : '';
+          host.innerHTML = `<section class="practice-sheet" role="dialog" aria-modal="true" aria-labelledby="practice-editor-title" tabindex="-1"><span class="sheet-handle" aria-hidden="true"></span><header class="practice-sheet-header"><h2 id="practice-editor-title">Ezt szeretném gyakorolni</h2><button class="practice-sheet-close" type="button" data-action="close-practice-sheet" data-sheet-close aria-label="Bezárás">×</button></header>${sourceBlock}<label class="practice-field">AMIKOR…<textarea data-practice-input="triggerText" data-invalid="${Boolean(editor.errors?.triggerText)}" placeholder="Észreveszem, hogy…">${escapeHtml(editor.triggerText)}</textarea></label><label class="practice-field">AKKOR MEGPRÓBÁLOM…<textarea data-practice-input="intentionText" data-invalid="${Boolean(editor.errors?.intentionText)}" placeholder="Megállok egy pillanatra, és…">${escapeHtml(editor.intentionText)}</textarea></label><div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="save-practice-editor">Ezt szeretném gyakorolni</button></div></section>`;
+        }
+        openPracticeEditor(source = null, practiceId = null) {
+          const existing = this.getPracticeById(practiceId);
+          this.state.practice.detailPracticeId = null;
+          this.state.practice.replacementCandidate = null;
+          this.state.practice.editor = {
+            mode: existing ? 'edit' : 'create',
+            practiceId: existing?.id || null,
+            source: existing?.source || source?.source || null,
+            sourceTextSnapshot: existing?.sourceTextSnapshot || source?.sourceTextSnapshot || '',
+            triggerText: existing?.triggerText || '',
+            intentionText: existing?.intentionText || '',
+            errors: {}
+          };
+          this.renderPracticeSheet();
+          this.openAppOverlaySheet(this.practiceSheetHost, document.activeElement);
+        }
+        openPracticeDetails(practiceId) {
+          const practice = this.getPracticeById(practiceId) || this.getActivePractice();
+          if (!practice) return this.openPracticeEditor();
+          this.state.practice.editor = null;
+          this.state.practice.replacementCandidate = null;
+          this.state.practice.detailPracticeId = practice.id;
+          this.renderPracticeSheet();
+          this.openAppOverlaySheet(this.practiceSheetHost, document.activeElement);
+        }
+        closePracticeSheet() {
+          this.flushHomePracticeDraft();
+          this.state.practice.editor = null;
+          this.state.practice.detailPracticeId = null;
+          this.state.practice.replacementCandidate = null;
+          this.closeAppOverlaySheet(this.practiceSheetHost);
+          this.renderHomePracticeBlock();
+        }
+        updatePracticeDraft(field, value) {
+          const editor = this.state.practice.editor;
+          if (!editor || !['triggerText', 'intentionText'].includes(field)) return;
+          editor[field] = value;
+          editor.errors[field] = false;
+          this.state.practice.saveState = 'saving';
+          this.flushHomePracticeDraft();
+        }
+        flushHomePracticeDraft() { return this.persistPracticeEveningState(); }
+        savePracticeEditor() {
+          const editor = this.state.practice.editor;
+          if (!editor) return;
+          editor.errors = { triggerText: !editor.triggerText.trim(), intentionText: !editor.intentionText.trim() };
+          if (editor.errors.triggerText || editor.errors.intentionText) { this.renderPracticeSheet(); return; }
+          const active = this.getActivePractice();
+          const selected = editor.practiceId ? this.getPracticeById(editor.practiceId) : null;
+          if (active && active.id !== selected?.id) { this.state.practice.replacementCandidate = { ...editor }; this.renderPracticeSheet(); return; }
+          this.commitPracticeEditor(editor);
+        }
+        confirmPracticeReplacement() {
+          const editor = this.state.practice.replacementCandidate;
+          if (!editor) return;
+          const active = this.getActivePractice();
+          if (active) active.status = 'paused';
+          this.state.practice.replacementCandidate = null;
+          this.commitPracticeEditor(editor);
+        }
+        cancelPracticeReplacement() { this.state.practice.replacementCandidate = null; this.renderPracticeSheet(); }
+        commitPracticeEditor(editor) {
+          const now = new Date().toISOString();
+          let practice = editor.practiceId ? this.getPracticeById(editor.practiceId) : null;
+          if (!practice) { practice = createPractice({ source: editor.source, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: 'active', activatedAt: now }); this.state.practice.practices.push(practice); }
+          else Object.assign(practice, { source: editor.source, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: 'active', activatedAt: practice.activatedAt || now, updatedAt: now });
+          this.state.practice.practices.forEach((item) => { if (item.id !== practice.id && item.status === 'active') item.status = 'paused'; });
+          this.state.practice.activePracticeId = practice.id;
+          this.state.practice.editor = null;
+          this.state.practice.detailPracticeId = practice.id;
+          this.flushHomePracticeDraft();
+          this.renderHomePracticeBlock();
+          this.renderPracticeSheet();
+        }
+        setPracticeStatus(practiceId, status) {
+          if (!PRACTICE_STATUSES.includes(status)) return;
+          const practice = this.getPracticeById(practiceId); if (!practice) return;
+          if (status === 'active') this.state.practice.practices.forEach((item) => { if (item.id !== practice.id && item.status === 'active') item.status = 'paused'; });
+          practice.status = status; practice.updatedAt = new Date().toISOString();
+          this.state.practice.activePracticeId = status === 'active' ? practice.id : (this.state.practice.activePracticeId === practice.id ? null : this.state.practice.activePracticeId);
+          this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.renderPracticeSheet();
+        }
+        renderPracticeDetailsHistory(practiceId) {
+          const history = this.practiceSheetHost?.querySelector('[data-component="practice-history"]');
+          if (history) history.hidden = !history.hidden;
+        }
+        getEveningSession() { return this.state.evening.sessions[this.state.evening.activeSessionId] || null; }
+        getCleanDayNumber(date = localDateIso()) { return isoDaysBetween(this.state.evening.startedAt, date) + 1; }
+        markCleanToday() {
+          const evening = this.state.evening; const date = localDateIso(); const sessionId = `${evening.sobrietyCycleId}:${date}`;
+          let session = evening.sessions[sessionId];
+          if (!session) {
+            const practice = this.getActivePractice();
+            const practiceSnapshot = practice ? { id: practice.id, triggerText: practice.triggerText, intentionText: practice.intentionText, sourceTextSnapshot: practice.sourceTextSnapshot, source: practice.source } : null;
+            const dayNumber = this.getCleanDayNumber(date); const artwork = resolveRewardArtwork(dayNumber);
+            session = createEveningSession({ sobrietyCycleId: evening.sobrietyCycleId, date, dayNumber, rewardArtworkId: artwork.asset, practiceSnapshot });
+            evening.sessions[sessionId] = session;
+          }
+          evening.cleanDates[date] = true;
+          evening.activeSessionId = sessionId;
+          if (session.status === 'completed') session.wizardStep = 'writing';
+          this.flushEveningDraft(); this.renderHomeCleanSummary(); this.navigate('clean-reward');
+        }
+        flushEveningDraft() {
+          const session = this.getEveningSession();
+          if (session) { session.updatedAt = new Date().toISOString(); session.savedAt = session.updatedAt; }
+          return this.persistPracticeEveningState();
+        }
+        renderHomeCleanSummary() {
+          const count = this.getCleanDayNumber();
+          const metric = this.root.querySelector('[data-component="home-clean-day-count"]');
+          if (metric) metric.textContent = String(count);
+        }
+        setEveningPrompt(promptId) { const session = this.getEveningSession(); if (!session || !EVENING_PROMPTS.some((prompt) => prompt.id === promptId)) return; session.activePromptId = promptId; this.flushEveningDraft(); this.renderEveningWizard(); }
+        setEveningMood(mood) { const session = this.getEveningSession(); if (!session || mood < 1 || mood > 5) return; session.mood = session.mood === mood ? null : mood; this.flushEveningDraft(); this.renderEveningWizard(); }
+        updateEveningAnswer(promptId, value) { const session = this.getEveningSession(); if (!session || !EVENING_PROMPTS.some((prompt) => prompt.id === promptId)) return; session.answers[promptId] = value; this.flushEveningDraft(); }
+        setPracticeObservation(observationType) { const reflection = this.getEveningSession()?.practiceReflection; if (!reflection || !['remembered', 'attempted', 'no_opportunity'].includes(observationType)) return; reflection.observationType = reflection.observationType === observationType ? null : observationType; reflection.updatedAt = new Date().toISOString(); this.flushEveningDraft(); this.renderEveningWizard(); }
+        updateEveningPracticeNote(note) { const reflection = this.getEveningSession()?.practiceReflection; if (!reflection) return; reflection.note = note; reflection.updatedAt = new Date().toISOString(); this.flushEveningDraft(); }
+        eveningSteps(session) { return session?.practiceSnapshot ? ['reward', 'writing', 'practice', 'complete'] : ['reward', 'writing', 'complete']; }
+        advanceEveningWizard(direction) {
+          const session = this.getEveningSession(); if (!session) return;
+          this.flushEveningDraft(); const steps = this.eveningSteps(session); const index = Math.max(0, steps.indexOf(session.wizardStep));
+          session.wizardStep = steps[Math.max(0, Math.min(steps.length - 1, index + direction))];
+          this.renderEveningWizard();
+        }
+        completeEveningWizard() {
+          const session = this.getEveningSession(); if (!session) return this.navigate('home');
+          const reflection = session.practiceReflection; const practice = reflection ? this.getPracticeById(reflection.practiceId) : null;
+          if (reflection && practice && !practice.reflections.some((item) => item.eveningSessionId === session.id)) practice.reflections.push({ ...reflection });
+          session.status = 'completed'; this.flushEveningDraft(); this.navigate('home');
+        }
+        renderEveningWizard() {
+          const host = this.eveningWizardHost; const session = this.getEveningSession(); if (!host || !session) return;
+          if (this.eveningRewardArtwork && this.eveningRewardArtwork.getAttribute('src') !== session.rewardArtworkId) this.eveningRewardArtwork.setAttribute('src', session.rewardArtworkId);
+          const steps = this.eveningSteps(session); const step = steps.includes(session.wizardStep) ? session.wizardStep : 'reward'; const index = steps.indexOf(step);
+          const dots = `<div class="evening-step-dots" aria-hidden="true">${steps.map((item) => `<span data-active="${item === step}"></span>`).join('')}</div>`;
+          const actions = (primary, secondary = '') => `<div class="evening-wizard-actions"><button class="evening-primary" type="button" data-action="${primary.action}">${primary.label}</button>${secondary}</div>`;
+          if (step === 'reward') { host.innerHTML = `<section class="evening-wizard"><section class="evening-wizard-copy"><h1>Ma is tettél egy lépést.</h1><strong>${session.dayNumber}. nap</strong><p>A tiszta napod már rögzítve van.</p></section><section class="evening-wizard-panel"><span class="sheet-handle" aria-hidden="true"></span><h2>Megérkeztél az estéhez</h2><p>Pár percben megőrizheted, mi történt ma.</p>${dots}${actions({ action: 'evening-next', label: 'Tovább az esti reflexióhoz' }, '<button class="evening-secondary" type="button" data-action="evening-later">Később</button>')}</section></section>`; return; }
+          if (step === 'writing') {
+            const prompt = EVENING_PROMPTS.find((item) => item.id === session.activePromptId) || EVENING_PROMPTS[0];
+            host.innerHTML = `<section class="evening-wizard"><span></span><section class="evening-wizard-panel"><span class="sheet-handle" aria-hidden="true"></span><h2>Hogyan telt a napod?</h2><p>Csak annyit írj, amennyi most jól esik.</p><div class="evening-prompt-tabs" aria-label="Esti reflexiós kérdések">${EVENING_PROMPTS.map((item, promptIndex) => `<button type="button" data-action="select-evening-prompt" data-evening-prompt-id="${item.id}" aria-pressed="${item.id === prompt.id}">${promptIndex + 1}. kérdés</button>`).join('')}</div><div class="evening-prompt-tabs" aria-label="Hangulat">${[1,2,3,4,5].map((mood) => `<button type="button" data-action="set-evening-mood" data-evening-mood="${mood}" aria-pressed="${session.mood === mood}" aria-label="${mood}. hangulat">${mood}</button>`).join('')}</div><label class="evening-writing-label">${escapeHtml(prompt.text)}<textarea data-evening-answer="${prompt.id}" placeholder="Írj, ha szeretnél…">${escapeHtml(session.answers[prompt.id] || '')}</textarea></label><div class="evening-media-tools" aria-label="Kiegészítő lehetőségek"><button type="button" disabled title="Ebben az offline prototípusban még nincs bekötve">Hála hozzáadása</button><button type="button" disabled title="Ebben az offline prototípusban még nincs bekötve">Fotó</button><button type="button" disabled title="Ebben az offline prototípusban még nincs bekötve">Hangjegyzet</button></div><p>Fotó- és hangjegyzet-rögzítés ebben az offline prototípusban még nincs bekötve.</p>${dots}${actions({ action: 'evening-next', label: 'Tovább' }, '<button class="evening-secondary" type="button" data-action="evening-back">Vissza</button>')}</section></section>`; return;
+          }
+          if (step === 'practice') {
+            const practice = session.practiceSnapshot; const reflection = session.practiceReflection;
+            host.innerHTML = `<section class="evening-wizard"><span></span><section class="evening-wizard-panel"><span class="sheet-handle" aria-hidden="true"></span><h2>Amit most gyakorlok</h2><p>${escapeHtml(practice.intentionText)}</p><section class="practice-source"><small>AMIKOR</small><p>${escapeHtml(practice.triggerText)}</p></section><label class="evening-writing-label">Ma hogyan találkoztál ezzel?</label><div class="evening-observation-options">${[{id:'remembered',label:'Eszembe jutott'},{id:'attempted',label:'Megpróbáltam alkalmazni'},{id:'no_opportunity',label:'Ma nem volt rá alkalom'}].map((item) => `<button type="button" data-action="select-practice-observation" data-practice-observation="${item.id}" aria-pressed="${reflection.observationType === item.id}">${item.label}</button>`).join('')}</div><label class="evening-writing-label">Mit vettél észre?<textarea data-evening-practice-note placeholder="Írhatsz néhány szót, ha szeretnél…">${escapeHtml(reflection.note || '')}</textarea></label>${dots}${actions({ action: 'evening-next', label: 'Tovább' }, '<button class="evening-secondary" type="button" data-action="evening-back">Vissza</button>')}</section></section>`; return;
+          }
+          host.innerHTML = `<section class="evening-wizard"><section class="evening-wizard-copy"><h1>A mai reflexiód mentve.</h1><strong>${session.dayNumber}. nap</strong><p>Holnap is visszatérhetsz a saját szándékodhoz.</p></section><section class="evening-wizard-panel"><span class="sheet-handle" aria-hidden="true"></span>${dots}${actions({ action: 'complete-evening', label: 'Vissza a főmenübe' }, '<button class="evening-secondary" type="button" data-action="evening-back">Vissza</button>')}</section></section>`;
         }
         syncMainNavigation() {
           const isPathFocus = this.state.route === 'path' && this.pathScreen?.classList.contains('path-focus');
@@ -5141,7 +5519,6 @@
         endDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; const delta = this.drag.startY - event.clientY; const moved = this.drag.moved; const shouldExpand = delta > 30 || this.state.sheet.progress >= .42; this.ignoreNextClick = moved; this.summary.releasePointerCapture(event.pointerId); this.drag = null; this.settle(shouldExpand ? 'expanded' : 'collapsed'); }
         consumeDragClick(event) { if (!this.ignoreNextClick) return; this.ignoreNextClick = false; event.preventDefault(); event.stopImmediatePropagation(); }
         cancelDrag(event) { if (!this.drag || event.pointerId !== this.drag.pointerId) return; this.drag = null; this.settle(this.state.sheet.progress >= .5 ? 'expanded' : 'collapsed'); }
-        updateTask(id, done) { const task = this.tasks.find((item) => item.id === id); if (task) task.done = done; }
         getPathNavigation() { return this.state.path.navigation; }
         getCurrentCycle() { return this.state.path.cycles.find((cycle) => cycle.id === this.state.path.currentCycleId); }
         getStep(stepId = this.getPathNavigation().stepId) { return PATH_STEPS.find((step) => step.id === stepId); }
@@ -5209,6 +5586,8 @@
           if (!item || !question) return;
           const answer = this.getPathSummaryAnswer(item, question); answer.text = target.value; answer.savedAt = new Date().toISOString();
           const state = this.getPathSummaryState(); state.saveState = 'saved';
+          const practiceAction = target.closest?.('.path-summary-question')?.querySelector('[data-action="create-practice-from-summary"]');
+          if (practiceAction) { practiceAction.disabled = !answer.text.trim(); practiceAction.dataset.practiceSourceText = answer.text; }
           this.updatePathSummarySaveStatus('saved');
         }
         flushPathSummaryDraft() { return true; }
@@ -5297,7 +5676,9 @@
           const subtitle = item.overall ? 'Amit magammal viszek' : 'Amit felismertem';
           const questions = item.questions.map((question, index) => {
             const answer = this.getPathSummaryAnswer(item, question, { create: !readOnly });
-            return `<label class="path-summary-question"><span class="path-summary-question-number">${String(index + 1).padStart(2, '0')}</span><span class="path-summary-question-copy"><h2>${escapeHtml(question.text)}</h2><textarea data-path-summary-answer data-path-summary-scope="${item.id}" data-path-summary-question-id="${question.id}" placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea></span></label>`;
+            const source = { type: 'path-summary', cycleId: this.getCurrentCycle()?.id || '', stepId: step.id, topicId: item.overall ? null : item.id, summaryQuestionId: question.id };
+            const practiceAction = !readOnly ? `<button class="path-summary-practice-action" type="button" data-action="create-practice-from-summary" data-practice-source="${escapeHtml(JSON.stringify(source))}" data-practice-source-text="${escapeHtml(answer.text)}"${answer.text.trim() ? '' : ' disabled'}>Ezt szeretném gyakorolni</button>` : '';
+            return `<label class="path-summary-question"><span class="path-summary-question-number">${String(index + 1).padStart(2, '0')}</span><span class="path-summary-question-copy"><h2>${escapeHtml(question.text)}</h2><textarea data-path-summary-answer data-path-summary-scope="${item.id}" data-path-summary-question-id="${question.id}" placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea>${practiceAction}</span></label>`;
           }).join('');
           const closeAction = `<footer class="path-summary-close-actions"><button class="path-secondary-button" type="button" data-action="close-path-step" ${readOnly ? 'disabled' : ''}>Ezt a lépésmunkát lezárom</button><button class="path-secondary-button" type="button" data-action="keep-path-step-open">Még dolgozom rajta</button></footer>`;
           return `<article class="path-summary-card"><header class="path-summary-card-header"><span class="path-summary-card-art" style="--path-summary-art-position: ${escapeHtml(visual.position)}" aria-hidden="true"><img src="${escapeHtml(visual.asset)}" alt=""></span><span class="path-summary-card-title"><strong>${escapeHtml(title)}</strong><small>${subtitle}</small></span><span class="path-summary-save-status" data-path-summary-save-status data-save-state="saved"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg><span data-path-summary-save-copy>Automatikusan mentve</span></span></header>${this.readOnlyNotice()}${questions}${closeAction}</article>`;
