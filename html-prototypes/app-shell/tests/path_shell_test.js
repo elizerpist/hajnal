@@ -38,7 +38,12 @@ assert.equal(executableSteps[3].themes[1].questions.length, 11, 'Step 4 Neheztel
 assert.equal(initialPathState.cycles.length, 2, 'the initial prototype state must represent historical and current work cycles');
 assert.equal(initialPathState.currentCycleId, 'cycle-2026', 'the current cycle must be explicit rather than overwriting history');
 assert.equal(initialPathState.assetStyle, 'original', 'the Ösvény Overview must begin in its existing original artwork mode');
-assert.deepEqual(initialPathState.lastWorked, { cycleId: 'cycle-2026', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, 'the current-work card must have one explicit last-question pointer');
+assert.deepEqual(
+  { cycleId: initialPathState.lastWorked.cycleId, stepId: initialPathState.lastWorked.stepId, topicId: initialPathState.lastWorked.topicId, questionIndex: initialPathState.lastWorked.questionIndex },
+  { cycleId: 'cycle-2026', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 },
+  'the current-work card must have one explicit last-question pointer',
+);
+assert.ok(initialPathState.lastWorked.runId, 'the current-work pointer must additionally remember the selected step-work run');
 assert.deepEqual(
   executableSteps.slice(0, 5).map((step) => initialPathState.cycles[1].steps[step.id].status),
   Array(5).fill('in-progress'),
@@ -119,9 +124,11 @@ const documentStub = {
   querySelector(selector) { return selector === '.app-frame' ? root : null; },
 };
 const runnableScript = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/)[1]
-  .replace("new HomeInteractionController(document.querySelector('.app-frame'));", "globalThis.__pathController = new HomeInteractionController(document.querySelector('.app-frame'));");
+  .replace("new HomeInteractionController(document.querySelector('.app-frame'));", "globalThis.__HomeInteractionController = HomeInteractionController; globalThis.__pathController = new HomeInteractionController(document.querySelector('.app-frame'));");
 const immediateTimeout = (callback) => { callback(); return 1; };
-const sandbox = { console, document: documentStub, globalThis: { setTimeout: immediateTimeout }, requestAnimationFrame: (callback) => callback(), setTimeout: immediateTimeout, clearTimeout() {}, window: { matchMedia: () => ({ matches: false }) } };
+const localStorageEntries = new Map();
+const localStorageStub = { getItem: (key) => localStorageEntries.get(key) || null, setItem: (key, value) => localStorageEntries.set(key, String(value)) };
+const sandbox = { console, document: documentStub, globalThis: { setTimeout: immediateTimeout, localStorage: localStorageStub }, requestAnimationFrame: (callback) => callback(), setTimeout: immediateTimeout, clearTimeout() {}, window: { matchMedia: () => ({ matches: false }) } };
 vm.runInNewContext(runnableScript, sandbox);
 const controller = sandbox.globalThis.__pathController;
 controller.openPathView('overview');
@@ -320,7 +327,8 @@ controller.openPathTopics();
 controller.openPathTopic('step-4-topic-2');
 assert.equal(controller.getPathNavigation().view, 'question', 'Step 4 must enter the shared question editor directly');
 assert.equal(controller.getPathNavigation().questionIndex, 5, 'the partially answered Neheztelések topic must resume at its sixth question');
-assert.deepEqual({ ...controller.state.path.lastWorked }, { cycleId: controller.getCurrentCycle().id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 5 }, 'opening a Step 4 topic directly must retain the existing exact last-work pointer');
+assert.deepEqual({ cycleId: controller.state.path.lastWorked.cycleId, stepId: controller.state.path.lastWorked.stepId, topicId: controller.state.path.lastWorked.topicId, questionIndex: controller.state.path.lastWorked.questionIndex }, { cycleId: controller.getCurrentCycle().id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 5 }, 'opening a Step 4 topic directly must retain the existing exact last-work pointer');
+assert.ok(controller.state.path.lastWorked.runId, 'opening a Path topic must preserve its step-work run identity');
 const firstAnswer = controller.getCurrentPathAnswer();
 firstAnswer.text = 'A prototípusban megőrzött saját gondolat.';
 controller.movePathQuestion(1);
@@ -401,6 +409,47 @@ assert.match(pathContent.innerHTML, /readonly aria-readonly="true"/, 'historical
 controller.state.path.currentCycleId = 'cycle-2026';
 controller.getPathNavigation().stepId = 'step-4';
 controller.getPathNavigation().topicId = 'step-4-topic-2';
+controller.openPathStep('step-4');
+assert.match(pathContent.innerHTML, /data-action="toggle-path-step-context-menu"/, 'every chapter menu must replace its old overview action with the three-dot context trigger');
+controller.togglePathStepContextMenu();
+assert.equal(controller.isPathStepContextMenuOpen(), true, 'the context menu must own an explicit open state');
+assert.match(pathContent.innerHTML, /data-component="path-step-context-menu"/, 'the anchored menu must render as a menu layer');
+assert.match(pathContent.innerHTML, /Korábbi lépésmunkáim/, 'the context menu must expose the step history action');
+controller.openPathStepWorkHistory();
+assert.equal(controller.getPathNavigation().view, 'step-work-history', 'the context action must open the step-specific history view');
+assert.match(pathContent.innerHTML, /Jelenlegi feldolgozás/, 'the history view must separate the current processing run');
+assert.match(pathContent.innerHTML, /Korábbi feldolgozásaim/, 'the history view must render archived work independently');
+const stepFourHistory = controller.getStepWorkHistoryEntries('step-4');
+assert.ok(stepFourHistory.length >= 2, 'the prototype must offer multiple Step 4 history entries without mixing other steps');
+const reviewedRun = stepFourHistory[0];
+controller.openPathStepWorkRun(reviewedRun.runId, reviewedRun.cycleId);
+assert.equal(controller.getPathNavigation().stepWorkReview.runId, reviewedRun.runId, 'opening an archived item must select the exact run, not the active cycle');
+assert.equal(controller.isPathReadOnly(), true, 'an archived step-work run must be read-only even while the active full cycle remains editable');
+const archivedAnswer = controller.getCurrentStepWork().topics['step-4-topic-2'].answers['step-4-topic-2-question-1'];
+const archivedImportant = archivedAnswer.important;
+controller.openPathTopic('step-4-topic-2');
+controller.togglePathAnswerFlag('important');
+assert.equal(archivedAnswer.important, archivedImportant, 'a flag action must not mutate an archived answer');
+controller.pathBack();
+controller.pathBack();
+controller.pathBack();
+assert.equal(controller.getPathNavigation().view, 'step-work-history', 'back from an archived chapter must return to its history, not the 12-step root');
+const cycleBeforeStepRestart = controller.getCurrentCycle().id;
+const preservedOtherStep = JSON.stringify(controller.getCurrentCycle().steps['step-3']);
+const oldRunId = controller.getCurrentCycle().steps['step-4'].runId;
+controller.requestNewPathStepWorkRun();
+assert.match(pathContent.innerHTML, /Újra szeretnéd feldolgozni ezt a lépést/, 'new step processing requires an explicit data-preserving confirmation');
+controller.confirmNewPathStepWorkRun();
+assert.equal(controller.getCurrentCycle().id, cycleBeforeStepRestart, 'reprocessing a step must not start or select a different full cycle');
+assert.notEqual(controller.getCurrentCycle().steps['step-4'].runId, oldRunId, 'the newly active Step 4 run must have its own identity');
+assert.equal(controller.getCurrentCycle().steps['step-4'].status, 'not-started', 'the newly active Step 4 run must begin empty');
+assert.equal(JSON.stringify(controller.getCurrentCycle().steps['step-3']), preservedOtherStep, 'reprocessing Step 4 must leave Step 3 untouched');
+assert.ok(controller.getCurrentCycle().stepHistory['step-4'].some((entry) => entry.runId === oldRunId), 'the previous active Step 4 work must be archived as a stable snapshot');
+assert.ok(localStorageEntries.has('hajnal-path-step-work-v2'), 'Path step-work history must persist through the versioned browser storage adapter');
+assert.equal(JSON.parse(localStorageEntries.get('hajnal-path-step-work-v2')).path.currentCycleId, cycleBeforeStepRestart, 'persisted Path state must retain the active full-cycle identity after a single-step restart');
+const restoredController = new sandbox.globalThis.__HomeInteractionController(root);
+assert.equal(restoredController.getCurrentCycle().id, cycleBeforeStepRestart, 'a fresh controller must restore the persisted active cycle');
+assert.ok(restoredController.getCurrentCycle().stepHistory['step-4'].some((entry) => entry.runId === oldRunId), 'a fresh controller must restore archived step-work snapshots');
 const priorCycleCount = controller.state.path.cycles.length;
 controller.startNewPathCycle();
 assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting a new work cycle must preserve prior cycles');
@@ -410,7 +459,7 @@ assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting
   'data-route="path"',
   'class="route-screen path-screen"',
   'data-path-view="overview"',
-  "const PATH_VIEWS = Object.freeze(['overview', 'step', 'topics', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'cycles']);",
+  "const PATH_VIEWS = Object.freeze(['overview', 'step', 'topics', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'step-work-history', 'cycles']);",
   'const PATH_STEPS = Object.freeze(PATH_STEP_SEEDS.map',
   'createPathState()',
   'renderPath()',
@@ -439,7 +488,7 @@ assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting
   'A teljes lépés',
 ].forEach(expectContains);
 
-assert.equal((html.match(/data-action="open-path"/g) || []).length, 2, 'Ösvény must keep its shared BottomNav entry and the Step 4 source-of-truth overview action');
+assert.equal((html.match(/data-action="open-path"/g) || []).length, 1, 'Ösvény must keep its shared BottomNav entry while chapter headers use the context menu');
 assert.equal((html.match(/data-path-step-id=/g) || []).length, 0, 'steps must be rendered from state, not hardcoded screen markup');
 expectContains('--path-step-art-mask: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.42) 10%');
 expectContains('-webkit-mask-image: var(--path-step-art-mask);');

@@ -1321,6 +1321,55 @@
     .path-screen[data-path-view="step"] .path-step-four-scroll { height: 100%; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; overflow-y: auto; padding: 0; scrollbar-width: none; }
     .path-step-four-scroll { height: 100%; overflow-y: auto; padding: 0 0 14px; scrollbar-width: none; }
     .path-step-four-scroll::-webkit-scrollbar { display: none; }
+    .path-step-context-menu-anchor { position: relative; z-index: 2; display: block; }
+    .path-step-four-menu-header .path-step-context-menu-trigger { font-size: 20px; letter-spacing: 1px; line-height: 1; }
+    .path-step-context-menu-scrim { position: fixed; z-index: 1; inset: 0; width: auto !important; height: auto !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; cursor: default; }
+    .path-step-context-menu { width: 208px; position: absolute; z-index: 3; top: 51px; right: 0; display: block; padding: 7px; border: 1px solid rgba(106, 86, 180, .12); border-radius: 17px; background: rgba(255, 253, 254, .98); box-shadow: 0 16px 30px rgba(44, 46, 119, .18); transform-origin: top right; animation: path-context-menu-in 170ms ease-out both; }
+    .path-step-context-menu button { width: 100% !important; min-height: 44px; height: auto !important; display: grid !important; grid-template-columns: 22px minmax(0, 1fr); align-items: center; gap: 9px; padding: 10px !important; border: 0 !important; border-radius: 12px !important; background: transparent !important; box-shadow: none !important; color: #382E71 !important; font: inherit; font-size: 12px; font-weight: 760; text-align: left; }
+    .path-step-context-menu button:hover, .path-step-context-menu button:focus-visible { background: #F2EDFC !important; }
+    .path-step-context-menu .icon { width: 20px !important; height: 20px !important; color: #7355AE; stroke-width: 1.9 !important; }
+    @keyframes path-context-menu-in { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .path-screen[data-path-view="step-work-history"].path-focus .path-content { top: 0; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; padding: 0; }
+    .path-step-work-history-screen { height: 100%; display: grid; grid-template-rows: 208px minmax(0, 1fr); overflow: hidden; background: #FCF9FE; color: #172342; }
+    .path-step-work-history-hero { position: relative; overflow: hidden; isolation: isolate; background: #E9E0F6; }
+    .path-step-work-history-hero > img { width: 100%; height: 286px; position: absolute; z-index: -2; top: 0; left: 0; display: block; object-fit: cover; object-position: center 32%; opacity: .84; -webkit-mask-image: var(--hero-art-vertical-fade-mask); mask-image: var(--hero-art-vertical-fade-mask); pointer-events: none; }
+    .path-step-work-history-hero-fade { position: absolute; z-index: -1; right: 0; bottom: 0; left: 0; height: 92px; background: linear-gradient(180deg, transparent 0%, #FCF9FE 92%); pointer-events: none; }
+    .path-step-work-history-back { width: 44px; height: 44px; position: absolute; z-index: 1; top: 19px; left: 18px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.78); border-radius: 50%; background: rgba(255,255,255,.87); color: #25275A; box-shadow: 0 7px 18px rgba(50,36,106,.10); }
+    .path-step-work-history-back .icon { width: 24px; height: 24px; stroke-width: 2.2; }
+    .path-step-work-history-heading { position: absolute; z-index: 1; top: 24px; right: 24px; left: 80px; }
+    .path-step-work-history-heading h1 { margin: 0; color: #20245E; font-size: 20px; line-height: 1.1; font-weight: 840; letter-spacing: -.04em; }
+    .path-step-work-history-heading p { margin: 6px 0 0; color: #675C92; font-size: 11px; line-height: 1.3; font-weight: 720; }
+    .path-step-work-history-scroll { min-height: 0; overflow-y: auto; padding: 11px 18px calc(28px + var(--bottom-safe-area)); scrollbar-width: none; }
+    .path-step-work-history-scroll::-webkit-scrollbar { display: none; }
+    .path-step-work-history-label { margin: 0 0 9px; color: #8A78AC; font-size: 10px; font-weight: 830; letter-spacing: .085em; text-transform: uppercase; }
+    .path-step-work-history-card { width: 100%; min-height: 86px; display: grid; grid-template-columns: 55px minmax(0, 1fr) 22px; align-items: center; gap: 11px; padding: 13px; border: 1px solid rgba(113, 85, 174, .14); border-radius: 23px; background: rgba(255,255,255,.90); color: #182441; box-shadow: 0 10px 23px rgba(44,46,119,.07); font: inherit; text-align: left; cursor: pointer; }
+    .path-step-work-history-card.is-archived { min-height: 74px; border-color: rgba(113,85,174,.23); border-radius: 18px; box-shadow: 0 4px 12px rgba(44,46,119,.035); }
+    .path-step-work-history-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: #F0E9FB; color: #7454AF; }
+    .path-step-work-history-card.is-archived .path-step-work-history-icon { width: 40px; height: 40px; background: #F5F1FA; color: #9A86B7; }
+    .path-step-work-history-icon .icon { width: 24px; height: 24px; stroke-width: 1.75; }
+    .path-step-work-history-copy { min-width: 0; }
+    .path-step-work-history-copy strong { display: block; overflow: hidden; color: #253056; font-size: 13px; line-height: 1.22; font-weight: 820; letter-spacing: -.018em; text-overflow: ellipsis; white-space: nowrap; }
+    .path-step-work-history-copy small { display: block; overflow: hidden; margin-top: 5px; color: #736B91; font-size: 10.5px; line-height: 1.2; font-weight: 670; text-overflow: ellipsis; white-space: nowrap; }
+    .path-step-work-status-pill { display: inline-block; padding: 5px 10px; border-radius: 999px; background: #F0E9FF; color: #6C52D3; font-size: 10px; font-weight: 830; }
+    .path-step-work-status-pill[data-status="not-started"] { background: #F1EFF4; color: #7B7787; }
+    .path-step-work-status-pill[data-status="closed"] { background: #EAF3ED; color: #478364; }
+    .path-step-work-history-chevron { color: #7B62B5; font-size: 27px; line-height: 1; font-weight: 340; }
+    .path-step-work-history-previous { margin-top: 26px; }
+    .path-step-work-history-list { display: grid; gap: 10px; }
+    .path-step-work-history-empty { margin: 0; padding: 14px 4px; color: #756B91; font-size: 12px; line-height: 1.45; }
+    .path-step-work-history-new { padding-top: 25px; text-align: center; }
+    .path-step-work-history-new-button { width: 100%; min-height: 54px; border: 0; border-radius: 18px; background: linear-gradient(135deg, #7B63D8, #A37ADA); color: #FFF; box-shadow: 0 12px 23px rgba(91,63,169,.24); font: inherit; font-size: 13px; font-weight: 840; cursor: pointer; }
+    .path-step-work-history-new-button span { margin-right: 5px; font-size: 20px; font-weight: 380; vertical-align: -1px; }
+    .path-step-work-history-new p { margin: 9px 0 0; color: #8A80A1; font-size: 10.5px; font-weight: 650; }
+    .path-step-work-confirmation { position: absolute; z-index: 8; inset: 0; display: grid; place-items: end center; padding: 18px; background: rgba(34, 28, 67, .25); }
+    .path-step-work-confirmation-surface { width: 100%; padding: 22px; border-radius: 27px; background: #FFFCFF; box-shadow: 0 18px 42px rgba(36,30,77,.24); }
+    .path-step-work-confirmation h2 { margin: 0; color: #29245F; font-size: 18px; line-height: 1.2; letter-spacing: -.03em; }
+    .path-step-work-confirmation p { margin: 10px 0 0; color: #665E83; font-size: 12px; line-height: 1.45; }
+    .path-step-work-confirmation-note { padding: 9px 10px; border-radius: 12px; background: #F2EDFC; color: #5E4A9C !important; font-weight: 700; }
+    .path-step-work-confirmation-surface > div { display: grid; grid-template-columns: 1fr 1.35fr; gap: 9px; margin-top: 18px; }
+    .path-step-work-confirmation button { min-height: 45px; border-radius: 15px; font: inherit; font-size: 12px; font-weight: 800; }
+    .path-step-work-confirmation-cancel { border: 1px solid rgba(106,86,180,.18); background: #F8F5FB; color: #5F5480; }
+    .path-step-work-confirmation-confirm { border: 0; background: #7359C8; color: #FFF; }
     .path-step-four-cover { position: relative; }
     .path-step-four-art { height: 276px; background: #F2EAF4; }
     .path-step-four-art img { object-fit: cover; object-position: center top; }
@@ -2577,7 +2626,7 @@
       const INITIALIZATION_SOURCE_VIEW_ORDER = Object.freeze(['splash', 'onboarding', 'start-date', 'sponsor-setup', 'why-started', 'notifications']);
       const INITIALIZATION_VIEWS = INITIALIZATION_SOURCE_VIEW_ORDER;
       const INITIALIZATION_SPLASH_DELAY_MS = 2500;
-      const PATH_VIEWS = Object.freeze(['overview', 'step', 'topics', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'cycles']);
+      const PATH_VIEWS = Object.freeze(['overview', 'step', 'topics', 'topic', 'question', 'answers', 'sponsor-review', 'step-summary', 'step-work-history', 'cycles']);
       const PATH_QUESTION_OVERRIDES = Object.freeze({
         'step-4-topic-2': Object.freeze([
           'Melyik helyzet vagy kapcsolat foglalkoztat még mindig?',
@@ -2932,9 +2981,15 @@
       function createPathCollectionState() { return { selectedTopicId: 'all', query: '', carouselScrollLeft: null, listScrollTop: 0 }; }
       function createPathSummaryState() { return { selectedTopicId: null, carouselScrollLeft: null, cardScrollTop: 0, saveState: 'saved' }; }
       function createTopicWork(status = 'not-started') { return { status, answers: {} }; }
-      function createStepWork(step) {
-        const startedTopicCount = Math.ceil(step.themes.length / 2);
+      const PATH_STEP_WORK_STORAGE_KEY = 'hajnal-path-step-work-v2';
+      const PATH_STEP_WORK_SCHEMA_VERSION = 2;
+      function clonePathData(value) { return JSON.parse(JSON.stringify(value)); }
+      function createStepRunId(cycleId, stepId, timestamp = Date.now()) { return `${cycleId}-${stepId}-run-${timestamp}-${Math.random().toString(36).slice(2, 8)}`; }
+      function createStepWork(step, { runId = '', startedAt = '', seedTopicProgress = true } = {}) {
+        const startedTopicCount = seedTopicProgress ? Math.ceil(step.themes.length / 2) : 0;
         return {
+          runId,
+          startedAt,
           status: 'not-started',
           topics: Object.fromEntries(step.themes.map((topic, index) => [topic.id, createTopicWork(index < startedTopicCount ? 'in-progress' : 'not-started')])),
           topicSummaries: {},
@@ -2944,7 +2999,71 @@
           takeaway: ''
         };
       }
-      function createCycle(id, startedAt, readOnly = false) { return { id, startedAt, readOnly, status: 'active', steps: Object.fromEntries(PATH_STEPS.map((step) => [step.id, createStepWork(step)])) }; }
+      function createCycle(id, startedAt, readOnly = false) {
+        return {
+          id,
+          startedAt,
+          readOnly,
+          status: 'active',
+          schemaVersion: PATH_STEP_WORK_SCHEMA_VERSION,
+          steps: Object.fromEntries(PATH_STEPS.map((step) => [step.id, createStepWork(step, { runId: createStepRunId(id, step.id, `${startedAt}-${step.number}`), startedAt })])),
+          stepHistory: Object.fromEntries(PATH_STEPS.map((step) => [step.id, []]))
+        };
+      }
+      function createStepWorkHistoryEntry(cycle, step, work, { archivedAt = new Date().toISOString(), status = work.status } = {}) {
+        const snapshot = clonePathData(work);
+        const runId = snapshot.runId || createStepRunId(cycle.id, step.id);
+        snapshot.runId = runId;
+        return { id: runId, runId, cycleId: cycle.id, stepId: step.id, startedAt: snapshot.startedAt || cycle.startedAt, archivedAt, status, work: snapshot };
+      }
+      function archiveCurrentStepWork(cycle, step, { archivedAt = new Date().toISOString() } = {}) {
+        cycle.stepHistory ||= {};
+        cycle.stepHistory[step.id] ||= [];
+        const entry = createStepWorkHistoryEntry(cycle, step, cycle.steps[step.id], { archivedAt });
+        cycle.stepHistory[step.id].push(entry);
+        return entry;
+      }
+      function startNewStepWorkRun(cycle, step, { startedAt = new Date().toISOString(), runId = createStepRunId(cycle.id, step.id) } = {}) {
+        const archived = archiveCurrentStepWork(cycle, step, { archivedAt: startedAt });
+        cycle.steps[step.id] = createStepWork(step, { runId, startedAt, seedTopicProgress: false });
+        return { archived, work: cycle.steps[step.id] };
+      }
+      function hasMeaningfulStepWork(work) {
+        if (!work) return false;
+        if (work.status && work.status !== 'not-started') return true;
+        if (work.summary?.trim?.() || work.takeaway?.trim?.()) return true;
+        if (Object.keys(work.topicSummaries || {}).length || Object.keys(work.overallSummary || {}).length) return true;
+        return Object.values(work.topics || {}).some((topic) => Object.values(topic.answers || {}).some((answer) => answer.text?.trim?.() || answer.important || answer.discussWithSponsor || answer.voiceMemoState === 'recorded'));
+      }
+      function migratePathStepWorkState(pathState) {
+        if (!pathState?.cycles) return pathState;
+        pathState.cycles.forEach((cycle) => {
+          cycle.schemaVersion = PATH_STEP_WORK_SCHEMA_VERSION;
+          cycle.steps ||= {};
+          cycle.stepHistory ||= {};
+          PATH_STEPS.forEach((step) => {
+            const work = cycle.steps[step.id] ||= createStepWork(step, { runId: createStepRunId(cycle.id, step.id), startedAt: cycle.startedAt || '' });
+            work.runId ||= createStepRunId(cycle.id, step.id, `${cycle.startedAt || 'legacy'}-${step.number}`);
+            work.startedAt ||= cycle.startedAt || '';
+            cycle.stepHistory[step.id] = Array.isArray(cycle.stepHistory[step.id]) ? cycle.stepHistory[step.id].map((entry) => {
+              const snapshot = entry.work || entry;
+              snapshot.runId ||= entry.runId || entry.id || createStepRunId(cycle.id, step.id, `${cycle.startedAt || 'legacy'}-${step.number}`);
+              snapshot.startedAt ||= entry.startedAt || cycle.startedAt || '';
+              return { id: entry.id || snapshot.runId, runId: entry.runId || snapshot.runId, cycleId: entry.cycleId || cycle.id, stepId: step.id, startedAt: entry.startedAt || snapshot.startedAt, archivedAt: entry.archivedAt || cycle.startedAt || '', status: entry.status || snapshot.status || 'closed', work: snapshot };
+            }) : [];
+          });
+        });
+        pathState.collections ||= { important: createPathCollectionState(), sponsor: createPathCollectionState() };
+        pathState.summary ||= { byStep: {} };
+        pathState.navigation ||= { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 0, answerFilter: 'all', questionReturn: null, notice: '', stepWorkReview: null, contextMenuOpen: false };
+        pathState.navigation.stepWorkReview ||= null;
+        pathState.navigation.contextMenuOpen = false;
+        if (pathState.lastWorked && !pathState.lastWorked.runId) {
+          const cycle = pathState.cycles.find((item) => item.id === pathState.lastWorked.cycleId);
+          pathState.lastWorked.runId = cycle?.steps?.[pathState.lastWorked.stepId]?.runId || null;
+        }
+        return pathState;
+      }
       function seedPathImportantDemo(cycle) {
         PATH_STEPS.forEach((step) => {
           const topics = step.themes.slice(0, Math.ceil(step.themes.length / 2));
@@ -2977,9 +3096,15 @@
         });
         current.steps['step-5'].topics['step-5-topic-2'].answers = { 'step-5-topic-2-question-1': createAnswer({ text: 'Ezt a félelmet szeretném majd elmondani egy bizalmi beszélgetésben.', discussWithSponsor: true }) };
         current.steps['step-9'].topics['step-9-topic-4'].answers = { 'step-9-topic-4-question-1': createAnswer({ text: 'Előbb át szeretném beszélni, mi lenne biztonságos és nem okozna újabb kárt.', discussWithSponsor: true }) };
+        const archivedStepFour = createStepWorkHistoryEntry(current, PATH_STEPS[3], current.steps['step-4'], { archivedAt: '2025-12-18T12:00:00.000Z', status: 'closed' });
+        archivedStepFour.id = archivedStepFour.runId = 'cycle-2026-step-4-run-2025';
+        archivedStepFour.work.runId = archivedStepFour.runId;
+        archivedStepFour.work.startedAt = '2025-03-07T12:00:00.000Z';
+        archivedStepFour.work.status = 'closed';
+        current.stepHistory['step-4'].push(archivedStepFour);
         seedPathImportantDemo(historical);
         seedPathImportantDemo(current);
-        return { currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', collections: { important: createPathCollectionState(), sponsor: createPathCollectionState() }, summary: { byStep: {} }, lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', questionReturn: null, notice: '' } };
+        return migratePathStepWorkState({ currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', collections: { important: createPathCollectionState(), sponsor: createPathCollectionState() }, summary: { byStep: {} }, lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, runId: current.steps['step-4'].runId }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', questionReturn: null, notice: '', stepWorkReview: null, contextMenuOpen: false } });
       }
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
@@ -3224,6 +3349,7 @@
               motivation: 'Szeretnék jelen lenni, tisztábban gondolkodni, és újra bízni magamban.'
             }
           };
+          this.restorePathStepWorkState();
           this.drag = null;
           this.ignoreNextClick = false;
           this.motionReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3293,7 +3419,7 @@
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('keydown', (event) => this.handlePathCollectionCarouselKeydown(event));
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.navigate('home'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPathStepContextMenuOpen()) { this.closePathStepContextMenu(); return; } if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.navigate('home'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
         }
@@ -3511,6 +3637,13 @@
             case 'toggle-path-step-four-hero-variant': this.togglePathStepFourHeroVariant(); break;
             case 'toggle-path-step-four-copy-placement': this.togglePathStepFourCopyPlacement(); break;
             case 'open-path-step': this.openPathStep(event.target.closest('[data-step-id]').dataset.stepId); break;
+            case 'toggle-path-step-context-menu': this.togglePathStepContextMenu(event.target.closest('[data-action="toggle-path-step-context-menu"]')); break;
+            case 'close-path-step-context-menu': this.closePathStepContextMenu(); break;
+            case 'open-path-step-work-history': this.openPathStepWorkHistory(); break;
+            case 'open-path-step-work-run': { const target = event.target.closest('[data-step-run-id]'); this.openPathStepWorkRun(target?.dataset.stepRunId, target?.dataset.cycleId); break; }
+            case 'request-new-path-step-work-run': this.requestNewPathStepWorkRun(); break;
+            case 'cancel-new-path-step-work-run': this.cancelNewPathStepWorkRun(); break;
+            case 'confirm-new-path-step-work-run': this.confirmNewPathStepWorkRun(); break;
             case 'continue-path-current': this.resumePathCurrent(); break;
             case 'open-path-topics': this.openPathTopics(); break;
             case 'open-path-topic': this.openPathTopic(event.target.closest('[data-topic-id]').dataset.topicId); break;
@@ -5293,6 +5426,7 @@
           if (event.clientY - drag.startY > 54) this.closePanicSheet(drag.sheet);
         }
         handlePlatformBack() {
+          if (this.isPathStepContextMenuOpen()) { this.closePathStepContextMenu(); return; }
           if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; }
           if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; }
           if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; }
@@ -5447,6 +5581,20 @@
               this.state.evening = { ...createEveningState(), ...saved.evening, activeSessionId: null };
             }
           } catch (_) { /* A prototípus működik böngészőtárolás nélkül is, de nem állít tartós mentést. */ }
+        }
+        restorePathStepWorkState() {
+          try {
+            const raw = globalThis.localStorage?.getItem(PATH_STEP_WORK_STORAGE_KEY);
+            if (!raw) return;
+            const saved = JSON.parse(raw);
+            if (saved?.version === PATH_STEP_WORK_SCHEMA_VERSION && saved?.path?.cycles) this.state.path = migratePathStepWorkState(saved.path);
+          } catch (_) { /* A prototípus a böngészőtárolás nélkül is használható; hibás mentést nem töltünk be. */ }
+        }
+        persistPathStepWorkState() {
+          try {
+            globalThis.localStorage?.setItem(PATH_STEP_WORK_STORAGE_KEY, JSON.stringify({ version: PATH_STEP_WORK_SCHEMA_VERSION, path: this.state.path }));
+            return true;
+          } catch (_) { return false; }
         }
         persistPracticeEveningState() {
           const practice = this.state.practice;
@@ -5684,18 +5832,40 @@
         getCurrentCycle() { return this.state.path.cycles.find((cycle) => cycle.id === this.state.path.currentCycleId); }
         getStep(stepId = this.getPathNavigation().stepId) { return PATH_STEPS.find((step) => step.id === stepId); }
         getTopic(topicId = this.getPathNavigation().topicId, step = this.getStep()) { return step?.themes.find((topic) => topic.id === topicId); }
-        rememberLastPathWork() { const navigation = this.getPathNavigation(); this.state.path.lastWorked = { cycleId: this.state.path.currentCycleId, stepId: navigation.stepId, topicId: navigation.topicId, questionIndex: navigation.questionIndex }; }
-        getLastPathWork() { const last = this.state.path.lastWorked; if (!last || last.cycleId !== this.state.path.currentCycleId) return null; const step = this.getStep(last.stepId); const topic = this.getTopic(last.topicId, step); if (!step || !topic || last.questionIndex < 0 || last.questionIndex >= topic.questions.length) return null; return { step, topic, questionIndex: last.questionIndex }; }
-        getCurrentStepWork(stepId = this.getPathNavigation().stepId) { return this.getCurrentCycle().steps[stepId]; }
-        getTopicWork(stepId = this.getPathNavigation().stepId, topicId = this.getPathNavigation().topicId) { const stepWork = this.getCurrentStepWork(stepId); return stepWork.topics[topicId] ||= createTopicWork(); }
+        rememberLastPathWork() { const navigation = this.getPathNavigation(); this.state.path.lastWorked = { cycleId: this.state.path.currentCycleId, stepId: navigation.stepId, topicId: navigation.topicId, questionIndex: navigation.questionIndex, runId: this.getDisplayedStepRunId(navigation.stepId) }; this.persistPathStepWorkState(); }
+        getLastPathWork() { const last = this.state.path.lastWorked; if (!last || last.cycleId !== this.state.path.currentCycleId) return null; const step = this.getStep(last.stepId); const topic = this.getTopic(last.topicId, step); const activeRunId = this.getCurrentCycle().steps[last.stepId]?.runId; if (!step || !topic || (last.runId && last.runId !== activeRunId) || last.questionIndex < 0 || last.questionIndex >= topic.questions.length) return null; return { step, topic, questionIndex: last.questionIndex }; }
+        getStepWorkHistoryEntry(cycleId, stepId, runId) {
+          const cycle = this.state.path.cycles.find((item) => item.id === cycleId);
+          if (!cycle) return null;
+          const archived = cycle.stepHistory?.[stepId]?.find((entry) => entry.runId === runId || entry.id === runId);
+          if (archived) return archived;
+          const active = cycle.steps?.[stepId];
+          return active?.runId === runId ? { id: active.runId, runId: active.runId, cycleId: cycle.id, stepId, startedAt: active.startedAt || cycle.startedAt, archivedAt: cycle.readOnly ? cycle.startedAt : null, status: active.status, work: active } : null;
+        }
+        getDisplayedStepRunId(stepId = this.getPathNavigation().stepId) {
+          const review = this.getPathNavigation().stepWorkReview;
+          if (review?.stepId === stepId) return review.runId;
+          return this.getCurrentCycle().steps[stepId]?.runId || null;
+        }
+        getCurrentStepWork(stepId = this.getPathNavigation().stepId) {
+          const review = this.getPathNavigation().stepWorkReview;
+          if (review?.stepId === stepId) return this.getStepWorkHistoryEntry(review.cycleId, stepId, review.runId)?.work || this.getCurrentCycle().steps[stepId];
+          return this.getCurrentCycle().steps[stepId];
+        }
+        getTopicWork(stepId = this.getPathNavigation().stepId, topicId = this.getPathNavigation().topicId) {
+          const stepWork = this.getCurrentStepWork(stepId); const current = stepWork.topics?.[topicId];
+          if (current) return current;
+          if (this.isPathReadOnly()) return createTopicWork();
+          stepWork.topics ||= {}; return stepWork.topics[topicId] = createTopicWork();
+        }
         getCurrentQuestion() { const topic = this.getTopic(); return topic.questions[this.getPathNavigation().questionIndex] || topic.questions[0]; }
-        getCurrentPathAnswer(create = true) { const answerMap = this.getTopicWork().answers; const question = this.getCurrentQuestion(); return answerMap[question.id] || (create ? answerMap[question.id] = createAnswer() : createAnswer()); }
+        getCurrentPathAnswer(create = true) { const answerMap = this.getTopicWork().answers; const question = this.getCurrentQuestion(); return answerMap[question.id] || (create && !this.isPathReadOnly() ? answerMap[question.id] = createAnswer() : createAnswer()); }
         getTopicResumeQuestionIndex(topic, stepId = this.getPathNavigation().stepId) {
           const answers = this.getTopicWork(stepId, topic.id).answers;
           const firstUnanswered = topic.questions.findIndex((question) => !answers[question.id]?.text.trim());
           return firstUnanswered === -1 ? Math.max(0, topic.questions.length - 1) : firstUnanswered;
         }
-        isPathReadOnly() { return Boolean(this.getCurrentCycle().readOnly); }
+        isPathReadOnly() { return Boolean(this.getCurrentCycle().readOnly || this.getPathNavigation().stepWorkReview?.readOnly); }
         getAnsweredCount(topic, stepId = this.getPathNavigation().stepId) { const answers = this.getTopicWork(stepId, topic.id).answers; return topic.questions.filter((question) => answers[question.id]?.text.trim()).length; }
         getTopicVisualState(topic, stepId = this.getPathNavigation().stepId) {
           const answered = this.getAnsweredCount(topic, stepId);
@@ -5705,11 +5875,17 @@
         getFlagCounts(stepId = this.getPathNavigation().stepId) { const step = this.getStep(stepId); const work = this.getCurrentStepWork(stepId); const all = step.themes.flatMap((topic) => Object.values(work.topics[topic.id]?.answers || {})); return { important: all.filter((answer) => answer.important).length, sponsor: all.filter((answer) => answer.discussWithSponsor).length }; }
         getPathCollectionConfig(kind) { return PATH_COLLECTION_CONFIG[kind] || PATH_COLLECTION_CONFIG.important; }
         getPathCollectionKindForView(view = this.getPathNavigation().view) { return Object.values(PATH_COLLECTION_CONFIG).find((config) => config.view === view)?.key || null; }
-        getPathCollectionState(kind) { const config = this.getPathCollectionConfig(kind); const collections = this.state.path.collections ||= {}; return collections[config.key] ||= createPathCollectionState(); }
+        getPathCollectionState(kind) {
+          const config = this.getPathCollectionConfig(kind); const collections = this.state.path.collections ||= {};
+          const existing = collections[config.key]; const runKey = `${this.getPathNavigation().stepId}:${this.getDisplayedStepRunId() || 'current'}`;
+          if (!existing || existing.selectedTopicId !== undefined) collections[config.key] = { [runKey]: existing?.selectedTopicId !== undefined ? existing : createPathCollectionState() };
+          return collections[config.key][runKey] ||= createPathCollectionState();
+        }
         getPathSummaryState() {
           const summary = this.state.path.summary ||= { byStep: {} }; const byStep = summary.byStep ||= {};
           const step = this.getStep();
-          const state = byStep[step?.id] ||= createPathSummaryState();
+          const key = `${step?.id || 'step'}:${this.getDisplayedStepRunId(step?.id) || 'current'}`;
+          const state = byStep[key] ||= createPathSummaryState();
           const resumeTopicId = this.getPathNavigation().topicId;
           if (step && !this.getPathSummaryItems(step).some((item) => item.id === state.selectedTopicId)) state.selectedTopicId = step.themes.some((topic) => topic.id === resumeTopicId) ? resumeTopicId : (step.themes[0]?.id || 'overall-step-reflection');
           return state;
@@ -5726,6 +5902,7 @@
         getSelectedPathSummaryItem() { const state = this.getPathSummaryState(); return this.getPathSummaryItems().find((item) => item.id === state.selectedTopicId) || this.getPathSummaryItems()[0]; }
         ensurePathSummaryStorage(stepId = this.getPathNavigation().stepId) {
           const work = this.getCurrentStepWork(stepId);
+          if (this.isPathReadOnly()) return work;
           work.topicSummaries ||= {}; work.overallSummary ||= {};
           const registry = this.getPathSummaryRegistry(stepId);
           if (!registry || work.summaryMigrationVersion >= 1) return work;
@@ -5737,7 +5914,7 @@
         }
         getPathSummaryAnswer(item, question, { create = !this.isPathReadOnly() } = {}) {
           const work = this.ensurePathSummaryStorage();
-          const bucket = item.overall ? work.overallSummary : (work.topicSummaries[item.id] ||= {});
+          const bucket = item.overall ? (work.overallSummary || {}) : (work.topicSummaries?.[item.id] || (create ? (work.topicSummaries[item.id] = {}) : {}));
           if (!bucket[question.id] && create) bucket[question.id] = { text: '', savedAt: null };
           return bucket[question.id] || { text: '', savedAt: null };
         }
@@ -5749,6 +5926,7 @@
           const state = this.getPathSummaryState(); state.saveState = 'saved';
           const practiceAction = target.closest?.('.path-summary-question')?.querySelector('[data-action="create-practice-from-summary"]');
           if (practiceAction) { practiceAction.disabled = !answer.text.trim(); practiceAction.dataset.practiceSourceText = answer.text; }
+          this.persistPathStepWorkState();
           this.updatePathSummarySaveStatus('saved');
         }
         flushPathSummaryDraft() { return true; }
@@ -5837,7 +6015,7 @@
           const subtitle = item.overall ? 'Amit magammal viszek' : 'Amit felismertem';
           const questions = item.questions.map((question, index) => {
             const answer = this.getPathSummaryAnswer(item, question, { create: !readOnly });
-            const source = { type: 'path-summary', cycleId: this.getCurrentCycle()?.id || '', stepId: step.id, topicId: item.overall ? null : item.id, summaryQuestionId: question.id };
+            const source = { type: 'path-summary', cycleId: this.getCurrentCycle()?.id || '', runId: this.getDisplayedStepRunId(step.id), stepId: step.id, topicId: item.overall ? null : item.id, summaryQuestionId: question.id };
             const practiceAction = !readOnly ? `<button class="path-summary-practice-action" type="button" data-action="create-practice-from-summary" data-practice-source="${escapeHtml(JSON.stringify(source))}" data-practice-source-text="${escapeHtml(answer.text)}"${answer.text.trim() ? '' : ' disabled'}>Ezt szeretném gyakorolni</button>` : '';
             return `<label class="path-summary-question"><span class="path-summary-question-number">${String(index + 1).padStart(2, '0')}</span><span class="path-summary-question-copy"><h2>${escapeHtml(question.text)}</h2><textarea data-path-summary-answer data-path-summary-scope="${item.id}" data-path-summary-question-id="${question.id}" placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea>${practiceAction}</span></label>`;
           }).join('');
@@ -5955,7 +6133,8 @@
           const navigation = this.getPathNavigation();
           navigation.view = PATH_VIEWS.includes(view) ? view : 'overview';
           navigation.notice = '';
-          if (navigation.view === 'overview') this.selectCurrentPathWork();
+          navigation.contextMenuOpen = false;
+          if (navigation.view === 'overview') { navigation.stepWorkReview = null; this.selectCurrentPathWork(); }
           this.navigate('path');
         }
         togglePathOverviewAssetStyle() {
@@ -5974,9 +6153,45 @@
           this.state.path.stepFourHeroCopyPlacement = this.state.path.stepFourHeroCopyPlacement === 'hero' ? 'body' : 'hero';
           this.renderPath();
         }
-        openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.questionReturn = null; navigation.view = 'step'; this.navigate('path'); }
+        openPathStep(stepId) { const step = this.getStep(stepId); if (!step) return; const navigation = this.getPathNavigation(); navigation.stepId = step.id; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.questionReturn = null; navigation.stepWorkReview = null; navigation.contextMenuOpen = false; navigation.view = 'step'; this.navigate('path'); }
+        isPathStepContextMenuOpen() { return Boolean(this.state.route === 'path' && this.getPathNavigation().view === 'step' && this.getPathNavigation().contextMenuOpen); }
+        togglePathStepContextMenu(trigger) {
+          const navigation = this.getPathNavigation(); navigation.contextMenuOpen = !navigation.contextMenuOpen;
+          this.renderPath();
+          if (navigation.contextMenuOpen) requestAnimationFrame(() => this.root.querySelector('[data-component="path-step-context-menu"] [role="menuitem"]')?.focus?.());
+          else trigger?.focus?.();
+        }
+        closePathStepContextMenu() { if (!this.getPathNavigation().contextMenuOpen) return; this.getPathNavigation().contextMenuOpen = false; this.renderPath(); }
+        getStepWorkHistoryEntries(stepId = this.getPathNavigation().stepId) {
+          const step = this.getStep(stepId); const current = this.getCurrentCycle(); const entries = (current.stepHistory?.[stepId] || []).filter((entry) => hasMeaningfulStepWork(entry.work)).map((entry) => ({ ...entry, readOnly: true }));
+          this.state.path.cycles.filter((cycle) => cycle.id !== current.id).forEach((cycle) => {
+            const work = cycle.steps?.[stepId];
+            if (!hasMeaningfulStepWork(work)) return;
+            entries.push({ id: work.runId, runId: work.runId, cycleId: cycle.id, stepId, startedAt: work.startedAt || cycle.startedAt, archivedAt: cycle.startedAt, status: work.status, work, readOnly: true, legacyCycle: true });
+          });
+          return entries.sort((first, second) => String(second.archivedAt || second.startedAt || '').localeCompare(String(first.archivedAt || first.startedAt || '')));
+        }
+        openPathStepWorkHistory() { const navigation = this.getPathNavigation(); navigation.contextMenuOpen = false; navigation.stepWorkReview = null; navigation.stepWorkConfirmation = false; navigation.view = 'step-work-history'; this.navigate('path'); }
+        openPathStepWorkRun(runId, cycleId) {
+          const navigation = this.getPathNavigation(); const step = this.getStep(); const entry = this.getStepWorkHistoryEntries(step.id).find((item) => item.runId === runId && item.cycleId === cycleId);
+          if (!entry) return;
+          navigation.stepWorkReview = { stepId: step.id, cycleId: entry.cycleId, runId: entry.runId, readOnly: true };
+          navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.questionReturn = null; navigation.view = 'step'; this.navigate('path');
+        }
+        requestNewPathStepWorkRun() { this.getPathNavigation().stepWorkConfirmation = true; this.renderPath(); }
+        cancelNewPathStepWorkRun() { this.getPathNavigation().stepWorkConfirmation = false; this.renderPath(); }
+        confirmNewPathStepWorkRun() {
+          const step = this.getStep(); const cycle = this.getCurrentCycle();
+          if (!step || cycle.readOnly) return;
+          const created = startNewStepWorkRun(cycle, step);
+          const navigation = this.getPathNavigation();
+          navigation.stepWorkConfirmation = false; navigation.stepWorkReview = null; navigation.topicId = step.themes[0].id; navigation.questionIndex = 0; navigation.questionReturn = null; navigation.view = 'step';
+          navigation.notice = 'Új feldolgozás indult. A korábbi válaszaid változatlanul megmaradtak.';
+          this.persistPathStepWorkState(); this.navigate('path');
+          return created;
+        }
         openPathTopics() { this.getPathNavigation().view = 'topics'; this.navigate('path'); }
-        openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = this.getTopicResumeQuestionIndex(topic, step.id); navigation.questionReturn = null; navigation.view = 'question'; this.getCurrentStepWork().status = this.getCurrentStepWork().status === 'not-started' && !this.isPathReadOnly() ? 'in-progress' : this.getCurrentStepWork().status; const topicWork = this.getTopicWork(step.id, topic.id); if (topicWork.status === 'not-started' && !this.isPathReadOnly()) topicWork.status = 'in-progress'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathTopic(topicId) { const step = this.getStep(); const topic = this.getTopic(topicId, step); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topic.id; navigation.questionIndex = this.getTopicResumeQuestionIndex(topic, step.id); navigation.questionReturn = null; navigation.view = 'question'; const work = this.getCurrentStepWork(); if (work.status === 'not-started' && !this.isPathReadOnly()) work.status = 'in-progress'; const topicWork = this.getTopicWork(step.id, topic.id); if (topicWork.status === 'not-started' && !this.isPathReadOnly()) topicWork.status = 'in-progress'; this.rememberLastPathWork(); this.navigate('path'); }
         openPathQuestion() { const navigation = this.getPathNavigation(); navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
         commitPathQuestionAnswer() { const input = this.root.querySelector('[data-path-answer-text]'); if (input && !this.isPathReadOnly()) this.getCurrentPathAnswer().text = input.value; this.rememberLastPathWork(); }
         isPathQuestionNavigatorOpen() { return Boolean(this.pathQuestionNavigatorOpen && this.pathQuestionNavigatorHost && !this.pathQuestionNavigatorHost.hidden); }
@@ -6060,24 +6275,29 @@
             navigation.stepId = returnContext.stepId; navigation.topicId = returnContext.topicId; navigation.view = this.getPathCollectionConfig(collectionKind).view; navigation.questionReturn = null;
             this.renderPath(); this.restorePathCollectionState(collectionKind); return;
           }
-          if (view === 'question' || view === 'topic') navigation.view = 'topics'; else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') navigation.view = 'step'; else if (view === 'step' || view === 'cycles') navigation.view = 'overview'; else { this.navigate('home'); return; }
+          if (view === 'question' || view === 'topic') navigation.view = 'topics';
+          else if (view === 'topics' || view === 'answers' || view === 'sponsor-review' || view === 'step-summary') navigation.view = 'step';
+          else if (view === 'step' && navigation.stepWorkReview) { navigation.stepWorkReview = null; navigation.view = 'step-work-history'; }
+          else if (view === 'step-work-history') navigation.view = 'step';
+          else if (view === 'step' || view === 'cycles') navigation.view = 'overview';
+          else { this.navigate('home'); return; }
           navigation.questionReturn = null;
           this.renderPath();
         }
-        togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; const collection = Object.values(PATH_COLLECTION_CONFIG).find((config) => config.flag === flag); if (collection) this.normalizePathCollectionSelection(collection.key); if (flag === 'discussWithSponsor') this.renderPendingTopics(); this.renderPath(); }
-        togglePathVoiceMemo() { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer.voiceMemoState = answer.voiceMemoState === 'recorded' ? 'none' : 'recorded'; this.renderPath(); }
+        togglePathAnswerFlag(flag) { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer[flag] = !answer[flag]; const collection = Object.values(PATH_COLLECTION_CONFIG).find((config) => config.flag === flag); if (collection) this.normalizePathCollectionSelection(collection.key); if (flag === 'discussWithSponsor') this.renderPendingTopics(); this.persistPathStepWorkState(); this.renderPath(); }
+        togglePathVoiceMemo() { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer.voiceMemoState = answer.voiceMemoState === 'recorded' ? 'none' : 'recorded'; this.persistPathStepWorkState(); this.renderPath(); }
         openPathSponsorReview(scope = 'step') { const navigation = this.getPathNavigation(); navigation.sponsorScope = scope; navigation.questionReturn = null; navigation.view = 'sponsor-review'; this.navigate('path'); }
         openPathAnswers() { const navigation = this.getPathNavigation(); navigation.questionReturn = null; navigation.view = 'answers'; this.navigate('path'); }
         openPathSummary() { this.flushPathSummaryDraft(); this.getPathSummaryState(); this.getPathNavigation().view = 'step-summary'; this.navigate('path'); }
         setPathAnswerFilter(filter) { this.getPathNavigation().answerFilter = filter; this.renderPath(); }
-        closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.setPathNotice('A jelenlegi lépésmunkát lezártad. Ez később bármikor újra megnyitható.'); }
+        closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.persistPathStepWorkState(); this.setPathNotice('A jelenlegi lépésmunkát lezártad. Ez később bármikor újra megnyitható.'); }
         openPathCycles() { this.getPathNavigation().view = 'cycles'; this.navigate('path'); }
         openPathCycle(cycleId) { const cycle = this.state.path.cycles.find((item) => item.id === cycleId); if (!cycle) return; this.state.path.currentCycleId = cycle.id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-4'; navigation.topicId = 'step-4-topic-2'; navigation.questionIndex = 0; this.rememberLastPathWork(); this.navigate('path'); }
         startNewPathCycle() { const year = new Date().getFullYear(); const id = `cycle-${Date.now()}`; this.state.path.cycles.push(createCycle(id, String(year))); this.state.path.currentCycleId = id; const navigation = this.getPathNavigation(); navigation.view = 'overview'; navigation.stepId = 'step-1'; navigation.topicId = 'step-1-topic-1'; navigation.questionIndex = 0; navigation.notice = 'Új lépésmunka indult. A korábbi válaszaid változatlanul megmaradtak.'; this.rememberLastPathWork(); this.navigate('path'); }
-        collectSponsorItems(stepId = null) { const items = []; const cycle = this.getCurrentCycle(); PATH_STEPS.filter((step) => !stepId || step.id === stepId).forEach((step) => step.themes.forEach((topic) => topic.questions.forEach((question, index) => { const answer = cycle.steps[step.id].topics[topic.id]?.answers?.[question.id]; if (answer?.discussWithSponsor) items.push({ step, topic, question, answer, key: `${step.id}|${topic.id}|${index}` }); }))); return items; }
+        collectSponsorItems(stepId = null) { const items = []; PATH_STEPS.filter((step) => !stepId || step.id === stepId).forEach((step) => { const work = this.getCurrentStepWork(step.id); step.themes.forEach((topic) => topic.questions.forEach((question, index) => { const answer = work?.topics?.[topic.id]?.answers?.[question.id]; if (answer?.discussWithSponsor) items.push({ step, topic, question, answer, runId: this.getDisplayedStepRunId(step.id), key: `${this.getDisplayedStepRunId(step.id) || 'current'}|${step.id}|${topic.id}|${index}` }); })); }); return items; }
         markPathSponsorDiscussed(key) { if (this.isPathReadOnly()) return; const item = this.findReviewItem(key); if (item) item.answer.discussedWithSponsor = !item.answer.discussedWithSponsor; this.renderPath(); }
         findReviewItem(key) { return this.collectSponsorItems().find((item) => item.key === key); }
-        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[2] * 1; navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
+        openPathReviewAnswer(key) { const item = this.findReviewItem(key); if (!item) return; const navigation = this.getPathNavigation(); navigation.stepId = item.step.id; navigation.topicId = item.topic.id; navigation.questionIndex = item.key.split('|')[3] * 1; navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
         openPathAnswer(topicId, questionIndex) { const topic = this.getTopic(topicId); if (!topic) return; const navigation = this.getPathNavigation(); navigation.topicId = topicId; navigation.questionIndex = questionIndex; navigation.questionReturn = null; navigation.view = 'question'; this.rememberLastPathWork(); this.navigate('path'); }
         openPathCollectionQuestion(kind, topicId, questionId) {
           const config = this.getPathCollectionConfig(kind); const step = this.getStep(); const topic = this.getTopic(topicId, step); const questionIndex = topic?.questions.findIndex((question) => question.id === questionId);
@@ -6208,6 +6428,10 @@
             : '<span aria-hidden="true"></span>';
           return `<header class="path-step-four-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><h1>${escapeHtml(title)}</h1>${trailing}</header>`;
         }
+        renderPathStepContextMenu() {
+          const open = this.isPathStepContextMenuOpen();
+          return `${open ? '<button class="path-step-context-menu-scrim" type="button" data-action="close-path-step-context-menu" aria-label="Helyi menü bezárása"></button>' : ''}<span class="path-step-context-menu-anchor"><button class="path-step-context-menu-trigger" type="button" data-action="toggle-path-step-context-menu" aria-label="Lépésműveletek" aria-haspopup="menu" aria-expanded="${open}"><span aria-hidden="true">•••</span></button>${open ? '<span class="path-step-context-menu" data-component="path-step-context-menu" role="menu" aria-label="Lépésműveletek"><button type="button" role="menuitem" data-action="open-path-step-work-history"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg><span>Korábbi lépésmunkáim</span></button></span>' : ''}</span>`;
+        }
         renderPathChapterIdentity(step, progress) {
           const heroAsset = this.pathChapterHeroAsset(step); const heroQuote = this.pathChapterHeroQuote(step);
           return `<section class="path-step-four-cover" data-component="path-step-four-chapter-header" aria-labelledby="path-chapter-title"><div class="path-step-four-art" data-path-chapter-art="${step.id}"><img src="${heroAsset}" alt="${escapeHtml(step.title)} fejezetképe"><div class="path-step-four-hero-copy"><span class="path-step-four-hero-kicker">${step.number}. lépés</span><h2 id="path-chapter-title">${escapeHtml(step.title)}</h2><p>„${escapeHtml(heroQuote)}”</p></div><span class="path-step-four-handwritten" aria-hidden="true">${escapeHtml(this.pathChapterHandwritten(step.number))}</span></div><div class="path-step-four-copy"><div class="path-step-four-progress"><span class="path-step-four-progress-ring" style="--chapter-progress: ${progress.percent}" aria-label="${progress.percent}% haladás"><span><strong>${progress.percent}%</strong><small>haladás</small></span></span><div class="path-step-four-progress-copy"><strong>${progress.answeredTopics} / ${progress.totalTopics} téma</strong><span>${progress.answeredQuestions} / ${progress.totalQuestions} kérdés</span><span class="path-step-four-progress-bar" aria-hidden="true"><span style="--chapter-progress: ${progress.percent}"></span></span></div></div></div></section>`;
@@ -6217,7 +6441,7 @@
           const importantLabel = `${flags.important} fontos gondolat`;
           const reflectionQuote = this.pathChapterReflectionQuote(step.number);
           const cards = this.getPathChapterMenuAssets(step);
-          return `<header class="path-step-four-header path-step-four-menu-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><button type="button" data-action="open-path" aria-label="Ösvény áttekintése"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg></button></header><main class="path-step-four-scroll">${this.renderPathChapterIdentity(step, progress)}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>${escapeHtml(reflectionQuote)}</p><span aria-hidden="true">”</span></aside><section class="path-step-four-menu-grid" aria-label="${step.number}. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><img class="path-step-four-menu-card-bg" src="${cards.topics}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small><em>Fedezd fel a lépés témáit, és haladj tovább.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><img class="path-step-four-menu-card-bg" src="${cards.answers}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>Fontos nekem</strong><small>${importantLabel}</small><em>A gondolatok, amelyekhez később is visszatérnél.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><img class="path-step-four-menu-card-bg" src="${cards.sponsorReview}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small><em>Amit érdemes megosztanod.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><img class="path-step-four-menu-card-bg" src="${cards.summary}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small><em>Lásd, mennyit haladtál eddig.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button></section></main>`;
+          return `<header class="path-step-four-header path-step-four-menu-header"><button type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button>${this.renderPathStepContextMenu()}</header><main class="path-step-four-scroll">${this.renderPathChapterIdentity(step, progress)}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>${escapeHtml(reflectionQuote)}</p><span aria-hidden="true">”</span></aside><section class="path-step-four-menu-grid" aria-label="${step.number}. lépés menü"><button class="path-step-four-menu-card" type="button" data-action="open-path-topics"><img class="path-step-four-menu-card-bg" src="${cards.topics}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg></span><strong>Témák</strong><small>${progress.totalTopics} téma</small><em>Fedezd fel a lépés témáit, és haladj tovább.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-answers"><img class="path-step-four-menu-card-bg" src="${cards.answers}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span><strong>Fontos nekem</strong><small>${importantLabel}</small><em>A gondolatok, amelyekhez később is visszatérnél.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-sponsor-review" data-path-sponsor-scope="step"><img class="path-step-four-menu-card-bg" src="${cards.sponsorReview}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><strong>Szponzorral átbeszélendő</strong><small>${flags.sponsor} jelölés</small><em>Amit érdemes megosztanod.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button><button class="path-step-four-menu-card" type="button" data-action="open-path-summary"><img class="path-step-four-menu-card-bg" src="${cards.summary}" alt="" aria-hidden="true"><span class="path-step-four-menu-icon"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg></span><strong>Összegzés</strong><small>Saját gondolataim</small><em>Lásd, mennyit haladtál eddig.</em><span class="path-step-four-menu-arrow" aria-hidden="true">›</span></button></section></main>`;
         }
         renderPathTopics() {
           const step = this.getStep();
@@ -6264,6 +6488,30 @@
         }
         renderPathStepSummary() {
           return this.renderPathSummary();
+        }
+        formatPathStepWorkDate(value, { detail = false } = {}) {
+          if (!value) return '';
+          if (/^\d{4}$/.test(String(value))) return String(value);
+          const date = new Date(value);
+          if (Number.isNaN(date.getTime())) return String(value);
+          return new Intl.DateTimeFormat('hu-HU', detail ? { year: 'numeric', month: 'long', day: 'numeric' } : { year: 'numeric' }).format(date);
+        }
+        getStepWorkTopicLabel(step, work) {
+          const activeTopic = step.themes.find((topic) => work.topics?.[topic.id]?.status === 'in-progress' || Object.values(work.topics?.[topic.id]?.answers || {}).some((answer) => answer.text?.trim()));
+          return activeTopic?.title || (work.status === 'not-started' ? 'Még nem kezdted el' : 'Saját ritmusodban');
+        }
+        stepWorkHistoryStatusLabel(status) { return status === 'closed' ? 'Lezárt feldolgozás' : status === 'in-progress' ? 'Folyamatban' : 'Még nem kezdted el'; }
+        renderPathStepWorkHistory() {
+          const step = this.getStep(); const current = this.getCurrentCycle(); const currentWork = current.steps[step.id]; const entries = this.getStepWorkHistoryEntries(step.id);
+          const heroAsset = this.pathChapterHeroAsset(step); const currentYear = this.formatPathStepWorkDate(currentWork.startedAt || current.startedAt); const currentStatus = this.stepWorkHistoryStatusLabel(currentWork.status);
+          const previousCards = entries.length
+            ? entries.map((entry) => {
+              const year = this.formatPathStepWorkDate(entry.startedAt || entry.archivedAt); const detail = this.formatPathStepWorkDate(entry.startedAt || entry.archivedAt, { detail: true });
+              return `<button class="path-step-work-history-card is-archived" type="button" data-action="open-path-step-work-run" data-step-run-id="${escapeHtml(entry.runId)}" data-cycle-id="${escapeHtml(entry.cycleId)}"><span class="path-step-work-history-icon" aria-hidden="true"><svg class="icon"><use href="#icon-book"/></svg></span><span class="path-step-work-history-copy"><strong>${escapeHtml(year)} · ${escapeHtml(step.title)}</strong><small>Megőrzött válaszok · Csak olvasható${detail && detail !== year ? ` · ${escapeHtml(detail)}` : ''}</small></span><span class="path-step-work-history-chevron" aria-hidden="true">›</span></button>`;
+            }).join('')
+            : '<p class="path-step-work-history-empty">Ehhez a lépéshez még nincs korábbi feldolgozásod.</p>';
+          const confirmation = this.getPathNavigation().stepWorkConfirmation ? `<aside class="path-step-work-confirmation" role="dialog" aria-modal="true" aria-labelledby="path-step-work-confirmation-title"><div class="path-step-work-confirmation-surface"><h2 id="path-step-work-confirmation-title">Újra szeretnéd feldolgozni ezt a lépést?</h2><p>A jelenlegi válaszaid megmaradnak. Az új feldolgozást üres kérdésekkel kezdheted el.</p>${currentWork.status === 'in-progress' ? '<p class="path-step-work-confirmation-note">A folyamatban lévő feldolgozásodat is változatlanul megőrizzük.</p>' : ''}<div><button class="path-step-work-confirmation-cancel" type="button" data-action="cancel-new-path-step-work-run">Mégse</button><button class="path-step-work-confirmation-confirm" type="button" data-action="confirm-new-path-step-work-run">Új feldolgozás indítása</button></div></div></aside>` : '';
+          return `<main class="path-step-work-history-screen" data-component="path-step-work-history"><header class="path-step-work-history-hero"><img src="${heroAsset}" alt="" aria-hidden="true"><div class="path-step-work-history-hero-fade" aria-hidden="true"></div><button class="path-step-work-history-back" type="button" data-action="path-back" aria-label="Vissza a ${step.number}. lépéshez"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="path-step-work-history-heading"><h1>Korábbi feldolgozások</h1><p>${step.number}. lépés · ${escapeHtml(step.title)}</p></div></header><div class="path-step-work-history-scroll"><section aria-labelledby="path-current-step-work-title"><p class="path-step-work-history-label" id="path-current-step-work-title">Jelenlegi feldolgozás</p><button class="path-step-work-history-card is-current" type="button" data-action="open-path-step" data-step-id="${step.id}"><span class="path-step-work-history-icon" aria-hidden="true"><svg class="icon"><use href="#icon-leaf"/></svg></span><span class="path-step-work-history-copy"><strong>${escapeHtml(currentYear)} · ${escapeHtml(step.title)}</strong><small><span class="path-step-work-status-pill" data-status="${escapeHtml(currentWork.status)}">${escapeHtml(currentStatus)}</span><span>· ${escapeHtml(this.getStepWorkTopicLabel(step, currentWork))}</span></small></span><span class="path-step-work-history-chevron" aria-hidden="true">›</span></button></section><section class="path-step-work-history-previous" aria-labelledby="path-previous-step-work-title"><p class="path-step-work-history-label" id="path-previous-step-work-title">Korábbi feldolgozásaim</p><div class="path-step-work-history-list">${previousCards}</div></section><section class="path-step-work-history-new"><button class="path-step-work-history-new-button" type="button" data-action="request-new-path-step-work-run"><span aria-hidden="true">+</span> Új feldolgozás indítása</button><p>A korábbi válaszaid megmaradnak.</p></section></div>${confirmation}</main>`;
         }
         renderPathCycles() {
           return `${this.pathHeader('Korábbi lépésmunkáim', 'A korábbi válaszaid megmaradnak', true)}<div class="path-scroll"><section class="path-cycle-list">${this.state.path.cycles.map((cycle, index) => `<button class="path-cycle-row" type="button" data-action="open-path-cycle" data-cycle-id="${cycle.id}" aria-current="${cycle.id === this.state.path.currentCycleId ? 'true' : 'false'}"><span><strong>${index + 1}. lépésmunka</strong><small>${escapeHtml(cycle.startedAt)} · ${cycle.readOnly ? 'korábbi, csak olvasható' : 'jelenlegi lépésmunka'}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section><button class="path-primary-button" type="button" data-action="start-new-path-cycle">Új lépésmunka indítása</button>${this.pathNotice()}</div>`;
