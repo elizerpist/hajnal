@@ -1005,6 +1005,49 @@
     .path-collection-empty strong { color: #51457D; font-size: 14px; line-height: 1.2; font-weight: 800; }
     .path-collection-empty p { max-width: 260px; margin: 0; font-size: 11.5px; line-height: 1.4; font-weight: 620; }
     @media (prefers-reduced-motion: reduce) { .path-collection-carousel { scroll-behavior: auto; } }
+
+    /* Summary uses the exact compact-hero/carousel geometry of the marked-question
+       collections.  Its card is the only vertical scroll owner. */
+    .path-screen[data-path-view="step-summary"].path-focus .path-content { top: 0; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow: hidden; padding: 0; }
+    .path-summary-screen { width: 100%; height: 100%; min-height: 0; display: grid; grid-template-rows: var(--path-compact-hero-height) minmax(0, 1fr); overflow: hidden; }
+    .path-summary-hero { height: var(--path-compact-hero-height); position: relative; z-index: 0; isolation: isolate; overflow: visible; padding: 16px 18px 0; color: #241A59; }
+    .path-summary-hero-art { height: 286px; position: absolute; z-index: -2; inset: 0; overflow: hidden; background: #F2EAF3; pointer-events: none; -webkit-mask-image: var(--hero-art-vertical-fade-mask); mask-image: var(--hero-art-vertical-fade-mask); }
+    .path-summary-hero-art::after { content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,252,254,.04) 46%, var(--screen-background) 100%); }
+    .path-summary-hero-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+    .path-summary-hero-back { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(106,86,180,.13); border-radius: 50%; background: rgba(255,255,255,.82); color: var(--hajnal-purple); box-shadow: 0 8px 20px rgba(44,46,119,.06); cursor: pointer; }
+    .path-summary-hero-back .icon { width: 22px; height: 22px; }
+    .path-summary-hero-copy { position: absolute; right: 25px; bottom: 26px; left: 25px; }
+    .path-summary-hero-copy span, .path-summary-hero-copy strong, .path-summary-hero-copy small { display: block; }
+    .path-summary-hero-copy span { color: rgba(74,55,150,.75); font-size: 10.5px; line-height: 1.15; font-weight: 810; letter-spacing: .055em; text-transform: uppercase; }
+    .path-summary-hero-copy strong { margin-top: 5px; color: #241A59; font-family: Georgia, "Times New Roman", serif; font-size: 29px; line-height: .98; font-weight: 700; letter-spacing: -.055em; }
+    .path-summary-hero-copy small { margin-top: 6px; color: rgba(56,43,119,.68); font-size: 11px; line-height: 1.2; font-weight: 710; }
+    .path-summary-body { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 8px; overflow: hidden; padding: 2px 18px 0; }
+    .path-summary-carousel .path-collection-topic-tile small { display: none; }
+    .path-summary-carousel .path-collection-topic-tile { align-content: end; }
+    .path-summary-carousel .path-collection-topic-tile[data-path-summary-overall="true"]::after { background: linear-gradient(180deg, rgba(96,76,165,.06) 12%, rgba(255,252,254,.17) 42%, rgba(246,241,252,.96) 100%); }
+    .path-summary-scroll { min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 1px 1px calc(26px + var(--bottom-safe-area)); overscroll-behavior-y: contain; scrollbar-width: none; touch-action: pan-y; }
+    .path-summary-scroll::-webkit-scrollbar { display: none; }
+    .path-summary-card { overflow: hidden; border: 1px solid rgba(106,86,180,.13); border-radius: 24px; background: rgba(255,253,254,.95); box-shadow: 0 11px 26px rgba(44,46,119,.075); }
+    .path-summary-card-header { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 10px; padding: 15px 15px 13px; }
+    .path-summary-card-art { width: 44px; height: 44px; overflow: hidden; border-radius: 50%; background: #EEE8FA; box-shadow: 0 4px 10px rgba(44,46,119,.08); }
+    .path-summary-card-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: var(--path-summary-art-position, center); }
+    .path-summary-card-title { min-width: 0; }
+    .path-summary-card-title strong, .path-summary-card-title small { display: block; }
+    .path-summary-card-title strong { overflow: hidden; color: #221954; font-size: 14px; line-height: 1.17; font-weight: 850; text-overflow: ellipsis; white-space: nowrap; }
+    .path-summary-card-title small { margin-top: 3px; color: rgba(56,43,119,.57); font-size: 10.5px; line-height: 1.2; font-weight: 690; }
+    .path-summary-save-status { display: inline-flex; align-items: center; gap: 4px; color: #6B8E78; font-size: 9.5px; line-height: 1.15; font-weight: 780; white-space: nowrap; }
+    .path-summary-save-status .icon { width: 14px; height: 14px; }
+    .path-summary-save-status[data-save-state="saving"] { color: #8979A9; }
+    .path-summary-save-status[data-save-state="error"] { color: #A35C70; }
+    .path-summary-question { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: start; gap: 10px; padding: 17px 15px; border-top: 1px solid rgba(106,86,180,.10); }
+    .path-summary-question-number { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 18px; background: #F0EBFC; color: #735EAB; font-size: 16px; line-height: 1; font-weight: 860; letter-spacing: .02em; }
+    .path-summary-question-copy { min-width: 0; }
+    .path-summary-question h2 { margin: 5px 0 10px; color: #1D2947; font-size: 14.5px; line-height: 1.32; font-weight: 790; letter-spacing: -.015em; }
+    .path-summary-question textarea { width: 100%; min-height: 116px; display: block; box-sizing: border-box; resize: vertical; padding: 12px; border: 1px solid rgba(106,86,180,.16); border-radius: 15px; outline: 0; background: #FCFAFE; color: #1C2946; font: inherit; font-size: 13px; line-height: 1.48; }
+    .path-summary-question textarea:focus { border-color: rgba(106,86,180,.48); box-shadow: 0 0 0 3px rgba(106,86,180,.12); }
+    .path-summary-question textarea[readonly] { background: rgba(247,244,250,.76); color: rgba(28,41,70,.74); }
+    .path-summary-close-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 15px 17px; }
+    .path-summary-close-actions .path-secondary-button { margin: 0; font-size: 11px; }
     .path-question-editor-body { position: relative; z-index: 1; display: grid; gap: 12px; padding: 0 18px calc(25px + env(safe-area-inset-bottom, 0px)); background: transparent; }
     .path-question-editor-card { overflow: hidden; border: 1px solid rgba(106,86,180,.14); border-radius: 23px; background: rgba(255,253,254,.94); box-shadow: 0 10px 25px rgba(44,46,119,.07); }
     .path-question-editor-label { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 16px 0; color: #705BB5; font-size: 10px; line-height: 1.15; font-weight: 840; letter-spacing: .04em; text-transform: uppercase; }
@@ -2483,6 +2526,197 @@
           questions: Object.freeze(makePathQuestions(step.number, title, index))
         })))
       })));
+      const PATH_SUMMARY_QUESTION_COPY_STEP_1 = Object.freeze([
+        Object.freeze(['Mely tapasztalataim mutatták meg legvilágosabban, hogy a szerhasználatom feletti irányításom megváltozott?', 'Hogyan befolyásolta a függőség a döntéseimet, a kapcsolataimat és azt, ahogyan önmagamra tekintettem?', 'Mit ismerek fel ma a függőségem természetéről, amit korábban nem tudtam vagy nem akartam észrevenni?']),
+        Object.freeze(['Milyen magyarázatokkal próbáltam korábban kisebbíteni vagy elfedni a függőségem következményeit?', 'Mely figyelmeztető jeleket hagytam figyelmen kívül, és mit értek meg most ezekből?', 'Hogyan tudok ma őszintébb lenni önmagammal anélkül, hogy emiatt bántanám magam?']),
+        Object.freeze(['Mely következmények változtatták meg leginkább azt, ahogyan az életemre tekintek?', 'Milyen fontos szükségleteim, kapcsolataim vagy értékeim szorultak háttérbe a függőség idején?', 'Mit tanultam ezekből a tapasztalatokból, amit szeretnék a felépülésem során szem előtt tartani?']),
+        Object.freeze(['Mely helyzetekben ismertem fel, hogy az akaraterőm önmagában nem volt elegendő?', 'Mit jelent számomra különbséget tenni a tehetetlenség elfogadása és a remény feladása között?', 'Miben tudok ma segítséget elfogadni ahelyett, hogy egyedül próbálnék mindent megoldani?']),
+        Object.freeze(['Az életem mely területein vált különösen láthatóvá, hogy elveszítettem az egyensúlyt?', 'Hogyan hatott rám, amikor mindenáron próbáltam irányítani a körülményeimet vagy más embereket?', 'Mely dolgokra tudok ma valóban hatással lenni, és mit kell megtanulnom elengedni?']),
+        Object.freeze(['Milyen kivételeket vagy feltételeket szerettem volna korábban fenntartani a felépülésemben?', 'Milyen félelem vagy bizonytalanság húzódhat meg a még meglévő fenntartásaim mögött?', 'Milyen támogatás segítene abban, hogy nyitottabban és őszintébben nézzek rá ezekre?']),
+        Object.freeze(['Mit jelent számomra abbahagyni azt a küzdelmet, amely újra és újra ugyanoda vezetett?', 'Milyen érzéseket vált ki belőlem, amikor nem az ellenállást, hanem a segítség elfogadását választom?', 'Hogyan jelenhet meg a megadás a mai döntéseimben konkrét, számomra vállalható módon?']),
+        Object.freeze(['Mely valóságokkal volt számomra a legnehezebb szembenézni a függőségemmel kapcsolatban?', 'Miben különbözik számomra az elfogadás attól, hogy helyeslem a múltban történteket?', 'Hogyan adhat több nyugalmat az életemnek, ha a jelenlegi helyzetemből indulok ki?']),
+        Object.freeze(['Az őszinteség, nyitottság és hajlandóság közül melyik vált különösen fontossá számomra ebben a lépésben?', 'Milyen helyzetekben tapasztaltam meg, hogy egy alapelv követése más irányba vitt, mint a régi szokásaim?', 'Melyik alapelvet szeretném tudatosabban gyakorolni a következő időszakban?']),
+        Object.freeze(['Hogyan változott a függőségemről alkotott képem az első lépés feldolgozása során?', 'Milyen személyes jelentést kapott számomra a tehetetlenség és az elfogadás?', 'Mi az az egy felismerés, amelyhez a nehéz napokon is szeretnék visszatérni?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_2 = Object.freeze([
+        Object.freeze(['Mikor tapasztaltam először, hogy a változás számomra is valódi lehetőség lehet?', 'Milyen tapasztalatok vagy emberek segítettek akkor is reményt találni, amikor ezt egyedül nehéz volt?', 'Hogyan tudok a reményhez kapcsolódni akkor is, amikor még nem látom a következő lépéseket?']),
+        Object.freeze(['Milyen gondolkodási szokások tartottak korábban olyan helyzetekben, amelyek ártottak nekem?', 'Miből veszem észre, amikor a régi gondolkodásom újra befolyásolja a döntéseimet?', 'Milyen új nézőpontok segítenek reálisabban és együttérzőbben tekinteni önmagamra?']),
+        Object.freeze(['Mely elképzeléseimhez ragaszkodtam annyira, hogy nehezen fogadtam el más lehetőségeket?', 'Mit tapasztaltam, amikor megengedtem magamnak, hogy egy korábbitól eltérő nézőpontot is meghalljak?', 'Hogyan szeretném a nyitottságot gyakorolni akkor is, amikor valami elsőre idegen vagy kényelmetlen?']),
+        Object.freeze(['Mit jelenthet számomra olyan támogatásra támaszkodni, amely túlmutat a saját akaraterőmön?', 'Milyen közösségi, spirituális vagy személyes tapasztalatok segítenek elképzelni ezt a lehetőséget?', 'Hogyan tudok nyitott maradni anélkül, hogy olyan meggyőződést kellene magamra erőltetnem, amelyet nem érzek sajátomnak?']),
+        Object.freeze(['Hogyan fogalmaznám meg a saját szavaimmal a második lépés számomra fontos üzenetét?', 'Miben különbözik a reményről és a támogatásról alkotott jelenlegi képem a korábbitól?', 'Milyen kérdéseket szeretnék még nyitva hagyni, miközben folytatom a felépülésemet?']),
+        Object.freeze(['Milyen változást vettem észre abban, ahogyan ma egy nehéz helyzetet értelmezek?', 'Mely régi gondolati minták helyett tudok egyre gyakrabban átgondoltabb döntéseket hozni?', 'Mi segít felismerni, ha egy döntés előtt érdemes megállnom, segítséget kérnem vagy időt adnom magamnak?']),
+        Object.freeze(['Mely tapasztalataim segítettek újra bizalmat kialakítani önmagam vagy mások iránt?', 'Hogyan különböztetem meg a bizalmat attól, hogy ellenőrzés nélkül mindent elhiszek?', 'Milyen apró lépéssel tudom ma biztonságos módon gyakorolni a bizalmat?']),
+        Object.freeze(['Hogyan jelent meg a remény és a nyitottság a második lépés során szerzett tapasztalataimban?', 'Milyen helyzetben segített egy spirituális alapelv eltávolodni a félelemtől vagy a reménytelenségtől?', 'Melyik alapelvet szeretném a következő lépésben tudatosabban alkalmazni?']),
+        Object.freeze(['Hogyan változott a reményről alkotott személyes elképzelésem?', 'Mit tanultam arról, hogy nem kell kizárólag a saját erőmre támaszkodnom?', 'Milyen új lehetőséget látok ma az életemben, amelyet korábban nehéz lett volna elképzelnem?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_3 = Object.freeze([
+        Object.freeze(['Miben különbözik számomra egy őszinte döntés egy pillanatnyi elhatározástól?', 'Milyen korábbi tapasztalataim mutatták meg, hogy a döntéseimet tettekkel is támogatnom kell?', 'Hogyan szeretném felismerhetővé tenni a mindennapjaimban azt, amit most eldöntöttem?']),
+        Object.freeze(['Mely helyzetekben próbáltam mindenáron a saját elképzeléseim szerint alakítani az eseményeket?', 'Hogyan befolyásolta a kapcsolataimat és a belső nyugalmamat a túlzott kontrolligény?', 'Milyen különbséget látok ma a felelős cselekvés és a mindenáron való irányítás között?']),
+        Object.freeze(['Mi az, amit újra és újra próbáltam kézben tartani, pedig valójában nem állt az irányításom alatt?', 'Milyen félelmek jelennek meg bennem, amikor az elengedés lehetőségére gondolok?', 'Hogyan gyakorolhatom az elengedést úgy, hogy közben a saját felelősségemet továbbra is vállalom?']),
+        Object.freeze(['Milyen tapasztalatok alapján tudom felismerni, hogy valamiben vagy valakiben biztonságosan bízhatok?', 'Mit jelent számomra bízni akkor is, amikor a végeredmény még bizonytalan?', 'Hogyan tudom a bizalmat a saját határaim megtartásával együtt gyakorolni?']),
+        Object.freeze(['Milyen személyes értékek, tapasztalatok vagy meggyőződések adnak irányt az életemnek?', 'Hogyan kapcsolódik a spiritualitásról alkotott saját értelmezésem a mindennapi döntéseimhez?', 'Milyen gyakorlat segíthet mélyíteni ezt a kapcsolatot a saját tempómban?']),
+        Object.freeze(['Miben lettem nyitottabb a változásra, mint a lépésmunka megkezdése előtt?', 'Mely helyzetekben nehéz számomra a hajlandóságot tettekre váltani?', 'Mi lenne egy olyan kicsi, vállalható lépés, amely kifejezné a változás iránti szándékomat?']),
+        Object.freeze(['Mely döntéseimet sikerült már konkrét cselekvéssel megerősítenem?', 'Mi segít abban, hogy a kezdeti lelkesedés elmúlása után is kitartsak a számomra fontos irány mellett?', 'Milyen következő cselekvés támogatná leginkább a most meghozott döntésemet?']),
+        Object.freeze(['Hogyan kapcsolódott össze számomra a hit, a bizalom és a hajlandóság ebben a lépésben?', 'Milyen helyzetben tudtam egy fontos alapelvet a saját akaratom vagy félelmem elé helyezni?', 'Melyik elv segítene leginkább abban, hogy a döntéseimet következetesebben megéljem?']),
+        Object.freeze(['Hogyan fogalmaznám meg a harmadik lépésben meghozott személyes döntésemet?', 'Milyen változás történt bennem az irányításról és a bizalomról alkotott elképzeléseimben?', 'Mit szeretnék megőrizni ebből a hozzáállásból, amikor nehezebb időszak következik?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_4 = Object.freeze([
+        Object.freeze(['Milyen érzésekkel kezdtem el az önleltárt, és hogyan változtak ezek a munka során?', 'Mi segített biztonságos és őszinte teret teremteni a saját történetem vizsgálatához?', 'Mit tanultam arról, milyen tempóban és milyen támogatással tudok a legjobban dolgozni?']),
+        Object.freeze(['Milyen visszatérő mintákat ismertem fel a nehezteléseim és konfliktusaim között?', 'Mit látok most másképp a saját reakcióimban, érzéseimben és szükségleteimben?', 'Mit szeretnék ezekből a felismerésekből továbbvinni vagy biztonságos keretek között megbeszélni?']),
+        Object.freeze(['Milyen visszatérő kapcsolati mintákat vettem észre a különböző életszakaszaimban?', 'Milyen szerepet játszottak a saját szükségleteim, határaim és kommunikációs szokásaim ezekben a kapcsolatokban?', 'Milyen kapcsolódási módot szeretnék tudatosabban gyakorolni a jövőben?']),
+        Object.freeze(['Mit ismertem fel a közelséggel, bizalommal és sebezhetőséggel kapcsolatos szükségleteimről?', 'Hogyan hatottak korábbi tapasztalataim a saját határaimra és az intimitás megélésére?', 'Milyen értékek mentén szeretnék biztonságosabb, kölcsönösebb és őszintébb kapcsolatokat kialakítani?']),
+        Object.freeze(['Milyen visszatérő viselkedéseim mögött ismertem fel félelmet, bizonytalanságot vagy kontrolligényt?', 'Hogyan hatottak ezek a minták rám és a környezetemben élő emberekre?', 'Melyik mintát szeretném először tudatosabban észrevenni, mielőtt automatikusan cselekednék?']),
+        Object.freeze(['Milyen különbséget fedeztem fel a tetteimért érzett felelősség és az önmagam egészére irányuló szégyen között?', 'Mely korábbi tapasztalataimra tudok ma nagyobb megértéssel és kevesebb önbántással tekinteni?', 'Hogyan szeretnék felelősséget vállalni úgy, hogy közben az önmagam iránti tiszteletet is megőrzöm?']),
+        Object.freeze(['Milyen helyzetekben sérültek a határaim, és mit ismertem fel az ezekhez kapcsolódó érzéseimről?', 'Hogyan különböztetem meg a mások által okozott sérelmeket azoktól a döntésektől, amelyekre ma valóban hatásom lehet?', 'Milyen támogatás, határhúzás vagy öngondoskodás segítene nagyobb biztonságot teremteni a jelenben?']),
+        Object.freeze(['Mely félelmek jelentek meg ismételten a különböző történeteimben?', 'Hogyan befolyásolták ezek a félelmek a döntéseimet, a kapcsolataimat vagy az önmagamról alkotott képemet?', 'Milyen új hozzáállás segíthet abban, hogy a félelem jelenlétében is tudatos döntéseket hozzak?']),
+        Object.freeze(['Milyen pozitív tulajdonságaimat és erőforrásaimat ismertem fel az önleltár során?', 'Milyen helyzetekben tudtam már a számomra fontos értékeknek megfelelően cselekedni?', 'Hogyan szeretném ezeket az erősségeket tudatosabban használni a felépülésemben?']),
+        Object.freeze(['Mely felismerések váltak lehetővé azáltal, hogy őszintébben tekintettem önmagamra?', 'Hogyan segített az alázat, bátorság vagy nyitottság szembenézni a nehezebb tapasztalataimmal?', 'Melyik alapelvet szeretném tovább gyakorolni, amikor újabb kellemetlen igazsággal találkozom?']),
+        Object.freeze(['Az önleltár mely részéhez szeretnék még visszatérni, mert további megértést igényel?', 'Milyen érzésekkel tekintek most arra a munkára, amelyet eddig elvégeztem?', 'Mi segítene abban, hogy a leírtakat biztonságosan és őszintén tudjam tovább feldolgozni?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_5 = Object.freeze([
+        Object.freeze(['Milyen érzésekkel készültem arra, hogy az önleltárom tartalmát megosszam egy másik emberrel?', 'Milyen feltételek és személyes határok segítettek a biztonságos megosztásban?', 'Mit ismertem fel arról, mikor és hogyan tudok őszintén beszélni a számomra nehéz dolgokról?']),
+        Object.freeze(['Mitől tartottam leginkább, amikor elképzeltem, hogy valaki más is megismeri a történetem egyes részeit?', 'Mely félelmeim bizonyultak másnak a valóságban, mint ahogyan előzetesen elképzeltem őket?', 'Mi segíthet abban, hogy a jövőben a félelmeim mellett is vállalni tudjam az őszinteséget?']),
+        Object.freeze(['Mely igazságok kimondása jelentett különösen fontos fordulópontot az önmagammal való kapcsolatomban?', 'Hogyan változott az önmagamról alkotott képem, amikor nem próbáltam többé elkerülni ezeket a felismeréseket?', 'Hogyan tudok ezekre az igazságokra felelősséggel, de önbántás nélkül tekinteni?']),
+        Object.freeze(['Mit jelentett számomra spirituális értelemben is őszintén szembenézni önmagammal?', 'Milyen változást tapasztaltam a saját értelmezésem szerinti Felsőbb Erőhöz való viszonyomban?', 'Hogyan szeretném tovább alakítani ezt a kapcsolatot a saját meggyőződésemnek megfelelően?']),
+        Object.freeze(['Mit tapasztaltam, amikor egy biztonságos kapcsolatban őszintén beszéltem a nehézségeimről?', 'Hogyan változott a szégyenhez, bizalomhoz vagy sebezhetőséghez való viszonyom a megosztás során?', 'Mit tanultam arról, milyen szerepe lehet mások támogatásának a felépülésemben?']),
+        Object.freeze(['Mely viselkedési minták váltak egyértelműbbé, amikor hangosan is megfogalmaztam őket?', 'Milyen közös szükségleteket vagy félelmeket ismertem fel a visszatérő minták mögött?', 'Hogyan szeretném hamarabb felismerni ezeket a mintákat a jövőben?']),
+        Object.freeze(['Milyen mélyebb működésmódokat ismertem fel a különböző hibáim és döntéseim mögött?', 'Hogyan tudom megkülönböztetni a változtatható viselkedéseimet az önmagam egészéről alkotott negatív ítéletektől?', 'Melyik visszatérő működésmódommal szeretnék tudatosabban foglalkozni a következő lépésekben?']),
+        Object.freeze(['Hogyan hatott rám, hogy bizonyos dolgokat hosszú ideig magamban tartottam?', 'Mit tapasztaltam abból, amikor biztonságos körülmények között megszűnt egy korábban hordozott titok súlya?', 'Mit jelent számomra az őszinteség úgy, hogy közben a személyes határaimat és a magánéletemet is tiszteletben tartom?']),
+        Object.freeze(['Milyen változást vettem észre abban, ahogyan a múltbeli hibáimra és önmagamra tekintek?', 'Hogyan tudom egyszerre elfogadni a történetem tényeit és vállalni a szükséges változtatásokat?', 'Milyen hozzáállás segítene abban, hogy a felépülésem során türelmesebb legyek önmagammal?']),
+        Object.freeze(['Hogyan jelent meg a bátorság és az őszinteség az ötödik lépésben végzett munkámban?', 'Milyen szerepet játszott a bizalom, az alázat vagy a nyitottság a megosztás során?', 'Melyik alapelvet szeretném megőrizni, amikor ismét nehéz lesz őszintének lennem?']),
+        Object.freeze(['Mi volt az ötödik lépés legváratlanabb vagy legfontosabb személyes felismerése?', 'Hogyan változott a másokhoz való kapcsolódásról és a segítség elfogadásáról alkotott képem?', 'Mi az, amit az őszinte megosztás tapasztalatából hosszabb távon is szeretnék megőrizni?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_6 = Object.freeze([
+        Object.freeze(['Mely visszatérő működésmódokat ismertem fel, amelyek már nem szolgálják a felépülésemet?', 'Hogyan kapcsolódhatnak ezek a működésmódok korábbi félelmeimhez vagy védekezési szokásaimhoz?', 'Melyik mintával kapcsolatban érzem most a legnagyobb hajlandóságot a változásra?']),
+        Object.freeze(['Milyen helyzetekben jelentek meg újra és újra ugyanazok a reakcióim?', 'Miből tudom ma korábban észrevenni, hogy egy régi minta kezd működésbe lépni?', 'Mit próbálhatnék ki legközelebb az automatikus reakció helyett?']),
+        Object.freeze(['Milyen szükségletet próbáltam korábban kielégíteni ezekkel a viselkedésekkel?', 'Milyen rövid távú biztonságot, kontrollérzetet vagy megkönnyebbülést nyújtottak számomra?', 'Hogyan tudnám ugyanezeket a szükségleteket egészségesebb módon figyelembe venni?']),
+        Object.freeze(['Milyen kapcsolatokat, lehetőségeket vagy belső erőforrásokat korlátoztak a régi mintáim?', 'Mely következmények váltak számomra különösen fontossá a változás szükségességének felismerésében?', 'Mit szeretnék visszaépíteni az életembe ezek helyett?']),
+        Object.freeze(['Mely régi működésmódoktól a legnehezebb jelenleg eltávolodnom?', 'Milyen bizonytalanságtól próbálhat megvédeni ez a ragaszkodás?', 'Mi segítene abban, hogy biztonságosan kipróbáljak egy eltérő hozzáállást?']),
+        Object.freeze(['Milyen helyzetekben érzem, hogy szeretném elkerülni vagy elhalasztani a változást?', 'Milyen érzések, félelmek vagy elvárások állhatnak az ellenállásom mögött?', 'Hogyan tudnék az ellenállásomra kíváncsisággal reagálni ahelyett, hogy elítélném magam miatta?']),
+        Object.freeze(['Milyen változásra érzem magam ma nyitottabbnak, mint korábban?', 'Mi segített abban, hogy egy nehéz működésmód elengedésének lehetőségét komolyan vegyem?', 'Hogyan tudnám a hajlandóságomat a következő napokban egy apró döntéssel kifejezni?']),
+        Object.freeze(['Milyen tulajdonságokat szeretnék tudatosabban gyakorolni a régi viselkedési mintáim helyett?', 'Hogyan nézne ki egy számomra fontos helyzet, ha ezeknek az értékeknek megfelelően reagálnék?', 'Mi lenne az első felismerhető jele annak, hogy ebbe az irányba mozdulok?']),
+        Object.freeze(['Mely spirituális alapelvek segítenek abban, hogy ne kizárólag akaraterőből próbáljak megváltozni?', 'Hogyan jelenik meg számomra a hajlandóság, alázat vagy türelem a változás folyamatában?', 'Milyen alapelvet szeretnék tudatosan előtérbe helyezni, amikor ellenállást tapasztalok?']),
+        Object.freeze(['Mely működésmódjaimmal kapcsolatban érzem most a legnagyobb nyitottságot a változásra?', 'Milyen kérdéseket vagy bizonytalanságokat szeretnék még átgondolni a hetedik lépés előtt?', 'Hogyan szeretném továbbvinni a hajlandóság tapasztalatát a következő lépésbe?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_7 = Object.freeze([
+        Object.freeze(['Hogyan változott az alázatról alkotott képem a hetedik lépés feldolgozása során?', 'Milyen helyzetekben tapasztaltam, hogy az alázat nem gyengeséget, hanem nyitottságot jelent?', 'Hogyan szeretném az alázatot a saját méltóságom megőrzésével együtt gyakorolni?']),
+        Object.freeze(['Miből ismertem fel, hogy az alázat és a megalázottság nem ugyanazt jelenti?', 'Milyen korábbi tapasztalataim torzíthatták az alázatról alkotott elképzeléseimet?', 'Hogyan tudok nyitott és tanulni kész maradni anélkül, hogy feladnám a személyes határaimat?']),
+        Object.freeze(['Milyen érzések nehezítik meg számomra, hogy másoktól segítséget kérjek?', 'Milyen tapasztalataim mutatták meg, hogy a segítség elfogadása erőforrás is lehet?', 'Hogyan szeretnék legközelebb őszintébben jelezni, ha valamiben támogatásra van szükségem?']),
+        Object.freeze(['Mely működésmódjaimat látom most tisztábban, amelyeken szeretnék változtatni?', 'Hogyan tudok ezekre a hiányosságokra a fejlődés lehetőségeként tekinteni, nem pedig önmagam elutasításának okaként?', 'Melyik területen szeretnék különösen türelmes és következetes lenni a változás során?']),
+        Object.freeze(['Milyen részeimet sikerült nagyobb megértéssel elfogadnom a lépésmunka során?', 'Hogyan fér meg egymás mellett az önelfogadás és a változás iránti szándék?', 'Mit tehetek azért, hogy a nehezebb napokon se veszítsem el az önmagam iránti tiszteletet?']),
+        Object.freeze(['Milyen helyzetekben várom el magamtól a változást gyorsabban, mint ahogyan az természetesen történik?', 'Mit tanultam azokból a tapasztalatokból, amikor a türelem több eredményt hozott, mint a sürgetés?', 'Hogyan tudom észrevenni a kisebb változásokat is anélkül, hogy állandóan összehasonlítanám magam másokkal?']),
+        Object.freeze(['Milyen pozitív alapelveket tudnék tudatosan gyakorolni a régi, automatikus viselkedéseim helyett?', 'Mely mindennapi helyzetek kínálnak lehetőséget ezeknek az elveknek a kipróbálására?', 'Hogyan tudom felismerni, ha egy korábban nehéz helyzetben már másként reagálok?']),
+        Object.freeze(['Milyen változást tapasztalok a saját spirituális utamhoz való viszonyomban?', 'Hogyan segített az alázat vagy a segítség elfogadása mélyebben kapcsolódni a számomra fontos értékekhez?', 'Milyen gyakorlat támogatná a spirituális fejlődésemet a következő időszakban?']),
+        Object.freeze(['Mely konkrét helyzetekben vettem észre, hogy már nem pontosan úgy reagálok, mint korábban?', 'Hogyan hatnak ezek az apró változások a kapcsolataimra vagy a mindennapi közérzetemre?', 'Milyen változást szeretnék tovább erősíteni anélkül, hogy azonnali tökéletességet várnék magamtól?']),
+        Object.freeze(['A hetedik lépés mely részének megértése jelentett számomra különösen fontos fordulópontot?', 'Mely változásokkal kapcsolatban szeretnék még több türelmet és elfogadást gyakorolni?', 'Milyen támogatás segíthet abban, hogy a felismeréseimet hosszabb távon is alkalmazzam?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_8 = Object.freeze([
+        Object.freeze(['Hogyan változott az elképzelésem arról, milyen különböző módokon okozhatunk kárt másoknak vagy önmagunknak?', 'Milyen különbséget ismertem fel a szándékaim és a tetteim tényleges következményei között?', 'Hogyan szeretnék nagyobb figyelemmel fordulni a viselkedésem másokra gyakorolt hatása felé?']),
+        Object.freeze(['Milyen kapcsolatokat vagy emberi helyzeteket ismertem fel, amelyekben a tetteim következményekkel jártak másokra nézve?', 'Milyen érzéseket vált ki belőlem, amikor ezekre a kapcsolatokat érintő tapasztalatokra őszintén tekintek?', 'Hogyan tudom a felelősségvállalás szándékát megőrizni anélkül, hogy elhamarkodott lépésekbe kezdenék?']),
+        Object.freeze(['Milyen érzelmi, kapcsolati, anyagi vagy egyéb következményeket ismertem fel a korábbi viselkedésemben?', 'Mely helyzetekben vált számomra világosabbá a különbség aközött, amit tenni akartam, és ami ténylegesen történt?', 'Hogyan szeretnék felelősen viszonyulni ezekhez a felismerésekhez a további lépésmunka során?']),
+        Object.freeze(['Milyen módokon befolyásolta az aktív függőség a másokkal szembeni viselkedésemet?', 'Milyen visszatérő helyzeteket ismertem fel, amelyekben a szerhasználatom másoknak is következményeket okozott?', 'Mit szeretnék ezekből a tapasztalatokból megérteni a későbbi felelősségvállalás érdekében?']),
+        Object.freeze(['Milyen helyzetekben fordult elő, hogy a felépülésem során is megbántottam vagy hátrányosan érintettem másokat?', 'Mit ismertem fel arról, hogy a szermentesség önmagában nem old meg minden kapcsolati vagy viselkedési mintát?', 'Milyen hozzáállás segítene felelősebben kezelni a jelenben elkövetett hibáimat?']),
+        Object.freeze(['Milyen módokon hanyagoltam el korábban a saját testi, érzelmi vagy kapcsolati szükségleteimet?', 'Milyen következményeket értek meg ma tisztábban az önmagamhoz való korábbi viszonyomból?', 'Hogyan szeretnék nagyobb gondoskodással és tisztelettel fordulni önmagam felé?']),
+        Object.freeze(['Miben látom ma a különbséget a saját tetteimért vállalt felelősség és az önmagam hibáztatása között?', 'Mely helyzetekben tudom különválasztani a saját döntéseimet mások döntéseitől és felelősségétől?', 'Hogyan szeretnék úgy felelősséget vállalni, hogy közben nem veszem magamra azt, ami nem az én felelősségem?']),
+        Object.freeze(['Milyen változás történt bennem a korábbi károk elismerésével kapcsolatos hajlandóságomban?', 'Milyen félelmek vagy bizonytalanságok nehezítik még a jóvátétel lehetőségének átgondolását?', 'Milyen további beszélgetés vagy felkészülés segíthet tisztábban látni a következő lépéseket?']),
+        Object.freeze(['Mit ismertem fel arról, hogyan kapcsolódik a megbocsátás a saját belső békémhez?', 'Hogyan különböztetem meg a megbocsátás lehetőségét a történtek helyeslésétől vagy a bizalom automatikus helyreállításától?', 'Milyen érzéseket szeretnék még feldolgozni anélkül, hogy siettetném magamban a megbocsátást?']),
+        Object.freeze(['Milyen szempontokat tartok fontosnak a későbbi jóvátételi lehetőségek felelős átgondolásakor?', 'Mely helyzetek igényelnek különösen körültekintő mérlegelést vagy szponzori útmutatást?', 'Milyen információkat vagy felismeréseket szeretnék megőrizni a kilencedik lépésre való felkészüléshez?']),
+        Object.freeze(['Hogyan jelent meg a felelősségvállalás, együttérzés és őszinteség a nyolcadik lépés munkájában?', 'Milyen tapasztalat segített különbséget tenni a valódi hajlandóság és az önmagamra helyezett nyomás között?', 'Melyik alapelvet szeretném különösen fontosnak tekinteni a jóvátételekkel kapcsolatos döntésekben?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_9 = Object.freeze([
+        Object.freeze(['Milyen belső és gyakorlati felkészülést tartok szükségesnek a jóvátételi lehetőségek mérlegeléséhez?', 'Milyen érzéseket vagy elvárásokat szeretnék tisztázni, mielőtt bármilyen kapcsolatfelvételre gondolnék?', 'Milyen szerepe lehet a szponzori útmutatásnak a biztonságos döntések előkészítésében?']),
+        Object.freeze(['Milyen személyes indítékok vezetnek, amikor a jóvátétel lehetőségére gondolok?', 'Hogyan különböztetem meg a felelősségvállalás szándékát attól, hogy saját bűntudatomtól szeretnék gyorsan megszabadulni?', 'Milyen hozzáállás segítene a másik ember helyzetét is tiszteletben tartani?']),
+        Object.freeze(['Milyen reakciókat vagy eredményeket képzeltem el korábban egy jóvátételi helyzettől?', 'Hogyan tudok felelősséget vállalni úgy, hogy nem próbálom irányítani a másik ember válaszát?', 'Mit jelent számomra elfogadni, hogy a jóvátétel nem feltétlenül eredményez megbocsátást vagy kapcsolat-helyreállítást?']),
+        Object.freeze(['Mely jóvátételi helyzeteknél érzem különösen fontosnak egy tapasztalt szponzor nézőpontját?', 'Milyen kockázatokat, határokat vagy lehetséges következményeket szeretnék előre tisztázni?', 'Milyen kérdéseket szeretnék konkrétan magammal vinni a következő szponzori beszélgetésre?']),
+        Object.freeze(['Mit ismertem fel arról, mikor lehet megfelelő és biztonságos egy közvetlen jóvátételi kísérlet?', 'Hogyan tudnám a felelősségemet világosan megfogalmazni magyarázkodás vagy elvárások nélkül?', 'Milyen szempontokat kell figyelembe vennem ahhoz, hogy a kapcsolatfelvétel ne okozzon további kárt?']),
+        Object.freeze(['Milyen helyzetekben lehet értelmesebb vagy biztonságosabb a változást a viselkedésemmel kifejezni?', 'Milyen konkrét értékek gyakorlásával tudom megmutatni, hogy ma másként szeretnék élni?', 'Hogyan tudom felismerni, ha a közvetett jóvátétel valódi felelősségvállalás, nem pedig a nehéz helyzetek elkerülése?']),
+        Object.freeze(['Milyen helyzetekben lehet egy kapcsolatfelvétel vagy jóvátételi kísérlet megterhelő, nem kívánt vagy veszélyes a másik ember számára?', 'Milyen személyes, jogi vagy biztonsági határokat kell tiszteletben tartanom?', 'Hogyan tudom elfogadni, ha egy helyzetben a felelős döntés éppen az, hogy nem kezdeményezek közvetlen kapcsolatot?']),
+        Object.freeze(['Mit jelent számomra a saját tetteimért vállalt felelősség akkor is, ha a következményeket már nem tudom megváltoztatni?', 'Hogyan kerülhetem el, hogy a felelősségvállalás helyett magyarázkodásba vagy önhibáztatásba csússzak?', 'Milyen mindennapi viselkedés mutathatja meg leginkább a felelősségvállalás iránti elkötelezettségemet?']),
+        Object.freeze(['Milyen felismeréseket hoztak számomra a már átgondolt vagy megtett jóvátételi lépések?', 'Mit tanultam a saját elvárásaimról és arról, hogyan reagálok mások válaszaira?', 'Hogyan szeretném ezeket a tapasztalatokat a későbbi kapcsolataimban alkalmazni?']),
+        Object.freeze(['Mely helyzetekben maradt bennem bizonytalanság vagy befejezetlenség érzése?', 'Hogyan tudok együtt élni azzal, hogy bizonyos ügyek rendezése nem kizárólag rajtam múlik?', 'Milyen további támogatás, türelem vagy belső munka segíthet ezekhez a helyzetekhez felelősen viszonyulni?']),
+        Object.freeze(['Hogyan jelent meg az alázat, őszinteség és együttérzés a jóvátételekkel kapcsolatos munkámban?', 'Milyen helyzetben kellett a saját megkönnyebbülésem helyett mások biztonságát vagy határait előtérbe helyeznem?', 'Melyik alapelvet szeretném tovább gyakorolni a kapcsolataimban a jóvátételeken túl is?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_10 = Object.freeze([
+        Object.freeze(['Hogyan változott az önvizsgálatról alkotott képem, amikor azt a mindennapjaim részének kezdtem tekinteni?', 'Milyen különbséget látok az őszinte önreflexió és az állandó önkritika között?', 'Milyen egyszerű szokás segíthet rendszeresen kapcsolatban maradni a saját érzéseimmel és tetteimmel?']),
+        Object.freeze(['Milyen helyzetekben veszem észre leggyakrabban, hogy automatikusan reagálok?', 'Milyen testi, érzelmi vagy gondolati jelek segítenek hamarabb felismerni ezeket a reakciókat?', 'Hogyan szeretnék több teret teremteni az érzéseim és a cselekedeteim között?']),
+        Object.freeze(['Milyen mindennapi helyzetekben tudom ma pontosabban felismerni a saját részemet?', 'Hogyan különböztetem meg a felelősségvállalást a túlzott önhibáztatástól?', 'Milyen viselkedéssel tudom leginkább kifejezni, hogy vállalom a döntéseim következményeit?']),
+        Object.freeze(['Mi nehezíti meg számomra, hogy időben felismerjem és beismerjem a hibáimat?', 'Milyen tapasztalataim mutatták meg, hogy egy őszinte beismerés csökkentheti a további konfliktusokat?', 'Hogyan szeretnék legközelebb reagálni, amikor észreveszem, hogy hibáztam?']),
+        Object.freeze(['Milyen pozitív döntéseket vagy viselkedéseket vettem észre magamban a közelmúltban?', 'Mely erősségeim segítettek ezekben a helyzetekben?', 'Hogyan tudom elismerni a fejlődésemet anélkül, hogy tökéletességet várnék magamtól?']),
+        Object.freeze(['Mely régi reakcióim térnek vissza különösen könnyen feszültség vagy bizonytalanság idején?', 'Miből veszem észre, ha egy korábbi működésmód újra hatással van rám?', 'Milyen új választási lehetőséget szeretnék tudatosabban gyakorolni ezekben a helyzetekben?']),
+        Object.freeze(['Mely alapelvek segítenek a mindennapi önvizsgálatban őszintének és együttérzőnek maradni?', 'Hogyan tudom a türelmet, alázatot vagy felelősségvállalást apró hétköznapi helyzetekben gyakorolni?', 'Melyik alapelvhez szeretnék különösen gyakran visszatérni, amikor nehéz napom van?']),
+        Object.freeze(['Milyen napi rutinba tudom természetesen beilleszteni a rövid önreflexiót?', 'Milyen változást tapasztalok, amikor hamarabb észreveszem és kezelem a hibáimat?', 'Hogyan szeretném fenntarthatóvá tenni ezt a gyakorlatot anélkül, hogy újabb teljesítménykényszerré válna?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_11 = Object.freeze([
+        Object.freeze(['Hogyan alakult a saját spiritualitásomról alkotott elképzelésem a felépülésem során?', 'Milyen tapasztalatok segítenek kapcsolatban maradni a számomra fontos értékekkel vagy a saját értelmezésem szerinti Felsőbb Erővel?', 'Milyen irányban szeretném tovább mélyíteni ezt a személyes utat?']),
+        Object.freeze(['Milyen személyes jelentést tulajdonítok az imának, akár vallásos, akár más spirituális értelemben?', 'Milyen érzéseket vagy felismeréseket tapasztalok, amikor őszintén megfogalmazom a bennem lévő gondolatokat?', 'Hogyan szeretném az imát vagy egy számomra megfelelő elcsendesedési gyakorlatot használni a mindennapokban?']),
+        Object.freeze(['Mit tapasztaltam önmagamról, amikor tudatosan időt adtam a csendnek és a figyelemnek?', 'Milyen nehézségekkel találkoztam a meditáció során, és hogyan változott ezekhez a viszonyom?', 'Milyen meditációs vagy figyelemgyakorlat illeszkedne leginkább a saját szükségleteimhez?']),
+        Object.freeze(['Milyen érzések vagy gondolatok válnak észrevehetőbbé számomra, amikor elcsendesedem?', 'Hogyan változik a reakcióim minősége, ha időt adok magamnak a figyelmes jelenlétre?', 'Milyen helyzetekben szeretném tudatosabban gyakorolni a csendet és a meghallást?']),
+        Object.freeze(['Mit jelent számomra kapcsolatban maradni valamivel, ami értelmet vagy irányt ad az életemnek?', 'Milyen tapasztalatok segítettek mélyebb bizalmat vagy belső nyugalmat kialakítani?', 'Hogyan szeretném ezt a kapcsolatot a mindennapi döntéseimben is megjeleníteni?']),
+        Object.freeze(['Milyen helyzetekben veszem észre, hogy a félelmeim vagy az azonnali vágyaim próbálják irányítani a döntéseimet?', 'Hogyan tudom megkülönböztetni a pillanatnyi késztetést a mélyebb értékeimmel összhangban álló iránytól?', 'Milyen gyakorlat segíthet tisztábban látni, mielőtt fontos döntést hozok?']),
+        Object.freeze(['Hogyan értelmezem a saját meggyőződésem szerint a Felsőbb Erő akaratának fogalmát?', 'Milyen szempontok segítenek különbséget tenni a saját elvárásaim és a számomra fontos spirituális értékek között?', 'Hogyan szeretném ezt az értelmezést felelősen és a saját döntési szabadságom megőrzésével alkalmazni?']),
+        Object.freeze(['Milyen változást tapasztaltam, amikor egy helyzetben előbb figyeltem, és csak utána reagáltam?', 'Hogyan hatott a kapcsolataimra, amikor valóban megpróbáltam meghallani mások nézőpontját?', 'Milyen mindennapi helyzetekben szeretném tudatosabban gyakorolni az ítélkezés nélküli figyelmet?']),
+        Object.freeze(['Hogyan kapcsolódnak a spirituális felismeréseim a tényleges döntéseimhez és viselkedésemhez?', 'Milyen helyzetben sikerült már a belső nyugalomból vagy tudatos figyelemből kiindulva cselekednem?', 'Milyen konkrét tett segítene jobban összhangba hozni az értékeimet és a mindennapjaimat?']),
+        Object.freeze(['Mely spirituális alapelvek váltak különösen fontossá számomra a tudatos kapcsolat gyakorlása során?', 'Hogyan segítettek ezek az elvek türelmesebben vagy nyitottabban viszonyulni a bizonytalansághoz?', 'Melyik alapelvet szeretném tudatosabban megélni a következő időszakban?']),
+        Object.freeze(['Mely elcsendesedési, meditációs vagy spirituális gyakorlatok bizonyultak számomra valóban támogató hatásúnak?', 'Milyen körülmények segítik vagy nehezítik, hogy rendszeresen időt szánjak ezekre?', 'Hogyan alakíthatok ki olyan napi gyakorlatot, amely hosszú távon is természetes része lehet az életemnek?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY_STEP_12 = Object.freeze([
+        Object.freeze(['Milyen változásokat ismertem fel önmagamban a lépések feldolgozása során?', 'Mely korábbi működésmódjaimhoz viszonyulok ma másként, mint a felépülésem kezdetén?', 'Mely tapasztalatokat szeretném hosszú távon is megőrizni a mindennapi életemben?']),
+        Object.freeze(['Milyen személyes jelentést kapott számomra a spirituális ébredés fogalma?', 'Milyen változásokat tapasztaltam a saját értékrendemben, kapcsolataimban vagy élethez való hozzáállásomban?', 'Hogyan szeretném ezt a belső változást a mindennapi tetteimben is továbbvinni?']),
+        Object.freeze(['Mit jelent számomra megosztani a saját felépülési tapasztalataimat másokkal?', 'Hogyan tudok a saját történetemről őszintén beszélni anélkül, hogy mások útját vagy döntéseit irányítani próbálnám?', 'Milyen formában szeretnék reményt és támogatást közvetíteni mások felé?']),
+        Object.freeze(['Milyen saját tapasztalataim segíthetnek együttérzőbben kapcsolódni más felépülő emberekhez?', 'Hogyan tudok támogatást nyújtani anélkül, hogy átvenném a másik ember döntéseiért való felelősséget?', 'Milyen személyes határokat szeretnék megőrizni, miközben mások felé fordulok?']),
+        Object.freeze(['Milyen tapasztalatokból értettem meg, mit jelent számomra a közösségért végzett szolgálat?', 'Hogyan hat rám, amikor önkéntesen hozzájárulhatok mások támogatásához vagy a közösség működéséhez?', 'Milyen szolgálati forma illeszkedne jelenleg leginkább a lehetőségeimhez és a személyes határaimhoz?']),
+        Object.freeze(['Milyen helyzetekben tanultam meg jobban felismerni a saját fizikai, érzelmi vagy kapcsolati határaimat?', 'Hogyan változott a segítségnyújtásról alkotott képem, amikor a saját szükségleteimet is figyelembe vettem?', 'Hogyan szeretném a jövőben összehangolni a mások felé fordulást és az öngondoskodást?']),
+        Object.freeze(['Mit ismertem fel arról, milyen motivációk vezetnek, amikor másoknak segítek?', 'Milyen helyzetekben tapasztaltam meg, hogy az önzetlenség nem jelenti a saját szükségleteim teljes háttérbe szorítását?', 'Hogyan szeretném az önzetlenséget szabadon, elvárások és önfeladás nélkül gyakorolni?']),
+        Object.freeze(['Hogyan változott a mások nehézségeihez való viszonyom a saját felépülési tapasztalataim hatására?', 'Milyen helyzetekben tudtam már nagyobb türelemmel vagy együttérzéssel reagálni, mint korábban?', 'Hogyan szeretném az együttérzést önmagam és mások felé egyaránt gyakorolni?']),
+        Object.freeze(['Mely spirituális alapelvek jelentek meg leginkább a kapcsolataimban, munkámban vagy mindennapi döntéseimben?', 'Hol tapasztalok még különbséget a fontosnak tartott értékeim és a tényleges viselkedésem között?', 'Hogyan szeretném természetesebben beépíteni ezeket az elveket az életem különböző területeibe?']),
+        Object.freeze(['Milyen tapasztalatokból értettem meg, hogy a felépülés folyamatos gyakorlás, nem egyszeri feladat?', 'Mely szokások, kapcsolatok és közösségi tapasztalatok támogatják leginkább a további utamat?', 'Hogyan szeretnék nyitott maradni az új felismerésekre és a további változás lehetőségére?'])
+      ]);
+      const PATH_SUMMARY_QUESTION_COPY = Object.freeze({
+        'step-1': PATH_SUMMARY_QUESTION_COPY_STEP_1,
+        'step-2': PATH_SUMMARY_QUESTION_COPY_STEP_2,
+        'step-3': PATH_SUMMARY_QUESTION_COPY_STEP_3,
+        'step-4': PATH_SUMMARY_QUESTION_COPY_STEP_4,
+        'step-5': PATH_SUMMARY_QUESTION_COPY_STEP_5,
+        'step-6': PATH_SUMMARY_QUESTION_COPY_STEP_6,
+        'step-7': PATH_SUMMARY_QUESTION_COPY_STEP_7,
+        'step-8': PATH_SUMMARY_QUESTION_COPY_STEP_8,
+        'step-9': PATH_SUMMARY_QUESTION_COPY_STEP_9,
+        'step-10': PATH_SUMMARY_QUESTION_COPY_STEP_10,
+        'step-11': PATH_SUMMARY_QUESTION_COPY_STEP_11,
+        'step-12': PATH_SUMMARY_QUESTION_COPY_STEP_12
+      });
+      const PATH_SUMMARY_OVERALL_COPY = Object.freeze({
+        'step-1': Object.freeze(['Milyen igazságokat tudok ma elfogadni a függőségemről, amelyekkel korábban nehéz volt szembenéznem?', 'Hogyan változott a segítséghez, az őszinteséghez és saját lehetőségeimhez való viszonyom?', 'Mit szeretnék magammal vinni az első lépésből a reménnyel kapcsolatos további munkámba?']),
+        'step-2': Object.freeze(['Milyen tapasztalatok segítettek abban, hogy a változás lehetőségét komolyabban vegyem?', 'Hogyan alakult a bizalomhoz, a reményhez és a saját korlátaimhoz való viszonyom?', 'Mit szeretnék továbbvinni ebből a felismerésből a harmadik lépés döntéseibe?']),
+        'step-3': Object.freeze(['Hogyan változott a döntéshez, a bizalomhoz és az irányításhoz való viszonyom?', 'Milyen konkrét tapasztalatok mutatják meg számomra, hogy a döntésem már a tetteimben is megjelenik?', 'Mit szeretnék magammal vinni ebből a lépésből a negyedik lépés őszinte önvizsgálatába?']),
+        'step-4': Object.freeze([
+          'Milyen közös mintákat ismertem fel a nehezteléseimben, félelmeimben és kapcsolataimban?',
+          'Milyen erősségeket, értékeket vagy új lehetőségeket fedeztem fel magamban az önleltár során?',
+          'Mit szeretnék magammal vinni ebből a munkából az ötödik lépés őszinte megosztásába?'
+        ]),
+        'step-5': Object.freeze(['Mit értettem meg önmagamról azáltal, hogy a korábbi leltármunkámat őszintén megoszthattam?', 'Hogyan változott a szégyenhez, bizalomhoz és személyes felelősséghez való viszonyom?', 'Mely felismerésekkel szeretnék tovább dolgozni a hatodik lépésben?']),
+        'step-6': Object.freeze(['Milyen mélyebb szükségleteket és félelmeket ismertem fel a régi működésmódjaim mögött?', 'Hogyan változott az elképzelésem arról, mit jelent valóban készen állni a változásra?', 'Milyen hozzáállást szeretnék magammal vinni a hetedik lépés alázattal kapcsolatos munkájába?']),
+        'step-7': Object.freeze(['Hogyan változott az alázathoz, önelfogadáshoz és segítségkéréshez való viszonyom?', 'Milyen régi működésmódok helyett kezdtem el tudatosabban pozitív alapelveket gyakorolni?', 'Milyen felismerésekkel szeretnék továbblépni a felelősséggel kapcsolatos nyolcadik lépésbe?']),
+        'step-8': Object.freeze(['Hogyan változott a felelősségről és a korábbi tetteim következményeiről alkotott képem?', 'Milyen különbséget ismertem fel a jóvátételi hajlandóság, az önhibáztatás és a másokért vállalt túlzott felelősség között?', 'Mit szeretnék magammal vinni a kilencedik lépés biztonságos és körültekintő előkészítésébe?']),
+        'step-9': Object.freeze(['Hogyan változott az elképzelésem a jóvátételről, a felelősségvállalásról és mások határainak tiszteletéről?', 'Milyen tapasztalatok segítettek elfogadni, hogy a jóvátétel eredményét nem tudom teljesen irányítani?', 'Mit szeretnék a kilencedik lépésből a mindennapi felelősségvállalásom részévé tenni?']),
+        'step-10': Object.freeze(['Hogyan változott az önreflexióhoz és a mindennapi felelősségvállaláshoz való viszonyom?', 'Milyen tapasztalataim mutatják meg, hogy egyre hamarabb felismerem a régi reakcióimat és a pozitív döntéseimet is?', 'Hogyan szeretném hosszú távon megőrizni a folyamatos, együttérző önleltár szokását?']),
+        'step-11': Object.freeze(['Hogyan változott a csendhez, figyelemhez és saját spirituális utamhoz való viszonyom?', 'Milyen új kapcsolatot ismertem fel a belső figyelem és a mindennapi döntéseim között?', 'Hogyan szeretném tovább gyakorolni a tudatos kapcsolatot úgy, hogy az valóban támogassa a felépülésemet?']),
+        'step-12': Object.freeze(['Milyen személyes változásokat és spirituális felismeréseket hozott számomra a tizenkét lépés feldolgozása?', 'Hogyan alakult át a másokhoz, a közösséghez és a segítségnyújtáshoz való viszonyom?', 'Milyen alapelvekkel és szokásokkal szeretném a továbbiakban is élni a felépülésemet?'])
+      });
+      function makePathSummaryQuestions(step, topic) {
+        const copy = PATH_SUMMARY_QUESTION_COPY[step.id]?.[step.themes.findIndex((candidate) => candidate.id === topic.id)];
+        if (!copy || copy.length !== 3) throw new Error(`Hiányzó összegző kérdésregiszter: ${step.id}/${topic.id}`);
+        return Object.freeze(copy.map((text, index) => Object.freeze({ id: `${topic.id}-summary-${index + 1}`, text })));
+      }
+      function makePathOverallSummaryQuestions(step) {
+        const copy = PATH_SUMMARY_OVERALL_COPY[step.id];
+        if (!copy || copy.length !== 3) throw new Error(`Hiányzó teljeslépés-összegzés: ${step.id}`);
+        return Object.freeze(copy.map((text, index) => Object.freeze({ id: `${step.id}-overall-summary-${index + 1}`, text })));
+      }
+      const PATH_SUMMARY_QUESTIONS = Object.freeze(Object.fromEntries(PATH_STEPS.map((step) => [step.id, Object.freeze({
+        topics: Object.freeze(Object.fromEntries(step.themes.map((topic) => [topic.id, makePathSummaryQuestions(step, topic)]))),
+        overall: makePathOverallSummaryQuestions(step)
+      })])));
       const PATH_OVERVIEW_ORIGINAL_STEP_ART = Object.freeze([
         'assets/path-step-4/tile-topics.png',
         'assets/path-step-4/tile-sponsor-review.png',
@@ -2604,12 +2838,16 @@
       function stableStringHash(value) { return [...String(value || '')].reduce((hash, character) => ((hash * 31) + character.charCodeAt(0)) | 0, 0); }
       function normalizeSearchText(value) { return String(value || '').toLocaleLowerCase('hu-HU').normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
       function createPathCollectionState() { return { selectedTopicId: 'all', query: '', carouselScrollLeft: null, listScrollTop: 0 }; }
+      function createPathSummaryState() { return { selectedTopicId: null, carouselScrollLeft: null, cardScrollTop: 0, saveState: 'saved' }; }
       function createTopicWork(status = 'not-started') { return { status, answers: {} }; }
       function createStepWork(step) {
         const startedTopicCount = Math.ceil(step.themes.length / 2);
         return {
           status: 'not-started',
           topics: Object.fromEntries(step.themes.map((topic, index) => [topic.id, createTopicWork(index < startedTopicCount ? 'in-progress' : 'not-started')])),
+          topicSummaries: {},
+          overallSummary: {},
+          summaryMigrationVersion: 0,
           summary: '',
           takeaway: ''
         };
@@ -2649,7 +2887,7 @@
         current.steps['step-9'].topics['step-9-topic-4'].answers = { 'step-9-topic-4-question-1': createAnswer({ text: 'Előbb át szeretném beszélni, mi lenne biztonságos és nem okozna újabb kárt.', discussWithSponsor: true }) };
         seedPathImportantDemo(historical);
         seedPathImportantDemo(current);
-        return { currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', collections: { important: createPathCollectionState(), sponsor: createPathCollectionState() }, lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', questionReturn: null, notice: '' } };
+        return { currentCycleId: current.id, cycles: [historical, current], assetStyle: 'original', overviewLayout: 'roomy', stepFourHeroVariant: 'compact', stepFourHeroCopyPlacement: 'body', collections: { important: createPathCollectionState(), sponsor: createPathCollectionState() }, summary: { byStep: {} }, lastWorked: { cycleId: current.id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, navigation: { view: 'overview', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4, answerFilter: 'all', questionReturn: null, notice: '' } };
       }
 
       function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]); }
@@ -2812,7 +3050,7 @@
           this.root.addEventListener('click', (event) => this.handleAction(event));
           this.root.addEventListener('click', (event) => this.consumeHistoryMetricsRailClick(event), true);
           this.root.addEventListener('input', (event) => this.handleInput(event));
-          this.root.addEventListener('scroll', (event) => this.capturePathCollectionScroll(event), true);
+          this.root.addEventListener('scroll', (event) => this.capturePathWorkspaceScroll(event), true);
           this.root.addEventListener('pointerdown', (event) => this.pathQuestionPointerDown(event));
           this.root.addEventListener('pointermove', (event) => this.pathQuestionPointerMove(event));
           this.root.addEventListener('pointerup', (event) => this.pathQuestionPointerEnd(event));
@@ -3060,6 +3298,7 @@
             case 'open-path-sponsor-review': this.openPathSponsorReview(event.target.closest('[data-path-sponsor-scope]')?.dataset.pathSponsorScope || 'all'); break;
             case 'open-path-answers': this.openPathAnswers(); break;
             case 'select-path-collection-topic': { const target = event.target.closest('[data-path-collection-topic-id]'); this.selectPathCollectionTopic(target?.dataset.pathCollectionKind, target?.dataset.pathCollectionTopicId); break; }
+            case 'select-path-summary-topic': this.selectPathSummaryTopic(event.target.closest('[data-path-summary-topic-id]')?.dataset.pathSummaryTopicId); break;
             case 'clear-path-collection-search': this.clearPathCollectionSearch(event.target.closest('[data-path-collection-kind]')?.dataset.pathCollectionKind); break;
             case 'open-path-collection-question': { const target = event.target.closest('[data-question-id]'); this.openPathCollectionQuestion(target?.dataset.pathCollectionKind, target?.dataset.topicId, target?.dataset.questionId); break; }
             case 'set-path-answer-filter': this.setPathAnswerFilter(event.target.closest('[data-filter]').dataset.filter); break;
@@ -3092,8 +3331,7 @@
           if (target.matches('[data-path-collection-search]')) { this.setPathCollectionSearch(target.dataset.pathCollectionKind, target.value); return; }
           if (this.isPathReadOnly()) return;
           if (target.matches('[data-path-answer-text]')) { this.getCurrentPathAnswer().text = target.value; this.rememberLastPathWork(); }
-          if (target.matches('[data-path-step-summary]')) { this.getCurrentStepWork().summary = target.value; }
-          if (target.matches('[data-path-step-takeaway]')) { this.getCurrentStepWork().takeaway = target.value; }
+          if (target.matches('[data-path-summary-answer]')) this.savePathSummaryAnswer(target);
         }
         pathQuestionPointerDown(event) {
           if (this.isPathQuestionNavigatorOpen() || this.state.route !== 'path' || this.getPathNavigation().view !== 'question' || event.button > 0) return;
@@ -4930,6 +5168,56 @@
         getPathCollectionConfig(kind) { return PATH_COLLECTION_CONFIG[kind] || PATH_COLLECTION_CONFIG.important; }
         getPathCollectionKindForView(view = this.getPathNavigation().view) { return Object.values(PATH_COLLECTION_CONFIG).find((config) => config.view === view)?.key || null; }
         getPathCollectionState(kind) { const config = this.getPathCollectionConfig(kind); const collections = this.state.path.collections ||= {}; return collections[config.key] ||= createPathCollectionState(); }
+        getPathSummaryState() {
+          const summary = this.state.path.summary ||= { byStep: {} }; const byStep = summary.byStep ||= {};
+          const step = this.getStep();
+          const state = byStep[step?.id] ||= createPathSummaryState();
+          const resumeTopicId = this.getPathNavigation().topicId;
+          if (step && !this.getPathSummaryItems(step).some((item) => item.id === state.selectedTopicId)) state.selectedTopicId = step.themes.some((topic) => topic.id === resumeTopicId) ? resumeTopicId : (step.themes[0]?.id || 'overall-step-reflection');
+          return state;
+        }
+        getPathSummaryRegistry(stepId = this.getPathNavigation().stepId) { return PATH_SUMMARY_QUESTIONS[stepId]; }
+        getPathSummaryItems(step = this.getStep()) {
+          const registry = this.getPathSummaryRegistry(step?.id);
+          if (!step || !registry) return [];
+          return [
+            ...step.themes.map((topic, index) => ({ id: topic.id, topic, index, questions: registry.topics[topic.id], overall: false })),
+            { id: 'overall-step-reflection', topic: null, index: step.themes.length, questions: registry.overall, overall: true }
+          ];
+        }
+        getSelectedPathSummaryItem() { const state = this.getPathSummaryState(); return this.getPathSummaryItems().find((item) => item.id === state.selectedTopicId) || this.getPathSummaryItems()[0]; }
+        ensurePathSummaryStorage(stepId = this.getPathNavigation().stepId) {
+          const work = this.getCurrentStepWork(stepId);
+          work.topicSummaries ||= {}; work.overallSummary ||= {};
+          const registry = this.getPathSummaryRegistry(stepId);
+          if (!registry || work.summaryMigrationVersion >= 1) return work;
+          const overall = registry.overall;
+          if (work.summary?.trim() && overall[0] && !work.overallSummary[overall[0].id]) work.overallSummary[overall[0].id] = { text: work.summary, savedAt: 'migrated' };
+          if (work.takeaway?.trim() && overall[1] && !work.overallSummary[overall[1].id]) work.overallSummary[overall[1].id] = { text: work.takeaway, savedAt: 'migrated' };
+          work.summaryMigrationVersion = 1;
+          return work;
+        }
+        getPathSummaryAnswer(item, question, { create = !this.isPathReadOnly() } = {}) {
+          const work = this.ensurePathSummaryStorage();
+          const bucket = item.overall ? work.overallSummary : (work.topicSummaries[item.id] ||= {});
+          if (!bucket[question.id] && create) bucket[question.id] = { text: '', savedAt: null };
+          return bucket[question.id] || { text: '', savedAt: null };
+        }
+        savePathSummaryAnswer(target) {
+          const item = this.getPathSummaryItems().find((candidate) => candidate.id === target.dataset.pathSummaryScope);
+          const question = item?.questions.find((candidate) => candidate.id === target.dataset.pathSummaryQuestionId);
+          if (!item || !question) return;
+          const answer = this.getPathSummaryAnswer(item, question); answer.text = target.value; answer.savedAt = new Date().toISOString();
+          const state = this.getPathSummaryState(); state.saveState = 'saved';
+          this.updatePathSummarySaveStatus('saved');
+        }
+        flushPathSummaryDraft() { return true; }
+        updatePathSummarySaveStatus(state) {
+          this.root.querySelectorAll('[data-path-summary-save-status]').forEach((element) => {
+            element.dataset.saveState = state;
+            element.querySelector('[data-path-summary-save-copy]')?.replaceChildren(document.createTextNode(state === 'error' ? 'Mentési hiba' : state === 'saving' ? 'Mentés...' : 'Automatikusan mentve'));
+          });
+        }
         getPathCollectionItems(kind, stepId = this.getPathNavigation().stepId) {
           const config = this.getPathCollectionConfig(kind); const step = this.getStep(stepId);
           if (!step) return [];
@@ -4958,6 +5246,23 @@
           });
         }
         getPathCollectionQuestionPresentation(questionId) { return PATH_COLLECTION_PRESENTATIONS[Math.abs(stableStringHash(questionId)) % PATH_COLLECTION_PRESENTATIONS.length]; }
+        renderPathCarouselSegments(items, renderTile) {
+          return [0, 1, 2].map((segment) => `<span class="path-collection-carousel-segment"${segment === 1 ? '' : ' aria-hidden="true"'}>${items.map((item) => renderTile(item, segment)).join('')}</span>`).join('');
+        }
+        positionPathInfiniteCarousel(component, state, { restore = false } = {}) {
+          const carousel = this.root.querySelector(`[data-component="${component}"]`);
+          if (!carousel || !Number.isFinite(carousel.scrollWidth) || !carousel.scrollWidth) return;
+          const segmentWidth = carousel.scrollWidth / 3;
+          carousel.scrollLeft = restore && Number.isFinite(state.carouselScrollLeft) ? state.carouselScrollLeft : segmentWidth;
+        }
+        capturePathInfiniteCarousel(target, state) {
+          const segmentWidth = target.scrollWidth / 3;
+          if (Number.isFinite(segmentWidth) && segmentWidth > 0) {
+            if (target.scrollLeft < segmentWidth * .28) target.scrollLeft += segmentWidth;
+            else if (target.scrollLeft > segmentWidth * 1.72) target.scrollLeft -= segmentWidth;
+          }
+          state.carouselScrollLeft = target.scrollLeft;
+        }
         renderPathCollectionQuestionRows(kind) {
           const config = this.getPathCollectionConfig(kind); const items = this.getFilteredPathCollectionItems(config.key);
           if (!items.length) {
@@ -4974,17 +5279,39 @@
           const filters = [{ id: 'all', title: 'Összes', count: this.getPathCollectionItems(config.key).length, asset: this.pathChapterHeroAsset(step), position: 'center' }, ...this.getPathCollectionTopics(config.key).map(({ topic, index, count }) => {
             const visual = this.getPathTopicCardVisual(step, topic, index); return { id: topic.id, title: topic.title, count, asset: visual.asset, position: visual.position };
           })];
-          return [0, 1, 2].map((segment) => `<span class="path-collection-carousel-segment"${segment === 1 ? '' : ' aria-hidden="true"'}>${filters.map((filter) => `<button class="path-collection-topic-tile" type="button" data-action="select-path-collection-topic" data-path-collection-kind="${config.key}" data-path-collection-topic-id="${filter.id}" aria-pressed="${collection.selectedTopicId === filter.id}"${segment === 1 ? '' : ' tabindex="-1"'} style="--path-collection-art-position: ${escapeHtml(filter.position)}"><img src="${escapeHtml(filter.asset)}" alt="" aria-hidden="true"><strong>${escapeHtml(filter.title)}</strong><small>${config.topicCountLabel(filter.count)}</small></button>`).join('')}</span>`).join('');
+          return this.renderPathCarouselSegments(filters, (filter, segment) => `<button class="path-collection-topic-tile" type="button" data-action="select-path-collection-topic" data-path-collection-kind="${config.key}" data-path-collection-topic-id="${filter.id}" aria-pressed="${collection.selectedTopicId === filter.id}"${segment === 1 ? '' : ' tabindex="-1"'} style="--path-collection-art-position: ${escapeHtml(filter.position)}"><img src="${escapeHtml(filter.asset)}" alt="" aria-hidden="true"><strong>${escapeHtml(filter.title)}</strong><small>${config.topicCountLabel(filter.count)}</small></button>`);
+        }
+        renderPathSummaryTopicTiles() {
+          const step = this.getStep(); const state = this.getPathSummaryState(); const items = this.getPathSummaryItems(step);
+          return this.renderPathCarouselSegments(items, (item, segment) => {
+            const visual = item.overall ? { asset: this.pathChapterHeroAsset(step), position: 'center' } : this.getPathTopicCardVisual(step, item.topic, item.index);
+            const title = item.overall ? 'A teljes lépés' : item.topic.title;
+            return `<button class="path-collection-topic-tile" type="button" data-action="select-path-summary-topic" data-path-summary-topic-id="${item.id}" data-path-summary-overall="${item.overall}" aria-pressed="${state.selectedTopicId === item.id}"${segment === 1 ? '' : ' tabindex="-1"'} style="--path-collection-art-position: ${escapeHtml(visual.position)}"><img src="${escapeHtml(visual.asset)}" alt="" aria-hidden="true"><strong>${escapeHtml(title)}</strong><small aria-hidden="true"></small></button>`;
+          });
+        }
+        renderPathSummaryCard() {
+          const step = this.getStep(); const item = this.getSelectedPathSummaryItem(); const readOnly = this.isPathReadOnly();
+          if (!item) return '';
+          const visual = item.overall ? { asset: this.pathChapterHeroAsset(step), position: 'center' } : this.getPathTopicCardVisual(step, item.topic, item.index);
+          const title = item.overall ? 'A teljes lépés' : item.topic.title;
+          const subtitle = item.overall ? 'Amit magammal viszek' : 'Amit felismertem';
+          const questions = item.questions.map((question, index) => {
+            const answer = this.getPathSummaryAnswer(item, question, { create: !readOnly });
+            return `<label class="path-summary-question"><span class="path-summary-question-number">${String(index + 1).padStart(2, '0')}</span><span class="path-summary-question-copy"><h2>${escapeHtml(question.text)}</h2><textarea data-path-summary-answer data-path-summary-scope="${item.id}" data-path-summary-question-id="${question.id}" placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(answer.text)}</textarea></span></label>`;
+          }).join('');
+          const closeAction = `<footer class="path-summary-close-actions"><button class="path-secondary-button" type="button" data-action="close-path-step" ${readOnly ? 'disabled' : ''}>Ezt a lépésmunkát lezárom</button><button class="path-secondary-button" type="button" data-action="keep-path-step-open">Még dolgozom rajta</button></footer>`;
+          return `<article class="path-summary-card"><header class="path-summary-card-header"><span class="path-summary-card-art" style="--path-summary-art-position: ${escapeHtml(visual.position)}" aria-hidden="true"><img src="${escapeHtml(visual.asset)}" alt=""></span><span class="path-summary-card-title"><strong>${escapeHtml(title)}</strong><small>${subtitle}</small></span><span class="path-summary-save-status" data-path-summary-save-status data-save-state="saved"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg><span data-path-summary-save-copy>Automatikusan mentve</span></span></header>${this.readOnlyNotice()}${questions}${closeAction}</article>`;
+        }
+        renderPathSummary() {
+          const step = this.getStep(); this.ensurePathSummaryStorage(step.id); const heroAsset = this.pathChapterHeroAsset(step);
+          return `<main class="path-summary-screen" data-component="path-summary-screen"><header class="path-summary-hero"><span class="path-summary-hero-art" aria-hidden="true"><img src="${escapeHtml(heroAsset)}" alt=""></span><button class="path-summary-hero-back" type="button" data-action="path-back" aria-label="Vissza a ${step.number}. lépés főmenüjébe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="path-summary-hero-copy"><span>${step.number}. lépés · ${escapeHtml(step.title)}</span><strong>Összegzés</strong><small>Mélyebb megértés. Tisztább irány.</small></div></header><section class="path-summary-body"><nav class="path-collection-carousel path-summary-carousel" data-component="path-summary-carousel" aria-label="Összegző témák" tabindex="0">${this.renderPathSummaryTopicTiles()}</nav><section class="path-summary-scroll" data-component="path-summary-scroll" aria-label="Összegző kérdések">${this.renderPathSummaryCard()}${this.pathNotice()}</section></section></main>`;
         }
         renderPathCollection(kind) {
           const config = this.getPathCollectionConfig(kind); const step = this.getStep(); const collection = this.normalizePathCollectionSelection(config.key); const count = this.getPathCollectionItems(config.key, step.id).length; const heroAsset = this.pathChapterHeroAsset(step);
           return `<main class="path-collection-screen" data-component="path-collection-screen" data-path-collection-kind="${config.key}"><header class="path-collection-hero"><span class="path-collection-hero-art" aria-hidden="true"><img src="${escapeHtml(heroAsset)}" alt=""></span><button class="path-collection-hero-back" type="button" data-action="path-back" aria-label="Vissza a ${step.number}. lépés főmenüjébe"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="path-collection-hero-copy"><span>${step.number}. lépés · ${escapeHtml(step.title)}</span><strong>${config.title}</strong><small>${config.countLabel(count)}</small></div></header><section class="path-collection-body${config.privacyNote ? ' has-privacy-note' : ''}"><nav class="path-collection-carousel" data-component="path-collection-carousel" data-path-collection-kind="${config.key}" aria-label="${config.carouselLabel}" tabindex="0">${this.renderPathCollectionTopicTiles(config.key)}</nav><label class="path-collection-search"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><input type="search" data-path-collection-search data-path-collection-kind="${config.key}" value="${escapeHtml(collection.query)}" placeholder="${config.searchPlaceholder}" aria-label="${config.searchLabel}"><button class="path-collection-search-clear" type="button" data-action="clear-path-collection-search" data-path-collection-kind="${config.key}" aria-label="Keresés törlése"${collection.query ? '' : ' hidden'}>×</button></label>${config.privacyNote ? `<p class="path-collection-privacy-note">${config.privacyNote}</p>` : ''}<section class="path-collection-list-scroll" data-component="path-collection-list-scroll" data-path-collection-kind="${config.key}" aria-label="${config.title}"><p class="path-collection-result-count" data-component="path-collection-result-count">${config.resultCountLabel(this.getFilteredPathCollectionItems(config.key).length)}</p><div class="path-collection-question-list" data-component="path-collection-question-list">${this.renderPathCollectionQuestionRows(config.key)}</div></section></section></main>`;
         }
         positionPathCollectionCarousel(kind, { restore = false } = {}) {
-          const carousel = this.root.querySelector('[data-component="path-collection-carousel"]');
-          if (!carousel || !Number.isFinite(carousel.scrollWidth) || !carousel.scrollWidth) return;
-          const collection = this.getPathCollectionState(kind); const segmentWidth = carousel.scrollWidth / 3;
-          carousel.scrollLeft = restore && Number.isFinite(collection.carouselScrollLeft) ? collection.carouselScrollLeft : segmentWidth;
+          this.positionPathInfiniteCarousel('path-collection-carousel', this.getPathCollectionState(kind), { restore });
         }
         capturePathCollectionState(kind) {
           const collection = this.getPathCollectionState(kind); const carousel = this.root.querySelector('[data-component="path-collection-carousel"]'); const list = this.root.querySelector('[data-component="path-collection-list-scroll"]');
@@ -4998,15 +5325,19 @@
           const target = event.target; const collection = this.getPathCollectionState(kind);
           if (target?.matches?.('[data-component="path-collection-list-scroll"]')) { collection.listScrollTop = target.scrollTop; return; }
           if (!target?.matches?.('[data-component="path-collection-carousel"]')) return;
-          const segmentWidth = target.scrollWidth / 3;
-          if (Number.isFinite(segmentWidth) && segmentWidth > 0) {
-            if (target.scrollLeft < segmentWidth * .28) target.scrollLeft += segmentWidth;
-            else if (target.scrollLeft > segmentWidth * 1.72) target.scrollLeft -= segmentWidth;
-          }
-          collection.carouselScrollLeft = target.scrollLeft;
+          this.capturePathInfiniteCarousel(target, collection);
+        }
+        capturePathWorkspaceScroll(event) {
+          if (this.state.route !== 'path') return;
+          const view = this.getPathNavigation().view;
+          if (view !== 'step-summary') { this.capturePathCollectionScroll(event); return; }
+          const state = this.getPathSummaryState(); const target = event.target;
+          if (target?.matches?.('[data-component="path-summary-scroll"]')) { state.cardScrollTop = target.scrollTop; return; }
+          if (!target?.matches?.('[data-component="path-summary-carousel"]')) return;
+          this.capturePathInfiniteCarousel(target, state);
         }
         handlePathCollectionCarouselKeydown(event) {
-          const carousel = event.target.closest?.('[data-component="path-collection-carousel"]');
+          const carousel = event.target.closest?.('[data-component="path-collection-carousel"], [data-component="path-summary-carousel"]');
           if (!carousel || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
           event.preventDefault(); const delta = event.key === 'ArrowLeft' ? -122 : 122;
           if (carousel.scrollBy) carousel.scrollBy({ left: delta, behavior: this.motionReduced ? 'auto' : 'smooth' }); else carousel.scrollLeft += delta;
@@ -5027,6 +5358,32 @@
           const carousel = this.root.querySelector('[data-component="path-collection-carousel"]');
           if (carousel) { carousel.innerHTML = this.renderPathCollectionTopicTiles(config.key); this.positionPathCollectionCarousel(config.key); }
           this.updatePathCollectionQuestionList(config.key, { resetScroll: true });
+        }
+        positionPathSummaryCarousel({ restore = false } = {}) {
+          this.positionPathInfiniteCarousel('path-summary-carousel', this.getPathSummaryState(), { restore });
+        }
+        capturePathSummaryState() {
+          const state = this.getPathSummaryState(); const carousel = this.root.querySelector('[data-component="path-summary-carousel"]'); const scroll = this.root.querySelector('[data-component="path-summary-scroll"]');
+          if (carousel && Number.isFinite(carousel.scrollLeft)) state.carouselScrollLeft = carousel.scrollLeft;
+          if (scroll && Number.isFinite(scroll.scrollTop)) state.cardScrollTop = scroll.scrollTop;
+          return state;
+        }
+        selectPathSummaryTopic(topicId) {
+          const state = this.getPathSummaryState();
+          if (!this.getPathSummaryItems().some((item) => item.id === topicId) || state.selectedTopicId === topicId) return;
+          this.flushPathSummaryDraft(); this.capturePathSummaryState(); state.selectedTopicId = topicId; state.cardScrollTop = 0;
+          const carousel = this.root.querySelector('[data-component="path-summary-carousel"]'); const scroll = this.root.querySelector('[data-component="path-summary-scroll"]');
+          if (carousel) carousel.innerHTML = this.renderPathSummaryTopicTiles();
+          if (scroll) { scroll.innerHTML = `${this.renderPathSummaryCard()}${this.pathNotice()}`; scroll.scrollTop = 0; }
+          this.positionPathSummaryCarousel({ restore: true });
+        }
+        restorePathSummaryState() {
+          const restore = () => {
+            const state = this.getPathSummaryState(); const scroll = this.root.querySelector('[data-component="path-summary-scroll"]');
+            this.positionPathSummaryCarousel({ restore: true });
+            if (scroll && Number.isFinite(state.cardScrollTop)) scroll.scrollTop = state.cardScrollTop;
+          };
+          if (typeof requestAnimationFrame === 'function') requestAnimationFrame(restore); else restore();
         }
         restorePathCollectionState(kind) {
           const config = this.getPathCollectionConfig(kind); const collection = this.normalizePathCollectionSelection(config.key);
@@ -5169,7 +5526,7 @@
         togglePathVoiceMemo() { if (this.isPathReadOnly()) return; const answer = this.getCurrentPathAnswer(); answer.voiceMemoState = answer.voiceMemoState === 'recorded' ? 'none' : 'recorded'; this.renderPath(); }
         openPathSponsorReview(scope = 'step') { const navigation = this.getPathNavigation(); navigation.sponsorScope = scope; navigation.questionReturn = null; navigation.view = 'sponsor-review'; this.navigate('path'); }
         openPathAnswers() { const navigation = this.getPathNavigation(); navigation.questionReturn = null; navigation.view = 'answers'; this.navigate('path'); }
-        openPathSummary() { this.getPathNavigation().view = 'step-summary'; this.navigate('path'); }
+        openPathSummary() { this.flushPathSummaryDraft(); this.getPathSummaryState(); this.getPathNavigation().view = 'step-summary'; this.navigate('path'); }
         setPathAnswerFilter(filter) { this.getPathNavigation().answerFilter = filter; this.renderPath(); }
         closePathStep() { if (this.isPathReadOnly()) return; this.getCurrentStepWork().status = 'closed'; this.setPathNotice('A jelenlegi lépésmunkát lezártad. Ez később bármikor újra megnyitható.'); }
         openPathCycles() { this.getPathNavigation().view = 'cycles'; this.navigate('path'); }
@@ -5237,6 +5594,7 @@
           this.syncMainNavigation();
           const collectionKind = this.getPathCollectionKindForView(view);
           if (collectionKind) this.restorePathCollectionState(collectionKind);
+          if (view === 'step-summary') this.restorePathSummaryState();
         }
         pathHeader(title = 'Ösvény', eyebrow = '12 lépés', back = false) { return `<header class="path-header">${back ? '<button class="path-back-button" type="button" data-action="path-back" aria-label="Vissza"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg>Vissza</button>' : '<span class="path-kicker">12 lépés</span>'}<div><h1>${escapeHtml(title)}</h1><p>${escapeHtml(eyebrow)}</p></div></header>`; }
         pathNotice() { const notice = this.getPathNavigation().notice; return notice ? `<p class="path-notice" role="status">${escapeHtml(notice)}</p>` : ''; }
@@ -5363,13 +5721,7 @@
           return this.renderPathCollection('sponsor');
         }
         renderPathStepSummary() {
-          const step = this.getStep(); const work = this.getCurrentStepWork(); const flags = this.getFlagCounts(); const readOnly = this.isPathReadOnly();
-          if (step.number === 4) return this.renderPathStepFourSummary();
-          return `${this.pathHeader(`${step.number}. lépés összegzése`, step.title, true)}<div class="path-scroll">${this.readOnlyNotice()}<section class="path-summary-writing"><label for="path-summary">Mit jelent számodra most ez a lépés?<textarea id="path-summary" data-path-step-summary placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.summary)}</textarea></label><label for="path-takeaway">Amit ebből magammal viszek<textarea id="path-takeaway" data-path-step-takeaway placeholder="Ami most fontos marad…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.takeaway)}</textarea></label></section><div class="path-summary-meta"><span>♡ ${flags.important} fontos válasz</span><span>${flags.sponsor} szponzorral átbeszélendő</span></div>${step.number === 12 ? '<section class="path-info-card"><strong>Az Ösvény nem ér véget itt.</strong><p>Új lépésmunkával később újra végigjárhatod a saját tempódban.</p></section>' : ''}<div class="path-summary-actions"><button class="path-primary-button" type="button" data-action="close-path-step" ${readOnly ? 'disabled' : ''}>Ezt a lépésmunkát lezárom</button><button class="path-secondary-button" type="button" data-action="keep-path-step-open">Még dolgozom rajta</button></div>${step.number === 12 ? '<button class="path-secondary-button" type="button" data-action="start-new-path-cycle">Új lépésmunka indítása</button>' : ''}${this.pathNotice()}</div>`;
-        }
-        renderPathStepFourSummary() {
-          const work = this.getCurrentStepWork(); const flags = this.getFlagCounts(); const readOnly = this.isPathReadOnly();
-          return `${this.pathStepFourHeader('Összegzés')}<main class="path-step-four-scroll">${this.readOnlyNotice()}<aside class="path-step-four-quote"><span aria-hidden="true">“</span><p>Amit őszintén le tudok írni, arra már másképp tudok ránézni.</p></aside><section class="path-summary-writing"><label for="path-summary">Mit jelent számomra most ez a lépés?<textarea id="path-summary" data-path-step-summary placeholder="Írd le a saját szavaiddal…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.summary)}</textarea></label><label for="path-takeaway">Amit ebből magammal viszek<textarea id="path-takeaway" data-path-step-takeaway placeholder="Ami most fontos marad…" ${readOnly ? 'readonly aria-readonly="true"' : ''}>${escapeHtml(work.takeaway)}</textarea></label></section><div class="path-summary-meta"><span>♡ ${flags.important} fontos válasz</span><span>${flags.sponsor} szponzorral átbeszélendő</span></div><div class="path-summary-actions"><button class="path-primary-button" type="button" data-action="close-path-step" ${readOnly ? 'disabled' : ''}>Ezt a lépésmunkát lezárom</button><button class="path-secondary-button" type="button" data-action="keep-path-step-open">Még dolgozom rajta</button></div>${this.pathNotice()}</main>`;
+          return this.renderPathSummary();
         }
         renderPathCycles() {
           return `${this.pathHeader('Korábbi lépésmunkáim', 'A korábbi válaszaid megmaradnak', true)}<div class="path-scroll"><section class="path-cycle-list">${this.state.path.cycles.map((cycle, index) => `<button class="path-cycle-row" type="button" data-action="open-path-cycle" data-cycle-id="${cycle.id}" aria-current="${cycle.id === this.state.path.currentCycleId ? 'true' : 'false'}"><span><strong>${index + 1}. lépésmunka</strong><small>${escapeHtml(cycle.startedAt)} · ${cycle.readOnly ? 'korábbi, csak olvasható' : 'jelenlegi lépésmunka'}</small></span><span class="path-chevron" aria-hidden="true">›</span></button>`).join('')}</section><button class="path-primary-button" type="button" data-action="start-new-path-cycle">Új lépésmunka indítása</button>${this.pathNotice()}</div>`;

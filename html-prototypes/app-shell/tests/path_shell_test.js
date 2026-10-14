@@ -376,6 +376,31 @@ controller.openPathSponsorReview('all');
 assert.match(pathContent.innerHTML, /nem küld el és nem oszt meg automatikusan/, 'sponsor review must state its privacy boundary');
 controller.openPathSummary();
 assert.match(pathContent.innerHTML, /Ezt a lépésmunkát lezárom/, 'Step 4 summary must preserve its existing close action');
+assert.match(pathContent.innerHTML, /A teljes lépés/, 'summary must expose the distinct whole-step carousel item');
+assert.match(pathContent.innerHTML, /data-component="path-summary-scroll"/, 'summary must have one named vertical scroll owner');
+assert.equal((pathContent.innerHTML.match(/data-path-summary-answer/g) || []).length, 3, 'a selected summary topic must render exactly three independent answer fields');
+const selectedSummaryItem = controller.getSelectedPathSummaryItem();
+const selectedSummaryQuestion = selectedSummaryItem.questions[0];
+controller.savePathSummaryAnswer({ dataset: { pathSummaryScope: selectedSummaryItem.id, pathSummaryQuestionId: selectedSummaryQuestion.id }, value: 'Külön mentett összegző gondolat.' });
+assert.equal(controller.getPathSummaryAnswer(selectedSummaryItem, selectedSummaryQuestion).text, 'Külön mentett összegző gondolat.', 'summary input must not use the wizard answer branch');
+controller.selectPathSummaryTopic('overall-step-reflection');
+assert.equal(controller.getPathSummaryState().selectedTopicId, 'overall-step-reflection', 'the full-step tile must select the independent overall summary');
+const stepFourWork = controller.getCurrentStepWork();
+stepFourWork.summary = 'Korábbi összegzés megőrzendő.';
+stepFourWork.takeaway = 'Korábbi útravaló megőrzendő.';
+stepFourWork.summaryMigrationVersion = 0;
+controller.ensurePathSummaryStorage('step-4');
+const overallSummaryQuestions = controller.getPathSummaryRegistry('step-4').overall;
+assert.equal(stepFourWork.overallSummary[overallSummaryQuestions[0].id].text, 'Korábbi összegzés megőrzendő.', 'legacy summary must migrate without deletion');
+assert.equal(stepFourWork.overallSummary[overallSummaryQuestions[1].id].text, 'Korábbi útravaló megőrzendő.', 'legacy takeaway must migrate without deletion');
+controller.state.path.currentCycleId = 'cycle-2024';
+controller.getPathNavigation().stepId = 'step-1';
+controller.getPathNavigation().topicId = 'step-1-topic-1';
+controller.openPathSummary();
+assert.match(pathContent.innerHTML, /readonly aria-readonly="true"/, 'historical cycle summary answers must remain readable but non-editable');
+controller.state.path.currentCycleId = 'cycle-2026';
+controller.getPathNavigation().stepId = 'step-4';
+controller.getPathNavigation().topicId = 'step-4-topic-2';
 const priorCycleCount = controller.state.path.cycles.length;
 controller.startNewPathCycle();
 assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting a new work cycle must preserve prior cycles');
@@ -405,12 +430,13 @@ assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting
   '<textarea',
   'aria-pressed=',
   'data-path-answer-text',
-  'data-path-step-summary',
-  'data-path-step-takeaway',
+  'data-path-summary-answer',
+  'topicSummaries',
+  'overallSummary',
   'data-path-read-only',
   'discussedWithSponsor',
   'voiceMemoState',
-  'Az Ösvény nem ér véget itt.',
+  'A teljes lépés',
 ].forEach(expectContains);
 
 assert.equal((html.match(/data-action="open-path"/g) || []).length, 2, 'Ösvény must keep its shared BottomNav entry and the Step 4 source-of-truth overview action');
