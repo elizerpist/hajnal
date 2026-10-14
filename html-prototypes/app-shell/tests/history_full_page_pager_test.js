@@ -33,7 +33,8 @@ assert.match(html, /finishHistoryPagerSettle\(token = this\.historyPagerSettle\?
 assert.match(html, /history-period-pager-slide/, 'A slide must contain hero and body together, not two synchronized sibling animations.');
 assert.match(html, /data-history-pager-role="\$\{role\}"\$\{role === 'current' \? '' : ' aria-hidden="true" inert'\}/, 'Offscreen slides must be pre-rendered but neither focusable nor tappable.');
 assert.match(html, /historyPagerPointerDown\(event\)[\s\S]*?history-pager-calendar-rail/, 'The calendar rail must retain priority over the outer chapter pager.');
-assert.match(html, /historyPagerPointerMove\(event\)[\s\S]*?Math\.max\(Math\.abs\(deltaX\), Math\.abs\(deltaY\)\) >= 12/, 'The pager must defer axis commitment through a small initial touch threshold.');
+assert.match(html, /resolveHorizontalPointerAxis\(deltaX, deltaY, threshold = 12\)[\s\S]*?Math\.max\(Math\.abs\(deltaX\), Math\.abs\(deltaY\)\) < threshold/, 'The shared gesture resolver must defer axis commitment through a small initial touch threshold.');
+assert.match(html, /historyPagerPointerMove\(event\)[\s\S]*?resolveHorizontalPointerAxis\(deltaX, deltaY\)/, 'History must consume the shared directional-lock resolver rather than own a duplicate.');
 assert.match(html, /historyPagerPointerEnd\(event\)[\s\S]*?drag\.width \* \.25[\s\S]*?\.45/, 'Settle must use both distance and velocity thresholds.');
 assert.match(html, /clearHistoryPagerTrackFrame\(\)[\s\S]*?cancelAnimationFrame/, 'A shared cleanup must cancel a queued drag frame before it can overwrite a settled position.');
 assert.match(html, /settleHistoryPager\(target\)[\s\S]*?clearHistoryPagerTrackFrame\(\)/, 'Settling must clear a stale drag frame before its final transform is written.');

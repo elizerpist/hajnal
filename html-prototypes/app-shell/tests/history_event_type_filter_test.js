@@ -18,8 +18,7 @@ assert.match(html, /this\.state\.historyEventTypeFilter\s*=\s*this\.state\.histo
 assert.match(html, /case 'toggle-history-event-filter': this\.toggleHistoryEventFilter\(/, 'the delegated action handler must reach the filter state owner');
 assert.match(html, /data-action="toggle-history-event-filter"[^]*?data-history-event-type=/, 'metric icon controls must expose event type filter actions');
 assert.match(html, /class="history-event-node[^]*?data-action="toggle-history-event-filter"/, 'Timeline event icons must be tappable type filters');
-assert.match(html, /renderHistoryTimelineEventMarkup\(this\.filteredHistoryTimelineEvents\(timeline\.events\s*\|\|\s*\[\]\)\)/, 'full-hero Timeline slides must filter through the shared resolver before rendering');
-assert.match(html, /const events = this\.filteredHistoryTimelineEvents\(timeline\?\.events\s*\|\|\s*\[\]\)/, 'cards-mode Timeline must filter through the shared resolver before rendering');
+assert.match(html, /const events = this\.filteredHistoryTimelineEvents\(timeline\.events\s*\|\|\s*\[\]\);[\s\S]*?renderHistoryTimelineEventMarkup\(events\)/, 'the permanent full-hero Timeline must filter through the shared resolver before rendering');
 assert.match(html, /aria-pressed="\$\{String\(metric\.id === this\.state\.historyEventTypeFilter\)\}"/, 'summary filter controls must announce their selected state');
 assert.match(html, /aria-pressed="\$\{String\(type\.id === this\.state\.historyEventTypeFilter\)\}"/, 'Timeline icon controls must announce their selected state');
 

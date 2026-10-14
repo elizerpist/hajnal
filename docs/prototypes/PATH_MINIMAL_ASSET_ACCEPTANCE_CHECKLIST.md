@@ -1,0 +1,30 @@
+# Ösvény minimal asset system — acceptance checklist
+
+## Architecture card
+
+| Concern | Decision |
+| --- | --- |
+| Visual source of truth | `/storage/emulated/0/hajnal/source of truth/osvenyminimal.png` for the Overview and `/storage/emulated/0/hajnal/source of truth/4lepesminimal.png` for every chapter menu — the latter takes priority for chapter heroes and their four function cards. |
+| State owner and write path | `state.path.assetStyle` is written only by `togglePathOverviewAssetStyle()` and rendered through `renderPath()`. |
+| Shared asset resolver | One neutral `PATH_ARTWORKS` map will own original/minimal assets for both the Overview and all chapter-menu heroes/function cards; renderer helpers select from it. |
+| Scope boundary | Layout, text, progress, navigation, topics, questions and BottomNav retain their owners. Only the Overview current-card treatment and chapter-menu artwork switch by style. |
+
+| ID | Source | Code owner | Acceptance condition | Verification | Status |
+| --- | --- | --- | --- | --- | --- |
+| PMA-01 | User specification, source of truth | `assets/path-minimal/` | The hero plus all 12 Overview step assets follow the quiet, low-detail pastel visual language of `osvenyminimal.png` | Direct reference/asset inspection; changed-state screenshot | PARTIAL — assets were directly checked against the source, but no rendered Android screenshot exists yet. |
+| PMA-02 | User specification: exact asset dimensions | New asset files | `overview-hero.png` is 1136×1385; each `step-01`…`step-12` image is 1536×1024 | `path_minimal_assets_test.js` | DONE |
+| PMA-03 | User specification: motif fidelity | `PATH_ARTWORKS.minimal.overview` | The 12 minimal images preserve the original motif order: leaves, stacked stones, lake/mountain, lotus, shore stones, monochrome water stone, leaves, notebook, stones, lake/mountain, tea cups, paper boat | Asset manifest and direct inspection | DONE |
+| PMA-04 | User specification: original/minimal control | `state.path.assetStyle` | One stateful control switches only the Overview hero and its card/list image bands between original and minimal assets | `path_shell_test.js` | DONE |
+| PMA-05 | User specification: top-right placement | Overview action cluster | The toggle belongs to the existing top-right action rhythm, exposes pressed state and a clear Hungarian label | `path_shell_test.js`; screenshot | PARTIAL — DOM, label, pressed state, and action-cluster placement are tested; a rendered screenshot remains outstanding. |
+| PMA-06 | User specification: preserve structure | Existing Overview renderer | Layout, text, progress rings/bars, spacing, and navigation retain their existing owners and behavior | Existing Path contracts | DONE |
+| PMA-07 | User correction: overlapping control | Removed fit-all Overview presentation | The overlapping control and its state/action/CSS path are absent; it can no longer hide the upper current-work card | `path_fit_all_overview_test.js` | DONE |
+| PMA-08 | User correction: always-visible current-work card | Overview renderer | No state, control, CSS branch, or replacement surface can hide the upper current-work card | `path_overview_hero_card_toggle_test.js` | DONE |
+| PMA-09 | User instruction: current-card cleanup | Overview current-work renderer | The current card has neither the numbered circular medallion nor a left-side white mask/fade; its linear progress bar remains | `path_shell_test.js` | DONE |
+| PMA-10 | User specification, `4lepesminimal.png` | `assets/path-chapter-minimal/` | Every chapter has a source-faithful minimal hero, and every chapter’s four function-card images are a coherent quiet pastel family with motif fidelity | Asset dimension/manifest test; direct source/asset inspection; changed-state screenshot | PARTIAL — source and generated assets were inspected directly; a rendered browser/Android screen capture is not available in this environment. |
+| PMA-11 | User specification: exact asset dimensions | `assets/path-chapter-minimal/` | Step 4’s portrait hero is 1136×1385; other chapter heroes and all 48 function-card assets are 1536×1024 | `path_chapter_minimal_assets_test.js` | DONE |
+| PMA-12 | User specification: shared mode inheritance | `PATH_ARTWORKS`, chapter renderer helpers | One existing `state.path.assetStyle` state switches Overview and every chapter hero/function card between original and minimal with no local duplicate state | `path_shell_test.js` | DONE |
+| PMA-13 | User specification: preserve chapter structure | Existing chapter menu renderer | Hero/header, progress card, quote, four functional destinations, and BottomNav stay structurally and behaviorally unchanged | Existing Path contracts; screenshot | PARTIAL — source and navigation/progress contracts pass; rendered screenshot verification remains unavailable. |
+| PMA-14 | User correction: current-card right fade | Overview current-card visual | The current-card artwork stays fully visible at its left edge and retains only its right-side white fade into card copy | `path_shell_test.js`; direct screenshot inspection | DONE |
+| PMA-15 | User instruction: all 121 themes | `assets/path-topic-minimal/` | Every canonical theme has one dedicated 1536×1024 low-detail pastel illustration, rather than reusing the chapter artwork cycle | `path_topic_minimal_assets_test.js`; direct asset inspection | DONE |
+| PMA-16 | User instruction: shared style mode for themes | `PATH_ARTWORKS`, `getPathTopicCardVisual()` | The existing original/minimal state switches all topic-row artwork with no local topic-style state | `path_topic_minimal_assets_test.js`, `path_shell_test.js` | DONE |
+| PMA-17 | User instruction: BottomNav and spacing | `syncMainNavigation()`, Path CSS | BottomNav stays visible in every Path submenu including question editors; lower step-menu cards have 24px of space above it | `path_bottom_navigation_submenus_test.js`; direct screenshot inspection | PARTIAL — controller and CSS contracts pass; the environment cannot make a new rendered Android/browser screenshot. |

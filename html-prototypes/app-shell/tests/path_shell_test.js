@@ -16,6 +16,10 @@ function expectAbsent(pattern, message) {
   assert.ok(!pattern.test(html), message);
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 const seedMatch = html.match(/const PATH_STEP_SEEDS = Object\.freeze\(([\s\S]*?)\n      \);\n      const PATH_STEPS/);
 assert.ok(seedMatch, 'PATH_STEP_SEEDS must be a structured, locally declared data source');
 const stepSeeds = new Function(`return (${seedMatch[1]});`)();
@@ -33,6 +37,7 @@ assert.ok(stepSeeds.every((step) => step.id && step.title && step.summary && Arr
 assert.equal(executableSteps[3].themes[1].questions.length, 11, 'Step 4 Neheztelések must exercise the full repeated question editor');
 assert.equal(initialPathState.cycles.length, 2, 'the initial prototype state must represent historical and current work cycles');
 assert.equal(initialPathState.currentCycleId, 'cycle-2026', 'the current cycle must be explicit rather than overwriting history');
+assert.equal(initialPathState.assetStyle, 'original', 'the Ösvény Overview must begin in its existing original artwork mode');
 assert.deepEqual(initialPathState.lastWorked, { cycleId: 'cycle-2026', stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 4 }, 'the current-work card must have one explicit last-question pointer');
 assert.deepEqual(
   executableSteps.slice(0, 5).map((step) => initialPathState.cycles[1].steps[step.id].status),
@@ -59,13 +64,15 @@ function makeElement() {
     attributes: new Map(),
     classList: { add() {}, remove() {}, toggle() {}, contains() { return false; } },
     dataset: {},
-    style: { setProperty() {} },
+    style: { setProperty() {}, removeProperty() {} },
     innerHTML: '',
     addEventListener() {},
     setAttribute(name, value) { this.attributes.set(name, String(value)); },
     removeAttribute(name) { this.attributes.delete(name); },
     setPointerCapture() {},
     releasePointerCapture() {},
+    focus() {},
+    scrollIntoView() {},
   };
 }
 
@@ -75,16 +82,37 @@ const expandHotspot = makeElement();
 const fullscreenButton = makeElement();
 const pathScreen = makeElement();
 const pathContent = makeElement();
+const pathNavigatorHost = makeElement();
+const pathNavigatorTopic = makeElement();
+const pathNavigatorMeta = makeElement();
+const pathNavigatorList = makeElement();
+const pathNavigatorDialog = makeElement();
+const pathNavigatorClose = makeElement();
+const pathNavigatorSheet = makeElement();
+const pathNavigatorBackdrop = makeElement();
+pathNavigatorHost.hidden = true;
+pathNavigatorHost.querySelector = (selector) => ({
+  '[data-component="path-question-navigator-topic"]': pathNavigatorTopic,
+  '[data-component="path-question-navigator-meta"]': pathNavigatorMeta,
+  '[data-component="path-question-navigator-list"]': pathNavigatorList,
+  '[data-sheet-close]': pathNavigatorClose,
+  '[role="dialog"]': pathNavigatorDialog,
+  '.path-question-navigator-sheet': pathNavigatorSheet,
+  '.path-question-navigator-backdrop': pathNavigatorBackdrop,
+}[selector] || null);
 root.querySelector = (selector) => ({
   '[data-component="daily-summary-card"]': summary,
   '[data-action="expand-home-card"]': expandHotspot,
   '[data-action="toggle-fullscreen"]': fullscreenButton,
   '[data-component="path-workspace"]': pathScreen,
   '[data-component="path-content"]': pathContent,
-}[selector] || null);
+  '[data-component="path-question-navigator-sheet"]': pathNavigatorHost,
+  '[data-route="path"]': pathScreen,
+}[selector] || (selector === '[data-app-overlay-sheet]:not([hidden])' && !pathNavigatorHost.hidden ? pathNavigatorHost : null));
 root.querySelectorAll = () => [];
 const documentStub = {
   fullscreenElement: null,
+  activeElement: { blur() {} },
   documentElement: { requestFullscreen() {} },
   exitFullscreen() {},
   addEventListener() {},
@@ -92,13 +120,16 @@ const documentStub = {
 };
 const runnableScript = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/)[1]
   .replace("new HomeInteractionController(document.querySelector('.app-frame'));", "globalThis.__pathController = new HomeInteractionController(document.querySelector('.app-frame'));");
-const sandbox = { console, document: documentStub, globalThis: {}, window: { matchMedia: () => ({ matches: false }) } };
+const immediateTimeout = (callback) => { callback(); return 1; };
+const sandbox = { console, document: documentStub, globalThis: { setTimeout: immediateTimeout }, requestAnimationFrame: (callback) => callback(), setTimeout: immediateTimeout, clearTimeout() {}, window: { matchMedia: () => ({ matches: false }) } };
 vm.runInNewContext(runnableScript, sandbox);
 const controller = sandbox.globalThis.__pathController;
 controller.openPathView('overview');
 assert.equal(root.dataset.route, 'path', 'Ösvény must own the shared path route');
+assert.equal(pathScreen.dataset.pathAssetStyle, 'original', 'the Ösvény Overview must expose its original artwork state to its visual layer');
 assert.match(pathContent.innerHTML, /Jelenleg ezen dolgozol/, 'root must render Current Work');
 assert.match(pathContent.innerHTML, />12 lépés</, 'root must render the twelve-step chapter list');
+assert.match(pathContent.innerHTML, /data-component="path-overview-asset-style-toggle"/, 'root must render the original/minimal artwork toggle inside its existing action cluster');
 assert.match(pathContent.innerHTML, /path-overview-height-toggle/, 'root must render the high/low card-height control');
 assert.equal(pathScreen.dataset.pathStep, 'step-4', 'fast-card progress must resolve from the same current step as its matching list row');
 assert.equal(pathScreen.dataset.pathOverviewLayout, 'roomy', 'the restored, taller card composition must be the default');
@@ -109,7 +140,9 @@ controller.togglePathOverviewLayout();
 assert.equal(pathScreen.dataset.pathOverviewLayout, 'roomy', 'the root height control must switch back to taller cards');
 assert.doesNotMatch(pathContent.innerHTML, /path-step-card-state/, 'step rows must not render a separate right-side pie/state circle');
 assert.match(pathContent.innerHTML, /path-step-card-number" style="--path-step-progress:/, 'the numbered medalion must own the step progress ring');
-assert.match(pathContent.innerHTML, /path-fast-medallion path-fast-medallion--static/, 'the fast-card step number must be a static pink disc, because its linear bar is the sole current-work progress indicator');
+assert.doesNotMatch(pathContent.innerHTML, /path-fast-medallion/, 'the current-work card must not render a duplicate numbered circle beside its linear progress bar');
+assert.match(html, /\.path-fast-visual\s*\{[^}]*-webkit-mask-image:\s*var\(--path-fast-card-art-mask\);[^}]*mask-image:\s*var\(--path-fast-card-art-mask\);/, 'the current-work artwork must keep its right-side fade through its dedicated mask');
+assert.match(html, /--path-fast-card-art-mask:\s*linear-gradient\(90deg,\s*#000 0%,[\s\S]*?transparent 100%\)/, 'the current-work artwork mask must begin fully visible at the left and fade only toward the right');
 executableSteps.slice(5).forEach((step) => {
   assert.match(pathContent.innerHTML, new RegExp(`data-step-id="${step.id}" data-path-state="not-started"`), `Step ${step.number} must initially be marked unstarted`);
 });
@@ -122,6 +155,35 @@ assert.equal(controller.pathStepArt(1), 'assets/path-step-4/tile-topics.png', 's
 assert.equal(controller.pathStepArt(2), 'assets/path-step-4/tile-sponsor-review.png', 'step 2 must retain its distinct original artwork');
 assert.equal(controller.pathStepArt(3), 'assets/path-step-4/tile-summary.png', 'step 3 must retain its distinct original artwork');
 assert.equal(controller.pathStepArt(4), 'assets/path-step-4/hero-onleltar-row.png', 'both root Step 4 cards must use the common landscape adapter rather than the portrait chapter hero');
+assert.equal(controller.pathOverviewStepArt(4), 'assets/path-step-4/hero-onleltar-row.png', 'original Overview artwork must retain the existing Step 4 landscape adapter');
+controller.togglePathOverviewAssetStyle();
+assert.equal(pathScreen.dataset.pathAssetStyle, 'minimal', 'the Overview artwork control must switch to the minimal asset state');
+assert.equal(controller.pathOverviewStepArt(4), 'assets/path-minimal/step-04.png', 'minimal Overview artwork must resolve through the centralized minimal asset map');
+assert.match(pathContent.innerHTML, /src="assets\/path-minimal\/step-04\.png"/, 'minimal mode must replace the current-step card and its matching list band without changing their renderers');
+const minimalStepFour = executableSteps[3];
+controller.openPathStep(minimalStepFour.id);
+assert.equal(pathScreen.dataset.pathAssetStyle, 'minimal', 'the selected artwork mode must persist into every step menu');
+assert.equal(controller.pathChapterHeroAsset(minimalStepFour), 'assets/path-chapter-minimal/step-04-hero.png', 'Step 4 must resolve its minimal hero through the shared artwork set');
+assert.match(pathContent.innerHTML, /src="assets\/path-chapter-minimal\/step-04-hero\.png"/, 'minimal Step 4 must render its matching minimal hero');
+['topics', 'answers', 'sponsor-review', 'summary'].forEach((kind) => {
+  assert.match(pathContent.innerHTML, new RegExp(`src="assets/path-chapter-minimal/step-04-${kind}\\.png"`), `minimal Step 4 must render its ${kind} functional-card visual`);
+});
+const minimalStepTwelve = executableSteps[11];
+controller.openPathStep(minimalStepTwelve.id);
+assert.equal(controller.pathChapterHeroAsset(minimalStepTwelve), 'assets/path-chapter-minimal/step-12-hero.png', 'every chapter, including Step 12, must inherit minimal artwork mode');
+assert.match(pathContent.innerHTML, /src="assets\/path-chapter-minimal\/step-12-summary\.png"/, 'the Step 12 Summary functional card must use its own minimal asset');
+executableSteps.forEach((step) => {
+  controller.openPathStep(step.id);
+  controller.openPathTopics();
+  step.themes.forEach((topic, index) => {
+    const asset = `assets/path-topic-minimal/step-${String(step.number).padStart(2, '0')}-topic-${String(index + 1).padStart(2, '0')}.png`;
+    assert.equal(controller.getPathTopicCardVisual(step, topic, index).asset, asset, `minimal mode must resolve a dedicated artwork file for Step ${step.number} topic ${index + 1}`);
+    assert.ok(pathContent.innerHTML.includes(`src="${asset}"`), `minimal Step ${step.number} topic list must render its dedicated topic artwork`);
+  });
+});
+controller.openPathView('overview');
+controller.togglePathOverviewAssetStyle();
+assert.equal(pathScreen.dataset.pathAssetStyle, 'original', 'the Overview artwork control must switch back to the original asset state');
 assert.equal(controller.pathStepArtIsMirrored(1), true, 'Step 1 artwork must mirror into the shared rightward fade composition');
 assert.equal(controller.pathStepArtIsMirrored(2), true, 'Step 2 artwork must mirror into the shared rightward fade composition');
 assert.equal(controller.pathStepArtIsMirrored(3), true, 'Step 3 artwork must mirror into the shared rightward fade composition');
@@ -151,8 +213,7 @@ executableSteps.forEach((step) => {
 
 controller.openPathStep('step-5');
 controller.openPathTopic('step-5-topic-2');
-controller.openPathQuestion();
-assert.doesNotMatch(pathContent.innerHTML, /path-step-four-question-wizard/, 'Step 5 must retain its existing generic question renderer');
+assert.match(pathContent.innerHTML, /data-component="path-question-editor-stage"/, 'Step 5 must use the common question editor');
 controller.movePathQuestion(1);
 controller.openPathView('overview');
 assert.match(pathContent.innerHTML, /Őszinte megosztás/, 'the live current-work card must move to the most recently opened question step');
@@ -241,8 +302,8 @@ executableSteps.forEach((step) => {
     const firstUnanswered = topic.questions.findIndex((question) => !controller.getTopicWork(step.id, topic.id).answers[question.id]?.text.trim());
     const expectedResumeIndex = firstUnanswered === -1 ? topic.questions.length - 1 : firstUnanswered;
     controller.openPathTopic(topic.id);
-    assert.equal(controller.getPathNavigation().view, step.id === 'step-4' ? 'question' : 'topic', `Step ${step.number} topic row ${index + 1} must ${step.id === 'step-4' ? 'open the direct question wizard' : 'preserve its existing topic starter destination'}`);
-    if (step.id === 'step-4') assert.equal(controller.getPathNavigation().questionIndex, expectedResumeIndex, `Step 4 topic row ${index + 1} must resume at its first unanswered question, or its last question when complete`);
+    assert.equal(controller.getPathNavigation().view, 'question', `Step ${step.number} topic row ${index + 1} must open the shared question editor`);
+    assert.equal(controller.getPathNavigation().questionIndex, expectedResumeIndex, `Step ${step.number} topic row ${index + 1} must resume at its first unanswered question, or its last question when complete`);
     assert.match(pathContent.innerHTML, new RegExp(topic.title), `Step ${step.number} topic row ${index + 1} must keep its unchanged topic identity`);
     assert.equal(JSON.stringify(Object.fromEntries(step.themes.map((candidate) => [candidate.id, controller.getTopicWork(step.id, candidate.id).answers]))), answersBeforeTopics, `opening Step ${step.number} topic row ${index + 1} must not alter answer state`);
     assert.equal(JSON.stringify(Object.fromEntries(step.themes.filter((candidate) => candidate.id !== topic.id).map((candidate) => [candidate.id, controller.getTopicWork(step.id, candidate.id).status]))), siblingStatusesBeforeTopic, `opening Step ${step.number} topic row ${index + 1} must not alter sibling topic states`);
@@ -257,7 +318,7 @@ executableSteps.forEach((step) => {
 controller.openPathStep('step-4');
 controller.openPathTopics();
 controller.openPathTopic('step-4-topic-2');
-assert.equal(controller.getPathNavigation().view, 'question', 'Step 4 must omit the topic starter and enter the question wizard directly');
+assert.equal(controller.getPathNavigation().view, 'question', 'Step 4 must enter the shared question editor directly');
 assert.equal(controller.getPathNavigation().questionIndex, 5, 'the partially answered Neheztelések topic must resume at its sixth question');
 assert.deepEqual({ ...controller.state.path.lastWorked }, { cycleId: controller.getCurrentCycle().id, stepId: 'step-4', topicId: 'step-4-topic-2', questionIndex: 5 }, 'opening a Step 4 topic directly must retain the existing exact last-work pointer');
 const firstAnswer = controller.getCurrentPathAnswer();
@@ -265,22 +326,42 @@ firstAnswer.text = 'A prototípusban megőrzött saját gondolat.';
 controller.movePathQuestion(1);
 controller.movePathQuestion(-1);
 assert.equal(controller.getCurrentPathAnswer().text, 'A prototípusban megőrzött saját gondolat.', 'question drafts must survive previous/next navigation');
+const navigatorTopic = controller.getTopic();
+const navigatorAnswered = controller.getAnsweredCount(navigatorTopic, controller.getStep().id);
+controller.openPathQuestionNavigator(makeElement());
+assert.equal(pathNavigatorHost.hidden, false, 'the navigator must open as an overlay without leaving the active question route');
+assert.equal(controller.getPathNavigation().view, 'question', 'opening the navigator must not add a question-list route');
+assert.equal(pathNavigatorTopic.textContent, navigatorTopic.title, 'the navigator header must identify the active topic');
+assert.equal(pathNavigatorMeta.textContent, `${navigatorAnswered} / ${navigatorTopic.questions.length} megválaszolva`, 'the answered count must use saved answer text rather than the active question index');
+assert.equal((pathNavigatorList.innerHTML.match(/data-action="select-path-question"/g) || []).length, navigatorTopic.questions.length, 'the navigator must render exactly one selectable row for every active-topic question');
+assert.match(pathNavigatorList.innerHTML, new RegExp(escapeRegExp(navigatorTopic.questions[5].text)), 'question rows must expose their actual question text, not just a number');
+assert.match(pathNavigatorList.innerHTML, /data-path-question-current="true"/, 'the active question must be independently marked in the navigator');
+const currentQuestionIndexBeforeNavigatorSelection = controller.getPathNavigation().questionIndex;
+const targetQuestionIndex = currentQuestionIndexBeforeNavigatorSelection === navigatorTopic.questions.length - 1 ? 0 : navigatorTopic.questions.length - 1;
+controller.selectPathQuestionFromNavigator(targetQuestionIndex);
+assert.equal(controller.getPathNavigation().questionIndex, targetQuestionIndex, 'direct selection must update the shared active-question index in one transition');
+assert.equal(pathNavigatorHost.hidden, true, 'the navigator must close after selecting another question');
+assert.equal(controller.getTopicWork(controller.getStep().id, navigatorTopic.id).answers[navigatorTopic.questions[currentQuestionIndexBeforeNavigatorSelection].id].text, 'A prototípusban megőrzött saját gondolat.', 'the current answer must still be saved before direct question selection');
+controller.openPathQuestionNavigator(makeElement());
+controller.selectPathQuestionFromNavigator(targetQuestionIndex);
+assert.equal(controller.getPathNavigation().questionIndex, targetQuestionIndex, 'selecting the current navigator row must preserve the active question');
+assert.equal(pathNavigatorHost.hidden, true, 'selecting the current navigator row must only close the sheet');
 controller.togglePathAnswerFlag('important');
 controller.togglePathAnswerFlag('discussWithSponsor');
 assert.equal(controller.getCurrentPathAnswer().important, true, 'important must be independent answer state');
 assert.equal(controller.getCurrentPathAnswer().discussWithSponsor, true, 'sponsor discussion must be independent answer state');
-assert.match(pathContent.innerHTML, /data-component="path-step-four-question-wizard"/, 'Step 4 must render its dedicated focused journaling question surface');
-assert.match(pathContent.innerHTML, /assets\/path-step-4\/hero-onleltar-mobile\.png/, 'the Step 4 question hero must reuse the existing Step 4 hero asset');
-assert.match(pathContent.innerHTML, /data-component="path-step-four-formatting-rail"/, 'Step 4 must reserve a formatting rail inside its journal editor');
-assert.match(pathContent.innerHTML, /data-component="path-step-four-voice-memo"/, 'Step 4 must render a separate voice memo card');
+assert.match(pathContent.innerHTML, /data-component="path-question-editor-stage"/, 'Step 4 must render the shared focused journaling question surface');
+assert.match(pathContent.innerHTML, new RegExp(controller.getPathTopicCardVisual(stepFour, stepFour.themes[1], 1).asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'the Step 4 question hero must resolve from its topic artwork');
+assert.match(pathContent.innerHTML, /data-component="path-question-formatting-rail"/, 'the shared editor must reserve a formatting rail inside its journal editor');
+assert.match(pathContent.innerHTML, /class="path-question-voice-memo"/, 'the shared editor must render a separate voice memo card');
 assert.match(pathContent.innerHTML, /data-action="toggle-path-important"/, 'Step 4 must retain the important-answer action');
 assert.match(pathContent.innerHTML, /data-action="toggle-path-sponsor"/, 'Step 4 sponsor tile must toggle the existing answer flag rather than navigate away');
-assert.match(pathContent.innerHTML, /data-path-step-four-important="true"/, 'Step 4 must expose the active important tile state from the existing answer object');
-assert.match(pathContent.innerHTML, /data-path-step-four-sponsor="true"/, 'Step 4 must expose the active sponsor tile state from the existing answer object');
+assert.match(pathContent.innerHTML, /data-action="toggle-path-important" aria-pressed="true"/, 'the shared editor must expose the active important state from the existing answer object');
+assert.match(pathContent.innerHTML, /data-action="toggle-path-sponsor" aria-pressed="true"/, 'the shared editor must expose the active sponsor state from the existing answer object');
 assert.doesNotMatch(pathContent.innerHTML, /Korábbi válaszaim|send-path-question-to-sponsor-pending/, 'Step 4 direct question flow must not expose the removed topic-starter answers shortcut or sponsor-navigation action');
 assert.doesNotMatch(pathContent.innerHTML, /data-action="path-dictation"|>Diktálás</, 'Step 4 must move voice-to-text affordance into the placeholder formatting rail rather than retain a separate Dictation action');
 controller.togglePathVoiceMemo();
-assert.match(pathContent.innerHTML, /data-path-step-four-voice-state="recorded"/, 'Step 4 voice memo card must expose the existing recorded state');
+assert.match(pathContent.innerHTML, /path-question-voice-memo" type="button" data-action="toggle-path-voice-memo" aria-pressed="true"/, 'the shared voice memo card must expose the existing recorded state');
 controller.pathBack();
 assert.equal(controller.getPathNavigation().view, 'topics', 'Step 4 question back must return directly to the Step 4 topic list');
 const completedStepFourTopic = stepFour.themes[0];
@@ -313,8 +394,6 @@ assert.equal(controller.state.path.cycles.length, priorCycleCount + 1, 'starting
   "case 'open-path-step': this.openPathStep(event.target.closest('[data-step-id]').dataset.stepId); break;",
   "case 'open-path-topic': this.openPathTopic(event.target.closest('[data-topic-id]').dataset.topicId); break;",
   "case 'open-path-question': this.openPathQuestion(); break;",
-  "case 'path-next-question': this.movePathQuestion(1); break;",
-  "case 'path-previous-question': this.movePathQuestion(-1); break;",
   "case 'toggle-path-important': this.togglePathAnswerFlag('important'); break;",
   "case 'toggle-path-sponsor': this.togglePathAnswerFlag('discussWithSponsor'); break;",
   "case 'open-path-sponsor-review':",
@@ -344,20 +423,21 @@ expectContains('.path-step-card > .path-step-card-art { position: absolute; z-in
 expectContains('.path-step-card[data-path-state="not-started"] .path-step-card-art img { filter: grayscale(1);');
 expectContains('--path-step-art-width: 186px;');
 expectContains('[data-path-overview-layout="compact"] .path-overview-content { --path-step-art-width: 168px;');
-expectContains('.path-step-card[data-step-id="step-4"] .path-step-card-art, .path-screen[data-path-view="overview"][data-path-step="step-4"] .path-fast-visual');
+expectContains('.path-step-card[data-step-id="step-4"] .path-step-card-art { --path-step-art-mask:');
+expectAbsent(/\.path-screen\[data-path-view="overview"\]\[data-path-step="step-4"\] \.path-fast-visual \{ --path-step-art-mask:/, 'the current-work card must not inherit the Step 4 row fade mask');
 expectContains('.path-step-card[data-step-id="step-4"] .path-step-card-number { --path-step-progress: 12 !important; }');
 expectContains('.path-screen[data-path-view="overview"][data-path-step="step-4"] .path-fast-progress > span { width: 12% !important; }');
 expectContains('.path-step-card[data-step-id="step-6"] .path-step-card-number, .path-step-card[data-step-id="step-7"] .path-step-card-number');
 expectContains('.path-screen[data-path-view="overview"][data-path-overview-layout="compact"] .path-step-card-number { width: 46px; height: 46px;');
 expectAbsent(/data-path-overview-layout="compact"\][^{]*\.path-(?:fast-medallion|step-card-number) > span \{ background:/, 'compact mode must never alter the number medallion body');
 expectContains('padding: 3px; border: 4px solid #FEFBFA;');
-expectContains('.path-fast-medallion > span, .path-step-card-number > span { width: 100%; height: 100%; display: grid; place-items: center; border-radius: 50%; background: #EAE0FA; }');
-expectAbsent(/\.path-fast-medallion > span, \.path-step-card-number > span \{[^}]*rgba\(/, 'the number-disc fill must be opaque, so the progress ring cannot appear as pie slices');
-expectContains('.path-fast-medallion--static { padding: 0; border: 0; background: #EAE0FA; }');
+expectAbsent(/path-fast-medallion/, 'the removed current-card number circle must not retain CSS or markup');
 expectContains('.path-step-card-number { width: 54px; height: 54px; position: relative; justify-self: start; margin-left: -7px; font-size: 21px; }');
 expectContains('.path-screen[data-path-view="step"] .path-step-four-scroll { height: 100%; display: flex; flex-direction: column; justify-content: space-between;');
 expectContains('.path-step-card[data-path-current="true"] { border-color: rgba(44, 46, 119, .045); background: rgba(254, 251, 250, .94);');
 expectContains('.path-step-four-art { height: 276px; background: #F2EAF4; }');
+expectAbsent(/path-step-four-menu-hero-toggle-label/, 'the Step 4 chapter menu must not own the History timeline compact-view control');
+expectAbsent(/--path-question-hero-height/, 'the Step 4 question geometry must remain local to the question renderer');
 expectContains('.path-screen[data-path-step="step-4"][data-path-view="step"][data-path-step-four-hero-variant="large"] .path-step-four-art, .path-screen[data-path-step="step-4"][data-path-view="topics"][data-path-step-four-hero-variant="large"] .path-step-four-art { height: 270px; }');
 expectContains('.path-screen[data-path-step="step-4"][data-path-view="step"][data-path-step-four-hero-variant="large"] .path-step-four-art img, .path-screen[data-path-step="step-4"][data-path-view="topics"][data-path-step-four-hero-variant="large"] .path-step-four-art img { height: 127%; bottom: auto; object-position: center top; }');
 expectContains('.path-screen[data-path-step="step-4"][data-path-view="step"][data-path-step-four-hero-variant="large"] .path-step-four-art::after, .path-screen[data-path-step="step-4"][data-path-view="topics"][data-path-step-four-hero-variant="large"] .path-step-four-art::after { height: 42px; }');

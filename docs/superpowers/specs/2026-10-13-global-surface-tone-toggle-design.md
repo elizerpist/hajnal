@@ -1,31 +1,34 @@
-# Globális háttérárnyalat-váltó – design
+# Globális háttérárnyalat-paletta – design
 
 ## Jóváhagyott cél
 
-A főmenüben egyetlen új, állapotjelző gomb váltja az alkalmazás egységes
-oldal-/képernyőhátterét a jelenlegi és a projekt-indexben használt árnyalat
-között. A felhasználó választása újratöltés után is megmarad.
+A főmenü felső vezérlői alatt egyetlen, vízszintes ötszínű paletta választja
+az alkalmazás egységes oldal-/képernyőhátterét. A felhasználó választása
+újratöltés után is megmarad.
 
-| Mód | Szemantikus háttérszín | Gomb `aria-pressed` |
+| Mód | Szemantikus háttérszín | Palettaállapot |
 | --- | --- | --- |
-| `original` (alapértelmezett) | `#F9F3F7` | `false` |
-| `index` | `#FDF5F8` | `true` |
+| `index` | `#FDF5F8` | legvilágosabb |
+| `original` (alapértelmezett) | `#F9F3F7` | eredeti |
+| `blush` | `#F4E8F1` | enyhén telítettebb |
+| `mauve` | `#ECD9E9` | mauve |
+| `lavender` | `#E0C9E2` | legerősebb |
 
 Forrás: 2026-10-13-i felhasználói instrukció: „a főmenube kérek egy gombot,
 ami vált a kicsit sötétebb index.html árnyalat és az eredeti közt”, majd
 „ez legyen befolyásall a hystoryra, összes almenure, azbösvényre összes
 almenujére, és a sponzor, és gyűlések menure, tehát az egész appra”, valamint
-„a fade out maradjon meg mindenhol, azt ne vedd ki”. A felhasználó a bemutatott
-egy-gombos tervet 2026-10-13-án jóváhagyta.
+„a fade out maradjon meg mindenhol, azt ne vedd ki”. A felhasználó a korábbi
+egy-gombos tervet 2026-10-13-án jóváhagyta, majd ugyanazon a napon azt
+ötszínű, fokozatosan telítettebb palettára cserélte.
 
 ## Felhasználói működés
 
-- A `home-top-actions` meglévő vezérlőcsoportja egyetlen új, kerek,
-  akadálymentes gombbal bővül. Nem készül külön Megjelenés képernyő,
-  választólista vagy route.
-- A gomb az aktuálisan **nem** aktív módra hívja a felhasználót: eredeti
-  módban az index-árnyalat bekapcsolását, index módban az eredeti árnyalat
-  visszaállítását jelzi a címkéje és `aria-label` értéke.
+- A `home-top-actions` alatt egyetlen akadálymentes, vízszintes paletta
+  jelenik meg pontosan öt kerek színmintával. Nem készül külön Megjelenés
+  képernyő, választólista vagy route.
+- A minták egy radio-csoportot alkotnak; pontosan egy aktív, azt a kiemelt
+  keret, emelés és `aria-checked="true"` jelzi.
 - A kiválasztás best-effort `localStorage`-ban marad meg, ugyanazzal a
   biztonságos olvasási/írási mintával, amelyet a meglévő globális betűtípus
   kapcsoló használ. Tárolási hiba vagy ismeretlen érték esetén az `original`
@@ -62,7 +65,7 @@ olvad.
 
 | Terület | Tulajdonos / újrahasználat | Egyetlen írási út |
 | --- | --- | --- |
-| Aktív háttérmód | `HomeInteractionController.state.surfaceTone` | `toggleGlobalSurfaceTone()` |
+| Aktív háttérmód | `HomeInteractionController.state.surfaceTone` | `selectGlobalSurfaceTone(tone)` |
 | Tartós felhasználói választás | a meglévő typeface-persistencia mintája | `persistSurfaceTone()` |
 | DOM-állapot és vezérlő szemantika | controller `renderSurfaceTone()` + `.app-frame[data-surface-tone]` | kizárólag a renderelő metódus |
 | Közös felületi szín | meglévő `--screen-background` mögötti szemantikus tokenek | egy attribútumhoz kötött token-feloldás |
@@ -75,15 +78,15 @@ központi controller végzi.
 
 ## Megvalósítási szerződés
 
-1. A `:root` egyszer deklarálja az eredeti és index felületi értéket. Az
-   `.app-frame[data-surface-tone="index"]` kizárólag a közös szemantikus
-   token feloldását cseréli ki.
+1. A `:root` egyszer deklarálja mind az öt felületi értéket. Az
+   `.app-frame[data-surface-tone]` kizárólag a közös szemantikus token
+   feloldását cseréli ki.
 2. Az összes érintett route és résznézet a meglévő közös tokenen vagy annak
    scoped aliasán keresztül olvassa a háttérszínt; nem kap route-onkénti
    `#FDF5F8` másolatot.
-3. A controller induláskor olvassa a `hajnal.surfaceTone` értéket, a gomb
-   eseménye csak a meglévő központi action-dispatchen jut el a toggle
-   metódusig, majd a render állítja az attribútumot és az ARIA-állapotot.
+3. A controller induláskor olvassa a `hajnal.surfaceTone` értéket, a paletta
+   eseménye csak a meglévő központi action-dispatchen jut el a kiválasztó
+   metódusig, majd a render állítja az attribútumot és az ARIA-állapotokat.
 4. A meglévő fade-maszkok, History pager-, Timeline-, Calendar-, Ösvény-
    navigáció- és BottomNav-tulajdonosok nem változnak.
 

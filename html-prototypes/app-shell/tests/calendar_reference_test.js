@@ -54,7 +54,7 @@ assert.ok(calendarHero.includes('class="history-day-quote-card calendar-rail-her
 assert.ok(calendarHero.includes('A nehéz pillanatok is a történetem részei, és erősebbé tesznek.'), 'the Rail hero must contain the requested quote');
 assert.ok(html.includes('.calendar-period-hero .calendar-rail-hero { display: none; }'), 'the Grid Calendar must hide the Rail-only quote hero despite the quote-card base display rule');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .calendar-period-hero { display: block; }'), 'the Rail Calendar must expose the same shared Calendar hero owner as Grid');
-assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { z-index: 2; top: 224px; display: block; overflow-y: auto; padding: 24px 18px 14px; border-radius: 33px 33px 0 0; background: #FFFCFD; }'), 'the Rail body must overlap the same-sized hero at the Grid body boundary');
+assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .history-detail-content { z-index: 2; top: 224px; display: block; overflow-y: auto; padding: 24px 18px 14px; border-radius: 33px 33px 0 0; background: var(--screen-background); }'), 'the Rail body must overlap the same-sized hero at the Grid body boundary while following the selected global surface');
 assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calendar"][data-history-calendar-view="rail"] .calendar-rail-hero { height: 100%; position: absolute; inset: 0; z-index: 2; display: grid;'), 'the quote visual must fill the shared Rail hero rather than remain a body card');
 
 [
@@ -63,9 +63,6 @@ assert.ok(html.includes('.history-detail-screen[data-history-detail-view="calend
   'Február 2025',
   'Febr. 14. • Péntek',
   '3 esemény • 14. tiszta nap',
-  'Aznapi emlékek',
-  'Elindultam',
-  'Jobban vagyok',
   'data-action="open-history-calendar-rail"',
   'data-history-calendar-date="2025-02-14"',
 ].forEach((value) => assert.ok(historyDetail.includes(value), `grid.png source state is missing ${value}`));
@@ -80,14 +77,14 @@ assert.ok(!calendarGrid.includes('Aznapi emlékek'), 'the Grid Calendar must not
   'data-history-calendar-rail-view',
   'class="history-calendar-day-rail"',
   'class="history-calendar-memories"',
-  'Aznapi emlékek',
-  'Elindultam',
-  'Jobban vagyok',
-  'src="assets/hero/timelinehero.png"',
+  'Az utam pillanatai',
+  'data-component="history-calendar-rail-timeline-events"',
+  'data-component="history-calendar-rail-event-count"',
 ].forEach((value) => assert.ok(calendarRail.includes(value), `the reworked rail state is missing ${value}`));
-assert.equal((historyDetail.match(/class="history-calendar-memories"/g) || []).length, 1, 'Aznapi emlékek must have one physical owner after moving from Grid to Rail');
+assert.equal((historyDetail.match(/class="history-calendar-memories"/g) || []).length, 1, 'The calendar rail Timeline must have one physical owner after replacing the memory-card layout.');
 assert.ok(!calendarRail.includes('history-day-tabs'), 'the Rail Calendar must not retain the Idővonal/Jegyzetek/Statisztika pill row');
 assert.ok(!calendarRail.includes('history-day-event-list'), 'the Rail Calendar must not retain its former day Timeline');
+assert.ok(!calendarRail.includes('history-calendar-memory-list'), 'the Rail Calendar must not retain duplicate non-filterable memory cards.');
 assert.ok(!calendarRail.includes('history-day-quote-card'), 'the quote card must move out of the Rail body and into its Hero');
 assert.ok(calendarRail.indexOf('class="history-calendar-day-rail"') < calendarRail.indexOf('class="history-calendar-memories"'), 'the date Rail card must be the first body content beneath the Hero');
 assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state must be represented by the existing current-period route state');
@@ -119,6 +116,9 @@ assert.ok(html.includes('[data-history-calendar-view="rail"]'), 'rail.png state 
   'this.historyWorkspace.dataset.historyCalendarView = calendarView;',
 ].forEach((value) => assert.ok(html.includes(value), `the existing controller must own ${value}`));
 assert.ok(!html.includes('HISTORY_CALENDAR_DAY_EVENTS'), 'the controller must not retain data for the removed Rail day Timeline');
+assert.ok(html.includes('renderSelectedHistoryCalendarRailTimeline(selected)'), 'The Rail must populate its cards with the shared History timeline renderer.');
+assert.ok(html.includes("'[data-component=\"history-calendar-rail-timeline-events\"]'"), 'The Rail must have one stable mount for filterable timeline cards.');
+assert.ok(html.includes('this.renderHistoryTimelineEventMarkup(events)'), 'The Rail must reuse the shared tappable/filterable event-card renderer.');
 
 assert.ok(!/\bfetch\s*\(/.test(html), 'the calendar/rail source implementation must remain local and offline');
 

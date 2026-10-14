@@ -1,0 +1,10 @@
+# History Timeline compact hero — acceptance checklist
+
+| ID | Source | Code owner | Acceptance condition | Verification | Status |
+| --- | --- | --- | --- | --- | --- |
+| HTH-01 | User correction, 2026-10-13: compact view belongs in History, not Ösvény Step 4 | `historyPresentation.history` / `toggleHistoryHeroVariant()` | Történetem has the one controller-owned compact-view control; no new Path state or control is introduced | `timeline_reference_test.js`, `path_shell_test.js` | DONE |
+| HTH-02 | User correction: History hero is smaller | Inline History CSS | Default Történetem hero uses the established 185px compact geometry | Source contract passed; visual screenshot still needed | PARTIAL |
+| HTH-03 | User correction: Timeline body begins higher | Inline History workspace CSS | The Timeline workspace starts at 154px in compact mode | Source contract passed; visual screenshot still needed | PARTIAL |
+| HTH-04 | User instruction: keep fade-out everywhere | Existing `--history-inline-hero-fade-mask` | Compact mode keeps the hero image's fading mask | Source contract passed; visual screenshot still needed | PARTIAL |
+| HTH-05 | User correction, 2026-10-13: the whole selected chapter hero must resize, not only the chapter cards | Full-page History pager CSS / existing `toggleHistoryHeroVariant()` | In Hero Swipe mode, the existing single control is tappable and changes the actual pager hero to 185px while raising its Timeline body to 154px | `timeline_reference_test.js` passed; Hero Swipe screenshot still needed | PARTIAL |
+| HTH-06 | User request, 2026-10-13: an extra control previews a pink pastel Hero from Ösvény instead of the purple History artwork | `historyPresentation.history.heroArtwork` / one History artwork resolver | The leaf control switches both the Történetem menu hero and every full-page Hero Swipe chapter hero between their purple artwork and the existing Ösvény pastel asset; it leaves layout, content, and fades intact | Source contracts passed; changed-state screenshot still needed | PARTIAL |

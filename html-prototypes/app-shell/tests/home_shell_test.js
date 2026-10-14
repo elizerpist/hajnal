@@ -189,7 +189,8 @@ assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'Pánik m
 const historyScreenStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyScreenEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyScreenStart);
 const historyScreenMarkup = html.slice(historyScreenStart, historyScreenEnd);
-assert.equal((historyScreenMarkup.match(/data-component="history-period-carousel"/g) || []).length, 1, 'History must expose its one hero-owned period carousel');
+assert.equal((historyScreenMarkup.match(/data-component="history-full-page-pager"/g) || []).length, 1, 'History must expose its one full-page chapter pager');
+assert.equal((historyScreenMarkup.match(/history-period-carousel/g) || []).length, 0, 'History must not retain the retired period-card carousel');
 assert.equal((historyScreenMarkup.match(/data-component="history-workspace"/g) || []).length, 1, 'the Timeline and Calendar body must be in the History route');
 const milestoneCardMarkup = html.match(/<button class="milestone-card"[\s\S]*?<\/button>/g) || [];
 assert.equal(milestoneCardMarkup.length, 9, 'M must contain exactly nine milestone cards');
