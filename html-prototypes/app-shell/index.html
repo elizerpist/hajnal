@@ -1727,6 +1727,59 @@
     .meeting-time-options button { min-height: 39px; border: 0; border-radius: 12px; background: transparent; color: #6F7686; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
     .meeting-time-options button[aria-pressed="true"] { background: #EEE8FA; color: var(--hajnal-purple); font-weight: 830; }
     @media (prefers-reduced-motion: reduce) { .meeting-picker-sheet-backdrop, .meeting-picker-sheet { transition: none; } }
+
+    /* Meetings redesign — one shared hero, sibling calendar/list bodies, and a child detail page. */
+    .meetings-screen { isolation: isolate; overflow: hidden; background: var(--screen-background); }
+    .meetings-screen .status-bar { position: relative; z-index: 5; color: #11133E; }
+    .meetings-hero { height: 287px; position: absolute; z-index: 0; top: 0; right: 0; left: 0; overflow: hidden; pointer-events: none; }
+    .meetings-hero > img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 31%; opacity: .92; }
+    .meetings-hero::after { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(255,251,253,0) 30%, rgba(255,251,253,.12) 52%, var(--screen-background) 96%); pointer-events: none; }
+    .meetings-hero-copy { position: absolute; z-index: 2; top: 48px; left: 26px; color: #101441; text-shadow: 0 1px 12px rgba(255,255,255,.3); }
+    .meetings-hero-copy h1 { margin: 0; font-size: 34px; line-height: .97; font-weight: 860; letter-spacing: -.055em; }
+    .meetings-hero-copy p { margin: 10px 0 0; color: rgba(56,56,128,.74); font-size: 14px; line-height: 1.33; font-weight: 740; }
+    .meetings-inline-view-switch { position: absolute; z-index: 8; top: 42px; right: 20px; pointer-events: auto; }
+    .meetings-main-content { z-index: 2; top: 250px; padding: 0 18px calc(28px + var(--bottom-nav-h)); overflow-y: auto; overscroll-behavior-y: contain; animation: meetings-body-in 190ms ease-out both; }
+    .meetings-main-content::before { content: ""; height: 13px; display: block; }
+    .meetings-calendar-card { margin-top: 0; padding: 14px 12px 18px; border-radius: 26px; background: rgba(255,253,254,.94); box-shadow: 0 14px 30px rgba(55,34,117,.075); }
+    .meeting-calendar-month { min-height: 48px; }
+    .meeting-calendar-month strong { font-size: 18px; letter-spacing: -.025em; }
+    .meeting-calendar-grid { gap: 5px; }
+    .meeting-calendar-day, .meeting-calendar-spacer { min-height: 50px; border-radius: 15px; }
+    .meeting-calendar-day { border: 1px solid rgba(81,67,139,.055); background: rgba(255,255,255,.42); font-weight: 790; }
+    .meeting-calendar-day.is-outside-month { opacity: .38; }
+    .meeting-calendar-day.is-selected { border-color: transparent; background: linear-gradient(135deg, #724DD0, #9470E0); box-shadow: 0 8px 15px rgba(92,65,182,.22); }
+    .meeting-calendar-day::after { display: none; }
+    .meeting-calendar-day-dots { position: absolute; right: 0; bottom: 5px; left: 0; display: flex; justify-content: center; gap: 3px; }
+    .meeting-calendar-day-dots span { width: 5px; height: 5px; border-radius: 50%; background: #35B893; }
+    .meeting-calendar-day-dots .closed { background: #9A72E3; }
+    .meeting-calendar-day-dots .online { background: #F2B549; }
+    .meeting-calendar-day-dots .attended { background: #EB6090; }
+    .meeting-calendar-day.is-selected .meeting-calendar-day-dots span { box-shadow: 0 0 0 1px rgba(255,255,255,.65); }
+    .meeting-calendar-legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 11px; margin: 14px 0 0; color: #8177A1; font-size: 10px; font-weight: 700; }
+    .meeting-calendar-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .meeting-calendar-legend i { width: 9px; height: 9px; border-radius: 50%; background: #35B893; }
+    .meeting-calendar-legend i.closed { background: #9A72E3; }.meeting-calendar-legend i.online { background: #F2B549; }.meeting-calendar-legend i.attended { background: #EB6090; }
+    .meetings-day-heading { margin: 22px 2px 10px; }
+    .meetings-day-heading h2 { font-size: 19px; }
+    .meetings-day-heading-actions { display: flex; align-items: center; gap: 8px; }
+    .meetings-day-add, .meetings-list-add { width: 39px; height: 39px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: linear-gradient(135deg, #7A58D8, #9A78E5); color: #fff; font: inherit; font-size: 27px; line-height: 1; box-shadow: 0 7px 15px rgba(92,65,182,.22); cursor: pointer; }
+    .meeting-card { min-height: 118px; grid-template-columns: 69px minmax(0,1fr) auto; align-items: stretch; gap: 10px; padding: 13px; border: 0; border-radius: 23px; background: rgba(255,253,254,.92); box-shadow: 0 9px 22px rgba(54,35,111,.06); }
+    .meeting-card-date { min-height: 72px; display: grid; align-content: center; justify-items: center; padding: 7px; border-radius: 16px; background: #F0ECFB; color: #7464A9; text-align: center; }
+    .meeting-card-date span { font-size: 10px; font-weight: 760; }.meeting-card-date strong { margin: 2px 0; color: #2A245B; font-size: 20px; line-height: 1; font-weight: 850; }.meeting-card-date small { font-size: 10px; font-weight: 740; }
+    .meeting-card-stripe { width: 4px; align-self: stretch; border-radius: 999px; background: #49BAD3; }.meeting-card-stripe.closed { background: #8B68E0; }.meeting-card-stripe.online { background: #F3B654; }.meeting-card-stripe.attended { background: #35B893; }
+    .meeting-card-main { grid-template-columns: 4px minmax(0,1fr); gap: 11px; align-items: stretch; }.meeting-card-time { display: none; }
+    .meeting-card-copy h3, .meeting-past-copy h3 { font-size: 14px; }.meeting-card-copy p { margin-top: 4px; font-size: 11px; }.meeting-card-meta { margin-top: 5px !important; }
+    .meeting-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }.meeting-tag { padding: 4px 8px; border-radius: 999px; background: #F1EDFB; color: #6A55BF; font-size: 9.5px; font-weight: 770; }.meeting-tag.closed { background: #FFF0F7; color: #D85491; }
+    .meeting-card-side { display: grid; align-content: center; justify-items: end; gap: 11px; }.meeting-attendance-action { min-height: 33px; border: 0; background: #EFEAFB; color: #7058BE; }.meeting-attendance-action.is-selected { background: #E5F7EF; color: #259C78; }.meeting-card-chevron { font-size: 27px; color: #765FC1; }
+    .meetings-list-statistics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 14px 11px; border-radius: 27px; background: rgba(255,253,254,.94); box-shadow: 0 12px 27px rgba(54,35,111,.065); }.meetings-list-statistics-header { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; color: #29245B; }.meetings-list-statistics-header strong { font-size: 18px; letter-spacing: -.03em; }.meetings-list-statistics-header span { color: #877DA7; font-size: 11px; font-weight: 700; }
+    .meeting-stat { display: grid; justify-items: center; gap: 5px; text-align: center; color: #82759E; font-size: 10px; font-weight: 700; }.meeting-stat b { width: 51px; height: 51px; display: grid; place-items: center; border: 5px solid #EBE6F6; border-right-color: #9B7AE1; border-radius: 50%; color: #2E2867; font-size: 18px; }.meeting-stat.attended b { border-right-color: #35B893; }.meeting-stat.maybe b { border-right-color: #F1B950; }
+    .meetings-list-section { margin-top: 24px; }.meetings-list-section-header { display: flex; align-items: center; justify-content: space-between; margin: 0 2px 10px; }.meetings-list-section-header h2 { margin: 0; color: #201950; font-size: 19px; letter-spacing: -.04em; }.meetings-list-section-header span { color: #7E62D0; font-size: 12px; font-weight: 790; }
+    .meeting-note-preview { overflow: hidden; display: -webkit-box; margin: 4px 0 0; color: #7B7391; font-size: 10.5px; line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+    .meeting-detail-screen { isolation: isolate; background: var(--screen-background); }.meeting-detail-screen::before { content: ""; position: absolute; z-index: 0; top: 0; right: 0; left: 0; height: 204px; background: linear-gradient(180deg, rgba(228,220,251,.76), rgba(255,251,253,0)); pointer-events: none; }.meeting-nested-header, .meeting-detail-content { position: relative; z-index: 1; }.meeting-detail-identity { padding-top: 8px; }.meeting-detail-statuses { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 15px; }.meeting-detail-statuses button { min-height: 35px; padding: 0 10px; border: 1px solid rgba(106,86,180,.16); border-radius: 999px; background: rgba(255,255,255,.74); color: #6C5AA4; font: inherit; font-size: 11px; font-weight: 760; cursor: pointer; }.meeting-detail-statuses button[aria-pressed="true"] { border-color: transparent; background: #E3F5EC; color: #269A76; }
+    .meeting-note-card { display: grid; gap: 8px; margin-top: 15px; padding: 17px; border: 1px solid rgba(106,86,180,.1); border-radius: 24px; background: rgba(255,253,254,.92); box-shadow: 0 9px 21px rgba(54,35,111,.055); }.meeting-note-card h3 { margin: 0; color: #2A235C; font-size: 16px; }.meeting-note-card p { margin: 0; color: #827896; font-size: 11px; line-height: 1.38; font-weight: 610; }.meeting-note-card textarea { width: 100%; min-height: 132px; padding: 12px; border: 1px solid rgba(106,86,180,.16); border-radius: 16px; outline: 0; background: #FAF8FE; color: #292354; font: inherit; font-size: 13px; line-height: 1.4; resize: vertical; }.meeting-note-card small { color: #9185A8; font-size: 10px; font-weight: 670; }
+    .meeting-form-sheet-host { position: absolute; z-index: 135; inset: 0; display: grid; align-items: end; background: rgba(22,17,61,.36); opacity: 0; transition: opacity 220ms ease; }.meeting-form-sheet-host[hidden] { display: none; }.meeting-form-sheet-host[data-sheet-state="open"] { opacity: 1; }.meeting-form-sheet { max-height: min(88dvh, 760px); display: grid; gap: 14px; overflow-y: auto; padding: 17px 20px calc(24px + var(--bottom-safe-area)); border-radius: 28px 28px 0 0; background: #FCFBFE; color: var(--hajnal-navy); box-shadow: 0 -16px 44px rgba(22,17,61,.15); transform: translateY(100%); transition: transform 260ms cubic-bezier(.2,.85,.25,1); scrollbar-width: none; }.meeting-form-sheet-host[data-sheet-state="open"] .meeting-form-sheet { transform: translateY(0); }.meeting-form-sheet-header { display: grid; grid-template-columns: minmax(0,1fr) 34px; gap: 10px; align-items: start; }.meeting-form-sheet-kicker { margin: 0; color: #826BBE; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }.meeting-form-sheet-header h2 { margin: 4px 0 0; font-size: 19px; line-height: 1.18; font-weight: 850; }.meeting-form-sheet-close { width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: #F0EBFC; color: var(--hajnal-purple); font-size: 22px; cursor: pointer; }.meeting-form-sheet .meeting-form-card { border: 1px solid rgba(106,86,180,.1); box-shadow: none; }.meeting-form-sheet .meeting-field input, .meeting-form-sheet .meeting-field select { width: 100%; min-height: 34px; box-sizing: border-box; border: 0; outline: 0; background: transparent; color: #142039; font: inherit; font-size: 14px; font-weight: 700; }.meeting-form-sheet .meeting-field select { appearance: auto; }.meeting-recurrence-days { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; }.meeting-recurrence-days button { min-height: 34px; justify-content: center; border: 1px solid rgba(106,86,180,.16); border-radius: 11px; background: #FAF8FE; color: #746998; font-size: 10px; }.meeting-recurrence-days button[aria-pressed="true"] { background: #EEE8FA; color: #57408F; }.meeting-recurrence-hint { margin: 0; color: #867B9F; font-size: 10px; line-height: 1.25; font-weight: 630; }.meeting-form-sheet .meeting-save-button { margin-top: 0; }.meetings-list-empty { margin: 0; padding: 16px; border-radius: 18px; background: rgba(255,255,255,.58); color: #817795; font-size: 12px; line-height: 1.4; font-weight: 620; }
+    @keyframes meetings-body-in { from { opacity: .7; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { .meetings-main-content, .meeting-form-sheet-host, .meeting-form-sheet { animation: none; transition: none; } }
     .panic-why-screen { background: var(--screen-background); }
     .panic-child-header { min-height: 84px; position: relative; z-index: 2; display: grid; grid-template-columns: 42px minmax(0, 1fr) 42px; align-items: start; padding: 13px 18px 8px; }
     .panic-child-header .icon-button { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid rgba(106,86,180,.12); border-radius: 50%; background: rgba(255,255,255,.76); color: var(--hajnal-purple); }
@@ -2134,7 +2187,7 @@
 
     <section class="route-screen meetings-screen" id="meetings" data-route="meetings" data-screen="meetings" data-component="meeting-finder" aria-labelledby="meetings-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="meetings-main-header"><h1 id="meetings-title">Gyűlések</h1><button class="meetings-add-button" type="button" data-action="open-new-meeting" aria-label="Új gyűlés hozzáadása">+</button></header>
+      <section class="meetings-hero" data-component="meetings-hero" aria-label="Gyűlések hero"><img src="assets/hero/meetings_hero_soft.png" alt="" aria-hidden="true"><div class="meetings-hero-copy"><h1 id="meetings-title">Gyűlések</h1><p>Közösség. Támogatás.<br>Mindig van hely, ahol meghallgatnak.</p></div><nav class="history-inline-view-switch meetings-inline-view-switch" data-component="meetings-view-switch" aria-label="Gyűlések nézete"><button type="button" data-action="switch-meetings-view" data-meetings-view="list" aria-pressed="false" aria-label="Lista mód"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button><button type="button" data-action="switch-meetings-view" data-meetings-view="calendar" aria-pressed="true" aria-label="Naptár mód"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg></button></nav></section>
       <main class="meetings-main-content" data-component="meetings-main-content" aria-live="polite"></main>
     </section>
 
@@ -2158,6 +2211,8 @@
         <div class="meeting-picker-content" data-component="meeting-picker-content"></div>
       </section>
     </div>
+
+    <div class="meeting-form-sheet-host" data-component="meeting-form-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true"></div>
 
     <section class="route-screen path-screen" id="path-root" data-route="path" data-screen="path-root" data-component="path-workspace" data-path-view="overview" data-path-read-only="false" aria-label="Ösvény">
       <main class="path-content" data-component="path-content" aria-live="polite"></main>
@@ -2343,13 +2398,15 @@
         { id: 'pending-weekend', title: 'Hétvégi buli' },
         { id: 'pending-meetings', title: 'Miért hagytam ki két gyűlést?' }
       ]);
+      const MEETINGS_HERO_ASSET = 'assets/hero/meetings_hero_soft.png';
       const MEETING_SEED_ITEMS = Object.freeze([
-        { id: 'meeting-new-beginning', title: 'Új Kezdet', date: '2026-10-06', start: '18:00', end: '19:00', format: 'in-person', venue: 'Közösségi Ház', address: '1082 Budapest, Baross utca 12.', url: '', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
-        { id: 'meeting-online-budapest', title: 'Online NA Budapest', date: '2026-10-06', start: '21:00', end: '22:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
-        { id: 'meeting-pure-path', title: 'Tiszta út', date: '2026-10-08', start: '19:30', end: '20:30', format: 'in-person', venue: 'Újbuda Közösségi Tér', address: '1117 Budapest, Karinthy Frigyes út 16.', url: '', openness: 'Zárt', planned: true, attended: false, note: '', own: false, coordinates: null },
-        { id: 'meeting-morning-circle', title: 'Reggeli kör', date: '2026-10-10', start: '10:00', end: '11:00', format: 'in-person', venue: 'Szent Imre Ház', address: '1024 Budapest, Keleti Károly utca 15.', url: '', openness: 'Nyitott', planned: false, attended: false, note: '', own: false, coordinates: null },
-        { id: 'meeting-past-new-beginning', title: 'Új Kezdet', date: '2026-10-05', start: '18:00', end: '19:00', format: 'in-person', venue: 'Közösségi Ház', address: '1082 Budapest, Baross utca 12.', url: '', openness: 'Nyitott', planned: false, attended: true, note: 'Nehéz nap volt, de jó volt hallani mások megosztását. A 3. lépésről volt szó.', own: false, coordinates: null },
-        { id: 'meeting-past-online', title: 'Esti online kör', date: '2026-09-29', start: '20:00', end: '21:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', planned: false, attended: true, note: 'Jó volt hallani másokat. Nem kell egyedül végigcsinálnom.', own: false, coordinates: null }
+        { id: 'meeting-tiszta-ut', title: 'Tiszta út', date: '2026-10-06', start: '18:00', end: '19:00', format: 'in-person', venue: 'Belvárosi Közösségi Ház', address: '1052 Budapest, Kossuth Lajos utca 12.', url: '', openness: 'Nyitott', attendance: 'planned', planned: true, attended: false, note: '', recurrence: { kind: 'weekly', weekdays: [2] }, own: false, coordinates: null },
+        { id: 'meeting-nyitott-kezdokor', title: 'AA – Nyitott gyűlés', date: '2026-10-15', start: '18:00', end: '19:00', format: 'in-person', venue: 'Belvárosi Közösségi Ház', address: '1052 Budapest, Kossuth Lajos utca 12.', url: '', openness: 'Nyitott', attendance: 'planned', planned: true, attended: false, note: 'Jó lesz figyelni arra, ami másoknak most segít.', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null },
+        { id: 'meeting-esti-online', title: 'NA – Zárt gyűlés', date: '2026-10-15', start: '19:30', end: '20:30', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Zárt', attendance: 'maybe', planned: false, attended: false, note: '', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null },
+        { id: 'meeting-hetvegi', title: 'Hétvégi gyűlés', date: '2026-10-17', start: '10:00', end: '11:00', format: 'in-person', venue: 'Remény Klub', address: '1024 Budapest, Keleti Károly utca 15.', url: '', openness: 'Nyitott', attendance: 'planned', planned: true, attended: false, note: '', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null },
+        { id: 'meeting-noi-kor', title: 'Női gyűlés', date: '2026-10-19', start: '18:30', end: '19:30', format: 'in-person', venue: 'Közösségi Tér', address: '1117 Budapest, Karinthy Frigyes út 16.', url: '', openness: 'Zárt', attendance: 'maybe', planned: false, attended: false, note: '', recurrence: { kind: 'weekly', weekdays: [1] }, own: false, coordinates: null },
+        { id: 'meeting-past-open', title: 'AA – Hétköznapi erő', date: '2026-10-05', start: '18:00', end: '19:00', format: 'in-person', venue: 'Belvárosi Közösségi Ház', address: '1052 Budapest, Kossuth Lajos utca 12.', url: '', openness: 'Nyitott', attendance: 'attended', planned: false, attended: true, note: 'Jó volt hallani mások megosztását. Nem kell mindent egyedül végigcsinálnom.', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null },
+        { id: 'meeting-past-online', title: 'Nyitott beszélgetés', date: '2026-09-29', start: '20:00', end: '21:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', attendance: 'attended', planned: false, attended: true, note: '', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null }
       ]);
       const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor']);
       const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({
@@ -2947,6 +3004,32 @@
         const cappedDay = Math.max(1, Math.min(90, Number(dayNumber) || 1));
         return [...REWARD_ARTWORKS].reverse().find((item) => item.day <= cappedDay) || REWARD_ARTWORKS[0];
       }
+      function normalizedMeetingRecurrence(meeting = {}) {
+        const source = meeting.recurrence || {};
+        const kind = source.kind === 'weekly' ? 'weekly' : 'once';
+        const firstDate = meeting.date || '';
+        const firstWeekday = /^\d{4}-\d{2}-\d{2}$/.test(firstDate) ? new Date(`${firstDate}T12:00:00`).getDay() : 1;
+        const weekdays = [...new Set((Array.isArray(source.weekdays) ? source.weekdays : []).filter((day) => Number.isInteger(day) && day >= 0 && day <= 6))];
+        return { kind, weekdays: kind === 'weekly' ? (weekdays.length ? weekdays : [firstWeekday]) : [] };
+      }
+      function meetingOccursOnDate(meeting, date) {
+        if (!meeting?.date || !/^\d{4}-\d{2}-\d{2}$/.test(date || '') || date < meeting.date) return false;
+        const recurrence = normalizedMeetingRecurrence(meeting);
+        if (recurrence.kind === 'once') return meeting.date === date;
+        return recurrence.weekdays.includes(new Date(`${date}T12:00:00`).getDay());
+      }
+      function meetingOccurrenceKey(instance) { return `${instance.sourceId}:${instance.occurrenceDate}`; }
+      function meetingInstancesForDate(meetings, date) {
+        return meetings
+          .filter((meeting) => meetingOccursOnDate(meeting, date))
+          .map((meeting) => ({ ...meeting, sourceId: meeting.id, occurrenceDate: date, occurrenceKey: meetingOccurrenceKey({ sourceId: meeting.id, occurrenceDate: date }) }))
+          .sort((first, second) => String(first.start || '').localeCompare(String(second.start || '')));
+      }
+      function meetingInstancesInRange(meetings, fromDate, toDate) {
+        const from = new Date(`${fromDate}T12:00:00`); const to = new Date(`${toDate}T12:00:00`); const instances = [];
+        for (let current = new Date(from); current <= to; current.setDate(current.getDate() + 1)) instances.push(...meetingInstancesForDate(meetings, localDateIso(current)));
+        return instances;
+      }
       function createPractice(seed = {}) {
         const now = new Date().toISOString();
         return {
@@ -3055,6 +3138,7 @@
           this.meetingsContent = root.querySelector('[data-component="meetings-main-content"]');
           this.meetingDetailContent = root.querySelector('[data-component="meeting-detail-content"]');
           this.meetingEditorContent = root.querySelector('[data-component="meeting-editor-content"]');
+          this.meetingFormSheetHost = root.querySelector('[data-component="meeting-form-sheet"]');
           this.meetingTimelineEvents = root.querySelector('[data-component="meeting-timeline-events"]');
           this.historyPresentationElements = {
             history: {
@@ -3110,6 +3194,8 @@
             meetingsSelectedDate: '2026-10-06',
             meetingsCalendarMonth: '2026-10-01',
             meetingDetailId: null,
+            meetingDetailOccurrenceDate: null,
+            meetingDetailOrigin: 'calendar',
             meetingEditor: null,
             meetingPicker: null,
             sponsor: { ...SPONSOR_INITIAL_STATE },
@@ -3204,7 +3290,7 @@
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('keydown', (event) => this.handlePathCollectionCarouselKeydown(event));
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.navigate('home'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorAvailabilityDraft) this.closeSponsorAvailability(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorNextSheet) this.closeSponsorNextSheet(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-takeaways') this.closeSponsorTakeaways(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.navigate('home'); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           window.addEventListener?.('popstate', () => this.handlePlatformBack());
         }
@@ -3360,15 +3446,19 @@
             case 'select-meetings-date': this.selectMeetingsDate(event.target.closest('[data-meeting-date]')?.dataset.meetingDate); break;
             case 'toggle-meeting-planned': event.stopPropagation(); this.toggleMeetingPlanned(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
             case 'confirm-meeting-attendance': event.stopPropagation(); this.confirmMeetingAttendance(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
-            case 'open-meeting-detail': this.openMeetingDetail(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'open-meeting-detail': { const target = event.target.closest('[data-meeting-id]'); this.openMeetingDetail(target?.dataset.meetingId, target?.dataset.meetingOccurrenceDate, target?.dataset.meetingOrigin); break; }
             case 'close-meeting-detail': this.closeMeetingDetail(); break;
             case 'open-meeting-map': this.openMeetingMap(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
             case 'open-meeting-editor': this.openMeetingEditor(event.target.closest('[data-meeting-id]')?.dataset.meetingId, event.target.closest('[data-meeting-editor-origin]')?.dataset.meetingEditorOrigin || 'meetings', event.target.closest('[data-meeting-editor-mode]')?.dataset.meetingEditorMode); break;
-            case 'open-new-meeting': this.openNewMeeting(this.state.meetingsSelectedDate); break;
+            case 'open-new-meeting': this.openNewMeeting(event.target.closest('[data-meeting-date]')?.dataset.meetingDate || this.state.meetingsSelectedDate, event.target.closest('[data-action="open-new-meeting"]')); break;
             case 'close-meeting-editor': this.closeMeetingEditor(); break;
+            case 'close-meeting-form-sheet': this.closeMeetingFormSheet(); break;
             case 'save-meeting-editor': this.saveMeetingEditor(); break;
             case 'toggle-meeting-attendance-editor': this.toggleMeetingAttendanceFromEditor(); break;
             case 'toggle-meeting-editor-planned': this.toggleMeetingEditorPlanned(); this.renderMeetingEditor(); break;
+            case 'set-meeting-attendance': this.setMeetingAttendance(event.target.closest('[data-meeting-id]')?.dataset.meetingId, event.target.closest('[data-meeting-attendance]')?.dataset.meetingAttendance); break;
+            case 'set-meeting-recurrence': this.setMeetingRecurrence(event.target.closest('[data-meeting-recurrence]')?.dataset.meetingRecurrence); break;
+            case 'toggle-meeting-recurrence-weekday': this.toggleMeetingRecurrenceWeekday(Number(event.target.closest('[data-meeting-weekday]')?.dataset.meetingWeekday)); break;
             case 'select-meeting-format': this.selectMeetingFormat(event.target.closest('[data-meeting-format]')?.dataset.meetingFormat); break;
             case 'open-meeting-picker': this.openMeetingPicker(event.target.closest('[data-meeting-picker-field]')?.dataset.meetingPickerField, event.target.closest('[data-action="open-meeting-picker"]')); break;
             case 'close-meeting-picker': this.closeMeetingPicker(); break;
@@ -3463,6 +3553,7 @@
           if (target.matches('[data-sponsor-backup-input]')) { const contact = this.findSponsorBackup(target.closest('[data-sponsor-backup-id]')?.dataset.sponsorBackupId); const field = target.dataset.sponsorBackupInput; if (contact && ['name', 'phone'].includes(field)) { contact[field] = target.value; this.state.sponsorBackupImportNoticeId = null; this.renderSponsorSurfaces(); } return; }
           if (target.matches('[data-sponsor-date-input]')) { this.getSponsorDraft().since = target.value; this.root.querySelectorAll('[data-sponsor-since-display]').forEach((element) => { element.textContent = this.formatSponsorSince(target.value); }); return; }
           if (target.matches('[data-meeting-editor-input]')) { const editor = this.getMeetingEditor(); if (editor) { editor.draft[target.dataset.meetingEditorInput] = target.value; editor.error = ''; } return; }
+          if (target.matches('[data-meeting-detail-note]')) { const meeting = this.findMeeting(target.dataset.meetingId); if (meeting) meeting.note = target.value; return; }
           if (target.matches('[data-initial-motivation]')) { this.state.initialization.motivation = target.value; this.updateMotivationSurfaces(); return; }
           if (target.matches('[data-path-collection-search]')) { this.setPathCollectionSearch(target.dataset.pathCollectionKind, target.value); return; }
           if (target.matches('[data-practice-input]')) { this.updatePracticeDraft(target.dataset.practiceInput, target.value); return; }
@@ -4769,19 +4860,26 @@
           const match = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/.exec(value || '');
           return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null;
         }
-        renderMonthCalendarCells({ month, selectedValue = '', action, dataAttribute, dayClass, spacerClass, selectable = () => true, extraClass = () => '', ariaLabel = (value) => value }) {
+        renderMonthCalendarCells({ month, selectedValue = '', action, dataAttribute, dayClass, spacerClass, selectable = () => true, extraClass = () => '', ariaLabel = (value) => value, outsideDays = false, dayMarkup = (value, day) => String(day) }) {
           const firstWeekday = (new Date(month.getFullYear(), month.getMonth(), 1).getDay() + 6) % 7;
           const dayCount = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
-          return [
-            ...Array.from({ length: firstWeekday }, () => `<span class="${spacerClass}" aria-hidden="true"></span>`),
-            ...Array.from({ length: dayCount }, (_, index) => {
-              const value = localDateIso(new Date(month.getFullYear(), month.getMonth(), index + 1));
-              const canSelect = selectable(value);
-              const selected = canSelect && value === selectedValue;
-              const today = value === localDateIso();
-              return `<button class="${dayClass}${today ? ' is-today' : ''}${selected ? ' is-selected' : ''}${extraClass(value) ? ` ${extraClass(value)}` : ''}" type="button" data-action="${action}" ${dataAttribute}="${value}" aria-pressed="${selected}" aria-label="${escapeHtml(ariaLabel(value, index + 1))}"${canSelect ? '' : ' disabled aria-disabled="true"'}>${index + 1}</button>`;
-            })
-          ].join('');
+          const calendarCell = (date, day, outside = false) => {
+            const value = localDateIso(date);
+            const canSelect = selectable(value);
+            const selected = canSelect && value === selectedValue;
+            const today = value === localDateIso();
+            const classes = `${dayClass}${outside ? ' is-outside-month' : ''}${today ? ' is-today' : ''}${selected ? ' is-selected' : ''}${extraClass(value) ? ` ${extraClass(value)}` : ''}`;
+            return `<button class="${classes}" type="button" data-action="${action}" ${dataAttribute}="${value}" aria-pressed="${selected}" aria-label="${escapeHtml(ariaLabel(value, day))}"${canSelect ? '' : ' disabled aria-disabled="true"'}>${dayMarkup(value, day, outside)}</button>`;
+          };
+          const leading = outsideDays
+            ? Array.from({ length: firstWeekday }, (_, index) => { const date = new Date(month.getFullYear(), month.getMonth(), index - firstWeekday + 1); return calendarCell(date, date.getDate(), true); })
+            : Array.from({ length: firstWeekday }, () => `<span class="${spacerClass}" aria-hidden="true"></span>`);
+          const current = Array.from({ length: dayCount }, (_, index) => calendarCell(new Date(month.getFullYear(), month.getMonth(), index + 1), index + 1));
+          const trailingCount = outsideDays ? Math.max(0, 42 - leading.length - current.length) : 0;
+          const trailing = outsideDays
+            ? Array.from({ length: trailingCount }, (_, index) => { const date = new Date(month.getFullYear(), month.getMonth() + 1, index + 1); return calendarCell(date, date.getDate(), true); })
+            : [];
+          return [...leading, ...current, ...trailing].join('');
         }
         halfHourTimeSlots() { return Array.from({ length: 48 }, (_, index) => `${String(Math.floor(index / 2)).padStart(2, '0')}:${index % 2 ? '30' : '00'}`); }
         meetingMonthKey(value) {
@@ -4796,22 +4894,46 @@
           if (short) return `${months[date.getMonth()].slice(0, 3)}. ${date.getDate()}.`;
           return `${date.getFullYear()}. ${months[date.getMonth()]} ${date.getDate()}.${withWeekday ? `, ${weekdays[date.getDay()]}` : ''}`;
         }
+        meetingOccurrenceDate(meeting) { return meeting?.occurrenceDate || meeting?.date || ''; }
         isMeetingPast(meeting) {
-          return new Date(`${meeting.date}T${meeting.end || meeting.start || '00:00'}:00`).getTime() < Date.now();
+          const date = this.meetingOccurrenceDate(meeting);
+          return new Date(`${date}T${meeting.end || meeting.start || '00:00'}:00`).getTime() < Date.now();
         }
-        findMeeting(id) { return this.state.meetings.find((meeting) => meeting.id === id); }
-        meetingsForDate(date) { return this.state.meetings.filter((meeting) => meeting.date === date).sort((first, second) => first.start.localeCompare(second.start)); }
-        attendedMeetings() { return this.state.meetings.filter((meeting) => meeting.attended).sort((first, second) => `${second.date}${second.start}`.localeCompare(`${first.date}${first.start}`)); }
+        findMeeting(id) { return this.state.meetings.find((meeting) => meeting.id === id || meeting.id === String(id || '').split(':')[0]); }
+        meetingsForDate(date) { return meetingInstancesForDate(this.state.meetings, date); }
+        meetingInstancesInRange(fromDate, toDate) { return meetingInstancesInRange(this.state.meetings, fromDate, toDate); }
+        meetingAttendance(meeting) {
+          if (meeting.attendance) return meeting.attendance;
+          if (meeting.attended) return 'attended';
+          return meeting.planned ? 'planned' : 'maybe';
+        }
+        meetingAttendanceText(meeting) {
+          return ({ planned: 'Ott leszek', maybe: 'Talán ott leszek', attended: 'Ott voltam', declined: 'Most nem megyek' })[this.meetingAttendance(meeting)] || 'Talán ott leszek';
+        }
+        meetingTone(meeting) {
+          if (this.meetingAttendance(meeting) === 'attended') return 'attended';
+          if (meeting.format === 'online') return 'online';
+          return String(meeting.openness || '').toLowerCase().startsWith('zárt') ? 'closed' : 'open';
+        }
+        attendedMeetings() {
+          const today = localDateIso();
+          const start = new Date(`${today}T12:00:00`); start.setDate(start.getDate() - 120);
+          return this.meetingInstancesInRange(localDateIso(start), today)
+            .filter((meeting) => this.isMeetingPast(meeting) && this.meetingAttendance(meeting) === 'attended')
+            .sort((first, second) => `${second.occurrenceDate}${second.start}`.localeCompare(`${first.occurrenceDate}${first.start}`));
+        }
         meetingFormatText(meeting) { return meeting.format === 'online' ? 'Online' : 'Személyes'; }
-        meetingLocationText(meeting) { return meeting.format === 'online' ? 'Online' : [meeting.venue, meeting.address].filter(Boolean).join(' · '); }
+        meetingLocationText(meeting) { return meeting.format === 'online' ? (meeting.url ? 'Online · csatlakozási link' : 'Online') : [meeting.venue, meeting.address].filter(Boolean).join(' · ') || 'Helyszín egyeztetés alatt'; }
         renderMeetings() {
           this.renderMeetingsMain();
           this.renderMeetingTimelineEvents();
         }
         renderMeetingsMain() {
           if (!this.meetingsContent) return;
-          const view = this.state.meetingsView;
-          this.meetingsContent.innerHTML = `<nav class="meetings-segmented" aria-label="Gyűlések nézete"><button type="button" data-action="switch-meetings-view" data-meetings-view="calendar" aria-pressed="${view === 'calendar'}">Naptár</button><button type="button" data-action="switch-meetings-view" data-meetings-view="past" aria-pressed="${view === 'past'}">Korábbi gyűléseim</button></nav>${view === 'calendar' ? this.renderMeetingsCalendarView() : this.renderMeetingsPastView()}`;
+          const view = this.state.meetingsView === 'list' ? 'list' : 'calendar';
+          this.root.querySelectorAll('[data-component="meetings-view-switch"] [data-meetings-view]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.meetingsView === view)));
+          this.meetingsContent.dataset.meetingsView = view;
+          this.meetingsContent.innerHTML = view === 'calendar' ? this.renderMeetingsCalendarView() : this.renderMeetingsListView();
         }
         renderMeetingsCalendarView() {
           const month = this.meetingDateObject(this.state.meetingsCalendarMonth);
@@ -4823,9 +4945,11 @@
             dataAttribute: 'data-meeting-date',
             dayClass: 'meeting-calendar-day',
             spacerClass: 'meeting-calendar-spacer',
-            extraClass: (date) => {
-              const meetings = this.meetingsForDate(date);
-              return `${meetings.length ? 'has-meeting' : ''}${meetings.some((meeting) => meeting.planned) ? ' is-planned' : ''}`.trim();
+            outsideDays: true,
+            extraClass: (date) => this.meetingsForDate(date).length ? 'has-meeting' : '',
+            dayMarkup: (date, day) => {
+              const tones = [...new Set(this.meetingsForDate(date).slice(0, 3).map((meeting) => this.meetingTone(meeting)))];
+              return `<span>${day}</span>${tones.length ? `<span class="meeting-calendar-day-dots">${tones.map((tone) => `<span class="${tone}"></span>`).join('')}</span>` : ''}`;
             },
             ariaLabel: (date) => {
               const count = this.meetingsForDate(date).length;
@@ -4833,34 +4957,29 @@
             }
           });
           const selectedMeetings = this.meetingsForDate(this.state.meetingsSelectedDate);
-          return `<section class="meetings-calendar-card" aria-label="Havi naptár"><div class="meeting-calendar-month"><button type="button" data-action="meetings-previous-month" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>${month.getFullYear()}. ${monthNames[month.getMonth()]}</strong><button type="button" data-action="meetings-next-month" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="meeting-calendar-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sze</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span></div><div class="meeting-calendar-grid">${days}</div></section><div class="meetings-day-heading"><h2>${escapeHtml(this.formatMeetingDate(this.state.meetingsSelectedDate, { withWeekday: true }))}</h2>${selectedMeetings.length ? `<span class="meetings-count-badge">${selectedMeetings.length} gyűlés</span>` : ''}</div>${selectedMeetings.length ? `<section class="meetings-day-list" aria-label="Kiválasztott napi gyűlések">${selectedMeetings.map((meeting) => this.renderMeetingCard(meeting)).join('')}</section>` : `<section class="meetings-empty"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><p>Ezen a napon nincs gyűlés.</p><button type="button" data-action="open-new-meeting">+ Gyűlés hozzáadása</button></section>`}`;
+          return `<section class="meetings-calendar-card" aria-label="Havi naptár"><div class="meeting-calendar-month"><button type="button" data-action="meetings-previous-month" aria-label="Előző hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><strong>${month.getFullYear()}. ${monthNames[month.getMonth()]}</strong><button type="button" data-action="meetings-next-month" aria-label="Következő hónap"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button></div><div class="meeting-calendar-weekdays" aria-hidden="true"><span>H</span><span>K</span><span>Sze</span><span>Cs</span><span>P</span><span>Szo</span><span>V</span></div><div class="meeting-calendar-grid">${days}</div><p class="meeting-calendar-legend"><span><i></i>Nyitott</span><span><i class="closed"></i>Zárt</span><span><i class="online"></i>Online</span></p></section><header class="meetings-day-heading"><span><h2>${escapeHtml(this.formatMeetingDate(this.state.meetingsSelectedDate, { withWeekday: true }))}</h2><p>${selectedMeetings.length ? `${selectedMeetings.length} gyűlés ezen a napon` : 'Még nincs gyűlés erre a napra'}</p></span><div class="meetings-day-heading-actions"><button class="meetings-day-add" type="button" data-action="open-new-meeting" data-meeting-date="${this.state.meetingsSelectedDate}" aria-label="Új gyűlés hozzáadása erre a napra">+</button></div></header>${selectedMeetings.length ? `<section class="meetings-day-list" aria-label="Kiválasztott napi gyűlések">${selectedMeetings.map((meeting) => this.renderMeetingCard(meeting, 'calendar')).join('')}</section>` : `<section class="meetings-empty"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><p>Ezen a napon nincs gyűlés. A + gombbal hozzáadhatsz egyet.</p></section>`}`;
         }
-        renderMeetingCard(meeting) {
-          const past = this.isMeetingPast(meeting);
-          const attendance = past
-            ? (meeting.attended ? `<button class="meeting-attendance-action is-selected" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="meetings">✓ Ott voltam</button>` : `<button class="meeting-attendance-action" type="button" data-action="confirm-meeting-attendance" data-meeting-id="${meeting.id}">Ott voltam</button>`)
-            : `<button class="meeting-attendance-action${meeting.planned ? ' is-selected' : ''}" type="button" data-action="toggle-meeting-planned" data-meeting-id="${meeting.id}">${meeting.planned ? '✓ Ott leszek' : '○ Ott leszek'}</button>`;
-          return `<article class="meeting-card" data-action="open-meeting-detail" data-meeting-id="${meeting.id}"><button class="meeting-card-main" type="button" data-action="open-meeting-detail" data-meeting-id="${meeting.id}" aria-label="${escapeHtml(meeting.title)} részletei"><span class="meeting-card-time">${escapeHtml(meeting.start)}<small>${escapeHtml(meeting.end)}</small></span><span class="meeting-card-copy"><h3>${escapeHtml(meeting.title)}</h3><p>${escapeHtml(this.meetingLocationText(meeting))}</p><p class="meeting-card-meta">${escapeHtml(meeting.openness)} · ${escapeHtml(this.meetingFormatText(meeting))}</p></span></button><div class="meeting-card-actions">${attendance}<span class="meeting-card-chevron" aria-hidden="true">›</span></div></article>`;
+        renderMeetingCard(meeting, origin = 'list') {
+          const dateValue = this.meetingOccurrenceDate(meeting); const date = this.meetingDateObject(dateValue); const tone = this.meetingTone(meeting); const past = this.isMeetingPast(meeting);
+          const attendance = this.meetingAttendance(meeting);
+          return `<article class="meeting-card" data-meeting-id="${meeting.sourceId || meeting.id}" data-meeting-occurrence-date="${dateValue}" data-meeting-origin="${origin}"><span class="meeting-card-date"><span>${['V','H','K','Sze','Cs','P','Szo'][date.getDay()]}</span><strong>${date.getDate()}</strong><small>${this.formatMeetingDate(dateValue, { short: true }).split(' ')[0]}</small></span><button class="meeting-card-main" type="button" data-action="open-meeting-detail" data-meeting-id="${meeting.sourceId || meeting.id}" data-meeting-occurrence-date="${dateValue}" data-meeting-origin="${origin}" aria-label="${escapeHtml(meeting.title)} részletei"><span class="meeting-card-stripe ${tone}"></span><span class="meeting-card-copy"><h3>${escapeHtml(meeting.title)}</h3><p>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)} · ${escapeHtml(this.meetingLocationText(meeting))}</p><span class="meeting-card-tags"><span class="meeting-tag ${String(meeting.openness).toLowerCase().startsWith('zárt') ? 'closed' : ''}">${escapeHtml(meeting.openness)}</span><span class="meeting-tag">${escapeHtml(this.meetingFormatText(meeting))}</span></span>${meeting.note ? `<p class="meeting-note-preview">${escapeHtml(meeting.note)}</p>` : ''}</span></button><span class="meeting-card-side"><button class="meeting-attendance-action${attendance === 'attended' || attendance === 'planned' ? ' is-selected' : ''}" type="button" data-action="set-meeting-attendance" data-meeting-id="${meeting.sourceId || meeting.id}" data-meeting-attendance="${past ? 'attended' : attendance === 'planned' ? 'maybe' : 'planned'}">${escapeHtml(this.meetingAttendanceText(meeting))}</button><span class="meeting-card-chevron" aria-hidden="true">›</span></span></article>`;
         }
-        renderMeetingsPastView() {
-          const meetings = this.attendedMeetings();
-          if (!meetings.length) return `<section class="meetings-empty" style="margin-top:18px"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><p>Még nincs rögzített gyűlésed.</p><p>Ha egy elmúlt gyűlésnél megjelölöd, hogy ott voltál, itt fog megjelenni.</p></section>`;
-          let lastMonth = '';
-          const rows = meetings.map((meeting) => {
-            const date = this.meetingDateObject(meeting.date);
-            const month = `${date.getFullYear()}. ${['JANUÁR', 'FEBRUÁR', 'MÁRCIUS', 'ÁPRILIS', 'MÁJUS', 'JÚNIUS', 'JÚLIUS', 'AUGUSZTUS', 'SZEPTEMBER', 'OKTÓBER', 'NOVEMBER', 'DECEMBER'][date.getMonth()]}`;
-            const heading = month === lastMonth ? '' : `<h2 class="meeting-past-month">${month}</h2>`;
-            lastMonth = month;
-            return `${heading}<button class="meeting-past-card" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="meetings" aria-label="${escapeHtml(meeting.title)} gyűlés emlékének szerkesztése"><span class="meeting-date-badge"><strong>${date.getDate()}.</strong><span>${['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'][date.getMonth()]}</span></span><span class="meeting-past-copy"><h3>${escapeHtml(meeting.title)}</h3><small>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)} · ${escapeHtml(meeting.format === 'online' ? 'Online' : (meeting.address.split(',')[0] || meeting.venue))}</small>${meeting.note ? `<p>„${escapeHtml(meeting.note)}”</p>` : ''}</span><span class="meeting-card-chevron" aria-hidden="true">›</span></button>`;
-          }).join('');
-          return `<section class="meetings-past-list" aria-label="Korábbi gyűléseim">${rows}</section>`;
+        renderMeetingsListView() {
+          const today = localDateIso(); const until = new Date(`${today}T12:00:00`); until.setDate(until.getDate() + 90);
+          const since = new Date(`${today}T12:00:00`); since.setDate(since.getDate() - 120);
+          const upcoming = this.meetingInstancesInRange(today, localDateIso(until)).filter((meeting) => !this.isMeetingPast(meeting) && this.meetingAttendance(meeting) !== 'declined');
+          const past = this.meetingInstancesInRange(localDateIso(since), today).filter((meeting) => this.isMeetingPast(meeting) && this.meetingAttendance(meeting) === 'attended').sort((a, b) => `${b.occurrenceDate}${b.start}`.localeCompare(`${a.occurrenceDate}${a.start}`));
+          const countThisMonth = this.meetingInstancesInRange(this.meetingMonthKey(today), localDateIso(new Date(new Date(`${this.meetingMonthKey(today)}T12:00:00`).getFullYear(), new Date(`${this.meetingMonthKey(today)}T12:00:00`).getMonth() + 1, 0))).length;
+          const stats = `<section class="meetings-list-statistics" data-component="meeting-list-statistics"><header class="meetings-list-statistics-header"><strong>Gyűléseim</strong><span>nyugodt áttekintés</span></header><span class="meeting-stat attended"><b>${past.length}</b><span>látogatott</span></span><span class="meeting-stat"><b>${countThisMonth}</b><span>ebben a hónapban</span></span><span class="meeting-stat"><b>${upcoming.length}</b><span>közelgő</span></span><span class="meeting-stat maybe"><b>${upcoming.filter((item) => this.meetingAttendance(item) === 'maybe').length}</b><span>talán</span></span></section>`;
+          const section = (title, items, empty, key) => `<section class="meetings-list-section"><header class="meetings-list-section-header"><h2>${title}</h2>${key === 'upcoming' ? `<button class="meetings-list-add" type="button" data-action="open-new-meeting" data-meeting-date="${today}" aria-label="Új gyűlés hozzáadása">+</button>` : `<span>${items.length} alkalom</span>`}</header>${items.length ? `<div class="meetings-day-list">${items.map((meeting) => this.renderMeetingCard(meeting, 'list')).join('')}</div>` : `<p class="meetings-list-empty">${empty}</p>`}</section>`;
+          return `${stats}${section('Közelgő gyűléseim', upcoming, 'Nincs közelgő gyűlésed. Adj hozzá egyet, amikor jól esne kapcsolódni.', 'upcoming')}${section('Korábbi gyűléseim', past, 'Amikor egy gyűlés után megjelölöd, hogy ott voltál, itt marad meg az emléke.', 'past')}`;
         }
         renderMeetingTimelineEvents() {
           const meetings = this.attendedMeetings();
           const monthNames = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'];
           const weekdayNames = ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'];
           const events = meetings.map((meeting) => {
-            const date = this.meetingDateObject(meeting.date);
+            const date = this.meetingDateObject(this.meetingOccurrenceDate(meeting));
             return {
               id: `meeting-${meeting.id}`,
               meetingId: meeting.id,
@@ -4883,29 +5002,44 @@
           ]);
           targets.forEach((target) => { if (target) target.innerHTML = markup; });
         }
-        setMeetingsView(view) { this.state.meetingsView = view === 'past' ? 'past' : 'calendar'; this.renderMeetingsMain(); }
+        setMeetingsView(view) { this.state.meetingsView = view === 'list' || view === 'past' ? 'list' : 'calendar'; this.renderMeetingsMain(); }
         moveMeetingsMonth(direction) { const month = this.meetingDateObject(this.state.meetingsCalendarMonth); month.setMonth(month.getMonth() + direction); this.state.meetingsCalendarMonth = localDateIso(new Date(month.getFullYear(), month.getMonth(), 1)); this.renderMeetingsMain(); }
         selectMeetingsDate(date) { if (!this.meetingDateObject(date)) return; this.state.meetingsSelectedDate = date; this.state.meetingsCalendarMonth = this.meetingMonthKey(date); this.renderMeetingsMain(); }
-        toggleMeetingPlanned(id) { const meeting = this.findMeeting(id); if (!meeting || this.isMeetingPast(meeting)) return; meeting.planned = !meeting.planned; this.renderMeetings(); if (this.state.route === 'meeting-detail') this.renderMeetingDetail(); }
-        confirmMeetingAttendance(id) { const meeting = this.findMeeting(id); if (!meeting || !this.isMeetingPast(meeting)) return; meeting.attended = true; meeting.planned = false; this.renderMeetings(); if (this.state.route === 'meeting-detail') this.renderMeetingDetail(); }
+        setMeetingAttendance(id, attendance) {
+          const meeting = this.findMeeting(id); if (!meeting) return;
+          const next = ['planned', 'maybe', 'attended', 'declined'].includes(attendance) ? attendance : 'maybe';
+          meeting.attendance = next; meeting.planned = next === 'planned'; meeting.attended = next === 'attended';
+          this.renderMeetings(); if (this.state.route === 'meeting-detail') this.renderMeetingDetail();
+        }
+        toggleMeetingPlanned(id) { const meeting = this.findMeeting(id); if (!meeting || this.isMeetingPast(meeting)) return; this.setMeetingAttendance(id, this.meetingAttendance(meeting) === 'planned' ? 'maybe' : 'planned'); }
+        confirmMeetingAttendance(id) { this.setMeetingAttendance(id, 'attended'); }
         openMeetings(origin = 'home') { this.state.meetingOrigin = origin === 'panic' ? 'panic' : 'home'; this.renderMeetings(); this.navigate('meetings'); }
         returnFromMeetings() { this.navigate(this.state.meetingOrigin === 'panic' ? 'panic' : 'home'); }
-        openMeetingDetail(id) { const meeting = this.findMeeting(id); if (!meeting) return; this.state.meetingDetailId = id; this.renderMeetingDetail(); this.navigate('meeting-detail'); }
-        closeMeetingDetail() { this.state.meetingDetailId = null; this.renderMeetings(); this.navigate('meetings'); }
+        openMeetingDetail(id, occurrenceDate = '', origin = 'calendar') {
+          const meeting = this.findMeeting(id); if (!meeting) return;
+          this.state.meetingDetailId = meeting.id; this.state.meetingDetailOccurrenceDate = occurrenceDate || meeting.date; this.state.meetingDetailOrigin = origin === 'list' ? 'list' : 'calendar';
+          this.renderMeetingDetail(); this.navigate('meeting-detail');
+        }
+        closeMeetingDetail() {
+          this.state.meetingsView = this.state.meetingDetailOrigin === 'list' ? 'list' : 'calendar'; this.state.meetingDetailId = null; this.state.meetingDetailOccurrenceDate = null;
+          this.renderMeetings(); this.navigate('meetings');
+        }
         renderMeetingDetail() {
-          const meeting = this.findMeeting(this.state.meetingDetailId);
-          if (!meeting || !this.meetingDetailContent) return;
+          const source = this.findMeeting(this.state.meetingDetailId);
+          if (!source || !this.meetingDetailContent) return;
+          const occurrenceDate = this.state.meetingDetailOccurrenceDate || source.date;
+          const meeting = { ...source, sourceId: source.id, occurrenceDate };
+          const past = this.isMeetingPast(meeting); const attendance = this.meetingAttendance(meeting);
           const location = meeting.format === 'online'
             ? `<div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-message"/></svg><span>Forma</span><strong>Online</strong></div>`
             : `<button class="meeting-context-row location-row" type="button" data-action="open-meeting-map" data-meeting-id="${meeting.id}" aria-label="Térkép megnyitása: ${escapeHtml(meeting.address || meeting.venue)}"><svg class="icon" aria-hidden="true"><use href="#icon-location"/></svg><span>Helyszín</span><strong>${escapeHtml(meeting.venue || meeting.address || 'Nincs megadva')}</strong></button><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Forma</span><strong>Személyes</strong></div>`;
           const mainAction = meeting.format === 'online'
             ? `<a class="meeting-primary-button" href="${escapeHtml(meeting.url || '#')}" target="_blank" rel="noopener">Csatlakozás</a>`
             : `<button class="meeting-primary-button" type="button" data-action="open-meeting-map" data-meeting-id="${meeting.id}">Térkép megnyitása</button>`;
-          const ownerAction = meeting.own ? '<button class="meeting-secondary-button" type="button" data-action="open-meeting-editor" data-meeting-id="' + meeting.id + '" data-meeting-editor-origin="detail" data-meeting-editor-mode="form">Szerkesztés</button>' : '';
-          const attendanceAction = this.isMeetingPast(meeting)
-            ? `<button class="meeting-secondary-button" type="button" data-action="${meeting.attended ? 'open-meeting-editor' : 'confirm-meeting-attendance'}" data-meeting-id="${meeting.id}" data-meeting-editor-origin="detail">${meeting.attended ? 'Saját megjegyzés szerkesztése' : 'Ott voltam'}</button>`
-            : `<button class="meeting-secondary-button" type="button" data-action="toggle-meeting-planned" data-meeting-id="${meeting.id}">${meeting.planned ? '✓ Ott leszek' : '○ Ott leszek'}</button>`;
-          this.meetingDetailContent.innerHTML = `<section class="meeting-detail-identity"><span class="meeting-detail-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><h2>${escapeHtml(meeting.title)}</h2><p>${escapeHtml(meeting.openness)} NA gyűlés</p></section><section class="meeting-context-card"><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><span>Dátum</span><strong>${escapeHtml(this.formatMeetingDate(meeting.date, { withWeekday: true }))}</strong></div><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg><span>Időpont</span><strong>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)}</strong></div>${location}</section><div class="meeting-detail-actions">${mainAction}${attendanceAction}${ownerAction}</div>`;
+          const notePrompt = past ? 'Mi maradt meg bennem ebből a gyűlésből? Mi volt jó, vagy mi érintett meg?' : 'Mit szeretnék mondani? Mire szeretnék figyelni ezen a gyűlésen?';
+          const statuses = [{ id: 'planned', label: 'Ott leszek' }, { id: 'maybe', label: 'Talán' }, { id: 'attended', label: 'Ott voltam' }, { id: 'declined', label: 'Nem megyek' }];
+          const ownerAction = meeting.own ? `<button class="meeting-secondary-button" type="button" data-action="open-meeting-editor" data-meeting-id="${meeting.id}" data-meeting-editor-origin="detail" data-meeting-editor-mode="form">Szerkesztés</button>` : '';
+          this.meetingDetailContent.innerHTML = `<section class="meeting-detail-identity"><span class="meeting-detail-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><h2>${escapeHtml(meeting.title)}</h2><p>${escapeHtml(meeting.openness)} · ${escapeHtml(this.meetingFormatText(meeting))}</p><div class="meeting-detail-statuses" aria-label="Részvételi állapot">${statuses.map((status) => `<button type="button" data-action="set-meeting-attendance" data-meeting-id="${meeting.id}" data-meeting-attendance="${status.id}" aria-pressed="${attendance === status.id}">${status.label}</button>`).join('')}</div></section><section class="meeting-context-card"><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-calendar"/></svg><span>Dátum</span><strong>${escapeHtml(this.formatMeetingDate(occurrenceDate, { withWeekday: true }))}</strong></div><div class="meeting-context-row"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg><span>Időpont</span><strong>${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)}</strong></div>${location}</section><section class="meeting-note-card" data-component="meeting-note-card"><h3>${past ? 'Amit magammal viszek' : 'Jegyzet a gyűléshez'}</h3><p>${notePrompt}</p><textarea data-meeting-detail-note data-meeting-id="${meeting.id}" placeholder="Írj ide, amikor jól esik…">${escapeHtml(source.note || '')}</textarea><small>Automatikusan mentve ebben a prototípusban.</small></section><div class="meeting-detail-actions">${mainAction}${ownerAction}</div>`;
         }
         openMeetingMap(id) {
           const meeting = this.findMeeting(id); if (!meeting) return;
@@ -4914,15 +5048,27 @@
           const openMap = (origin = '') => { const params = new URLSearchParams({ api: '1', destination }); if (origin) params.set('origin', origin); window.open(`https://www.google.com/maps/dir/?${params.toString()}`, '_blank', 'noopener'); };
           if (navigator.geolocation) navigator.geolocation.getCurrentPosition((position) => openMap(`${position.coords.latitude},${position.coords.longitude}`), () => openMap(), { enableHighAccuracy: false, timeout: 7000, maximumAge: 300000 }); else openMap();
         }
-        createMeetingDraft(date = this.state.meetingsSelectedDate) { return { title: '', date, start: '18:00', end: '19:00', format: 'in-person', venue: '', address: '', url: '', openness: 'Nyitott', planned: true, attended: false, note: '', own: true, coordinates: null }; }
+        createMeetingDraft(date = this.state.meetingsSelectedDate) { return { title: '', date, start: '18:00', end: '19:00', format: 'in-person', venue: '', address: '', url: '', openness: 'Nyitott', attendance: 'planned', planned: true, attended: false, recurrence: { kind: 'once', weekdays: [] }, note: '', own: true, coordinates: null }; }
         getMeetingEditor() { return this.state.meetingEditor; }
-        openNewMeeting(date) { this.state.meetingEditor = { mode: 'form', meetingId: null, returnRoute: 'meetings', draft: this.createMeetingDraft(date), error: '', locationMessage: '' }; this.renderMeetingEditor(); this.navigate('meeting-editor'); }
+        isMeetingFormSheetOpen() { return Boolean(this.meetingFormSheetHost && !this.meetingFormSheetHost.hidden); }
+        openNewMeeting(date, trigger) { this.openMeetingFormSheet(null, 'meetings', trigger, date); }
+        openMeetingFormSheet(meetingId = null, origin = 'meetings', trigger = null, date = this.state.meetingsSelectedDate) {
+          const source = meetingId ? this.findMeeting(meetingId) : null;
+          const draft = source ? { ...source, recurrence: normalizedMeetingRecurrence(source), coordinates: source.coordinates ? { ...source.coordinates } : null } : this.createMeetingDraft(date);
+          this.state.meetingEditor = { mode: 'form', surface: 'sheet', meetingId: source?.id || null, returnRoute: origin === 'detail' ? 'meeting-detail' : origin, draft, error: '', locationMessage: '' };
+          this.renderMeetingFormSheet(); this.openAppOverlaySheet(this.meetingFormSheetHost, trigger || document.activeElement);
+        }
+        closeMeetingFormSheet() {
+          const returnRoute = this.getMeetingEditor()?.returnRoute; this.closeAppOverlaySheet(this.meetingFormSheetHost); this.state.meetingEditor = null;
+          if (returnRoute === 'meeting-detail') this.renderMeetingDetail(); else this.renderMeetings();
+        }
+        renderMeetingFormSheet() {
+          const editor = this.getMeetingEditor(); const host = this.meetingFormSheetHost; if (!editor || !host) return;
+          host.innerHTML = `<button class="meeting-picker-sheet-backdrop" type="button" data-action="close-meeting-form-sheet" aria-label="Gyűlés szerkesztő bezárása"></button><section class="meeting-form-sheet" role="dialog" aria-modal="true" aria-labelledby="meeting-form-sheet-title" tabindex="-1"><span class="meeting-picker-sheet-handle" aria-hidden="true"></span><header class="meeting-form-sheet-header"><div><p class="meeting-form-sheet-kicker">Gyűlések</p><h2 id="meeting-form-sheet-title">${editor.meetingId ? 'Gyűlés szerkesztése' : 'Új gyűlés'}</h2></div><button class="meeting-form-sheet-close" type="button" data-action="close-meeting-form-sheet" data-sheet-close aria-label="Bezárás">×</button></header>${this.renderMeetingFormFields(editor)}${editor.error ? `<p class="meeting-editor-error" role="alert">${escapeHtml(editor.error)}</p>` : ''}<button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button></section>`;
+        }
         openMeetingEditor(id, origin = 'meetings', requestedMode = '') {
           const meeting = this.findMeeting(id); if (!meeting) return;
-          const forcedForm = requestedMode === 'form';
-          const mode = forcedForm || (meeting.own && !meeting.attended) ? 'form' : 'memory';
-          this.state.meetingEditor = { mode, meetingId: id, returnRoute: origin === 'timeline' ? 'history-detail' : origin === 'detail' ? 'meeting-detail' : 'meetings', draft: { ...meeting, coordinates: meeting.coordinates ? { ...meeting.coordinates } : null }, error: '', locationMessage: '' };
-          this.renderMeetingEditor(); this.navigate('meeting-editor');
+          this.openMeetingFormSheet(meeting.id, origin === 'detail' ? 'detail' : origin, document.activeElement);
         }
         closeMeetingEditor() {
           const editor = this.getMeetingEditor(); const route = editor?.returnRoute || 'meetings'; this.state.meetingEditor = null;
@@ -4939,28 +5085,37 @@
           return `<section class="timeline-event-hero meeting-memory-editor-hero" aria-label="Gyűlés emlékképe"><img src="assets/hero/timelinehero.png" alt="Hegycsúcsok a naplementében"><span class="timeline-event-hero-icon" aria-hidden="true"><svg class="icon"><use href="#icon-people"/></svg></span><span class="timeline-event-hero-photo" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span></section><section class="meeting-editor-context"><span class="meeting-detail-icon"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg></span><h2>${escapeHtml(meeting.title)}</h2><p>${escapeHtml(this.formatMeetingDate(meeting.date, { withWeekday: true }))} · ${escapeHtml(meeting.start)}–${escapeHtml(meeting.end)}</p><p>${escapeHtml(this.meetingLocationText(meeting))}</p></section><section class="meeting-attended-row"><span>✓ Ott voltam</span><button type="button" data-action="toggle-meeting-attendance-editor">Visszavonom</button></section><section class="meeting-note-field"><label for="meeting-note-input">Saját megjegyzés</label><textarea id="meeting-note-input" data-meeting-editor-input="note" placeholder="Mi maradt meg ebből a gyűlésből?">${escapeHtml(meeting.note)}</textarea></section><button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button>`;
         }
         renderMeetingFormEditor(editor) {
+          return `${this.renderMeetingFormFields(editor)}${editor.error ? `<p class="meeting-editor-error" role="alert">${escapeHtml(editor.error)}</p>` : ''}<button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button>`;
+        }
+        renderMeetingFormFields(editor) {
           const meeting = editor.draft;
           const personalFields = meeting.format === 'in-person'
             ? `<div class="meeting-field"><label for="meeting-venue-input">Helyszín neve</label><input id="meeting-venue-input" data-meeting-editor-input="venue" type="text" value="${escapeHtml(meeting.venue)}" placeholder="Pl. Közösségi Ház"></div><div class="meeting-field"><label for="meeting-address-input">Cím</label><input id="meeting-address-input" data-meeting-editor-input="address" type="text" value="${escapeHtml(meeting.address)}" placeholder="Pl. 1082 Budapest, Baross utca 12."><button class="meeting-location-action" type="button" data-action="use-current-meeting-location"><svg class="icon" aria-hidden="true"><use href="#icon-location"/></svg>Jelenlegi hely használata</button>${editor.locationMessage ? `<p class="meeting-location-status" role="status">${escapeHtml(editor.locationMessage)}</p>` : ''}</div>`
             : `<div class="meeting-field"><label for="meeting-url-input">Online link</label><input id="meeting-url-input" data-meeting-editor-input="url" type="url" value="${escapeHtml(meeting.url)}" placeholder="https://..."></div>`;
-          return `<section class="meeting-form-card"><div class="meeting-field"><label for="meeting-title-input">Gyűlés neve</label><input id="meeting-title-input" data-meeting-editor-input="title" type="text" autocomplete="off" autocapitalize="sentences" value="${escapeHtml(meeting.title)}" placeholder="Pl. Új Kezdet" required></div><div class="meeting-field"><span class="meeting-field-label">Dátum</span><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="date"><span>${escapeHtml(this.formatMeetingDate(meeting.date))}</span><span>›</span></button></div><div class="meeting-field"><span class="meeting-field-label">Időpont</span><div class="meeting-time-pair"><div class="meeting-mini-field"><label>Kezdés</label><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="start">${escapeHtml(meeting.start)}</button></div><div class="meeting-mini-field"><label>Befejezés</label><button type="button" data-action="open-meeting-picker" data-meeting-picker-field="end">${escapeHtml(meeting.end)}</button></div></div></div><div class="meeting-field"><span class="meeting-field-label">Forma</span><div class="meeting-format-selector"><button type="button" data-action="select-meeting-format" data-meeting-format="in-person" aria-pressed="${meeting.format === 'in-person'}">Személyes</button><button type="button" data-action="select-meeting-format" data-meeting-format="online" aria-pressed="${meeting.format === 'online'}">Online</button></div></div>${personalFields}<div class="meeting-field"><span class="meeting-field-label">Ott leszek</span><button type="button" data-action="toggle-meeting-editor-planned"><span>${meeting.planned ? '✓ Igen' : '○ Még nem tudom'}</span><span>›</span></button></div></section><section class="meeting-note-field"><label for="meeting-form-note-input">Megjegyzés <span>(opcionális)</span></label><textarea id="meeting-form-note-input" data-meeting-editor-input="note" placeholder="Gondolatok, érzések, felismerések…">${escapeHtml(meeting.note)}</textarea></section>${editor.error ? `<p class="meeting-editor-error" role="alert">${escapeHtml(editor.error)}</p>` : ''}<button class="meeting-save-button" type="button" data-action="save-meeting-editor">Mentés</button>`;
+          const recurrence = normalizedMeetingRecurrence(meeting); const dayLabels = ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'];
+          return `<section class="meeting-form-card"><div class="meeting-field"><label for="meeting-title-input">Gyűlés neve</label><input id="meeting-title-input" data-meeting-editor-input="title" type="text" autocomplete="off" autocapitalize="sentences" value="${escapeHtml(meeting.title)}" placeholder="Pl. Új Kezdet" required></div><div class="meeting-field"><label for="meeting-date-input">Dátum</label><input id="meeting-date-input" data-meeting-editor-input="date" type="date" value="${escapeHtml(meeting.date)}"></div><div class="meeting-field"><span class="meeting-field-label">Időpont</span><div class="meeting-time-pair"><div class="meeting-mini-field"><label for="meeting-start-input">Kezdés</label><input id="meeting-start-input" data-meeting-editor-input="start" type="time" value="${escapeHtml(meeting.start)}"></div><div class="meeting-mini-field"><label for="meeting-end-input">Befejezés</label><input id="meeting-end-input" data-meeting-editor-input="end" type="time" value="${escapeHtml(meeting.end)}"></div></div></div><div class="meeting-field"><span class="meeting-field-label">Ismétlődés</span><div class="meeting-format-selector"><button type="button" data-action="set-meeting-recurrence" data-meeting-recurrence="once" aria-pressed="${recurrence.kind === 'once'}">Egyszeri</button><button type="button" data-action="set-meeting-recurrence" data-meeting-recurrence="weekly" aria-pressed="${recurrence.kind === 'weekly'}">Heti</button></div>${recurrence.kind === 'weekly' ? `<div class="meeting-recurrence-days" aria-label="Ismétlődő napok">${dayLabels.map((label, day) => `<button type="button" data-action="toggle-meeting-recurrence-weekday" data-meeting-weekday="${day}" aria-pressed="${recurrence.weekdays.includes(day)}">${label}</button>`).join('')}</div><p class="meeting-recurrence-hint">A módosítás a teljes heti sorozatra vonatkozik.</p>` : ''}</div><div class="meeting-field"><span class="meeting-field-label">Forma</span><div class="meeting-format-selector"><button type="button" data-action="select-meeting-format" data-meeting-format="in-person" aria-pressed="${meeting.format === 'in-person'}">Személyes</button><button type="button" data-action="select-meeting-format" data-meeting-format="online" aria-pressed="${meeting.format === 'online'}">Online</button></div></div>${personalFields}<div class="meeting-field"><label for="meeting-openness-input">Nyitottság</label><select id="meeting-openness-input" data-meeting-editor-input="openness"><option${meeting.openness === 'Nyitott' ? ' selected' : ''}>Nyitott</option><option${meeting.openness === 'Zárt' ? ' selected' : ''}>Zárt</option></select></div></section><section class="meeting-note-field"><label for="meeting-form-note-input">Kezdeti megjegyzés <span>(opcionális)</span></label><textarea id="meeting-form-note-input" data-meeting-editor-input="note" placeholder="Gondolatok, érzések, felismerések…">${escapeHtml(meeting.note)}</textarea></section>`;
         }
-        selectMeetingFormat(format) { const editor = this.getMeetingEditor(); if (!editor || editor.mode !== 'form') return; editor.draft.format = format === 'online' ? 'online' : 'in-person'; this.renderMeetingEditor(); }
+        rerenderMeetingEditorSurface() { if (this.getMeetingEditor()?.surface === 'sheet') this.renderMeetingFormSheet(); else this.renderMeetingEditor(); }
+        selectMeetingFormat(format) { const editor = this.getMeetingEditor(); if (!editor || editor.mode !== 'form') return; editor.draft.format = format === 'online' ? 'online' : 'in-person'; this.rerenderMeetingEditorSurface(); }
+        setMeetingRecurrence(kind) { const editor = this.getMeetingEditor(); if (!editor || editor.mode !== 'form') return; const weekday = this.meetingDateObject(editor.draft.date)?.getDay() ?? 1; editor.draft.recurrence = { kind: kind === 'weekly' ? 'weekly' : 'once', weekdays: kind === 'weekly' ? [weekday] : [] }; this.rerenderMeetingEditorSurface(); }
+        toggleMeetingRecurrenceWeekday(day) { const editor = this.getMeetingEditor(); if (!editor || editor.mode !== 'form' || day < 0 || day > 6) return; const current = normalizedMeetingRecurrence(editor.draft); const weekdays = current.weekdays.includes(day) ? current.weekdays.filter((item) => item !== day) : [...current.weekdays, day].sort(); editor.draft.recurrence = { kind: 'weekly', weekdays: weekdays.length ? weekdays : [day] }; this.rerenderMeetingEditorSurface(); }
         toggleMeetingAttendanceFromEditor() {
           const editor = this.getMeetingEditor(); if (!editor) return;
           if (!window.confirm('Eltávolítod ezt a gyűlést a korábbi gyűléseid közül?')) return;
-          editor.draft.attended = false; const meeting = this.findMeeting(editor.meetingId); if (meeting) meeting.attended = false; this.state.meetingEditor = null; this.renderMeetings(); this.state.meetingsView = 'past'; this.navigate('meetings');
+          editor.draft.attended = false; const meeting = this.findMeeting(editor.meetingId); if (meeting) { meeting.attended = false; meeting.attendance = 'maybe'; } this.state.meetingEditor = null; this.state.meetingsView = 'list'; this.renderMeetings(); this.navigate('meetings');
         }
         toggleMeetingEditorPlanned() { const editor = this.getMeetingEditor(); if (editor?.mode === 'form') editor.draft.planned = !editor.draft.planned; }
         saveMeetingEditor() {
           const editor = this.getMeetingEditor(); if (!editor) return;
           const draft = editor.draft;
-          if (!draft.title.trim()) { editor.error = 'Adj meg egy gyűlésnevet.'; this.renderMeetingEditor(); return; }
-          if (editor.mode === 'form' && (!draft.start || !draft.end || draft.start >= draft.end)) { editor.error = 'A befejezés legyen később a kezdésnél.'; this.renderMeetingEditor(); return; }
+          if (!draft.title.trim()) { editor.error = 'Adj meg egy gyűlésnevet.'; this.rerenderMeetingEditorSurface(); return; }
+          if (editor.mode === 'form' && (!draft.date || !draft.start || !draft.end || draft.start >= draft.end)) { editor.error = 'A dátum, kezdés és befejezés legyen érvényes.'; this.rerenderMeetingEditorSurface(); return; }
+          draft.recurrence = normalizedMeetingRecurrence(draft); draft.attendance = draft.attendance || (draft.attended ? 'attended' : draft.planned ? 'planned' : 'maybe'); draft.planned = draft.attendance === 'planned'; draft.attended = draft.attendance === 'attended';
           if (editor.meetingId) { const index = this.state.meetings.findIndex((meeting) => meeting.id === editor.meetingId); if (index !== -1) this.state.meetings[index] = { ...this.state.meetings[index], ...draft, title: draft.title.trim() }; }
           else { const id = `meeting-own-${Date.now()}`; this.state.meetings.push({ ...draft, id, title: draft.title.trim(), own: true }); editor.meetingId = id; }
-          const route = editor.returnRoute; this.state.meetingEditor = null; this.state.meetingsSelectedDate = draft.date; this.state.meetingsCalendarMonth = this.meetingMonthKey(draft.date); this.state.meetingsView = 'calendar'; this.renderMeetings();
-          if (route === 'meeting-detail') { this.state.meetingDetailId = editor.meetingId; this.renderMeetingDetail(); this.navigate('meeting-detail'); } else this.navigate(route === 'history-detail' ? 'history-detail' : 'meetings');
+          const route = editor.returnRoute; this.state.meetingsSelectedDate = draft.date; this.state.meetingsCalendarMonth = this.meetingMonthKey(draft.date); this.renderMeetings();
+          if (editor.surface === 'sheet') { this.closeAppOverlaySheet(this.meetingFormSheetHost); this.state.meetingEditor = null; if (route === 'meeting-detail') { this.state.meetingDetailId = editor.meetingId; this.state.meetingDetailOccurrenceDate = draft.date; this.renderMeetingDetail(); } return; }
+          this.state.meetingEditor = null; if (route === 'meeting-detail') { this.state.meetingDetailId = editor.meetingId; this.renderMeetingDetail(); this.navigate('meeting-detail'); } else this.navigate(route === 'history-detail' ? 'history-detail' : 'meetings');
         }
         openMeetingPicker(field, trigger) {
           const editor = this.getMeetingEditor(); if (!editor || !['date', 'start', 'end'].includes(field)) return;
@@ -4979,12 +5134,12 @@
         moveMeetingPickerMonth(direction) { const picker = this.state.meetingPicker; if (!picker) return; const month = this.meetingDateObject(picker.calendarMonth); month.setMonth(month.getMonth() + direction); picker.calendarMonth = localDateIso(new Date(month.getFullYear(), month.getMonth(), 1)); this.renderMeetingPicker(); }
         selectMeetingPickerDate(value) { if (!this.state.meetingPicker || !this.meetingDateObject(value)) return; this.state.meetingPicker.value = value; this.renderMeetingPicker(); }
         selectMeetingPickerTime(value) { if (!this.state.meetingPicker || !/^([01][0-9]|2[0-3]):(00|30)$/.test(value || '')) return; this.state.meetingPicker.value = value; this.renderMeetingPicker(); }
-        saveMeetingPicker() { const picker = this.state.meetingPicker; const editor = this.getMeetingEditor(); if (!picker || !editor) return; editor.draft[picker.field] = picker.value; this.closeMeetingPicker(); this.renderMeetingEditor(); }
+        saveMeetingPicker() { const picker = this.state.meetingPicker; const editor = this.getMeetingEditor(); if (!picker || !editor) return; editor.draft[picker.field] = picker.value; this.closeMeetingPicker(); this.rerenderMeetingEditorSurface(); }
         useCurrentMeetingLocation() {
           const editor = this.getMeetingEditor(); if (!editor) return;
-          if (!navigator.geolocation) { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.renderMeetingEditor(); return; }
-          editor.locationMessage = 'Helyzet lekérése…'; this.renderMeetingEditor();
-          navigator.geolocation.getCurrentPosition((position) => { editor.draft.coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude }; editor.locationMessage = `Helyzet rögzítve · ${position.coords.latitude.toFixed(3)}, ${position.coords.longitude.toFixed(3)}`; this.renderMeetingEditor(); }, () => { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.renderMeetingEditor(); }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+          if (!navigator.geolocation) { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.rerenderMeetingEditorSurface(); return; }
+          editor.locationMessage = 'Helyzet lekérése…'; this.rerenderMeetingEditorSurface();
+          navigator.geolocation.getCurrentPosition((position) => { editor.draft.coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude }; editor.locationMessage = `Helyzet rögzítve · ${position.coords.latitude.toFixed(3)}, ${position.coords.longitude.toFixed(3)}`; this.rerenderMeetingEditorSurface(); }, () => { editor.locationMessage = 'A helyzet nem érhető el. A címet kézzel is megadhatod.'; this.rerenderMeetingEditorSurface(); }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
         }
         readPanicVariant() {
           try { return window.localStorage?.getItem('hajnal.panicVariant') === 'alternative' ? 'alternative' : 'classic'; } catch (_) { return 'classic'; }
@@ -5136,9 +5291,12 @@
         }
         handlePlatformBack() {
           if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; }
+          if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; }
           if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; }
           if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
           if (this.state.panicMotivationSheet) { this.closePanicMotivationSheet(); return; }
+          if (this.state.route === 'meeting-detail') { this.closeMeetingDetail(); return; }
+          if (this.state.route === 'meeting-editor') { this.closeMeetingEditor(); return; }
           if (this.state.route === 'sponsor-backups') { this.closeSponsorBackups(); return; }
           if (this.state.route === 'clean-reward') { this.flushEveningDraft(); this.navigate('home'); return; }
           if (['panic-why', 'panic-relapse', 'survival', 'panic-contacts'].includes(this.state.route)) this.navigate('panic');
