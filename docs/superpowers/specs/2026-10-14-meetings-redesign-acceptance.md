@@ -59,3 +59,11 @@ Meeting UI → `HomeInteractionController` → meeting domain helper/resolver �
 | MTG-08 | §12 | CSS/motion | Puha mód-, sheet- és child-transition; reduced-motion támogatott; nincs gesture vagy scroll ownership hiba. | Reduced-motion CSS és egyértelmű scroll owner kész; gesture/screenshot runtime blokkolt. | PARTIAL |
 | MTG-09 | §13 | Architecture boundary | Nem keletkezik párhuzamos meeting-adatbázis, picker vagy overlay engine; egy write path marad. | Architecture card + boundary contract zöld. | DONE |
 | MTG-10 | §14–16 | Seeds/tests | Azonnal tesztelhető egyszeri/heti, múltbeli/közelgő, jegyzetes/jegyzet nélküli seedek; minden előző feltétel igazolva. | Seedek és célzott teszt kész; teljes suite 35 passz, 3 régi History runtime blokk. | PARTIAL |
+| MTG-11 | 2026-10-14 user request | History/Meetings shared layout token; Meetings main renderer | A Naptár-rács és a Lista „Gyűléseim” card felső éle ugyanott indul, mint a Történetem jelenlegi időszak-kártyája; Lista módban a stat-card nem görgethető, csak az alatta lévő gyűléslista. | `--history-current-card-top` közös token, külön `.meetings-list-fixed` + egyetlen `.meetings-list-scroll` owner; célzott contract teszt zöld. Friss Android/Chromium képernyőkép továbbra is blokkolt. | PARTIAL |
+
+## 2026-10-14 – Meetings body alignment compact architecture gate
+
+- **MTG-11 ownership:** a History current-period card pozíciójának egyetlen szemantikus tulajdonosa a `--history-current-card-top` token; a Meetings kizárólag ezt fogyasztja a `--meetings-body-top` adapteren keresztül.
+- **Megosztott primitive:** nincs második pozíciószám vagy új scroll-motor. Calendar módban a meglévő Meetings body a vertikális scroll owner; Lista módban a fix stat-card mellett csak `.meetings-list-scroll` kezel függőleges scrollt.
+- **Állapot/adatút:** változatlan. A `state.meetings`, a meglévő Lista renderer és a meeting occurrence resolver marad az egyetlen adatforrás.
+- **Ellenőrzés:** a `meetings_redesign_test.js` rögzíti a közös top tokent, a fix lista-wrapper és az egyetlen Lista-scroll owner jelenlétét; a teljes képernyős vizuális ellenőrzéshez továbbra sincs vezérelhető Android/Chromium runtime ebben a környezetben.

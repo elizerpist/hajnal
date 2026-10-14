@@ -7,7 +7,7 @@
   <meta name="prototype-status" content="variant">
   <title>Hajnal · Kezdőlap</title>
   <style>
-    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --screen-background-original: #F9F3F7; --screen-background-index: #FDF5F8; --screen-background-blush: #F4E8F1; --screen-background-mauve: #ECD9E9; --screen-background-lavender: #E0C9E2; --screen-background: var(--screen-background-original); --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --path-overview-hero-height: 238px; --path-overview-header-stack: 112px; --path-overview-current-card-height: 102px; --path-overview-current-card-height-compact: 90px; --path-compact-hero-height: 194px; --history-inline-workspace-overlap: 22px; --hero-art-vertical-fade-mask: linear-gradient(180deg, #000 0%, rgba(0,0,0,.98) 22%, rgba(0,0,0,.88) 43%, rgba(0,0,0,.62) 63%, rgba(0,0,0,.28) 82%, transparent 100%); --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
+    :root { --screen-w: 412px; --screen-h: 892px; --bottom-safe-area: env(safe-area-inset-bottom, 0px); --bottom-nav-h: calc(70px + var(--bottom-safe-area)); --hajnal-navy: #2C2E77; --hajnal-purple: #6A56B4; --hajnal-lavender: #B89AD7; --screen-background-original: #F9F3F7; --screen-background-index: #FDF5F8; --screen-background-blush: #F4E8F1; --screen-background-mauve: #ECD9E9; --screen-background-lavender: #E0C9E2; --screen-background: var(--screen-background-original); --white: #FFFFFF; --hairline: rgba(106, 86, 180, .13); --radius-button: 17px; --insight-rail-gap: 8px; --path-overview-hero-height: 238px; --path-overview-header-stack: 112px; --path-overview-current-card-height: 102px; --path-overview-current-card-height-compact: 90px; --path-compact-hero-height: 194px; --history-current-card-top: 151px; --history-inline-workspace-overlap: 22px; --hero-art-vertical-fade-mask: linear-gradient(180deg, #000 0%, rgba(0,0,0,.98) 22%, rgba(0,0,0,.88) 43%, rgba(0,0,0,.62) 63%, rgba(0,0,0,.28) 82%, transparent 100%); --font: "Avenir Next", "Nunito Sans", "Trebuchet MS", system-ui, sans-serif; }
     * { box-sizing: border-box; }
     html { color-scheme: light; }
     body { min-width: 320px; min-height: 100vh; display: grid; place-items: center; margin: 0; background: radial-gradient(circle at 12% 0%, rgba(241, 142, 175, .13), transparent 31rem), radial-gradient(circle at 90% 4%, rgba(184, 154, 215, .16), transparent 34rem), #fffdfd; color: var(--hajnal-navy); font-family: var(--font); -webkit-font-smoothing: antialiased; }
@@ -1729,7 +1729,7 @@
     @media (prefers-reduced-motion: reduce) { .meeting-picker-sheet-backdrop, .meeting-picker-sheet { transition: none; } }
 
     /* Meetings redesign — one shared hero, sibling calendar/list bodies, and a child detail page. */
-    .meetings-screen { isolation: isolate; overflow: hidden; background: var(--screen-background); }
+    .meetings-screen { --meetings-body-top: var(--history-current-card-top); isolation: isolate; overflow: hidden; background: var(--screen-background); }
     .meetings-screen .status-bar { position: relative; z-index: 5; color: #11133E; }
     .meetings-hero { height: 287px; position: absolute; z-index: 0; top: 0; right: 0; left: 0; overflow: hidden; pointer-events: none; }
     .meetings-hero > img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 31%; opacity: .92; }
@@ -1738,8 +1738,11 @@
     .meetings-hero-copy h1 { margin: 0; font-size: 34px; line-height: .97; font-weight: 860; letter-spacing: -.055em; }
     .meetings-hero-copy p { margin: 10px 0 0; color: rgba(56,56,128,.74); font-size: 14px; line-height: 1.33; font-weight: 740; }
     .meetings-inline-view-switch { position: absolute; z-index: 8; top: 42px; right: 20px; pointer-events: auto; }
-    .meetings-main-content { z-index: 2; top: 250px; padding: 0 18px calc(28px + var(--bottom-nav-h)); overflow-y: auto; overscroll-behavior-y: contain; animation: meetings-body-in 190ms ease-out both; }
-    .meetings-main-content::before { content: ""; height: 13px; display: block; }
+    .meetings-main-content { z-index: 2; top: var(--meetings-body-top); padding: 0 18px 22px; overflow-y: auto; overscroll-behavior-y: contain; animation: meetings-body-in 190ms ease-out both; }
+    .meetings-main-content[data-meetings-view="list"] { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 14px; overflow: hidden; }
+    .meetings-list-fixed { min-width: 0; }
+    .meetings-list-scroll { min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .meetings-list-scroll::-webkit-scrollbar { display: none; }
     .meetings-calendar-card { margin-top: 0; padding: 14px 12px 18px; border-radius: 26px; background: rgba(255,253,254,.94); box-shadow: 0 14px 30px rgba(55,34,117,.075); }
     .meeting-calendar-month { min-height: 48px; }
     .meeting-calendar-month strong { font-size: 18px; letter-spacing: -.025em; }
@@ -2006,7 +2009,7 @@
     .history-screen[data-history-workspace="inline"] .history-period-pager-art::after { background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,250,253,.03) 55%, rgba(255,250,253,.10) 76%, transparent); }
     .history-screen[data-history-workspace="inline"] .history-period-pager-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
     .history-screen[data-history-workspace="inline"] .history-period-pager-slide[data-history-period-current="false"] .history-period-pager-art img { filter: grayscale(1) saturate(.25) contrast(.90) brightness(1.08); opacity: .68; }
-    .history-chapter-info-card { height: var(--path-overview-current-card-height); position: absolute; z-index: 3; top: 151px; right: 18px; left: 18px; display: grid; grid-template-columns: minmax(0, 1fr) 62px; align-items: center; gap: 10px; padding: 15px 16px 14px 18px; border: 1px solid rgba(44,46,119,.045); border-radius: 25px; background: rgba(255,253,254,.96); color: #352576; box-shadow: 0 10px 24px rgba(69,47,122,.08); }
+    .history-chapter-info-card { height: var(--path-overview-current-card-height); position: absolute; z-index: 3; top: var(--history-current-card-top); right: 18px; left: 18px; display: grid; grid-template-columns: minmax(0, 1fr) 62px; align-items: center; gap: 10px; padding: 15px 16px 14px 18px; border: 1px solid rgba(44,46,119,.045); border-radius: 25px; background: rgba(255,253,254,.96); color: #352576; box-shadow: 0 10px 24px rgba(69,47,122,.08); }
     .history-chapter-info-copy { min-width: 0; display: grid; gap: 3px; }
     .history-chapter-info-copy small { overflow: hidden; color: #866FAB; font-size: 9px; line-height: 1.1; font-weight: 800; letter-spacing: .08em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
     .history-chapter-info-copy strong { overflow: hidden; color: #2E2678; font-size: 21px; line-height: 1.02; font-weight: 850; letter-spacing: -.045em; text-overflow: ellipsis; white-space: nowrap; }
@@ -4972,7 +4975,7 @@
           const countThisMonth = this.meetingInstancesInRange(this.meetingMonthKey(today), localDateIso(new Date(new Date(`${this.meetingMonthKey(today)}T12:00:00`).getFullYear(), new Date(`${this.meetingMonthKey(today)}T12:00:00`).getMonth() + 1, 0))).length;
           const stats = `<section class="meetings-list-statistics" data-component="meeting-list-statistics"><header class="meetings-list-statistics-header"><strong>Gyűléseim</strong><span>nyugodt áttekintés</span></header><span class="meeting-stat attended"><b>${past.length}</b><span>látogatott</span></span><span class="meeting-stat"><b>${countThisMonth}</b><span>ebben a hónapban</span></span><span class="meeting-stat"><b>${upcoming.length}</b><span>közelgő</span></span><span class="meeting-stat maybe"><b>${upcoming.filter((item) => this.meetingAttendance(item) === 'maybe').length}</b><span>talán</span></span></section>`;
           const section = (title, items, empty, key) => `<section class="meetings-list-section"><header class="meetings-list-section-header"><h2>${title}</h2>${key === 'upcoming' ? `<button class="meetings-list-add" type="button" data-action="open-new-meeting" data-meeting-date="${today}" aria-label="Új gyűlés hozzáadása">+</button>` : `<span>${items.length} alkalom</span>`}</header>${items.length ? `<div class="meetings-day-list">${items.map((meeting) => this.renderMeetingCard(meeting, 'list')).join('')}</div>` : `<p class="meetings-list-empty">${empty}</p>`}</section>`;
-          return `${stats}${section('Közelgő gyűléseim', upcoming, 'Nincs közelgő gyűlésed. Adj hozzá egyet, amikor jól esne kapcsolódni.', 'upcoming')}${section('Korábbi gyűléseim', past, 'Amikor egy gyűlés után megjelölöd, hogy ott voltál, itt marad meg az emléke.', 'past')}`;
+          return `<div class="meetings-list-fixed">${stats}</div><div class="meetings-list-scroll">${section('Közelgő gyűléseim', upcoming, 'Nincs közelgő gyűlésed. Adj hozzá egyet, amikor jól esne kapcsolódni.', 'upcoming')}${section('Korábbi gyűléseim', past, 'Amikor egy gyűlés után megjelölöd, hogy ott voltál, itt marad meg az emléke.', 'past')}</div>`;
         }
         renderMeetingTimelineEvents() {
           const meetings = this.attendedMeetings();

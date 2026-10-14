@@ -28,6 +28,17 @@ includes('data-meeting-recurrence', 'The meeting sheet must expose recurrence ed
 includes('openMeetingFormSheet(', 'Meeting creation and editing must share one sheet controller');
 includes('closeMeetingDetail()', 'The meeting child must have an explicit return path to its sibling mode');
 
+// The calendar and the fixed List summary begin at precisely the same vertical
+// landmark as History's current-period card.  List mode must then delegate the
+// only vertical scroll to its cards, never to that summary card.
+includes('--history-current-card-top: 151px', 'History must publish its current-period card top as a shared layout token');
+includes('top: var(--history-current-card-top)', 'History must consume the shared current-period card top token');
+includes('--meetings-body-top: var(--history-current-card-top)', 'Meetings must reuse History’s card-top token for its body start');
+includes('.meetings-main-content[data-meetings-view="list"]', 'List mode needs its own fixed-header/grid layout');
+includes('.meetings-list-fixed', 'List statistics need a non-scrolling fixed wrapper');
+includes('.meetings-list-scroll', 'List cards need the dedicated vertical scroll owner');
+includes('<div class="meetings-list-fixed">${stats}</div><div class="meetings-list-scroll">', 'The List renderer must place statistics outside the list scroll container');
+
 const newMeetingSource = html.match(/        openNewMeeting\([\s\S]*?\n        openMeetingEditor/);
 assert.ok(newMeetingSource, 'The new-meeting route adapter must be present');
 assert.match(newMeetingSource[0], /openMeetingFormSheet/, 'New meetings must open in the shared sheet');
