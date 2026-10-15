@@ -148,7 +148,7 @@ async function screenshot(page, filename) {
 
 function metricsSnapshotExpression(mode) {
   const selector = mode === 'hero'
-    ? '[data-history-pager-role="current"] .history-period-pager-summary'
+    ? '[data-history-pager-role="current"] .history-chapter-info-card'
     : '[data-component="history-workspace"] .history-number-summary';
   return `(() => {
     const summary = document.querySelector(${JSON.stringify(selector)});
@@ -156,7 +156,7 @@ function metricsSnapshotExpression(mode) {
     const body = ${mode === 'hero'
       ? "document.querySelector('[data-history-pager-role=\"current\"] .history-period-pager-body')"
       : "document.querySelector('[data-component=\"history-workspace\"] .history-detail-content')"};
-    const rect = (element) => { const value = element?.getBoundingClientRect(); return value ? { left: value.left, right: value.right, width: value.width, top: value.top, bottom: value.bottom } : null; };
+    const rect = (element) => { const value = element?.getBoundingClientRect(); return value ? { left: value.left, right: value.right, width: value.width, height: value.height, top: value.top, bottom: value.bottom } : null; };
     const railRect = rect(rail);
     const hit = railRect ? document.elementsFromPoint(railRect.left + Math.min(18, railRect.width / 2), railRect.top + Math.min(18, (railRect.bottom - railRect.top) / 2)).map((element) => String(element.className || '')) : [];
     return {
@@ -172,7 +172,7 @@ function metricsSnapshotExpression(mode) {
 
 async function verifyMetricCardCountSizing(page, mode, viewport) {
   const summarySelector = mode === 'hero'
-    ? '[data-history-pager-role="current"] .history-period-pager-summary'
+    ? '[data-history-pager-role="current"] .history-chapter-info-card'
     : '[data-component="history-workspace"] .history-number-summary';
   const bodySelector = mode === 'hero'
     ? '[data-history-pager-role="current"] .history-period-pager-body'
@@ -220,17 +220,46 @@ async function verifyMetricCardCountSizing(page, mode, viewport) {
 }
 
 async function verifyHeroRail(page, viewport) {
-  await click(page, '[data-component="history-period-presentation-toggle"]');
-  await waitFor(page, "document.querySelector('[data-component=\"sobriety-batch-history\"]')?.dataset.historyPeriodPresentation === 'hero-swipe'", 'full-hero History presentation');
+  assert.equal(
+    await evalValue(page, "document.querySelector('[data-component=\"sobriety-batch-history\"]')?.dataset.historyPeriodPresentation"),
+    'hero-swipe',
+    `${viewport.width}: History must keep its established full-hero pager presentation.`
+  );
+  const collapsed = await evalValue(page, metricsSnapshotExpression('hero'));
+  const preservedPrimaryCopy = await evalValue(page, `(() => {
+    const card = document.querySelector('[data-history-pager-role="current"] .history-chapter-info-card');
+    return card ? {
+      title: card.querySelector('.history-chapter-info-copy small')?.textContent?.trim(),
+      days: card.querySelector('.history-chapter-info-copy strong')?.textContent?.trim(),
+      date: card.querySelector('.history-chapter-info-copy > span')?.textContent?.trim(),
+      hasLeaf: Boolean(card.querySelector('use[href="#icon-leaf"]'))
+    } : null;
+  })()`);
+  assert.ok(collapsed.summary && collapsed.body, `${viewport.width}: collapsed period card and timeline body must render.`);
+  assert.equal(collapsed.summary.height, 102, `${viewport.width}: the collapsed period card must retain its original 102px height.`);
+  assert.ok(Math.abs(collapsed.body.top - collapsed.summary.bottom - 14) <= 1, `${viewport.width}: collapsed timeline body must begin after the original card gap.`);
+  assert.ok(preservedPrimaryCopy?.title && preservedPrimaryCopy.days && preservedPrimaryCopy.date && preservedPrimaryCopy.hasLeaf, `${viewport.width}: the original period identity and leaf must be present before expanding metrics.`);
   await click(page, '[data-history-pager-role="current"] [data-action="toggle-history-metrics"]');
   const before = await evalValue(page, metricsSnapshotExpression('hero'));
   await screenshot(page, `history-metrics-${viewport.width}x${viewport.height}-expanded-start.png`);
   assert.ok(before.summary && before.rail && before.body, `${viewport.width}: expanded hero metrics must render.`);
+  assert.ok(before.summary.height > collapsed.summary.height, `${viewport.width}: expanding metrics must grow the existing top card rather than render a second one.`);
+  assert.ok(before.body.top > collapsed.body.top, `${viewport.width}: expanding the card must move the timeline body down.`);
+  assert.ok(Math.abs(before.body.top - before.summary.bottom - 14) <= 1, `${viewport.width}: expanded timeline body must start below the actual expanded card, never behind it.`);
+  assert.deepEqual(await evalValue(page, `(() => {
+    const card = document.querySelector('[data-history-pager-role="current"] .history-chapter-info-card');
+    return card ? {
+      title: card.querySelector('.history-chapter-info-copy small')?.textContent?.trim(),
+      days: card.querySelector('.history-chapter-info-copy strong')?.textContent?.trim(),
+      date: card.querySelector('.history-chapter-info-copy > span')?.textContent?.trim(),
+      hasLeaf: Boolean(card.querySelector('use[href="#icon-leaf"]'))
+    } : null;
+  })()`), preservedPrimaryCopy, `${viewport.width}: expanding metrics must preserve all original period-card content.`);
   assert.ok(before.summary.width <= before.body.width + .5, `${viewport.width}: footer width may not exceed its padded body.`);
   assert.ok(before.summary.right <= before.body.right + .5, `${viewport.width}: footer must retain the body right margin.`);
   assert.ok(before.rail.scrollWidth > before.rail.clientWidth, `${viewport.width}: fixed cards must create an inner horizontal range.`);
   assert.equal(before.rail.touchAction, 'pan-y', `${viewport.width}: the rail must preserve the screen's native vertical panning while its scoped controller owns x dragging.`);
-  assert.equal(before.hit.some((className) => className.includes('history-metrics-surface')), false, `${viewport.width}: expanded collapse target may not cover the rail.`);
+  assert.equal(before.hit.some((className) => className.includes('history-card-metrics-toggle')), false, `${viewport.width}: the leaf toggle may not cover the expanded metrics rail.`);
   await touchDrag(page, '[data-history-pager-role="current"] [data-history-metrics-rail]', -190, 101);
   const afterOneDrag = await evalValue(page, metricsSnapshotExpression('hero'));
   await screenshot(page, `history-metrics-${viewport.width}x${viewport.height}-expanded-middle.png`);
@@ -265,21 +294,55 @@ async function verifyHeroRail(page, viewport) {
   const afterFilterRelease = await evalValue(page, metricsSnapshotExpression('hero'));
   assert.deepEqual(afterFilterRelease.pressed, [], `${viewport.width}: tapping the same metric icon again must release the filter.`);
   assert.ok(afterFilterRelease.rail.scrollLeft > 20, `${viewport.width}: releasing a filter must preserve the rail position.`);
-  return { before, afterOneDrag, atEnd, afterFilter, afterFilterRelease, countSizing: await verifyMetricCardCountSizing(page, 'hero', viewport) };
+  await click(page, '[data-history-pager-role="current"] [data-action="toggle-history-metrics"]');
+  const collapsedAgain = await evalValue(page, metricsSnapshotExpression('hero'));
+  assert.equal(collapsedAgain.summary.height, 102, `${viewport.width}: collapsing metrics must restore the original card height.`);
+  assert.ok(Math.abs(collapsedAgain.body.top - collapsedAgain.summary.bottom - 14) <= 1, `${viewport.width}: collapsing metrics must restore the original body relationship.`);
+  await click(page, '[data-history-pager-role="current"] [data-action="toggle-history-metrics"]');
+  const reopened = await evalValue(page, metricsSnapshotExpression('hero'));
+  assert.ok(reopened.rail.scrollLeft > 20, `${viewport.width}: reopening metrics must restore its previous horizontal rail position.`);
+  // The body target starts at 62% width, so 130px clears the pager's 25%
+  // commit threshold at every covered viewport without moving outside it.
+  await touchDrag(page, '[data-history-pager-role="current"] .history-period-pager-body', 130, 121);
+  // The production pager's settle transition lasts 280ms. The rail helper's
+  // 150ms pause is enough for local scrolling but not for a full period swap.
+  await delay(320);
+  const afterOuterPagerSwipe = await evalValue(page, metricsSnapshotExpression('hero'));
+  assert.notEqual(afterOuterPagerSwipe.periodId, reopened.periodId, `${viewport.width}: a horizontal swipe outside the expanded metrics rail must still switch History periods.`);
+  assert.ok(Math.abs(afterOuterPagerSwipe.body.top - afterOuterPagerSwipe.summary.bottom - 14) <= 1, `${viewport.width}: the next period must retain the expanded card/body geometry after an outer pager swipe.`);
+  return { collapsed, before, afterOneDrag, atEnd, afterFilter, afterFilterRelease, collapsedAgain, reopened, afterOuterPagerSwipe, countSizing: await verifyMetricCardCountSizing(page, 'hero', viewport) };
 }
 
-async function verifyCardsRail(page, viewport) {
-  await click(page, '[data-component="history-period-presentation-toggle"]');
-  await waitFor(page, "document.querySelector('[data-component=\"sobriety-batch-history\"]')?.dataset.historyPeriodPresentation === 'cards'", 'cards History presentation');
-  await click(page, '[data-component="history-workspace"] [data-action="toggle-history-metrics"]');
-  const before = await evalValue(page, metricsSnapshotExpression('cards'));
-  assert.ok(before.summary && before.rail && before.body, `${viewport.width}: expanded cards metrics must render.`);
-  assert.ok(before.summary.width <= before.body.width + .5 && before.summary.right <= before.body.right + .5, `${viewport.width}: cards footer must remain bounded by the body.`);
-  assert.ok(before.rail.scrollWidth > before.rail.clientWidth, `${viewport.width}: cards presentation must have the same real horizontal rail.`);
-  await touchDrag(page, '[data-component="history-workspace"] [data-history-metrics-rail]', -190, 111);
-  const after = await evalValue(page, metricsSnapshotExpression('cards'));
-  assert.ok(after.rail.scrollLeft > before.rail.scrollLeft + 20, `${viewport.width}: cards rail must also respond to native touch.`);
-  return { before, after, countSizing: await verifyMetricCardCountSizing(page, 'cards', viewport) };
+async function verifyCalendarIntegration(page, viewport) {
+  await click(page, '[data-component="history-view-switch"] [data-action="open-history-detail-calendar"]');
+  await waitFor(page, "document.querySelector('[data-history-pager-role=\"current\"] .history-period-pager-body')?.dataset.historyPagerView === 'calendar'", 'the inline History calendar view');
+  const result = await evalValue(page, `(() => {
+    const slide = document.querySelector('[data-history-pager-role="current"]');
+    const card = slide?.querySelector('.history-chapter-info-card');
+    const body = slide?.querySelector('.history-period-pager-body');
+    const owner = slide?.querySelector('[data-history-pager-scroll-owner]');
+    const calendar = slide?.querySelector('[data-history-pager-calendar-grid]');
+    const lastDay = calendar?.querySelector('.history-calendar-day:last-child');
+    const rect = (element) => { const value = element?.getBoundingClientRect(); return value ? { top: value.top, right: value.right, bottom: value.bottom, left: value.left, width: value.width, height: value.height } : null; };
+    if (owner) owner.scrollTop = owner.scrollHeight;
+    return {
+      card: rect(card),
+      body: rect(body),
+      owner: owner ? { ...rect(owner), clientHeight: owner.clientHeight, scrollHeight: owner.scrollHeight, scrollTop: owner.scrollTop } : null,
+      calendar: rect(calendar),
+      lastDay: rect(lastDay),
+      hasStandalonePagerSummary: Boolean(slide?.querySelector('.history-period-pager-summary')),
+      rail: card?.querySelector('[data-history-metrics-rail]') ? true : false
+    };
+  })()`);
+  await screenshot(page, `history-metrics-${viewport.width}x${viewport.height}-calendar-expanded.png`);
+  assert.ok(result.card && result.body && result.owner && result.calendar && result.lastDay, `${viewport.width}: the calendar must retain the integrated period card and a scrollable calendar body.`);
+  assert.ok(Math.abs(result.body.top - result.card.bottom - 14) <= 1, `${viewport.width}: calendar body must also begin below the expanded card.`);
+  assert.equal(result.hasStandalonePagerSummary, false, `${viewport.width}: calendar mode must not restore the removed lower metrics summary.`);
+  assert.equal(result.rail, true, `${viewport.width}: calendar mode must retain the metrics carousel inside the top card.`);
+  assert.ok(result.owner.scrollHeight >= result.owner.clientHeight, `${viewport.width}: calendar content must have a real vertical scroll owner when needed.`);
+  assert.ok(result.lastDay.bottom <= result.owner.bottom + 1, `${viewport.width}: the final calendar row must remain reachable above the bottom navigation.`);
+  return result;
 }
 
 (async () => {
@@ -311,7 +374,7 @@ async function verifyCardsRail(page, viewport) {
       await waitFor(page, "Boolean(document.querySelector('[data-component=\"bottom-navigation\"] [data-action=\"open-history\"]'))", 'the initialized app shell');
       await openHistory(page);
       await screenshot(page, `history-metrics-${viewport.width}x${viewport.height}-collapsed.png`);
-      results.push({ viewport, hero: await verifyHeroRail(page, viewport), cards: await verifyCardsRail(page, viewport) });
+      results.push({ viewport, hero: await verifyHeroRail(page, viewport), calendar: await verifyCalendarIntegration(page, viewport) });
     }
     fs.writeFileSync(path.join(artifactDirectory, 'history-metrics-geometry.json'), JSON.stringify(results, null, 2));
     console.log(JSON.stringify({ artifactDirectory, results }, null, 2));

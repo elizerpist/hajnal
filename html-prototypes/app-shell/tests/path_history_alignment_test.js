@@ -18,7 +18,7 @@ assert.match(html, /\.path-screen\[data-path-view="overview"\]::before\s*\{[\s\S
 
 assert.match(html, /const timelineHeading = pagerView === 'timeline' \? this\.renderHistoryChapterScrollHeading\(events\.length\) : '';/, 'The History heading must be derived once for Timeline and calendar-rail timeline-card states.');
 assert.match(html, /history-period-pager-body" data-history-pager-view="\$\{pagerView\}">\$\{timelineHeading\}<div class="history-period-pager-scroll-owner"/, 'The History heading must render before, not inside, the pager scroll owner.');
-assert.match(html, /history-period-pager-body\[data-history-pager-view="timeline"\]\s*\{[\s\S]*?grid-template-rows:\s*43px\s+minmax\(0,\s*1fr\)\s+auto/, 'Timeline heading must reserve a fixed body-level row.');
+assert.match(html, /history-period-pager-body\[data-history-pager-view="timeline"\]\s*\{[\s\S]*?grid-template-rows:\s*43px\s+minmax\(0,\s*1fr\);/, 'Timeline heading must reserve a fixed body-level row while the former lower stats row is removed.');
 assert.match(html, /renderHistoryPagerCalendarRail\(period, timeline\)[\s\S]*?renderHistoryTimelineEventMarkup\(this\.filteredHistoryTimelineEvents\(events\)\)/, 'The pager calendar rail must reuse the shared filtered History timeline-card renderer.');
 assert.match(html, /data-component="history-calendar-rail-timeline-events"/, 'The tapped-day calendar rail must own a target for shared timeline markup.');
 assert.match(html, /renderSelectedHistoryCalendarRailTimeline\(selected\)[\s\S]*?history-calendar-rail-timeline-events[\s\S]*?renderHistoryTimelineEventMarkup\(/, 'The existing calendar rail must hydrate the shared timeline card renderer through its shared updater.');

@@ -25,7 +25,7 @@ assert.match(html, /renderHistoryPeriodMetrics\(selected\)/, 'Cards mode must re
 assert.match(html, /data-component="history-period-metrics-grid"/, 'The cards-mode metric grid needs one stable targeted mount for period-specific values.');
 assert.match(html, /historyPeriodMetrics\(period\)\s*\{[\s\S]*?return this\.historyEventTypes\(\)\.map\(\(type\)/, 'one shared metric definition must derive every displayed card from the central event-type catalogue');
 assert.match(html, /value: events\.filter\(\(event\) => this\.historyEventTypeDefinition\(event\)\.id === type\.id\)\.length/, 'every period must expose the same event-type metrics, including an honest zero when it has no matching event');
-assert.match(html, /renderHistoryPagerSummary\(period\)[\s\S]*?renderHistoryMetricCards\(period\)/, 'the hero summary must render every shared metric card, not a smaller subset');
+assert.match(html, /renderHistoryChapterMetrics\(period\)[\s\S]*?renderHistoryMetricCards\(period\)/, 'the integrated chapter card must render every shared metric card, not a smaller subset');
 assert.match(html, /renderHistoryWorkspace\(\)[\s\S]*?renderHistoryPeriodMetrics\(selected\)/, 'the cards-layout summary must receive the exact same selected-period metric cards');
 assert.doesNotMatch(html, /history-period-pager-dots|historyPagerDots\(/, 'The full-hero presentation must not render redundant carousel indicator dots.');
 assert.match(html, /data-history-period-presentation="hero-swipe"\] \.history-hero-copy\s*\{[^}]*display:\s*block;/, 'Full-hero mode must retain the static Történetem heading at the top left.');
