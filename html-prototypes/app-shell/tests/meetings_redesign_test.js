@@ -37,7 +37,23 @@ includes('--meetings-body-top: var(--history-current-card-top)', 'Meetings must 
 includes('.meetings-main-content[data-meetings-view="list"]', 'List mode needs its own fixed-header/grid layout');
 includes('.meetings-list-fixed', 'List statistics need a non-scrolling fixed wrapper');
 includes('.meetings-list-scroll', 'List cards need the dedicated vertical scroll owner');
-includes('<div class="meetings-list-fixed">${stats}</div><div class="meetings-list-scroll">', 'The List renderer must place statistics outside the list scroll container');
+includes('<div class="meetings-list-fixed">${stats}${tabs}</div><div class="meetings-list-scroll">', 'The List renderer must keep statistics and its filter outside the list scroll container');
+includes("meetingsListTab: 'upcoming'", 'Meetings needs one controller-owned list-tab state');
+includes("case 'select-meetings-list-tab': this.setMeetingsListTab", 'The list selector must transition through the existing controller');
+includes('data-component="meetings-list-tabs"', 'The list card must expose its own dual selector directly below the hero card');
+includes('data-meetings-list-tab="upcoming"', 'The selector must include the upcoming-meetings state');
+includes('data-meetings-list-tab="past"', 'The selector must include the past-meetings state');
+includes('setMeetingsListTab(tab)', 'The controller must own the upcoming/past selection');
+includes('.meetings-list-tabs { min-height: 46px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1px solid var(--hairline); border-radius: 17px; background: var(--white);', 'The meetings selector rail must be white');
+includes('.meetings-list-tab { min-width: 0; min-height: 38px; padding: 0 7px; border: 0; border-radius: 13px; background: var(--white);', 'Inactive meeting selector tabs must be white');
+includes('.meetings-list-tab[aria-selected="true"] { background: var(--hajnal-purple); color: var(--white);', 'The active meetings selector tab must use the application purple');
+includes('.meetings-inline-view-switch { position: absolute; z-index: 8; top: 32px;', 'Meetings selector must align with History at 32px');
+assert.doesNotMatch(html, /\.meetings-main-content\s*\{[^}]*animation:\s*meetings-body-in/, 'Meetings body must not slide upward when entering the route');
+assert.doesNotMatch(html, /@keyframes meetings-body-in/, 'The obsolete Meetings route-entry keyframes must be removed');
+
+const listRenderer = html.match(/        renderMeetingsListView\(\) \{[\s\S]*?\n        renderMeetingTimelineEvents\(\)/);
+assert.ok(listRenderer, 'The list renderer must be present');
+assert.doesNotMatch(listRenderer[0], /meetings-list-add|data-action="open-new-meeting"/, 'List mode must not create meetings; add actions belong exclusively to the calendar-day view');
 
 const newMeetingSource = html.match(/        openNewMeeting\([\s\S]*?\n        openMeetingEditor/);
 assert.ok(newMeetingSource, 'The new-meeting route adapter must be present');

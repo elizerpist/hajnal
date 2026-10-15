@@ -91,6 +91,7 @@ const homeNav = makeElement('return-home');
 const historyNav = makeElement('open-history');
 const pathNav = makeElement('open-path');
 const meetingsNav = makeElement('open-meetings');
+const sponsorNav = makeElement('open-sponsor');
 const mainNavigation = makeElement();
 
 root.querySelector = (selector) => ({
@@ -117,7 +118,7 @@ root.querySelector = (selector) => ({
   '[data-component="initialization-content"]': initializationContent,
   '[data-component="panic-motivation-copy"]': panicMotivationCopy,
 }[selector] || null);
-root.querySelectorAll = (selector) => selector.includes("button[data-action='return-home']") ? [homeNav, historyNav, pathNav, meetingsNav] : [];
+root.querySelectorAll = (selector) => selector.includes("button[data-action='return-home']") ? [homeNav, historyNav, pathNav, meetingsNav, sponsorNav] : [];
 
 const documentStub = {
   fullscreenElement: null,
@@ -169,12 +170,64 @@ assert.match(panicMotivationCopy.textContent, /kapcsolataimért/, 'onboarding mo
 controller.navigate('panic-relapse');
 assert.equal(root.dataset.route, 'panic-relapse', 'Pánik relapse option must open source Screen 15');
 
+controller.navigate('sponsor-next');
+assert.equal(mainNavigation.hidden, false, 'the full-screen next-conversation calendar must retain the shared BottomNav');
+assert.equal(sponsorNav.getAttribute('aria-current'), 'page', 'Sponzor stays active in the next-conversation calendar');
+controller.navigate('sponsor-since-calendar');
+assert.equal(mainNavigation.hidden, false, 'the full-screen Sponsor-since calendar must retain the shared BottomNav');
+assert.equal(sponsorNav.getAttribute('aria-current'), 'page', 'Sponzor stays active in the Sponsor-since calendar');
+
+controller.openSponsorNextCalendar();
+assert.equal(root.dataset.route, 'sponsor-next', 'Legközelebb must open one full-screen Sponsor calendar route');
+assert.equal(controller.state.sponsorCalendar.kind, 'next', 'the next-conversation route must retain its own calendar draft');
+controller.selectSponsorCalendarDate('2026-10-21');
+controller.selectSponsorCalendarTime('18:00');
+controller.saveSponsorNextCalendar();
+assert.equal(root.dataset.route, 'sponsor', 'saving the next appointment must return to Sponsor rather than a sheet');
+assert.equal(controller.state.nextConversation.date, '2026-10-21', 'the full-screen calendar must save the selected date');
+assert.equal(controller.state.nextConversation.time, '18:00', 'the full-screen calendar must save the selected time');
+assert.equal(controller.state.nextConversation.isInitial, false, 'saving the full-screen calendar must clear the initial appointment state');
+
+const persistedSponsorSince = controller.state.sponsor.since;
+controller.openSponsorSinceCalendar();
+assert.equal(root.dataset.route, 'sponsor-since-calendar', 'Sponzorom mióta must open its own full-screen calendar route');
+controller.selectSponsorCalendarDate('2025-04-12');
+controller.saveSponsorSinceCalendar();
+assert.equal(root.dataset.route, 'sponsor-details', 'saving the sponsor-since draft must return to the details page');
+assert.equal(controller.state.sponsor.since, persistedSponsorSince, 'the Sponsor-since calendar must not persist profile changes before the details form is saved');
+assert.equal(controller.state.sponsorDraft.since, '2025-04-12', 'the Sponsor-since calendar must update only the editable profile draft');
+
 controller.startSurvivalPack();
 assert.equal(root.dataset.route, 'survival', '15 perces csomag must open one data-driven survival route');
-assert.match(survivalContent.innerHTML, /1 \/ 5/, 'survival must begin at source 18A');
-for (let index = 0; index < 5; index += 1) controller.advanceSurvivalStep();
+assert.match(survivalContent.innerHTML, /1 \/ 7/, 'survival must begin at its first interactive station');
+for (let index = 0; index < 6; index += 1) controller.advanceSurvivalStep();
 assert.equal(root.dataset.route, 'survival', 'the shared survival flow must stay on its own reassessment ending rather than forcing a contact route');
-assert.equal(controller.state.survivalSession.completed, true, 'the final survival step must expose an explicit reassessment state');
+assert.equal(controller.state.survivalSession.status, 'reassessment', 'a fast path must reach reassessment without falsely claiming fifteen minutes elapsed');
+assert.notEqual(controller.state.survivalSession.status, 'completed', 'a fast path must never falsely report the fifteen-minute support window as complete');
+
+controller.startSurvivalPack({ restart: true });
+assert.ok(controller.survivalRemainingSeconds() <= 900 && controller.survivalRemainingSeconds() >= 899, 'a new survival session must begin with one real 15-minute time budget');
+controller.advanceSurvivalStep();
+controller.toggleSurvivalBreathing();
+assert.equal(controller.state.survivalSession.breathingPaused, true, 'the breathing visual may pause without stopping the whole session clock');
+controller.advanceSurvivalStep();
+controller.selectSurvivalChoice('water', 'unavailable');
+assert.equal(controller.state.survivalSession.selections.water, 'unavailable', 'the optional water choice must remain session-local');
+controller.selectSurvivalChoice('environment', 'stayed');
+assert.equal(controller.state.survivalSession.selections.environment, 'stayed', 'the optional environment choice must remain session-local');
+controller.advanceSurvivalStep();
+assert.equal(controller.state.survivalSession.currentStep, 5, 'the user reaches the waiting station without a mandatory contact action');
+controller.updateSurvivalNoteDraft('Most csak leírom, ami bennem van.');
+controller.saveSurvivalFreeNote();
+assert.equal(controller.state.freeNotes[0].type, 'free', 'writing from survival must be saved as a reusable free-note type');
+assert.equal(controller.state.freeNotes[0].source, 'survival-pack', 'writing may retain a non-routing survival source context');
+controller.startSurvivalReassessment({ early: true });
+controller.selectSurvivalOutcome('still-hard');
+controller.returnToSurvivalWait();
+assert.equal(controller.state.survivalSession.currentStep, 5, 'the still-hard path must return only to waiting, not restart the earlier stations');
+assert.equal(controller.state.survivalSession.status, 'active', 'continuing to wait reactivates the existing session');
+controller.state.survivalSession.startedAt = Date.now() - 901000;
+assert.equal(controller.survivalRemainingSeconds(), 0, 'the remaining duration must clamp at zero after fifteen minutes');
 
 controller.openMeetings('panic');
 assert.equal(root.dataset.route, 'meetings', 'Pánik and shared Gyűlések must resolve to one meetings route');
@@ -227,7 +280,8 @@ assert.ok(!html.includes('HISTORY_CALENDAR_DAY_EVENTS'), 'the route controller m
 assert.ok(!html.includes('select-history-timeline-filter'), 'the shared route controller must not retain the removed Timeline filter action');
 assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller must not retain state for removed Timeline filter pills');
 [
-  'class="survival-card"',
+  'class="survival-shell"',
+  'class="survival-footer"',
   'class="survival-action"',
   'class="source-splash-background"',
   'class="source-welcome-arch"',
@@ -237,15 +291,15 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
   'class="source-notification-list"',
   'data-action="open-timeline-event-detail"',
   'Idővonalam számokban',
-  'Állj meg.',
+  'Állj meg egy pillanatra.',
   'Lélegezz.',
-  'Igyál vizet.',
-  'Menj ki.',
-  'Írj egy mondatot.',
+  'Igyál egy korty vizet.',
+  'Válts környezetet.',
+  'Maradj még itt egy kicsit.',
 ].forEach((value) => assert.ok(html.includes(value), `dynamic route renderer must reuse a defined visual class: ${value}`));
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must be bound in the floating hero switch and retained shared workspace template');
-assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the source 18A–E pack must have exactly five data states');
+assert.equal((html.match(/id: 'survival-/g) || []).length, 7, 'the survival pack must have exactly seven data states');
 assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 2, 'the shared BottomNav and Pánik variants must target the one meeting route');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');
 

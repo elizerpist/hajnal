@@ -28,6 +28,12 @@ assert.ok(fs.existsSync(appShellPath), 'app-shell index.html must exist');
 
 const html = fs.readFileSync(appShellPath, 'utf8');
 
+assert.equal(
+  (html.match(/--home-expanded-travel:\s*96px;/g) || []).length,
+  2,
+  'the expanded Home sheet and its summary card must retain the approved 96px swipe-up travel',
+);
+
 function expectContains(value) {
   assert.ok(html.includes(value), `app shell is missing ${value}`);
 }
@@ -97,7 +103,7 @@ function expectAbsent(pattern, message) {
   "case 'open-panic': this.navigate('panic'); break;",
   "case 'open-daily-image': this.navigate('daily-image'); break;",
   "case 'return-to-milestones': this.navigate('milestones'); break;",
-  "const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor']);",
+  "const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-since-calendar']);",
   '--bottom-safe-area: env(safe-area-inset-bottom, 0px);',
   '--bottom-nav-h: calc(70px + var(--bottom-safe-area));',
   'background: #FFFCFC;',
@@ -134,7 +140,7 @@ function expectAbsent(pattern, message) {
   'Gyűlések',
   'Szponzor',
   'data-component="home-practice-block"',
-  'Ezt szeretném gyakorolni',
+  'Amit gyakorlok',
   'Megfogalmazom',
   'type="checkbox"',
   'Segítség kell',
@@ -149,9 +155,9 @@ function expectAbsent(pattern, message) {
   'Jelenlegi időszak',
   'Utam számokban',
   'data-component="evening-wizard"',
-  'Ma is tettél egy lépést.',
+  'Ma tiszta maradtam.',
   'Mi volt ma a legjobb?',
-  'A mai reflexiód mentve.',
+  'Napi reflexió',
   'A következő kapu már látszik.',
   'A türelem is haladás.',
   'Nem siettetjük a fényt.',
@@ -169,7 +175,8 @@ assert.equal(
 const homeMarkupStart = html.indexOf('<section class="home-body"');
 const homeMarkupEnd = html.indexOf('<nav class="bottom-nav"', homeMarkupStart);
 const homePracticeMarkup = html.slice(homeMarkupStart, homeMarkupEnd);
-assert.match(homePracticeMarkup, /Ezt szeretném gyakorolni/, '8B must contain the user-authored practice block');
+assert.match(homePracticeMarkup, /Amit gyakorlok/, '8B must contain the user-authored practice block');
+assert.match(homePracticeMarkup, /data-component="home-daily-reflection-block"/, '8B must expose the independent Daily reflection entry point');
 assert.doesNotMatch(homePracticeMarkup, /Mai feladataim|data-task-id=|type="checkbox"/, '8B must not retain checklist rows after the practice replacement');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
@@ -177,7 +184,7 @@ assert.ok((html.match(/data-panic-option="/g) || []).length >= 6, 'Classic Páni
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'source 31 must have one shared screen owner for Pánik and Gyűlések');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must have one visible hero switch and one retained shared workspace binding');
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
-assert.equal((html.match(/id: 'survival-/g) || []).length, 5, 'the survival data model must retain all five source 18A–E states');
+assert.equal((html.match(/id: 'survival-/g) || []).length, 7, 'the survival data model must declare the seven interactive stations');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'Pánik must reuse the one app-frame-owned BottomNav rather than render a route-local copy');
 const historyScreenStart = html.indexOf('<section class="route-screen history-screen" id="home-statistics"');
 const historyScreenEnd = html.indexOf('<section class="route-screen history-detail-screen"', historyScreenStart);
