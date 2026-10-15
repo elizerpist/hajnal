@@ -47,7 +47,7 @@ includes('setMeetingsListTab(tab)', 'The controller must own the upcoming/past s
 includes('.meetings-list-tabs { min-height: 46px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1px solid var(--hairline); border-radius: 17px; background: var(--white);', 'The meetings selector rail must be white');
 includes('.meetings-list-tab { min-width: 0; min-height: 38px; padding: 0 7px; border: 0; border-radius: 13px; background: var(--white);', 'Inactive meeting selector tabs must be white');
 includes('.meetings-list-tab[aria-selected="true"] { background: var(--hajnal-purple); color: var(--white);', 'The active meetings selector tab must use the application purple');
-includes('.meetings-inline-view-switch { position: absolute; z-index: 8; top: 32px;', 'Meetings selector must align with History at 32px');
+includes('.meetings-inline-view-switch { position: absolute; z-index: 8; top: var(--main-menu-hero-view-switch-top);', 'Meetings selector must use the same shared vertical coordinate as History');
 assert.doesNotMatch(html, /\.meetings-main-content\s*\{[^}]*animation:\s*meetings-body-in/, 'Meetings body must not slide upward when entering the route');
 assert.doesNotMatch(html, /@keyframes meetings-body-in/, 'The obsolete Meetings route-entry keyframes must be removed');
 

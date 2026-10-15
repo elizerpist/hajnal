@@ -55,6 +55,20 @@ async function run() {
     await page.locator('.bottom-nav button[data-action="open-meetings"]').click();
     await page.locator('[data-component="meetings-view-switch"] [data-meetings-view="list"]').click();
     const meetingsTop = await page.locator('[data-component="meeting-list-statistics"]').evaluate((node) => node.getBoundingClientRect().top);
+    await page.locator('.meetings-main-content[data-meetings-view="list"] [data-action="open-meeting-detail"]').first().click();
+    await page.locator('.app-frame[data-route="meeting-detail"]').waitFor();
+    const meetingDetailGeometry = await page.locator('section[data-route="meeting-detail"]').evaluate((screen) => {
+      const content = screen.querySelector('[data-component="meeting-detail-content"]')?.getBoundingClientRect();
+      const avatar = screen.querySelector('.meeting-detail-icon')?.getBoundingClientRect();
+      const nav = document.querySelector('.bottom-nav')?.getBoundingClientRect();
+      return { contentTop: content?.top, contentBottom: content?.bottom, avatarTop: avatar?.top, navTop: nav?.top };
+    });
+    assert.equal(await page.locator('.bottom-nav').isVisible(), true, 'Meeting detail must retain the shared BottomNav');
+    assert.ok(meetingDetailGeometry.contentTop >= 80 && meetingDetailGeometry.contentBottom <= meetingDetailGeometry.navTop, 'Meeting detail content must occupy the visible sponsor-details-style window above BottomNav');
+    assert.ok(meetingDetailGeometry.avatarTop >= 86 && meetingDetailGeometry.avatarTop <= 110, 'Meeting detail identity must begin near the Sponsor-details avatar geometry, without a blank top void');
+    await shot('12-meeting-detail');
+    await page.locator('[data-action="close-meeting-detail"]').click();
+    await page.locator('.app-frame[data-route="meetings"]').waitFor();
 
     await page.locator('.bottom-nav button[data-action="open-sponsor"]').click();
     await page.locator('[data-component="sponsor-contact-card"]').waitFor();
@@ -65,7 +79,7 @@ async function run() {
     });
     assert.ok(Math.abs(meetingsTop - sponsorTop) <= 2, `Sponsor card (${sponsorTop}) and Meetings card (${meetingsTop}) must share the 151px body top`);
     console.log(`Sponsor geometry: Meetings ${meetingsTop}px; Sponsor ${sponsorTop}px; delta ${Math.abs(meetingsTop - sponsorTop)}px`);
-    assert.equal(await page.locator('.sponsor-hero img').getAttribute('src'), 'assets/hero/sponsor_hero_soft.png');
+    assert.equal(await page.locator('section[data-route="sponsor"] .sponsor-hero img').getAttribute('src'), 'assets/hero/sponsor_hero_soft.png');
     await shot('01-sponsor-empty');
 
     await page.locator('[data-component="sponsor-backup-preview"] [data-action="open-sponsor-backups"]').first().click();
@@ -96,7 +110,7 @@ async function run() {
     await page.locator('section[data-route="sponsor-work"]').waitFor();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-work');
     assert.equal(await page.locator('.bottom-nav button[data-action="open-sponsor"]').getAttribute('aria-current'), 'page');
-    assert.equal(await page.locator('[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('button[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
     const sharedWorkGeometry = await page.locator('section[data-route="sponsor-work"]').evaluate((screen) => {
       const title = screen.querySelector('.sponsor-hero-copy h1');
       const profile = screen.querySelector('.sponsor-work-profile');
@@ -104,15 +118,26 @@ async function run() {
       const titleRect = title.getBoundingClientRect();
       return { titleTop: titleRect.top, titleLeft: titleRect.left, titleFontSize: getComputedStyle(title).fontSize, profileTop: profile.getBoundingClientRect().top, hero: hero.getAttribute('src') };
     });
-    assert.deepEqual({ top: sharedWorkGeometry.titleTop, left: sharedWorkGeometry.titleLeft, fontSize: sharedWorkGeometry.titleFontSize }, sponsorHeroGeometry, 'Shared work must reuse the Sponsor hero title geometry exactly');
+    assert.equal(sharedWorkGeometry.titleFontSize, sponsorHeroGeometry.fontSize, 'Shared work must reuse the Sponsor hero title size');
+    assert.ok(Math.abs(sharedWorkGeometry.titleTop - sponsorHeroGeometry.top) <= 1 && Math.abs(sharedWorkGeometry.titleLeft - sponsorHeroGeometry.left) <= 1, 'Shared work must reuse the Sponsor hero title geometry within browser rounding');
     assert.equal(sharedWorkGeometry.hero, 'assets/hero/sponsor_hero_soft.png', 'Shared work must reuse the Sponsor hero artwork');
     assert.ok(Math.abs(sharedWorkGeometry.profileTop - sponsorTop) <= 2, 'Shared work profile and Sponsor contact card must share the same body top');
+    const sharedWorkContactControls = await page.locator('section[data-route="sponsor-work"] .sponsor-work-contact-link').evaluateAll((controls) => controls.map((control) => ({
+      controlHeight: control.getBoundingClientRect().height,
+      iconHeight: control.querySelector('.icon')?.getBoundingClientRect().height || 0
+    })));
+    assert.ok(sharedWorkContactControls.every(({ controlHeight, iconHeight }) => controlHeight >= 58 && iconHeight >= 31), 'Shared-work contact controls must scale with the larger profile card, matching Sponsor quick-action prominence');
     await shot('03-sponsor-work-pending');
     await page.locator('section[data-route="sponsor-work"] [data-action="open-sponsor-details"]').click();
     await page.locator('section[data-route="sponsor-details"]').waitFor();
+    assert.equal(await page.locator('.bottom-nav').isVisible(), true, 'Sponsor details must retain the one shared BottomNav');
+    assert.equal(await page.locator('[data-action="save-sponsor-details"]').count(), 0, 'Sponsor details must not expose a manual save CTA');
+    await page.locator('[data-sponsor-name-input]').fill('Péter K.');
+    await shot('03a-sponsor-details-autosave');
     await page.locator('[data-action="close-sponsor-details"]').click();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-work');
-    assert.equal(await page.locator('[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('section[data-route="sponsor-work"] [data-sponsor-name-display]').textContent(), 'Péter K.', 'Sponsor details must persist edits while the user types');
+    assert.equal(await page.locator('button[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
     const pendingScrollGeometry = await page.locator('.sponsor-work-list-scroll').evaluate((owner) => {
       const fab = document.querySelector('[data-component="sponsor-work-fab"]');
       owner.scrollTop = owner.scrollHeight;
@@ -135,16 +160,16 @@ async function run() {
     await page.locator('section[data-route="sponsor-takeaway-editor"]').waitFor();
     await page.locator('[data-action="close-sponsor-takeaway-editor"]').click();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-work');
-    assert.equal(await page.locator('[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('button[data-sponsor-work-tab="pending"]').getAttribute('aria-selected'), 'true');
     await page.locator('[data-component="sponsor-work-fab"]').click();
     await page.locator('[data-pending-inline-input]').fill('Egy új, saját téma');
     await page.locator('[data-pending-inline-input]').press('Enter');
     await page.getByText('Egy új, saját téma', { exact: true }).waitFor();
 
-    await page.locator('[data-sponsor-work-tab="takeaways"]').click();
-    assert.equal(await page.locator('[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
+    await page.locator('button[data-sponsor-work-tab="takeaways"]').click();
+    assert.equal(await page.locator('button[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
     const takeawayAccent = await page.locator('section[data-route="sponsor-work"]').evaluate((screen) => ({
-      tabBackground: getComputedStyle(screen.querySelector('[data-sponsor-work-tab="takeaways"]')).backgroundColor,
+      tabBackground: getComputedStyle(screen.querySelector('button[data-sponsor-work-tab="takeaways"]')).backgroundColor,
       fabBackground: getComputedStyle(screen.querySelector('[data-component="sponsor-work-fab"]')).backgroundColor
     }));
     assert.equal(takeawayAccent.tabBackground, 'rgb(106, 86, 180)', 'The selected takeaway tab must use the application-purple pill surface');
@@ -167,7 +192,7 @@ async function run() {
     await page.locator('[data-takeaway-title-input]').fill('Új, közös útravaló');
     await page.locator('[data-action="save-sponsor-takeaway"]').click();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-work');
-    assert.equal(await page.locator('[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('button[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
     await page.getByText('Új, közös útravaló', { exact: true }).waitFor();
     await page.getByText('Új, közös útravaló', { exact: true }).click();
     await page.locator('[data-takeaway-title-input]').fill('Szerkesztett közös útravaló');
@@ -182,7 +207,7 @@ async function run() {
     await page.locator('[data-takeaway-id]').first().click();
     await page.locator('[data-action="close-sponsor-takeaway-editor"]').click();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-work');
-    assert.equal(await page.locator('[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('button[data-sponsor-work-tab="takeaways"]').getAttribute('aria-selected'), 'true');
 
     await page.locator('[data-action="close-sponsor-work"]').click();
     await page.locator('.bottom-nav button[data-action="open-meetings"]').click();
@@ -199,17 +224,49 @@ async function run() {
     await page.locator('section[data-route="sponsor-next"] [data-component="sponsor-calendar-content"]').waitFor();
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-next');
     assert.equal(await page.locator('.bottom-nav button[data-action="open-sponsor"]').getAttribute('aria-current'), 'page');
-    assert.ok(await page.locator('[data-component="sponsor-calendar-history"] .sponsor-calendar-history-item').count() > 0, 'The full-screen appointment calendar must render its dedicated mock prior-appointments list');
+    assert.equal(await page.locator('.bottom-nav').isVisible(), true, 'Sponsor next must keep the shared BottomNav visible');
+    assert.equal(await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="calendar"]').getAttribute('aria-pressed'), 'true');
+    assert.ok(await page.locator('[data-component="sponsor-calendar-content"] [data-action="open-sponsor-next-native-time-picker"]').count() > 0, 'Calendar mode must offer a native time picker from the selected calendar day');
+    assert.equal(await page.locator('[data-component="sponsor-calendar-content"] .sponsor-calendar-time-card').count(), 0, 'Calendar mode must not retain the former custom time-picker card');
+    assert.equal(await page.locator('[data-component="sponsor-calendar-content"]').evaluate((node) => node.scrollTop), 0, 'Opening the sponsor calendar grid must start at the top of its content');
+    const pastConversationDay = page.locator('[data-component="sponsor-calendar-content"] [data-sponsor-calendar-date="2026-10-08"]');
+    assert.equal(await pastConversationDay.isDisabled(), false, 'Past sponsor-conversation days must remain selectable in the calendar grid');
+    await pastConversationDay.click();
+    assert.equal(await pastConversationDay.getAttribute('aria-pressed'), 'true', 'Selecting a past sponsor-conversation day must keep it highlighted in place');
+    assert.ok(await page.locator('[data-component="sponsor-calendar-history"] .sponsor-conversation-card').count() > 0, 'A past selected day must reveal its recorded conversation cards');
+    await shot('05b-sponsor-next-past-calendar');
+    const sponsorNextHeader = await page.locator('section[data-route="sponsor-next"]').evaluate((screen) => {
+      const back = screen.querySelector('[data-action="close-sponsor-calendar"]')?.getBoundingClientRect();
+      const title = screen.querySelector('.sponsor-next-hero-copy h1')?.getBoundingClientRect();
+      return { backRight: back?.right, titleLeft: title?.left };
+    });
+    assert.ok(sponsorNextHeader.titleLeft >= sponsorNextHeader.backRight + 8, 'Sponsor-next title must start after the back control instead of overlapping it');
     await shot('05-sponsor-next-calendar');
-    await page.locator('[data-action="close-sponsor-calendar"]').click();
+    await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="list"]').click();
+    await page.locator('[data-component="sponsor-next-upcoming-card"]').waitFor();
+    assert.equal(await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="list"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('.sponsor-next-list-scroll').evaluate((node) => getComputedStyle(node).overflowY), 'auto', 'Past sponsor conversations must own their list scroll');
+    await shot('05a-sponsor-next-list');
+    await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="calendar"]').click();
+    await page.locator('[data-component="sponsor-calendar-content"] [data-action="open-sponsor-next-native-time-picker"]').waitFor();
+    assert.equal(await page.locator('[data-component="sponsor-calendar-content"]').evaluate((node) => node.scrollTop), 0, 'Returning to the sponsor calendar grid must reset the content scroll to the top');
+    await page.locator('section[data-route="sponsor-next"] [data-action="close-sponsor-calendar"]').click();
     await page.locator('section[data-route="sponsor"]').waitFor();
 
-    await page.locator('[data-action="open-sponsor-details"]').click();
-    await page.locator('[data-action="open-sponsor-since-calendar"]').click();
-    await page.locator('section[data-route="sponsor-since-calendar"] [data-component="sponsor-since-calendar-content"]').waitFor();
-    assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-since-calendar');
-    await shot('06-sponsor-since-calendar');
-    await page.locator('[data-action="close-sponsor-calendar"]').click();
+    await page.locator('section[data-route="sponsor"] [data-action="open-sponsor-details"]').click();
+    await page.locator('[data-component="sponsor-availability-inline"]').waitFor();
+    assert.equal(await page.locator('[data-sponsor-since-native]').getAttribute('type'), 'date', 'Sponsor-since must use the platform date input');
+    assert.ok(await page.locator('[data-sponsor-inline-native-time]').count() === 2, 'The selected availability day must use two platform time inputs');
+    assert.equal(await page.locator('[data-component="sponsor-availability-day-rail"] button').count(), 7, 'Sponsor details must keep all seven compact day choices inline');
+    assert.equal(await page.locator('[data-action="save-sponsor-details"]').count(), 0, 'Sponsor details must remain auto-saved without a manual CTA');
+    const sponsorDetailsFit = await page.locator('.sponsor-detail-content').evaluate((content) => ({
+      clientHeight: content.clientHeight,
+      scrollHeight: content.scrollHeight,
+      timeFieldHeight: content.querySelector('.sponsor-inline-time')?.getBoundingClientRect().height || 0
+    }));
+    assert.ok(sponsorDetailsFit.scrollHeight <= sponsorDetailsFit.clientHeight, 'Sponsor details must fit above the shared BottomNav without requiring page scroll at 412×892');
+    assert.ok(sponsorDetailsFit.timeFieldHeight <= 44, 'The inline availability time pills must remain compact');
+    await shot('06-sponsor-details-availability');
     assert.equal(await page.locator('.app-frame').getAttribute('data-route'), 'sponsor-details');
     assert.deepEqual(pageErrors, [], `unexpected browser errors: ${pageErrors.join('; ')}`);
   } finally {

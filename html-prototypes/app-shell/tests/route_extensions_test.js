@@ -136,8 +136,6 @@ const controller = sandbox.globalThis.__routeController;
 assert.equal(mainNavigation.hidden, false, 'Home must expose the one app-frame-owned BottomNav');
 controller.navigate('history');
 assert.equal(mainNavigation.hidden, false, 'History must retain the same BottomNav instead of mounting a route-local copy');
-controller.navigate('timeline');
-assert.equal(mainNavigation.hidden, false, 'Timeline must retain the same BottomNav above its route layer');
 controller.navigate('timeline-event-detail');
 assert.equal(mainNavigation.hidden, true, 'the full-height event detail must hide the one shared BottomNav');
 controller.navigate('panic');
@@ -173,9 +171,6 @@ assert.equal(root.dataset.route, 'panic-relapse', 'Pánik relapse option must op
 controller.navigate('sponsor-next');
 assert.equal(mainNavigation.hidden, false, 'the full-screen next-conversation calendar must retain the shared BottomNav');
 assert.equal(sponsorNav.getAttribute('aria-current'), 'page', 'Sponzor stays active in the next-conversation calendar');
-controller.navigate('sponsor-since-calendar');
-assert.equal(mainNavigation.hidden, false, 'the full-screen Sponsor-since calendar must retain the shared BottomNav');
-assert.equal(sponsorNav.getAttribute('aria-current'), 'page', 'Sponzor stays active in the Sponsor-since calendar');
 
 controller.openSponsorNextCalendar();
 assert.equal(root.dataset.route, 'sponsor-next', 'Legközelebb must open one full-screen Sponsor calendar route');
@@ -188,14 +183,11 @@ assert.equal(controller.state.nextConversation.date, '2026-10-21', 'the full-scr
 assert.equal(controller.state.nextConversation.time, '18:00', 'the full-screen calendar must save the selected time');
 assert.equal(controller.state.nextConversation.isInitial, false, 'saving the full-screen calendar must clear the initial appointment state');
 
-const persistedSponsorSince = controller.state.sponsor.since;
-controller.openSponsorSinceCalendar();
-assert.equal(root.dataset.route, 'sponsor-since-calendar', 'Sponzorom mióta must open its own full-screen calendar route');
-controller.selectSponsorCalendarDate('2025-04-12');
-controller.saveSponsorSinceCalendar();
-assert.equal(root.dataset.route, 'sponsor-details', 'saving the sponsor-since draft must return to the details page');
-assert.equal(controller.state.sponsor.since, persistedSponsorSince, 'the Sponsor-since calendar must not persist profile changes before the details form is saved');
-assert.equal(controller.state.sponsorDraft.since, '2025-04-12', 'the Sponsor-since calendar must update only the editable profile draft');
+controller.openSponsorDetails();
+controller.updateSponsorSinceFromNative('2025-04-12');
+assert.equal(root.dataset.route, 'sponsor-details', 'Sponzorom mióta must remain on the details route while the native picker updates it');
+assert.equal(controller.state.sponsor.since, '2025-04-12', 'the native Sponsor-since picker must persist the chosen date without a manual profile-save CTA');
+assert.equal(controller.state.sponsorDraft.since, '2025-04-12', 'the persisted Sponsor-since value must remain available in the current details draft');
 
 controller.startSurvivalPack();
 assert.equal(root.dataset.route, 'survival', '15 perces csomag must open one data-driven survival route');
@@ -251,7 +243,8 @@ assert.equal(root.dataset.route, 'home', 'initialization completion must return 
 [
   "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
   "case 'open-history-detail-calendar': this.openHistoryDetail('calendar'); break;",
-  "case 'open-history-calendar-rail': this.openHistoryCalendarRail(event.target.closest('[data-history-calendar-date]')?.dataset.historyCalendarDate); break;",
+  "case 'open-history-calendar-rail': {",
+  "else this.selectHistoryCalendarGridDate(date);",
   "case 'open-history-calendar-grid': this.openHistoryCalendarGrid(); break;",
   "case 'toggle-history-hero-variant': this.toggleHistoryHeroVariant(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
   "case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;",
@@ -300,7 +293,7 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must be bound in the floating hero switch and retained shared workspace template');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 7, 'the survival pack must have exactly seven data states');
-assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 2, 'the shared BottomNav and Pánik variants must target the one meeting route');
+assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 1, 'the shared BottomNav must retain the one Meetings route while Pánik uses its inline meeting card');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');
 
 console.log('PASS shared route extensions and initialization contract');

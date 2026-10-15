@@ -55,7 +55,6 @@ function expectAbsent(pattern, message) {
   'data-component="checklist-sheet"',
   'class="bottom-nav"',
   'data-route="home"',
-  'class="route-screen timeline-screen" id="home-statistics-timeline"',
   'class="route-screen milestone-screen" id="progress-milestones"',
   'class="route-screen history-screen" id="home-statistics"',
   'class="route-screen panic-screen" id="panic-root"',
@@ -68,13 +67,12 @@ function expectAbsent(pattern, message) {
   'class="route-screen panic-contacts-screen" id="panic-contacts"',
   'class="route-screen meetings-screen" id="meetings"',
   'class="route-screen initialization-screen" id="initialization"',
-  'data-screen="home-statistics-timeline"',
   'data-screen="progress-milestones"',
   'data-screen="home-statistics"',
   'data-screen="panic-root"',
   'data-screen="daily-image"',
   'data-screen="checkin-clean"',
-  'data-action="open-current-period-timeline"',
+  'data-action="open-daily-overview"',
   'data-action="open-milestones"',
   'data-action="open-history"',
   'data-action="open-panic"',
@@ -82,7 +80,7 @@ function expectAbsent(pattern, message) {
   'data-action="return-to-milestones"',
   'data-action="mark-clean-today"',
   'data-action="open-history-detail"',
-  'data-action="open-panic-why"',
+  'data-action="open-panic-motivation-sheet"',
   'data-action="open-panic-relapse"',
   'data-action="start-survival-pack"',
   'data-action="open-meetings"',
@@ -97,13 +95,12 @@ function expectAbsent(pattern, message) {
   'document.exitFullscreen()',
   "document.addEventListener('fullscreenchange'",
   'updateFullscreenButton()',
-  "case 'open-current-period-timeline': this.navigate('timeline'); break;",
   "case 'open-milestones': this.navigate('milestones'); break;",
   "case 'open-history': this.navigate('history'); break;",
   "case 'open-panic': this.navigate('panic'); break;",
   "case 'open-daily-image': this.navigate('daily-image'); break;",
   "case 'return-to-milestones': this.navigate('milestones'); break;",
-  "const NAVIGATION_ROUTES = new Set(['home', 'timeline', 'milestones', 'history', 'history-detail', 'meetings', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-since-calendar']);",
+  "const NAVIGATION_ROUTES = new Set(['home', 'milestones', 'history', 'history-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details']);",
   '--bottom-safe-area: env(safe-area-inset-bottom, 0px);',
   '--bottom-nav-h: calc(70px + var(--bottom-safe-area));',
   'background: #FFFCFC;',
@@ -112,7 +109,7 @@ function expectAbsent(pattern, message) {
   'html:fullscreen .home-illustration',
   "case 'mark-clean-today': this.markCleanToday(); break;",
   "case 'open-history-detail': this.openHistoryDetail('timeline', event.target.closest('[data-history-batch]')?.querySelector('h2')?.textContent); break;",
-  "case 'open-panic-why': this.navigate('panic-why'); break;",
+  "case 'open-panic-motivation-sheet': this.openPanicMotivationSheet(event.target.closest('[data-action=\"open-panic-motivation-sheet\"]')); break;",
   "case 'open-panic-relapse': this.navigate('panic-relapse'); break;",
   "case 'start-survival-pack': this.startSurvivalPack(); break;",
   "case 'open-meetings': this.openMeetings(event.target.closest('[data-meetings-origin]')?.dataset.meetingsOrigin || 'home'); break;",
@@ -145,11 +142,7 @@ function expectAbsent(pattern, message) {
   'type="checkbox"',
   'Segítség kell',
   'Nem vagy egyedül.',
-  'Hívd a szponzorod',
-  'Hívd a tartalék kapcsolattartót',
   '15 perces túlélőcsomag',
-  'Olvasd el, miért kezdted el',
-  'Keresd meg a következő meetinget',
   'Visszaestem',
   'Fejezeteim és emlékeim',
   'Jelenlegi időszak',
@@ -176,11 +169,24 @@ const homeMarkupStart = html.indexOf('<section class="home-body"');
 const homeMarkupEnd = html.indexOf('<nav class="bottom-nav"', homeMarkupStart);
 const homePracticeMarkup = html.slice(homeMarkupStart, homeMarkupEnd);
 assert.match(homePracticeMarkup, /Amit gyakorlok/, '8B must contain the user-authored practice block');
-assert.match(homePracticeMarkup, /data-component="home-daily-reflection-block"/, '8B must expose the independent Daily reflection entry point');
+assert.doesNotMatch(homePracticeMarkup, /home-daily-reflection|A mai napom/, 'The short Home sheet must not contain a second Daily reflection card');
 assert.doesNotMatch(homePracticeMarkup, /Mai feladataim|data-task-id=|type="checkbox"/, '8B must not retain checklist rows after the practice replacement');
+assert.match(html, /class="metric clean-days-metric"[^>]*data-action="open-daily-overview"[^>]*aria-label="Napi áttekintés megnyitása"/, 'Tiszta napok must open its compact daily-overview chooser rather than a direct route');
+assert.match(html, /\.home-metrics\s*\{[^}]*min-height:\s*118px;[^}]*right:\s*58px;[^}]*left:\s*58px;[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+1px\s+minmax\(0,\s*1fr\);/, 'The summary card must retain its exact two-column 118px geometry');
+assert.match(html, /class="metric-goal"[^>]*>\/ 90 nap<\//, 'The 90-day target must share the count line rather than add a row');
+assert.match(html, /class="metric-reflection-link"[^>]*>[^<]*<svg[^>]*>[^<]*<use href="#icon-heart"\/>[\s\S]*?Reflexió[\s\S]*?›/, 'The compact left summary must include one reflection affordance inside its existing tap target');
+assert.match(html, /data-component="daily-overview-menu"[\s\S]*?role="dialog"[\s\S]*?Napi áttekintés/, 'A compact dismissible Daily overview overlay must remain locally owned by Home');
+assert.match(html, /data-component="daily-overview-menu"[^>]*data-app-overlay-sheet/, 'The overview chooser must reuse the app overlay lifecycle instead of changing Home geometry');
+assert.match(html, /handlePlatformBack\(\)[\s\S]*?isDailyOverviewMenuOpen\(\)[\s\S]*?closeDailyOverviewMenu\(\); return;/, 'Android Back must dismiss the overview chooser before navigating');
+assert.match(html, /event\.key === 'Escape'[\s\S]*?isDailyOverviewMenuOpen\(\)[\s\S]*?closeDailyOverviewMenu\(\); return;/, 'Escape must dismiss the overview chooser before another Home action');
+assert.match(html, /data-action="open-current-period-history-timeline"/, 'The overview must offer the canonical current-period Timeline');
+assert.match(html, /data-action="open-daily-reflection-from-overview"/, 'The overview must offer the shared daily reflection wizard');
+assert.doesNotMatch(html, /open-current-period-timeline|data-route="timeline"|home-statistics-timeline/, 'The retired placeholder Timeline route must not remain reachable or mounted');
+assert.match(html, /\.home-body\s*\{[^}]*overflow:\s*hidden;/, 'The compact Home sheet must not become vertically scrollable');
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
-assert.ok((html.match(/data-panic-option="/g) || []).length >= 6, 'Classic Pánik must retain its six quick options alongside the alternative renderer');
+assert.equal((html.match(/data-panic-option="/g) || []).length, 0, 'The retired six-tile Pánik layout must not remain mounted');
+assert.match(html, /panic-alternative-grid[\s\S]*?toggle-panic-next-meeting/, 'The single fixed Pánik layout must retain the three-tile alternative grid with inline next-meeting access');
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'source 31 must have one shared screen owner for Pánik and Gyűlések');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must have one visible hero switch and one retained shared workspace binding');
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');

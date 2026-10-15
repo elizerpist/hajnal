@@ -46,5 +46,10 @@ assert.match(html, /historyPagerPointerCancel\(event\)[\s\S]*?drag\.axis === 'ho
 assert.match(html, /\.history-period-pager-scroll-owner \{ min-height: 0; overflow-y: auto;[^}]*touch-action: pan-y;/, 'The pager must preserve one native vertical Timeline scroll owner per active slide.');
 assert.match(html, /data-history-period-presentation="hero-swipe"\][\s\S]{0,1200}\.history-full-page-pager\s*\{[^}]*display:\s*block/, 'The common pager must be visible only in hero-swipe mode.');
 assert.match(html, /data-history-period-presentation="hero-swipe"\][\s\S]{0,1800}\.history-workspace\s*\{[^}]*display:\s*none/, 'The old detached workspace must not run in parallel in hero-swipe mode.');
+assert.match(html, /\.history-detail-event-list\s*\{\s*--history-event-node-size:\s*32px;\s*--history-event-node-inline-offset:\s*2px;\s*--history-event-node-center:\s*16px;/, 'One shared History event-list geometry must reserve a smaller icon column for wider cards.');
+assert.match(html, /\.history-detail-event-list::before\s*\{[^}]*left:\s*calc\(var\(--history-event-node-inline-offset\) \+ var\(--history-event-node-center\)\);/, 'The History timeline line must use the shared node centre rather than a stale hard-coded coordinate.');
+assert.match(html, /\.history-event-node\s*\{[^}]*align-self:\s*center;[^}]*border:\s*3px solid/, 'Every History event icon must stay vertically centred against its adjacent card while becoming more compact.');
+assert.doesNotMatch(html, /<img class="history-event-mini"/, 'History timeline cards must not render embedded artwork thumbnails.');
+assert.doesNotMatch(html, /\.history-event-card \.history-event-mini\s*\{/, 'The retired History timeline artwork-thumbnail styling must not remain.');
 
 console.log('history_full_page_pager_test: PASS');

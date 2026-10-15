@@ -6,10 +6,12 @@ const path = require('node:path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
-assert.match(html, /panicVariant:\s*(?:this\.readPanicVariant\(\)|'classic')/, 'Pánik must have controller-owned Classic/Alternative state');
-assert.match(html, /togglePanicVariant\(\)/, 'Pánik must expose one variant toggle action');
-assert.match(html, /renderPanicVariant\(\)/, 'Pánik must render exactly the active variant');
-assert.match(html, /data-action="toggle-panic-variant"/, 'the former Panic close affordance must be the view toggle');
+assert.match(html, /panicNextMeetingOpen:\s*false/, 'Pánik must own the inline next-meeting state');
+assert.match(html, /renderPanicVariant\(\)/, 'Pánik must render the fixed alternative layout');
+assert.match(html, /data-action="toggle-panic-next-meeting"/, 'The fixed Panic layout must reveal the next meeting in place');
+assert.match(html, /data-component="panic-next-meeting-slot"/, 'The next meeting needs an inline layout slot');
+assert.doesNotMatch(html, /data-action="toggle-panic-variant"/, 'The removed panic layout toggle must not survive');
+assert.doesNotMatch(html, /renderPanicClassic\(/, 'The static six-tile panic layout must be removed');
 assert.match(html, /panic-alternative/, 'Alternative Pánik needs its own scoped view boundary');
 assert.match(html, /panic-main-button--pulse/, 'Alternative help button must receive a scoped pulse class');
 assert.match(html, /@keyframes\s+panic-help-pulse/, 'Alternative help pulse needs a CSS keyframe');

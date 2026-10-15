@@ -9,6 +9,7 @@ const shellPath = path.resolve(__dirname, '..', 'index.html');
 const source = fs.readFileSync(shellPath, 'utf8');
 const heroDirectory = path.resolve(__dirname, '..', 'assets', 'history-chapter-hero');
 const periodIds = ['2024-05', '2024-06', '2024-08', '2024-10', '2025-01', '2025-05', '2025-06', '2025-08', '2025-11', 'current'];
+const currentHeroAsset = path.join(heroDirectory, 'current_richer.png');
 
 assert.match(source, /historyPeriodPresentation:\s*'hero-swipe'/, 'History must start in the permanent hero-swipe presentation.');
 assert.doesNotMatch(source, /history-period-carousel/, 'The retired History card carousel must not remain in markup, styles, or runtime code.');
@@ -18,7 +19,11 @@ assert.match(source, /history-chapter-scroll-heading/, 'The scroll zone needs it
 assert.match(source, /var\(--path-overview-current-card-height\)/, 'The chapter card must use the shared Ösvény hero-card height token.');
 assert.match(source, /renderHistoryLayout\(\)\s*\{[\s\S]*?this\.renderHistoryFullPagePager\(\);[\s\S]*?\}/, 'History layout must render through the one existing full-page pager.');
 assert.match(source, /assets\/history-chapter-hero\/2024-05\.png/, 'History periods must point to the regenerated chapter hero assets.');
+assert.match(source, /const HISTORY_CURRENT_PERIOD_HERO_ASSET = 'assets\/history-chapter-hero\/current_richer\.png';/, 'The current period must resolve its richer hero through one named asset constant.');
+assert.match(source, /id: 'current',[\s\S]*?heroArt: HISTORY_CURRENT_PERIOD_HERO_ASSET/, 'Only the current History chapter must use the richer current-period artwork.');
 assert.match(source, /history-period-pager-slide\[data-history-period-current="false"\][\s\S]*?grayscale\(1\)/, 'Past chapters must remain visually subdued.');
+assert.ok(fs.existsSync(currentHeroAsset), 'Missing the generated richer current History hero artwork.');
+assert.ok(fs.statSync(currentHeroAsset).size > 10000, 'The richer current History hero artwork is unexpectedly small.');
 
 for (const id of periodIds) {
   const assetPath = path.join(heroDirectory, `${id}.png`);
