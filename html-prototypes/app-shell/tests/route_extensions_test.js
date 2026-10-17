@@ -137,7 +137,7 @@ assert.equal(mainNavigation.hidden, false, 'Home must expose the one app-frame-o
 controller.navigate('history');
 assert.equal(mainNavigation.hidden, false, 'History must retain the same BottomNav instead of mounting a route-local copy');
 controller.navigate('timeline-event-detail');
-assert.equal(mainNavigation.hidden, true, 'the full-height event detail must hide the one shared BottomNav');
+assert.equal(mainNavigation.hidden, false, 'the History event detail must retain the one shared BottomNav');
 controller.navigate('panic');
 assert.equal(mainNavigation.hidden, false, 'Pánik root must reuse the same BottomNav');
 controller.navigate('panic-why');
@@ -160,6 +160,7 @@ assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stay
 controller.navigate('timeline-event-detail');
 assert.equal(root.dataset.route, 'timeline-event-detail', 'a timeline event must still open the distinct event-detail route');
 assert.equal(historyNav.getAttribute('aria-current'), 'page', 'Történetem stays active inside event detail');
+assert.equal(mainNavigation.hidden, false, 'the event detail keeps Történetem active without hiding the shared BottomNav');
 
 controller.navigate('panic-why');
 assert.equal(root.dataset.route, 'panic-why', 'Pánik why option must open source Screen 30');
@@ -293,7 +294,13 @@ assert.ok(!html.includes('historyTimelineFilter'), 'the shared route controller 
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'Screen 31 must be defined once for both entry points');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must be bound in the floating hero switch and retained shared workspace template');
 assert.equal((html.match(/id: 'survival-/g) || []).length, 7, 'the survival pack must have exactly seven data states');
-assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 1, 'the shared BottomNav must retain the one Meetings route while Pánik uses its inline meeting card');
+assert.ok((html.match(/data-action="open-meetings"/g) || []).length >= 1, 'the shared BottomNav must retain the one Meetings route while Pánik uses its focus-popup next-meeting helper');
 assert.ok(!/\bfetch\s*\(/.test(html), 'new routes must remain offline without fetch');
+assert.match(html, /const NAVIGATION_ROUTES = new Set\(\[[^\]]*'timeline-event-detail'/, 'the controller-owned navigation route set must include event detail so the shared BottomNav remains visible');
+assert.match(html, /\.timeline-event-detail-content\s*\{[^}]*bottom:\s*var\(--bottom-nav-h\);/s, 'event-detail content must reserve the shared BottomNav instead of scrolling behind it');
+assert.doesNotMatch(html, /timeline-event-tags|>Címkék</, 'event-detail markup must not render the retired tags row or tag pills');
+assert.doesNotMatch(html, /timeline-event-images|timeline-event-add-image|<h3>Képek<\/h3>|Kép hozzáadása/, 'event-detail markup must not expose an unsupported image upload section');
+assert.doesNotMatch(html, /timeline-event-detail-more|aria-label="További lehetőségek">•••/, 'event detail must not render an inactive three-dot menu');
+assert.match(html, /\.timeline-event-detail-screen \.timeline-event-hero\s*\{[^}]*height:\s*148px;/s, 'only the event-detail hero must use the compact 148px height');
 
 console.log('PASS shared route extensions and initialization contract');

@@ -24,12 +24,15 @@ assert.doesNotMatch(html, /data-action="open-sponsor-availability"/, 'The former
 assert.doesNotMatch(html, /data-action="open-sponsor-since-calendar"/, 'The former sponsor-since calendar route entrypoint must be removed');
 assert.doesNotMatch(html, /sponsor-availability-sheet/, 'The former availability sheet styles and host must be removed');
 
-// Panic mode is intentionally one focused arrangement, and the next meeting
-// expands in place without navigating to the organiser screen.
-includes('panicNextMeetingOpen: false', 'Panic needs controller-owned inline meeting-card state');
-includes('data-action="toggle-panic-next-meeting"', 'The alternative quick action must toggle the inline meeting card');
-includes('data-component="panic-next-meeting-slot"', 'The inline card needs a stable layout slot beneath the three tiles');
-includes('renderPanicNextMeetingPanel()', 'Panic must update only its inline meeting panel');
+// Panic mode is intentionally one focused arrangement. The next meeting stays
+// in Panic, but now uses the existing centered focus-popup primitive instead
+// of adding vertical content beneath the quick actions.
+includes('panicNextMeetingOpen: false', 'Panic needs controller-owned next-meeting popup state');
+includes('data-action="toggle-panic-next-meeting"', 'The alternative quick action must toggle the next-meeting popup');
+includes('data-component="panic-next-meeting-popup"', 'The next meeting needs a dedicated focus-popup host');
+includes('renderPanicNextMeetingPopup()', 'Panic must update only its popup meeting content');
+includes('openAppOverlaySheet(this.panicNextMeetingPopupHost, trigger)', 'The next meeting must reuse the common overlay/focus lifecycle');
+assert.doesNotMatch(html, /data-component="panic-next-meeting-slot"/, 'The retired inline panel slot must not remain mounted');
 includes('panicRelevantMeetingInstances(', 'Panic must derive the next meeting from shared recurring instances');
 includes('data-action="panic-next-meeting-plan"', 'The panic card must use shared occurrence attendance');
 assert.doesNotMatch(html, /data-action="toggle-panic-variant"/, 'The removed Panic layout switch must not remain interactive');
@@ -47,5 +50,6 @@ includes('sponsorNextView:', 'The selected Sponsor next view must be held in con
 includes('renderSponsorNextListView()', 'The list view must render its fixed upcoming card and scrollable past cards');
 includes('renderSponsorConversationCardsForDate(', 'Calendar mode must render only selected-day conversation cards');
 includes('data-component="sponsor-next-upcoming-card"', 'List mode requires its fixed hero-under upcoming card');
+includes('class="meetings-day-list sponsor-next-conversation-list"', 'Sponsor next conversation cards must reuse the Meetings list gap instead of stacking flush');
 
 console.log('PASS sponsor, panic and next-meeting refinement source contract');

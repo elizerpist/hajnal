@@ -16,7 +16,8 @@ assert.match(html, /data-action="select-practice-source"/, 'The editor must be a
 assert.match(html, /getPracticeSourceCandidates\(\)\s*\{[\s\S]*?stepHistory/, 'The source picker must include saved Path runs, not only the current view');
 assert.match(html, /practices:\s*\[\],[\s\S]*?activePracticeId:\s*null/, 'A fresh manager must not invent a demonstration exercise');
 assert.match(html, /editorDraft/, 'Closing an unfinished editor must preserve a local draft');
-assert.match(html, /data-action="set-practice-list-filter"/, 'Paused and archived practices must have a compact manager filter');
+assert.match(html, /practicePickerArtwork\(practice\)/, 'The new picker must resolve its generated artwork through one controller owner');
+assert.doesNotMatch(html, /data-practice-filter-select/, 'The reference picker must not retain the retired status filter control');
 assert.doesNotMatch(html, /align-items:\s*end;[\s\S]*?\.practice-sheet/, 'The retired bottom-aligned practice sheet must not remain active');
 
 assert.match(html, /data-action="open-sponsor-next-native-time-picker"/, 'Sponsor calendar must open the native time picker from its calendar card');

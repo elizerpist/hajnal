@@ -95,10 +95,9 @@ function createServer(root) {
     if (screenshotDir) await page.screenshot({ path: path.join(screenshotDir, '14-practice-editor-filled.png') });
 
     await page.locator('[data-action="save-practice-editor"]').click();
-    await page.getByRole('button', { name: 'Vissza a gyakorlataimhoz' }).click();
-    await page.locator('.practice-active-card').waitFor();
-    assert.equal(await page.locator('.practice-active-card strong').textContent(), 'Figyelmes meghallgatás', 'Saving a new practice must place it in the single active-card slot');
-    assert.equal(await page.locator('.practice-manager-row').count(), 0, 'An active practice must not be duplicated in the remaining-practices list');
+    await page.locator('.practice-current-card').waitFor();
+    assert.equal(await page.locator('.practice-current-card strong').textContent(), 'Figyelmes meghallgatás', 'Saving a new practice must place it in the single fixed current-practice slot');
+    assert.equal(await page.locator('.practice-list-card').count(), 0, 'An active practice must not be duplicated in the remaining-practices list');
     if (screenshotDir) await page.screenshot({ path: path.join(screenshotDir, '15-practice-manager-active.png') });
 
     // A reflection that was opened earlier in the day can safely attach a

@@ -82,8 +82,8 @@ assert.equal(
 );
 assert.match(
   html,
-  /const NAVIGATION_ROUTES = new Set\(\['home', 'milestones', 'history', 'history-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details'\]\);/,
-  'one route policy must keep the shared BottomNav visible on the requested meeting detail route',
+  /const NAVIGATION_ROUTES = new Set\(\['home', 'milestones', 'history', 'history-detail', 'timeline-event-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details'\]\);/,
+  'one route policy must keep the shared BottomNav visible on the requested meeting and History event-detail routes',
 );
 assert.match(
   html,

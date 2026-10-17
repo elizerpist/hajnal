@@ -246,6 +246,7 @@ async function run() {
     await page.locator('[data-component="sponsor-next-upcoming-card"]').waitFor();
     assert.equal(await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="list"]').getAttribute('aria-pressed'), 'true');
     assert.equal(await page.locator('.sponsor-next-list-scroll').evaluate((node) => getComputedStyle(node).overflowY), 'auto', 'Past sponsor conversations must own their list scroll');
+    assert.equal(await page.locator('.sponsor-next-conversation-list').evaluate((node) => getComputedStyle(node).rowGap), '10px', 'Sponsor conversation cards must reuse the Meetings list-mode 10px card gap');
     await shot('05a-sponsor-next-list');
     await page.locator('[data-component="sponsor-next-view-switch"] [data-sponsor-next-view="calendar"]').click();
     await page.locator('[data-component="sponsor-calendar-content"] [data-action="open-sponsor-next-native-time-picker"]').waitFor();

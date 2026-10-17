@@ -44,8 +44,10 @@
     .home-subtitle { display: block; margin-top: 7px; color: rgba(255, 255, 255, .84); font-size: 13px; font-weight: 650; }
     .home-tagline { display: block; margin-top: 18px; color: rgba(255, 255, 255, .97); font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.05; font-weight: 700; }
 
-    .home-body { --home-expanded-travel: 96px; position: absolute; z-index: 20; top: calc(682px - var(--sheet-progress, 0) * var(--home-expanded-travel)); right: 0; bottom: var(--bottom-nav-h); left: 0; display: flex; flex-direction: column; gap: 0; overflow: hidden; padding: 62px 24px 12px; border-radius: 92px 92px 0 0; background: var(--screen-background); color: var(--hajnal-navy); opacity: var(--sheet-progress, 0); pointer-events: none; transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 180ms ease; }
-    .home-body::before { content: ""; position: absolute; z-index: -1; top: -28px; right: -64px; left: -64px; height: 88px; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: inherit; }
+    .home-body { --home-expanded-travel: 96px; position: absolute; z-index: 20; top: calc(682px - var(--sheet-progress, 0) * var(--home-expanded-travel)); right: 0; bottom: var(--bottom-nav-h); left: 0; display: flex; flex-direction: column; gap: 0; isolation: isolate; overflow: hidden; padding: 62px 24px 12px; border-radius: 92px 92px 0 0; background: var(--screen-background); color: var(--hajnal-navy); opacity: var(--sheet-progress, 0); pointer-events: none; transition: top 300ms cubic-bezier(.2, .85, .25, 1), opacity 180ms ease; }
+    .home-body::before { content: ""; position: absolute; z-index: 0; top: -28px; right: -64px; left: -64px; height: 88px; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: var(--screen-background); pointer-events: none; }
+    .home-body::after { position: absolute; z-index: 0; inset: 0; background-image: var(--practice-sheet-decoration, none); background-repeat: no-repeat; background-position: center; background-size: 100% 100%; content: ""; opacity: .3; pointer-events: none; }
+    .home-body > * { position: relative; z-index: 1; }
     .app-frame[data-screen-state="8b-expanded"] .home-body { pointer-events: auto; }
     .home-metrics { --home-expanded-travel: 96px; min-height: 118px; position: absolute; z-index: 32; top: calc(614px - var(--sheet-progress, 0) * var(--home-expanded-travel)); right: 58px; left: 58px; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); align-items: stretch; overflow: hidden; border: 1px solid rgba(106, 86, 180, .14); border-radius: 24px; background: #FFFCFB; color: var(--hajnal-navy); box-shadow: 0 2px 8px rgba(44, 46, 119, .04), inset 0 1px 0 rgba(255, 255, 255, .68); cursor: grab; touch-action: none; user-select: none; will-change: top; transition: top 300ms cubic-bezier(.2, .85, .25, 1); }
     .app-frame.is-dragging .home-metrics, .app-frame.is-dragging .home-body { transition: none; }
@@ -91,9 +93,10 @@
     .home-practice-open { min-height: 30px; padding: 7px 9px; border: 1px solid rgba(106, 86, 180, .18); border-radius: 12px; background: rgba(255,255,255,.78); white-space: nowrap; }
     .home-practice-active { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 24px; align-items: center; gap: 8px; padding: 8px 0 5px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
     .home-practice-active strong, .home-practice-active small, .home-practice-active span { display: block; }
-    .home-practice-active strong { overflow: hidden; color: #231954; font-size: 14px; line-height: 1.26; font-weight: 810; text-overflow: ellipsis; white-space: nowrap; }
+    .home-practice-active strong { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: #231954; font-size: 14px; line-height: 1.26; font-weight: 810; text-overflow: clip; white-space: normal; }
     .home-practice-active small { margin-top: 5px; color: rgba(44,46,119,.58); font-size: 10.5px; line-height: 1.24; font-weight: 670; }
-    .home-practice-active span { color: var(--hajnal-purple); font-size: 25px; line-height: 1; text-align: right; }
+    .home-practice-active > span:first-child { min-width: 0; color: inherit; font-size: inherit; line-height: inherit; text-align: left; }
+    .home-practice-active > span:last-child { color: var(--hajnal-purple); font-size: 25px; line-height: 1; text-align: right; }
     .native-control { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .home-actions { display: grid; margin-top: auto; }
     .home-actions .help-button { min-height: 42px; font-size: 12px; }
@@ -719,52 +722,55 @@
     .practice-popup-header h2 { margin: 1px 0 0; font-size: 21px; line-height: 1.16; font-weight: 850; letter-spacing: -.035em; }
     .practice-popup-header p { margin: 5px 0 0; color: rgba(44,46,119,.62); font-size: 12px; line-height: 1.35; font-weight: 620; }
     .practice-popup-close { width: 34px; height: 34px; padding: 0; border: 1px solid rgba(106,86,180,.12); border-radius: 50%; background: #F4F0FC; color: var(--hajnal-purple); font-size: 22px; cursor: pointer; }
-    /* `gyakorlat.png`: the manager has fixed framing around a single scrollable list. */
-    .practice-focus-dialog--manager { width: min(calc(100vw - 64px), 348px); height: min(74dvh, 660px); max-height: calc(100dvh - 142px); grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: 9px; overflow: hidden; padding: 18px 18px 16px; border-radius: 32px; box-shadow: 0 27px 68px rgba(29,20,74,.28), 0 8px 24px rgba(106,86,180,.12); }
-    .practice-focus-dialog--manager .practice-popup-header { grid-template-columns: minmax(0,1fr) 34px; gap: 10px; }
+    /* `gyakorlat2.png`: fixed chrome and current card above one independently scrolling practice body. */
+    .practice-focus-dialog--manager { width: min(calc(100vw - 44px), 374px); height: min(88dvh, 784px); max-height: calc(100dvh - 38px); grid-template-rows: auto auto minmax(0, 1fr); gap: 12px; overflow: hidden; padding: 14px 18px 17px; border: 1px solid rgba(255,255,255,.86); border-radius: 32px; box-shadow: 0 24px 62px rgba(29,20,74,.25), 0 7px 18px rgba(216,112,169,.20); }
+    .practice-picker-chrome { display: grid; }
+    .practice-focus-dialog--manager .practice-popup-header { grid-template-columns: minmax(0,1fr) 37px; gap: 9px; align-items: start; }
     .practice-focus-dialog--manager .practice-popup-header > span { min-width: 0; }
-    .practice-focus-dialog--manager .practice-popup-header h2 { margin: 0; color: #202265; font-size: clamp(18px, 4.7vw, 20.5px); line-height: 1.08; font-weight: 850; letter-spacing: -.06em; white-space: nowrap; }
-    .practice-focus-dialog--manager .practice-popup-header p { overflow: hidden; margin-top: 5px; color: #7771AB; font-size: clamp(8.5px, 2.2vw, 9.2px); line-height: 1.25; font-weight: 650; letter-spacing: -.035em; text-overflow: ellipsis; white-space: nowrap; }
-    .practice-focus-dialog--manager .practice-popup-close { width: 34px; height: 34px; border-color: rgba(106,86,180,.08); background: #F0EDFB; color: #5D4BAA; font-size: 25px; font-weight: 480; line-height: 1; box-shadow: inset 0 1px 0 rgba(255,255,255,.7); }
-    .practice-active-card { min-width: 0; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 9px; min-height: 84px; padding: 10px; border: 1px solid rgba(146,119,207,.04); border-radius: 23px; background: linear-gradient(118deg, #E9E0FC 0%, #F2EEFE 100%); color: #352568; box-shadow: 0 9px 20px rgba(106,86,180,.075); }
-    .practice-active-card-icon, .practice-row-icon { width: 42px; height: 42px; display: grid; place-items: center; align-self: start; border-radius: 50%; background: linear-gradient(145deg, #C5F6CD, #E9FBE9); color: #31AE58; }
-    .practice-active-card-icon .icon, .practice-row-icon .icon { width: 23px; height: 23px; }
-    .practice-active-card-copy { min-width: 0; align-self: center; }
-    .practice-active-card small { display: block; color: #7962D7; font-size: 9px; font-weight: 840; letter-spacing: .075em; }
-    .practice-active-card strong { display: block; overflow: hidden; margin-top: 3px; color: #202265; font-size: 16px; line-height: 1.16; font-weight: 850; text-overflow: ellipsis; white-space: nowrap; }
-    .practice-active-card p { overflow: hidden; margin: 3px 0 0; color: #7169A2; font-size: 10px; line-height: 1.2; font-weight: 630; text-overflow: ellipsis; white-space: nowrap; }
-    .practice-active-card-source { display: flex !important; align-items: center; gap: 4px; overflow: hidden; margin-top: 4px; color: #756DB0 !important; font-size: 9.5px !important; font-weight: 700 !important; letter-spacing: 0 !important; text-overflow: ellipsis; white-space: nowrap; }
-    .practice-active-card-source .icon { width: 14px; height: 14px; flex: 0 0 auto; }
-    .practice-active-card-action { min-height: 36px; align-self: center; padding: 8px 11px; border: 0; border-radius: 13px; background: linear-gradient(135deg, #7358DA, #825FE7); color: #fff; font: inherit; font-size: 11px; font-weight: 810; white-space: nowrap; box-shadow: 0 8px 15px rgba(106,86,180,.19); cursor: pointer; }
-    .practice-active-card-action span { margin-left: 4px; font-size: 19px; line-height: .5; vertical-align: -1px; }
-    .practice-manager-list { display: grid; gap: 8px; }
-    .practice-manager-list > h3, .practice-manager-list-heading h3 { margin: 0; color: #242568; font-size: 16px; line-height: 1; font-weight: 840; letter-spacing: -.025em; }
-    .practice-manager-list-heading { min-width: 0; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 8px; }
-    .practice-list-filter { display: inline-flex; align-items: center; gap: 2px; min-width: 0; padding: 2px; border-radius: 999px; background: #F0ECFA; }
-    .practice-list-filter button { min-height: 29px; padding: 5px 8px; border: 0; border-radius: 999px; background: transparent; color: #79729D; font: inherit; font-size: 8.5px; font-weight: 760; white-space: nowrap; cursor: pointer; }
-    .practice-list-filter button[aria-pressed="true"] { background: linear-gradient(135deg, #765ADC, #684EC7); color: #FFF; box-shadow: 0 3px 7px rgba(80,59,144,.22); }
-    .practice-manager-scroll { min-height: 0; display: grid; align-content: start; gap: 5px; overflow-y: auto; padding: 1px 0 4px; scrollbar-width: none; }
-    .practice-manager-scroll::-webkit-scrollbar { display: none; }
-    .practice-manager-row { min-width: 0; display: grid; grid-template-columns: auto minmax(0,1fr) auto auto; gap: 9px; align-items: center; min-height: 60px; padding: 7px 10px; border: 1px solid rgba(106,86,180,.14); border-radius: 19px; background: rgba(255,255,255,.84); box-shadow: 0 4px 10px rgba(44,46,119,.025); }
-    .practice-row-icon { width: 42px; height: 42px; align-self: center; background: #F0EDFC; color: #8063DD; }
-    .practice-manager-row:nth-child(3n+1) .practice-row-icon { background: #FEEBEF; color: #F15D76; }
-    .practice-manager-row:nth-child(3n+2) .practice-row-icon { background: #EAF4FE; color: #5199E9; }
-    .practice-manager-row:nth-child(3n) .practice-row-icon { background: #FFF4DF; color: #F3A224; }
-    .practice-row-icon .icon { width: 23px; height: 23px; }
-    .practice-row-copy { min-width: 0; display: grid; gap: 2px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-    .practice-manager-row strong, .practice-manager-row small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .practice-manager-row strong { color: #252568; font-size: 13px; line-height: 1.17; font-weight: 830; }
-    .practice-manager-row small { color: #7770A9; font-size: 10px; line-height: 1.18; font-weight: 630; }
-    .practice-row-source { display: flex !important; align-items: center; gap: 4px; color: #766DB2 !important; font-weight: 700 !important; }
-    .practice-row-source .icon { width: 13px; height: 13px; flex: 0 0 auto; }
-    .practice-row-activate { width: 40px; height: 40px; display: grid; place-items: center; padding: 0 0 0 2px; border: 0; border-radius: 50%; background: #F1EEFC; color: #7257D6; font: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
-    .practice-row-menu { position: relative; width: 24px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #756BA7; font: inherit; font-size: 23px; line-height: 1; cursor: pointer; }
-    .practice-row-context { grid-column: 1 / -1; display: grid; gap: 3px; padding-top: 7px; border-top: 1px solid rgba(106,86,180,.10); }
-    .practice-row-context button { min-height: 34px; padding: 7px 8px; border: 0; border-radius: 10px; background: transparent; color: #49367F; font: inherit; font-size: 11px; font-weight: 760; text-align: left; cursor: pointer; }
-    .practice-row-context button:hover, .practice-row-context button:focus-visible { background: #F2EDFB; outline: none; }
-    .practice-manager-create { min-height: 48px; border: 1px dashed rgba(106,86,180,.45); border-radius: 17px; background: #FBF9FE; color: #6149AD; font: inherit; font-size: 12px; font-weight: 830; cursor: pointer; }
-    @media (max-width: 400px) { .practice-focus-dialog--manager .practice-popup-header { grid-template-columns: minmax(0,1fr) 30px; gap: 7px; } .practice-focus-dialog--manager .practice-popup-close { width: 30px; height: 30px; font-size: 22px; } }
-    @media (max-width: 380px) { .practice-focus-dialog--manager { width: calc(100vw - 34px); height: min(75dvh, 640px); padding: 18px 14px 15px; gap: 10px; } .practice-focus-dialog--manager .practice-popup-header h2 { font-size: 19px; } .practice-focus-dialog--manager .practice-popup-header p { font-size: 9.8px; } .practice-active-card { grid-template-columns: 40px minmax(0,1fr) auto; gap: 8px; min-height: 86px; padding: 10px; } .practice-active-card-icon { width: 40px; height: 40px; } .practice-active-card-icon .icon { width: 22px; height: 22px; } .practice-active-card-action { min-height: 33px; padding: 7px 8px; font-size: 10px; } .practice-manager-list > h3, .practice-manager-list-heading h3 { font-size: 14px; } .practice-list-filter button { min-height: 27px; padding: 4px 6px; font-size: 7.5px; } .practice-manager-row { min-height: 62px; gap: 7px; padding: 8px; } .practice-row-icon { width: 40px; height: 40px; } .practice-row-activate { width: 35px; height: 35px; font-size: 17px; } .practice-row-menu { width: 19px; height: 35px; font-size: 20px; } }
+    .practice-focus-dialog--manager .practice-popup-header h2 { margin: 0; color: #171D68; font-size: clamp(19px, 4.8vw, 21px); line-height: 1.08; font-weight: 850; letter-spacing: -.048em; white-space: nowrap; }
+    .practice-focus-dialog--manager .practice-popup-header p { margin-top: 4px; color: rgba(61,70,137,.78); font-size: 11px; line-height: 1.25; font-weight: 570; letter-spacing: -.02em; }
+    .practice-focus-dialog--manager .practice-popup-close { width: 37px; height: 37px; padding: 0 0 3px; border: 1px solid rgba(125,104,201,.08); border-radius: 50%; background: rgba(241,236,255,.94); color: #7053CF; font-size: 31px; font-weight: 320; line-height: 1; box-shadow: 0 8px 16px rgba(103,82,178,.07); }
+    .practice-current-card { min-width: 0; position: relative; isolation: isolate; display: grid; grid-template-columns: 52px minmax(0,1fr); align-items: center; gap: 6px; min-height: 90px; overflow: hidden; padding: 9px 8px; border: 1px solid rgba(195,176,237,.19); border-radius: 22px; background: linear-gradient(117deg, #F7F0FF 0%, #EFE8FF 100%); color: #252A58; box-shadow: inset 0 1px 0 rgba(255,255,255,.76); }
+    .practice-current-edit { width: 100%; font: inherit; text-align: left; cursor: pointer; }
+    .practice-current-edit:hover, .practice-current-edit:focus-visible { border-color: rgba(106,86,180,.38); box-shadow: inset 0 1px 0 rgba(255,255,255,.76), 0 0 0 3px rgba(121,102,200,.11); outline: 0; }
+    .practice-current-artwork { width: 52px; height: 52px; position: relative; z-index: 1; display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.90), rgba(218,247,234,.78) 53%, rgba(224,217,251,.74) 100%); }
+    .practice-current-artwork img { width: 44px; height: 44px; object-fit: contain; filter: drop-shadow(0 7px 8px rgba(88,120,105,.12)); }
+    .practice-current-copy { min-width: 0; position: relative; z-index: 1; align-self: center; }
+    .practice-current-copy small { display: block; color: #7656DC; font-size: 9px; font-weight: 850; letter-spacing: .07em; }
+    .practice-current-copy strong { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; margin-top: 2px; color: #171D68; font-size: 13px; line-height: 1.1; font-weight: 830; letter-spacing: -.055em; text-overflow: clip; white-space: normal; }
+    .practice-current-source { margin-top: 4px; color: rgba(47,54,122,.75) !important; font-size: 10px !important; font-weight: 570 !important; letter-spacing: -.015em !important; }
+    .practice-list-shell { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .practice-list-shell > h3 { margin: 0 0 7px 2px; color: #171D68; font-size: 18px; line-height: 1.1; font-weight: 840; letter-spacing: -.045em; }
+    .practice-list-scroll { min-height: 0; display: grid; align-content: start; gap: 7px; overflow-y: auto; padding: 0 1px 2px 0; scrollbar-width: none; }
+    .practice-list-scroll::-webkit-scrollbar { display: none; }
+    .practice-list-card { width: 100%; min-width: 0; position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: center; min-height: 74px; padding: 7px; border: 1px solid rgba(106,86,180,.12); border-radius: 20px; background: rgba(255,253,254,.94); color: inherit; box-shadow: 0 8px 18px rgba(44,46,119,.05); font: inherit; text-align: left; }
+    .practice-list-card:focus-within { z-index: 4; }
+    .practice-list-edit { width: 100%; min-width: 0; display: grid; grid-template-columns: 52px minmax(0,1fr); gap: 8px; align-items: center; padding: 0; border: 0; border-radius: 14px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .practice-list-edit:hover, .practice-list-edit:focus-visible { outline: 0; }
+    .practice-list-card:hover, .practice-list-card:focus-within { border-color: rgba(106,86,180,.30); background: #FFFEFF; box-shadow: 0 10px 24px rgba(44,46,119,.055), 0 0 0 3px rgba(121,102,200,.11); }
+    .practice-list-artwork { width: 52px; height: 52px; position: relative; z-index: 1; display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: var(--practice-artwork-surface, #EEF8F2); }
+    .practice-list-artwork[data-practice-artwork="heart"] { --practice-artwork-surface: #FDECF2; }
+    .practice-list-artwork[data-practice-artwork="wave"] { --practice-artwork-surface: #EAF6FD; }
+    .practice-list-artwork[data-practice-artwork="sprout"] { --practice-artwork-surface: #EBF8EE; }
+    .practice-list-artwork[data-practice-artwork="sunrise"] { --practice-artwork-surface: #FFF2DF; }
+    .practice-list-artwork[data-practice-artwork="moon"] { --practice-artwork-surface: #F0EEFF; }
+    .practice-list-artwork img { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 5px 6px rgba(74,70,128,.10)); }
+    .practice-list-copy { min-width: 0; position: relative; z-index: 1; display: grid; gap: 2px; }
+    .practice-list-copy strong, .practice-list-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .practice-list-copy strong { color: #171D68; font-size: 14px; line-height: 1.12; font-weight: 800; letter-spacing: -.035em; }
+    .practice-list-copy small { color: #59649D; font-size: 10px; line-height: 1.15; font-weight: 570; }
+    .practice-list-chevron { width: 37px; height: 37px; position: relative; z-index: 1; display: grid; place-items: center; padding: 0 0 2px 2px; border: 0; border-radius: 50%; background: #F5F1FF; color: #6843CC; font: inherit; font-size: 28px; font-weight: 340; line-height: .7; cursor: pointer; }
+    .practice-list-chevron:hover, .practice-list-chevron:focus-visible { background: #EAE1FF; outline: 2px solid rgba(121,102,200,.35); outline-offset: 2px; }
+    .practice-manager-footer { display: grid; gap: 0; overflow: hidden; padding-top: 7px; }
+    .practice-manager-create { min-height: 50px; margin-top: 0; border: 0; border-radius: 999px; background: linear-gradient(100deg, #F0EBFF, #EEE8FF); color: #5035C5; font: inherit; font-size: 13px; font-weight: 640; cursor: pointer; }
+    .practice-manager-create:hover, .practice-manager-create:focus-visible { background: #E8E1FF; outline: 2px solid rgba(121,102,200,.35); outline-offset: 2px; }
+    .practice-picker-footer { display: grid; justify-items: center; gap: 3px; padding: 9px 0 5px; color: rgba(88,75,157,.73); }
+    .practice-picker-footer-mark { width: 164px; display: grid; grid-template-columns: 1fr 42px 1fr; align-items: center; gap: 7px; }
+    .practice-picker-footer-mark::before, .practice-picker-footer-mark::after { height: 1px; background: rgba(121,102,200,.38); content: ""; }
+    .practice-picker-footer svg { width: 34px; height: 29px; fill: none; stroke: #B9ACF6; stroke-width: 1.45; }
+    .practice-picker-footer p { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 10px; font-style: italic; line-height: 1.2; }
+    @media (max-width: 400px) { .practice-focus-dialog--manager { width: calc(100vw - 30px); height: min(88dvh, 760px); padding: 13px 15px 15px; border-radius: 29px; } .practice-focus-dialog--manager .practice-popup-header h2 { font-size: clamp(18px, 5.4vw, 21px); } .practice-current-card { grid-template-columns: 58px minmax(0,1fr); min-height: 88px; padding: 8px; border-radius: 21px; } .practice-current-artwork { width: 58px; height: 58px; } .practice-current-artwork img { width: 48px; height: 48px; } .practice-list-card { grid-template-columns: minmax(0,1fr) auto; gap: 7px; min-height: 72px; padding: 7px; border-radius: 20px; } .practice-list-edit { grid-template-columns: 50px minmax(0,1fr); gap: 7px; } .practice-list-artwork { width: 50px; height: 50px; } .practice-list-artwork img { width: 40px; height: 40px; } .practice-list-copy strong { font-size: 13px; } .practice-list-copy small { font-size: 10px; } .practice-list-chevron { width: 36px; height: 36px; font-size: 27px; } }
+    @media (max-width: 380px) { .practice-focus-dialog--manager { height: min(89dvh, 716px); gap: 10px; } .practice-focus-dialog--manager .practice-popup-header h2 { font-size: 18px; } .practice-focus-dialog--manager .practice-popup-header p { font-size: 10px; } .practice-current-card { grid-template-columns: 54px minmax(0,1fr); min-height: 82px; gap: 6px; } .practice-current-artwork { width: 54px; height: 54px; } .practice-current-artwork img { width: 45px; height: 45px; } .practice-current-copy strong { font-size: 13px; } .practice-current-source { font-size: 9px !important; } }
     .practice-source { display: grid; gap: 5px; padding: 12px; border-radius: 16px; background: #F1ECFA; color: #564783; }
     .practice-source small { color: rgba(72,57,132,.72); font-size: 10px; font-weight: 770; }
     .practice-source p { margin: 0; font-size: 12px; line-height: 1.42; font-weight: 620; }
@@ -777,6 +783,8 @@
     .practice-actions button { min-height: 44px; border-radius: 15px; font: inherit; font-size: 12px; font-weight: 810; cursor: pointer; }
     .practice-actions-primary { border: 0; background: linear-gradient(135deg, #7961DD, #634FC5); color: #FFF; }
     .practice-actions-secondary { border: 1px solid rgba(106,86,180,.16); background: #FFF; color: var(--hajnal-purple); }
+    .practice-editor-delete { border-color: rgba(182,83,111,.20); color: #A64B68; }
+    .practice-editor-delete:hover, .practice-editor-delete:focus-visible { border-color: rgba(182,83,111,.36); background: #FFF7F9; outline: 0; }
     .practice-detail-row { width: 100%; display: grid; grid-template-columns: minmax(0,1fr) 18px; gap: 10px; align-items: center; padding: 10px 0; border: 0; border-top: 1px solid rgba(106,86,180,.10); background: transparent; color: #302661; font: inherit; text-align: left; font-size: 13px; font-weight: 770; cursor: pointer; }
     @media (prefers-reduced-motion: reduce) { .practice-popup-host, .practice-focus-dialog { transition: none; } }
 
@@ -814,27 +822,26 @@
     .panic-motivation-card strong { font-size: 13px; line-height: 1.15; font-weight: 830; }
     .panic-motivation-card small { display: -webkit-box; margin-top: 3px; color: rgba(255,255,255,.78); font-size: 10.5px; line-height: 1.3; font-weight: 590; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     .panic-motivation-card > span:last-child { color: rgba(255,255,255,.82); font-size: 23px; }
-    .panic-next-meeting-slot { display: grid; overflow: hidden; margin: 0 0 16px; }.panic-next-meeting-slot:empty { display: none; }
-    .panic-next-meeting-card { display: grid; gap: 11px; padding: 14px; border: 1px solid rgba(255,255,255,.18); border-radius: 20px; background: rgba(103,79,157,.30); color: var(--white); box-shadow: 0 13px 28px rgba(13,9,47,.16); backdrop-filter: blur(10px); animation: panic-next-meeting-in 240ms ease both; }
-    .panic-next-meeting-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }.panic-next-meeting-heading span { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 820; }.panic-next-meeting-heading .icon { width: 19px; height: 19px; color: #FFD9E9; }.panic-next-meeting-close { width: 28px; height: 28px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.13); color: #fff; font: inherit; font-size: 21px; cursor: pointer; }
+    .panic-next-meeting-popup-content { display: grid; gap: 14px; align-content: start; }
+    .panic-next-meeting-card { display: grid; gap: 12px; color: var(--white); }
     .panic-next-meeting-time { display: grid; gap: 3px; }.panic-next-meeting-time strong { font-size: 19px; line-height: 1.1; font-weight: 850; }.panic-next-meeting-time span { color: rgba(255,255,255,.72); font-size: 12px; font-weight: 640; }.panic-next-meeting-copy { display: grid; gap: 3px; }.panic-next-meeting-copy strong { font-size: 15px; line-height: 1.18; font-weight: 820; }.panic-next-meeting-copy span { color: rgba(255,255,255,.76); font-size: 11px; line-height: 1.35; font-weight: 570; }
     .panic-next-meeting-actions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; }.panic-next-meeting-actions button, .panic-next-meeting-actions a { min-height: 39px; display: grid; place-items: center; padding: 8px; border: 1px solid rgba(255,255,255,.22); border-radius: 13px; background: rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 11px; font-weight: 800; text-decoration: none; cursor: pointer; }.panic-next-meeting-actions .panic-next-meeting-primary { border-color: transparent; background: #F15D9A; }.panic-next-meeting-actions .is-planned { background: rgba(136,236,205,.20); color: #E1FFF4; }.panic-next-meeting-more, .panic-next-meeting-help { justify-self: center; padding: 1px 2px; border: 0; background: transparent; color: rgba(255,255,255,.86); font: inherit; font-size: 11px; font-weight: 760; text-decoration: underline; cursor: pointer; }
     .panic-next-meeting-empty { display: grid; gap: 8px; }.panic-next-meeting-empty p { margin: 0; color: rgba(255,255,255,.76); font-size: 12px; line-height: 1.35; }
-    @keyframes panic-next-meeting-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes panic-help-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.085); } }
     @keyframes panic-variant-fade { from { opacity: .01; } to { opacity: 1; } }
-    .panic-help-sheet-host { position: absolute; z-index: 510; inset: 0; isolation: isolate; overscroll-behavior: contain; }
-    .panic-help-sheet-host[hidden] { display: none; }
-    .panic-help-sheet-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(12,13,39,.52); opacity: 0; transition: opacity 260ms ease-out; }
-    .panic-help-sheet { position: absolute; right: 0; bottom: 0; left: 0; max-height: calc(100% - 28px); overflow-y: auto; padding: 0 19px calc(19px + env(safe-area-inset-bottom)); border: 1px solid rgba(255,255,255,.18); border-bottom: 0; border-radius: 30px 30px 0 0; background: rgba(43,36,91,.96); box-shadow: 0 -16px 38px rgba(9,9,32,.34); color: #FFF; transform: translateY(104%); transition: transform 290ms cubic-bezier(.2,.8,.2,1); overscroll-behavior: contain; }
-    .panic-help-sheet-host[data-sheet-state="open"] .panic-help-sheet-backdrop { opacity: 1; }
-    .panic-help-sheet-host[data-sheet-state="open"] .panic-help-sheet { transform: translateY(0); }
-    .panic-help-sheet-handle { width: 42px; height: 5px; display: block; margin: 10px auto 11px; border-radius: 999px; background: rgba(255,255,255,.48); touch-action: none; cursor: grab; }
-    .panic-help-sheet-header { display: grid; grid-template-columns: minmax(0,1fr) 36px; gap: 8px; align-items: start; }
-    .panic-help-sheet-header h2 { margin: 0; color: #FFF; font-size: 22px; line-height: 1.1; font-weight: 850; letter-spacing: -.04em; }
-    .panic-help-sheet-header p { margin: 5px 0 0; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.32; font-weight: 590; }
-    .panic-help-sheet-close { width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.20); border-radius: 50%; background: rgba(255,255,255,.10); color: #FFF; font-size: 22px; line-height: 1; cursor: pointer; }
-    .panic-contact-card { margin-top: 18px; padding: 13px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.09); }
+    .panic-focus-popup-host { position: absolute; z-index: 510; inset: 0; display: grid; place-items: center; padding: 28px 20px calc(28px + env(safe-area-inset-bottom)); isolation: isolate; overscroll-behavior: contain; }
+    .panic-focus-popup-host[hidden] { display: none; }
+    .panic-focus-popup-backdrop, .panic-help-sheet-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(12,13,39,.58); opacity: 0; transition: opacity 220ms ease-out; backdrop-filter: blur(4px); }
+    .panic-focus-popup { width: min(100%, 364px); max-height: min(78dvh, 690px); position: relative; z-index: 1; display: grid; grid-template-rows: auto minmax(0,1fr); overflow: hidden; border: 1px solid rgba(255,255,255,.18); border-radius: 28px; background: rgba(43,36,91,.98); box-shadow: 0 22px 54px rgba(9,9,32,.42), 0 3px 10px rgba(9,9,32,.20); color: #FFF; opacity: 0; transform: scale(.96); transition: transform 220ms cubic-bezier(.2,.8,.2,1), opacity 180ms ease-out; overscroll-behavior: contain; }
+    .panic-focus-popup-host[data-sheet-state="open"] .panic-focus-popup-backdrop { opacity: 1; }
+    .panic-focus-popup-host[data-sheet-state="open"] .panic-focus-popup { transform: scale(1); opacity: 1; }
+    .panic-focus-popup-header { display: grid; grid-template-columns: minmax(0,1fr) 36px; gap: 12px; align-items: start; padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .panic-focus-popup-header h2 { margin: 0; color: #FFF; font-size: 22px; line-height: 1.1; font-weight: 850; letter-spacing: -.04em; }
+    .panic-focus-popup-header p { margin: 5px 0 0; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.32; font-weight: 590; }
+    .panic-focus-popup-close { width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.20); border-radius: 50%; background: rgba(255,255,255,.10); color: #FFF; font-size: 22px; line-height: 1; cursor: pointer; }
+    .panic-focus-popup > [data-component$="-content"] { min-height: 0; overflow-y: auto; padding: 16px 20px 20px; scrollbar-width: none; }
+    .panic-focus-popup > [data-component$="-content"]::-webkit-scrollbar { display: none; }
+    .panic-contact-card { margin-top: 0; padding: 13px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(255,255,255,.09); }
     .panic-contact-card h3 { margin: 0; color: #FFF; font-size: 14px; line-height: 1.16; font-weight: 820; }
     .panic-contact-card p { margin: 4px 0 0; color: rgba(255,255,255,.74); font-size: 11.5px; line-height: 1.35; font-weight: 590; }
     .panic-contact-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 12px; }
@@ -846,11 +853,11 @@
     .panic-emergency { width: 100%; grid-template-columns: 37px minmax(0,1fr); justify-items: start; gap: 7px; margin: 13px 0 0; background: rgba(255,255,255,.07); }
     .panic-emergency strong, .panic-emergency small { display: block; text-align: left; }
     .panic-emergency small { margin-top: 2px; color: rgba(255,255,255,.67); font-size: 10px; font-weight: 560; }
-    .panic-motivation-sheet-content { display: grid; gap: 12px; padding: 19px 0 8px; }
+    .panic-motivation-sheet-content { display: grid; gap: 12px; align-content: center; min-height: 190px; }
     .panic-motivation-sheet-content > .icon { width: 31px; height: 31px; color: #FFD9E9; }
     .panic-motivation-sheet-content blockquote { margin: 0; color: #FFF; font-family: Georgia, "Times New Roman", serif; font-size: 22px; line-height: 1.28; font-weight: 700; }
     .panic-motivation-sheet-content p { margin: 0; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.42; font-weight: 590; }
-    @media (prefers-reduced-motion: reduce) { .panic-main-button--pulse, .panic-alternative { animation: none; } .panic-help-sheet, .panic-help-sheet-backdrop { transition: none; } }
+    @media (prefers-reduced-motion: reduce) { .panic-main-button--pulse, .panic-alternative { animation: none; } .panic-focus-popup, .panic-focus-popup-backdrop { transition: none; } }
 
     .daily-image-screen { background: #171848; color: var(--white); }
     .daily-image-carousel { position: absolute; inset: 0; z-index: 1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
@@ -1735,10 +1742,10 @@
     .timeline-event-detail-screen { background: var(--screen-background); }
     .timeline-event-detail-screen .screen-header { min-height: 76px; }
     .timeline-event-detail-screen .screen-header-copy h1 { padding-top: 3px; font-size: 18px; }
-    .timeline-event-detail-more { font-size: 18px !important; font-weight: 900; letter-spacing: 2px; }
-    .timeline-event-detail-content { position: absolute; top: 108px; right: 0; bottom: 0; left: 0; overflow-y: auto; padding: 0 18px 28px; color: #292077; scrollbar-width: none; }
+    .timeline-event-detail-content { position: absolute; top: 108px; right: 0; bottom: var(--bottom-nav-h); left: 0; overflow-y: auto; padding: 0 18px 28px; color: #292077; scrollbar-width: none; }
     .timeline-event-detail-content::-webkit-scrollbar { display: none; }
     .timeline-event-hero { height: 164px; position: relative; overflow: visible; border-radius: 22px; background: #A58AD5; box-shadow: 0 11px 24px rgba(44,46,119,.12); }
+    .timeline-event-detail-screen .timeline-event-hero { height: 148px; }
     .timeline-event-hero img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: inherit; }
     .timeline-event-hero-icon, .timeline-event-hero-photo { width: 54px; height: 54px; display: grid; place-items: center; position: absolute; bottom: -25px; border: 3px solid #fff; border-radius: 50%; background: #EEE8FB; color: #674BC2; box-shadow: 0 6px 15px rgba(44,46,119,.13); }
     .timeline-event-hero-icon { left: 14px; }
@@ -1754,13 +1761,7 @@
     .timeline-event-detail-row { display: grid; grid-template-columns: 23px 66px minmax(0,1fr); align-items: center; gap: 8px; color: #7569A8; font-size: 11px; font-weight: 650; }
     .timeline-event-detail-row .icon { width: 18px; height: 18px; color: #7866B2; }
     .timeline-event-detail-row strong { color: #34277E; font-size: 11px; font-weight: 740; }
-    .timeline-event-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .timeline-event-tags span { padding: 5px 8px; border-radius: 999px; background: #EEE7FB; color: #6248B2; font-size: 10px; font-weight: 760; }
     .timeline-event-note { margin: 0; color: #625798; font-size: 12px; line-height: 1.45; font-weight: 600; }
-    .timeline-event-images { display: flex; gap: 10px; }
-    .timeline-event-images img, .timeline-event-add-image { width: 66px; height: 66px; border-radius: 12px; }
-    .timeline-event-images img { object-fit: cover; }
-    .timeline-event-add-image { display: grid; place-items: center; border: 1px dashed rgba(106,86,180,.30); background: transparent; color: #765BC1; font-size: 30px; line-height: 1; }
     .timeline-event-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
     .timeline-event-actions button { min-height: 46px; border: 1px solid #B59CE9; border-radius: 17px; background: rgba(255,255,255,.72); color: #6C50C2; font: inherit; font-size: 12px; font-weight: 820; }
     .timeline-event-actions button:last-child { border-color: #FF6D82; color: #F14E69; }
@@ -2400,13 +2401,12 @@
 
     <section class="route-screen timeline-event-detail-screen" id="timeline-event-detail" data-route="timeline-event-detail" data-screen="timeline-event-detail" aria-labelledby="timeline-event-detail-title">
       <div class="status-bar" aria-hidden="true"><span>9:41</span><span class="system-icons"><svg><use href="#icon-signal"/></svg><svg><use href="#icon-wifi"/></svg><svg><use href="#icon-battery"/></svg></span></div>
-      <header class="screen-header"><button class="icon-button" type="button" data-action="return-to-history-detail" aria-label="Vissza az idővonalhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="timeline-event-detail-title">Esemény részletei</h1></div><button class="icon-button timeline-event-detail-more" type="button" aria-label="További lehetőségek">•••</button></header>
+      <header class="screen-header"><button class="icon-button" type="button" data-action="return-to-history-detail" aria-label="Vissza az idővonalhoz"><svg class="icon" aria-hidden="true"><use href="#icon-back"/></svg></button><div class="screen-header-copy"><h1 id="timeline-event-detail-title">Esemény részletei</h1></div><span aria-hidden="true"></span></header>
       <main class="timeline-event-detail-content" aria-label="Elindultam esemény részletei">
         <section class="timeline-event-hero" aria-label="Esemény képe"><img src="assets/hero/timelinehero.png" alt="Hegycsúcsok a naplementében"><span class="timeline-event-hero-icon" aria-hidden="true"><svg class="icon"><use href="#icon-progress"/></svg></span><span class="timeline-event-hero-photo" aria-hidden="true"><svg class="icon"><use href="#icon-path"/></svg></span></section>
         <section class="timeline-event-lead"><h2>Elindultam</h2><time>2024. december 28. • 10:24</time><p class="timeline-event-quote">„Ma döntöttem úgy, hogy új életet kezdek. Nem lesz könnyű, de megéri.”</p></section>
-        <section class="timeline-event-section"><h3>Részletek</h3><div class="timeline-event-details"><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Dátum</span><strong>2024. december 28.</strong></div><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg><span>Időpont</span><strong>10:24</strong></div><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Típus</span><strong>Mérföldkő</strong></div><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>Címkék</span><span class="timeline-event-tags"><span>#kezdet</span><span>#döntés</span><span>#remény</span></span></div></div></section>
+        <section class="timeline-event-section"><h3>Részletek</h3><div class="timeline-event-details"><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-leaf"/></svg><span>Dátum</span><strong>2024. december 28.</strong></div><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-progress"/></svg><span>Időpont</span><strong>10:24</strong></div><div class="timeline-event-detail-row"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Típus</span><strong>Mérföldkő</strong></div></div></section>
         <section class="timeline-event-section"><h3>Jegyzet</h3><p class="timeline-event-note">Hosszú idő után először érzem, hogy van választásom. Ma kimondtam: elég.</p></section>
-        <section class="timeline-event-section"><h3>Képek</h3><div class="timeline-event-images"><img src="assets/hero/timelinehero.png" alt="Az eseményhez tartozó hegyi naplemente"><button class="timeline-event-add-image" type="button" aria-label="Kép hozzáadása">+</button></div></section>
         <div class="timeline-event-actions"><button type="button">Szerkesztés</button><button type="button">Törlés</button></div>
       </main>
     </section>
@@ -2478,21 +2478,27 @@
       <main class="panic-content" data-component="panic-content" data-panic-variant="alternative"></main>
     </section>
 
-    <div class="panic-help-sheet-host" data-component="panic-help-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
-      <button class="panic-help-sheet-backdrop" type="button" data-action="close-panic-help-sheet" aria-label="Segítségkérő panel bezárása"></button>
-      <section class="panic-help-sheet" role="dialog" aria-modal="true" aria-labelledby="panic-help-sheet-title" tabindex="-1">
-        <span class="panic-help-sheet-handle" data-panic-sheet-handle="help" aria-hidden="true"></span>
-        <header class="panic-help-sheet-header"><div><h2 id="panic-help-sheet-title">Hívj fel valakit</h2><p>Nem indul automatikus hívás vagy üzenet.</p></div><button class="panic-help-sheet-close" type="button" data-action="close-panic-help-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
+    <div class="panic-focus-popup-host" data-component="panic-help-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="panic-focus-popup-backdrop" type="button" data-action="close-panic-help-sheet" aria-label="Segítségkérő ablak bezárása"></button>
+      <section class="panic-focus-popup" role="dialog" aria-modal="true" aria-labelledby="panic-help-sheet-title" tabindex="-1">
+        <header class="panic-focus-popup-header"><div><h2 id="panic-help-sheet-title">Hívj fel valakit</h2><p>Nem indul automatikus hívás vagy üzenet.</p></div><button class="panic-focus-popup-close" type="button" data-action="close-panic-help-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
         <div data-component="panic-help-sheet-content"></div>
       </section>
     </div>
 
-    <div class="panic-help-sheet-host panic-motivation-sheet-host" data-component="panic-motivation-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
-      <button class="panic-help-sheet-backdrop" type="button" data-action="close-panic-motivation-sheet" aria-label="Miért kezdtem el? panel bezárása"></button>
-      <section class="panic-help-sheet panic-motivation-sheet" role="dialog" aria-modal="true" aria-labelledby="panic-motivation-sheet-title" tabindex="-1">
-        <span class="panic-help-sheet-handle" data-panic-sheet-handle="motivation" aria-hidden="true"></span>
-        <header class="panic-help-sheet-header"><div><h2 id="panic-motivation-sheet-title">Miért kezdtem el?</h2><p>Emlékeztető a saját szavaiddal.</p></div><button class="panic-help-sheet-close" type="button" data-action="close-panic-motivation-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
+    <div class="panic-focus-popup-host panic-motivation-popup-host" data-component="panic-motivation-sheet" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="panic-focus-popup-backdrop" type="button" data-action="close-panic-motivation-sheet" aria-label="Miért kezdtem el? ablak bezárása"></button>
+      <section class="panic-focus-popup panic-motivation-popup" role="dialog" aria-modal="true" aria-labelledby="panic-motivation-sheet-title" tabindex="-1">
+        <header class="panic-focus-popup-header"><div><h2 id="panic-motivation-sheet-title">Miért kezdtem el?</h2><p>Emlékeztető a saját szavaiddal.</p></div><button class="panic-focus-popup-close" type="button" data-action="close-panic-motivation-sheet" data-sheet-close aria-label="Bezárás">×</button></header>
         <div class="panic-motivation-sheet-content" data-component="panic-motivation-sheet-content"></div>
+      </section>
+    </div>
+
+    <div class="panic-focus-popup-host panic-next-meeting-popup-host" data-component="panic-next-meeting-popup" data-app-overlay-sheet data-sheet-state="closed" hidden aria-hidden="true">
+      <button class="panic-focus-popup-backdrop" type="button" data-action="close-panic-next-meeting" aria-label="Következő gyűlés ablak bezárása"></button>
+      <section class="panic-focus-popup panic-next-meeting-popup" role="dialog" aria-modal="true" aria-labelledby="panic-next-meeting-popup-title" tabindex="-1">
+        <header class="panic-focus-popup-header"><div><h2 id="panic-next-meeting-popup-title">Következő gyűlés</h2><p>A következő elérhető alkalom a felvitt gyűléseidből.</p></div><button class="panic-focus-popup-close" type="button" data-action="close-panic-next-meeting" data-sheet-close aria-label="Bezárás">×</button></header>
+        <div class="panic-next-meeting-popup-content" data-component="panic-next-meeting-popup-content"></div>
       </section>
     </div>
 
@@ -2645,7 +2651,7 @@
         { id: 'meeting-past-open', title: 'AA – Hétköznapi erő', date: '2026-10-05', start: '18:00', end: '19:00', format: 'in-person', venue: 'Belvárosi Közösségi Ház', address: '1052 Budapest, Kossuth Lajos utca 12.', url: '', openness: 'Nyitott', attendance: 'attended', planned: false, attended: true, note: 'Jó volt hallani mások megosztását. Nem kell mindent egyedül végigcsinálnom.', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null },
         { id: 'meeting-past-online', title: 'Nyitott beszélgetés', date: '2026-09-29', start: '20:00', end: '21:00', format: 'online', venue: '', address: '', url: 'https://meet.google.com/', openness: 'Nyitott', attendance: 'attended', planned: false, attended: true, note: '', recurrence: { kind: 'once', weekdays: [] }, own: false, coordinates: null }
       ]);
-      const NAVIGATION_ROUTES = new Set(['home', 'milestones', 'history', 'history-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details']);
+      const NAVIGATION_ROUTES = new Set(['home', 'milestones', 'history', 'history-detail', 'timeline-event-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details']);
       const HISTORY_CALENDAR_DAY_DOTS = Object.freeze({
         '2025-02-03': Object.freeze(['mint']),
         '2025-02-05': Object.freeze(['violet']),
@@ -3430,10 +3436,7 @@
           activePracticeId: null,
           editor: null,
           editorDraft: null,
-          detailPracticeId: null,
-          replacementCandidate: null,
           practicePopupView: null,
-          contextMenuPracticeId: null,
           listFilter: 'all',
           saveState: 'saved'
         };
@@ -3563,6 +3566,8 @@
           this.panicHelpSheetContent = root.querySelector('[data-component="panic-help-sheet-content"]');
           this.panicMotivationSheetHost = root.querySelector('[data-component="panic-motivation-sheet"]');
           this.panicMotivationSheetContent = root.querySelector('[data-component="panic-motivation-sheet-content"]');
+          this.panicNextMeetingPopupHost = root.querySelector('[data-component="panic-next-meeting-popup"]');
+          this.panicNextMeetingPopupContent = root.querySelector('[data-component="panic-next-meeting-popup-content"]');
           this.survivalNoteSheetHost = root.querySelector('[data-component="survival-note-sheet"]');
           this.survivalNoteSheetContent = root.querySelector('[data-component="survival-note-sheet-content"]');
           this.historyPager = root.querySelector('[data-component="history-full-page-pager"]');
@@ -3731,10 +3736,6 @@
           this.root.addEventListener('pointermove', (event) => this.historyMetricsRailPointerMove(event), true);
           this.root.addEventListener('pointerup', (event) => this.historyMetricsRailPointerEnd(event), true);
           this.root.addEventListener('pointercancel', (event) => this.historyMetricsRailPointerCancel(event), true);
-          this.root.addEventListener('pointerdown', (event) => this.startPanicSheetDrag(event));
-          this.root.addEventListener('pointermove', (event) => this.updatePanicSheetDrag(event));
-          this.root.addEventListener('pointerup', (event) => this.finishPanicSheetDrag(event));
-          this.root.addEventListener('pointercancel', () => { this.panicSheetDrag = null; });
           this.historyPager?.addEventListener('pointerdown', (event) => this.historyPagerPointerDown(event));
           this.historyPager?.addEventListener('pointermove', (event) => this.historyPagerPointerMove(event));
           this.historyPager?.addEventListener('pointerup', (event) => this.historyPagerPointerEnd(event));
@@ -3749,7 +3750,7 @@
           this.root.addEventListener('keydown', (event) => { if (event.key === 'Enter' && event.target.matches('[data-pending-inline-input]')) { event.preventDefault(); this.commitPendingTopic(); } });
           this.root.addEventListener('keydown', (event) => this.handlePathCollectionCarouselKeydown(event));
           this.root.addEventListener('focusin', (event) => { if (event.target.matches('[data-sponsor-name-input], [data-sponsor-phone-input], [data-sponsor-backup-input]')) requestAnimationFrame(() => event.target.scrollIntoView({ block: 'center', behavior: 'smooth' })); });
-          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPathStepContextMenuOpen()) { this.closePathStepContextMenu(); return; } if (this.isDailyOverviewMenuOpen()) { this.closeDailyOverviewMenu(); return; } if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.survivalNoteSheet) this.closeSurvivalNoteSheet(); else if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorCalendar) this.closeSponsorCalendar(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-work') this.closeSponsorWork(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'daily-reflection') this.closeDailyReflection(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'survival') this.exitSurvivalPack(); else if (['panic-why', 'panic-relapse', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.closeCleanReward(); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
+          this.root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { if (this.isPathStepContextMenuOpen()) { this.closePathStepContextMenu(); return; } if (this.isDailyOverviewMenuOpen()) { this.closeDailyOverviewMenu(); return; } if (this.isPracticeSheetOpen()) { this.closePracticeSheet(); return; } if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; } if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; } if (this.state.survivalNoteSheet) this.closeSurvivalNoteSheet(); else if (this.state.panicNextMeetingOpen) this.closePanicNextMeeting(); else if (this.state.panicHelpSheet) this.closePanicHelpSheet(); else if (this.state.panicMotivationSheet) this.closePanicMotivationSheet(); else if (this.state.meetingPicker) this.closeMeetingPicker(); else if (this.state.sponsorMessageSheet) this.closeSponsorMessageSheet(); else if (this.state.sponsorCalendar) this.closeSponsorCalendar(); else if (this.sponsorSheetClosing) return; else if (this.state.route === 'meeting-editor') this.closeMeetingEditor(); else if (this.state.route === 'meeting-detail') this.closeMeetingDetail(); else if (this.state.route === 'sponsor-takeaway-editor') this.closeTakeawayEditor(); else if (this.state.route === 'sponsor-work') this.closeSponsorWork(); else if (this.state.route === 'sponsor-backups') this.closeSponsorBackups(); else if (this.state.route === 'sponsor-details') this.closeSponsorDetails(); else if (this.state.route === 'daily-reflection') this.closeDailyReflection(); else if (this.state.route === 'path' && this.state.path.navigation.view !== 'overview') this.openPathView('overview'); else if (this.state.route === 'timeline-event-detail') this.navigate('history'); else if (this.state.route === 'history' && this.state.historyDetailView === 'calendar' && this.state.historyCalendarView === 'rail') this.openHistoryCalendarGrid(); else if (this.state.route === 'survival') this.exitSurvivalPack(); else if (['panic-why', 'panic-relapse', 'panic-contacts'].includes(this.state.route)) this.navigate('panic'); else if (this.state.route === 'clean-reward') this.closeCleanReward(); else if (this.state.route !== 'home') this.navigate('home'); else this.settle('collapsed'); } });
           document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
           document.addEventListener('visibilitychange', () => {
             if (document.hidden) return;
@@ -3835,11 +3836,12 @@
             case 'toggle-history-metrics': this.toggleHistoryMetrics(event.target.closest('[data-history-presentation-surface]')?.dataset.historyPresentationSurface); break;
             case 'toggle-history-event-filter': this.toggleHistoryEventFilter(event.target.closest('[data-history-event-type]')?.dataset.historyEventType); break;
             case 'open-panic': this.navigate('panic'); break;
-            case 'toggle-panic-next-meeting': this.togglePanicNextMeeting(); break;
+            case 'toggle-panic-next-meeting': this.togglePanicNextMeeting(event.target.closest('[data-action="toggle-panic-next-meeting"]')); break;
             case 'close-panic-next-meeting': this.closePanicNextMeeting(); break;
             case 'panic-next-meeting-other': this.showAnotherPanicMeeting(); break;
             case 'panic-next-meeting-plan': this.setPanicNextMeetingPlanned(event.target.closest('[data-meeting-id]')?.dataset.meetingId, event.target.closest('[data-meeting-occurrence-date]')?.dataset.meetingOccurrenceDate); break;
             case 'panic-next-meeting-map': this.openMeetingMap(event.target.closest('[data-meeting-id]')?.dataset.meetingId); break;
+            case 'open-panic-help-from-next-meeting': this.openPanicHelpFromNextMeeting(); break;
             case 'open-panic-help-sheet': this.openPanicHelpSheet(event.target.closest('[data-action="open-panic-help-sheet"]')); break;
             case 'close-panic-help-sheet': this.closePanicHelpSheet(); break;
             case 'open-panic-motivation-sheet': this.openPanicMotivationSheet(event.target.closest('[data-action="open-panic-motivation-sheet"]')); break;
@@ -3978,13 +3980,10 @@
             case 'open-practice-manager': this.openPracticeManager(event.target.closest('[data-action="open-practice-manager"]')); break;
             case 'open-practice-editor': this.openPracticeEditor(this.practiceSourceFromAction(event.target.closest('[data-action="open-practice-editor"]'))); break;
             case 'create-practice-from-summary': this.openPracticeEditor(this.practiceSourceFromAction(event.target.closest('[data-action="create-practice-from-summary"]'))); break;
-            case 'open-practice-details': this.openPracticeDetails(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
             case 'close-practice-sheet': this.closePracticeSheet(); break;
             case 'save-practice-editor': this.savePracticeEditor(); break;
             case 'save-practice-later': this.savePracticeEditor({ activate: false }); break;
             case 'activate-practice': this.requestPracticeActivation(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
-            case 'toggle-practice-menu': this.togglePracticeMenu(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
-            case 'set-practice-list-filter': this.setPracticeListFilter(event.target.closest('[data-practice-list-filter]')?.dataset.practiceListFilter); break;
             case 'select-practice-source': this.selectPracticeSource(this.practiceSourceFromAction(event.target.closest('[data-action="select-practice-source"]'))); break;
             case 'edit-practice': this.openPracticeEditor(null, event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
             case 'pause-practice': this.setPracticeStatus(event.target.closest('[data-practice-id]')?.dataset.practiceId, 'paused'); break;
@@ -3993,9 +3992,6 @@
             case 'restore-practice': this.setPracticeStatus(event.target.closest('[data-practice-id]')?.dataset.practiceId, 'paused'); break;
             case 'delete-practice': this.deletePractice(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
             case 'cancel-practice-editor': this.cancelPracticeEditor(); break;
-            case 'open-practice-history': this.renderPracticeDetailsHistory(event.target.closest('[data-practice-id]')?.dataset.practiceId); break;
-            case 'confirm-practice-replace': this.confirmPracticeReplacement(); break;
-            case 'cancel-practice-replace': this.cancelPracticeReplacement(); break;
             case 'select-practice-observation': this.setPracticeObservation(event.target.closest('[data-practice-observation]')?.dataset.practiceObservation); break;
             case 'return-home': this.navigate('home'); break;
             case 'toggle-fullscreen': this.toggleFullscreen(); break;
@@ -4705,13 +4701,13 @@
         renderSponsorConversationCardsForDate(date) {
           const items = this.sponsorConversationsForDate(date);
           const title = date ? this.formatSponsorNextDate(date, { withWeekday: true }) : 'Válassz egy napot';
-          return `<section class="sponsor-calendar-history" data-component="sponsor-calendar-history" aria-label="Kiválasztott napi alkalmak"><header class="sponsor-calendar-history-header"><h2>${escapeHtml(title)}</h2><p>${items.length ? `${items.length} alkalom ezen a napon` : 'Ezen a napon még nincs rögzített alkalom.'}</p></header>${items.map((item) => this.renderSponsorConversationCard(item)).join('')}</section>`;
+          return `<section class="sponsor-calendar-history" data-component="sponsor-calendar-history" aria-label="Kiválasztott napi alkalmak"><header class="sponsor-calendar-history-header"><h2>${escapeHtml(title)}</h2><p>${items.length ? `${items.length} alkalom ezen a napon` : 'Ezen a napon még nincs rögzített alkalom.'}</p></header><div class="meetings-day-list sponsor-next-conversation-list">${items.map((item) => this.renderSponsorConversationCard(item)).join('')}</div></section>`;
         }
         renderSponsorNextListView() {
           const next = this.state.nextConversation;
           const upcoming = next ? `<section class="sponsor-next-upcoming-card" data-component="sponsor-next-upcoming-card"><span class="sponsor-next-upcoming-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span><span class="sponsor-next-upcoming-copy"><small>Következő beszélgetés</small><strong>${escapeHtml(this.formatSponsorNextCardDate(next.date))} · ${escapeHtml(next.time)}</strong><span>${escapeHtml(this.state.sponsor.name)} · közös idő</span></span><b aria-hidden="true">›</b></section>` : `<section class="sponsor-next-upcoming-card" data-component="sponsor-next-upcoming-card"><span class="sponsor-next-upcoming-icon" aria-hidden="true"><svg class="icon"><use href="#icon-calendar"/></svg></span><span class="sponsor-next-upcoming-copy"><small>Következő beszélgetés</small><strong>Még nincs időpont</strong><span>A naptárban választhatsz egyet.</span></span><b aria-hidden="true">›</b></section>`;
           const past = [...this.state.sponsorConversationHistory].sort((left, right) => `${right.date} ${right.time}`.localeCompare(`${left.date} ${left.time}`));
-          return `${upcoming}<section class="sponsor-next-list-scroll" aria-label="Korábbi alkalmak"><header class="sponsor-next-list-heading"><h2>Korábbi alkalmak</h2><span>${past.length} alkalom</span></header>${past.map((item) => this.renderSponsorConversationCard({ ...item, kind: 'past' })).join('')}</section>`;
+          return `${upcoming}<section class="sponsor-next-list-scroll" aria-label="Korábbi alkalmak"><header class="sponsor-next-list-heading"><h2>Korábbi alkalmak</h2><span>${past.length} alkalom</span></header><div class="meetings-day-list sponsor-next-conversation-list">${past.map((item) => this.renderSponsorConversationCard({ ...item, kind: 'past' })).join('')}</div></section>`;
         }
         moveSponsorCalendarMonth(direction) {
           const calendar = this.state.sponsorCalendar;
@@ -5843,14 +5839,14 @@
           return motivation || 'Írd le, miért fontos neked a felépülés.';
         }
         renderPanicAlternative() {
-          return `<section class="panic-alternative"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button panic-main-button--pulse" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell, kapcsolati lehetőségek megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-alternative-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>15 perces<br>túlélőcsomag</span></button><button type="button" data-action="toggle-panic-next-meeting" aria-expanded="${this.state.panicNextMeetingOpen}"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Következő<br>gyűlés</span></button><button type="button" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Visszaestem</span></button></section><div class="panic-next-meeting-slot" data-component="panic-next-meeting-slot"></div><button class="panic-motivation-card" type="button" data-action="open-panic-motivation-sheet" aria-label="Miért kezdtem el? panel megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span><strong>Miért kezdtem el?</strong><small>${escapeHtml(this.panicMotivationExcerpt())}</small></span><span aria-hidden="true">›</span></button></section>`;
+          return `<section class="panic-alternative"><section class="panic-center"><h2>Nem vagy egyedül.</h2><p>Most csak a következő néhány perc számít.</p><button class="panic-main-button panic-main-button--pulse" type="button" data-action="open-panic-help-sheet" aria-label="Segítség kell, kapcsolati lehetőségek megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Segítség<br>kell</span></button></section><p class="panic-detail-intro">Alatta minden gyors opció külön, nyugodt lépésként indul.</p><section class="panic-alternative-grid" aria-label="Pánik mód gyors opciók"><button type="button" data-action="start-survival-pack"><svg class="icon" aria-hidden="true"><use href="#icon-path"/></svg><span>15 perces<br>túlélőcsomag</span></button><button type="button" data-action="toggle-panic-next-meeting" aria-expanded="${this.state.panicNextMeetingOpen}"><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg><span>Következő<br>gyűlés</span></button><button type="button" data-action="open-panic-relapse"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span>Visszaestem</span></button></section><button class="panic-motivation-card" type="button" data-action="open-panic-motivation-sheet" aria-label="Miért kezdtem el? ablak megnyitása"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg><span><strong>Miért kezdtem el?</strong><small>${escapeHtml(this.panicMotivationExcerpt())}</small></span><span aria-hidden="true">›</span></button></section>`;
         }
         renderPanicVariant() {
           if (!this.panicContent || !this.panicScreen) return;
           this.panicContent.dataset.panicVariant = 'alternative';
           this.panicScreen.dataset.panicVariant = 'alternative';
           this.panicContent.innerHTML = this.renderPanicAlternative();
-          this.renderPanicNextMeetingPanel();
+          this.renderPanicNextMeetingPopup();
         }
         panicRelevantMeetingInstances(now = new Date()) {
           const today = localDateIso(now); const limit = new Date(`${today}T12:00:00`); limit.setDate(limit.getDate() + 90);
@@ -5875,44 +5871,58 @@
           if (minutes < 6 * 60) return `${Math.round(minutes / 60)} óra múlva kezdődik`;
           return meeting.occurrenceDate === localDateIso(now) ? 'Ma este kezdődik' : meeting.occurrenceDate === localDateIso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)) ? 'Holnap lesz' : `${this.formatMeetingDate(meeting.occurrenceDate, { withWeekday: true })} lesz`;
         }
-        startPanicNextMeetingTicker() { this.stopPanicNextMeetingTicker(); this.panicNextMeetingTicker = globalThis.setInterval?.(() => this.renderPanicNextMeetingPanel(), 60000); }
+        startPanicNextMeetingTicker() { this.stopPanicNextMeetingTicker(); this.panicNextMeetingTicker = globalThis.setInterval?.(() => this.renderPanicNextMeetingPopup(), 60000); }
         stopPanicNextMeetingTicker() { if (this.panicNextMeetingTicker) globalThis.clearInterval?.(this.panicNextMeetingTicker); this.panicNextMeetingTicker = null; }
-        togglePanicNextMeeting() {
-          this.state.panicNextMeetingOpen = !this.state.panicNextMeetingOpen;
+        togglePanicNextMeeting(trigger) {
+          if (this.state.panicNextMeetingOpen) { this.closePanicNextMeeting(); return; }
+          this.state.panicNextMeetingOpen = true;
           this.state.panicNextMeetingIndex = 0;
-          if (this.state.panicNextMeetingOpen) this.startPanicNextMeetingTicker(); else this.stopPanicNextMeetingTicker();
-          this.renderPanicNextMeetingPanel();
+          this.renderPanicNextMeetingPopup();
+          this.startPanicNextMeetingTicker();
+          this.openAppOverlaySheet(this.panicNextMeetingPopupHost, trigger);
         }
-        closePanicNextMeeting() { this.state.panicNextMeetingOpen = false; this.state.panicNextMeetingIndex = 0; this.stopPanicNextMeetingTicker(); this.renderPanicNextMeetingPanel(); }
+        closePanicNextMeeting() {
+          if (!this.state.panicNextMeetingOpen && this.panicNextMeetingPopupHost?.hidden) return;
+          this.state.panicNextMeetingOpen = false;
+          this.state.panicNextMeetingIndex = 0;
+          this.stopPanicNextMeetingTicker();
+          this.renderPanicNextMeetingPopup();
+          this.closeAppOverlaySheet(this.panicNextMeetingPopupHost);
+        }
         showAnotherPanicMeeting() {
           const nextIndex = this.state.panicNextMeetingIndex + 1; const items = this.panicRelevantMeetingInstances();
           if (nextIndex >= items.length) return;
-          this.state.panicNextMeetingIndex = nextIndex; this.renderPanicNextMeetingPanel();
+          this.state.panicNextMeetingIndex = nextIndex; this.renderPanicNextMeetingPopup();
         }
         setPanicNextMeetingPlanned(id, occurrenceDate) {
           const instance = this.panicRelevantMeetingInstances().find((item) => item.sourceId === id && item.occurrenceDate === occurrenceDate);
           if (!instance) return;
           this.setMeetingAttendance(id, this.meetingAttendance(instance) === 'planned' ? 'maybe' : 'planned', occurrenceDate);
-          this.renderPanicNextMeetingPanel();
+          this.renderPanicNextMeetingPopup();
         }
-        renderPanicNextMeetingPanel() {
-          const slot = this.root.querySelector('[data-component="panic-next-meeting-slot"]');
-          if (!slot) return;
+        openPanicHelpFromNextMeeting() {
+          const trigger = this.root.querySelector('[data-action="toggle-panic-next-meeting"]');
+          this.closePanicNextMeeting();
+          globalThis.setTimeout(() => this.openPanicHelpSheet(trigger), this.motionReduced ? 0 : 200);
+        }
+        renderPanicNextMeetingPopup() {
+          const content = this.panicNextMeetingPopupContent;
+          if (!content) return;
           const trigger = this.root.querySelector('[data-action="toggle-panic-next-meeting"]');
           if (trigger) trigger.setAttribute('aria-expanded', String(this.state.panicNextMeetingOpen));
-          if (!this.state.panicNextMeetingOpen) { slot.innerHTML = ''; return; }
+          if (!this.state.panicNextMeetingOpen) { content.innerHTML = ''; return; }
           const meetings = this.panicRelevantMeetingInstances();
           this.state.panicNextMeetingIndex = Math.min(this.state.panicNextMeetingIndex, Math.max(0, meetings.length - 1));
           const meeting = meetings[this.state.panicNextMeetingIndex];
-          if (!meeting) { slot.innerHTML = `<section class="panic-next-meeting-card panic-next-meeting-empty"><header class="panic-next-meeting-heading"><span><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Következő gyűlés</span><button class="panic-next-meeting-close" type="button" data-action="close-panic-next-meeting" aria-label="Következő gyűlés bezárása">×</button></header><p>Most nincs közelgő gyűlés a felvitt alkalmak között.</p><p>Addig is kérhetsz segítséget valakitől.</p><button class="panic-next-meeting-help" type="button" data-action="open-panic-help-sheet">Segítség kell</button></section>`; return; }
+          if (!meeting) { content.innerHTML = `<section class="panic-next-meeting-card panic-next-meeting-empty"><p>Most nincs közelgő gyűlés a felvitt alkalmak között.</p><p>Addig is kérhetsz segítséget valakitől.</p><button class="panic-next-meeting-help" type="button" data-action="open-panic-help-from-next-meeting">Segítség kell</button></section>`; return; }
           const attendance = this.meetingAttendance(meeting); const online = meeting.format === 'online'; const hasJoin = /^https?:\/\//i.test(String(meeting.url || ''));
           const primary = online
             ? hasJoin ? `<a class="panic-next-meeting-primary" href="${escapeHtml(meeting.url)}" target="_blank" rel="noopener">Csatlakozás</a>` : '<span>Csatlakozási link nincs megadva.</span>'
             : `<button class="panic-next-meeting-primary" type="button" data-action="panic-next-meeting-map" data-meeting-id="${escapeHtml(meeting.sourceId)}">Útvonal</button>`;
           const location = online ? 'Online gyűlés' : this.meetingLocationText(meeting);
           const more = this.state.panicNextMeetingIndex < meetings.length - 1 ? '<button class="panic-next-meeting-more" type="button" data-action="panic-next-meeting-other">Másik gyűlés ›</button>' : '';
-          const needHelp = meeting.occurrenceDate !== localDateIso() ? '<button class="panic-next-meeting-help" type="button" data-action="open-panic-help-sheet">Segítség most</button>' : '';
-          slot.innerHTML = `<section class="panic-next-meeting-card"><header class="panic-next-meeting-heading"><span><svg class="icon" aria-hidden="true"><use href="#icon-people"/></svg>Következő gyűlés</span><button class="panic-next-meeting-close" type="button" data-action="close-panic-next-meeting" aria-label="Következő gyűlés bezárása">×</button></header><div class="panic-next-meeting-time"><strong>${escapeHtml(this.panicMeetingDateTimeLabel(meeting))}</strong><span>${escapeHtml(this.panicMeetingRelativeLabel(meeting))}</span></div><div class="panic-next-meeting-copy"><strong>${escapeHtml(meeting.title)}</strong><span>${escapeHtml(location)}</span></div><div class="panic-next-meeting-actions">${primary}<button class="${attendance === 'planned' ? 'is-planned' : ''}" type="button" data-action="panic-next-meeting-plan" data-meeting-id="${escapeHtml(meeting.sourceId)}" data-meeting-occurrence-date="${escapeHtml(meeting.occurrenceDate)}">${attendance === 'planned' ? '✓ Ott leszek' : 'Ott leszek'}</button></div>${more}${needHelp}</section>`;
+          const needHelp = meeting.occurrenceDate !== localDateIso() ? '<button class="panic-next-meeting-help" type="button" data-action="open-panic-help-from-next-meeting">Segítség most</button>' : '';
+          content.innerHTML = `<section class="panic-next-meeting-card"><div class="panic-next-meeting-time"><strong>${escapeHtml(this.panicMeetingDateTimeLabel(meeting))}</strong><span>${escapeHtml(this.panicMeetingRelativeLabel(meeting))}</span></div><div class="panic-next-meeting-copy"><strong>${escapeHtml(meeting.title)}</strong><span>${escapeHtml(location)}</span></div><div class="panic-next-meeting-actions">${primary}<button class="${attendance === 'planned' ? 'is-planned' : ''}" type="button" data-action="panic-next-meeting-plan" data-meeting-id="${escapeHtml(meeting.sourceId)}" data-meeting-occurrence-date="${escapeHtml(meeting.occurrenceDate)}">${attendance === 'planned' ? '✓ Ott leszek' : 'Ott leszek'}</button></div>${more}${needHelp}</section>`;
         }
         getPanicContact(key = 'sponsor') { return this.sponsorContactForKey(key); }
         hasPanicContact(key = 'sponsor') { return Boolean(String(this.getPanicContact(key)?.name || '').trim()); }
@@ -5974,27 +5984,6 @@
           this.closePanicHelpSheet();
           globalThis.setTimeout(() => this.openSponsorMessageSheet(trigger, { contactKey: key, message, panicOrigin: true }), this.motionReduced ? 0 : 200);
         }
-        panicSheetIsOpen(sheet) { return sheet === 'motivation' ? this.state.panicMotivationSheet : this.state.panicHelpSheet; }
-        closePanicSheet(sheet) { if (sheet === 'motivation') this.closePanicMotivationSheet(); else this.closePanicHelpSheet(); }
-        startPanicSheetDrag(event) {
-          const handle = event.target.closest('[data-panic-sheet-handle]');
-          const sheet = handle?.dataset.panicSheetHandle;
-          if (!sheet || !this.panicSheetIsOpen(sheet)) return;
-          this.panicSheetDrag = { pointerId: event.pointerId, sheet, startY: event.clientY, moved: false };
-          handle.setPointerCapture?.(event.pointerId);
-        }
-        updatePanicSheetDrag(event) {
-          const drag = this.panicSheetDrag;
-          if (!drag || drag.pointerId !== event.pointerId) return;
-          drag.moved ||= event.clientY - drag.startY > 8;
-          if (drag.moved) event.preventDefault();
-        }
-        finishPanicSheetDrag(event) {
-          const drag = this.panicSheetDrag;
-          if (!drag || drag.pointerId !== event.pointerId) return;
-          this.panicSheetDrag = null;
-          if (event.clientY - drag.startY > 54) this.closePanicSheet(drag.sheet);
-        }
         handlePlatformBack() {
           if (this.isPathStepContextMenuOpen()) { this.closePathStepContextMenu(); return; }
           if (this.isDailyOverviewMenuOpen()) { this.closeDailyOverviewMenu(); return; }
@@ -6002,6 +5991,7 @@
           if (this.isMeetingFormSheetOpen()) { this.closeMeetingFormSheet(); return; }
           if (this.isPathQuestionNavigatorOpen()) { this.closePathQuestionNavigator(); return; }
           if (this.state.survivalNoteSheet) { this.closeSurvivalNoteSheet(); return; }
+          if (this.state.panicNextMeetingOpen) { this.closePanicNextMeeting(); return; }
           if (this.state.panicHelpSheet) { this.closePanicHelpSheet(); return; }
           if (this.state.panicMotivationSheet) { this.closePanicMotivationSheet(); return; }
           if (this.state.route === 'meeting-detail') { this.closeMeetingDetail(); return; }
@@ -6268,7 +6258,8 @@
         navigate(route) {
           if (route === 'history-detail') route = 'history';
           if (route !== 'sponsor-next') this.state.sponsorCalendar = null;
-          if (route !== 'panic') this.stopPanicNextMeetingTicker();
+          if (route !== 'panic' && this.state.panicNextMeetingOpen) this.closePanicNextMeeting();
+          else if (route !== 'panic') this.stopPanicNextMeetingTicker();
           if (route !== 'initialization') this.clearInitializationSplashTimer();
           this.state.route = route;
           this.root.dataset.route = route;
@@ -6295,10 +6286,7 @@
                 practices: saved.practice.practices.map((practice) => createPractice(practice)),
                 editor: null,
                 editorDraft: saved.practice.editorDraft || null,
-                detailPracticeId: null,
-                replacementCandidate: null,
                 practicePopupView: null,
-                contextMenuPracticeId: null,
                 listFilter: ['all', 'paused', 'archived'].includes(saved.practice.listFilter) ? saved.practice.listFilter : 'all'
               };
               const active = this.state.practice.practices.find((practice) => practice.id === this.state.practice.activePracticeId && practice.status === 'active') || this.state.practice.practices.find((practice) => practice.status === 'active') || null;
@@ -6365,13 +6353,18 @@
         renderHomePracticeBlock() {
           const host = this.root.querySelector('[data-component="home-practice-block"]');
           if (!host) return;
+          const homeBody = typeof host.closest === 'function' ? host.closest('.home-body') : this.root.querySelector('.home-body');
           const practice = this.getActivePractice();
           if (!practice) {
+            homeBody?.style.removeProperty('--practice-sheet-decoration');
+            homeBody?.removeAttribute('data-practice-decoration');
             host.innerHTML = '<h1 id="home-practice-title">Amit gyakorlok</h1><button class="home-practice-open" type="button" data-action="open-practice-manager"><span>Még nem választottál gyakorlatot.</span><span aria-hidden="true">›</span></button>';
             return;
           }
-          const source = this.formatPracticeSource(practice);
-          host.innerHTML = `<h1 id="home-practice-title">Amit gyakorlok</h1><button class="home-practice-active" type="button" data-action="open-practice-manager" aria-label="Gyakorlatmanager megnyitása"><span><strong>${escapeHtml(practice.title || practice.intentionText)}</strong>${source ? `<small>${escapeHtml(source)}</small>` : ''}</span><span aria-hidden="true">›</span></button>`;
+          const artwork = this.practicePickerArtwork(practice);
+          homeBody?.style.setProperty('--practice-sheet-decoration', `url("${artwork.sheetDecoration}")`);
+          homeBody?.setAttribute('data-practice-decoration', artwork.id);
+          host.innerHTML = `<h1 id="home-practice-title">Amit gyakorlok</h1><button class="home-practice-active" type="button" data-action="open-practice-manager" aria-label="Gyakorlatmanager megnyitása"><span><strong>${escapeHtml(practice.title || practice.intentionText)}</strong></span><span aria-hidden="true">›</span></button>`;
         }
         practiceSourceFromAction(target) {
           if (!target?.dataset?.practiceSource) return null;
@@ -6379,43 +6372,48 @@
         }
         isPracticeSheetOpen() { return Boolean(this.practiceSheetHost && !this.practiceSheetHost.hidden); }
         practicePopupHeader(title, subtitle = '') { return `<header class="practice-popup-header"><span><h2 id="practice-popup-title">${escapeHtml(title)}</h2>${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ''}</span><button class="practice-popup-close" type="button" data-action="close-practice-sheet" aria-label="Bezárás">×</button></header>`; }
+        practicePickerArtwork(practice) {
+          const artworks = [
+            { id: 'heart', src: 'assets/practice/practice_heart_blossom.png', sheetDecoration: 'assets/practice/decor/heart_sheet_field_v4.png' },
+            { id: 'wave', src: 'assets/practice/practice_wave.png', sheetDecoration: 'assets/practice/decor/wave_sheet_field_v4.png' },
+            { id: 'sprout', src: 'assets/practice/practice_sprout.png', sheetDecoration: 'assets/practice/decor/sprout_sheet_field_v4.png' },
+            { id: 'sunrise', src: 'assets/practice/practice_sunrise.png', sheetDecoration: 'assets/practice/decor/sunrise_sheet_field_v4.png' },
+            { id: 'moon', src: 'assets/practice/practice_moon.png', sheetDecoration: 'assets/practice/decor/moon_sheet_field_v4.png' }
+          ];
+          const identity = `${practice?.id || ''} ${practice?.title || ''} ${practice?.source?.topicId || ''}`.toLocaleLowerCase('hu-HU');
+          const theme = /hála|szív|szeretet/.test(identity) ? 'heart'
+            : /megáll|víz|hullám|légz|nyugalom/.test(identity) ? 'wave'
+              : /nap|reggel|tudatos/.test(identity) ? 'sunrise'
+                : /hold|este|pihen/.test(identity) ? 'moon'
+                  : /figyel|türel|határ|stressz|meghallgat/.test(identity) ? 'sprout' : '';
+          if (theme) return artworks.find((artwork) => artwork.id === theme);
+          const seed = Array.from(String(practice?.id || practice?.title || 'practice')).reduce((sum, char) => sum + char.codePointAt(0), 0);
+          return artworks[seed % artworks.length];
+        }
         practiceRow(practice) {
-          const menuOpen = this.state.practice.contextMenuPracticeId === practice.id;
-          const sourceIcon = practice.source?.type === 'custom' ? '#icon-profile' : '#icon-book';
           const sourceLabel = this.formatPracticeSource(practice) || 'Saját gyakorlat';
-          const statusAction = practice.status === 'archived'
-            ? `<button type="button" data-action="restore-practice" data-practice-id="${escapeHtml(practice.id)}">Vissza a gyakorlataimhoz</button>`
-            : `<button type="button" data-action="archive-practice" data-practice-id="${escapeHtml(practice.id)}">Megőrzöm későbbre</button>`;
-          return `<article class="practice-manager-row" data-practice-status="${escapeHtml(practice.status)}"><span class="practice-row-icon" aria-hidden="true"><svg class="icon"><use href="#icon-leaf"/></svg></span><button class="practice-row-copy" type="button" data-action="activate-practice" data-practice-id="${escapeHtml(practice.id)}" aria-label="${escapeHtml(practice.title)} aktiválása"><strong>${escapeHtml(practice.title)}</strong><small>${escapeHtml(practice.intentionText || sourceLabel)}</small><small class="practice-row-source"><svg class="icon" aria-hidden="true"><use href="${sourceIcon}"/></svg>${escapeHtml(sourceLabel)}</small></button><button class="practice-row-activate" type="button" data-action="activate-practice" data-practice-id="${escapeHtml(practice.id)}" aria-label="${escapeHtml(practice.title)} aktiválása"><span aria-hidden="true">▶</span></button><button class="practice-row-menu" type="button" data-action="toggle-practice-menu" data-practice-id="${escapeHtml(practice.id)}" aria-expanded="${menuOpen}" aria-label="${escapeHtml(practice.title)} további lehetőségei">⋮</button>${menuOpen ? `<div class="practice-row-context"><button type="button" data-action="activate-practice" data-practice-id="${escapeHtml(practice.id)}">Aktiválás</button><button type="button" data-action="edit-practice" data-practice-id="${escapeHtml(practice.id)}">Szerkesztés</button>${statusAction}<button type="button" data-action="delete-practice" data-practice-id="${escapeHtml(practice.id)}">Törlés</button></div>` : ''}</article>`;
+          const artwork = this.practicePickerArtwork(practice);
+          return `<article class="practice-list-card" data-practice-id="${escapeHtml(practice.id)}"><button class="practice-list-edit" type="button" data-action="edit-practice" data-practice-id="${escapeHtml(practice.id)}" aria-label="${escapeHtml(practice.title)} szerkesztése"><span class="practice-list-artwork" data-practice-artwork="${artwork.id}" aria-hidden="true"><img src="${artwork.src}" alt=""></span><span class="practice-list-copy"><strong>${escapeHtml(practice.title)}</strong><small>${escapeHtml(sourceLabel)}</small></span></button><button class="practice-list-chevron" type="button" data-action="activate-practice" data-practice-id="${escapeHtml(practice.id)}" aria-label="${escapeHtml(practice.title)} aktiválása">›</button></article>`;
         }
         renderPracticeSheet() {
           const host = this.practiceSheetHost; if (!host) return;
-          const state = this.state.practice; const view = state.practicePopupView || 'manager'; const active = this.getActivePractice(); const detail = this.getPracticeById(state.detailPracticeId);
+          const state = this.state.practice; const view = state.practicePopupView || 'manager'; const active = this.getActivePractice();
           let body = '';
-          if (state.replacementCandidate) {
-            body = `${this.practicePopupHeader('Gyakorlat váltása')}<p>Az előző gyakorlatod megmarad, és szüneteltetve lesz.</p><div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="confirm-practice-replace">Erre váltok</button><button class="practice-actions-secondary" type="button" data-action="cancel-practice-replace">Mégsem</button></div>`;
-          } else if (view === 'details' && detail) {
-            const reflections = detail.reflections?.length ? detail.reflections.map((item) => `<p>${escapeHtml(item.date)} · ${escapeHtml(item.note || item.observationType || 'Rövid visszatekintés')}</p>`).join('') : '<p>Még nincs rögzített tapasztalat.</p>';
-            const lifecycle = detail.status === 'active'
-              ? `<button class="practice-actions-secondary" type="button" data-action="pause-practice" data-practice-id="${escapeHtml(detail.id)}">Szüneteltetem</button>`
-              : detail.status === 'archived'
-                ? `<button class="practice-actions-secondary" type="button" data-action="restore-practice" data-practice-id="${escapeHtml(detail.id)}">Vissza a gyakorlataimhoz</button>`
-                : `<button class="practice-actions-secondary" type="button" data-action="activate-practice" data-practice-id="${escapeHtml(detail.id)}">Ezt aktiválom</button>`;
-            body = `${this.practicePopupHeader(detail.title, this.formatPracticeSource(detail) || 'Saját gyakorlat')}${detail.sourceTextSnapshot ? `<section class="practice-source"><small>FORRÁS</small><p>„${escapeHtml(detail.sourceTextSnapshot)}”</p></section>` : ''}<section class="practice-source"><small>AMIKOR</small><p>${escapeHtml(detail.triggerText)}</p><small>AKKOR MEGPRÓBÁLOM</small><p>${escapeHtml(detail.intentionText)}</p></section><section class="practice-source"><small>KORÁBBI TAPASZTALATAIM</small>${reflections}</section><div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="edit-practice" data-practice-id="${escapeHtml(detail.id)}">Szerkesztés</button>${lifecycle}<button class="practice-actions-secondary" type="button" data-action="open-practice-manager">Vissza a gyakorlataimhoz</button></div>`;
-          } else if (view === 'editor' && state.editor) {
+          if (view === 'editor' && state.editor) {
             const editor = state.editor; const sourceLabel = editor.source ? this.formatPracticeSource({ source: editor.source }) : 'Saját gyakorlat';
-            body = `${this.practicePopupHeader(editor.mode === 'edit' ? 'Gyakorlat szerkesztése' : 'Új gyakorlat', 'Fogalmazd meg, mit szeretnél tudatosan gyakorolni.')}<section class="practice-source"><small>FORRÁS</small><p>${escapeHtml(sourceLabel || 'Saját gyakorlat')}</p>${editor.sourceTextSnapshot ? `<p>„${escapeHtml(editor.sourceTextSnapshot)}”</p>` : ''}<button class="practice-detail-row" type="button" data-action="select-practice-source"><span>Ösvényből választok</span><span>›</span></button></section><label class="practice-field">GYAKORLAT NEVE<input data-practice-input="title" value="${escapeHtml(editor.title)}" data-invalid="${Boolean(editor.errors?.title)}" placeholder="Például: Figyelmes meghallgatás"></label><label class="practice-field">AMIKOR<textarea data-practice-input="triggerText" data-invalid="${Boolean(editor.errors?.triggerText)}" placeholder="Észreveszem, hogy…">${escapeHtml(editor.triggerText)}</textarea></label><label class="practice-field">AKKOR MEGPRÓBÁLOM<textarea data-practice-input="intentionText" data-invalid="${Boolean(editor.errors?.intentionText)}" placeholder="Megállok egy pillanatra, és…">${escapeHtml(editor.intentionText)}</textarea></label>${active && active.id !== editor.practiceId ? '<p class="practice-source">Aktiváláskor a jelenlegi gyakorlat szünetel.</p>' : ''}<div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="save-practice-editor">${editor.mode === 'edit' ? 'Mentés' : 'Ezt fogom gyakorolni'}</button>${editor.mode === 'create' ? '<button class="practice-actions-secondary" type="button" data-action="save-practice-later">Mentés későbbre</button>' : ''}<button class="practice-actions-secondary" type="button" data-action="cancel-practice-editor">Mégsem</button></div>`;
+            body = `${this.practicePopupHeader(editor.mode === 'edit' ? 'Gyakorlat szerkesztése' : 'Új gyakorlat', 'Fogalmazd meg, mit szeretnél tudatosan gyakorolni.')}<section class="practice-source"><small>FORRÁS</small><p>${escapeHtml(sourceLabel || 'Saját gyakorlat')}</p>${editor.sourceTextSnapshot ? `<p>„${escapeHtml(editor.sourceTextSnapshot)}”</p>` : ''}<button class="practice-detail-row" type="button" data-action="select-practice-source"><span>Ösvényből választok</span><span>›</span></button></section><label class="practice-field">GYAKORLAT NEVE<input data-practice-input="title" value="${escapeHtml(editor.title)}" data-invalid="${Boolean(editor.errors?.title)}" placeholder="Például: Figyelmes meghallgatás"></label><label class="practice-field">AMIKOR<textarea data-practice-input="triggerText" data-invalid="${Boolean(editor.errors?.triggerText)}" placeholder="Észreveszem, hogy…">${escapeHtml(editor.triggerText)}</textarea></label><label class="practice-field">AKKOR MEGPRÓBÁLOM<textarea data-practice-input="intentionText" data-invalid="${Boolean(editor.errors?.intentionText)}" placeholder="Megállok egy pillanatra, és…">${escapeHtml(editor.intentionText)}</textarea></label>${active && active.id !== editor.practiceId ? '<p class="practice-source">Aktiváláskor a jelenlegi gyakorlat szünetel.</p>' : ''}<div class="practice-actions"><button class="practice-actions-primary" type="button" data-action="save-practice-editor">${editor.mode === 'edit' ? 'Mentés' : 'Ezt fogom gyakorolni'}</button>${editor.mode === 'create' ? '<button class="practice-actions-secondary" type="button" data-action="save-practice-later">Mentés későbbre</button>' : ''}${editor.mode === 'edit' ? `<button class="practice-actions-secondary practice-editor-delete" type="button" data-action="delete-practice" data-practice-id="${escapeHtml(editor.practiceId)}">Gyakorlat törlése</button>` : ''}<button class="practice-actions-secondary" type="button" data-action="cancel-practice-editor">Mégsem</button></div>`;
           } else if (view === 'source-picker') {
             const candidates = this.getPracticeSourceCandidates();
             body = `${this.practicePopupHeader('Ösvényből választok', 'Egy korábbi felismerésből készíthetsz gyakorlatot.')}<section class="practice-manager-list">${candidates.length ? candidates.map((item) => `<button class="practice-detail-row" type="button" data-action="select-practice-source" data-practice-source="${escapeHtml(JSON.stringify(item.source))}" data-practice-source-text="${escapeHtml(item.text)}"><span>${escapeHtml(item.label)}<small>${escapeHtml(item.text)}</small></span><span>›</span></button>`).join('') : '<p class="practice-source">Még nincs kitöltött összegző felismerésed. Saját gyakorlatot bármikor létrehozhatsz.</p>'}</section><button class="practice-actions-secondary" type="button" data-action="open-practice-editor">Vissza a szerkesztőhöz</button>`;
           } else {
-            const filter = ['all', 'paused', 'archived'].includes(state.listFilter) ? state.listFilter : 'all';
-            const others = state.practices.filter((item) => item.id !== active?.id && (filter === 'all' || item.status === filter)).sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
-            const filters = [['all', 'Összes'], ['paused', 'Szüneteltetett'], ['archived', 'Megőrzött']].map(([id, label]) => `<button type="button" data-action="set-practice-list-filter" data-practice-list-filter="${id}" aria-pressed="${filter === id}">${label}</button>`).join('');
+            const others = state.practices.filter((item) => item.id !== active?.id).sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
             const activeSource = active ? this.formatPracticeSource(active) || 'Saját gyakorlat' : '';
-            const activeSourceIcon = active?.source?.type === 'custom' ? '#icon-profile' : '#icon-book';
-            const activeCard = active ? `<section class="practice-active-card"><span class="practice-active-card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-leaf"/></svg></span><span class="practice-active-card-copy"><small>MOST EZT GYAKORLOM</small><strong>${escapeHtml(active.title)}</strong><p>${escapeHtml(active.intentionText || activeSource)}</p><small class="practice-active-card-source"><svg class="icon" aria-hidden="true"><use href="${activeSourceIcon}"/></svg>${escapeHtml(activeSource)}</small></span><button class="practice-active-card-action" type="button" data-action="open-practice-details" data-practice-id="${escapeHtml(active.id)}">Részletek <span aria-hidden="true">›</span></button></section>` : `<section class="practice-source"><strong>Most nincs aktív gyakorlatod.</strong><p>Válassz egyet a korábbiak közül, vagy hozz létre újat.</p></section>`;
-            body = `${this.practicePopupHeader('Ezt szeretném gyakorolni', 'Válassz a felismeréseidből vagy saját gyakorlataidból.')}${activeCard}<div class="practice-manager-list-heading"><h3>Gyakorlataim</h3><div class="practice-list-filter" role="group" aria-label="Gyakorlatok szűrése">${filters}</div></div><section class="practice-manager-scroll" aria-label="Gyakorlataim listája">${others.length ? others.map((practice) => this.practiceRow(practice)).join('') : '<p class="practice-source">Ebben a nézetben még nincs gyakorlat.</p>'}</section><button class="practice-manager-create" type="button" data-action="open-practice-editor">+ Új gyakorlat hozzáadása</button>`;
+            const currentArtwork = this.practicePickerArtwork(active || { status: 'active' });
+            const activeCard = active
+              ? `<button class="practice-current-card practice-current-edit" type="button" data-action="edit-practice" data-practice-id="${escapeHtml(active.id)}" aria-label="${escapeHtml(active.title)} szerkesztése"><span class="practice-current-artwork" aria-hidden="true"><img src="${currentArtwork.src}" alt=""></span><span class="practice-current-copy"><small>MOST GYAKORLOM</small><strong>${escapeHtml(active.title)}</strong><small class="practice-current-source">${escapeHtml(activeSource)}</small></span></button>`
+              : `<section class="practice-current-card"><span class="practice-current-artwork" aria-hidden="true"><img src="${currentArtwork.src}" alt=""></span><span class="practice-current-copy"><small>MOST GYAKORLOM</small><strong>Most nincs aktív gyakorlatod.</strong><small class="practice-current-source">Válassz egyet a gyakorlataid közül.</small></span></section>`;
+            const footer = '<footer class="practice-picker-footer" aria-hidden="true"><span class="practice-picker-footer-mark"><svg viewBox="0 0 42 34"><path d="M21 30c-8-4-12-10-12-17 6 1 10 5 12 10 2-5 6-9 12-10 0 7-4 13-12 17Z"/><path d="M21 24c-4-6-4-13 0-20 4 7 4 14 0 20ZM21 24C14 22 9 18 5 11c8 0 13 4 16 13ZM21 24c7-2 12-6 16-13-8 0-13 4-16 13Z"/></svg></span><p>Tiszta gondolatok. Derűsebb holnap.</p></footer>';
+            body = `<div class="practice-picker-chrome">${this.practicePopupHeader('Ezt szeretném gyakorolni', 'Válassz a gyakorlataid közül, vagy hozz létre újat.')}</div>${activeCard}<section class="practice-list-shell" aria-label="Gyakorlataim"><h3>Gyakorlataim</h3><div class="practice-list-scroll" aria-label="Gyakorlataim listája">${others.length ? others.map((practice) => this.practiceRow(practice)).join('') : '<p class="practice-source">Még nincs további gyakorlatod.</p>'}</div><footer class="practice-manager-footer"><button class="practice-manager-create" type="button" data-action="open-practice-editor">＋ Új gyakorlat hozzáadása</button>${footer}</footer></section>`;
           }
           host.innerHTML = `<section class="practice-focus-dialog${view === 'manager' ? ' practice-focus-dialog--manager' : ''}" data-component="practice-manager" role="dialog" aria-modal="true" aria-labelledby="practice-popup-title" tabindex="-1">${body}</section>`;
         }
@@ -6470,10 +6468,9 @@
           });
           return candidates.sort((first, second) => String(second.updatedAt).localeCompare(String(first.updatedAt)) || first.label.localeCompare(second.label, 'hu'));
         }
-        openPracticeManager(trigger = document.activeElement) { const state = this.state.practice; state.editor = null; state.detailPracticeId = null; state.replacementCandidate = null; state.contextMenuPracticeId = null; state.practicePopupView = 'manager'; this.renderPracticeSheet(); this.openAppOverlaySheet(this.practiceSheetHost, trigger); }
+        openPracticeManager(trigger = document.activeElement) { const state = this.state.practice; state.editor = null; state.practicePopupView = 'manager'; this.renderPracticeSheet(); this.openAppOverlaySheet(this.practiceSheetHost, trigger); }
         openPracticeEditor(source = null, practiceId = null) {
           const existing = this.getPracticeById(practiceId); const state = this.state.practice;
-          state.detailPracticeId = null; state.replacementCandidate = null; state.contextMenuPracticeId = null;
           const draft = state.editorDraft && state.editorDraft.practiceId === (existing?.id || null) && !source ? state.editorDraft : null;
           state.editor = {
             mode: existing ? 'edit' : 'create',
@@ -6487,7 +6484,6 @@
           };
           state.practicePopupView = 'editor'; this.renderPracticeSheet(); this.openAppOverlaySheet(this.practiceSheetHost, document.activeElement);
         }
-        openPracticeDetails(practiceId) { const practice = this.getPracticeById(practiceId) || this.getActivePractice(); if (!practice) return this.openPracticeEditor(); const state = this.state.practice; state.editor = null; state.detailPracticeId = practice.id; state.contextMenuPracticeId = null; state.practicePopupView = 'details'; this.renderPracticeSheet(); this.openAppOverlaySheet(this.practiceSheetHost, document.activeElement); }
         preservePracticeEditorDraft() {
           const editor = this.state.practice.editor;
           if (!editor || ![editor.title, editor.triggerText, editor.intentionText].some((value) => String(value || '').trim())) return;
@@ -6500,21 +6496,16 @@
             intentionText: editor.intentionText || ''
           };
         }
-        closePracticeSheet() { const state = this.state.practice; this.preservePracticeEditorDraft(); this.flushHomePracticeDraft(); state.editor = null; state.detailPracticeId = null; state.replacementCandidate = null; state.contextMenuPracticeId = null; state.practicePopupView = null; this.closeAppOverlaySheet(this.practiceSheetHost); this.renderHomePracticeBlock(); }
+        closePracticeSheet() { const state = this.state.practice; this.preservePracticeEditorDraft(); this.flushHomePracticeDraft(); state.editor = null; state.practicePopupView = null; this.closeAppOverlaySheet(this.practiceSheetHost); this.renderHomePracticeBlock(); }
         cancelPracticeEditor() { this.preservePracticeEditorDraft(); this.state.practice.editor = null; this.state.practice.practicePopupView = 'manager'; this.flushHomePracticeDraft(); this.renderPracticeSheet(); }
         updatePracticeDraft(field, value) { const editor = this.state.practice.editor; if (!editor || !['title', 'triggerText', 'intentionText'].includes(field)) return; editor[field] = value; editor.errors[field] = false; this.state.practice.saveState = 'saving'; this.flushHomePracticeDraft(); }
         flushHomePracticeDraft() { return this.persistPracticeEveningState(); }
-        togglePracticeMenu(practiceId) { this.state.practice.contextMenuPracticeId = this.state.practice.contextMenuPracticeId === practiceId ? null : practiceId; this.renderPracticeSheet(); }
-        setPracticeListFilter(filter) { if (!['all', 'paused', 'archived'].includes(filter)) return; this.state.practice.listFilter = filter; this.state.practice.contextMenuPracticeId = null; this.flushHomePracticeDraft(); this.renderPracticeSheet(); }
         selectPracticeSource(source) { if (source) { if (!this.state.practice.editor) this.openPracticeEditor(source); else { this.state.practice.editor.source = source.source || source; this.state.practice.editor.sourceTextSnapshot = source.sourceTextSnapshot || ''; this.state.practice.practicePopupView = 'editor'; this.renderPracticeSheet(); } return; } this.state.practice.practicePopupView = 'source-picker'; this.renderPracticeSheet(); }
-        savePracticeEditor({ activate = true } = {}) { const editor = this.state.practice.editor; if (!editor) return; editor.errors = { title: !editor.title.trim(), triggerText: !editor.triggerText.trim(), intentionText: !editor.intentionText.trim() }; if (Object.values(editor.errors).some(Boolean)) { this.renderPracticeSheet(); return; } const active = this.getActivePractice(); if (activate && active && active.id !== editor.practiceId) { this.state.practice.replacementCandidate = { ...editor, activate }; this.renderPracticeSheet(); return; } this.commitPracticeEditor(editor, { activate }); }
-        requestPracticeActivation(practiceId) { const practice = this.getPracticeById(practiceId); if (!practice) return; const active = this.getActivePractice(); if (!active || active.id === practice.id) return this.setPracticeStatus(practice.id, 'active'); this.state.practice.replacementCandidate = { practiceId: practice.id, activationOnly: true }; this.renderPracticeSheet(); }
-        confirmPracticeReplacement() { const candidate = this.state.practice.replacementCandidate; if (!candidate) return; const active = this.getActivePractice(); if (active) active.status = 'paused'; this.state.practice.replacementCandidate = null; if (candidate.activationOnly) return this.setPracticeStatus(candidate.practiceId, 'active'); this.commitPracticeEditor(candidate, { activate: true }); }
-        cancelPracticeReplacement() { this.state.practice.replacementCandidate = null; this.renderPracticeSheet(); }
-        commitPracticeEditor(editor, { activate = false } = {}) { const now = new Date().toISOString(); let practice = editor.practiceId ? this.getPracticeById(editor.practiceId) : null; const preservedStatus = practice?.status || 'paused'; if (!practice) { practice = createPractice({ title: editor.title.trim(), source: editor.source || { type: 'custom' }, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: activate ? 'active' : 'paused', activatedAt: activate ? now : null }); this.state.practice.practices.push(practice); } else Object.assign(practice, { title: editor.title.trim(), source: editor.source, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: activate ? 'active' : preservedStatus, activatedAt: activate ? (practice.activatedAt || now) : practice.activatedAt, updatedAt: now }); if (activate) { this.state.practice.practices.forEach((item) => { if (item.id !== practice.id && item.status === 'active') item.status = 'paused'; }); this.state.practice.activePracticeId = practice.id; } this.state.practice.editor = null; this.state.practice.editorDraft = null; this.state.practice.detailPracticeId = practice.id; this.state.practice.practicePopupView = 'details'; this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.renderPracticeSheet(); }
+        savePracticeEditor({ activate = true } = {}) { const editor = this.state.practice.editor; if (!editor) return; editor.errors = { title: !editor.title.trim(), triggerText: !editor.triggerText.trim(), intentionText: !editor.intentionText.trim() }; if (Object.values(editor.errors).some(Boolean)) { this.renderPracticeSheet(); return; } this.commitPracticeEditor(editor, { activate }); }
+        requestPracticeActivation(practiceId) { this.setPracticeStatus(practiceId, 'active'); }
+        commitPracticeEditor(editor, { activate = false } = {}) { const now = new Date().toISOString(); let practice = editor.practiceId ? this.getPracticeById(editor.practiceId) : null; const preservedStatus = practice?.status || 'paused'; if (!practice) { practice = createPractice({ title: editor.title.trim(), source: editor.source || { type: 'custom' }, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: activate ? 'active' : 'paused', activatedAt: activate ? now : null }); this.state.practice.practices.push(practice); } else Object.assign(practice, { title: editor.title.trim(), source: editor.source, sourceTextSnapshot: editor.sourceTextSnapshot, triggerText: editor.triggerText.trim(), intentionText: editor.intentionText.trim(), status: activate ? 'active' : preservedStatus, activatedAt: activate ? (practice.activatedAt || now) : practice.activatedAt, updatedAt: now }); if (activate) { this.state.practice.practices.forEach((item) => { if (item.id !== practice.id && item.status === 'active') item.status = 'paused'; }); this.state.practice.activePracticeId = practice.id; } this.state.practice.editor = null; this.state.practice.editorDraft = null; this.state.practice.practicePopupView = 'manager'; this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.renderPracticeSheet(); }
         setPracticeStatus(practiceId, status) { if (!PRACTICE_STATUSES.includes(status)) return; const practice = this.getPracticeById(practiceId); if (!practice) return; if (status === 'active') this.state.practice.practices.forEach((item) => { if (item.id !== practice.id && item.status === 'active') item.status = 'paused'; }); practice.status = status; practice.updatedAt = new Date().toISOString(); this.state.practice.activePracticeId = status === 'active' ? practice.id : (this.state.practice.activePracticeId === practice.id ? null : this.state.practice.activePracticeId); this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.state.practice.practicePopupView = 'manager'; this.renderPracticeSheet(); }
-        deletePractice(practiceId) { const practice = this.getPracticeById(practiceId); if (!practice || !globalThis.confirm?.(`Törlöd ezt a gyakorlatot: ${practice.title}?`)) return; this.state.practice.practices = this.state.practice.practices.filter((item) => item.id !== practiceId); if (this.state.practice.activePracticeId === practiceId) this.state.practice.activePracticeId = null; this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.state.practice.contextMenuPracticeId = null; this.state.practice.practicePopupView = 'manager'; this.renderPracticeSheet(); }
-        renderPracticeDetailsHistory() { this.state.practice.practicePopupView = 'details'; this.renderPracticeSheet(); }
+        deletePractice(practiceId) { const practice = this.getPracticeById(practiceId); if (!practice || !globalThis.confirm?.(`Törlöd ezt a gyakorlatot: ${practice.title}?`)) return; this.state.practice.practices = this.state.practice.practices.filter((item) => item.id !== practiceId); if (this.state.practice.activePracticeId === practiceId) this.state.practice.activePracticeId = null; this.flushHomePracticeDraft(); this.renderHomePracticeBlock(); this.state.practice.practicePopupView = 'manager'; this.renderPracticeSheet(); }
         getEveningSession() { return this.state.evening.sessions[this.state.evening.activeSessionId] || null; }
         getDailyReflectionSession(date = localDateIso()) { return this.state.evening.sessions[`${this.state.evening.sobrietyCycleId}:${date}`] || null; }
         getCleanDayNumber(date = localDateIso()) { return isoDaysBetween(this.state.evening.startedAt, date) + 1; }

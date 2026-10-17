@@ -100,7 +100,7 @@ function expectAbsent(pattern, message) {
   "case 'open-panic': this.navigate('panic'); break;",
   "case 'open-daily-image': this.navigate('daily-image'); break;",
   "case 'return-to-milestones': this.navigate('milestones'); break;",
-  "const NAVIGATION_ROUTES = new Set(['home', 'milestones', 'history', 'history-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details']);",
+  "const NAVIGATION_ROUTES = new Set(['home', 'milestones', 'history', 'history-detail', 'timeline-event-detail', 'meetings', 'meeting-detail', 'path', 'panic', 'sponsor', 'sponsor-work', 'sponsor-next', 'sponsor-details']);",
   '--bottom-safe-area: env(safe-area-inset-bottom, 0px);',
   '--bottom-nav-h: calc(70px + var(--bottom-safe-area));',
   'background: #FFFCFC;',
@@ -186,7 +186,7 @@ assert.match(html, /\.home-body\s*\{[^}]*overflow:\s*hidden;/, 'The compact Home
 assert.equal((html.match(/<nav class="bottom-nav"/g) || []).length, 1, 'the visible reference bottom navigation must be present exactly once');
 assert.equal((html.match(/class="bottom-nav-item"/g) || []).length, 5, 'bottom navigation must expose exactly five items');
 assert.equal((html.match(/data-panic-option="/g) || []).length, 0, 'The retired six-tile Pánik layout must not remain mounted');
-assert.match(html, /panic-alternative-grid[\s\S]*?toggle-panic-next-meeting/, 'The single fixed Pánik layout must retain the three-tile alternative grid with inline next-meeting access');
+assert.match(html, /panic-alternative-grid[\s\S]*?toggle-panic-next-meeting/, 'The single fixed Pánik layout must retain the three-tile alternative grid with focus-popup next-meeting access');
 assert.equal((html.match(/class="route-screen meetings-screen"/g) || []).length, 1, 'source 31 must have one shared screen owner for Pánik and Gyűlések');
 assert.equal((html.match(/data-history-detail-tab=/g) || []).length, 4, 'the two current-period submenus must have one visible hero switch and one retained shared workspace binding');
 assert.ok(html.includes('const SURVIVAL_STEPS = Object.freeze(['), 'the survival renderer must own one structured source 18A–E data model');
