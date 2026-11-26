@@ -57,7 +57,9 @@ jobs:
       - name: Free space on the ephemeral runner
         run: |
           df -h /
-          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost \
+            /usr/share/swift /usr/local/share/chromium /opt/google/chrome \
+            /opt/microsoft/msedge /usr/local/.ghcup
           df -h /
       - uses: actions/setup-java@v4
         with:
