@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/features/app_lock/application/lock_controller.dart';
 import 'package:hajnal/features/app_lock/domain/lock_mode.dart';
 import 'package:hajnal/features/app_lock/presentation/lock_gate.dart';
+import 'package:hajnal/features/app_lock/presentation/lock_settings.dart';
 import 'package:hajnal/features/app_lock/presentation/pin_pad.dart';
 import 'package:hajnal/features/app_lock/presentation/pin_setup.dart';
 import 'lock_controller_test.dart' as fakes;
@@ -15,6 +16,35 @@ Future<void> enter(WidgetTester tester, String pin) async {
 }
 
 void main() {
+  testWidgets('settings remain accessible on a narrow screen with large text', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final controller = LockController(
+      fakes.Store(LockMode.pinAndBiometric),
+      fakes.Finger(),
+      fakes.Device(),
+    );
+    await controller.initialize();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.6)),
+          child: LockSettingsPage(controller: controller),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.scrollUntilVisible(find.text('PIN és biometria'), 200);
+    expect(find.text('PIN és biometria'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+  });
+
   testWidgets('PIN screen supports small viewport and large text', (
     tester,
   ) async {

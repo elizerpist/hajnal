@@ -126,6 +126,10 @@ void main() {
     controller.background();
     controller.resumed();
     await controller.submitPin('123456');
+    await tester.pump();
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(seconds: 2)),
+    );
     await capture('lock-biometric-step');
     await File(
       '${directory.path}/lock-visual-ready',

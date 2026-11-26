@@ -80,15 +80,15 @@ class _LockAuthPageState extends State<LockAuthPage> {
                   children: [
                     SvgPicture.asset(
                       BrandAssets.logo,
-                      width: 110,
-                      height: 110,
+                      width: 140,
+                      height: 140,
                       semanticsLabel: 'Hajnal',
                     ),
                     const Text(
                       'Jó, hogy itt vagy.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 32,
+                        fontSize: 36,
                         fontWeight: FontWeight.w800,
                         color: HajnalColors.navy,
                       ),
@@ -96,17 +96,42 @@ class _LockAuthPageState extends State<LockAuthPage> {
                     const Text(
                       'Oldd fel a Hajnalt a folytatáshoz.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: HajnalColors.navy),
+                      style: TextStyle(fontSize: 20, color: HajnalColors.navy),
                     ),
                     if (mode == LockMode.pinAndBiometric)
                       Card(
                         color: HajnalColors.card,
+                        elevation: 2,
+                        shadowColor: HajnalColors.cardShadow,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          side: const BorderSide(color: HajnalColors.keyBorder),
+                        ),
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 28,
+                            vertical: 22,
+                          ),
                           child: Column(
                             children: [
                               _step(Icons.check_circle, '1. PIN ellenőrizve'),
-                              const SizedBox(height: 20),
+                              const SizedBox(
+                                height: 28,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 32,
+                                      child: Center(
+                                        child: VerticalDivider(
+                                          width: 1,
+                                          thickness: 1,
+                                          color: HajnalColors.purple,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               _step(
                                 Icons.radio_button_checked,
                                 '2. Biometrikus azonosítás',
@@ -117,13 +142,13 @@ class _LockAuthPageState extends State<LockAuthPage> {
                       ),
                     const Icon(
                       Icons.fingerprint,
-                      size: 104,
+                      size: 120,
                       color: HajnalColors.purple,
                     ),
                     const Text(
                       'Folytasd a telefonod azonosítójával.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: HajnalColors.navy),
+                      style: TextStyle(fontSize: 20, color: HajnalColors.navy),
                     ),
                     if (controller.message != null)
                       Text(
@@ -133,7 +158,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                       ),
                     SizedBox(
                       width: double.infinity,
-                      height: 56,
+                      height: 60,
                       child: FilledButton(
                         onPressed: controller.busy ? null : bio,
                         style: FilledButton.styleFrom(
@@ -145,7 +170,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                         child: const Text(
                           'Azonosítás indítása',
                           style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 22,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -160,7 +185,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                       ),
                     const Text(
                       'A rendszer saját ablaka nyílik meg.',
-                      style: TextStyle(color: HajnalColors.navy),
+                      style: TextStyle(fontSize: 16, color: HajnalColors.navy),
                     ),
                   ],
                 ),
@@ -173,12 +198,13 @@ class _LockAuthPageState extends State<LockAuthPage> {
   );
   Widget _step(IconData icon, String label) => Row(
     children: [
-      Icon(icon, color: HajnalColors.purple),
-      const SizedBox(width: 16),
+      Icon(icon, color: HajnalColors.purple, size: 32),
+      const SizedBox(width: 20),
       Expanded(
         child: Text(
           label,
           style: const TextStyle(
+            fontSize: 20,
             fontWeight: FontWeight.w700,
             color: HajnalColors.navy,
           ),

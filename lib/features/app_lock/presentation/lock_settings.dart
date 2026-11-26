@@ -94,7 +94,10 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: HajnalColors.sheet,
-    appBar: AppBar(backgroundColor: HajnalColors.sheet),
+    appBar: AppBar(
+      backgroundColor: HajnalColors.sheet,
+      foregroundColor: HajnalColors.navy,
+    ),
     body: SafeArea(
       child: ListenableBuilder(
         listenable: widget.controller,
@@ -103,11 +106,12 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
+              const SizedBox(height: 8),
               const Text(
                 'Alkalmazászár',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 33,
                   fontWeight: FontWeight.w800,
                   color: HajnalColors.navy,
                 ),
@@ -116,7 +120,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
               const Text(
                 'Te döntöd el, hogyan lépsz be.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: HajnalColors.navy),
+                style: TextStyle(fontSize: 20, color: HajnalColors.navy),
               ),
               const SizedBox(height: 32),
               _card(LockMode.off, 'Kikapcsolva', 'Belépés azonosítás nélkül'),
@@ -144,20 +148,29 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
               const Text(
                 'Zárolás minden visszatéréskor.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: HajnalColors.navy),
+                style: TextStyle(fontSize: 16, color: HajnalColors.navy),
               ),
               const SizedBox(height: 28),
               if (c.mode != LockMode.off)
                 Card(
                   color: HajnalColors.card,
+                  elevation: 2,
+                  shadowColor: HajnalColors.cardShadow,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    side: const BorderSide(color: HajnalColors.keyBorder),
+                  ),
                   child: ListTile(
+                    minTileHeight: 72,
                     leading: const Icon(
                       Icons.key_outlined,
+                      size: 30,
                       color: HajnalColors.purple,
                     ),
                     title: const Text(
                       'PIN módosítása',
                       style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: HajnalColors.navy,
                       ),
@@ -182,6 +195,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                       'Az azonosítás a készülékeden történik.',
                       style: TextStyle(
                         color: HajnalColors.navy,
+                        fontSize: 16,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -201,9 +215,13 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Semantics(
         selected: selected,
+        checked: selected,
+        inMutuallyExclusiveGroup: true,
         button: true,
         child: Material(
           color: selected ? HajnalColors.selectedCard : HajnalColors.card,
+          elevation: 2,
+          shadowColor: HajnalColors.cardShadow,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
             side: const BorderSide(color: HajnalColors.keyBorder),
@@ -214,7 +232,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                 ? null
                 : () => choose(mode),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
               child: Row(
                 children: [
                   Expanded(
@@ -224,7 +242,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                         Text(
                           title,
                           style: const TextStyle(
-                            fontSize: 21,
+                            fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: HajnalColors.navy,
                           ),
@@ -233,7 +251,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                         Text(
                           description,
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: HajnalColors.navy,
                           ),
                         ),
@@ -245,6 +263,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                         ? Icons.radio_button_checked
                         : Icons.radio_button_unchecked,
                     color: HajnalColors.purple,
+                    size: 28,
                   ),
                 ],
               ),

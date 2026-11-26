@@ -7,8 +7,8 @@ reference = Image.open('docs/references/source-of-truth/pin.png').convert('RGB')
 for name, left in [('lock-settings', 88), ('lock-pin-setup', 558), ('lock-biometric-step', 1030)]:
     actual = Image.open(f'evidence/{name}.png').convert('RGB')
     # Status and navigation areas belong to Android, not to the mockup.
-    actual = actual.crop((0, 24, actual.width, actual.height - 24))
-    expected = reference.crop((left, 130, left + 418, 965)).resize(actual.size, Image.Resampling.LANCZOS)
+    actual = actual.crop((0, 24, actual.width, actual.height - 48))
+    expected = reference.crop((left, 130, left + 418, 945)).resize(actual.size, Image.Resampling.LANCZOS)
     overlay = Image.blend(expected, actual, 0.5)
     difference = ImageChops.difference(expected, actual)
     panel = Image.new('RGB', (actual.width * 4, actual.height))

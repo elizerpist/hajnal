@@ -90,6 +90,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) => MaterialApp(
     title: 'Hajnal',
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: HajnalColors.purple),
       scaffoldBackgroundColor: HajnalColors.sheet,

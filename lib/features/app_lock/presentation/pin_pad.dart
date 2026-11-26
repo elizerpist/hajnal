@@ -41,9 +41,10 @@ class _PinPadState extends State<PinPad> {
         ? null
         : AppBar(
             backgroundColor: HajnalColors.sheet,
+            foregroundColor: HajnalColors.navy,
             title: Text(
               widget.header!,
-              style: const TextStyle(fontWeight: FontWeight.w800),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
             ),
             actions: [
               if (widget.step != null)
@@ -75,7 +76,7 @@ class _PinPadState extends State<PinPad> {
                   widget.title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 34,
                     fontWeight: FontWeight.w800,
                     color: HajnalColors.navy,
                   ),
@@ -84,14 +85,14 @@ class _PinPadState extends State<PinPad> {
                   widget.subtitle,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     color: HajnalColors.navy,
                   ),
                 ),
                 Semantics(
                   label: 'PIN-kód, ${value.length} számjegy',
                   child: SizedBox(
-                    height: 62,
+                    height: 72,
                     child: Center(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
@@ -101,13 +102,13 @@ class _PinPadState extends State<PinPad> {
                             value.length.clamp(6, 20),
                             (i) => Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: 11,
                               ),
                               child: Icon(
                                 i < value.length
                                     ? Icons.circle
                                     : Icons.circle_outlined,
-                                size: 16,
+                                size: 18,
                                 color: HajnalColors.purple,
                               ),
                             ),
@@ -117,6 +118,7 @@ class _PinPadState extends State<PinPad> {
                     ),
                   ),
                 ),
+                Container(width: 276, height: 1, color: HajnalColors.keyBorder),
                 if (widget.message != null)
                   Text(
                     widget.message!,
@@ -126,7 +128,7 @@ class _PinPadState extends State<PinPad> {
                 GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    mainAxisExtent: 64,
+                    mainAxisExtent: 70,
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                   ),
@@ -145,7 +147,7 @@ class _PinPadState extends State<PinPad> {
                       '9',
                     ])
                       _key(digit, () => add(digit)),
-                    const SizedBox(),
+                    ExcludeSemantics(child: _key('', null)),
                     _key('0', () => add('0')),
                     _key('Törlés', erase, icon: Icons.backspace_outlined),
                   ],
@@ -153,7 +155,7 @@ class _PinPadState extends State<PinPad> {
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
-                  height: 56,
+                  height: 60,
                   child: FilledButton(
                     onPressed: widget.busy || value.length < 6
                         ? null
@@ -167,7 +169,7 @@ class _PinPadState extends State<PinPad> {
                     child: Text(
                       widget.button,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 22,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -181,6 +183,7 @@ class _PinPadState extends State<PinPad> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: HajnalColors.navy,
+                        fontSize: 16,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -193,13 +196,16 @@ class _PinPadState extends State<PinPad> {
     ),
   );
 
-  Widget _key(String label, VoidCallback onTap, {IconData? icon}) => Semantics(
+  Widget _key(String label, VoidCallback? onTap, {IconData? icon}) => Semantics(
     button: true,
     label: label,
     child: OutlinedButton(
       onPressed: widget.busy ? null : onTap,
       style: OutlinedButton.styleFrom(
         backgroundColor: HajnalColors.keyboardSurface,
+        disabledBackgroundColor: HajnalColors.keyboardSurface,
+        elevation: 2,
+        shadowColor: HajnalColors.cardShadow,
         side: const BorderSide(color: HajnalColors.keyBorder),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
         foregroundColor: HajnalColors.navy,
@@ -208,7 +214,7 @@ class _PinPadState extends State<PinPad> {
       child: icon == null
           ? Text(
               label,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
             )
           : Icon(icon, size: 28),
     ),
