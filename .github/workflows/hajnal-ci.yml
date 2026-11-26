@@ -72,6 +72,8 @@ jobs:
           cache: true
       - run: flutter pub get --enforce-lockfile
       - run: flutter build apk --debug
+      - name: Compile native smoke tests
+        run: cd android && ./gradlew :app:assembleDebugAndroidTest --stacktrace
       - name: Reserve disk for the emulator
         run: |
           sudo rm -rf /opt/hostedtoolcache/CodeQL
