@@ -462,3 +462,9 @@ Dokumentációs státusz:
 - DONE: a korábbi szabályokat felváltó döntések jelölve.
 - DONE: nyitott technikai/termékpontok elkülönítve.
 - NOT IMPLEMENTED: Flutter, adatbázis, editor, hang, titkosítás és platformtesztek.
+
+## 19. S0 starter és időkezelés
+
+Az S0 kizárólag a `docs/implementation/HAJNAL_S0_STARTER_PROMPT.md` szerinti shell, kezdődátum, helyi adattárolás, naptárkövetés és artwork-alap. A teljes alkalmazás további moduljai nem részei az S0-nak. A fix kezdőnapot időzónaváltáskor nem konvertáljuk; a mai nap a készülék helyi dátuma, a kijelzett érték a naptári különbség legalább nullára korlátozva. Az offline készülékóra változtatása visszafelé is módosíthatja a kijelzést. Ez nem manipulációbiztos időhitelesítés.
+
+Az első adatbázis-séma v1. Minden későbbi sémaváltozás megőrző migrációval és korábbi sémafixture-ön végzett teszttel kerülhet be; adatvesztő törlés és újralétrehozás nem elfogadható. Az S0 implementáció készülő állapotát a `docs/implementation/S0_ACCEPTANCE.md` követi.

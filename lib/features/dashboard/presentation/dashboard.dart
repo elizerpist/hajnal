@@ -79,6 +79,8 @@ class _DashboardState extends State<Dashboard>
           final height = constraints.maxHeight;
           final cardWidth = math.min(296.0, constraints.maxWidth - 32);
           final travel = math.min(96.0, height * .15);
+          final scale = MediaQuery.textScalerOf(context).scale(1);
+          final cardHeight = math.max(118.0, 118 + (scale - 1) * 160);
           final closedTop = math.max(
             MediaQuery.paddingOf(context).top + 64,
             height - 278,
@@ -114,7 +116,7 @@ class _DashboardState extends State<Dashboard>
                   top: closedTop - travel * progress.value,
                   left: (constraints.maxWidth - cardWidth) / 2,
                   width: cardWidth,
-                  height: 118,
+                  height: cardHeight,
                   child: Semantics(
                     button: true,
                     label: 'Napi összegzés',

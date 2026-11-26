@@ -2,6 +2,9 @@ import 'package:drift/drift.dart';
 
 part 'hajnal_database.g.dart';
 
+@TableIndex.sql(
+  'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
+)
 class RecoveryPeriods extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get startLocalDate => text()();
@@ -26,11 +29,6 @@ class HajnalDatabase extends _$HajnalDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (m) async {
-      await m.createAll();
-      await customStatement(
-        'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
-      );
-    },
+    beforeOpen: (_) async => customStatement('PRAGMA foreign_keys = ON'),
   );
 }

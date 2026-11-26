@@ -22,23 +22,41 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "hu.elizerpist.hajnal"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["buildCommit"] = System.getenv("HAJNAL_BUILD_SHA") ?: "local"
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+    signingConfigs {
+        create("hajnalCi") {
+            val keyPath = System.getenv("HAJNAL_KEYSTORE_PATH")
+            if (keyPath != null) {
+                storeFile = file(keyPath)
+                storePassword = System.getenv("HAJNAL_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("HAJNAL_KEY_ALIAS")
+                keyPassword = System.getenv("HAJNAL_KEYSTORE_PASSWORD")
+            }
         }
     }
+    buildTypes {
+        getByName("profile") { signingConfig = signingConfigs.getByName("hajnalCi") }
+        getByName("release") { signingConfig = signingConfigs.getByName("hajnalCi") }
+    }
+
 }
 
 flutter {
     source = "../.."
+}
+
+
+dependencies {
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 }

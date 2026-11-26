@@ -601,6 +601,10 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   late final $ArtworkOverridesTable artworkOverrides = $ArtworkOverridesTable(
     this,
   );
+  late final Index oneActivePeriod = Index(
+    'one_active_period',
+    'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -608,6 +612,7 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     recoveryPeriods,
     artworkOverrides,
+    oneActivePeriod,
   ];
 }
 

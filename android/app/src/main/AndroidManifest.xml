@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="hajnal"
+        android:label="Hajnal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="hu.elizerpist.hajnal.BUILD_COMMIT" android:value="${buildCommit}" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

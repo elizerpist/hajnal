@@ -31,6 +31,8 @@ class MainActivity : FlutterActivity() {
                     finishPicker(mapOf("year" to y, "month" to m + 1, "day" to d))
                 }, year, month - 1, day).also { dialog ->
                     val max = Calendar.getInstance().apply { set(maxYear, maxMonth - 1, maxDay, 23, 59, 59); set(Calendar.MILLISECOND, 999) }
+                    val min = Calendar.getInstance().apply { clear(); set(1, Calendar.JANUARY, 1, 0, 0, 0) }
+                    dialog.datePicker.minDate = min.timeInMillis
                     dialog.datePicker.maxDate = max.timeInMillis
                     dialog.setOnCancelListener { finishPicker(null) }
                     dialog.show()

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'app/bootstrap_controller.dart';
@@ -10,6 +11,23 @@ import 'core/artwork/artwork_service.dart';
 import 'core/platform/date_picker.dart';
 import 'features/recovery/data/drift_recovery_store.dart';
 import 'features/recovery/data/recovery_repository.dart';
+
+final bootstrapProvider = Provider<BootstrapController>(
+  (ref) => throw StateError('Bootstrap not initialized'),
+);
+final artworkProvider = Provider<ArtworkService>(
+  (ref) => throw StateError('Artwork not initialized'),
+);
+
+class _AppScope extends ConsumerWidget {
+  const _AppScope();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => HajnalApp(
+    controller: ref.watch(bootstrapProvider),
+    artwork: ref.watch(artworkProvider),
+    picker: PlatformDatePicker(),
+  );
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,10 +92,12 @@ class _RootState extends State<_Root> {
   @override
   Widget build(BuildContext context) {
     if (controller != null) {
-      return HajnalApp(
-        controller: controller!,
-        picker: PlatformDatePicker(),
-        artwork: artwork,
+      return ProviderScope(
+        overrides: [
+          bootstrapProvider.overrideWithValue(controller!),
+          artworkProvider.overrideWithValue(artwork!),
+        ],
+        child: const _AppScope(),
       );
     }
     return MaterialApp(

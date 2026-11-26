@@ -12,6 +12,7 @@ class ArtworkView extends StatefulWidget {
 class _ArtworkViewState extends State<ArtworkView> {
   ImageProvider image = const AssetImage(dashboardArtwork);
   int sequence = 0;
+  int width = 1024;
   @override
   void initState() {
     super.initState();
@@ -21,6 +22,8 @@ class _ArtworkViewState extends State<ArtworkView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final media = MediaQuery.of(context);
+    width = (media.size.width * media.devicePixelRatio).ceil().clamp(1, 2048);
     _load();
   }
 
@@ -42,8 +45,17 @@ class _ArtworkViewState extends State<ArtworkView> {
           ? const AssetImage(dashboardArtwork)
           : FileImage(descriptor!.file!);
       if (!mounted || ticket != sequence) return;
-      await precacheImage(next, context);
-      if (mounted && ticket == sequence) setState(() => image = next);
+      var failed = false;
+      await precacheImage(
+        ResizeImage.resizeIfNeeded(width, null, next),
+        context,
+        onError: (_, _) {
+          failed = true;
+        },
+      );
+      if (!failed && mounted && ticket == sequence) {
+        setState(() => image = next);
+      }
     } catch (_) {
       // Keep the last successfully decoded image visible.
     }
@@ -57,6 +69,9 @@ class _ArtworkViewState extends State<ArtworkView> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Image(image: image, fit: BoxFit.cover, alignment: Alignment.topCenter);
+  Widget build(BuildContext context) => Image(
+    image: ResizeImage.resizeIfNeeded(width, null, image),
+    fit: BoxFit.cover,
+    alignment: Alignment.topCenter,
+  );
 }

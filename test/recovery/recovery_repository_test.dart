@@ -39,4 +39,23 @@ void main() {
     expect(await repository.countActive(), 0);
     await db.close();
   });
+  test('database enforces unique active period and integrity', () async {
+    final db = HajnalDatabase(NativeDatabase.memory());
+    await db.customStatement(
+      "INSERT INTO recovery_periods (start_local_date, created_at_utc) VALUES ('2024-01-01', 0)",
+    );
+    await expectLater(
+      db.customStatement(
+        "INSERT INTO recovery_periods (start_local_date, created_at_utc) VALUES ('2024-01-02', 0)",
+      ),
+      throwsA(anything),
+    );
+    final check = await db.customSelect('PRAGMA integrity_check').getSingle();
+    expect(check.data.values.single, 'ok');
+    final foreignKeys = await db
+        .customSelect('PRAGMA foreign_keys')
+        .getSingle();
+    expect(foreignKeys.data.values.single, 1);
+    await db.close();
+  });
 }

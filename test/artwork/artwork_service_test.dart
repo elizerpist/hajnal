@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
@@ -27,6 +28,40 @@ void main() {
         await before.file!.delete();
         expect((await service.resolve()).file, isNull);
       } finally {
+        await db.close();
+        await dir.delete(recursive: true);
+      }
+    },
+  );
+  test(
+    'newer installation wins when older validation finishes later',
+    () async {
+      final dir = await Directory.systemTemp.createTemp('hajnal-art-race-');
+      final db = HajnalDatabase(NativeDatabase.memory());
+      final slow = Completer<bool>();
+      final service = ArtworkService(
+        db,
+        dir,
+        (bytes) => bytes.first == 1 ? slow.future : Future.value(true),
+      );
+      try {
+        final first = File('${dir.path}/first');
+        final second = File('${dir.path}/second');
+        await first.writeAsBytes([1]);
+        await second.writeAsBytes([2]);
+        final old = service.install(first);
+        await Future<void>.delayed(Duration.zero);
+        await service.install(second);
+        slow.complete(true);
+        await old;
+        final reopened = ArtworkService(db, dir, (_) async => true);
+        final current = await reopened.resolve();
+        expect(await current.file!.readAsBytes(), [2]);
+        await reopened.clear();
+        expect((await reopened.resolve()).file, isNull);
+        reopened.dispose();
+      } finally {
+        service.dispose();
         await db.close();
         await dir.delete(recursive: true);
       }
