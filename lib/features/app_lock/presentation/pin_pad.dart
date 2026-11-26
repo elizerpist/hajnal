@@ -67,6 +67,7 @@ class _PinPadState extends State<PinPad> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                const SizedBox(height: 30),
                 const Icon(
                   Icons.lock_outline,
                   size: 54,
@@ -119,6 +120,7 @@ class _PinPadState extends State<PinPad> {
                   ),
                 ),
                 Container(width: 276, height: 1, color: HajnalColors.keyBorder),
+                const SizedBox(height: 10),
                 if (widget.message != null)
                   Text(
                     widget.message!,

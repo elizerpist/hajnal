@@ -144,7 +144,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                     style: TextStyle(color: HajnalColors.navy),
                   ),
                 ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 14),
               const Text(
                 'Zárolás minden visszatéréskor.',
                 textAlign: TextAlign.center,
@@ -184,7 +184,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                         : () => choose(c.mode, changePin: true),
                   ),
                 ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -232,7 +232,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                 ? null
                 : () => choose(mode),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
               child: Row(
                 children: [
                   Expanded(
