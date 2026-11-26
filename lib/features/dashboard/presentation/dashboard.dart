@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../app/bootstrap_controller.dart';
-import '../../../core/artwork/artwork_service.dart';
+import '../../../core/artwork/artwork_source.dart';
 import '../../../core/artwork/artwork_view.dart';
 import '../../../core/theme/hajnal_tokens.dart';
 
@@ -14,7 +14,7 @@ class Dashboard extends StatefulWidget {
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
-  final ArtworkService? artwork;
+  final ArtworkSource? artwork;
   @override
   State<Dashboard> createState() => _DashboardState();
 }

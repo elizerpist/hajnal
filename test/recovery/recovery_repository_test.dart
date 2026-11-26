@@ -87,4 +87,21 @@ void main() {
       await db.close();
     },
   );
+  test('corrupt database raises an error without replacing the file', () async {
+    final dir = await Directory.systemTemp.createTemp('hajnal-broken-db-');
+    final file = File('${dir.path}/broken.sqlite');
+    final original = <int>[1, 3, 5, 7, 9];
+    await file.writeAsBytes(original);
+    final db = HajnalDatabase(NativeDatabase(file));
+    try {
+      await expectLater(
+        RecoveryRepository(db).watchStart().first,
+        throwsA(anything),
+      );
+      expect(await file.readAsBytes(), original);
+    } finally {
+      await db.close();
+      await dir.delete(recursive: true);
+    }
+  });
 }

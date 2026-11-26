@@ -59,4 +59,17 @@ void main() {
       });
     },
   );
+  test('midnight is not missed if clock changes during rescheduling', () {
+    fakeAsync((async) {
+      var calls = 0;
+      final before = DateTime(2024, 1, 1, 23, 59, 59, 999);
+      final after = DateTime(2024, 1, 2);
+      final tracker = DayTracker(() => ++calls < 3 ? before : after);
+      tracker.setStart(DateTime(2024, 1, 1));
+      tracker.resume();
+      async.elapse(const Duration(milliseconds: 1));
+      expect(tracker.days, 1);
+      tracker.dispose();
+    });
+  });
 }

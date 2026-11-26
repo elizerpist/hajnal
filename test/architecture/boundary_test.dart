@@ -51,6 +51,8 @@ void main() {
             'MethodChannel',
             '/data/',
             'core/database/',
+            'core/platform/',
+            'artwork_service.dart',
             'getApplicationSupportDirectory',
             'customStatement',
           ]) {
@@ -122,5 +124,42 @@ void main() {
     expect(gestureOwners, [
       'lib/features/dashboard/presentation/dashboard.dart',
     ]);
+  });
+  test(
+    'app controller and rendering stay independent of concrete adapters',
+    () {
+      final controller = File(
+        'lib/app/bootstrap_controller.dart',
+      ).readAsStringSync();
+      for (final forbidden in [
+        'BuildContext',
+        'package:flutter/material.dart',
+        'core/database/',
+        'core/platform/',
+        '/data/',
+      ]) {
+        expect(controller, isNot(contains(forbidden)), reason: forbidden);
+      }
+      final app = File('lib/app/hajnal_app.dart').readAsStringSync();
+      for (final forbidden in [
+        'core/database/',
+        'core/platform/',
+        'artwork_service.dart',
+        'MethodChannel',
+      ]) {
+        expect(app, isNot(contains(forbidden)), reason: forbidden);
+      }
+    },
+  );
+  test('root widget does not coordinate storage or concrete repositories', () {
+    final root = File('lib/main.dart').readAsStringSync();
+    for (final forbidden in [
+      'getApplicationSupportDirectory',
+      'NativeDatabase',
+      'RecoveryRepository',
+      '.cleanup()',
+    ]) {
+      expect(root, isNot(contains(forbidden)), reason: forbidden);
+    }
   });
 }

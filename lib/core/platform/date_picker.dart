@@ -1,26 +1,5 @@
 import 'package:flutter/services.dart';
-
-sealed class DatePickerResult {
-  const DatePickerResult();
-}
-
-class DatePicked extends DatePickerResult {
-  const DatePicked(this.date);
-  final DateTime date;
-}
-
-class DatePickCancelled extends DatePickerResult {
-  const DatePickCancelled();
-}
-
-class DatePickFailed extends DatePickerResult {
-  const DatePickFailed(this.message);
-  final String message;
-}
-
-abstract interface class DatePicker {
-  Future<DatePickerResult> pick(DateTime initial, DateTime today);
-}
+import '../../features/onboarding/application/date_picker.dart';
 
 class PlatformDatePicker implements DatePicker {
   static const _channel = MethodChannel('hu.elizerpist.hajnal/date_picker');

@@ -1,21 +1,15 @@
-import 'dart:io';
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'app/app_services.dart';
 import 'app/bootstrap_controller.dart';
 import 'app/hajnal_app.dart';
-import 'core/database/hajnal_database.dart';
-import 'core/artwork/artwork_service.dart';
+import 'core/artwork/artwork_source.dart';
 import 'core/platform/date_picker.dart';
-import 'features/recovery/data/drift_recovery_store.dart';
-import 'features/recovery/data/recovery_repository.dart';
 
 final bootstrapProvider = Provider<BootstrapController>(
   (ref) => throw StateError('Bootstrap not initialized'),
 );
-final artworkProvider = Provider<ArtworkService>(
+final artworkProvider = Provider<ArtworkSource>(
   (ref) => throw StateError('Artwork not initialized'),
 );
 
@@ -45,10 +39,9 @@ class _Root extends StatefulWidget {
 }
 
 class _RootState extends State<_Root> {
-  HajnalDatabase? database;
-  BootstrapController? controller;
-  ArtworkService? artwork;
+  AppServices? services;
   Object? error;
+  bool opening = false;
   @override
   void initState() {
     super.initState();
@@ -56,68 +49,56 @@ class _RootState extends State<_Root> {
   }
 
   Future<void> open() async {
+    if (opening) return;
+    opening = true;
+    if (error != null && mounted) setState(() => error = null);
     try {
-      final dir = await getApplicationSupportDirectory();
-      final db = HajnalDatabase(
-        NativeDatabase.createInBackground(
-          File(p.join(dir.path, 'hajnal.sqlite')),
-        ),
-      );
-      final art = ArtworkService(db, Directory(p.join(dir.path, 'artwork')));
-      await art.cleanup();
-      final vm = BootstrapController(
-        DriftRecoveryStore(RecoveryRepository(db)),
-        DateTime.now,
-      );
+      final result = await AppServices.open();
       if (!mounted) {
-        vm.dispose();
-        await db.close();
+        await result.close();
         return;
       }
       setState(() {
-        database = db;
-        controller = vm;
-        artwork = art;
+        services = result;
         error = null;
       });
     } catch (e) {
       if (mounted) setState(() => error = e);
+    } finally {
+      opening = false;
     }
   }
 
   void retry() {
-    final oldController = controller;
-    final oldArtwork = artwork;
-    final oldDatabase = database;
+    final old = services;
     setState(() {
-      controller = null;
-      artwork = null;
-      database = null;
+      services = null;
       error = null;
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      oldController?.dispose();
-      oldArtwork?.dispose();
-      await oldDatabase?.close();
-      if (mounted) await open();
+      try {
+        await old?.close();
+        if (mounted) await open();
+      } catch (e) {
+        if (mounted) setState(() => error = e);
+      }
     });
   }
 
   @override
   void dispose() {
-    controller?.dispose();
-    artwork?.dispose();
-    database?.close();
+    services?.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (controller != null) {
+    final current = services;
+    if (current != null) {
       return ProviderScope(
         overrides: [
-          bootstrapProvider.overrideWithValue(controller!),
-          artworkProvider.overrideWithValue(artwork!),
+          bootstrapProvider.overrideWithValue(current.controller),
+          artworkProvider.overrideWithValue(current.artwork),
         ],
         child: _AppScope(onRetry: retry),
       );

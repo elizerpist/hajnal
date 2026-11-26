@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'artwork_catalog.dart';
-import 'artwork_service.dart';
+import 'artwork_source.dart';
 
 class ArtworkView extends StatefulWidget {
   const ArtworkView({super.key, this.service});
-  final ArtworkService? service;
+  final ArtworkSource? service;
   @override
   State<ArtworkView> createState() => _ArtworkViewState();
 }
 
 class _ArtworkViewState extends State<ArtworkView> {
-  ImageProvider image = const AssetImage(dashboardArtwork);
+  ImageProvider image = AssetImage(dashboardArtwork.asset);
   int sequence = 0;
   int width = 1024;
   @override
@@ -42,7 +42,7 @@ class _ArtworkViewState extends State<ArtworkView> {
     try {
       final descriptor = await widget.service?.resolve();
       final ImageProvider next = descriptor?.file == null
-          ? const AssetImage(dashboardArtwork)
+          ? AssetImage(dashboardArtwork.asset)
           : FileImage(descriptor!.file!);
       if (!mounted || ticket != sequence) return;
       var failed = false;

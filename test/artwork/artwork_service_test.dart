@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -106,4 +107,45 @@ void main() {
       await dir.delete(recursive: true);
     }
   });
+  testWidgets('image dimensions are checked before full decoding', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      final recorder = ui.PictureRecorder();
+      final canvas = ui.Canvas(recorder);
+      canvas.drawRect(const ui.Rect.fromLTWH(0, 0, 8193, 1), ui.Paint());
+      final image = await recorder.endRecording().toImage(8193, 1);
+      final encoded = await image.toByteData(format: ui.ImageByteFormat.png);
+      image.dispose();
+      expect(
+        await ArtworkService.decodeImage(encoded!.buffer.asUint8List()),
+        isFalse,
+      );
+    });
+  });
+  test(
+    'oversized files are rejected and cleanup only removes temporary files',
+    () async {
+      final dir = await Directory.systemTemp.createTemp('hajnal-art-cleanup-');
+      final db = HajnalDatabase(NativeDatabase.memory());
+      final service = ArtworkService(db, dir, (_) async => true);
+      try {
+        final temporary = File('${dir.path}/unfinished.tmp');
+        final keep = File('${dir.path}/keep.img');
+        await temporary.writeAsBytes([1]);
+        await keep.writeAsBytes([2]);
+        await service.cleanup();
+        expect(await temporary.exists(), isFalse);
+        expect(await keep.exists(), isTrue);
+        final big = File('${dir.path}/big');
+        await big.writeAsBytes(Uint8List(ArtworkService.maxBytes + 1));
+        await expectLater(service.install(big), throwsFormatException);
+        expect((await service.resolve()).file, isNull);
+      } finally {
+        service.dispose();
+        await db.close();
+        await dir.delete(recursive: true);
+      }
+    },
+  );
 }

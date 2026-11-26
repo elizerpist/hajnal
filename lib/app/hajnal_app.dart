@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../core/platform/date_picker.dart';
+import '../features/onboarding/application/date_picker.dart';
 import '../core/theme/hajnal_tokens.dart';
-import '../core/artwork/artwork_service.dart';
+import '../core/artwork/artwork_source.dart';
 import '../features/dashboard/presentation/dashboard.dart';
 import '../features/onboarding/presentation/onboarding.dart';
 import 'bootstrap_controller.dart';
@@ -16,7 +16,7 @@ class HajnalApp extends StatefulWidget {
   });
   final BootstrapController controller;
   final DatePicker picker;
-  final ArtworkService? artwork;
+  final ArtworkSource? artwork;
   final VoidCallback? onRetry;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
@@ -75,7 +75,7 @@ class _Bootstrap extends StatefulWidget {
   });
   final BootstrapController controller;
   final DatePicker picker;
-  final ArtworkService? artwork;
+  final ArtworkSource? artwork;
   final VoidCallback? onRetry;
   @override
   State<_Bootstrap> createState() => _BootstrapState();

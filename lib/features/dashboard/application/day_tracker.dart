@@ -32,8 +32,8 @@ class DayTracker extends ChangeNotifier {
     _check = null;
   }
 
-  void _update() {
-    final next = _start == null ? null : cleanDays(_start!, _now());
+  void _update([DateTime? current]) {
+    final next = _start == null ? null : cleanDays(_start!, current ?? _now());
     if (days != next) {
       days = next;
       notifyListeners();
@@ -42,9 +42,9 @@ class DayTracker extends ChangeNotifier {
 
   void _refresh() {
     if (!_foreground) return;
-    _update();
-    _midnight?.cancel();
     final now = _now();
+    _update(now);
+    _midnight?.cancel();
     final next = DateTime(now.year, now.month, now.day + 1);
     _midnight = Timer(next.difference(now), _refresh);
   }

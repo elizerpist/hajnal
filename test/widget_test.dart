@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
-import 'package:hajnal/core/platform/date_picker.dart';
+import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class MemoryStore implements RecoveryStore {
@@ -144,6 +144,49 @@ void main() {
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
     expect(tester.getTopLeft(card).dy, closeTo(initial, .1));
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('storage error shows retry instead of onboarding', (
+    tester,
+  ) async {
+    final store = MemoryStore();
+    final controller = BootstrapController(store, DateTime.now);
+    var retries = 0;
+    await tester.pumpWidget(
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onRetry: () => retries++,
+      ),
+    );
+    store.stream.addError(StateError('unreadable database'));
+    await tester.pumpAndSettle();
+    expect(find.text('Az adatok nem tölthetők be.'), findsOneWidget);
+    expect(find.text('Kezdődátum'), findsNothing);
+    await tester.tap(find.text('Újrapróbálás'));
+    expect(retries, 1);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('lifecycle resume updates the visible day count', (tester) async {
+    final store = MemoryStore();
+    var now = DateTime(2024, 3, 31, 12);
+    final controller = BootstrapController(store, () => now);
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(DateTime(2024, 3, 30));
+    await tester.pumpAndSettle();
+    expect(find.text('1'), findsOneWidget);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    now = DateTime(2024, 4, 2, 12);
+    expect(controller.tracker.days, 1);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump();
+    expect(find.text('3'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();

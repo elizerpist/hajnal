@@ -4,7 +4,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/app/hajnal_app.dart';
-import 'package:hajnal/core/platform/date_picker.dart';
+import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class Store implements RecoveryStore {
@@ -173,6 +173,35 @@ void main() {
     expect(mid, lessThan(start));
     await tester.pumpAndSettle();
     expect(tester.getTopLeft(card).dy, lessThan(mid));
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('card and panel share position progress during drag', (
+    tester,
+  ) async {
+    final store = Store();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: Picker()),
+    );
+    store.stream.add(DateTime(2024, 4, 1));
+    await tester.pumpAndSettle();
+    final card = find.byKey(const Key('summary-card'));
+    final sheet = find.byKey(const Key('empty-sheet'));
+    final initialCard = tester.getTopLeft(card).dy;
+    final initialSheet = tester.getTopLeft(sheet).dy;
+    final gesture = await tester.startGesture(tester.getCenter(card));
+    await gesture.moveBy(const Offset(0, -20));
+    await tester.pump();
+    await gesture.moveBy(const Offset(0, -40));
+    await tester.pump();
+    expect(
+      initialCard - tester.getTopLeft(card).dy,
+      closeTo(initialSheet - tester.getTopLeft(sheet).dy, .01),
+    );
+    await gesture.cancel();
+    await tester.pumpAndSettle();
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();

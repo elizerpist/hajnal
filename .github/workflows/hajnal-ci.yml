@@ -27,7 +27,7 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get --enforce-lockfile
-      - run: dart format --output=none --set-exit-if-changed lib test scripts/calendar_dst_check.dart
+      - run: dart format --output=none --set-exit-if-changed lib test integration_test scripts/calendar_dst_check.dart
       - run: flutter analyze --no-pub
       - run: TZ=Europe/Budapest dart run scripts/calendar_dst_check.dart
       - run: flutter test --no-pub --reporter expanded | tee flutter-test.log
@@ -54,6 +54,11 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Free space on the ephemeral runner
+        run: |
+          df -h /
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost
+          df -h /
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -75,6 +80,7 @@ jobs:
           api-level: 35
           arch: x86_64
           disable-animations: true
+          emulator-boot-timeout: 420
           script: |
             mkdir -p evidence
             adb shell wm size 412x892
@@ -94,6 +100,15 @@ jobs:
             adb exec-out run-as hu.elizerpist.hajnal cat files/onboarding.png > ../evidence/onboarding.png || true
             adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-closed.png > ../evidence/dashboard-closed.png || true
             adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-open.png > ../evidence/dashboard-open.png || true
+            if [ "$result" -eq 0 ]; then
+              test -s ../evidence/onboarding.png && test -s ../evidence/dashboard-closed.png && test -s ../evidence/dashboard-open.png || result=1
+            fi
+            if [ "$result" -eq 0 ]; then
+              cd ..
+              flutter test --no-pub integration_test/artwork_test.dart > evidence/artwork-test.log 2>&1
+              result=$?
+              cat evidence/artwork-test.log
+            fi
             exit "$result"
       - uses: actions/upload-artifact@v4
         id: android_artifact

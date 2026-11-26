@@ -2,33 +2,43 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import '../database/hajnal_database.dart';
-
-class ArtworkDescriptor {
-  const ArtworkDescriptor({this.file, required this.revision});
-  final File? file;
-  final String revision;
-  static const bundle = ArtworkDescriptor(revision: 'bundle-1');
-}
+import 'artwork_catalog.dart';
+import 'artwork_source.dart';
 
 /// Owns dashboard artwork selection and app-private override files.
-class ArtworkService extends ChangeNotifier {
+class ArtworkService extends ChangeNotifier implements ArtworkSource {
   ArtworkService(this.db, this.directory, [this.validate = decodeImage]);
   final HajnalDatabase db;
   final Directory directory;
   final Future<bool> Function(Uint8List) validate;
   int _generation = 0;
-  static const role = 'dashboard.default';
+  static final role = dashboardArtwork.role;
   static const maxBytes = 8 * 1024 * 1024;
 
   static Future<bool> decodeImage(Uint8List data) async {
+    ui.ImmutableBuffer? buffer;
+    ui.ImageDescriptor? descriptor;
+    ui.Codec? codec;
     try {
-      final codec = await ui.instantiateImageCodec(data, targetWidth: 1024);
+      buffer = await ui.ImmutableBuffer.fromUint8List(data);
+      descriptor = await ui.ImageDescriptor.encoded(buffer);
+      if (descriptor.width > 8192 ||
+          descriptor.height > 8192 ||
+          descriptor.width * descriptor.height > 32000000) {
+        return false;
+      }
+      codec = await descriptor.instantiateCodec(
+        targetWidth: descriptor.width > 1024 ? 1024 : descriptor.width,
+      );
       final frame = await codec.getNextFrame();
       frame.image.dispose();
-      codec.dispose();
       return true;
     } catch (_) {
       return false;
+    } finally {
+      codec?.dispose();
+      descriptor?.dispose();
+      buffer?.dispose();
     }
   }
 
@@ -39,6 +49,7 @@ class ArtworkService extends ChangeNotifier {
     }
   }
 
+  @override
   Future<ArtworkDescriptor> resolve() async {
     await directory.create(recursive: true);
     final row = await (db.select(
@@ -47,17 +58,21 @@ class ArtworkService extends ChangeNotifier {
     if (row == null ||
         row.filename.contains('/') ||
         row.filename.contains('..')) {
-      return ArtworkDescriptor.bundle;
+      return ArtworkDescriptor(revision: dashboardArtwork.revision);
     }
     final file = File('${directory.path}/${row.filename}');
-    if (!await file.exists() || await file.length() > maxBytes) {
-      return ArtworkDescriptor.bundle;
+    try {
+      if (!await file.exists() || await file.length() > maxBytes) {
+        return ArtworkDescriptor(revision: dashboardArtwork.revision);
+      }
+      final bytes = await file.readAsBytes();
+      if (bytes.isEmpty || bytes.length > maxBytes || !await validate(bytes)) {
+        return ArtworkDescriptor(revision: dashboardArtwork.revision);
+      }
+      return ArtworkDescriptor(file: file, revision: row.revision);
+    } on FileSystemException {
+      return ArtworkDescriptor(revision: dashboardArtwork.revision);
     }
-    final bytes = await file.readAsBytes();
-    if (bytes.isEmpty || !await validate(bytes)) {
-      return ArtworkDescriptor.bundle;
-    }
-    return ArtworkDescriptor(file: file, revision: row.revision);
   }
 
   Future<void> install(File source) async {
@@ -66,7 +81,7 @@ class ArtworkService extends ChangeNotifier {
       throw const FormatException('Kép túl nagy');
     }
     final bytes = await source.readAsBytes();
-    if (bytes.isEmpty || !await validate(bytes)) {
+    if (bytes.isEmpty || bytes.length > maxBytes || !await validate(bytes)) {
       throw const FormatException('Érvénytelen kép');
     }
     await directory.create(recursive: true);

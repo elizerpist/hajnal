@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../app/bootstrap_controller.dart';
-import '../../../core/platform/date_picker.dart';
+import '../application/date_picker.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key, required this.controller, required this.picker});
