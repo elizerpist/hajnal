@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hajnal/core/brand/fingerprint_icon.dart';
 import 'package:hajnal/features/app_lock/application/lock_controller.dart';
 import 'package:hajnal/features/app_lock/domain/lock_mode.dart';
 import 'package:hajnal/features/app_lock/presentation/lock_gate.dart';
@@ -134,6 +135,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Személyes adat'), findsNothing);
     expect(find.text('Azonosítás indítása'), findsOneWidget);
+    expect(find.byType(HajnalFingerprint), findsOneWidget);
     await tester.tap(find.text('Azonosítás indítása'));
     await tester.pumpAndSettle();
     expect(find.text('Személyes adat'), findsOneWidget);

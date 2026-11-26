@@ -20,9 +20,7 @@ void main() {
         ),
       ),
     );
-    await tester.runAsync(
-      () async => Future<void>.delayed(const Duration(seconds: 2)),
-    );
+    await tester.runAsync(() => vg.waitForPendingDecodes());
     await tester.pumpAndSettle();
     final boundary = tester.renderObject<RenderRepaintBoundary>(
       find.byKey(key),

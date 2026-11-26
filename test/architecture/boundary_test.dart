@@ -201,6 +201,7 @@ void main() {
       'dashboard_layout.dart',
       'package:flutter_svg/flutter_svg.dart',
       '../../../core/brand/brand_assets.dart',
+      '../../../core/brand/fingerprint_icon.dart',
       '../application/biometrics.dart',
       '../application/lock_controller.dart',
       '../application/lock_settings_coordinator.dart',

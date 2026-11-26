@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/brand/brand_assets.dart';
+import '../../../core/brand/fingerprint_icon.dart';
 import '../../../core/theme/hajnal_tokens.dart';
 import '../application/lock_controller.dart';
 import '../domain/lock_mode.dart';
@@ -140,11 +141,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           ),
                         ),
                       ),
-                    const Icon(
-                      Icons.fingerprint,
-                      size: 120,
-                      color: HajnalColors.purple,
-                    ),
+                    const HajnalFingerprint(),
                     const Text(
                       'Folytasd a telefonod azonosítójával.',
                       textAlign: TextAlign.center,

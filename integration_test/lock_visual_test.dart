@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hajnal/core/brand/brand_assets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
@@ -87,10 +86,6 @@ void main() {
       VisualDevice(),
     );
     await controller.initialize();
-    final picture = await tester.runAsync(
-      () => vg.loadPicture(SvgAssetLoader(BrandAssets.logo), null),
-    );
-    picture!.picture.dispose();
     final directory = await getApplicationSupportDirectory();
     await binding.convertFlutterSurfaceToImage();
     Future<void> capture(String name) async {
@@ -144,6 +139,8 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
     expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
+    await tester.runAsync(() => vg.waitForPendingDecodes());
+    await tester.pumpAndSettle();
     await capture('lock-biometric-step');
     await File(
       '${directory.path}/lock-visual-ready',
