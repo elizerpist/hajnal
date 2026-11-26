@@ -6,7 +6,7 @@ Ez a felhasználó által kért nulladik starter build. Nem a teljes alkalmazás
 
 ## 1. Munkakörnyezet, felhatalmazás
 
-A meglévő ~/flutterapps/hajnal repóban dolgozz; előbb ellenőrizd a tényleges útvonalat, remote-ot, ágat és munkakönyvtárat. GitHub: elizerpist/hajnal. Kiinduló ág: feat/first-prototype-page. Frissíts biztonságosan; a feladat folytatása ezen az ágon történjen, hacsak a helyi munkakörnyezet már kifejezetten kijelölt másik Hajnal implementációs ágat. Más feladat munkáját ne keverd bele. Tilos reset --hard, git clean és force push.
+A meglévő ~/flutterapps/hajnal repóban dolgozz; előbb ellenőrizd a tényleges útvonalat, remote-ot, ágat és munkakönyvtárat. GitHub: elizerpist/hajnal. Kiinduló prototípuság: feat/first-prototype-page. Az S0 implementáció külön ága: build/starter; az implementációt erre az ágra commitold és pushold. Más feladat munkáját ne keverd bele. Tilos reset --hard, git clean és force push.
 
 Olvasd el az AGENTS.md-t, a releváns skilleket, a docs/HAJNAL_FLUTTER_SPECIFIKACIO.md-t és az előírt referenciaanyagokat. A felhasználó MOST engedélyezte az itt körülhatárolt Flutter-implementációt, tehát a korábbi dokumentáció-only tiltás erre a feladatra nem vonatkozik.
 
