@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hajnal/core/brand/brand_assets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
@@ -85,10 +87,21 @@ void main() {
       VisualDevice(),
     );
     await controller.initialize();
+    final picture = await tester.runAsync(
+      () => vg.loadPicture(SvgAssetLoader(BrandAssets.logo), null),
+    );
+    picture!.picture.dispose();
     final directory = await getApplicationSupportDirectory();
     await binding.convertFlutterSurfaceToImage();
     Future<void> capture(String name) async {
       await tester.pumpAndSettle();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(seconds: 1)),
+      );
+      await tester.pump();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 500)),
+      );
       final bytes = await binding.takeScreenshot(name);
       expect(bytes, isNotEmpty);
       await File(
@@ -110,6 +123,8 @@ void main() {
     await tester.tap(find.byTooltip('Menü'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Alkalmazászár'));
+    await tester.pumpAndSettle();
+    expect(find.text('Te döntöd el, hogyan lépsz be.'), findsOneWidget);
     await capture('lock-settings');
     final navigator = Navigator.of(
       tester.element(find.text('Alkalmazászár').last),
@@ -127,9 +142,8 @@ void main() {
     controller.resumed();
     await controller.submitPin('123456');
     await tester.pump();
-    await tester.runAsync(
-      () => Future<void>.delayed(const Duration(seconds: 2)),
-    );
+    await tester.pumpAndSettle();
+    expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
     await capture('lock-biometric-step');
     await File(
       '${directory.path}/lock-visual-ready',

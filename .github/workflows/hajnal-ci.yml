@@ -121,6 +121,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/publish_evidence.sh
+      - name: Require rendered lock screen evidence
+        run: |
+          grep -qx PASS evidence/lock-logo-status.txt
+          grep -qx PASS evidence/lock-settings-status.txt
       - name: Verify manual comparison of this commit's screenshots
         env:
           GH_TOKEN: ${{ github.token }}

@@ -112,7 +112,7 @@ class EvidenceReleaseTest(unittest.TestCase):
             root = Path(temporary)
             (root / 'evidence').mkdir()
             for name in (*SCREENSHOTS, 'flutter-test.log', 'android-test.log',
-                         'android-night-test.log', 'artwork-test.log', 'signed-upgrade-test.log', 'lock-visual-test.log', 'lock-native-test.log', 'lock-launcher-test.log',
+                         'android-night-test.log', 'artwork-test.log', 'signed-upgrade-test.log', 'lock-logo-status.txt', 'lock-settings-status.txt', 'lock-visual-test.log', 'lock-native-test.log', 'lock-launcher-test.log',
                          'picker-before-upgrade-theme.txt', 'picker-after-upgrade-theme.txt',
                          'previous-apk-badging.txt', 'new-apk-badging.txt',
                          'previous-merged-manifest.txt', 'new-merged-manifest.txt',
@@ -153,7 +153,7 @@ path.write_text(json.dumps(s))
                 subprocess.run(['bash', str(script)], cwd=root, env=env, check=True, capture_output=True)
             result = json.loads(state.read_text())
             self.assertEqual(result['creates'], 1)
-            self.assertEqual(len(result['assets']), 33)
+            self.assertEqual(len(result['assets']), 35)
             result['target'] = 'b' * 40
             state.write_text(json.dumps(result))
             self.assertNotEqual(subprocess.run(['bash', str(script)], cwd=root, env=env,
