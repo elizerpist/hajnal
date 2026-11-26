@@ -320,7 +320,9 @@ A PIN legalább hat számjegy; hosszabb is megadható.
 
 Aktív zárnál minden indítás és minden valódi háttérből visszatérés az adott mód szerinti azonosítást igényli, türelmi idő nélkül. Ez a tárcsázóból/SMS-ből visszatérésre is érvényes. A szerkesztés állapota megmarad.
 
-A biometrikus rendszerablak saját életciklus-eseményei nem hozhatnak létre újraazonosítási hurkot. A biometrikus képesség hiánya, megváltozása, zárolása és a két azonosítást követelő mód helyreállítási szabályai még technikailag véglegesítendők. Az együttes módot nem lehet csendben csak PIN-re gyengíteni.
+A biometrikus rendszerablak saját életciklus-eseményei nem hozhatnak létre újraazonosítási hurkot. Az együttes módban először a PIN, majd a biometria szükséges; nincs PIN-only kerülőút. A biometria hiányát, megszakítását és zárolását külön kell kezelni. Aktív védelem módosításához a jelenlegi szabály szerinti újrahitelesítés szükséges; új biometrikus mód csak sikeres natív azonosítás után aktiválható.
+
+Korábbi alkalmazászár nélküli telepítésen a kezdeti mód kikapcsolt. Meglévő zárolási állapot vagy biztonsági kulcs olvasási hibája viszont zárva tartja az alkalmazást. A PIN ellenőrző adata sózott, költséges, verziózott kivonatként platformos secure storage-ban tárolandó; a sikertelen próbák fokozódó, tartós és korlátos várakozást eredményeznek. A mód módosítása és a PIN cseréje megszakításbiztos írási utat használ. A telefonköltöztetéshez szükséges alkalmazásadatok mentése nem tiltható le globálisan; az elfelejtett alkalmazás-PIN és az új készülékre költöztetett, védett adatok helyreállítása külön, még nem implementált folyamat.
 
 Az alkalmazászár és a helyi fájlok titkosítása külön műszaki kérdés; az utóbbi kulcskezelési megoldása még nyitott.
 

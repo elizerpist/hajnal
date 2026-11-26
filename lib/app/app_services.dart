@@ -7,13 +7,20 @@ import '../core/artwork/drift_artwork_store.dart';
 import '../core/database/hajnal_database.dart';
 import '../features/recovery/data/drift_recovery_store.dart';
 import '../features/recovery/data/recovery_repository.dart';
+import '../features/app_lock/application/lock_controller.dart';
+import '../features/app_lock/data/biometric_adapter.dart';
+import '../features/app_lock/data/lock_repository.dart';
+import '../features/app_lock/data/pin_hasher.dart';
+import '../features/app_lock/data/secure_lock_store.dart';
+import '../core/platform/lock_guard.dart';
 import 'bootstrap_controller.dart';
 
 class AppServices {
-  AppServices._(this.database, this.controller, this.artwork);
+  AppServices._(this.database, this.controller, this.artwork, this.lock);
   final HajnalDatabase database;
   final BootstrapController controller;
   final ArtworkService artwork;
+  final LockController lock;
 
   static Future<AppServices> open() async {
     final directory = await getApplicationSupportDirectory();
@@ -32,7 +39,13 @@ class AppServices {
         DriftRecoveryStore(RecoveryRepository(database)),
         DateTime.now,
       );
-      return AppServices._(database, controller, artwork);
+      final lock = LockController(
+        LockRepository(database, const SecureLockStore(), PinHasher()),
+        BiometricAdapter(),
+        DeviceGuardAdapter(),
+      );
+      await lock.initialize();
+      return AppServices._(database, controller, artwork, lock);
     } catch (_) {
       artwork.dispose();
       await database.close();
@@ -42,6 +55,7 @@ class AppServices {
 
   Future<void> close() async {
     controller.dispose();
+    lock.dispose();
     artwork.dispose();
     await database.close();
   }

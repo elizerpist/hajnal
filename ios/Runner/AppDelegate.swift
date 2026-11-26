@@ -15,6 +15,21 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    let guardChannel = FlutterMethodChannel(name: "hu.elizerpist.hajnal/lock_guard", binaryMessenger: engineBridge.applicationRegistrar.messenger())
+    guardChannel.setMethodCallHandler { call, result in
+      switch call.method {
+      case "time":
+        let uptime = ProcessInfo.processInfo.systemUptime
+        let boot = Int((Date().timeIntervalSince1970 - uptime) / 60)
+        result(["uptime": Int(uptime), "boot": String(boot)])
+      case "reveal":
+        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
+          for window in scene.windows { window.viewWithTag(880032)?.removeFromSuperview() }
+        }
+        result(nil)
+      default: result(FlutterMethodNotImplemented)
+      }
+    }
     let channel = FlutterMethodChannel(name: "hu.elizerpist.hajnal/date_picker", binaryMessenger: engineBridge.applicationRegistrar.messenger())
     channel.setMethodCallHandler { [weak self] call, result in
       guard call.method == "pick" else { result(FlutterMethodNotImplemented); return }

@@ -24,11 +24,20 @@ adb shell cmd uimode night yes
 adb shell am force-stop hu.elizerpist.hajnal
 run_test nightPicker evidence/android-night-test.log
 adb shell cmd uimode night no
-for name in onboarding dashboard-closed dashboard-open picker-open picker-night; do
+run_test appLockPinAndBackground evidence/lock-native-test.log
+run_test launcherIcon evidence/lock-launcher-test.log
+for name in onboarding dashboard-closed dashboard-open picker-open picker-night lock-real-setup lock-launcher; do
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   test -s "evidence/$name.png"
 done
 timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evidence/artwork-test.log
+# The test renders the production lock widgets; platform authentication is simulated.
+timeout 10m flutter test --no-pub integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log
+for name in lock-settings lock-pin-setup lock-biometric-step; do
+  adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
+  test -s "evidence/$name.png"
+done
+
 # This emulator contains only test data. Remove the debug-signed package before
 # testing the separately signed, normal profile APK and its upgrade path.
 if adb shell pm path hu.elizerpist.hajnal | grep -q '^package:'; then

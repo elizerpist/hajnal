@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app/app_services.dart';
 import 'app/bootstrap_controller.dart';
 import 'app/hajnal_app.dart';
+import 'features/app_lock/application/lock_controller.dart';
 import 'core/artwork/artwork_source.dart';
 import 'core/platform/date_picker.dart';
 
@@ -11,6 +12,9 @@ final bootstrapProvider = Provider<BootstrapController>(
 );
 final artworkProvider = Provider<ArtworkSource>(
   (ref) => throw StateError('Artwork not initialized'),
+);
+final lockProvider = Provider<LockController>(
+  (ref) => throw StateError('Lock not initialized'),
 );
 
 class _AppScope extends ConsumerWidget {
@@ -21,6 +25,7 @@ class _AppScope extends ConsumerWidget {
     controller: ref.watch(bootstrapProvider),
     artwork: ref.watch(artworkProvider),
     picker: PlatformDatePicker(),
+    lock: ref.watch(lockProvider),
     onRetry: onRetry,
   );
 }
@@ -99,6 +104,7 @@ class _RootState extends State<_Root> {
         overrides: [
           bootstrapProvider.overrideWithValue(current.controller),
           artworkProvider.overrideWithValue(current.artwork),
+          lockProvider.overrideWithValue(current.lock),
         ],
         child: _AppScope(onRetry: retry),
       );

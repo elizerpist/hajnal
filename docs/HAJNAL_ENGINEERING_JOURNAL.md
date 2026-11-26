@@ -17,3 +17,7 @@ A `f3eb5b2` futásban a runneren rendelkezésre álló lemezterület nem volt el
 A `32f8202` futásban az emulátor elindult, az aláírt profile diagnosztikai build elkészült, és az apksigner érvényes v2 aláírást jelzett. A natív teszt előtt a futtató soronként külön shellt indított, így a `cd` elveszett; a következő commit egyetlen shellszkriptre vált. A HTML screenshotok a kvótahiba után a futási naplóból visszanyerhetők, de ez nem helyettesíti az artifact- és kiadási kaput.
 
 A `6c7797e` futásban az emulátor és a shellszkript is elindult; a natív teszt fordítása a Flutter debugfüggősége által behozott AndroidX teszt-runner 1.2.0 és a natív teszt 1.6.2 verziója közötti Gradle-konzisztenciakorláton állt meg. A debug futásidejű függőség egységesítése és a natív teszt előzetes CI-fordítása ezt célozza; az új verzió eredménye még ellenőrzendő.
+
+## Alkalmazászár — folyamatban
+
+A felhasználó által megadott háromképernyős referenciát és az eredeti SVG-t a repó verziózott assetjei közé helyeztük. Az alkalmazászárhoz külön domain állapotgép, beállítási koordinátor, tárolási adapterek és teljes navigációs fát fedő zár készült. A Drift v1→v2 migráció az időszakot és az artwork-adatokat megőrzi. Az ellenőrzött PIN Argon2id-vel készül, a titkos tárolóban a mód is szerepel; egy tranzakciós mutatóváltás őrzi a korábbi beállítást sikertelen írásnál. A helyi tesztek nem bizonyítják a tényleges biometrikus hardvert, az iOS működést, a képernyők referenciaegyezését vagy a telepített APK frissíthetőségét: ezekhez külön CI- és eszközbizonyíték szükséges.

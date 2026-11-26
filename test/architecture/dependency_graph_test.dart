@@ -13,11 +13,17 @@ class Dependency {
 }
 
 class MutationCalls extends RecursiveAstVisitor<void> {
+  MutationCalls(this.source);
+  final String source;
   final calls = <String>[];
   final dbUpdates = <String>[];
   @override
   void visitMethodInvocation(MethodInvocation node) {
-    calls.add(node.methodName.name);
+    if (!(source == 'lib/features/app_lock/data/lock_repository.dart' &&
+        node.methodName.name == 'create' &&
+        node.target?.toSource() == '_hasher')) {
+      calls.add(node.methodName.name);
+    }
     if (node.methodName.name == 'update' &&
         (node.target?.toSource() == '_db' || node.target?.toSource() == 'db')) {
       dbUpdates.add(node.toSource());
@@ -54,6 +60,18 @@ List<Dependency> dependencies(String source, String from) {
 }
 
 bool allowed(String source, String target) {
+  if (target.startsWith('package:local_auth/') &&
+      source != 'lib/features/app_lock/data/biometric_adapter.dart') {
+    return false;
+  }
+  if (target.startsWith('package:flutter_secure_storage/') &&
+      source != 'lib/features/app_lock/data/secure_lock_store.dart') {
+    return false;
+  }
+  if (target.startsWith('package:cryptography/') &&
+      source != 'lib/features/app_lock/data/pin_hasher.dart') {
+    return false;
+  }
   if (target.contains('/legacy/') ||
       target.contains('exptv2/') ||
       target.startsWith('package:firebase_') ||
@@ -76,14 +94,23 @@ bool allowed(String source, String target) {
       'drift',
       'path',
       'path_provider',
+      'local_auth',
+      'flutter_secure_storage',
+      'cryptography',
+      'flutter_svg',
     }.contains(package)) {
       return false;
     }
-    if ((presentation || application) && package != 'flutter') return false;
+    if ((presentation || application) &&
+        package != 'flutter' &&
+        !(presentation && package == 'flutter_svg')) {
+      return false;
+    }
   }
   if (target.startsWith('package:drift/') &&
       source != 'lib/app/app_services.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
   }
@@ -121,7 +148,8 @@ bool allowed(String source, String target) {
           target == 'dart:ui' ||
           target.startsWith('package:drift/') ||
           target.startsWith('package:sqlite3/') ||
-          target == 'package:flutter/services.dart' ||
+          (target == 'package:flutter/services.dart' &&
+              source != 'lib/app/hajnal_app.dart') ||
           target.startsWith('lib/core/database/') ||
           target.startsWith('lib/core/platform/') ||
           target.contains('/data/') ||
@@ -130,7 +158,12 @@ bool allowed(String source, String target) {
           target == 'lib/core/artwork/artwork_service.dart')) {
     return false;
   }
-  if (presentation && target.contains('/domain/')) return false;
+  // LockMode is an immutable view contract, never a domain engine.
+  if (presentation &&
+      target.contains('/domain/') &&
+      target != 'lib/features/app_lock/domain/lock_mode.dart') {
+    return false;
+  }
   if (application &&
       (target == 'package:flutter/material.dart' ||
           target == 'package:flutter/widgets.dart')) {
@@ -140,6 +173,7 @@ bool allowed(String source, String target) {
       source != 'lib/app/app_services.dart' &&
       source != 'lib/core/artwork/drift_artwork_store.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
   }
@@ -260,9 +294,23 @@ void main() {
     },
   );
 
+  test('lifecycle root imports only the predictive back event type', () {
+    final source = File('lib/app/hajnal_app.dart').readAsStringSync();
+    final imports = parseString(content: source).unit.directives
+        .whereType<ImportDirective>()
+        .where((d) => d.uri.stringValue == 'package:flutter/services.dart')
+        .toList();
+    expect(imports, hasLength(1));
+    expect(
+      imports.single.toSource(),
+      "import 'package:flutter/services.dart' show PredictiveBackEvent;",
+    );
+  });
+
   test('storage mutations are owned by the designated adapters', () {
     const dbWriters = {
       'lib/features/recovery/data/recovery_repository.dart',
+      'lib/features/app_lock/data/lock_repository.dart',
       'lib/core/artwork/drift_artwork_store.dart',
     };
     const fileOwner = 'lib/core/artwork/artwork_service.dart';
@@ -286,7 +334,7 @@ void main() {
       if (!file.path.endsWith('.dart') || file.path.endsWith('.g.dart')) {
         continue;
       }
-      final visitor = MutationCalls();
+      final visitor = MutationCalls(file.path);
       parseString(
         content: file.readAsStringSync(),
         path: file.path,
@@ -298,7 +346,9 @@ void main() {
           expect(visitor.calls, isNot(contains(method)), reason: file.path);
         }
       }
-      if (file.path != fileOwner && !dbWriters.contains(file.path)) {
+      if (file.path != fileOwner &&
+          file.path != 'lib/features/app_lock/data/secure_lock_store.dart' &&
+          !dbWriters.contains(file.path)) {
         expect(visitor.calls, isNot(contains('delete')), reason: file.path);
       }
       if (file.path != 'lib/core/database/hajnal_database.dart') {

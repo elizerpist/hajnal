@@ -11,10 +11,12 @@ class Dashboard extends StatefulWidget {
     super.key,
     required this.controller,
     required this.onOnboarding,
+    this.onLockSettings,
     this.artwork,
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
+  final VoidCallback? onLockSettings;
   final ArtworkSource? artwork;
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -92,6 +94,15 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                   widget.onOnboarding();
                 },
               ),
+              if (widget.onLockSettings != null)
+                ListTile(
+                  leading: const Icon(Icons.lock_outline),
+                  title: const Text('Alkalmazászár'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    widget.onLockSettings!();
+                  },
+                ),
             ],
           ),
         ),

@@ -589,6 +589,418 @@ class ArtworkOverridesCompanion extends UpdateCompanion<ArtworkOverride> {
   }
 }
 
+class $LockSettingsTable extends LockSettings
+    with TableInfo<$LockSettingsTable, LockSetting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LockSettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _modeMeta = const VerificationMeta('mode');
+  @override
+  late final GeneratedColumn<int> mode = GeneratedColumn<int>(
+    'mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _credentialSlotMeta = const VerificationMeta(
+    'credentialSlot',
+  );
+  @override
+  late final GeneratedColumn<String> credentialSlot = GeneratedColumn<String>(
+    'credential_slot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _failedAttemptsMeta = const VerificationMeta(
+    'failedAttempts',
+  );
+  @override
+  late final GeneratedColumn<int> failedAttempts = GeneratedColumn<int>(
+    'failed_attempts',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _retryDeadlineMeta = const VerificationMeta(
+    'retryDeadline',
+  );
+  @override
+  late final GeneratedColumn<int> retryDeadline = GeneratedColumn<int>(
+    'retry_deadline',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _retryBootMeta = const VerificationMeta(
+    'retryBoot',
+  );
+  @override
+  late final GeneratedColumn<String> retryBoot = GeneratedColumn<String>(
+    'retry_boot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    mode,
+    credentialSlot,
+    failedAttempts,
+    retryDeadline,
+    retryBoot,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'lock_settings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LockSetting> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('mode')) {
+      context.handle(
+        _modeMeta,
+        mode.isAcceptableOrUnknown(data['mode']!, _modeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_modeMeta);
+    }
+    if (data.containsKey('credential_slot')) {
+      context.handle(
+        _credentialSlotMeta,
+        credentialSlot.isAcceptableOrUnknown(
+          data['credential_slot']!,
+          _credentialSlotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('failed_attempts')) {
+      context.handle(
+        _failedAttemptsMeta,
+        failedAttempts.isAcceptableOrUnknown(
+          data['failed_attempts']!,
+          _failedAttemptsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('retry_deadline')) {
+      context.handle(
+        _retryDeadlineMeta,
+        retryDeadline.isAcceptableOrUnknown(
+          data['retry_deadline']!,
+          _retryDeadlineMeta,
+        ),
+      );
+    }
+    if (data.containsKey('retry_boot')) {
+      context.handle(
+        _retryBootMeta,
+        retryBoot.isAcceptableOrUnknown(data['retry_boot']!, _retryBootMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LockSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LockSetting(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      mode: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mode'],
+      )!,
+      credentialSlot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}credential_slot'],
+      ),
+      failedAttempts: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}failed_attempts'],
+      )!,
+      retryDeadline: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}retry_deadline'],
+      )!,
+      retryBoot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}retry_boot'],
+      )!,
+    );
+  }
+
+  @override
+  $LockSettingsTable createAlias(String alias) {
+    return $LockSettingsTable(attachedDatabase, alias);
+  }
+}
+
+class LockSetting extends DataClass implements Insertable<LockSetting> {
+  final int id;
+  final int mode;
+  final String? credentialSlot;
+  final int failedAttempts;
+  final int retryDeadline;
+  final String retryBoot;
+  const LockSetting({
+    required this.id,
+    required this.mode,
+    this.credentialSlot,
+    required this.failedAttempts,
+    required this.retryDeadline,
+    required this.retryBoot,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['mode'] = Variable<int>(mode);
+    if (!nullToAbsent || credentialSlot != null) {
+      map['credential_slot'] = Variable<String>(credentialSlot);
+    }
+    map['failed_attempts'] = Variable<int>(failedAttempts);
+    map['retry_deadline'] = Variable<int>(retryDeadline);
+    map['retry_boot'] = Variable<String>(retryBoot);
+    return map;
+  }
+
+  LockSettingsCompanion toCompanion(bool nullToAbsent) {
+    return LockSettingsCompanion(
+      id: Value(id),
+      mode: Value(mode),
+      credentialSlot: credentialSlot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(credentialSlot),
+      failedAttempts: Value(failedAttempts),
+      retryDeadline: Value(retryDeadline),
+      retryBoot: Value(retryBoot),
+    );
+  }
+
+  factory LockSetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LockSetting(
+      id: serializer.fromJson<int>(json['id']),
+      mode: serializer.fromJson<int>(json['mode']),
+      credentialSlot: serializer.fromJson<String?>(json['credentialSlot']),
+      failedAttempts: serializer.fromJson<int>(json['failedAttempts']),
+      retryDeadline: serializer.fromJson<int>(json['retryDeadline']),
+      retryBoot: serializer.fromJson<String>(json['retryBoot']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'mode': serializer.toJson<int>(mode),
+      'credentialSlot': serializer.toJson<String?>(credentialSlot),
+      'failedAttempts': serializer.toJson<int>(failedAttempts),
+      'retryDeadline': serializer.toJson<int>(retryDeadline),
+      'retryBoot': serializer.toJson<String>(retryBoot),
+    };
+  }
+
+  LockSetting copyWith({
+    int? id,
+    int? mode,
+    Value<String?> credentialSlot = const Value.absent(),
+    int? failedAttempts,
+    int? retryDeadline,
+    String? retryBoot,
+  }) => LockSetting(
+    id: id ?? this.id,
+    mode: mode ?? this.mode,
+    credentialSlot: credentialSlot.present
+        ? credentialSlot.value
+        : this.credentialSlot,
+    failedAttempts: failedAttempts ?? this.failedAttempts,
+    retryDeadline: retryDeadline ?? this.retryDeadline,
+    retryBoot: retryBoot ?? this.retryBoot,
+  );
+  LockSetting copyWithCompanion(LockSettingsCompanion data) {
+    return LockSetting(
+      id: data.id.present ? data.id.value : this.id,
+      mode: data.mode.present ? data.mode.value : this.mode,
+      credentialSlot: data.credentialSlot.present
+          ? data.credentialSlot.value
+          : this.credentialSlot,
+      failedAttempts: data.failedAttempts.present
+          ? data.failedAttempts.value
+          : this.failedAttempts,
+      retryDeadline: data.retryDeadline.present
+          ? data.retryDeadline.value
+          : this.retryDeadline,
+      retryBoot: data.retryBoot.present ? data.retryBoot.value : this.retryBoot,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LockSetting(')
+          ..write('id: $id, ')
+          ..write('mode: $mode, ')
+          ..write('credentialSlot: $credentialSlot, ')
+          ..write('failedAttempts: $failedAttempts, ')
+          ..write('retryDeadline: $retryDeadline, ')
+          ..write('retryBoot: $retryBoot')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    mode,
+    credentialSlot,
+    failedAttempts,
+    retryDeadline,
+    retryBoot,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LockSetting &&
+          other.id == this.id &&
+          other.mode == this.mode &&
+          other.credentialSlot == this.credentialSlot &&
+          other.failedAttempts == this.failedAttempts &&
+          other.retryDeadline == this.retryDeadline &&
+          other.retryBoot == this.retryBoot);
+}
+
+class LockSettingsCompanion extends UpdateCompanion<LockSetting> {
+  final Value<int> id;
+  final Value<int> mode;
+  final Value<String?> credentialSlot;
+  final Value<int> failedAttempts;
+  final Value<int> retryDeadline;
+  final Value<String> retryBoot;
+  const LockSettingsCompanion({
+    this.id = const Value.absent(),
+    this.mode = const Value.absent(),
+    this.credentialSlot = const Value.absent(),
+    this.failedAttempts = const Value.absent(),
+    this.retryDeadline = const Value.absent(),
+    this.retryBoot = const Value.absent(),
+  });
+  LockSettingsCompanion.insert({
+    this.id = const Value.absent(),
+    required int mode,
+    this.credentialSlot = const Value.absent(),
+    this.failedAttempts = const Value.absent(),
+    this.retryDeadline = const Value.absent(),
+    this.retryBoot = const Value.absent(),
+  }) : mode = Value(mode);
+  static Insertable<LockSetting> custom({
+    Expression<int>? id,
+    Expression<int>? mode,
+    Expression<String>? credentialSlot,
+    Expression<int>? failedAttempts,
+    Expression<int>? retryDeadline,
+    Expression<String>? retryBoot,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (mode != null) 'mode': mode,
+      if (credentialSlot != null) 'credential_slot': credentialSlot,
+      if (failedAttempts != null) 'failed_attempts': failedAttempts,
+      if (retryDeadline != null) 'retry_deadline': retryDeadline,
+      if (retryBoot != null) 'retry_boot': retryBoot,
+    });
+  }
+
+  LockSettingsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? mode,
+    Value<String?>? credentialSlot,
+    Value<int>? failedAttempts,
+    Value<int>? retryDeadline,
+    Value<String>? retryBoot,
+  }) {
+    return LockSettingsCompanion(
+      id: id ?? this.id,
+      mode: mode ?? this.mode,
+      credentialSlot: credentialSlot ?? this.credentialSlot,
+      failedAttempts: failedAttempts ?? this.failedAttempts,
+      retryDeadline: retryDeadline ?? this.retryDeadline,
+      retryBoot: retryBoot ?? this.retryBoot,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (mode.present) {
+      map['mode'] = Variable<int>(mode.value);
+    }
+    if (credentialSlot.present) {
+      map['credential_slot'] = Variable<String>(credentialSlot.value);
+    }
+    if (failedAttempts.present) {
+      map['failed_attempts'] = Variable<int>(failedAttempts.value);
+    }
+    if (retryDeadline.present) {
+      map['retry_deadline'] = Variable<int>(retryDeadline.value);
+    }
+    if (retryBoot.present) {
+      map['retry_boot'] = Variable<String>(retryBoot.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LockSettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('mode: $mode, ')
+          ..write('credentialSlot: $credentialSlot, ')
+          ..write('failedAttempts: $failedAttempts, ')
+          ..write('retryDeadline: $retryDeadline, ')
+          ..write('retryBoot: $retryBoot')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -598,6 +1010,7 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   late final $ArtworkOverridesTable artworkOverrides = $ArtworkOverridesTable(
     this,
   );
+  late final $LockSettingsTable lockSettings = $LockSettingsTable(this);
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
@@ -609,6 +1022,7 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     recoveryPeriods,
     artworkOverrides,
+    lockSettings,
     oneActivePeriod,
   ];
 }
@@ -976,6 +1390,225 @@ typedef $$ArtworkOverridesTableProcessedTableManager =
       ArtworkOverride,
       PrefetchHooks Function()
     >;
+typedef $$LockSettingsTableCreateCompanionBuilder =
+    LockSettingsCompanion Function({
+      Value<int> id,
+      required int mode,
+      Value<String?> credentialSlot,
+      Value<int> failedAttempts,
+      Value<int> retryDeadline,
+      Value<String> retryBoot,
+    });
+typedef $$LockSettingsTableUpdateCompanionBuilder =
+    LockSettingsCompanion Function({
+      Value<int> id,
+      Value<int> mode,
+      Value<String?> credentialSlot,
+      Value<int> failedAttempts,
+      Value<int> retryDeadline,
+      Value<String> retryBoot,
+    });
+
+class $$LockSettingsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $LockSettingsTable> {
+  $$LockSettingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get mode => $composableBuilder(
+    column: $table.mode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get credentialSlot => $composableBuilder(
+    column: $table.credentialSlot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get failedAttempts => $composableBuilder(
+    column: $table.failedAttempts,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get retryDeadline => $composableBuilder(
+    column: $table.retryDeadline,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get retryBoot => $composableBuilder(
+    column: $table.retryBoot,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$LockSettingsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $LockSettingsTable> {
+  $$LockSettingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get mode => $composableBuilder(
+    column: $table.mode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get credentialSlot => $composableBuilder(
+    column: $table.credentialSlot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get failedAttempts => $composableBuilder(
+    column: $table.failedAttempts,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get retryDeadline => $composableBuilder(
+    column: $table.retryDeadline,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get retryBoot => $composableBuilder(
+    column: $table.retryBoot,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$LockSettingsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $LockSettingsTable> {
+  $$LockSettingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get mode =>
+      $composableBuilder(column: $table.mode, builder: (column) => column);
+
+  GeneratedColumn<String> get credentialSlot => $composableBuilder(
+    column: $table.credentialSlot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get failedAttempts => $composableBuilder(
+    column: $table.failedAttempts,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get retryDeadline => $composableBuilder(
+    column: $table.retryDeadline,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get retryBoot =>
+      $composableBuilder(column: $table.retryBoot, builder: (column) => column);
+}
+
+class $$LockSettingsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $LockSettingsTable,
+          LockSetting,
+          $$LockSettingsTableFilterComposer,
+          $$LockSettingsTableOrderingComposer,
+          $$LockSettingsTableAnnotationComposer,
+          $$LockSettingsTableCreateCompanionBuilder,
+          $$LockSettingsTableUpdateCompanionBuilder,
+          (
+            LockSetting,
+            BaseReferences<_$HajnalDatabase, $LockSettingsTable, LockSetting>,
+          ),
+          LockSetting,
+          PrefetchHooks Function()
+        > {
+  $$LockSettingsTableTableManager(_$HajnalDatabase db, $LockSettingsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LockSettingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LockSettingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LockSettingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> mode = const Value.absent(),
+                Value<String?> credentialSlot = const Value.absent(),
+                Value<int> failedAttempts = const Value.absent(),
+                Value<int> retryDeadline = const Value.absent(),
+                Value<String> retryBoot = const Value.absent(),
+              }) => LockSettingsCompanion(
+                id: id,
+                mode: mode,
+                credentialSlot: credentialSlot,
+                failedAttempts: failedAttempts,
+                retryDeadline: retryDeadline,
+                retryBoot: retryBoot,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int mode,
+                Value<String?> credentialSlot = const Value.absent(),
+                Value<int> failedAttempts = const Value.absent(),
+                Value<int> retryDeadline = const Value.absent(),
+                Value<String> retryBoot = const Value.absent(),
+              }) => LockSettingsCompanion.insert(
+                id: id,
+                mode: mode,
+                credentialSlot: credentialSlot,
+                failedAttempts: failedAttempts,
+                retryDeadline: retryDeadline,
+                retryBoot: retryBoot,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$LockSettingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $LockSettingsTable,
+      LockSetting,
+      $$LockSettingsTableFilterComposer,
+      $$LockSettingsTableOrderingComposer,
+      $$LockSettingsTableAnnotationComposer,
+      $$LockSettingsTableCreateCompanionBuilder,
+      $$LockSettingsTableUpdateCompanionBuilder,
+      (
+        LockSetting,
+        BaseReferences<_$HajnalDatabase, $LockSettingsTable, LockSetting>,
+      ),
+      LockSetting,
+      PrefetchHooks Function()
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -984,4 +1617,6 @@ class $HajnalDatabaseManager {
       $$RecoveryPeriodsTableTableManager(_db, _db.recoveryPeriods);
   $$ArtworkOverridesTableTableManager get artworkOverrides =>
       $$ArtworkOverridesTableTableManager(_db, _db.artworkOverrides);
+  $$LockSettingsTableTableManager get lockSettings =>
+      $$LockSettingsTableTableManager(_db, _db.lockSettings);
 }

@@ -10,4 +10,4 @@ dart run build_runner build
 git diff --exit-code -- lib/core/database/hajnal_database.g.dart
 mkdir -p "$RUNNER_TEMP/hajnal-schema"
 dart run drift_dev schema dump lib/core/database/hajnal_database.dart "$RUNNER_TEMP/hajnal-schema/"
-diff -u drift_schemas/drift_schema_v1.json "$RUNNER_TEMP/hajnal-schema/drift_schema_v1.json"
+diff -u drift_schemas/drift_schema_v2.json "$RUNNER_TEMP/hajnal-schema/drift_schema_v2.json"

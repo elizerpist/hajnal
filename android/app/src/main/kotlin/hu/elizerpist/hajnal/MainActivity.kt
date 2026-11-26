@@ -2,17 +2,32 @@ package hu.elizerpist.hajnal
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import io.flutter.embedding.android.FlutterActivity
+import android.os.SystemClock
+import android.provider.Settings
+import android.view.WindowManager
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.util.Calendar
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     private var pending: MethodChannel.Result? = null
     private var picker: DatePickerDialog? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "hu.elizerpist.hajnal/lock_guard")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "time" -> {
+                        val boot = Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+                        if (boot < 0) result.error("clock", "Boot identifier unavailable", null)
+                        else result.success(mapOf("uptime" to SystemClock.elapsedRealtime() / 1000, "boot" to boot.toString()))
+                    }
+                    "reveal" -> { window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE); result.success(null) }
+                    else -> result.notImplemented()
+                }
+            }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "hu.elizerpist.hajnal/date_picker")
             .setMethodCallHandler { call, result ->
                 if (call.method != "pick") { result.notImplemented(); return@setMethodCallHandler }
@@ -38,6 +53,11 @@ class MainActivity : FlutterActivity() {
                     dialog.show()
                 }
             }
+    }
+
+    override fun onPause() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        super.onPause()
     }
 
     private fun finishPicker(value: Map<String, Int>?) {

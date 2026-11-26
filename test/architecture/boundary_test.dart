@@ -116,7 +116,10 @@ void main() {
         .where((f) => f.readAsStringSync().contains('MethodChannel('))
         .map((f) => f.path)
         .toList();
-    expect(channelOwners, ['lib/core/platform/date_picker.dart']);
+    expect(channelOwners.toSet(), {
+      'lib/core/platform/date_picker.dart',
+      'lib/core/platform/lock_guard.dart',
+    });
     final gestureOwners = files
         .where((f) => f.readAsStringSync().contains('onVerticalDragUpdate:'))
         .map((f) => f.path)
@@ -196,6 +199,15 @@ void main() {
       '../../../core/theme/hajnal_tokens.dart',
       '../application/date_picker.dart',
       'dashboard_layout.dart',
+      'package:flutter_svg/flutter_svg.dart',
+      '../../../core/brand/brand_assets.dart',
+      '../application/biometrics.dart',
+      '../application/lock_controller.dart',
+      '../application/lock_settings_coordinator.dart',
+      '../domain/lock_mode.dart',
+      'lock_auth_page.dart',
+      'pin_pad.dart',
+      'pin_setup.dart',
     };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
@@ -229,6 +241,7 @@ void main() {
           source.contains('_db.delete(')) {
         expect([
           'lib/features/recovery/data/recovery_repository.dart',
+          'lib/features/app_lock/data/lock_repository.dart',
           'lib/core/artwork/drift_artwork_store.dart',
         ], contains(file.path));
       }

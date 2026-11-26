@@ -117,6 +117,37 @@ class StarterSmokeTest {
         openPicker("picker-night"); device.pressBack(); device.pressBack()
     }
 
+    private fun digit(value: String) {
+        val key = device.wait(Until.findObject(By.desc(value)), 5000)
+            ?: device.wait(Until.findObject(By.text(value)), 5000)
+        assertNotNull("Missing PIN digit", key); key!!.click()
+    }
+    private fun enterPin() { for (value in listOf("1", "2", "3", "4", "5", "6")) digit(value) }
+
+    @Test fun appLockPinAndBackground() {
+        launch(); assertNotNull(find("Tiszta napok"))
+        click("Menü"); click("Alkalmazászár"); click("Csak PIN")
+        enterPin(); screenshot("lock-real-setup"); click("Tovább")
+        assertNotNull(find("Ismételd")); enterPin(); click("Tovább")
+        assertNotNull(find("PIN módosítása"))
+        device.pressHome(); Thread.sleep(1000); launch()
+        assertNotNull(find("Add meg a PIN-kódod")); enterPin(); click("Feloldás")
+        assertNotNull(find("PIN módosítása"))
+        click("Kikapcsolva"); assertNotNull(find("Azonosítás")); enterPin(); click("Feloldás")
+        assertNotNull(find("Zárolás minden visszatéréskor"))
+    }
+
+    @Test fun launcherIcon() {
+        device.pressHome(); device.waitForIdle()
+        val size = device.displayWidth to device.displayHeight
+        device.swipe(size.first / 2, size.second * 9 / 10, size.first / 2, size.second / 4, 20)
+        device.waitForIdle()
+        val icon = device.wait(Until.findObject(By.descContains("Hajnal")), 10000)
+            ?: device.wait(Until.findObject(By.textContains("Hajnal")), 10000)
+        assertNotNull("Installed Hajnal launcher icon", icon)
+        screenshot("lock-launcher")
+    }
+
     @Test fun prepareUpgrade() {
         launch(); assertNotNull(find("Kezdődátum")); openPicker("picker-before-upgrade")
         click("OK"); click("Mentés"); assertNotNull(find("Tiszta napok"))

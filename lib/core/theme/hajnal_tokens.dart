@@ -10,4 +10,7 @@ abstract final class HajnalColors {
   static const muted = Color(0x942c2e77);
   static const heroControl = Color(0x26ffffff);
   static const heroControlBorder = Color(0x47ffffff);
+  static const selectedCard = Color(0xffeee6f7);
+  static const keyboardSurface = Color(0xfffffafc);
+  static const keyBorder = Color(0xffe9e0e9);
 }

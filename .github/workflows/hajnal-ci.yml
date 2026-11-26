@@ -113,6 +113,10 @@ jobs:
           disable-animations: true
           emulator-boot-timeout: 420
           script: bash scripts/android_smoke.sh
+      - name: Compare app lock screenshots with the source reference
+        run: |
+          python3 -m pip install --user --break-system-packages Pillow
+          python3 scripts/compare_lock_screens.py
       - name: Publish evidence to a draft release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -123,7 +127,7 @@ jobs:
         run: |
           tag="hajnal-s0-${GITHUB_SHA:0:12}"
           mkdir -p reviewed
-          gh release download "$tag" --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --dir reviewed
+          gh release download "$tag" --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --pattern 'lock-*.png' --dir reviewed
           python3 scripts/check_visual_review.py reviewed "$GITHUB_SHA"
       - name: Require reviewed S0 acceptance criteria
         run: |
