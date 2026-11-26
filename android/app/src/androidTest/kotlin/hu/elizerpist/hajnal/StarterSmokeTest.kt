@@ -31,8 +31,19 @@ class StarterSmokeTest {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
     }
-    private fun find(label: String) = device.wait(Until.findObject(By.textContains(label)), 20000)
-        ?: device.wait(Until.findObject(By.descContains(label)), 20000)
+    private fun find(label: String): androidx.test.uiautomator.UiObject2? {
+        val deadline = android.os.SystemClock.elapsedRealtime() + 20000
+        while (android.os.SystemClock.elapsedRealtime() < deadline) {
+            val item = device.findObject(By.textContains(label)) ?: device.findObject(By.descContains(label))
+            if (item != null) return item
+            Thread.sleep(200)
+        }
+        return null
+    }
+    private fun resumeApp() {
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
+        context.startActivity(intent)
+    }
     private fun click(label: String) { val view = find(label); assertNotNull("Missing $label", view); view!!.click() }
     private fun screenshot(name: String) {
         val file = File(context.filesDir, "$name.png")
@@ -130,7 +141,7 @@ class StarterSmokeTest {
         enterPin(); screenshot("lock-real-setup"); click("Tovább")
         assertNotNull(find("Ismételd")); enterPin(); click("Tovább")
         assertNotNull(find("PIN módosítása"))
-        device.pressHome(); Thread.sleep(1000); launch()
+        device.pressHome(); Thread.sleep(1000); resumeApp()
         assertNotNull(find("Add meg a PIN-kódod")); enterPin(); click("Feloldás")
         assertNotNull(find("PIN módosítása"))
         click("Kikapcsolva"); assertNotNull(find("Azonosítás")); enterPin(); click("Feloldás")
