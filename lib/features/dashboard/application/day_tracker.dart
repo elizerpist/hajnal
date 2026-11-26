@@ -7,7 +7,8 @@ class DayTracker extends ChangeNotifier {
   DayTracker(this._now);
   final DateTime Function() _now;
   DateTime? _start;
-  int? days;
+  int? _days;
+  int? get days => _days;
   Timer? _midnight;
   Timer? _check;
   bool _foreground = false;
@@ -34,8 +35,8 @@ class DayTracker extends ChangeNotifier {
 
   void _update([DateTime? current]) {
     final next = _start == null ? null : cleanDays(_start!, current ?? _now());
-    if (days != next) {
-      days = next;
+    if (_days != next) {
+      _days = next;
       notifyListeners();
     }
   }

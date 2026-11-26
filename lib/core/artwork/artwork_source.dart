@@ -8,5 +8,5 @@ class ArtworkDescriptor {
 }
 
 abstract interface class ArtworkSource implements Listenable {
-  Future<ArtworkDescriptor> resolve();
+  Future<ArtworkDescriptor> resolve(String role);
 }

@@ -3,7 +3,8 @@ import 'artwork_catalog.dart';
 import 'artwork_source.dart';
 
 class ArtworkView extends StatefulWidget {
-  const ArtworkView({super.key, this.service});
+  const ArtworkView({super.key, required this.role, this.service});
+  final String role;
   final ArtworkSource? service;
   @override
   State<ArtworkView> createState() => _ArtworkViewState();
@@ -30,7 +31,7 @@ class _ArtworkViewState extends State<ArtworkView> {
   @override
   void didUpdateWidget(covariant ArtworkView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.service != widget.service) {
+    if (oldWidget.service != widget.service || oldWidget.role != widget.role) {
       oldWidget.service?.removeListener(_load);
       widget.service?.addListener(_load);
       _load();
@@ -40,7 +41,7 @@ class _ArtworkViewState extends State<ArtworkView> {
   Future<void> _load() async {
     final ticket = ++sequence;
     try {
-      final descriptor = await widget.service?.resolve();
+      final descriptor = await widget.service?.resolve(widget.role);
       final ImageProvider next = descriptor?.file == null
           ? AssetImage(dashboardArtwork.asset)
           : FileImage(descriptor!.file!);

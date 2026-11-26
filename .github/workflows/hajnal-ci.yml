@@ -70,6 +70,10 @@ jobs:
           cache: true
       - run: flutter pub get --enforce-lockfile
       - run: flutter build apk --debug
+      - name: Reserve disk for the emulator
+        run: |
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
       - name: Enable emulator acceleration
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-hajnal-kvm.rules
@@ -79,6 +83,7 @@ jobs:
         with:
           api-level: 35
           arch: x86_64
+          disk-size: 3072M
           disable-animations: true
           emulator-boot-timeout: 420
           script: |

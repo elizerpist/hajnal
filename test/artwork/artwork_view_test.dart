@@ -4,6 +4,7 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/artwork_catalog.dart';
 import 'package:hajnal/core/artwork/artwork_source.dart';
 import 'package:hajnal/core/artwork/artwork_view.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
@@ -12,7 +13,7 @@ class ControlledArtwork extends ArtworkService {
   ControlledArtwork(super.db, super.directory);
   final responses = <Completer<ArtworkDescriptor>>[];
   @override
-  Future<ArtworkDescriptor> resolve() {
+  Future<ArtworkDescriptor> resolve(String role) {
     final completer = Completer<ArtworkDescriptor>();
     responses.add(completer);
     return completer.future;
@@ -36,7 +37,9 @@ void main() {
       final service = ControlledArtwork(db, dir);
       try {
         await tester.pumpWidget(
-          MaterialApp(home: ArtworkView(service: service)),
+          MaterialApp(
+            home: ArtworkView(role: dashboardArtwork.role, service: service),
+          ),
         );
         ImageProvider selected() =>
             (tester.widget<Image>(find.byType(Image)).image as ResizeImage)

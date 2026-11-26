@@ -162,4 +162,27 @@ void main() {
       expect(root, isNot(contains(forbidden)), reason: forbidden);
     }
   });
+  test('day count is derived and has no public write path', () {
+    final source = File(
+      'lib/features/dashboard/application/day_tracker.dart',
+    ).readAsStringSync();
+    expect(source, contains('int? get days'));
+    expect(source, isNot(contains('int? days;')));
+  });
+  test('bootstrap state is exposed read only', () {
+    final source = File('lib/app/bootstrap_controller.dart').readAsStringSync();
+    for (final name in [
+      'startDate',
+      'error',
+      'saveError',
+      'loading',
+      'saving',
+    ]) {
+      expect(source, contains('get $name'), reason: name);
+    }
+    final publicFields = RegExp(
+      r'\b(?:DateTime\?|Object\?|bool)\s+(startDate|error|saveError|loading|saving)\s*[;=]',
+    );
+    expect(publicFields.hasMatch(source), isFalse);
+  });
 }

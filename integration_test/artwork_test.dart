@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/artwork_catalog.dart';
 import 'package:hajnal/core/artwork/artwork_view.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
 
@@ -31,20 +32,25 @@ void main() {
         var db = HajnalDatabase(NativeDatabase(dbFile));
         var service = ArtworkService(db, Directory('${dir.path}/private'));
         try {
-          await service.install(input);
-          final installed = await service.resolve();
+          await service.install(dashboardArtwork.role, input);
+          final installed = await service.resolve(dashboardArtwork.role);
           expect(installed.file, isNotNull);
           service.dispose();
           await db.close();
           db = HajnalDatabase(NativeDatabase(dbFile));
           service = ArtworkService(db, Directory('${dir.path}/private'));
-          expect((await service.resolve()).revision, installed.revision);
+          expect(
+            (await service.resolve(dashboardArtwork.role)).revision,
+            installed.revision,
+          );
           await tester.pumpWidget(
-            MaterialApp(home: ArtworkView(service: service)),
+            MaterialApp(
+              home: ArtworkView(role: dashboardArtwork.role, service: service),
+            ),
           );
           await tester.pumpAndSettle();
-          await service.clear();
-          expect((await service.resolve()).file, isNull);
+          await service.clear(dashboardArtwork.role);
+          expect((await service.resolve(dashboardArtwork.role)).file, isNull);
           await tester.pumpWidget(const SizedBox());
         } finally {
           service.dispose();

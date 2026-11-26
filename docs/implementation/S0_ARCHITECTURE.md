@@ -11,3 +11,7 @@ Forrás: `HAJNAL_S0_STARTER_PROMPT.md`, különösen §§3–8; `docs/HAJNAL_FLU
 - Ellenőrzés: boundary + domain + DB + widget, Android natív emulátor és restart, HTML/Flutter screenshotok, pontos SHA-s CI. iOS fizikai ellenőrzés külön nyitott.
 
 Implementációs ág: `build/starter`; a `feat/first-prototype-page` a prototípus ága.
+
+Fejlesztői alkalmazásazonosító: Android `hu.elizerpist.hajnal`; az iOS bundle-azonosító ugyanez. A rögzített CI eszközlánc Flutter 3.41.4 / Dart 3.11.1, Java 17 és Android API 35. A tartós fejlesztői kulcs a repón kívül van, a CI csak secretekből kapja. A közös Dart és az iOS-váz léte nem bizonyít iOS-en futtatást: iOS build és fizikai eszközvizsgálat még nem történt.
+
+Az artwork felületi szerződése szerepazonosítót használ; az `ArtworkService` kizárólagos tulajdonosa a privát override-fájl és descriptor frissítésének. A repository és a platformadapter konkrét típusait csak a kompozíciós gyökér köti be, a képernyők a szerződéseket fogyasztják. Az adatbázis nyitását, az artwork inicializálását és lezárását a nem widget `AppServices` kezeli.

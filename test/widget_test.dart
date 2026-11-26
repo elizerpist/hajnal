@@ -191,4 +191,23 @@ void main() {
     controller.dispose();
     await store.stream.close();
   });
+  testWidgets('tapping the scrim closes the menu', (tester) async {
+    final store = MemoryStore();
+    final controller = BootstrapController(store, DateTime.now);
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(DateTime.now());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    expect(find.text('Onboarding'), findsOneWidget);
+    final size = tester.getSize(find.byType(Scaffold).first);
+    await tester.tapAt(Offset(size.width - 10, size.height / 2));
+    await tester.pumpAndSettle();
+    expect(find.text('Onboarding'), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
 }

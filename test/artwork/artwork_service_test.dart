@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/artwork_catalog.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
 
 void main() {
@@ -21,14 +22,20 @@ void main() {
       try {
         final good = File('${dir.path}/source');
         await good.writeAsBytes([1, 2]);
-        await service.install(good);
-        final before = await service.resolve();
+        await service.install(dashboardArtwork.role, good);
+        final before = await service.resolve(dashboardArtwork.role);
         expect(before.file, isNotNull);
         await good.writeAsBytes([0]);
-        await expectLater(service.install(good), throwsFormatException);
-        expect((await service.resolve()).file?.path, before.file?.path);
+        await expectLater(
+          service.install(dashboardArtwork.role, good),
+          throwsFormatException,
+        );
+        expect(
+          (await service.resolve(dashboardArtwork.role)).file?.path,
+          before.file?.path,
+        );
         await before.file!.delete();
-        expect((await service.resolve()).file, isNull);
+        expect((await service.resolve(dashboardArtwork.role)).file, isNull);
       } finally {
         await db.close();
         await dir.delete(recursive: true);
@@ -51,16 +58,16 @@ void main() {
         final second = File('${dir.path}/second');
         await first.writeAsBytes([1]);
         await second.writeAsBytes([2]);
-        final old = service.install(first);
+        final old = service.install(dashboardArtwork.role, first);
         await Future<void>.delayed(Duration.zero);
-        await service.install(second);
+        await service.install(dashboardArtwork.role, second);
         slow.complete(true);
         await old;
         final reopened = ArtworkService(db, dir, (_) async => true);
-        final current = await reopened.resolve();
+        final current = await reopened.resolve(dashboardArtwork.role);
         expect(await current.file!.readAsBytes(), [2]);
-        await reopened.clear();
-        expect((await reopened.resolve()).file, isNull);
+        await reopened.clear(dashboardArtwork.role);
+        expect((await reopened.resolve(dashboardArtwork.role)).file, isNull);
         reopened.dispose();
       } finally {
         service.dispose();
@@ -92,13 +99,13 @@ void main() {
     var db = HajnalDatabase(NativeDatabase(databaseFile));
     var service = ArtworkService(db, artworkDir, (_) async => true);
     try {
-      await service.install(source);
-      final installed = await service.resolve();
+      await service.install(dashboardArtwork.role, source);
+      final installed = await service.resolve(dashboardArtwork.role);
       service.dispose();
       await db.close();
       db = HajnalDatabase(NativeDatabase(databaseFile));
       service = ArtworkService(db, artworkDir, (_) async => true);
-      final restored = await service.resolve();
+      final restored = await service.resolve(dashboardArtwork.role);
       expect(restored.revision, installed.revision);
       expect(await restored.file!.readAsBytes(), [9]);
     } finally {
@@ -139,8 +146,11 @@ void main() {
         expect(await keep.exists(), isTrue);
         final big = File('${dir.path}/big');
         await big.writeAsBytes(Uint8List(ArtworkService.maxBytes + 1));
-        await expectLater(service.install(big), throwsFormatException);
-        expect((await service.resolve()).file, isNull);
+        await expectLater(
+          service.install(dashboardArtwork.role, big),
+          throwsFormatException,
+        );
+        expect((await service.resolve(dashboardArtwork.role)).file, isNull);
       } finally {
         service.dispose();
         await db.close();

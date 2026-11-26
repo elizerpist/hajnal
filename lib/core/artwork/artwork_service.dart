@@ -12,7 +12,6 @@ class ArtworkService extends ChangeNotifier implements ArtworkSource {
   final Directory directory;
   final Future<bool> Function(Uint8List) validate;
   int _generation = 0;
-  static final role = dashboardArtwork.role;
   static const maxBytes = 8 * 1024 * 1024;
 
   static Future<bool> decodeImage(Uint8List data) async {
@@ -42,6 +41,10 @@ class ArtworkService extends ChangeNotifier implements ArtworkSource {
     }
   }
 
+  void _checkRole(String role) {
+    if (role != dashboardArtwork.role) throw ArgumentError.value(role, 'role');
+  }
+
   Future<void> cleanup() async {
     await directory.create(recursive: true);
     await for (final item in directory.list()) {
@@ -50,7 +53,8 @@ class ArtworkService extends ChangeNotifier implements ArtworkSource {
   }
 
   @override
-  Future<ArtworkDescriptor> resolve() async {
+  Future<ArtworkDescriptor> resolve(String role) async {
+    _checkRole(role);
     await directory.create(recursive: true);
     final row = await (db.select(
       db.artworkOverrides,
@@ -75,7 +79,8 @@ class ArtworkService extends ChangeNotifier implements ArtworkSource {
     }
   }
 
-  Future<void> install(File source) async {
+  Future<void> install(String role, File source) async {
+    _checkRole(role);
     final generation = ++_generation;
     if (await source.length() > maxBytes) {
       throw const FormatException('Kép túl nagy');
@@ -106,7 +111,8 @@ class ArtworkService extends ChangeNotifier implements ArtworkSource {
     notifyListeners();
   }
 
-  Future<void> clear() async {
+  Future<void> clear(String role) async {
+    _checkRole(role);
     ++_generation;
     await (db.delete(
       db.artworkOverrides,

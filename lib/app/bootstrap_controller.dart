@@ -12,47 +12,52 @@ class BootstrapController extends ChangeNotifier {
   final DateTime Function() _now;
   final DayTracker tracker;
   StreamSubscription<DateTime?>? _subscription;
-  DateTime? startDate;
-  Object? error;
-  Object? saveError;
-  bool loading = true;
-  bool saving = false;
+  DateTime? _startDate;
+  Object? _error;
+  Object? _saveError;
+  bool _loading = true;
+  bool _saving = false;
+  DateTime? get startDate => _startDate;
+  Object? get error => _error;
+  Object? get saveError => _saveError;
+  bool get loading => _loading;
+  bool get saving => _saving;
 
   void retry() {
     _subscription?.cancel();
-    loading = true;
-    error = null;
+    _loading = true;
+    _error = null;
     notifyListeners();
     _subscription = _store.watchStart().listen(
       (date) {
-        startDate = date;
+        _startDate = date;
         tracker.setStart(date);
-        loading = false;
-        error = null;
+        _loading = false;
+        _error = null;
         notifyListeners();
       },
       onError: (Object e) {
-        loading = false;
-        error = e;
+        _loading = false;
+        _error = e;
         notifyListeners();
       },
     );
   }
 
   Future<bool> initialize(DateTime date) async {
-    if (saving) return false;
-    saving = true;
-    saveError = null;
+    if (_saving) return false;
+    _saving = true;
+    _saveError = null;
     notifyListeners();
     try {
       await InitializeRecovery(_store)(date, _now());
       return true;
     } catch (e) {
-      saveError = e;
+      _saveError = e;
       notifyListeners();
       return false;
     } finally {
-      saving = false;
+      _saving = false;
       notifyListeners();
     }
   }

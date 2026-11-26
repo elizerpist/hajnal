@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../app/bootstrap_controller.dart';
 import '../../../core/artwork/artwork_source.dart';
+import '../../../core/artwork/artwork_catalog.dart';
 import '../../../core/artwork/artwork_view.dart';
 import '../../../core/theme/hajnal_tokens.dart';
 
@@ -101,7 +102,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           return Stack(
             fit: StackFit.expand,
             children: [
-              ArtworkView(service: widget.artwork),
+              ArtworkView(role: dashboardArtwork.role, service: widget.artwork),
               AnimatedBuilder(
                 animation: Listenable.merge([progress, sheetOpacity]),
                 builder: (context, _) => Positioned(
