@@ -6,10 +6,18 @@ Tulajdonosok: a RecoveryPeriod tartós igazságforrása változatlanul a Drift/S
 
 | ID | Forrás | Terület | Elfogadás | Ellenőrzés | Állapot |
 |---|---|---|---|---|---|
-| D01 | felhasználó §1 | onboarding/controller | Mentett dátum kijelölve; választás tervezet, Back/Cancel nem ment | widget | PARTIAL — helyi widgettesztek sikeresek; CI hátravan. |
-| D02 | §1 | use case/repository | Korábbi/későbbi/mai; jövő elutasítva, ID/createdAt változatlan, elavult ID és zárt rekord nem írható | DB/use case | PARTIAL — helyi adatbázistesztek sikeresek; CI hátravan. |
-| D03 | §1 | controller | Dupla mentés és DB-hiba, siker nélkül nincs navigálás; reaktív nap és restart | widget/DB | PARTIAL — helyi widget/DB-tesztek sikeresek; CI és natív restart hátravan. |
-| D04 | §2 | Android theme/picker | Merged manifest, nappali/éjszakai rendszeres framework dialog, natív választás/cancel és screenshot | natív emulátor/manifest | NOT DONE |
-| D05 | §3 | CI és APK | Előző tényleges HUMAN APK → új APK install -r, adat/ID/createdAt/artwork megőrzés és korrekció restarttal | aláírt emulátoros upgrade | NOT DONE |
-| D06 | §3–4 | CI release | Stabil app ID, korábbi tanúsítvány, nagyobb versionCode, ugyanazon SHA-hoz kötött Release/Pages | apksigner/aapt/HTTP/hash | NOT DONE |
-| D07 | §4 | docs/boundary | Ütköző spec és teszt frissítve, egy írási tulajdonos és teljes releváns teszt | architecture, CI, review | NOT DONE |
+| D01 | felhasználó §1 | onboarding/controller | Mentett dátum kijelölve; választás tervezet, Back/Cancel nem ment | widget | DONE — mentett kezdőnap, választási tervezet, Cancel és Back widgetteszt sikeres; CI 74 Flutter-teszt zöld. |
+| D02 | §1 | use case/repository | Korábbi/későbbi/mai; jövő elutasítva, ID/createdAt változatlan, elavult ID és zárt rekord nem írható | DB/use case | DONE — valós SQLite tesztek: korábbi/későbbi/mai, jövőbeli elutasítása, ID és createdAt megőrzése, lezárt/elavult ID és újranyitás. |
+| D03 | §1 | controller | Dupla mentés és DB-hiba, siker nélkül nincs navigálás; reaktív nap és restart | widget/DB | DONE — dupla mentés, sikertelen írás, változatlan kezdőnap, reaktív nap és újraindítás tesztelve; UI és háromrészes aláírt upgrade sikeres. |
+| D04 | §2 | Android theme/picker | Merged manifest, nappali/éjszakai rendszeres framework dialog, natív választás/cancel és screenshot | natív emulátor/manifest | DONE — régi összevont manifest, régi runtime Theme.Dialog.Alert és új ThemeOverlay.Material.Dialog.DatePicker vizsgálva; natív dátumválasztás/Cancel/év, nappali és éjszakai képek sikeresek. Az emulátor angol rendszerlokalizációt használt. |
+| D05 | §3 | CI és APK | Előző tényleges HUMAN APK → új APK install -r, adat/ID/createdAt/artwork megőrzés és korrekció restarttal | aláírt emulátoros upgrade | DONE — az előző, 13-as HUMAN APK-ra az új 15-ös adb install -r-rel települt; ID, createdAt, kezdőnap, artwork descriptor/fájl megmaradt, korrekció és második restart sikeres. |
+| D06 | §3–4 | CI release | Stabil app ID, korábbi tanúsítvány, nagyobb versionCode, ugyanazon SHA-hoz kötött Release/Pages | apksigner/aapt/HTTP/hash | DONE — tényleges APK-kon hu.elizerpist.hajnal, 13 → 15 verziókód, azonos 1296390e645bae7bbaa571db0c7484472c8545d472be999d5bc64784f01f9383 aláíró; publikus Release és Pages hash egyezik. |
+| D07 | §4 | docs/boundary | Ütköző spec és teszt frissítve, egy írási tulajdonos és teljes releváns teszt | architecture, CI, review | DONE — spec, S0 prompt és acceptance frissítve; teljes boundary suite, 74 Flutter-teszt, natív és integrációs kapuk sikeresek; tulajdonosi review alább. |
+
+## Structuring-apps és Ponytail review
+
+A `RecoveryRepository` az egyetlen időszak-adapter; az initialize idempotens, a külön korrekció ID-ra és aktív állapotra feltételes SQL update. A dátum validációja közös domain-függvény, az onboarding a szerkesztés kezdeti ID-ját és tervezetét tartja, a controller kizárja a párhuzamos mentést, a DayTracker csak a streamből számol. A tesztek az elavult ID-t, sikertelen írást, dupla mentést és reaktív frissítést ellenőrzik. A Drift-import kivétele kizárólag a kijelölt recovery adapterre vonatkozik; a production import/export és írástulajdonos boundary suite zöld.
+
+A natív Android framework DatePickerDialog megmaradt; a futó régi téma `android:style/Theme.Dialog.Alert`, az új `android:style/ThemeOverlay.Material.Dialog.DatePicker`. Nappali és sötét mód, Cancel, évválasztás és újraindítás emulátorban ellenőrizve. A felhasználó saját telefonján az OEM-megjelenés és az emulátorétól eltérő lokalizáció külön nincs kipróbálva.
+
+Ellenőrzött implementáció: `cf0d858c6de3c106e0b1357fdea85919d4992353`; [sikeres CI](https://github.com/elizerpist/hajnal/actions/runs/45872819773); [Release és natív képek](https://github.com/elizerpist/hajnal/releases/tag/hajnal-s0-cf0d858c6de3); APK SHA-256 `2c08ba067a8b8c15d8f769469147bb9f2d7364986fd535f9d46635f0df181f19`. iOS eszközös build és fizikai Android ellenőrzés nem történt.
