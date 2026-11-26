@@ -138,7 +138,7 @@ class StarterSmokeTest {
     @Test fun appLockPinAndBackground() {
         launch(); assertNotNull(find("Tiszta napok"))
         click("Menü"); click("Alkalmazászár"); click("Csak PIN")
-        enterPin(); screenshot("lock-real-setup"); click("Tovább")
+        enterPin(); device.waitForIdle(); Thread.sleep(500); screenshot("lock-real-setup"); click("Tovább")
         assertNotNull(find("Ismételd")); enterPin(); click("Tovább")
         assertNotNull(find("PIN módosítása"))
         device.pressHome(); Thread.sleep(1000); resumeApp()
