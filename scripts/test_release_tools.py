@@ -167,5 +167,46 @@ path.write_text(json.dumps(s))
                                                capture_output=True).returncode, 0)
 
 
+class AndroidSmokeScriptTest(unittest.TestCase):
+    def test_debug_test_package_is_removed_before_signed_upgrade_test(self):
+        script = Path(__file__).with_name('android_smoke.sh').resolve()
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            test_apk = root / 'build/app/outputs/apk/androidTest/debug/test.apk'
+            test_apk.parent.mkdir(parents=True)
+            test_apk.write_bytes(b'test')
+            profile = root / 'build/app/outputs/flutter-apk/app-profile.apk'
+            profile.parent.mkdir(parents=True)
+            profile.write_bytes(b'profile')
+            (root / 'hajnal-signed-test.apk').write_bytes(b'signed')
+            adb = root / 'adb'
+            adb.write_text('''#!/bin/sh
+case "$1:$2:$3" in
+  shell:pm:path) [ -f "$MOCK_ROOT/$4.installed" ] && echo package:present; exit 0;;
+  shell:am:instrument) echo 'OK (1 test)'; exit 0;;
+  exec-out:*) printf screenshot; exit 0;;
+esac
+case "$1" in
+  uninstall) rm -f "$MOCK_ROOT/$2.installed";;
+  install)
+    case "$*" in
+      *hajnal-signed-test.apk) [ ! -f "$MOCK_ROOT/hu.elizerpist.hajnal.test.installed" ] || exit 1; touch "$MOCK_ROOT/hu.elizerpist.hajnal.test.installed";;
+      *androidTest*) touch "$MOCK_ROOT/hu.elizerpist.hajnal.test.installed";;
+      *) touch "$MOCK_ROOT/hu.elizerpist.hajnal.installed";;
+    esac;;
+esac
+exit 0
+''')
+            adb.chmod(0o755)
+            flutter = root / 'flutter'
+            flutter.write_text('#!/bin/sh\necho artwork-passed\n')
+            flutter.chmod(0o755)
+            env = dict(os.environ, PATH=f"{root}:{os.environ['PATH']}",
+                       MOCK_ROOT=str(root), RUNNER_TEMP=str(root))
+            subprocess.run(['bash', str(script)], cwd=root, env=env,
+                           check=True, capture_output=True)
+            self.assertTrue((root / 'evidence/signed-upgrade-test.log').is_file())
+
+
 if __name__ == '__main__':
     unittest.main()

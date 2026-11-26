@@ -30,6 +30,9 @@ timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evide
 if adb shell pm path hu.elizerpist.hajnal | grep -q '^package:'; then
   adb uninstall hu.elizerpist.hajnal
 fi
+if adb shell pm path hu.elizerpist.hajnal.test | grep -q '^package:'; then
+  adb uninstall hu.elizerpist.hajnal.test
+fi
 if [ -s "$RUNNER_TEMP/hajnal-previous.apk" ]; then
   install_apk="$RUNNER_TEMP/hajnal-previous.apk"
 else
