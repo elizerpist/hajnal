@@ -2,7 +2,7 @@
 set -euo pipefail
 mkdir -p evidence
 python3 scripts/test_release_tools.py
-dart format --output=none --set-exit-if-changed lib test integration_test scripts/calendar_dst_check.dart
+dart format --output=none --set-exit-if-changed lib test integration_test test_driver scripts/calendar_dst_check.dart
 flutter analyze --no-pub
 TZ=Europe/Budapest dart run scripts/calendar_dst_check.dart
 flutter test --no-pub --reporter expanded | tee evidence/flutter-test.log

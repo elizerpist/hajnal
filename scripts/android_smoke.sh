@@ -32,9 +32,8 @@ for name in onboarding dashboard-closed dashboard-open picker-open picker-night 
 done
 timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evidence/artwork-test.log
 # The test renders the production lock widgets; platform authentication is simulated.
-timeout 10m flutter test --no-pub integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log
+timeout 10m flutter drive --no-pub --driver=test_driver/lock_visual_driver.dart --target=integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log
 for name in lock-settings lock-pin-setup lock-biometric-step; do
-  adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   test -s "evidence/$name.png"
 done
 

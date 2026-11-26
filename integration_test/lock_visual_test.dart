@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
@@ -85,15 +83,11 @@ void main() {
       VisualDevice(),
     );
     await controller.initialize();
-    final directory = await getApplicationSupportDirectory();
     await binding.convertFlutterSurfaceToImage();
     Future<void> capture(String name) async {
       await tester.pumpAndSettle();
       final bytes = await binding.takeScreenshot(name);
       expect(bytes, isNotEmpty);
-      await File(
-        '${directory.path}/$name.png',
-      ).writeAsBytes(bytes, flush: true);
     }
 
     await controller.submitPin('123456');

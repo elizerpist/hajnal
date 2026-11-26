@@ -204,7 +204,7 @@ exit 0
 ''')
             adb.chmod(0o755)
             flutter = root / 'flutter'
-            flutter.write_text('#!/bin/sh\necho artwork-passed\n')
+            flutter.write_text('#!/bin/sh\nif [ "$1" = drive ]; then for name in lock-settings lock-pin-setup lock-biometric-step; do printf screenshot > evidence/$name.png; done; fi\necho artwork-passed\n')
             flutter.chmod(0o755)
             env = dict(os.environ, PATH=f"{root}:{os.environ['PATH']}",
                        MOCK_ROOT=str(root), RUNNER_TEMP=str(root))
