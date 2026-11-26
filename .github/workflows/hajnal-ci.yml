@@ -11,6 +11,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   verify:
+    outputs:
+      logs_upload: ${{ steps.verify_artifact.outcome }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -34,8 +36,11 @@ jobs:
           mkdir -p /tmp/hajnal-schema
           dart run drift_dev schema dump lib/core/database/hajnal_database.dart /tmp/hajnal-schema/
           diff -u drift_schemas/drift_schema_v1.json /tmp/hajnal-schema/drift_schema_v1.json
+      # Keep test failures fatal; the job log remains available if artifact storage is full.
       - uses: actions/upload-artifact@v4
+        id: verify_artifact
         if: always()
+        continue-on-error: true
         with:
           name: verify-logs-${{ github.sha }}
           path: flutter-test.log
@@ -98,7 +103,7 @@ jobs:
             android/app/build/reports/androidTests/
           if-no-files-found: ignore
   human-apk:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/build/starter'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/build/starter' && needs.verify.outputs.logs_upload == 'success'
     needs: [verify, android-smoke]
     runs-on: ubuntu-latest
     timeout-minutes: 30

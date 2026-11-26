@@ -58,4 +58,31 @@ void main() {
     expect(foreignKeys.data.values.single, 1);
     await db.close();
   });
+  test(
+    'failed insert rolls back and repeated initialization does not alter date',
+    () async {
+      final db = HajnalDatabase(NativeDatabase.memory());
+      final repo = RecoveryRepository(db);
+      await db.customStatement(
+        "CREATE TRIGGER reject_period BEFORE INSERT ON recovery_periods BEGIN SELECT RAISE(ABORT, 'failure'); END",
+      );
+      await expectLater(
+        repo.initialize(DateTime(2024, 1, 1), DateTime(2024, 1, 2)),
+        throwsA(anything),
+      );
+      expect(await repo.countActive(), 0);
+      await db.customStatement('DROP TRIGGER reject_period');
+      final first = await repo.initialize(
+        DateTime(2024, 1, 1),
+        DateTime(2024, 1, 2),
+      );
+      final second = await repo.initialize(
+        DateTime(2023, 1, 1),
+        DateTime(2024, 1, 2),
+      );
+      expect(second.id, first.id);
+      expect(second.startLocalDate, '2024-01-01');
+      await db.close();
+    },
+  );
 }

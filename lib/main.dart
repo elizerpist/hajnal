@@ -20,12 +20,14 @@ final artworkProvider = Provider<ArtworkService>(
 );
 
 class _AppScope extends ConsumerWidget {
-  const _AppScope();
+  const _AppScope({required this.onRetry});
+  final VoidCallback onRetry;
   @override
   Widget build(BuildContext context, WidgetRef ref) => HajnalApp(
     controller: ref.watch(bootstrapProvider),
     artwork: ref.watch(artworkProvider),
     picker: PlatformDatePicker(),
+    onRetry: onRetry,
   );
 }
 
@@ -81,6 +83,24 @@ class _RootState extends State<_Root> {
     }
   }
 
+  void retry() {
+    final oldController = controller;
+    final oldArtwork = artwork;
+    final oldDatabase = database;
+    setState(() {
+      controller = null;
+      artwork = null;
+      database = null;
+      error = null;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      oldController?.dispose();
+      oldArtwork?.dispose();
+      await oldDatabase?.close();
+      if (mounted) await open();
+    });
+  }
+
   @override
   void dispose() {
     controller?.dispose();
@@ -97,7 +117,7 @@ class _RootState extends State<_Root> {
           bootstrapProvider.overrideWithValue(controller!),
           artworkProvider.overrideWithValue(artwork!),
         ],
-        child: const _AppScope(),
+        child: _AppScope(onRetry: retry),
       );
     }
     return MaterialApp(

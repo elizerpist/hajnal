@@ -39,13 +39,24 @@ class PlatformDatePicker implements DatePicker {
         'maxDay': today.day,
       });
       if (result == null) return const DatePickCancelled();
-      return DatePicked(
-        DateTime(result['year']!, result['month']!, result['day']!),
-      );
+      final year = result['year'], month = result['month'], day = result['day'];
+      if (year == null || month == null || day == null || year < 1) {
+        return const DatePickFailed('Érvénytelen dátum');
+      }
+      final selected = DateTime(year, month, day);
+      if (selected.year != year ||
+          selected.month != month ||
+          selected.day != day ||
+          selected.isAfter(DateTime(today.year, today.month, today.day))) {
+        return const DatePickFailed('Érvénytelen dátum');
+      }
+      return DatePicked(selected);
     } on PlatformException catch (e) {
       return DatePickFailed(e.message ?? e.code);
     } on MissingPluginException catch (e) {
       return DatePickFailed(e.message ?? 'A dátumválasztó nem érhető el.');
+    } on TypeError {
+      return const DatePickFailed('Érvénytelen dátum');
     } finally {
       _pending = false;
     }

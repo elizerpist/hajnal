@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -67,4 +68,18 @@ void main() {
       }
     },
   );
+  testWidgets('real codec accepts PNG and rejects corrupt bytes', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      final png = await File(
+        'assets/artwork/dashboard/placeholder.png',
+      ).readAsBytes();
+      expect(await ArtworkService.decodeImage(png), isTrue);
+      expect(
+        await ArtworkService.decodeImage(Uint8List.fromList([0, 1, 2])),
+        isFalse,
+      );
+    });
+  });
 }

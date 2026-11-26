@@ -4,11 +4,13 @@ import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class FakeStore implements RecoveryStore {
+  bool failSave = false;
   final controller = StreamController<DateTime?>.broadcast();
   @override
   Stream<DateTime?> watchStart() => controller.stream;
   @override
   Future<void> initialize(DateTime date, DateTime now) async {
+    if (failSave) throw StateError('failed write');
     controller.add(date);
   }
 }
@@ -40,6 +42,18 @@ void main() {
     await Future<void>.delayed(Duration.zero);
     expect(controller.startDate, DateTime(2024, 3, 31));
     expect(controller.tracker.days, 1);
+    controller.dispose();
+    await store.controller.close();
+  });
+  test('save failure stays distinct from database loading error', () async {
+    final store = FakeStore()..failSave = true;
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    store.controller.add(null);
+    await Future<void>.delayed(Duration.zero);
+    expect(await controller.initialize(DateTime(2024, 4, 1)), false);
+    expect(controller.startDate, isNull);
+    expect(controller.error, isNull);
+    expect(controller.saveError, isNotNull);
     controller.dispose();
     await store.controller.close();
   });

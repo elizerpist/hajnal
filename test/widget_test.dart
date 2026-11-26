@@ -53,4 +53,48 @@ void main() {
       await store.stream.close();
     },
   );
+  testWidgets(
+    'leaving onboarding without save shows empty counter and can reopen it',
+    (tester) async {
+      final store = MemoryStore();
+      final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+      await tester.pumpWidget(
+        HajnalApp(controller: controller, picker: FakePicker()),
+      );
+      store.stream.add(null);
+      await tester.pumpAndSettle();
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.text('—'), findsOneWidget);
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Onboarding'));
+      await tester.pumpAndSettle();
+      expect(find.text('Dátum kiválasztása'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+      controller.dispose();
+      await store.stream.close();
+    },
+  );
+  testWidgets('saved date is shown locked when onboarding reopened', (
+    tester,
+  ) async {
+    final store = MemoryStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(DateTime(2024, 3, 31));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onboarding'));
+    await tester.pumpAndSettle();
+    expect(find.text('A mentett kezdőnap nem módosítható.'), findsOneWidget);
+    expect(find.text('Mentés'), findsNothing);
+    expect(find.text('Dátum kiválasztása'), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
 }

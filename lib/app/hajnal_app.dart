@@ -11,10 +11,12 @@ class HajnalApp extends StatefulWidget {
     required this.controller,
     required this.picker,
     this.artwork,
+    this.onRetry,
   });
   final BootstrapController controller;
   final DatePicker picker;
   final ArtworkService? artwork;
+  final VoidCallback? onRetry;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -53,6 +55,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       controller: widget.controller,
       picker: widget.picker,
       artwork: widget.artwork,
+      onRetry: widget.onRetry,
     ),
   );
 }
@@ -62,10 +65,12 @@ class _Bootstrap extends StatefulWidget {
     required this.controller,
     required this.picker,
     this.artwork,
+    this.onRetry,
   });
   final BootstrapController controller;
   final DatePicker picker;
   final ArtworkService? artwork;
+  final VoidCallback? onRetry;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
@@ -89,7 +94,7 @@ class _BootstrapState extends State<_Bootstrap> {
       if (controller.loading) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
-      if (controller.error != null && controller.startDate == null) {
+      if (controller.error != null) {
         return Scaffold(
           body: Center(
             child: Column(
@@ -97,7 +102,7 @@ class _BootstrapState extends State<_Bootstrap> {
               children: [
                 const Text('Az adatok nem tölthetők be.'),
                 TextButton(
-                  onPressed: controller.retry,
+                  onPressed: widget.onRetry ?? controller.retry,
                   child: const Text('Újrapróbálás'),
                 ),
               ],
