@@ -257,10 +257,18 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               ),
               Positioned(
                 top: MediaQuery.paddingOf(context).top + 8,
-                left: 16,
+                left: 20,
                 child: Builder(
-                  builder: (context) => IconButton.filledTonal(
+                  builder: (context) => IconButton(
                     tooltip: 'Menü',
+                    style: IconButton.styleFrom(
+                      fixedSize: const Size(54, 54),
+                      backgroundColor: HajnalColors.heroControl,
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(
+                        color: HajnalColors.heroControlBorder,
+                      ),
+                    ),
                     onPressed: () => Scaffold.of(context).openDrawer(),
                     icon: const Icon(Icons.menu),
                   ),

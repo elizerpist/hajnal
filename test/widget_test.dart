@@ -48,6 +48,7 @@ void main() {
       expect(find.text('1'), findsOneWidget);
       expect(find.text('24'), findsNothing);
       expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(tester.getSize(find.byTooltip('Menü')), const Size(54, 54));
       await tester.tap(find.byKey(const Key('summary-card')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('empty-sheet')), findsOneWidget);

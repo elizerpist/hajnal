@@ -8,4 +8,6 @@ abstract final class HajnalColors {
   static const border = Color(0x246a56b4);
   static const cardShadow = Color(0x0a2c2e77);
   static const muted = Color(0x942c2e77);
+  static const heroControl = Color(0x26ffffff);
+  static const heroControlBorder = Color(0x47ffffff);
 }

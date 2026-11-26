@@ -185,4 +185,52 @@ void main() {
     );
     expect(publicFields.hasMatch(source), isFalse);
   });
+  test('feature imports and persistent write owners fail closed', () {
+    const presentationImports = {
+      'dart:math',
+      'package:flutter/material.dart',
+      '../../../app/bootstrap_controller.dart',
+      '../../../core/artwork/artwork_source.dart',
+      '../../../core/artwork/artwork_catalog.dart',
+      '../../../core/artwork/artwork_view.dart',
+      '../../../core/theme/hajnal_tokens.dart',
+      '../application/date_picker.dart',
+    };
+    final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
+    final files = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart') && !f.path.endsWith('.g.dart'))
+        .toList();
+    for (final file in files) {
+      final source = file.readAsStringSync();
+      for (final forbidden in [
+        'package:firebase_',
+        'package:http/',
+        'package:dio/',
+        'package:sqflite/',
+        'exptv2/',
+        '/legacy/',
+      ]) {
+        expect(source, isNot(contains(forbidden)), reason: file.path);
+      }
+      if (file.path.contains('/presentation/')) {
+        for (final match in imports.allMatches(source)) {
+          expect(
+            presentationImports,
+            contains(match.group(1)),
+            reason: file.path,
+          );
+        }
+      }
+      if (source.contains('.into(') ||
+          source.contains('db.delete(') ||
+          source.contains('_db.delete(')) {
+        expect([
+          'lib/features/recovery/data/recovery_repository.dart',
+          'lib/core/artwork/artwork_service.dart',
+        ], contains(file.path));
+      }
+    }
+  });
 }
