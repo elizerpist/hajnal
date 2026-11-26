@@ -125,6 +125,10 @@ jobs:
             evidence/
             android/app/build/reports/androidTests/
           if-no-files-found: ignore
+      # Preserve inspectable synthetic screenshots even if artifact storage is full.
+      - name: Log Android screenshots if artifact upload fails
+        if: always() && steps.android_artifact.outcome == 'failure'
+        run: python3 scripts/log_screenshots.py evidence/onboarding.png evidence/dashboard-closed.png evidence/dashboard-open.png
   reference-screens:
     needs: verify
     runs-on: ubuntu-24.04
@@ -141,11 +145,15 @@ jobs:
           curl -fsS http://127.0.0.1:8768/app-shell/ >/dev/null
           node scripts/capture_html_reference.cjs
       - uses: actions/upload-artifact@v4
+        id: reference_artifact
         if: always()
         with:
           name: html-evidence-${{ github.sha }}
           path: evidence/
           if-no-files-found: error
+      - name: Log reference screenshots if artifact upload fails
+        if: always() && steps.reference_artifact.outcome == 'failure'
+        run: python3 scripts/log_screenshots.py evidence/html-closed.png evidence/html-open.png
   profile-build-check:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/build/starter'
     needs: [verify, android-smoke]

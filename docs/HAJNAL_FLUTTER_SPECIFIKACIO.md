@@ -54,7 +54,7 @@ Kikapcsolás nem adattörlés. A korábbi adatok és a mentési csomagban való 
 
 Appindításkor a dashboard előtt frissül a napszám és a mérföldkövek állapota. Háttérből visszatéréskor szintén ellenőrzünk. Nyitott alkalmazásban éjfélkor a szám frissül akkor is, ha a felhasználó más képernyőn dolgozik.
 
-A dátum- és időzónaváltás, valamint a kézi rendszeróra-változtatás részletes kezelését a technikai specifikációban még rögzíteni kell.
+Az S0-ban az időzónaváltás és a kézi óraváltoztatás a készülék aktuális helyi dátumát módosíthatja; a rögzített kezdőnap nem változik. A pontos offline szabályt a 19. szakasz tartalmazza.
 
 ### 4.3. Lezárás, reset, visszaesés
 
@@ -461,7 +461,7 @@ Dokumentációs státusz:
 - DONE: az elfogadott működési döntések egy helyen rögzítve.
 - DONE: a korábbi szabályokat felváltó döntések jelölve.
 - DONE: nyitott technikai/termékpontok elkülönítve.
-- NOT IMPLEMENTED: Flutter, adatbázis, editor, hang, titkosítás és platformtesztek.
+- NOT IMPLEMENTED: a teljes alkalmazás Flutter-funkciói, editor, hang, titkosítás és teljes platformtesztelés. Az S0 starter aktuális állapotát külön elfogadási lista követi.
 
 ## 19. S0 starter és időkezelés
 
