@@ -177,6 +177,9 @@ class AndroidSmokeScriptTest(unittest.TestCase):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
             test_apk = root / 'build/app/outputs/apk/androidTest/debug/test.apk'
+            (root / 'scripts').mkdir()
+            import shutil
+            shutil.copyfile(Path(__file__).with_name('validate_png.py'), root / 'scripts/validate_png.py')
             test_apk.parent.mkdir(parents=True)
             test_apk.write_bytes(b'test')
             profile = root / 'build/app/outputs/flutter-apk/app-profile.apk'
@@ -189,7 +192,7 @@ class AndroidSmokeScriptTest(unittest.TestCase):
 case "$1:$2:$3" in
   shell:pm:path) [ -f "$MOCK_ROOT/$4.installed" ] && echo package:present; exit 0;;
   shell:am:instrument) echo 'OK (1 test)'; exit 0;;
-  exec-out:*) printf screenshot; exit 0;;
+  exec-out:*) python3 -c 'import sys,struct; sys.stdout.buffer.write(bytes.fromhex("89504e470d0a1a0a") + bytes(8) + struct.pack(">II", 412, 892))'; exit 0;;
 esac
 case "$1" in
   uninstall) rm -f "$MOCK_ROOT/$2.installed";;
@@ -204,7 +207,7 @@ exit 0
 ''')
             adb.chmod(0o755)
             flutter = root / 'flutter'
-            flutter.write_text('#!/bin/sh\nif [ "$1" = drive ]; then for name in lock-settings lock-pin-setup lock-biometric-step; do printf screenshot > evidence/$name.png; done; fi\necho artwork-passed\n')
+            flutter.write_text('#!/bin/sh\necho artwork-passed\n')
             flutter.chmod(0o755)
             env = dict(os.environ, PATH=f"{root}:{os.environ['PATH']}",
                        MOCK_ROOT=str(root), RUNNER_TEMP=str(root))

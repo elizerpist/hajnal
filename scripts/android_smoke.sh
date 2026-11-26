@@ -28,14 +28,36 @@ run_test appLockPinAndBackground evidence/lock-native-test.log
 run_test launcherIcon evidence/lock-launcher-test.log
 for name in onboarding dashboard-closed dashboard-open picker-open picker-night lock-real-setup lock-launcher; do
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
-  test -s "evidence/$name.png"
+  python3 scripts/validate_png.py "evidence/$name.png"
 done
 timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evidence/artwork-test.log
-# The test renders the production lock widgets; platform authentication is simulated.
-timeout 10m flutter drive --no-pub --driver=test_driver/lock_visual_driver.dart --target=integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log
-for name in lock-settings lock-pin-setup lock-biometric-step; do
-  test -s "evidence/$name.png"
+# Collect screenshots before flutter test removes the integration app.
+# Platform authentication is simulated; the actual app widgets are rendered.
+(timeout 10m flutter test --no-pub integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log) &
+visual_pid=$!
+ready=false
+for attempt in $(seq 1 600); do
+  if adb shell run-as hu.elizerpist.hajnal test -f files/lock-visual-ready 2>/dev/null; then
+    ready=true
+    break
+  fi
+  if ! kill -0 "$visual_pid" 2>/dev/null; then
+    wait "$visual_pid"
+    exit 1
+  fi
+  sleep 1
 done
+if [ "$ready" != true ]; then
+  kill "$visual_pid" 2>/dev/null || true
+  wait "$visual_pid" || true
+  exit 1
+fi
+for name in lock-settings lock-pin-setup lock-biometric-step; do
+  adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
+  python3 scripts/validate_png.py "evidence/$name.png"
+done
+adb shell run-as hu.elizerpist.hajnal touch files/lock-visual-copied
+wait "$visual_pid"
 
 # This emulator contains only test data. Remove the debug-signed package before
 # testing the separately signed, normal profile APK and its upgrade path.

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
@@ -83,11 +85,15 @@ void main() {
       VisualDevice(),
     );
     await controller.initialize();
+    final directory = await getApplicationSupportDirectory();
     await binding.convertFlutterSurfaceToImage();
     Future<void> capture(String name) async {
       await tester.pumpAndSettle();
       final bytes = await binding.takeScreenshot(name);
       expect(bytes, isNotEmpty);
+      await File(
+        '${directory.path}/$name.png',
+      ).writeAsBytes(bytes, flush: true);
     }
 
     await controller.submitPin('123456');
@@ -121,6 +127,19 @@ void main() {
     controller.resumed();
     await controller.submitPin('123456');
     await capture('lock-biometric-step');
+    await File(
+      '${directory.path}/lock-visual-ready',
+    ).writeAsString('ready', flush: true);
+    await tester.runAsync(() async {
+      final copied = File('${directory.path}/lock-visual-copied');
+      final deadline = DateTime.now().add(const Duration(minutes: 5));
+      while (!await copied.exists()) {
+        if (DateTime.now().isAfter(deadline)) {
+          throw TimeoutException('Screenshots were not collected');
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+      }
+    });
     await tester.pumpWidget(const SizedBox());
     bootstrap.dispose();
     controller.dispose();
