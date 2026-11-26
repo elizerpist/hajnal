@@ -1,6 +1,6 @@
 # Hajnal – Flutter működési és adatkezelési specifikáció
 
-Verzió: 0.2  
+Verzió: 0.3  
 Dátum: 2026-11-26  
 Állapot: elfogadott működési alapok; a jelölt technikai és termékdöntések további egyeztetésre várnak.
 
@@ -227,7 +227,15 @@ Az egyetlen aktív gyakorlat feltételét az adatbázisban is érvényesíteni k
 
 A HTML lépésválaszból is tud gyakorlatot indítani. Ez opcionális belépési út, nem lépésmodul-függőség. A forrás törlése esetén az eredethivatkozás megszűnik, a gyakorlat és a saját forrásszöveg-pillanatképe megmarad. Lépésmunka- vagy időszaktörlés nem kaszkádolhat a gyakorlatokra.
 
-**A HTML-ben megfigyelt, még egyeztetendő kiegészítés:** a napi reflexió az akkori aktív gyakorlat pillanatképét és egy hozzá írt megfigyelést is tárolhatja. Ennek Flutter-változatbeli megtartása külön döntés; nem következik az önálló Practice entitás elfogadásából. Ha megtartjuk, a pillanatképet a reflexió birtokolja, nem élő gyakorlat- vagy idővonalkapcsolat. A gyakorlat módosítása vagy törlése nem írhatja át és nem törölheti a korábbi reflexiót.
+**Elfogadott kiegészítés: gyakorlat-pillanatkép a napi reflexióban.** A napi reflexió az akkori aktív gyakorlat pillanatképét és az ahhoz opcionálisan írt megfigyelést is tárolja.
+
+- A pillanatkép a reflexióhoz való első hozzárendeléskor rögzíti a gyakorlat címét, kiváltó helyzetét és vállalt cselekvését. Újranyitáskor nem frissül automatikusan az élő gyakorlatból.
+- A pillanatkép és a megfigyelés tulajdonosa a Reflection. Nem új Practice entitás és nem külön idővonalesemény.
+- Az idővonal továbbra is csak a reflexióra hivatkozik; a gyakorlatkártyára nem.
+- A gyakorlat későbbi szerkesztése, állapotváltása vagy törlése nem módosítja és nem törli a korábbi reflexió pillanatképét vagy megfigyelését. A megjelenítéshez nem szükséges élő Practice rekord.
+- Aktív gyakorlat hiányában is elkészíthető a napi reflexió; a gyakorlatra vonatkozó megfigyelés nem kötelező.
+- A reflexió vagy az azt birtokló időszak törlése törli a reflexió saját pillanatképét és megfigyelését, de az önálló gyakorlatkártyát nem.
+- A pillanatkép és a megfigyelés a reflexióval együtt része a teljes biztonsági mentésnek.
 
 A teljes biztonsági mentés minden gyakorlatot és állapotát tartalmazza; a visszaállítás a saját azonosítókat is megőrzi.
 
@@ -400,6 +408,8 @@ Ezek követelmények, nem lefuttatott tesztek.
 - Gyakorlatművelet nem hoz létre idővonaleseményt; visszaesés, reset és időszaktörlés nem módosítja a gyakorlatokat.
 - Opcionális lépésforrás törlése megőrzi a gyakorlatot és annak forrásszöveg-pillanatképét.
 - Export/import megőrzi a gyakorlatkártyák azonosítóit, mezőit és állapotát.
+- A napi reflexió gyakorlat-pillanatképe és megfigyelése a gyakorlat módosítása/törlése és export/import után is megmarad; nem keletkezik külön gyakorlat-idővonalesemény.
+- Reflexió vagy időszak törlése a hozzá tartozó pillanatképet törli, az önálló gyakorlatot megőrzi.
 - Szponzori függő lista nem jelenik meg az idővonalon; átbeszélt téma igen.
 - Editorformázás és listahierarchia mentés, újranyitás és visszaállítás után megmarad.
 - Régebbi mentés nem ír felül frissebb szöveget.
@@ -423,7 +433,6 @@ Ezek követelmények, nem lefuttatott tesztek.
 - Piszkos/piszkozat/kész szerkesztési és tartalomállapotok.
 - Kikapcsolt modul korábbi tartalmainak szerkeszthetősége.
 - Idővonali csoportosítás, pánikeljárás megszakításának és befejezésének megjelenítése.
-- A HTML gyakorlat-pillanatképének és megfigyelésének megtartása a napi reflexióban; a gyakorlatkártya alapapphoz tartozása és idővonal-függetlensége már eldöntött.
 - A további modulok részletes képernyőspecifikációi a saját fejlesztési szakaszuk előtt.
 
 A nyitott pontokat nem szabad automatikusan kész döntésként implementálni.
