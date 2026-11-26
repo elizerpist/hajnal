@@ -33,6 +33,8 @@ class _AppScope extends ConsumerWidget {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PaintingBinding.instance.imageCache.maximumSize = 40;
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 32 * 1024 * 1024;
   runApp(const _Root());
 }
 

@@ -2,14 +2,23 @@ import 'package:drift/drift.dart';
 
 part 'hajnal_database.g.dart';
 
+class UtcInstant extends TypeConverter<DateTime, DateTime> {
+  const UtcInstant();
+  @override
+  DateTime fromSql(DateTime fromDb) => fromDb.toUtc();
+  @override
+  DateTime toSql(DateTime value) => value.toUtc();
+}
+
 @TableIndex.sql(
   'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
 )
 class RecoveryPeriods extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get startLocalDate => text()();
-  DateTimeColumn get createdAtUtc => dateTime()();
-  DateTimeColumn get closedAtUtc => dateTime().nullable()();
+  Column<DateTime> get createdAtUtc => dateTime().map(const UtcInstant())();
+  Column<DateTime> get closedAtUtc =>
+      dateTime().map(const UtcInstant()).nullable()();
 }
 
 class ArtworkOverrides extends Table {

@@ -41,4 +41,22 @@ void main() {
       });
     },
   );
+  test(
+    'local date change after timezone change recalculates without altering start',
+    () {
+      fakeAsync((async) {
+        var localTime = DateTime(2024, 1, 2, 0, 5);
+        final tracker = DayTracker(() => localTime);
+        final start = DateTime(2024, 1, 1);
+        tracker.setStart(start);
+        tracker.resume();
+        expect(tracker.days, 1);
+        localTime = DateTime(2024, 1, 1, 23, 5);
+        async.elapse(const Duration(seconds: 30));
+        expect(tracker.days, 0);
+        expect(start, DateTime(2024, 1, 1));
+        tracker.dispose();
+      });
+    },
+  );
 }

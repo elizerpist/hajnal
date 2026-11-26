@@ -104,4 +104,23 @@ void main() {
       );
     },
   );
+  test('platform channel and vertical gesture each have one owner', () {
+    final files = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart') && !f.path.endsWith('.g.dart'))
+        .toList();
+    final channelOwners = files
+        .where((f) => f.readAsStringSync().contains('MethodChannel('))
+        .map((f) => f.path)
+        .toList();
+    expect(channelOwners, ['lib/core/platform/date_picker.dart']);
+    final gestureOwners = files
+        .where((f) => f.readAsStringSync().contains('onVerticalDragUpdate:'))
+        .map((f) => f.path)
+        .toList();
+    expect(gestureOwners, [
+      'lib/features/dashboard/presentation/dashboard.dart',
+    ]);
+  });
 }

@@ -21,7 +21,9 @@ void main() {
         await db.close();
         db = HajnalDatabase(NativeDatabase(file));
         repository = RecoveryRepository(db);
-        expect((await repository.active()).id, results[0].id);
+        final reopened = await repository.active();
+        expect(reopened.id, results[0].id);
+        expect(reopened.createdAtUtc.isUtc, isTrue);
         expect(await repository.countActive(), 1);
         await db.close();
       } finally {

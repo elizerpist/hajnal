@@ -23,7 +23,7 @@ class StarterSmokeTest {
     private fun find(label: String) = device.wait(Until.findObject(By.textContains(label)), 20000)
         ?: device.wait(Until.findObject(By.descContains(label)), 20000)
     private fun click(label: String) { val view = find(label); assertNotNull("Missing $label", view); view!!.click() }
-    private fun screenshot(name: String) { assertTrue(device.takeScreenshot(File("/sdcard/Download/$name.png"))) }
+    private fun screenshot(name: String) { assertTrue(device.takeScreenshot(File(context.filesDir, "$name.png"))) }
 
     @Test fun nativePickerPersistenceAndNavigation() {
         launch()

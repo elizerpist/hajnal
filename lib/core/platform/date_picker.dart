@@ -57,6 +57,8 @@ class PlatformDatePicker implements DatePicker {
       return DatePickFailed(e.message ?? 'A dátumválasztó nem érhető el.');
     } on TypeError {
       return const DatePickFailed('Érvénytelen dátum');
+    } on ArgumentError {
+      return const DatePickFailed('Érvénytelen dátum');
     } finally {
       _pending = false;
     }

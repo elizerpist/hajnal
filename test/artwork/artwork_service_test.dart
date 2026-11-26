@@ -82,4 +82,28 @@ void main() {
       );
     });
   });
+  test('artwork descriptor survives database close and reopen', () async {
+    final dir = await Directory.systemTemp.createTemp('hajnal-art-restart-');
+    final databaseFile = File('${dir.path}/database.sqlite');
+    final source = File('${dir.path}/source');
+    await source.writeAsBytes([9]);
+    final artworkDir = Directory('${dir.path}/private');
+    var db = HajnalDatabase(NativeDatabase(databaseFile));
+    var service = ArtworkService(db, artworkDir, (_) async => true);
+    try {
+      await service.install(source);
+      final installed = await service.resolve();
+      service.dispose();
+      await db.close();
+      db = HajnalDatabase(NativeDatabase(databaseFile));
+      service = ArtworkService(db, artworkDir, (_) async => true);
+      final restored = await service.resolve();
+      expect(restored.revision, installed.revision);
+      expect(await restored.file!.readAsBytes(), [9]);
+    } finally {
+      service.dispose();
+      await db.close();
+      await dir.delete(recursive: true);
+    }
+  });
 }

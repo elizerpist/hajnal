@@ -8,5 +8,6 @@ void main() {
     expect(cleanDays(DateTime(2024, 2, 28), DateTime(2024, 3, 1)), 2);
     expect(cleanDays(DateTime(2025, 1, 1), DateTime(2024, 12, 31)), 0);
     expect(cleanDays(DateTime(2024, 1, 1), DateTime(2024, 1, 1)), 0);
+    expect(cleanDays(DateTime(2020, 2, 29), DateTime(2024, 3, 1)), 1462);
   });
 }

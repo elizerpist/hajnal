@@ -16,6 +16,12 @@ class MemoryStore implements RecoveryStore {
   }
 }
 
+class FailingStore extends MemoryStore {
+  @override
+  Future<void> initialize(DateTime date, DateTime now) async =>
+      throw StateError('write failed');
+}
+
 class FakePicker implements DatePicker {
   @override
   Future<DatePickerResult> pick(DateTime initial, DateTime today) async =>
@@ -93,6 +99,51 @@ void main() {
     expect(find.text('A mentett kezdőnap nem módosítható.'), findsOneWidget);
     expect(find.text('Mentés'), findsNothing);
     expect(find.text('Dátum kiválasztása'), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('failed save remains on onboarding', (tester) async {
+    final store = FailingStore();
+    final controller = BootstrapController(store, DateTime.now);
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(null);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Mentés'));
+    await tester.pumpAndSettle();
+    expect(find.text('A mentés nem sikerült. Próbáld újra.'), findsOneWidget);
+    expect(find.text('Kezdődátum'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('back closes the open menu before the expanded panel', (
+    tester,
+  ) async {
+    final store = MemoryStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(DateTime(2024, 4, 1));
+    await tester.pumpAndSettle();
+    final card = find.byKey(const Key('summary-card'));
+    final initial = tester.getTopLeft(card).dy;
+    await tester.tap(card);
+    await tester.pumpAndSettle();
+    final expanded = tester.getTopLeft(card).dy;
+    expect(expanded, lessThan(initial));
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Onboarding'), findsNothing);
+    expect(tester.getTopLeft(card).dy, closeTo(expanded, .1));
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(card).dy, closeTo(initial, .1));
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();

@@ -24,13 +24,17 @@ import UIKit
             let maxYear = args["maxYear"], let maxMonth = args["maxMonth"], let maxDay = args["maxDay"],
             let initial = Calendar.current.date(from: DateComponents(year: year, month: month, day: day)),
             let maximum = Calendar.current.date(from: DateComponents(year: maxYear, month: maxMonth, day: maxDay)),
-            let root = self.window?.rootViewController else {
+            let window = UIApplication.shared.connectedScenes
+              .compactMap({ $0 as? UIWindowScene })
+              .flatMap({ $0.windows })
+              .first(where: { $0.isKeyWindow }),
+            let root = window.rootViewController else {
         result(FlutterError(code: "arguments", message: "Invalid date or unavailable window", details: nil)); return
       }
       self.pendingDate = result
       let datePicker = UIDatePicker()
       datePicker.datePickerMode = .date
-      datePicker.preferredDatePickerStyle = .wheels
+      if #available(iOS 13.4, *) { datePicker.preferredDatePickerStyle = .wheels }
       datePicker.maximumDate = maximum
       datePicker.date = min(initial, maximum)
       let alert = UIAlertController(title: "Kezdődátum", message: "\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
@@ -50,6 +54,12 @@ import UIKit
       self.pickerAlert = alert
       root.present(alert, animated: true)
     }
+  }
+
+  override func applicationDidEnterBackground(_ application: UIApplication) {
+    pickerAlert?.dismiss(animated: false)
+    finishDate(nil)
+    super.applicationDidEnterBackground(application)
   }
 
   private func finishDate(_ value: [String: Int]?) {

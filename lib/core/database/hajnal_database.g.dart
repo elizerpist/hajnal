@@ -33,28 +33,24 @@ class $RecoveryPeriodsTable extends RecoveryPeriods
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtUtcMeta = const VerificationMeta(
-    'createdAtUtc',
-  );
   @override
-  late final GeneratedColumn<DateTime> createdAtUtc = GeneratedColumn<DateTime>(
-    'created_at_utc',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _closedAtUtcMeta = const VerificationMeta(
-    'closedAtUtc',
-  );
+  late final GeneratedColumnWithTypeConverter<DateTime, DateTime> createdAtUtc =
+      GeneratedColumn<DateTime>(
+        'created_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($RecoveryPeriodsTable.$convertercreatedAtUtc);
   @override
-  late final GeneratedColumn<DateTime> closedAtUtc = GeneratedColumn<DateTime>(
-    'closed_at_utc',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
+  late final GeneratedColumnWithTypeConverter<DateTime?, DateTime> closedAtUtc =
+      GeneratedColumn<DateTime>(
+        'closed_at_utc',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      ).withConverter<DateTime?>($RecoveryPeriodsTable.$converterclosedAtUtcn);
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -88,26 +84,6 @@ class $RecoveryPeriodsTable extends RecoveryPeriods
     } else if (isInserting) {
       context.missing(_startLocalDateMeta);
     }
-    if (data.containsKey('created_at_utc')) {
-      context.handle(
-        _createdAtUtcMeta,
-        createdAtUtc.isAcceptableOrUnknown(
-          data['created_at_utc']!,
-          _createdAtUtcMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_createdAtUtcMeta);
-    }
-    if (data.containsKey('closed_at_utc')) {
-      context.handle(
-        _closedAtUtcMeta,
-        closedAtUtc.isAcceptableOrUnknown(
-          data['closed_at_utc']!,
-          _closedAtUtcMeta,
-        ),
-      );
-    }
     return context;
   }
 
@@ -125,13 +101,17 @@ class $RecoveryPeriodsTable extends RecoveryPeriods
         DriftSqlType.string,
         data['${effectivePrefix}start_local_date'],
       )!,
-      createdAtUtc: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}created_at_utc'],
-      )!,
-      closedAtUtc: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}closed_at_utc'],
+      createdAtUtc: $RecoveryPeriodsTable.$convertercreatedAtUtc.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}created_at_utc'],
+        )!,
+      ),
+      closedAtUtc: $RecoveryPeriodsTable.$converterclosedAtUtcn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}closed_at_utc'],
+        ),
       ),
     );
   }
@@ -140,6 +120,13 @@ class $RecoveryPeriodsTable extends RecoveryPeriods
   $RecoveryPeriodsTable createAlias(String alias) {
     return $RecoveryPeriodsTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<DateTime, DateTime> $convertercreatedAtUtc =
+      const UtcInstant();
+  static TypeConverter<DateTime, DateTime> $converterclosedAtUtc =
+      const UtcInstant();
+  static TypeConverter<DateTime?, DateTime?> $converterclosedAtUtcn =
+      NullAwareTypeConverter.wrap($converterclosedAtUtc);
 }
 
 class RecoveryPeriod extends DataClass implements Insertable<RecoveryPeriod> {
@@ -158,9 +145,15 @@ class RecoveryPeriod extends DataClass implements Insertable<RecoveryPeriod> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['start_local_date'] = Variable<String>(startLocalDate);
-    map['created_at_utc'] = Variable<DateTime>(createdAtUtc);
+    {
+      map['created_at_utc'] = Variable<DateTime>(
+        $RecoveryPeriodsTable.$convertercreatedAtUtc.toSql(createdAtUtc),
+      );
+    }
     if (!nullToAbsent || closedAtUtc != null) {
-      map['closed_at_utc'] = Variable<DateTime>(closedAtUtc);
+      map['closed_at_utc'] = Variable<DateTime>(
+        $RecoveryPeriodsTable.$converterclosedAtUtcn.toSql(closedAtUtc),
+      );
     }
     return map;
   }
@@ -305,10 +298,14 @@ class RecoveryPeriodsCompanion extends UpdateCompanion<RecoveryPeriod> {
       map['start_local_date'] = Variable<String>(startLocalDate.value);
     }
     if (createdAtUtc.present) {
-      map['created_at_utc'] = Variable<DateTime>(createdAtUtc.value);
+      map['created_at_utc'] = Variable<DateTime>(
+        $RecoveryPeriodsTable.$convertercreatedAtUtc.toSql(createdAtUtc.value),
+      );
     }
     if (closedAtUtc.present) {
-      map['closed_at_utc'] = Variable<DateTime>(closedAtUtc.value);
+      map['closed_at_utc'] = Variable<DateTime>(
+        $RecoveryPeriodsTable.$converterclosedAtUtcn.toSql(closedAtUtc.value),
+      );
     }
     return map;
   }
@@ -650,14 +647,16 @@ class $$RecoveryPeriodsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<DateTime> get createdAtUtc => $composableBuilder(
+  ColumnWithTypeConverterFilters<DateTime, DateTime, DateTime>
+  get createdAtUtc => $composableBuilder(
     column: $table.createdAtUtc,
-    builder: (column) => ColumnFilters(column),
+    builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
-  ColumnFilters<DateTime> get closedAtUtc => $composableBuilder(
+  ColumnWithTypeConverterFilters<DateTime?, DateTime, DateTime>
+  get closedAtUtc => $composableBuilder(
     column: $table.closedAtUtc,
-    builder: (column) => ColumnFilters(column),
+    builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 }
 
@@ -708,15 +707,17 @@ class $$RecoveryPeriodsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<DateTime> get createdAtUtc => $composableBuilder(
-    column: $table.createdAtUtc,
-    builder: (column) => column,
-  );
+  GeneratedColumnWithTypeConverter<DateTime, DateTime> get createdAtUtc =>
+      $composableBuilder(
+        column: $table.createdAtUtc,
+        builder: (column) => column,
+      );
 
-  GeneratedColumn<DateTime> get closedAtUtc => $composableBuilder(
-    column: $table.closedAtUtc,
-    builder: (column) => column,
-  );
+  GeneratedColumnWithTypeConverter<DateTime?, DateTime> get closedAtUtc =>
+      $composableBuilder(
+        column: $table.closedAtUtc,
+        builder: (column) => column,
+      );
 }
 
 class $$RecoveryPeriodsTableTableManager

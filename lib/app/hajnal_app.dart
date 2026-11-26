@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/platform/date_picker.dart';
+import '../core/theme/hajnal_tokens.dart';
 import '../core/artwork/artwork_service.dart';
 import '../features/dashboard/presentation/dashboard.dart';
 import '../features/onboarding/presentation/onboarding.dart';
@@ -49,7 +50,12 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Hajnal',
     theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff5b4fc0)),
+      colorScheme: ColorScheme.fromSeed(seedColor: HajnalColors.purple),
+      scaffoldBackgroundColor: HajnalColors.sheet,
+      textTheme: ThemeData.light().textTheme.apply(
+        bodyColor: HajnalColors.navy,
+        displayColor: HajnalColors.navy,
+      ),
     ),
     home: _Bootstrap(
       controller: widget.controller,
