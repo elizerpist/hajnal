@@ -88,35 +88,7 @@ jobs:
           disk-size: 3072M
           disable-animations: true
           emulator-boot-timeout: 420
-          script: |
-            mkdir -p evidence
-            adb shell wm size 412x892
-            adb shell wm density 160
-            cd android
-            set +e
-            ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=hu.elizerpist.hajnal.StarterSmokeTest#nativePickerPersistenceAndNavigation --stacktrace > ../evidence/android-test.log 2>&1
-            result=$?
-            cat ../evidence/android-test.log
-            if [ "$result" -eq 0 ]; then
-              adb shell am force-stop hu.elizerpist.hajnal
-              adb shell am start -n hu.elizerpist.hajnal/.MainActivity
-              ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=hu.elizerpist.hajnal.StarterSmokeTest#verifyRelaunch --stacktrace >> ../evidence/android-test.log 2>&1
-              result=$?
-              cat ../evidence/android-test.log
-            fi
-            adb exec-out run-as hu.elizerpist.hajnal cat files/onboarding.png > ../evidence/onboarding.png || true
-            adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-closed.png > ../evidence/dashboard-closed.png || true
-            adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-open.png > ../evidence/dashboard-open.png || true
-            if [ "$result" -eq 0 ]; then
-              test -s ../evidence/onboarding.png && test -s ../evidence/dashboard-closed.png && test -s ../evidence/dashboard-open.png || result=1
-            fi
-            if [ "$result" -eq 0 ]; then
-              cd ..
-              flutter test --no-pub integration_test/artwork_test.dart > evidence/artwork-test.log 2>&1
-              result=$?
-              cat evidence/artwork-test.log
-            fi
-            exit "$result"
+          script: bash scripts/android_smoke.sh
       - uses: actions/upload-artifact@v4
         id: android_artifact
         if: always()
