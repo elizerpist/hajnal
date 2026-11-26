@@ -1,6 +1,6 @@
 # Hajnal – Flutter működési és adatkezelési specifikáció
 
-Verzió: 0.1  
+Verzió: 0.2  
 Dátum: 2026-11-26  
 Állapot: elfogadott működési alapok; a jelölt technikai és termékdöntések további egyeztetésre várnak.
 
@@ -28,7 +28,7 @@ Az onboarding során, később a beállításokban választható, mire használj
 
 | Modul | Tartalom |
 | --- | --- |
-| Alap, mindig elérhető | Tiszta napok, időszakok, pánikmód, idővonal, elnyert képek |
+| Alap, mindig elérhető | Tiszta napok, időszakok, pánikmód, idővonal, elnyert képek, gyakorlatkártyák |
 | Extra 1: napi reflexió | Napi szöveges és hangos bejegyzések |
 | Extra 2: szponzor | Elérhetőség, átbeszélendő témák, átbeszélt tartalmak |
 | Extra 3: gyűlések | Gyűlések, részvétel és megjegyzések |
@@ -96,6 +96,7 @@ A tulajdonos modul, az időszakhoz való kapcsolat és az idővonali megjelenít
 | Lépésmunka, lépések és válaszok | Lépésmunkák |
 | Átbeszélendő és átbeszélt szponzori téma | Szponzor |
 | Ajándék elnyerése | Elismerések |
+| Gyakorlatkártya | Gyakorlatok; az alapapp önálló, időszaktól és idővonaltól független része |
 
 A közös Content kezeli a formázott dokumentumot és a hangmemók kapcsolatait. A tulajdonos modul adja a tartalom üzleti jelentését és életciklusát.
 
@@ -117,6 +118,7 @@ Az elnevezések tervezési munkanevek, nem végleges SQL-séma.
 | Meeting / MeetingOccurrence / Attendance | Gyűlés, konkrét alkalom, saját részvétel |
 | AwardGrant | Elnyerés és bemutatási állapot |
 | TimelineEntry | Eredeti forrásra mutató, időszakhoz kapcsolt hivatkozás |
+| Practice | Önálló gyakorlatkártya, saját azonosítóval és életciklussal; nincs időszak- vagy idővonalkapcsolata |
 | AppSettings | Modulválasztás és alkalmazásbeállítások |
 
 ### 6.2. Megjelenítési szabályok
@@ -124,6 +126,7 @@ Az elnevezések tervezési munkanevek, nem végleges SQL-séma.
 - Az idővonalból megnyitott szerkesztés az eredeti tartalmat módosítja.
 - Automatikus mentés nem hoz létre mentésenként új idővonalkártyát.
 - A függő szponzori checklist nem kerül az idővonalra.
+- A gyakorlatkártya nem idővonali forrás. Létrehozása, szerkesztése, aktiválása, szüneteltetése, archiválása és törlése sem hoz létre idővonaleseményt.
 - Átbeszélés után az adott időszak idővonala az átbeszélt témára/tartalomra hivatkozik.
 - A tárcsázó vagy SMS-alkalmazás megnyitása nem bizonyít megtörtént hívást vagy elküldött üzenetet.
 - A gyűlésrészvétel konkrét alkalomhoz kötődik. Egy megjegyzés önmagában nem bizonyít részvételt.
@@ -161,7 +164,7 @@ A művelet a tulajdonos modulokból is törli az időszakhoz tartozó:
 - Törlés: a megerősítésben felsorolt érintett lépésmunka-tartalmak is törlődnek.
 - Ha más időszakban megjelenő tartalom is érintett, ezt a megerősítés jelzi.
 
-A közös szponzori elérhetőség, a gyűlések alapadatai, a még átbeszélendő témák és az appbeállítások megmaradnak.
+A közös szponzori elérhetőség, a gyűlések alapadatai, a még átbeszélendő témák, a gyakorlatkártyák és az appbeállítások megmaradnak. A gyakorlatkártyákra sem az időszak resetje, sem a visszaesés, sem az időszak/idővonal törlése nem hat.
 
 A több időszakban szerkesztett lépésválasz, illetve a teljes munkafüzet és az egyes lépéskidolgozások pontos törlési határát még a részletes adatmodellben kell lezárni. A program nem dönthet erről rejtett, túl széles kaszkáddal.
 
@@ -190,6 +193,43 @@ Az adatbázis-változások összehangolt tranzakcióban történjenek. A fájlt�
 - Egyedi törlés és listareset eltávolítja a kapcsolódó idővonali hivatkozásokat is.
 - A teljes időszaktörlés az oda tartozó átbeszélt tartalmat a szponzormodulból is eltávolítja.
 - A szponzori témalista resetje nem jelent automatikusan elérhetőségtörlést.
+
+### 8.3. Gyakorlatkártyák
+
+**Elfogadott alap:** a gyakorlatkártya külön entitás, az alapapp része, nincs kapcsolata az idővonallal. Minden extra kikapcsolása mellett is létrehozható és használható. Saját tulajdonosa a Gyakorlatok, nem a reflexió vagy a lépésmunka.
+
+A HTML `Amit gyakorlok` blokkja és gyakorlatkezelője alapján tervezett működés:
+- Saját gyakorlat létrehozása és szerkesztése.
+- Cím, kiváltó helyzet és vállalt cselekvés/szándék megadása.
+- Aktív, szüneteltetett és archivált állapot.
+- Egyszerre legfeljebb egy aktív gyakorlat; új aktiválásakor az előző szüneteltetett lesz.
+- Mentés későbbre aktiválás nélkül.
+- Egyedi, megerősített törlés.
+- Üres állapotban nem keletkezik automatikus gyakorlat vagy bemutatóadat.
+
+Tervezett adatmezők:
+
+| Mező | Jelentés |
+| --- | --- |
+| practiceId | Stabil saját azonosító |
+| title | A gyakorlat címe |
+| triggerText | A helyzet, amelyben gyakorolni szeretném |
+| intentionText | Amit ebben a helyzetben tenni szeretnék |
+| status | active / paused / archived |
+| createdAt, updatedAt, activatedAt | Létrehozás, módosítás, aktiválás időpontja |
+| sourceKind | Saját gyakorlat vagy opcionálisan lépésválaszból indított gyakorlat |
+| sourceReference | Opcionális eredethivatkozás; nem tulajdonosi kapcsolat |
+| sourceTextSnapshot | A létrehozáskor átvett forrásszöveg, az eredeti későbbi változásától függetlenül |
+
+Nincs `recoveryPeriodId` és nincs rá mutató `TimelineEntry`. A létrehozási dátum önmagában nem rendeli időszakhoz. A gyakorlat nem egyszerű Content-típus: saját strukturált mezői és állapotgépe vannak; az univerzális dokumentumszerkesztő esetleges használata ettől külön döntés.
+
+Az egyetlen aktív gyakorlat feltételét az adatbázisban is érvényesíteni kell. Az előző szüneteltetése és az új aktiválása egy tranzakció; a UI az adatbázisból olvassa az aktív kártyát. Külön, versengő tartós aktívazonosító nem szükséges.
+
+A HTML lépésválaszból is tud gyakorlatot indítani. Ez opcionális belépési út, nem lépésmodul-függőség. A forrás törlése esetén az eredethivatkozás megszűnik, a gyakorlat és a saját forrásszöveg-pillanatképe megmarad. Lépésmunka- vagy időszaktörlés nem kaszkádolhat a gyakorlatokra.
+
+**A HTML-ben megfigyelt, még egyeztetendő kiegészítés:** a napi reflexió az akkori aktív gyakorlat pillanatképét és egy hozzá írt megfigyelést is tárolhatja. Ennek Flutter-változatbeli megtartása külön döntés; nem következik az önálló Practice entitás elfogadásából. Ha megtartjuk, a pillanatképet a reflexió birtokolja, nem élő gyakorlat- vagy idővonalkapcsolat. A gyakorlat módosítása vagy törlése nem írhatja át és nem törölheti a korábbi reflexiót.
+
+A teljes biztonsági mentés minden gyakorlatot és állapotát tartalmazza; a visszaállítás a saját azonosítókat is megőrzi.
 
 ## 9. Pánikmód
 
@@ -335,7 +375,7 @@ Az adatbázisséma és a szerkesztő dokumentumformátuma verziózott. Minden k�
 
 1. Technikai próbák: editor és offline magyar diktálás valódi Androidon és iOS-en.
 2. Közös alapok: adatmodell, Content, mentési koordinátor, hangéletciklus, alkalmazászár, export/import.
-3. Alapapp: onboarding, számláló, időszakok, idővonal, elnyerések, pánikmód.
+3. Alapapp: onboarding, számláló, időszakok, idővonal, elnyerések, pánikmód, gyakorlatkártyák és gyakorlatkezelő.
 4. Napi reflexiók.
 5. Szponzor.
 6. Gyűlések.
@@ -356,6 +396,10 @@ Ezek követelmények, nem lefuttatott tesztek.
 - Egyedi törlés minden hivatkozást eltávolít, idegen tulajdonú hivatkozott tartalmat nem töröl.
 - Időszaktörlés mindkét lépésmunka-választással helyesen működik.
 - Pánikreflexió menthető kikapcsolt napi reflexió extra mellett.
+- Gyakorlatkártyák minden extra kikapcsolása mellett használhatók; egyszerre legfeljebb egy aktív.
+- Gyakorlatművelet nem hoz létre idővonaleseményt; visszaesés, reset és időszaktörlés nem módosítja a gyakorlatokat.
+- Opcionális lépésforrás törlése megőrzi a gyakorlatot és annak forrásszöveg-pillanatképét.
+- Export/import megőrzi a gyakorlatkártyák azonosítóit, mezőit és állapotát.
 - Szponzori függő lista nem jelenik meg az idővonalon; átbeszélt téma igen.
 - Editorformázás és listahierarchia mentés, újranyitás és visszaállítás után megmarad.
 - Régebbi mentés nem ír felül frissebb szöveget.
@@ -379,7 +423,7 @@ Ezek követelmények, nem lefuttatott tesztek.
 - Piszkos/piszkozat/kész szerkesztési és tartalomállapotok.
 - Kikapcsolt modul korábbi tartalmainak szerkeszthetősége.
 - Idővonali csoportosítás, pánikeljárás megszakításának és befejezésének megjelenítése.
-- „Ezt gyakorlom” kártyák modulhoz tartozása és végleges életciklusa.
+- A HTML gyakorlat-pillanatképének és megfigyelésének megtartása a napi reflexióban; a gyakorlatkártya alapapphoz tartozása és idővonal-függetlensége már eldöntött.
 - A további modulok részletes képernyőspecifikációi a saját fejlesztési szakaszuk előtt.
 
 A nyitott pontokat nem szabad automatikusan kész döntésként implementálni.
@@ -390,6 +434,8 @@ Forrás: a 2026-11-26-i tervezési beszélgetés, a felhasználó legutolsó kor
 
 Áttekintett repóreferenciák:
 - `AGENTS.md`
+- `html-prototypes/app-shell/index.html`: `createPractice`, `createPracticeState`, `renderHomePracticeBlock`, `commitPracticeEditor`, `setPracticeStatus`, `deletePractice`, `createDailyReflectionPracticeSnapshot`.
+- `docs/prototypes/REFINEMENT_AND_PRACTICE_MANAGER_ACCEPTANCE_CHECKLIST.md`, különösen RPM-07–09.
 - `docs/HAJNAL_RESZLETES_ALKALMAZASSPECIFIKACIO.md` teljes szövege, különösen §§1, 5–9, 11–12, 15, 17–20, 22–26.
 - `docs/prototypes/ACCEPTANCE_CHECKLIST.md` releváns tulajdonosi, editor-, szponzor- és idővonalbejegyzései.
 
