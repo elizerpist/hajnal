@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/brand/security_icons.dart';
 import '../application/biometrics.dart';
 import '../application/lock_controller.dart';
 import '../application/lock_settings_coordinator.dart';
@@ -97,6 +98,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
     appBar: AppBar(
       backgroundColor: HajnalColors.sheet,
       foregroundColor: HajnalColors.navy,
+      leading: Navigator.canPop(context) ? const HajnalBackButton() : null,
     ),
     body: SafeArea(
       child: ListenableBuilder(
@@ -162,11 +164,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                   ),
                   child: ListTile(
                     minTileHeight: 72,
-                    leading: const Icon(
-                      Icons.key_outlined,
-                      size: 30,
-                      color: HajnalColors.purple,
-                    ),
+                    leading: const HajnalKeyIcon(),
                     title: const Text(
                       'PIN módosítása',
                       style: TextStyle(

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
+import '../../../core/brand/security_icons.dart';
 import '../../../core/theme/hajnal_tokens.dart';
 
 class PinPad extends StatefulWidget {
@@ -42,6 +44,9 @@ class _PinPadState extends State<PinPad> {
         : AppBar(
             backgroundColor: HajnalColors.sheet,
             foregroundColor: HajnalColors.navy,
+            leading: Navigator.canPop(context)
+                ? const HajnalBackButton()
+                : null,
             title: Text(
               widget.header!,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
@@ -69,10 +74,11 @@ class _PinPadState extends State<PinPad> {
               children: [
                 const SizedBox(height: 30),
                 const Icon(
-                  Icons.lock_outline,
+                  CupertinoIcons.lock,
                   size: 54,
                   color: HajnalColors.navy,
                 ),
+                const SizedBox(height: 12),
                 Text(
                   widget.title,
                   textAlign: TextAlign.center,

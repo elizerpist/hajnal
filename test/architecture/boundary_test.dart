@@ -192,6 +192,7 @@ void main() {
     const presentationImports = {
       'dart:math',
       'package:flutter/material.dart',
+      'package:flutter/cupertino.dart',
       '../../../app/bootstrap_controller.dart',
       '../../../core/artwork/artwork_source.dart',
       '../../../core/artwork/artwork_catalog.dart',
@@ -202,6 +203,7 @@ void main() {
       'package:flutter_svg/flutter_svg.dart',
       '../../../core/brand/brand_assets.dart',
       '../../../core/brand/fingerprint_icon.dart',
+      '../../../core/brand/security_icons.dart',
       '../application/biometrics.dart',
       '../application/lock_controller.dart',
       '../application/lock_settings_coordinator.dart',

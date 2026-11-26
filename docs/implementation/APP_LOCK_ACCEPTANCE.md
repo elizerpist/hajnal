@@ -17,6 +17,8 @@ Tulajdonosok: egy lock-session controller tulajdonolja a zárolás és hitelesí
 
 Ellenőrzési megjegyzések: a vizuális integrációs teszt valódi Flutter komponenseket renderel, de a biometrikus platformválaszokat szimulálja; a fizikai biometrikus működés külön bizonyítékot igényel. A képernyő-összevetés és a launcher ellenőrzése az emulátoros CI eredménye alapján zárható. A telefonos mentés-visszaállítás és az iOS build/eszköz nincs helyben igazolva.
 
+A `5214daa` képeinek összevetése: a beállítási alsó szöveg már látható; a kulcs körvonala, a visszanyíl formája és a PIN-lakat eltér a referenciától, a PIN szövege és billentyűzete magasabban van. A biometrikus képernyőn a márka felső helyzete, az állapotkártya és az alsó művelet függőleges ritmusa eltér. A visszanyíl a natív és az integrációs képen is látható. A három állapotot az új commit emulátoros képeivel és overlayével együtt kell újra felülvizsgálni; a `5214daa` nem kapott vizuális jóváhagyást.
+
 ## Réteghatár- és Ponytail-önellenőrzés
 
 - A feloldási munkamenet egyetlen tulajdonosa a `LockController`; a meglévő `HajnalApp` observer továbbítja az életciklust. A beállítási munkafolyamat a `LockSettingsCoordinator` felelőssége, a képernyők bemenetet és navigációt adnak.

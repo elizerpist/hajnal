@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/brand/fingerprint_icon.dart';
+import 'package:hajnal/core/brand/security_icons.dart';
 import 'package:hajnal/features/app_lock/application/lock_controller.dart';
 import 'package:hajnal/features/app_lock/domain/lock_mode.dart';
 import 'package:hajnal/features/app_lock/presentation/lock_gate.dart';
+import 'package:hajnal/features/app_lock/presentation/lock_auth_page.dart';
 import 'package:hajnal/features/app_lock/presentation/lock_settings.dart';
 import 'package:hajnal/features/app_lock/presentation/pin_pad.dart';
 import 'package:hajnal/features/app_lock/presentation/pin_setup.dart';
@@ -17,6 +20,94 @@ Future<void> enter(WidgetTester tester, String pin) async {
 }
 
 void main() {
+  testWidgets('biometric screen remains scrollable with enlarged text', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final controller = LockController(
+      fakes.Store(LockMode.pinAndBiometric),
+      fakes.Finger(),
+      fakes.Device(),
+    );
+    await controller.initialize();
+    await controller.submitPin('001234');
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(1.6)),
+          child: LockAuthPage(controller: controller),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Azonosítás indítása'));
+    expect(tester.takeException(), isNull);
+    expect(find.byType(HajnalFingerprint), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+  });
+
+  testWidgets('reference sized settings and PIN retain their controls', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(412, 892);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final controller = LockController(
+      fakes.Store(LockMode.pinAndBiometric),
+      fakes.Finger(),
+      fakes.Device(),
+    );
+    await controller.initialize();
+    await tester.pumpWidget(
+      MaterialApp(home: LockSettingsPage(controller: controller)),
+    );
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('PIN módosítása'), 100);
+    expect(find.byType(HajnalKeyIcon), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Az azonosítás a készülékeden történik.'),
+      100,
+    );
+    expect(
+      tester
+          .getBottomLeft(find.text('Az azonosítás a készülékeden történik.'))
+          .dy,
+      lessThanOrEqualTo(892),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute<void>(builder: (_) => const PinSetup())),
+            child: const Text('open'),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(CupertinoIcons.lock), findsOneWidget);
+    expect(find.byTooltip('Back'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('Válassz PIN-kódot')).dy,
+      lessThan(tester.getTopLeft(find.text('1')).dy),
+    );
+    expect(
+      tester.getBottomLeft(find.text('A következő lépésben ismételd meg.')).dy,
+      lessThanOrEqualTo(892),
+    );
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+  });
+
   testWidgets('settings remain accessible on a narrow screen with large text', (
     tester,
   ) async {
