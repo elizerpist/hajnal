@@ -113,6 +113,11 @@ jobs:
           disable-animations: true
           emulator-boot-timeout: 420
           script: bash scripts/android_smoke.sh
+      - name: Preserve failed run evidence
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/publish_failed_evidence.sh
       - name: Compare app lock screenshots with the source reference
         run: |
           python3 -m pip install --user --break-system-packages Pillow

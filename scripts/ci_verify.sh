@@ -3,6 +3,7 @@ set -euo pipefail
 mkdir -p evidence
 python3 scripts/test_release_tools.py
 python3 scripts/test_release_candidate.py
+python3 scripts/test_failed_evidence.py
 dart format --output=none --set-exit-if-changed lib test integration_test scripts/calendar_dst_check.dart
 flutter analyze --no-pub
 TZ=Europe/Budapest dart run scripts/calendar_dst_check.dart

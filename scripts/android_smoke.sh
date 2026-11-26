@@ -30,10 +30,9 @@ for name in onboarding dashboard-closed dashboard-open picker-open picker-night 
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   python3 scripts/validate_png.py "evidence/$name.png"
 done
-timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evidence/artwork-test.log
 # Collect screenshots before flutter test removes the integration app.
 # Platform authentication is simulated; the actual app widgets are rendered.
-(timeout 10m flutter test --no-pub integration_test/lock_visual_test.dart | tee evidence/lock-visual-test.log) &
+(timeout 10m flutter test --no-pub integration_test/ci_integration_test.dart | tee evidence/artwork-test.log evidence/lock-visual-test.log) &
 visual_pid=$!
 ready=false
 for attempt in $(seq 1 600); do
