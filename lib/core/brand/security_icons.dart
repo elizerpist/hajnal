@@ -25,6 +25,55 @@ class HajnalKeyIcon extends StatelessWidget {
   );
 }
 
+class HajnalLockIcon extends StatelessWidget {
+  const HajnalLockIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) => const SizedBox(
+    width: 54,
+    height: 54,
+    child: CustomPaint(painter: _LockPainter()),
+  );
+}
+
+class _LockPainter extends CustomPainter {
+  const _LockPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.scale(size.width / 54, size.height / 54);
+    final stroke = Paint()
+      ..color = HajnalColors.navy
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(6, 23, 42, 30),
+        const Radius.circular(4),
+      ),
+      stroke,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(14, 23)
+        ..lineTo(14, 15)
+        ..cubicTo(14, -2, 40, -2, 40, 15)
+        ..lineTo(40, 23),
+      stroke,
+    );
+    canvas.drawCircle(
+      const Offset(27, 35),
+      3,
+      Paint()..color = HajnalColors.navy,
+    );
+    canvas.drawLine(const Offset(27, 37), const Offset(27, 43), stroke);
+  }
+
+  @override
+  bool shouldRepaint(_LockPainter oldDelegate) => false;
+}
+
 class _KeyPainter extends CustomPainter {
   const _KeyPainter();
 

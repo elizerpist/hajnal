@@ -182,7 +182,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                         : () => choose(c.mode, changePin: true),
                   ),
                 ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 22),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -230,7 +230,7 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
                 ? null
                 : () => choose(mode),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
                 children: [
                   Expanded(

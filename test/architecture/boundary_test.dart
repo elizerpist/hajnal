@@ -192,7 +192,6 @@ void main() {
     const presentationImports = {
       'dart:math',
       'package:flutter/material.dart',
-      'package:flutter/cupertino.dart',
       '../../../app/bootstrap_controller.dart',
       '../../../core/artwork/artwork_source.dart',
       '../../../core/artwork/artwork_catalog.dart',

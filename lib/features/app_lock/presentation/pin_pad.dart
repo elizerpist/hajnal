@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 import '../../../core/brand/security_icons.dart';
 import '../../../core/theme/hajnal_tokens.dart';
@@ -73,11 +72,7 @@ class _PinPadState extends State<PinPad> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const SizedBox(height: 30),
-                const Icon(
-                  CupertinoIcons.lock,
-                  size: 54,
-                  color: HajnalColors.navy,
-                ),
+                const HajnalLockIcon(),
                 const SizedBox(height: 12),
                 Text(
                   widget.title,
@@ -109,13 +104,13 @@ class _PinPadState extends State<PinPad> {
                             value.length.clamp(6, 20),
                             (i) => Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 11,
+                                horizontal: 9,
                               ),
                               child: Icon(
                                 i < value.length
                                     ? Icons.circle
                                     : Icons.circle_outlined,
-                                size: 18,
+                                size: 22,
                                 color: HajnalColors.purple,
                               ),
                             ),
@@ -125,7 +120,11 @@ class _PinPadState extends State<PinPad> {
                     ),
                   ),
                 ),
-                Container(width: 276, height: 1, color: HajnalColors.keyBorder),
+                Container(
+                  width: 276,
+                  height: 1,
+                  color: HajnalColors.pinUnderline,
+                ),
                 const SizedBox(height: 10),
                 if (widget.message != null)
                   Text(

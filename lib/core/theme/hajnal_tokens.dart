@@ -13,4 +13,5 @@ abstract final class HajnalColors {
   static const selectedCard = Color(0xffede4f8);
   static const keyboardSurface = Color(0xfffdf9fa);
   static const keyBorder = Color(0xffe9e0e9);
+  static const pinUnderline = Color(0xffc0b4d5);
 }

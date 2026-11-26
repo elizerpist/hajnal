@@ -19,6 +19,8 @@ Ellenőrzési megjegyzések: a vizuális integrációs teszt valódi Flutter kom
 
 A `5214daa` képeinek összevetése: a beállítási alsó szöveg már látható; a kulcs körvonala, a visszanyíl formája és a PIN-lakat eltér a referenciától, a PIN szövege és billentyűzete magasabban van. A biometrikus képernyőn a márka felső helyzete, az állapotkártya és az alsó művelet függőleges ritmusa eltér. A visszanyíl a natív és az integrációs képen is látható. A három állapotot az új commit emulátoros képeivel és overlayével együtt kell újra felülvizsgálni; a `5214daa` nem kapott vizuális jóváhagyást.
 
+A `9ccdb25` Android-tesztjei, aláírása és adatmegőrző upgrade-je sikeres. Az overlayeken az elrendezés javult, de a PIN-lakat kulcslyuka hiányzik, és az aláhúzás halványabb a referenciánál, ezért ez a képsor sem kapott jóváhagyást. A logó a felhasználó által előírt SVG, amely a referencia raszteres logójától eltérhet; a fizikai biometria és iOS ellenőrzése nyitott.
+
 ## Réteghatár- és Ponytail-önellenőrzés
 
 - A feloldási munkamenet egyetlen tulajdonosa a `LockController`; a meglévő `HajnalApp` observer továbbítja az életciklust. A beállítási munkafolyamat a `LockSettingsCoordinator` felelőssége, a képernyők bemenetet és navigációt adnak.

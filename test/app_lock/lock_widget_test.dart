@@ -1,5 +1,6 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart' show CupertinoIcons;
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/brand/fingerprint_icon.dart';
 import 'package:hajnal/core/brand/security_icons.dart';
@@ -20,6 +21,28 @@ Future<void> enter(WidgetTester tester, String pin) async {
 }
 
 void main() {
+  testWidgets('PIN lock paints a visible keyhole', (tester) async {
+    final key = GlobalKey();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Center(
+          child: RepaintBoundary(key: key, child: const HajnalLockIcon()),
+        ),
+      ),
+    );
+    final boundary =
+        key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+    final image = (await tester.runAsync(() => boundary.toImage()))!;
+    final pixels = (await tester.runAsync(
+      () => image.toByteData(format: ui.ImageByteFormat.rawRgba),
+    ))!;
+    int alpha(int x, int y) => pixels.getUint8((y * image.width + x) * 4 + 3);
+    expect(alpha(27, 35), greaterThan(200));
+    expect(alpha(27, 42), greaterThan(200));
+    expect(alpha(18, 35), 0);
+    image.dispose();
+  });
+
   testWidgets('biometric screen remains scrollable with enlarged text', (
     tester,
   ) async {
@@ -93,7 +116,7 @@ void main() {
     );
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
-    expect(find.byIcon(CupertinoIcons.lock), findsOneWidget);
+    expect(find.byType(HajnalLockIcon), findsOneWidget);
     expect(find.byTooltip('Back'), findsOneWidget);
     expect(
       tester.getTopLeft(find.text('Válassz PIN-kódot')).dy,
