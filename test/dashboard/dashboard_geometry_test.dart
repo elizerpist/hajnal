@@ -14,6 +14,11 @@ void main() {
     expect(layout.cardHeight, 118);
     expect(layout.closedTop, 614);
     expect(layout.travel, 96);
+    expect(layout.cardLeft, 58);
+    expect(layout.cardTop(0), 614);
+    expect(layout.cardTop(1), 518);
+    expect(layout.sheetTop(0), 682);
+    expect(layout.sheetTop(1), 586);
   });
 
   test('card stays in safe viewport at large scale and with system insets', () {

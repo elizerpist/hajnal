@@ -5,14 +5,19 @@ class DashboardLayout {
   const DashboardLayout._({
     required this.cardWidth,
     required this.cardHeight,
+    required this.cardLeft,
     required this.closedTop,
     required this.travel,
   });
 
   final double cardWidth;
   final double cardHeight;
+  final double cardLeft;
   final double closedTop;
   final double travel;
+
+  double cardTop(double progress) => closedTop - travel * progress;
+  double sheetTop(double progress) => cardTop(progress) + 68;
 
   static DashboardLayout resolve({
     required double width,
@@ -32,9 +37,11 @@ class DashboardLayout {
     final closedTop = math
         .max(safeTop + 64, height - bottomInset - 278)
         .clamp(safeTop, safeBottom - cardHeight);
+    final cardWidth = math.max(0.0, math.min(296.0, width - 32));
     return DashboardLayout._(
-      cardWidth: math.max(0, math.min(296, width - 32)),
+      cardWidth: cardWidth,
       cardHeight: cardHeight,
+      cardLeft: (width - cardWidth) / 2,
       closedTop: closedTop,
       travel: math.min(math.min(96, height * .15), closedTop - safeTop),
     );

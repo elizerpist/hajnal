@@ -108,7 +108,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           );
           final cardWidth = layout.cardWidth;
           final cardHeight = layout.cardHeight;
-          final closedTop = layout.closedTop;
           final travel = layout.travel;
           return Stack(
             fit: StackFit.expand,
@@ -117,7 +116,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               AnimatedBuilder(
                 animation: Listenable.merge([progress, sheetOpacity]),
                 builder: (context, _) => Positioned(
-                  top: closedTop + 68 - travel * progress.value,
+                  top: layout.sheetTop(progress.value),
                   left: 0,
                   right: 0,
                   bottom: 0,
@@ -139,8 +138,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               AnimatedBuilder(
                 animation: progress,
                 builder: (context, _) => Positioned(
-                  top: closedTop - travel * progress.value,
-                  left: (constraints.maxWidth - cardWidth) / 2,
+                  top: layout.cardTop(progress.value),
+                  left: layout.cardLeft,
                   width: cardWidth,
                   height: cardHeight,
                   child: Semantics(
