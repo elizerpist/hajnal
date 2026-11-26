@@ -46,7 +46,7 @@ Kikapcsolás nem adattörlés. A korábbi adatok és a mentési csomagban való 
 - Minden naptári napváltás egy nappal növeli a számlálót.
 - Korábbi kezdőnap kiválasztásakor az azóta eltelt éjfelek számát mutatjuk.
 - A számítás naptári napkülönbség, nem eltelt órák osztva 24-gyel.
-- A kezdőnap létrehozás után rögzített, nem szerkeszthető. Adatbázisban tárolt érték, nem kódba égetett konstans.
+- Az aktuális időszak kezdőnapja az onboardingban külön dátumkorrekcióval szerkeszthető. Csak mai vagy korábbi nap menthető; a period ID és createdAtUtc változatlan, nem jön létre reset vagy új időszak. A lezárt időszakok nem szerkeszthetők.
 - Nincs napi megerősítési kötelezettség.
 - A számláláshoz nem fut folyamatos háttérszolgáltatás.
 

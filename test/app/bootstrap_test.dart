@@ -5,17 +5,37 @@ import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class FakeStore implements RecoveryStore {
   bool failSave = false;
-  final controller = StreamController<DateTime?>.broadcast();
+  Completer<void>? correctionPending;
+  final controller = StreamController<ActiveRecovery?>.broadcast();
   @override
-  Stream<DateTime?> watchStart() => controller.stream;
+  Stream<ActiveRecovery?> watchStart() => controller.stream;
+  @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) async {
+    if (correctionPending != null) await correctionPending!.future;
+    if (id != 1) throw StateError("stale");
+    controller.add(ActiveRecovery(id, date));
+  }
+
   @override
   Future<void> initialize(DateTime date, DateTime now) async {
     if (failSave) throw StateError('failed write');
-    controller.add(date);
+    controller.add(ActiveRecovery(1, date));
   }
 }
 
 void main() {
+  test('duplicate correction is refused while one save is pending', () async {
+    final store = FakeStore()..correctionPending = Completer<void>();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    store.controller.add(ActiveRecovery(1, DateTime(2024, 3, 1)));
+    await Future<void>.delayed(Duration.zero);
+    final first = controller.correctStart(1, DateTime(2024, 3, 2));
+    expect(await controller.correctStart(1, DateTime(2024, 3, 3)), false);
+    store.correctionPending!.complete();
+    expect(await first, true);
+    controller.dispose();
+    await store.controller.close();
+  });
   test(
     'bootstrap waits for storage and preserves errors instead of empty data',
     () async {

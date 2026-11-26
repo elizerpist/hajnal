@@ -20,7 +20,11 @@ adb shell am force-stop hu.elizerpist.hajnal
 adb shell am start -n hu.elizerpist.hajnal/.MainActivity
 run_test verifyRelaunch evidence/android-relaunch-test.log
 cat evidence/android-first-test.log evidence/android-relaunch-test.log > evidence/android-test.log
-for name in onboarding dashboard-closed dashboard-open; do
+adb shell cmd uimode night yes
+adb shell am force-stop hu.elizerpist.hajnal
+run_test nightPicker evidence/android-night-test.log
+adb shell cmd uimode night no
+for name in onboarding dashboard-closed dashboard-open picker-open picker-night; do
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   test -s "evidence/$name.png"
 done
@@ -33,15 +37,17 @@ fi
 if adb shell pm path hu.elizerpist.hajnal.test | grep -q '^package:'; then
   adb uninstall hu.elizerpist.hajnal.test
 fi
-if [ -s "$RUNNER_TEMP/hajnal-previous.apk" ]; then
-  install_apk="$RUNNER_TEMP/hajnal-previous.apk"
-else
-  install_apk=build/app/outputs/flutter-apk/app-profile.apk
-fi
-adb install -r "$install_apk"
+test -s "$RUNNER_TEMP/hajnal-previous.apk"
+adb install -r "$RUNNER_TEMP/hajnal-previous.apk"
 adb install -r -t "$RUNNER_TEMP/hajnal-signed-test.apk"
-run_test nativePickerPersistenceAndNavigation evidence/signed-before-upgrade.log
+run_test prepareUpgrade evidence/signed-before-upgrade.log
+adb exec-out cat /sdcard/Android/data/hu.elizerpist.hajnal/files/picker-before-upgrade.png > evidence/picker-before-upgrade.png
+adb exec-out cat /sdcard/Android/data/hu.elizerpist.hajnal/files/picker-before-upgrade-theme.txt > evidence/picker-before-upgrade-theme.txt
 adb install -r build/app/outputs/flutter-apk/app-profile.apk
 adb shell am force-stop hu.elizerpist.hajnal
-run_test verifyRelaunch evidence/signed-after-upgrade.log
-cat evidence/signed-before-upgrade.log evidence/signed-after-upgrade.log > evidence/signed-upgrade-test.log
+run_test verifyUpgradeAndCorrect evidence/signed-after-upgrade.log
+adb exec-out cat /sdcard/Android/data/hu.elizerpist.hajnal/files/picker-after-upgrade.png > evidence/picker-after-upgrade.png
+adb exec-out cat /sdcard/Android/data/hu.elizerpist.hajnal/files/picker-after-upgrade-theme.txt > evidence/picker-after-upgrade-theme.txt
+adb shell am force-stop hu.elizerpist.hajnal
+run_test verifyCorrectedRelaunch evidence/signed-relaunch.log
+cat evidence/signed-before-upgrade.log evidence/signed-after-upgrade.log evidence/signed-relaunch.log > evidence/signed-upgrade-test.log

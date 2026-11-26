@@ -14,9 +14,14 @@ class Dependency {
 
 class MutationCalls extends RecursiveAstVisitor<void> {
   final calls = <String>[];
+  final dbUpdates = <String>[];
   @override
   void visitMethodInvocation(MethodInvocation node) {
     calls.add(node.methodName.name);
+    if (node.methodName.name == 'update' &&
+        (node.target?.toSource() == '_db' || node.target?.toSource() == 'db')) {
+      dbUpdates.add(node.toSource());
+    }
     super.visitMethodInvocation(node);
   }
 }
@@ -78,6 +83,7 @@ bool allowed(String source, String target) {
   }
   if (target.startsWith('package:drift/') &&
       source != 'lib/app/app_services.dart' &&
+      source != 'lib/features/recovery/data/recovery_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
   }
@@ -286,6 +292,7 @@ void main() {
         path: file.path,
       ).unit.accept(visitor);
       if (!dbWriters.contains(file.path)) {
+        expect(visitor.dbUpdates, isEmpty, reason: file.path);
         expect(visitor.calls, isNot(contains('into')), reason: file.path);
         for (final method in ['customInsert', 'customUpdate', 'customDelete']) {
           expect(visitor.calls, isNot(contains(method)), reason: file.path);

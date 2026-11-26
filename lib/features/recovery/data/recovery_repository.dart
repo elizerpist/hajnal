@@ -1,15 +1,19 @@
 import '../../../core/database/hajnal_database.dart';
+import 'package:drift/drift.dart';
+import '../domain/calendar.dart';
+import '../application/recovery_store.dart';
 
 class RecoveryRepository {
   RecoveryRepository(this._db);
   final HajnalDatabase _db;
 
-  Stream<DateTime?> watchStart() =>
+  Stream<ActiveRecovery?> watchStart() =>
       (_db.select(
         _db.recoveryPeriods,
       )..where((p) => p.closedAtUtc.isNull())).watchSingleOrNull().map(
-        (period) =>
-            period == null ? null : DateTime.parse(period.startLocalDate),
+        (period) => period == null
+            ? null
+            : ActiveRecovery(period.id, DateTime.parse(period.startLocalDate)),
       );
 
   Future<RecoveryPeriod> active() => (_db.select(
@@ -20,12 +24,17 @@ class RecoveryRepository {
     _db.recoveryPeriods,
   )..where((p) => p.closedAtUtc.isNull())).get()).length;
 
+  Future<void> correctStart(int id, DateTime start, DateTime now) async {
+    final value = validatedStartDate(start, now);
+    final count =
+        await (_db.update(_db.recoveryPeriods)
+              ..where((p) => p.id.equals(id) & p.closedAtUtc.isNull()))
+            .write(RecoveryPeriodsCompanion(startLocalDate: Value(value)));
+    if (count != 1) throw StateError('Active period changed');
+  }
+
   Future<RecoveryPeriod> initialize(DateTime start, DateTime now) async {
-    final date = DateTime.utc(start.year, start.month, start.day);
-    final today = DateTime.utc(now.year, now.month, now.day);
-    if (date.isAfter(today)) throw ArgumentError('Future start date');
-    final value =
-        '${start.year.toString().padLeft(4, '0')}-${start.month.toString().padLeft(2, '0')}-${start.day.toString().padLeft(2, '0')}';
+    final value = validatedStartDate(start, now);
     return _db.transaction(() async {
       final existing = await (_db.select(
         _db.recoveryPeriods,

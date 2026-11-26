@@ -11,9 +11,19 @@ class Onboarding extends StatefulWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
-  late DateTime date = widget.controller.startDate ?? DateTime.now();
+  late DateTime date;
+  late final int? periodId;
   String? error;
   bool picking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final period = widget.controller.activePeriod;
+    periodId = period?.id;
+    date = period?.startDate ?? DateTime.now();
+  }
+
   Future<void> choose() async {
     if (picking) return;
     setState(() => picking = true);
@@ -49,37 +59,35 @@ class _OnboardingState extends State<Onboarding> {
             Text(
               '${date.year}. ${date.month.toString().padLeft(2, '0')}. ${date.day.toString().padLeft(2, '0')}.',
             ),
-            if (widget.controller.startDate == null) ...[
-              TextButton(
-                onPressed: picking ? null : choose,
-                child: const Text('Dátum kiválasztása'),
-              ),
-              if (error != null) Text(error!),
-              const Spacer(),
-              ListenableBuilder(
-                listenable: widget.controller,
-                builder: (context, _) => FilledButton(
-                  onPressed: widget.controller.saving
-                      ? null
-                      : () async {
-                          final success = await widget.controller.initialize(
-                            date,
+            TextButton(
+              onPressed: picking ? null : choose,
+              child: const Text('Dátum kiválasztása'),
+            ),
+            if (error != null) Text(error!),
+            const Spacer(),
+            ListenableBuilder(
+              listenable: widget.controller,
+              builder: (context, _) => FilledButton(
+                onPressed: widget.controller.saving
+                    ? null
+                    : () async {
+                        final id = periodId;
+                        final success = id == null
+                            ? await widget.controller.initialize(date)
+                            : await widget.controller.correctStart(id, date);
+                        if (!context.mounted) return;
+                        if (success) {
+                          Navigator.of(context).pop();
+                        } else {
+                          setState(
+                            () =>
+                                error = 'A mentés nem sikerült. Próbáld újra.',
                           );
-                          if (!context.mounted) return;
-                          if (success) {
-                            Navigator.of(context).pop();
-                          } else {
-                            setState(
-                              () => error =
-                                  'A mentés nem sikerült. Próbáld újra.',
-                            );
-                          }
-                        },
-                  child: const Text('Mentés'),
-                ),
+                        }
+                      },
+                child: const Text('Mentés'),
               ),
-            ] else
-              const Text('A mentett kezdőnap nem módosítható.'),
+            ),
           ],
         ),
       ),

@@ -7,25 +7,54 @@ import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class MemoryStore implements RecoveryStore {
-  final stream = StreamController<DateTime?>.broadcast();
+  final stream = StreamController<ActiveRecovery?>.broadcast();
   @override
-  Stream<DateTime?> watchStart() => stream.stream;
+  Stream<ActiveRecovery?> watchStart() => stream.stream;
+  @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) async {
+    if (id != 1) throw StateError("stale");
+    stream.add(ActiveRecovery(id, date));
+  }
+
   @override
   Future<void> initialize(DateTime date, DateTime now) async {
-    stream.add(date);
+    stream.add(ActiveRecovery(1, date));
   }
 }
 
 class FailingStore extends MemoryStore {
   @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) async =>
+      throw StateError('write failed');
+  @override
   Future<void> initialize(DateTime date, DateTime now) async =>
       throw StateError('write failed');
 }
 
+class ChangedPeriodStore extends MemoryStore {
+  int activeId = 1;
+  int? attemptedId;
+  @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) async {
+    attemptedId = id;
+    if (id != activeId) throw StateError('period changed');
+    await super.correctStart(id, date, now);
+  }
+}
+
 class FakePicker implements DatePicker {
+  DateTime? initialDate;
+  @override
+  Future<DatePickerResult> pick(DateTime initial, DateTime today) async {
+    initialDate = initial;
+    return DatePicked(DateTime(2024, 3, 31));
+  }
+}
+
+class CancelPicker implements DatePicker {
   @override
   Future<DatePickerResult> pick(DateTime initial, DateTime today) async =>
-      DatePicked(DateTime(2024, 3, 31));
+      const DatePickCancelled();
 }
 
 void main() {
@@ -83,23 +112,26 @@ void main() {
       await store.stream.close();
     },
   );
-  testWidgets('saved date is shown locked when onboarding reopened', (
+  testWidgets('saved date is editable and immediately updates dashboard', (
     tester,
   ) async {
     final store = MemoryStore();
     final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
-    await tester.pumpWidget(
-      HajnalApp(controller: controller, picker: FakePicker()),
-    );
-    store.stream.add(DateTime(2024, 3, 31));
+    final picker = FakePicker();
+    await tester.pumpWidget(HajnalApp(controller: controller, picker: picker));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Menü'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Onboarding'));
     await tester.pumpAndSettle();
-    expect(find.text('A mentett kezdőnap nem módosítható.'), findsOneWidget);
-    expect(find.text('Mentés'), findsNothing);
-    expect(find.text('Dátum kiválasztása'), findsNothing);
+    await tester.tap(find.text('Dátum kiválasztása'));
+    await tester.pumpAndSettle();
+    expect(picker.initialDate, DateTime(2024, 3, 30));
+    expect(controller.startDate, DateTime(2024, 3, 30));
+    await tester.tap(find.text('Mentés'));
+    await tester.pumpAndSettle();
+    expect(find.text('1'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();
@@ -120,6 +152,75 @@ void main() {
     controller.dispose();
     await store.stream.close();
   });
+  testWidgets('cancel and back preserve the saved date', (tester) async {
+    final store = MemoryStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: CancelPicker()),
+    );
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onboarding'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Dátum kiválasztása'));
+    await tester.pumpAndSettle();
+    expect(controller.startDate, DateTime(2024, 3, 30));
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('2'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('correction failure leaves onboarding open', (tester) async {
+    final store = FailingStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onboarding'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Mentés'));
+    await tester.pumpAndSettle();
+    expect(find.text('A mentés nem sikerült. Próbáld újra.'), findsOneWidget);
+    expect(find.text('Kezdődátum'), findsOneWidget);
+    expect(controller.startDate, DateTime(2024, 3, 30));
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('an open edit retains its original period identity', (
+    tester,
+  ) async {
+    final store = ChangedPeriodStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: FakePicker()),
+    );
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onboarding'));
+    await tester.pumpAndSettle();
+    store.activeId = 2;
+    store.stream.add(ActiveRecovery(2, DateTime(2024, 3, 29)));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Mentés'));
+    await tester.pumpAndSettle();
+    expect(store.attemptedId, 1);
+    expect(controller.startDate, DateTime(2024, 3, 29));
+    expect(find.text('A mentés nem sikerült. Próbáld újra.'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
   testWidgets('back closes the open menu before the expanded panel', (
     tester,
   ) async {
@@ -128,7 +229,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: FakePicker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final initial = tester.getTopLeft(card).dy;
@@ -179,7 +280,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: FakePicker()),
     );
-    store.stream.add(DateTime(2024, 3, 30));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
     expect(find.text('1'), findsOneWidget);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
@@ -198,7 +299,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: FakePicker()),
     );
-    store.stream.add(DateTime.now());
+    store.stream.add(ActiveRecovery(1, DateTime.now()));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Menü'));
     await tester.pumpAndSettle();

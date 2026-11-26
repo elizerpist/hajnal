@@ -123,7 +123,7 @@ jobs:
         run: |
           tag="hajnal-s0-${GITHUB_SHA:0:12}"
           mkdir -p reviewed
-          gh release download "$tag" --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'dashboard-*.png' --dir reviewed
+          gh release download "$tag" --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --dir reviewed
           python3 scripts/check_visual_review.py reviewed "$GITHUB_SHA"
       - name: Require reviewed S0 acceptance criteria
         run: |

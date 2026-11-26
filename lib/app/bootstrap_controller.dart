@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../features/dashboard/application/day_tracker.dart';
 import '../features/recovery/application/recovery_store.dart';
 import '../features/recovery/application/initialize_recovery.dart';
+import '../features/recovery/application/correct_recovery_start.dart';
 
 class BootstrapController extends ChangeNotifier {
   BootstrapController(this._store, this._now) : tracker = DayTracker(_now) {
@@ -11,13 +12,14 @@ class BootstrapController extends ChangeNotifier {
   final RecoveryStore _store;
   final DateTime Function() _now;
   final DayTracker tracker;
-  StreamSubscription<DateTime?>? _subscription;
-  DateTime? _startDate;
+  StreamSubscription<ActiveRecovery?>? _subscription;
+  ActiveRecovery? _active;
   Object? _error;
   Object? _saveError;
   bool _loading = true;
   bool _saving = false;
-  DateTime? get startDate => _startDate;
+  DateTime? get startDate => _active?.startDate;
+  ActiveRecovery? get activePeriod => _active;
   Object? get error => _error;
   Object? get saveError => _saveError;
   bool get loading => _loading;
@@ -29,9 +31,9 @@ class BootstrapController extends ChangeNotifier {
     _error = null;
     notifyListeners();
     _subscription = _store.watchStart().listen(
-      (date) {
-        _startDate = date;
-        tracker.setStart(date);
+      (period) {
+        _active = period;
+        tracker.setStart(period?.startDate);
         _loading = false;
         _error = null;
         notifyListeners();
@@ -44,13 +46,19 @@ class BootstrapController extends ChangeNotifier {
     );
   }
 
-  Future<bool> initialize(DateTime date) async {
+  Future<bool> initialize(DateTime date) =>
+      _save(() => InitializeRecovery(_store)(date, _now()));
+
+  Future<bool> correctStart(int id, DateTime date) =>
+      _save(() => CorrectRecoveryStart(_store)(id, date, _now()));
+
+  Future<bool> _save(Future<void> Function() action) async {
     if (_saving) return false;
     _saving = true;
     _saveError = null;
     notifyListeners();
     try {
-      await InitializeRecovery(_store)(date, _now());
+      await action();
       return true;
     } catch (e) {
       _saveError = e;

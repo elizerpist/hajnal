@@ -6,10 +6,14 @@ class DriftRecoveryStore implements RecoveryStore {
   final RecoveryRepository repository;
 
   @override
-  Stream<DateTime?> watchStart() => repository.watchStart();
+  Stream<ActiveRecovery?> watchStart() => repository.watchStart();
 
   @override
   Future<void> initialize(DateTime date, DateTime now) async {
     await repository.initialize(date, now);
   }
+
+  @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) =>
+      repository.correctStart(id, date, now);
 }

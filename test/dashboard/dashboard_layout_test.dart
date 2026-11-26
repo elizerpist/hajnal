@@ -11,12 +11,18 @@ import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class Store implements RecoveryStore {
-  final stream = StreamController<DateTime?>.broadcast();
+  final stream = StreamController<ActiveRecovery?>.broadcast();
   @override
-  Stream<DateTime?> watchStart() => stream.stream;
+  Stream<ActiveRecovery?> watchStart() => stream.stream;
+  @override
+  Future<void> correctStart(int id, DateTime date, DateTime now) async {
+    if (id != 1) throw StateError("stale");
+    stream.add(ActiveRecovery(id, date));
+  }
+
   @override
   Future<void> initialize(DateTime date, DateTime now) async =>
-      stream.add(date);
+      stream.add(ActiveRecovery(1, date));
 }
 
 class TrackingArtwork extends ChangeNotifier implements ArtworkSource {
@@ -67,7 +73,7 @@ void main() {
             child: HajnalApp(controller: controller, picker: Picker()),
           ),
         );
-        store.stream.add(DateTime(2024, 4, 1));
+        store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
         await tester.pumpAndSettle();
         final card = find.byKey(const Key('summary-card'));
         expect(card, findsOneWidget);
@@ -94,7 +100,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final closed = tester.getTopLeft(card).dy;
@@ -128,7 +134,7 @@ void main() {
         child: HajnalApp(controller: controller, picker: Picker()),
       ),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final initial = tester.getTopLeft(card).dy;
@@ -175,7 +181,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final start = tester.getTopLeft(card).dy;
@@ -202,7 +208,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final sheet = find.byKey(const Key('empty-sheet'));
@@ -232,7 +238,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker(), artwork: source),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final initialLoads = source.loads;
     final artwork = tester.widget(find.byType(ArtworkView));
@@ -258,7 +264,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     final closed = tester.getTopLeft(card).dy;
@@ -290,7 +296,7 @@ void main() {
     await tester.pumpWidget(
       HajnalApp(controller: controller, picker: Picker()),
     );
-    store.stream.add(DateTime(2024, 4, 1));
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
     await tester.pumpAndSettle();
     final card = find.byKey(const Key('summary-card'));
     expect(tester.getTopLeft(card).dy, greaterThanOrEqualTo(24));

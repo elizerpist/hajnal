@@ -89,7 +89,7 @@ Dátumválasztás:
 
 Mentéskor egy tranzakcióban jöjjön létre az első aktív időszak, majd csak sikeres commit után lépj a dashboardra. Dupla mentés, újranyitás és restart nem hozhat létre újabb időszakot.
 
-A rögzített kezdőnap a termékspecifikáció szerint nem utólag szerkeszthető. Ha már van aktív időszak, az onboarding megmutatja a mentett dátumot olvasható, zárolt állapotban; ne írja felül. Rövid magyarázat elég. Reset/visszaesés most nincs. A későbbi modulválasztást külön szekcióként lehessen majd hozzáadni, de most ne legyenek nem működő checkboxok.
+Az aktuális időszak mentett kezdőnapja az onboardingban korrigálható: a mentett nap kijelölve indul, a választás mentésig tervezet, Back/Cancel nem ír. Csak mai vagy korábbi dátum menthető, külön ID-ra és aktív állapotra feltételes korrekcióval; a period ID és createdAtUtc megmarad. Reset/visszaesés most nincs. A későbbi modulválasztást külön szekcióként lehessen majd hozzáadni, de most ne legyenek nem működő checkboxok.
 
 ## 5. Adatbázis és felelősségi határok
 
@@ -197,7 +197,7 @@ Adatbázis:
 - új DB, időszak létrehozás, bezárás/újranyitás;
 - dupla/konkurens inicializálás: legfeljebb egy aktív időszak;
 - hibás mentés nem navigál sikerre és nem hagy részleges adatot;
-- dátumimmutabilitás a hivatalos írási úton;
+- dátumkorrekció az egyetlen hivatalos írási úton, aktív ID feltétellel és változatlan létrehozási idővel;
 - schema v1 export és idegenkulcs/integritás ellenőrzés;
 - artwork override tartósság és hibás/hiányzó fájl fallback.
 

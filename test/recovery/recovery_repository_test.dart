@@ -6,6 +6,68 @@ import 'package:hajnal/features/recovery/data/recovery_repository.dart';
 
 void main() {
   test(
+    'correction preserves identity and creation time and persists',
+    () async {
+      final dir = await Directory.systemTemp.createTemp('hajnal-correction-');
+      final file = File('${dir.path}/hajnal.sqlite');
+      var db = HajnalDatabase(NativeDatabase(file));
+      var repo = RecoveryRepository(db);
+      final now = DateTime.utc(2024, 4, 1, 12);
+      final period = await repo.initialize(DateTime(2024, 3, 20), now);
+      for (final date in [
+        DateTime(2024, 3, 1),
+        DateTime(2024, 3, 31),
+        DateTime(2024, 4, 1),
+      ]) {
+        await repo.correctStart(period.id, date, now);
+        final updated = await repo.active();
+        expect(updated.id, period.id);
+        expect(updated.createdAtUtc, period.createdAtUtc);
+        expect(updated.startLocalDate, date.toIso8601String().substring(0, 10));
+      }
+      await expectLater(
+        repo.correctStart(period.id, DateTime(2024, 4, 2), now),
+        throwsArgumentError,
+      );
+      await Future.wait([
+        repo.correctStart(period.id, DateTime(2024, 4, 1), now),
+        repo.correctStart(period.id, DateTime(2024, 4, 1), now),
+      ]);
+      await db.close();
+      db = HajnalDatabase(NativeDatabase(file));
+      repo = RecoveryRepository(db);
+      expect((await repo.active()).startLocalDate, '2024-04-01');
+      await db.close();
+      await dir.delete(recursive: true);
+    },
+  );
+
+  test('stale period and failed updates cannot change another period', () async {
+    final db = HajnalDatabase(NativeDatabase.memory());
+    final repo = RecoveryRepository(db);
+    final now = DateTime.utc(2024, 4, 1);
+    final first = await repo.initialize(DateTime(2024, 3, 1), now);
+    await db.customStatement(
+      'UPDATE recovery_periods SET closed_at_utc = 1 WHERE id = ?',
+      [first.id],
+    );
+    final current = await repo.initialize(DateTime(2024, 3, 2), now);
+    await expectLater(
+      repo.correctStart(first.id, DateTime(2024, 3, 3), now),
+      throwsStateError,
+    );
+    expect((await repo.active()).startLocalDate, '2024-03-02');
+    await db.customStatement(
+      "CREATE TRIGGER reject_correction BEFORE UPDATE ON recovery_periods BEGIN SELECT RAISE(ABORT, 'failure'); END",
+    );
+    await expectLater(
+      repo.correctStart(current.id, DateTime(2024, 3, 3), now),
+      throwsA(anything),
+    );
+    expect((await repo.active()).startLocalDate, '2024-03-02');
+    await db.close();
+  });
+  test(
     'initialization survives reopening and never creates two active periods',
     () async {
       final directory = await Directory.systemTemp.createTemp('hajnal-db-');

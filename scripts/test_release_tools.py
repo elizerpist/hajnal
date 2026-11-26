@@ -112,7 +112,11 @@ class EvidenceReleaseTest(unittest.TestCase):
             root = Path(temporary)
             (root / 'evidence').mkdir()
             for name in (*SCREENSHOTS, 'flutter-test.log', 'android-test.log',
-                         'artwork-test.log', 'signed-upgrade-test.log'):
+                         'android-night-test.log', 'artwork-test.log', 'signed-upgrade-test.log',
+                         'picker-before-upgrade-theme.txt', 'picker-after-upgrade-theme.txt',
+                         'previous-apk-badging.txt', 'new-apk-badging.txt',
+                         'previous-merged-manifest.txt', 'new-merged-manifest.txt',
+                         'previous-resources.txt', 'new-resources.txt'):
                 (root / 'evidence' / name).write_text('evidence')
             state = root / 'state.json'
             state.write_text(json.dumps({'exists': False, 'draft': True,
@@ -149,7 +153,7 @@ path.write_text(json.dumps(s))
                 subprocess.run(['bash', str(script)], cwd=root, env=env, check=True, capture_output=True)
             result = json.loads(state.read_text())
             self.assertEqual(result['creates'], 1)
-            self.assertEqual(len(result['assets']), 9)
+            self.assertEqual(len(result['assets']), 22)
             result['target'] = 'b' * 40
             state.write_text(json.dumps(result))
             self.assertNotEqual(subprocess.run(['bash', str(script)], cwd=root, env=env,
@@ -179,6 +183,7 @@ class AndroidSmokeScriptTest(unittest.TestCase):
             profile.parent.mkdir(parents=True)
             profile.write_bytes(b'profile')
             (root / 'hajnal-signed-test.apk').write_bytes(b'signed')
+            (root / 'hajnal-previous.apk').write_bytes(b'previous')
             adb = root / 'adb'
             adb.write_text('''#!/bin/sh
 case "$1:$2:$3" in

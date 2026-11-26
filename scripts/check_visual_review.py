@@ -8,7 +8,8 @@ import sys
 
 
 SCREENSHOTS = ('html-closed.png', 'html-open.png', 'onboarding.png',
-               'dashboard-closed.png', 'dashboard-open.png')
+               'dashboard-closed.png', 'dashboard-open.png', 'picker-open.png',
+               'picker-night.png', 'picker-before-upgrade.png', 'picker-after-upgrade.png')
 
 
 def check(directory: str, commit: str) -> None:
