@@ -1,10 +1,10 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../app/bootstrap_controller.dart';
 import '../../../core/artwork/artwork_source.dart';
 import '../../../core/artwork/artwork_catalog.dart';
 import '../../../core/artwork/artwork_view.dart';
 import '../../../core/theme/hajnal_tokens.dart';
+import 'dashboard_layout.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({
@@ -30,9 +30,11 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     duration: const Duration(milliseconds: 180),
   );
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final sheetOpen = ValueNotifier(false);
   bool moved = false;
   double drag = 0;
   void settle(bool open) {
+    if (open || progress.value == 0) sheetOpen.value = open;
     if (MediaQuery.disableAnimationsOf(context)) {
       progress.value = open ? 1 : 0;
       sheetOpacity.value = open ? 1 : 0;
@@ -49,7 +51,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   }
 
   void _refreshBack() {
-    if (mounted) setState(() {});
+    final open = progress.value > 0;
+    if (sheetOpen.value != open) sheetOpen.value = open;
   }
 
   @override
@@ -57,19 +60,24 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     progress.removeListener(_refreshBack);
     progress.dispose();
     sheetOpacity.dispose();
+    sheetOpen.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => PopScope(
-    canPop: progress.value == 0,
-    onPopInvokedWithResult: (didPop, _) {
-      if (!didPop && scaffoldKey.currentState?.isDrawerOpen == true) {
-        scaffoldKey.currentState!.closeDrawer();
-      } else if (!didPop && progress.value > 0) {
-        settle(false);
-      }
-    },
+  Widget build(BuildContext context) => ValueListenableBuilder<bool>(
+    valueListenable: sheetOpen,
+    builder: (context, open, child) => PopScope(
+      canPop: !open,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && scaffoldKey.currentState?.isDrawerOpen == true) {
+          scaffoldKey.currentState!.closeDrawer();
+        } else if (!didPop && sheetOpen.value) {
+          settle(false);
+        }
+      },
+      child: child!,
+    ),
     child: Scaffold(
       key: scaffoldKey,
       extendBodyBehindAppBar: true,
@@ -90,15 +98,18 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final height = constraints.maxHeight;
-          final cardWidth = math.min(296.0, constraints.maxWidth - 32);
-          final travel = math.min(96.0, height * .15);
-          final scale = MediaQuery.textScalerOf(context).scale(1);
-          final cardHeight = math.max(118.0, 118 + (scale - 1) * 160);
-          final closedTop = math.max(
-            MediaQuery.paddingOf(context).top + 64,
-            height - 278,
+          final media = MediaQuery.of(context);
+          final layout = DashboardLayout.resolve(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            topInset: media.padding.top,
+            bottomInset: media.padding.bottom,
+            textScale: media.textScaler.scale(1),
           );
+          final cardWidth = layout.cardWidth;
+          final cardHeight = layout.cardHeight;
+          final closedTop = layout.closedTop;
+          final travel = layout.travel;
           return Stack(
             fit: StackFit.expand,
             children: [
@@ -159,8 +170,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       onVerticalDragUpdate: (d) {
                         moved = true;
                         drag -= d.delta.dy;
-                        progress.value = (progress.value - d.delta.dy / travel)
-                            .clamp(0, 1);
+                        progress.value =
+                            (progress.value -
+                                    d.delta.dy / (travel == 0 ? 1 : travel))
+                                .clamp(0, 1);
                         sheetOpacity.value = progress.value;
                       },
                       onVerticalDragEnd: (_) {

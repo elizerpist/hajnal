@@ -237,15 +237,17 @@ A futás a commit tényleges SHA-ját ellenőrizze; ne egy régi, zöld runra hi
 
 Kapuk:
 A. verify: dependency install a lockfile alapján, format check, flutter analyze, teljes S0 unit/widget/boundary suite, Drift generált kód/séma konzisztencia, artwork katalógus ellenőrzés.
-B. android-smoke: A után, emulátorral valódi natív date-picker, DB persist/relaunch és alap navigáció/sheet tesztek; screenshot és tesztlog artifact.
-C. human-apk: A és B sikere után külön normál lib/main.dart entrypointból profile APK. Ez nem az integration_test APK.
+B. Android: A után, emulátorral valódi natív date-picker, DB persist/relaunch, aláírt frissítés és alap navigáció/sheet tesztek; screenshotok és tesztlogok a közös kiadási munkaterületen.
+C. HUMAN: A és B, a képek és a szemrevételezett összehasonlítás sikere után külön normál lib/main.dart entrypointból aláírt profile APK. Ez nem az integration_test APK.
 
-A sikeres artifact neve például hajnal_S0_HUMAN_<shortsha>.apk; tartalmazzon build commit metaadatot a buildben/manifestben, ne állandó debug panelt a dashboardon. Ha automata harness artifact is van, nevében egyértelműen AUTOMATED_TEST_HARNESS szerepeljen.
+A HUMAN Release asset neve `hajnal_S0_HUMAN_<12-karakteres-SHA>.apk`; a teljes SHA kerüljön a build metaadatába és a kiadás leírásába. Legyen SHA-256, verzió/buildszám, futáslink és aláírás-ellenőrzés. Már kiadott commit binárisa nem cserélhető le eltérő tartalomra.
 
-Teszteredmények és hibalogok mindig feltölthetők if: always() mellett. Emberi APK publikálás nem lehet always(), continue-on-error vagy sikertelen kapu után.
+Az Actions artifact-tárhely használata nem feltétele a kiadásnak: a tesztek, nem üres képek és logok a munkaterületről Release assetként kerülnek fel. Funkcionális tesztet nem lehet continue-on-error-ral gyengíteni; emberi APK publikálás nem lehet always() vagy sikertelen kapu után.
 A kis S0-nál ne másolj át curated listát, amely kihagyja a hibás teszteket. Nincs szükség nightly/baseline/dashboard performance infrastruktúrára vagy Fluvi demo seedre.
 
 A felhasználónak közvetlenül letölthető GitHub prerelease APK készüljön a sikeres push-futásból, az exptv2 mintájára. A publikálás csak a saját megbízható ág push/dispatch futásában történjen, ne PR-on. Read-only alap jogosultság, contents:write csak a publikáló jobban; untrusted PR ne férjen signing secrethez.
+
+A nyilvános, commitonként változatlan Release-URL mellett a ténylegesen konfigurált GitHub Pages `/download/` oldala mindig a legfrissebb sikeres, nyilvánosan letöltött és checksum alapján ellenőrzött APK-ra mutasson. Az oldal a commitot, buildidőt és checksumot is mutassa; régebbi párhuzamos futás ne állíthassa vissza. A Pages ág frissítése csak az ellenőrzött Release után történhet.
 
 Android appazonosító egyedi Hajnal azonosító legyen, ne Fluvi és ne com.example. Válassz és dokumentálj stabil fejlesztői azonosítót.
 Az APK aláírását ellenőrizd. Ismételt CI build telepítése ne kényszerítsen adatvesztő uninstallra: tartós Hajnal fejlesztői aláírókulcs szükséges. Már meglévőt használj, ha van. Kulcs/jelszó ne kerüljön gitbe, logba, artifactba vagy chatbe. Ha nincs hozzáférhető tartós CI aláírás, ezt tényleges konfigurációs blokkolóként jelentsd; a teszteket és build-ellenőrzést ettől még végezd el. Ne ígérj frissíthetőséget futásonként új debug kulccsal.
@@ -262,7 +264,7 @@ Végső jelentés magyarul:
 - branch és ellenőrzött commit SHA;
 - megvalósult S0 funkciók;
 - GitHub run link és minden kapu eredménye;
-- letölthető HUMAN APK link, aláírás/frissíthetőség állapota;
+- állandó Pages letöltési URL és commitazonosítós közvetlen HUMAN APK-link, checksum, aláírás/frissíthetőség állapota;
 - screenshot/evidence linkek;
 - a felhasználó fizikai telefonján ellenőrzendő rövid lista;
 - ténylegesen hiányzó vagy blokkolt tételek, iOS külön.

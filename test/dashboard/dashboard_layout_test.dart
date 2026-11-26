@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
+import 'package:hajnal/core/artwork/artwork_view.dart';
+import 'package:hajnal/core/artwork/artwork_source.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
@@ -14,6 +17,20 @@ class Store implements RecoveryStore {
   @override
   Future<void> initialize(DateTime date, DateTime now) async =>
       stream.add(date);
+}
+
+class TrackingArtwork extends ChangeNotifier implements ArtworkSource {
+  int loads = 0;
+  final retained = <File>{};
+  @override
+  void retain(File file) => retained.add(file);
+  @override
+  Future<void> release(File file) async => retained.remove(file);
+  @override
+  Future<ArtworkDescriptor> resolve(String role) async {
+    loads++;
+    return const ArtworkDescriptor(revision: 'test');
+  }
 }
 
 class Picker implements DatePicker {
@@ -202,6 +219,88 @@ void main() {
     );
     await gesture.cancel();
     await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+  testWidgets('sheet animation keeps the static dashboard and artwork intact', (
+    tester,
+  ) async {
+    final store = Store();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final source = TrackingArtwork();
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: Picker(), artwork: source),
+    );
+    store.stream.add(DateTime(2024, 4, 1));
+    await tester.pumpAndSettle();
+    final initialLoads = source.loads;
+    final artwork = tester.widget(find.byType(ArtworkView));
+    final scaffold = tester.widget(find.byType(Scaffold).first);
+    await tester.tap(find.byKey(const Key('summary-card')));
+    for (var i = 0; i < 8; i++) {
+      await tester.pump(const Duration(milliseconds: 30));
+      expect(source.loads, initialLoads);
+      expect(tester.widget(find.byType(ArtworkView)), same(artwork));
+      expect(tester.widget(find.byType(Scaffold).first), same(scaffold));
+    }
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    source.dispose();
+    await store.stream.close();
+  });
+  testWidgets('back interrupts opening animation and returns to closed state', (
+    tester,
+  ) async {
+    final store = Store();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: Picker()),
+    );
+    store.stream.add(DateTime(2024, 4, 1));
+    await tester.pumpAndSettle();
+    final card = find.byKey(const Key('summary-card'));
+    final closed = tester.getTopLeft(card).dy;
+    await tester.tap(card);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 60));
+    expect(tester.getTopLeft(card).dy, lessThan(closed));
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(card).dy, closeTo(closed, .1));
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
+
+  testWidgets('large text and bottom system inset keep the card visible', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(220, 320);
+    tester.view.devicePixelRatio = 1;
+    tester.view.padding = const FakeViewPadding(top: 24, bottom: 48);
+    tester.platformDispatcher.textScaleFactorTestValue = 3;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPadding);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final store = Store();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: Picker()),
+    );
+    store.stream.add(DateTime(2024, 4, 1));
+    await tester.pumpAndSettle();
+    final card = find.byKey(const Key('summary-card'));
+    expect(tester.getTopLeft(card).dy, greaterThanOrEqualTo(24));
+    expect(tester.getBottomRight(card).dy, lessThanOrEqualTo(272));
+    final closed = tester.getTopLeft(card).dy;
+    await tester.drag(card, const Offset(0, -80));
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(card).dy, lessThan(closed));
+    expect(tester.getTopLeft(card).dy, greaterThanOrEqualTo(24));
+    expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();

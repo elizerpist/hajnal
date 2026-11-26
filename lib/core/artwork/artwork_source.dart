@@ -9,4 +9,6 @@ class ArtworkDescriptor {
 
 abstract interface class ArtworkSource implements Listenable {
   Future<ArtworkDescriptor> resolve(String role);
+  void retain(File file);
+  Future<void> release(File file);
 }

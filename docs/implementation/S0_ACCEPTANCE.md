@@ -22,3 +22,15 @@ Forrás minden sornál: `docs/implementation/HAJNAL_S0_STARTER_PROMPT.md` megjel
 | S0-16 | §1, §11 | Git/worktree | Helyi változtatások megőrzése, kizárólag S0 commit és push, futás követése | git diff/status és Actions | PARTIAL — S0-commitok és push a build/starter ágon, a korábbi HTML-változások kizárva; a pontos végső commit CI-ellenőrzése hátravan. |
 
 Implementációs ág: `build/starter`; a `feat/first-prototype-page` a prototípus ága.
+
+## Kiegészítő elfogadási követelmények — 2026-11-26
+
+| ID | Forrás | Kódterület | Elfogadási feltétel | Ellenőrzés | Állapot |
+|---|---|---|---|---|---|
+| S0-R01 | felhasználói kiegészítés §1, §8 | architektúrakártya, boundary, review | Valós réteg-, tulajdonos- és írásiút-review, fail-closed import/export vizsgálat és viselkedési tesztek | külön boundary suite, teljes teszt, review | DONE — architektúrakártya és célzott review elkészült; szintaxisfa-alapú import/export és tulajdonosi szerződések, valamint a 67 tesztes helyi csomag zöld. |
+| S0-R02 | §2 | GitHub és teljes Git-előzmény | Követett tartalom és előzmény titok/személyes adat ellenőrzése, majd csak akadály hiányában nyilvános repó | objektumvizsgálat, hitelesítetlen HTTP | DONE — 2760 elérhető objektum és az elérhető Actions-naplók vizsgálata után a repó public; a hitelesítetlen GitHub API HTTP 200-at adott. A telefonszerű minták prototípus-seedek/tesztminták. |
+| S0-R03 | §3 | Android, release CI | Tartós Hajnal-kulcs, stabil alkalmazásazonosító, növekvő versionCode, commitazonosítós és ellenőrzött APK/checksum/metaadat; idempotens release | APK aláírás, buildmetaadat, publikus letöltés és hash | NOT DONE |
+| S0-R04 | §4 | Pages és release CI | Állandó `/download/` az utolsó igazolt release-re, commit, idő, checksum, link; párhuzamos régebbi kiadás nem írja vissza | Pages API, nyilvános HTTP és versenyteszt | PARTIAL — a `gh-pages` forrás és a Pages gyökere névtelenül elérhető, a letöltési út az első ellenőrzött release után igazolható. |
+| S0-R05 | §5 | CI | Minden teszt és nem üres screenshot ugyanazon SHA-ra, Release assetek; nincs artifactkvóta-függés vagy gyengített tesztkapu | CI-log, asset és negatív kaputeszt | PARTIAL — az átalakított workflow és a helyi scripttesztek elkészültek, az éles futás hátravan. |
+| S0-R06 | §6 | dashboard, layout resolver | Egy progress és gesztustulajdonos, csak animált részek rebuildje, Back állapotváltásra, safe inset/méret/betű | widget, resolver, rebuild és screenshot tesztek | PARTIAL — a célzott tesztek zöldek, az új Android-kép és vizuális összevetés hátravan. |
+| S0-R07 | §7 | artwork koordinátor/adaptérek | Rendezett install/clear, írási hiba és restart helyreállítása; aktív/folyamatban/látható fájlok védelme, árvatakarítás | determinisztikus késleltetett DB, fájl- és renderer-tesztek | PARTIAL — 19 célzott tartóssági/konkurencia/widgetteszt sikeres; az Android-integráció CI-igazolása hátravan. |

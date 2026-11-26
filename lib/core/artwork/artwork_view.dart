@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'artwork_catalog.dart';
 import 'artwork_source.dart';
@@ -14,6 +16,15 @@ class _ArtworkViewState extends State<ArtworkView> {
   ImageProvider image = AssetImage(dashboardArtwork.asset);
   int sequence = 0;
   int width = 1024;
+  File? retainedFile;
+  ArtworkSource? retainedSource;
+
+  void _release(ArtworkSource? source, File? file) {
+    if (source != null && file != null) {
+      unawaited(source.release(file).catchError((Object _) {}));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,12 +51,19 @@ class _ArtworkViewState extends State<ArtworkView> {
 
   Future<void> _load() async {
     final ticket = ++sequence;
+    final source = widget.service;
+    File? acquired;
     try {
-      final descriptor = await widget.service?.resolve(widget.role);
+      final descriptor = await source?.resolve(widget.role);
+      final file = descriptor?.file;
+      if (!mounted || ticket != sequence) return;
+      if (file != null && source != null) {
+        source.retain(file);
+        acquired = file;
+      }
       final ImageProvider next = descriptor?.file == null
           ? AssetImage(dashboardArtwork.asset)
           : FileImage(descriptor!.file!);
-      if (!mounted || ticket != sequence) return;
       var failed = false;
       await precacheImage(
         ResizeImage.resizeIfNeeded(width, null, next),
@@ -55,10 +73,18 @@ class _ArtworkViewState extends State<ArtworkView> {
         },
       );
       if (!failed && mounted && ticket == sequence) {
+        final previousSource = retainedSource;
+        final previousFile = retainedFile;
+        retainedSource = source;
+        retainedFile = file;
+        acquired = null;
         setState(() => image = next);
+        _release(previousSource, previousFile);
       }
     } catch (_) {
       // Keep the last successfully decoded image visible.
+    } finally {
+      _release(source, acquired);
     }
   }
 
@@ -66,6 +92,7 @@ class _ArtworkViewState extends State<ArtworkView> {
   void dispose() {
     sequence++;
     widget.service?.removeListener(_load);
+    _release(retainedSource, retainedFile);
     super.dispose();
   }
 

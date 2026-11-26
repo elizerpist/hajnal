@@ -3,6 +3,7 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import '../core/artwork/artwork_service.dart';
+import '../core/artwork/drift_artwork_store.dart';
 import '../core/database/hajnal_database.dart';
 import '../features/recovery/data/drift_recovery_store.dart';
 import '../features/recovery/data/recovery_repository.dart';
@@ -22,7 +23,7 @@ class AppServices {
       ),
     );
     final artwork = ArtworkService(
-      database,
+      DriftArtworkStore(database),
       Directory(p.join(directory.path, 'artwork')),
     );
     try {

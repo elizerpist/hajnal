@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:drift/native.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/drift_artwork_store.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
 import 'package:hajnal/core/artwork/artwork_catalog.dart';
 
@@ -27,7 +28,7 @@ void main() {
     () async {
       final db = HajnalDatabase(NativeDatabase.memory());
       final directory = await Directory.systemTemp.createTemp('hajnal-role-');
-      final service = ArtworkService(db, directory);
+      final service = ArtworkService(DriftArtworkStore(db), directory);
       try {
         await expectLater(service.resolve('unknown.role'), throwsArgumentError);
       } finally {

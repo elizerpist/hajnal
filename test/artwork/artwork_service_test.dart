@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/drift_artwork_store.dart';
 import 'package:hajnal/core/artwork/artwork_catalog.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
 
@@ -15,7 +16,7 @@ void main() {
       final dir = await Directory.systemTemp.createTemp('hajnal-art-');
       final db = HajnalDatabase(NativeDatabase.memory());
       final service = ArtworkService(
-        db,
+        DriftArtworkStore(db),
         dir,
         (bytes) async => bytes.first == 1,
       );
@@ -49,7 +50,7 @@ void main() {
       final db = HajnalDatabase(NativeDatabase.memory());
       final slow = Completer<bool>();
       final service = ArtworkService(
-        db,
+        DriftArtworkStore(db),
         dir,
         (bytes) => bytes.first == 1 ? slow.future : Future.value(true),
       );
@@ -63,7 +64,11 @@ void main() {
         await service.install(dashboardArtwork.role, second);
         slow.complete(true);
         await old;
-        final reopened = ArtworkService(db, dir, (_) async => true);
+        final reopened = ArtworkService(
+          DriftArtworkStore(db),
+          dir,
+          (_) async => true,
+        );
         final current = await reopened.resolve(dashboardArtwork.role);
         expect(await current.file!.readAsBytes(), [2]);
         await reopened.clear(dashboardArtwork.role);
@@ -97,14 +102,22 @@ void main() {
     await source.writeAsBytes([9]);
     final artworkDir = Directory('${dir.path}/private');
     var db = HajnalDatabase(NativeDatabase(databaseFile));
-    var service = ArtworkService(db, artworkDir, (_) async => true);
+    var service = ArtworkService(
+      DriftArtworkStore(db),
+      artworkDir,
+      (_) async => true,
+    );
     try {
       await service.install(dashboardArtwork.role, source);
       final installed = await service.resolve(dashboardArtwork.role);
       service.dispose();
       await db.close();
       db = HajnalDatabase(NativeDatabase(databaseFile));
-      service = ArtworkService(db, artworkDir, (_) async => true);
+      service = ArtworkService(
+        DriftArtworkStore(db),
+        artworkDir,
+        (_) async => true,
+      );
       final restored = await service.resolve(dashboardArtwork.role);
       expect(restored.revision, installed.revision);
       expect(await restored.file!.readAsBytes(), [9]);
@@ -135,7 +148,11 @@ void main() {
     () async {
       final dir = await Directory.systemTemp.createTemp('hajnal-art-cleanup-');
       final db = HajnalDatabase(NativeDatabase.memory());
-      final service = ArtworkService(db, dir, (_) async => true);
+      final service = ArtworkService(
+        DriftArtworkStore(db),
+        dir,
+        (_) async => true,
+      );
       try {
         final temporary = File('${dir.path}/unfinished.tmp');
         final keep = File('${dir.path}/keep.img');

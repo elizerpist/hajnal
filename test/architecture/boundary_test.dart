@@ -195,6 +195,7 @@ void main() {
       '../../../core/artwork/artwork_view.dart',
       '../../../core/theme/hajnal_tokens.dart',
       '../application/date_picker.dart',
+      'dashboard_layout.dart',
     };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
@@ -228,7 +229,7 @@ void main() {
           source.contains('_db.delete(')) {
         expect([
           'lib/features/recovery/data/recovery_repository.dart',
-          'lib/core/artwork/artwork_service.dart',
+          'lib/core/artwork/drift_artwork_store.dart',
         ], contains(file.path));
       }
     }

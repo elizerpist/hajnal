@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hajnal/core/artwork/artwork_service.dart';
+import 'package:hajnal/core/artwork/drift_artwork_store.dart';
 import 'package:hajnal/core/artwork/artwork_catalog.dart';
 import 'package:hajnal/core/artwork/artwork_view.dart';
 import 'package:hajnal/core/database/hajnal_database.dart';
@@ -30,7 +31,10 @@ void main() {
           '${dir.path}/input.png',
         ).writeAsBytes(png!.buffer.asUint8List());
         var db = HajnalDatabase(NativeDatabase(dbFile));
-        var service = ArtworkService(db, Directory('${dir.path}/private'));
+        var service = ArtworkService(
+          DriftArtworkStore(db),
+          Directory('${dir.path}/private'),
+        );
         try {
           await service.install(dashboardArtwork.role, input);
           final installed = await service.resolve(dashboardArtwork.role);
@@ -38,7 +42,10 @@ void main() {
           service.dispose();
           await db.close();
           db = HajnalDatabase(NativeDatabase(dbFile));
-          service = ArtworkService(db, Directory('${dir.path}/private'));
+          service = ArtworkService(
+            DriftArtworkStore(db),
+            Directory('${dir.path}/private'),
+          );
           expect(
             (await service.resolve(dashboardArtwork.role)).revision,
             installed.revision,

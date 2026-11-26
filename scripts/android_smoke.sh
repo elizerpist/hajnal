@@ -1,34 +1,44 @@
 #!/usr/bin/env bash
-set -u
-
+set -euo pipefail
 mkdir -p evidence
-adb shell wm size 412x892 || exit 1
-adb shell wm density 160 || exit 1
-cd android || exit 1
-echo 'Running native picker and navigation test'
-timeout 6m ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=hu.elizerpist.hajnal.StarterSmokeTest#nativePickerPersistenceAndNavigation --stacktrace 2>&1 | tee ../evidence/android-test.log
-result=${PIPESTATUS[0]}
-if [ "$result" -eq 0 ]; then
-  adb shell am force-stop hu.elizerpist.hajnal || result=$?
+adb shell wm size 412x892
+adb shell wm density 160
+test_apk="$(find build/app/outputs/apk/androidTest -name '*.apk' -print -quit)"
+test -n "$test_apk"
+adb install -r build/app/outputs/flutter-apk/app-debug.apk
+adb install -r -t "$test_apk"
+run_test() {
+  local method="$1"
+  local log="$2"
+  timeout 6m adb shell am instrument -w \
+    -e class "hu.elizerpist.hajnal.StarterSmokeTest#$method" \
+    hu.elizerpist.hajnal.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
+  grep -Eq '^OK \(1 test\)' "$log"
+}
+run_test nativePickerPersistenceAndNavigation evidence/android-first-test.log
+adb shell am force-stop hu.elizerpist.hajnal
+adb shell am start -n hu.elizerpist.hajnal/.MainActivity
+run_test verifyRelaunch evidence/android-relaunch-test.log
+cat evidence/android-first-test.log evidence/android-relaunch-test.log > evidence/android-test.log
+for name in onboarding dashboard-closed dashboard-open; do
+  adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
+  test -s "evidence/$name.png"
+done
+timeout 10m flutter test --no-pub integration_test/artwork_test.dart | tee evidence/artwork-test.log
+# This emulator contains only test data. Remove the debug-signed package before
+# testing the separately signed, normal profile APK and its upgrade path.
+if adb shell pm path hu.elizerpist.hajnal | grep -q '^package:'; then
+  adb uninstall hu.elizerpist.hajnal
 fi
-if [ "$result" -eq 0 ]; then
-  adb shell am start -n hu.elizerpist.hajnal/.MainActivity || result=$?
+if [ -s "$RUNNER_TEMP/hajnal-previous.apk" ]; then
+  install_apk="$RUNNER_TEMP/hajnal-previous.apk"
+else
+  install_apk=build/app/outputs/flutter-apk/app-profile.apk
 fi
-if [ "$result" -eq 0 ]; then
-  echo 'Running force-stop and relaunch test'
-  timeout 6m ./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=hu.elizerpist.hajnal.StarterSmokeTest#verifyRelaunch --stacktrace 2>&1 | tee -a ../evidence/android-test.log
-  result=${PIPESTATUS[0]}
-fi
-adb exec-out run-as hu.elizerpist.hajnal cat files/onboarding.png > ../evidence/onboarding.png || true
-adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-closed.png > ../evidence/dashboard-closed.png || true
-adb exec-out run-as hu.elizerpist.hajnal cat files/dashboard-open.png > ../evidence/dashboard-open.png || true
-if [ "$result" -eq 0 ]; then
-  test -s ../evidence/onboarding.png && test -s ../evidence/dashboard-closed.png && test -s ../evidence/dashboard-open.png || result=1
-fi
-if [ "$result" -eq 0 ]; then
-  cd .. || exit 1
-  echo 'Running artwork integration test'
-  timeout 10m flutter test --no-pub integration_test/artwork_test.dart 2>&1 | tee evidence/artwork-test.log
-  result=${PIPESTATUS[0]}
-fi
-exit "$result"
+adb install -r "$install_apk"
+adb install -r -t "$RUNNER_TEMP/hajnal-signed-test.apk"
+run_test nativePickerPersistenceAndNavigation evidence/signed-before-upgrade.log
+adb install -r build/app/outputs/flutter-apk/app-profile.apk
+adb shell am force-stop hu.elizerpist.hajnal
+run_test verifyRelaunch evidence/signed-after-upgrade.log
+cat evidence/signed-before-upgrade.log evidence/signed-after-upgrade.log > evidence/signed-upgrade-test.log
