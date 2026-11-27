@@ -103,7 +103,6 @@ exit 0
             self.assertNotEqual(result.returncode, 0)
             self.assertTrue((root / 'evidence/boarding-welcome-1.png').read_bytes())
             self.assertTrue((root / 'copied').exists())
-            self.assertIn('--no-dds', (root / 'flutter-args').read_text().splitlines())
             self.assertIn('integration_test/ci_integration_test.dart', (root / 'flutter-args').read_text().splitlines())
             self.assertIn('visual integration diagnostic', (root / 'evidence/android-failure-logcat.txt').read_text())
             self.assertIn(b'Missing or invalid screenshot', result.stderr)

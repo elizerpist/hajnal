@@ -17,6 +17,16 @@ REMOVED = (
 
 
 class WelcomeArtworkTest(unittest.TestCase):
+    def test_android_uses_supported_svg_renderer_workaround(self):
+        android = '{http://schemas.android.com/apk/res/android}'
+        root = ET.parse('android/app/src/main/AndroidManifest.xml').getroot()
+        metadata = root.find(
+            "./application/meta-data[@android:name='io.flutter.embedding.android.EnableImpeller']",
+            {'android': android[1:-1]},
+        )
+        self.assertIsNotNone(metadata)
+        self.assertEqual(metadata.get(android + 'value'), 'false')
+
     def test_sky_gradient_and_viewbox(self):
         root = ET.parse(PATH).getroot()
         self.assertEqual(root.get('viewBox'), '0 0 853 1844')

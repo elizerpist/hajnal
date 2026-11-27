@@ -8,6 +8,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="hu.elizerpist.hajnal.BUILD_COMMIT" android:value="${buildCommit}" />
+        <!-- shortcut: Android Impeller shows horizontal SVG artifacts; reassess after an engine fix. -->
+        <meta-data android:name="io.flutter.embedding.android.EnableImpeller" android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
