@@ -1,4 +1,4 @@
-import 'dart:ui' show SemanticsFlag;
+import 'dart:ui' show Tristate;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -113,8 +113,12 @@ void main() {
     final cell = find.byKey(const Key('calendar-day-2026-11-27'));
     final previouslySelected = find.byKey(const Key('calendar-day-2026-11-26'));
     expect(
-      tester.getSemantics(previouslySelected).hasFlag(SemanticsFlag.isSelected),
-      isTrue,
+      tester
+          .getSemantics(previouslySelected)
+          .getSemanticsData()
+          .flagsCollection
+          .isSelected,
+      Tristate.isTrue,
     );
     expect(
       tester.getSemantics(previouslySelected).label,
@@ -138,7 +142,10 @@ void main() {
     expect(circleSize.width, lessThanOrEqualTo(tester.getSize(cell).width));
     await tester.tap(cell);
     await tester.pumpAndSettle();
-    expect(tester.getSemantics(cell).hasFlag(SemanticsFlag.isSelected), isTrue);
+    expect(
+      tester.getSemantics(cell).getSemanticsData().flagsCollection.isSelected,
+      Tristate.isTrue,
+    );
     expect(decoration().border, isNull);
     expect(decoration().color, isNotNull);
     semantics.dispose();
