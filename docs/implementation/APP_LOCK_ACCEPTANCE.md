@@ -21,6 +21,8 @@ A `5214daa` képeinek összevetése: a beállítási alsó szöveg már láthat�
 
 A `9ccdb25` Android-tesztjei, aláírása és adatmegőrző upgrade-je sikeres. Az overlayeken az elrendezés javult, de a PIN-lakat kulcslyuka hiányzik, és az aláhúzás halványabb a referenciánál, ezért ez a képsor sem kapott jóváhagyást. A logó a felhasználó által előírt SVG, amely a referencia raszteres logójától eltérhet; a fizikai biometria és iOS ellenőrzése nyitott.
 
+A `f347e02` tesztjei és frissítése sikeresek, a PIN-lakat és aláhúzás megjelent. Az overlay további elrendezési különbséget mutatott: a PIN-fejléc, vonal és gomb függőleges pozíciója; a biometrikus kártya magassága, az ikon és a leírás térköze. A három képernyő új commitból készített overlaye szükséges a jóváhagyáshoz.
+
 ## Réteghatár- és Ponytail-önellenőrzés
 
 - A feloldási munkamenet egyetlen tulajdonosa a `LockController`; a meglévő `HajnalApp` observer továbbítja az életciklust. A beállítási munkafolyamat a `LockSettingsCoordinator` felelőssége, a képernyők bemenetet és navigációt adnak.

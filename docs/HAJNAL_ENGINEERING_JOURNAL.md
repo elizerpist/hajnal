@@ -41,3 +41,5 @@ A `5214daa` újrafuttatásban az Android fordítás, aláírás, emulátorteszte
 A `da8e90a` futásban a natív PIN-, dátum- és launcherellenőrzés, valamint az artwork-integráció sikeres, a közvetlenül utána indított második Flutter-integráció VM-kapcsolata viszont már a teszt betöltésekor megszakadt (`VmServiceDisappearedException`). A két meglévő integráció most egyetlen Flutter-tesztfolyamatban fut, a képek ugyanazzal a kész-jelzővel még a takarítás előtt kerülnek kiolvasásra. Az elakadt futásból nem készült kiadás.
 
 A `9ccdb25` futásban az összevont integráció, minden Android-teszt, az aláírás és az adatmegőrző frissítés sikeres; a vizuális ellenőrzés a PIN-lakat hiányzó kulcslyuka és a túl halvány aláhúzás miatt nem lett jóváhagyva. A publikálási job a képi jóváhagyás hiánya miatt nem adott ki APK-t.
+
+A `f347e02` futásban a 110 Flutter-teszt, a natív ellenőrzések, az aláírás és az adatmegőrző upgrade sikeres. A képi összevetés fennmaradó függőleges eltéréseket mutatott a PIN-fejlécre, a gombra és a biometrikus lépések kártyájára; a vizuális jóváhagyás és a publikálás ezért továbbra is függőben maradt.

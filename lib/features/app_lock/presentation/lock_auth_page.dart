@@ -80,14 +80,14 @@ class _LockAuthPageState extends State<LockAuthPage> {
                   child: Column(
                     // Spacers preserve the reference's relative vertical gaps.
                     children: [
-                      const Spacer(flex: 36),
+                      const Spacer(flex: 41),
                       SvgPicture.asset(
                         BrandAssets.logo,
                         width: 140,
                         height: 140,
                         semanticsLabel: 'Hajnal',
                       ),
-                      const Spacer(flex: 22),
+                      const Spacer(flex: 15),
                       const Text(
                         'Jó, hogy itt vagy.',
                         textAlign: TextAlign.center,
@@ -97,7 +97,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           color: HajnalColors.navy,
                         ),
                       ),
-                      const Spacer(flex: 9),
+                      const Spacer(flex: 8),
                       const Text(
                         'Oldd fel a Hajnalt a folytatáshoz.',
                         textAlign: TextAlign.center,
@@ -121,7 +121,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 28,
-                              vertical: 22,
+                              vertical: 29,
                             ),
                             child: Column(
                               children: [
@@ -151,9 +151,9 @@ class _LockAuthPageState extends State<LockAuthPage> {
                             ),
                           ),
                         ),
-                      const Spacer(flex: 36),
+                      const Spacer(flex: 25),
                       const HajnalFingerprint(),
-                      const Spacer(flex: 19),
+                      const Spacer(flex: 8),
                       const Text(
                         'Folytasd a telefonod azonosítójával.',
                         textAlign: TextAlign.center,
@@ -168,7 +168,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: HajnalColors.navy),
                         ),
-                      const Spacer(flex: 56),
+                      const Spacer(flex: 59),
                       SizedBox(
                         width: double.infinity,
                         height: 60,
@@ -196,7 +196,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                               : () => setState(() => usePin = true),
                           child: const Text('PIN használata'),
                         ),
-                      const Spacer(flex: 13),
+                      const Spacer(flex: 20),
                       const Text(
                         'A rendszer saját ablaka nyílik meg.',
                         style: TextStyle(
@@ -204,7 +204,7 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           color: HajnalColors.navy,
                         ),
                       ),
-                      const Spacer(flex: 20),
+                      const Spacer(flex: 21),
                     ],
                   ),
                 ),

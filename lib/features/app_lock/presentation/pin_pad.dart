@@ -41,6 +41,7 @@ class _PinPadState extends State<PinPad> {
     appBar: widget.header == null
         ? null
         : AppBar(
+            toolbarHeight: 76,
             backgroundColor: HajnalColors.sheet,
             foregroundColor: HajnalColors.navy,
             leading: Navigator.canPop(context)
@@ -71,9 +72,9 @@ class _PinPadState extends State<PinPad> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const SizedBox(height: 30),
+                SizedBox(height: widget.header == null ? 30 : 14),
                 const HajnalLockIcon(),
-                const SizedBox(height: 12),
+                SizedBox(height: widget.header == null ? 12 : 8),
                 Text(
                   widget.title,
                   textAlign: TextAlign.center,
@@ -91,27 +92,30 @@ class _PinPadState extends State<PinPad> {
                     color: HajnalColors.navy,
                   ),
                 ),
-                Semantics(
-                  label: 'PIN-kód, ${value.length} számjegy',
-                  child: SizedBox(
-                    height: 72,
-                    child: Center(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: List.generate(
-                            value.length.clamp(6, 20),
-                            (i) => Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 9,
-                              ),
-                              child: Icon(
-                                i < value.length
-                                    ? Icons.circle
-                                    : Icons.circle_outlined,
-                                size: 22,
-                                color: HajnalColors.purple,
+                Padding(
+                  padding: const EdgeInsets.only(top: 11),
+                  child: Semantics(
+                    label: 'PIN-kód, ${value.length} számjegy',
+                    child: SizedBox(
+                      height: 54,
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(
+                              value.length.clamp(6, 20),
+                              (i) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 9,
+                                ),
+                                child: Icon(
+                                  i < value.length
+                                      ? Icons.circle
+                                      : Icons.circle_outlined,
+                                  size: 22,
+                                  color: HajnalColors.purple,
+                                ),
                               ),
                             ),
                           ),
@@ -125,7 +129,7 @@ class _PinPadState extends State<PinPad> {
                   height: 1,
                   color: HajnalColors.pinUnderline,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 21),
                 if (widget.message != null)
                   Text(
                     widget.message!,
@@ -159,7 +163,7 @@ class _PinPadState extends State<PinPad> {
                     _key('Törlés', erase, icon: Icons.backspace_outlined),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 23),
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -184,7 +188,7 @@ class _PinPadState extends State<PinPad> {
                 ),
                 if (widget.footer != null)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 7),
                     child: Text(
                       widget.footer!,
                       textAlign: TextAlign.center,

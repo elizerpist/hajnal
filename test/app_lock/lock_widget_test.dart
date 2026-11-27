@@ -21,6 +21,43 @@ Future<void> enter(WidgetTester tester, String pin) async {
 }
 
 void main() {
+  testWidgets('PIN reference geometry keeps the keyboard and action visible', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(412, 892);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(
+            size: Size(412, 892),
+            padding: EdgeInsets.only(top: 24, bottom: 48),
+          ),
+          child: PinSetup(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final header = tester.getRect(find.text('PIN beállítása'));
+    final lock = tester.getRect(find.byType(HajnalLockIcon));
+    final firstKey = tester.getRect(find.widgetWithText(OutlinedButton, '1'));
+    expect(header.top, inInclusiveRange(40, 60));
+    expect(lock.top, inInclusiveRange(105, 145));
+    expect(header.bottom, lessThan(lock.top));
+    expect(lock.bottom, lessThan(firstKey.top));
+    await tester.ensureVisible(find.text('A következő lépésben ismételd meg.'));
+    await tester.pumpAndSettle();
+    final action = tester.getRect(find.widgetWithText(FilledButton, 'Tovább'));
+    final footer = tester.getRect(
+      find.text('A következő lépésben ismételd meg.'),
+    );
+    expect(action.bottom, lessThan(footer.top));
+    expect(footer.bottom, lessThanOrEqualTo(844));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('PIN lock paints a visible keyhole', (tester) async {
     final key = GlobalKey();
     await tester.pumpWidget(
