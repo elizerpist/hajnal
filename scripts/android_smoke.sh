@@ -10,10 +10,16 @@ adb install -r -t "$test_apk"
 run_test() {
   local method="$1"
   local log="$2"
-  timeout 6m adb shell am instrument -w \
+  if ! timeout 6m adb shell am instrument -w \
     -e class "hu.elizerpist.hajnal.StarterSmokeTest#$method" \
-    hu.elizerpist.hajnal.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
-  grep -Eq '^OK \(1 test\)' "$log"
+    hu.elizerpist.hajnal.test/androidx.test.runner.AndroidJUnitRunner | tee "$log" ||
+    ! grep -Eq '^OK \(1 test\)' "$log"; then
+    adb exec-out screencap -p > evidence/android-failure.png || true
+    adb logcat -d -s 'flutter:*' 'AndroidRuntime:E' > evidence/android-failure-logcat.txt || true
+    adb shell uiautomator dump /sdcard/hajnal-failure.xml >/dev/null 2>&1 || true
+    adb exec-out cat /sdcard/hajnal-failure.xml > evidence/android-failure-ui.xml || true
+    return 1
+  fi
 }
 run_test nativePickerPersistenceAndNavigation evidence/android-first-test.log
 adb shell am force-stop hu.elizerpist.hajnal
