@@ -113,6 +113,18 @@ jobs:
           disable-animations: true
           emulator-boot-timeout: 420
           script: bash scripts/android_smoke.sh
+      - name: Record runner resource and kernel diagnostics
+        if: failure()
+        run: |
+          mkdir -p evidence
+          {
+            free -m
+            df -h /
+            for file in /sys/fs/cgroup/memory.events /sys/fs/cgroup/memory.current /sys/fs/cgroup/memory.max; do
+              if [ -r "$file" ]; then printf '\n%s\n' "$file"; cat "$file"; fi
+            done
+          } > evidence/runner-resources.txt
+          sudo dmesg | tail -n 3000 | grep -Ei 'out of memory|killed process|oom-kill|qemu|segfault' > evidence/runner-kernel.txt || true
       - name: Preserve failed run evidence
         if: failure()
         env:
