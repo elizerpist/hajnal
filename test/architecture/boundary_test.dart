@@ -198,6 +198,9 @@ void main() {
       '../../../core/artwork/artwork_view.dart',
       '../../../core/theme/hajnal_tokens.dart',
       '../application/date_picker.dart',
+      '../application/onboarding_controller.dart',
+      '../application/onboarding_draft.dart',
+      'onboarding_calendar.dart',
       'dashboard_layout.dart',
       'package:flutter_svg/flutter_svg.dart',
       '../../../core/brand/brand_assets.dart',
@@ -243,6 +246,8 @@ void main() {
           source.contains('_db.delete(')) {
         expect([
           'lib/features/recovery/data/recovery_repository.dart',
+          'lib/features/onboarding/data/onboarding_repository.dart',
+          'lib/features/sponsor/data/sponsor_repository.dart',
           'lib/features/app_lock/data/lock_repository.dart',
           'lib/core/artwork/drift_artwork_store.dart',
         ], contains(file.path));

@@ -9,6 +9,8 @@ class DayTracker extends ChangeNotifier {
   DateTime? _start;
   int? _days;
   int? get days => _days;
+  final ValueNotifier<DateTime?> _calendarDay = ValueNotifier(null);
+  ValueListenable<DateTime?> get calendarDay => _calendarDay;
   Timer? _midnight;
   Timer? _check;
   bool _foreground = false;
@@ -44,6 +46,7 @@ class DayTracker extends ChangeNotifier {
   void _refresh() {
     if (!_foreground) return;
     final now = _now();
+    _calendarDay.value = DateTime(now.year, now.month, now.day);
     _update(now);
     _midnight?.cancel();
     final next = DateTime(now.year, now.month, now.day + 1);
@@ -53,6 +56,7 @@ class DayTracker extends ChangeNotifier {
   @override
   void dispose() {
     pause();
+    _calendarDay.dispose();
     super.dispose();
   }
 }

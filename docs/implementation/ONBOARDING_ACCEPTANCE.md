@@ -1,0 +1,17 @@
+# Teljes onboarding – elfogadási lista
+
+Forrás: a felhasználó teljes onboarding-megbízása, `boarding1.png` és `boarding2.png` a `docs/references/source-of-truth/` alatt; Flutter specifikáció §§2–3, 8, 11–14, 19–20. A felhasználói szöveg felülírja a referencia és a natív picker eltérő előírásait. A státuszok bizonyítékig NOT DONE.
+
+| ID | Forrás | Terület | Elfogadási feltétel | Ellenőrzés | Állapot |
+| --- | --- | --- | --- | --- | --- |
+| ONB-01 | Felhasználó, képek | flow, shell | Welcome 1–3, dátum, motiváció, extrák, feltételes szponzor; menüből Welcome 1, vissza/bezárás, első indulás és régi telepítés | widget, upgrade | PARTIAL — a helyi flow-, visszalépési és locktesztek sikeresek; a régi APK-ról upgrade CI-ben vár. |
+| ONB-02 | Felhasználó, képek | presentation/assets | Eredeti SVG és logó, előírt szövegek, helyes jelzők, olvasható reszponzív képernyők | összes screenshot, kis méret, nagy betű, billentyűzet | PARTIAL — SVG-k, szövegek, kis viewport, nagy betű és billentyűzet tesztelve; az összes emulátoros screenshot és szemrevételezés még vár. |
+| ONB-03 | Felhasználó | calendar/recovery | magyar inline naptár, hétfő, év/hónap, Ma, jövő kizárva; helyes élő számlálás és azonos period ID | widget, domain, DB | DONE — magyar hétkezdés, gyors év/hónap, Ma, jövő kizárása, naptári számlálás és azonos period helyben tesztelve. |
+| ONB-04 | Felhasználó | motivation | opcionális közös emlékeztető, kihagyás nem töröl | DB, widget | DONE — opcionális mező, újranyitás és kihagyás meglévő értékkel helyi controller- és DB-tesztben sikeres. |
+| ONB-05 | Felhasználó | modules | négy független tartós extra, alapfunkciók állandók, tartalom nem törlődik | DB, widget | DONE — független választások és kikapcsolás utáni megőrzés widget- és DB-tesztben sikeres; további modulbelépési pont még nincs. |
+| ONB-06 | Felhasználó | sponsor | feltételes ág, inline név/telefon, kihagyás nem töröl, egyetlen adattulajdonos | DB, widget | DONE — feltételes ág, névvalidáció, kapcsolat megőrzése és egyetlen táblatulajdonos helyben ellenőrzött. |
+| ONB-07 | Felhasználó | application/data | tartós külön piszkozat, rendezett automentés, atomi véglegesítés, hiba és újrapróbálás, dupla mentés és elavult módosítás kizárása | késleltetett írás, újraindítás, rollback, concurrency | DONE — piszkozat újranyitása, írássorrend, hiba/újrapróbálás, tranzakció rollback, dupla mentés és elavult ID helyben ellenőrzött. |
+| ONB-08 | Felhasználó | bootstrap/lock | megőrző migráció, lock utáni folytatás, nincs új lifecycle | migration, lock widget | PARTIAL — v2 migráció és lock utáni bevitelmegőrzés helyben zöld; aláírt APK-ról frissítés CI-ben vár. |
+| ONB-09 | structuring-apps | minden réteg | egy tulajdonos/írási út, helyes függőségek, boundary suite | boundary és review | DONE — structuring-apps és Ponytail review; az AST/import boundary suite és célzott viselkedéstesztek sikeresek. |
+| ONB-10 | Felhasználó | CI/release | analyze, teljes teszt, screenshot, aláírt, növelt versionCode, adatmegőrző upgrade, publikus Release és állandó link | CI, publikus letöltés, aláírás | NOT DONE — CI, aláírás, upgrade, publikus release és letöltés még nem igazolt. |
+| ONB-11 | Felhasználó | platform | iOS és fizikai eszköz ellenőrzésének tényleges határai dokumentálva | eredmények | PARTIAL — az iOS és fizikai eszközös vizsgálatot az elérhető környezet nem biztosítja; a végleges CI-eredmény még vár. |

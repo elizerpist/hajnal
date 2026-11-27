@@ -1001,6 +1001,734 @@ class LockSettingsCompanion extends UpdateCompanion<LockSetting> {
   }
 }
 
+class $OnboardingProfilesTable extends OnboardingProfiles
+    with TableInfo<$OnboardingProfilesTable, OnboardingProfile> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OnboardingProfilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _motivationMeta = const VerificationMeta(
+    'motivation',
+  );
+  @override
+  late final GeneratedColumn<String> motivation = GeneratedColumn<String>(
+    'motivation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _modulesMeta = const VerificationMeta(
+    'modules',
+  );
+  @override
+  late final GeneratedColumn<int> modules = GeneratedColumn<int>(
+    'modules',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _completedMeta = const VerificationMeta(
+    'completed',
+  );
+  @override
+  late final GeneratedColumn<bool> completed = GeneratedColumn<bool>(
+    'completed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("completed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, motivation, modules, completed];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'onboarding_profiles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OnboardingProfile> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('motivation')) {
+      context.handle(
+        _motivationMeta,
+        motivation.isAcceptableOrUnknown(data['motivation']!, _motivationMeta),
+      );
+    }
+    if (data.containsKey('modules')) {
+      context.handle(
+        _modulesMeta,
+        modules.isAcceptableOrUnknown(data['modules']!, _modulesMeta),
+      );
+    }
+    if (data.containsKey('completed')) {
+      context.handle(
+        _completedMeta,
+        completed.isAcceptableOrUnknown(data['completed']!, _completedMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  OnboardingProfile map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OnboardingProfile(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      motivation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}motivation'],
+      )!,
+      modules: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}modules'],
+      )!,
+      completed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}completed'],
+      )!,
+    );
+  }
+
+  @override
+  $OnboardingProfilesTable createAlias(String alias) {
+    return $OnboardingProfilesTable(attachedDatabase, alias);
+  }
+}
+
+class OnboardingProfile extends DataClass
+    implements Insertable<OnboardingProfile> {
+  final int id;
+  final String motivation;
+  final int modules;
+  final bool completed;
+  const OnboardingProfile({
+    required this.id,
+    required this.motivation,
+    required this.modules,
+    required this.completed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['motivation'] = Variable<String>(motivation);
+    map['modules'] = Variable<int>(modules);
+    map['completed'] = Variable<bool>(completed);
+    return map;
+  }
+
+  OnboardingProfilesCompanion toCompanion(bool nullToAbsent) {
+    return OnboardingProfilesCompanion(
+      id: Value(id),
+      motivation: Value(motivation),
+      modules: Value(modules),
+      completed: Value(completed),
+    );
+  }
+
+  factory OnboardingProfile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OnboardingProfile(
+      id: serializer.fromJson<int>(json['id']),
+      motivation: serializer.fromJson<String>(json['motivation']),
+      modules: serializer.fromJson<int>(json['modules']),
+      completed: serializer.fromJson<bool>(json['completed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'motivation': serializer.toJson<String>(motivation),
+      'modules': serializer.toJson<int>(modules),
+      'completed': serializer.toJson<bool>(completed),
+    };
+  }
+
+  OnboardingProfile copyWith({
+    int? id,
+    String? motivation,
+    int? modules,
+    bool? completed,
+  }) => OnboardingProfile(
+    id: id ?? this.id,
+    motivation: motivation ?? this.motivation,
+    modules: modules ?? this.modules,
+    completed: completed ?? this.completed,
+  );
+  OnboardingProfile copyWithCompanion(OnboardingProfilesCompanion data) {
+    return OnboardingProfile(
+      id: data.id.present ? data.id.value : this.id,
+      motivation: data.motivation.present
+          ? data.motivation.value
+          : this.motivation,
+      modules: data.modules.present ? data.modules.value : this.modules,
+      completed: data.completed.present ? data.completed.value : this.completed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingProfile(')
+          ..write('id: $id, ')
+          ..write('motivation: $motivation, ')
+          ..write('modules: $modules, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, motivation, modules, completed);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OnboardingProfile &&
+          other.id == this.id &&
+          other.motivation == this.motivation &&
+          other.modules == this.modules &&
+          other.completed == this.completed);
+}
+
+class OnboardingProfilesCompanion extends UpdateCompanion<OnboardingProfile> {
+  final Value<int> id;
+  final Value<String> motivation;
+  final Value<int> modules;
+  final Value<bool> completed;
+  const OnboardingProfilesCompanion({
+    this.id = const Value.absent(),
+    this.motivation = const Value.absent(),
+    this.modules = const Value.absent(),
+    this.completed = const Value.absent(),
+  });
+  OnboardingProfilesCompanion.insert({
+    this.id = const Value.absent(),
+    this.motivation = const Value.absent(),
+    this.modules = const Value.absent(),
+    this.completed = const Value.absent(),
+  });
+  static Insertable<OnboardingProfile> custom({
+    Expression<int>? id,
+    Expression<String>? motivation,
+    Expression<int>? modules,
+    Expression<bool>? completed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (motivation != null) 'motivation': motivation,
+      if (modules != null) 'modules': modules,
+      if (completed != null) 'completed': completed,
+    });
+  }
+
+  OnboardingProfilesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? motivation,
+    Value<int>? modules,
+    Value<bool>? completed,
+  }) {
+    return OnboardingProfilesCompanion(
+      id: id ?? this.id,
+      motivation: motivation ?? this.motivation,
+      modules: modules ?? this.modules,
+      completed: completed ?? this.completed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (motivation.present) {
+      map['motivation'] = Variable<String>(motivation.value);
+    }
+    if (modules.present) {
+      map['modules'] = Variable<int>(modules.value);
+    }
+    if (completed.present) {
+      map['completed'] = Variable<bool>(completed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingProfilesCompanion(')
+          ..write('id: $id, ')
+          ..write('motivation: $motivation, ')
+          ..write('modules: $modules, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SponsorContactsTable extends SponsorContacts
+    with TableInfo<$SponsorContactsTable, SponsorContact> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SponsorContactsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, phone];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sponsor_contacts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SponsorContact> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SponsorContact map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SponsorContact(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      )!,
+    );
+  }
+
+  @override
+  $SponsorContactsTable createAlias(String alias) {
+    return $SponsorContactsTable(attachedDatabase, alias);
+  }
+}
+
+class SponsorContact extends DataClass implements Insertable<SponsorContact> {
+  final int id;
+  final String name;
+  final String phone;
+  const SponsorContact({
+    required this.id,
+    required this.name,
+    required this.phone,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['phone'] = Variable<String>(phone);
+    return map;
+  }
+
+  SponsorContactsCompanion toCompanion(bool nullToAbsent) {
+    return SponsorContactsCompanion(
+      id: Value(id),
+      name: Value(name),
+      phone: Value(phone),
+    );
+  }
+
+  factory SponsorContact.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SponsorContact(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      phone: serializer.fromJson<String>(json['phone']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'phone': serializer.toJson<String>(phone),
+    };
+  }
+
+  SponsorContact copyWith({int? id, String? name, String? phone}) =>
+      SponsorContact(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        phone: phone ?? this.phone,
+      );
+  SponsorContact copyWithCompanion(SponsorContactsCompanion data) {
+    return SponsorContact(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      phone: data.phone.present ? data.phone.value : this.phone,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SponsorContact(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('phone: $phone')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, phone);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SponsorContact &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.phone == this.phone);
+}
+
+class SponsorContactsCompanion extends UpdateCompanion<SponsorContact> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> phone;
+  const SponsorContactsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.phone = const Value.absent(),
+  });
+  SponsorContactsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.phone = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<SponsorContact> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? phone,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (phone != null) 'phone': phone,
+    });
+  }
+
+  SponsorContactsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? phone,
+  }) {
+    return SponsorContactsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SponsorContactsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('phone: $phone')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $OnboardingDraftsTable extends OnboardingDrafts
+    with TableInfo<$OnboardingDraftsTable, OnboardingDraft> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $OnboardingDraftsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
+  @override
+  late final GeneratedColumn<String> payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, payload];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'onboarding_drafts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<OnboardingDraft> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('payload')) {
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  OnboardingDraft map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return OnboardingDraft(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      payload: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload'],
+      )!,
+    );
+  }
+
+  @override
+  $OnboardingDraftsTable createAlias(String alias) {
+    return $OnboardingDraftsTable(attachedDatabase, alias);
+  }
+}
+
+class OnboardingDraft extends DataClass implements Insertable<OnboardingDraft> {
+  final int id;
+  final String payload;
+  const OnboardingDraft({required this.id, required this.payload});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['payload'] = Variable<String>(payload);
+    return map;
+  }
+
+  OnboardingDraftsCompanion toCompanion(bool nullToAbsent) {
+    return OnboardingDraftsCompanion(id: Value(id), payload: Value(payload));
+  }
+
+  factory OnboardingDraft.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return OnboardingDraft(
+      id: serializer.fromJson<int>(json['id']),
+      payload: serializer.fromJson<String>(json['payload']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'payload': serializer.toJson<String>(payload),
+    };
+  }
+
+  OnboardingDraft copyWith({int? id, String? payload}) =>
+      OnboardingDraft(id: id ?? this.id, payload: payload ?? this.payload);
+  OnboardingDraft copyWithCompanion(OnboardingDraftsCompanion data) {
+    return OnboardingDraft(
+      id: data.id.present ? data.id.value : this.id,
+      payload: data.payload.present ? data.payload.value : this.payload,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingDraft(')
+          ..write('id: $id, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, payload);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is OnboardingDraft &&
+          other.id == this.id &&
+          other.payload == this.payload);
+}
+
+class OnboardingDraftsCompanion extends UpdateCompanion<OnboardingDraft> {
+  final Value<int> id;
+  final Value<String> payload;
+  const OnboardingDraftsCompanion({
+    this.id = const Value.absent(),
+    this.payload = const Value.absent(),
+  });
+  OnboardingDraftsCompanion.insert({
+    this.id = const Value.absent(),
+    required String payload,
+  }) : payload = Value(payload);
+  static Insertable<OnboardingDraft> custom({
+    Expression<int>? id,
+    Expression<String>? payload,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (payload != null) 'payload': payload,
+    });
+  }
+
+  OnboardingDraftsCompanion copyWith({Value<int>? id, Value<String>? payload}) {
+    return OnboardingDraftsCompanion(
+      id: id ?? this.id,
+      payload: payload ?? this.payload,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(payload.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('OnboardingDraftsCompanion(')
+          ..write('id: $id, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -1011,6 +1739,14 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     this,
   );
   late final $LockSettingsTable lockSettings = $LockSettingsTable(this);
+  late final $OnboardingProfilesTable onboardingProfiles =
+      $OnboardingProfilesTable(this);
+  late final $SponsorContactsTable sponsorContacts = $SponsorContactsTable(
+    this,
+  );
+  late final $OnboardingDraftsTable onboardingDrafts = $OnboardingDraftsTable(
+    this,
+  );
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
@@ -1023,6 +1759,9 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     recoveryPeriods,
     artworkOverrides,
     lockSettings,
+    onboardingProfiles,
+    sponsorContacts,
+    onboardingDrafts,
     oneActivePeriod,
   ];
 }
@@ -1609,6 +2348,492 @@ typedef $$LockSettingsTableProcessedTableManager =
       LockSetting,
       PrefetchHooks Function()
     >;
+typedef $$OnboardingProfilesTableCreateCompanionBuilder =
+    OnboardingProfilesCompanion Function({
+      Value<int> id,
+      Value<String> motivation,
+      Value<int> modules,
+      Value<bool> completed,
+    });
+typedef $$OnboardingProfilesTableUpdateCompanionBuilder =
+    OnboardingProfilesCompanion Function({
+      Value<int> id,
+      Value<String> motivation,
+      Value<int> modules,
+      Value<bool> completed,
+    });
+
+class $$OnboardingProfilesTableFilterComposer
+    extends Composer<_$HajnalDatabase, $OnboardingProfilesTable> {
+  $$OnboardingProfilesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get modules => $composableBuilder(
+    column: $table.modules,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get completed => $composableBuilder(
+    column: $table.completed,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$OnboardingProfilesTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $OnboardingProfilesTable> {
+  $$OnboardingProfilesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get modules => $composableBuilder(
+    column: $table.modules,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get completed => $composableBuilder(
+    column: $table.completed,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OnboardingProfilesTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $OnboardingProfilesTable> {
+  $$OnboardingProfilesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get motivation => $composableBuilder(
+    column: $table.motivation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get modules =>
+      $composableBuilder(column: $table.modules, builder: (column) => column);
+
+  GeneratedColumn<bool> get completed =>
+      $composableBuilder(column: $table.completed, builder: (column) => column);
+}
+
+class $$OnboardingProfilesTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $OnboardingProfilesTable,
+          OnboardingProfile,
+          $$OnboardingProfilesTableFilterComposer,
+          $$OnboardingProfilesTableOrderingComposer,
+          $$OnboardingProfilesTableAnnotationComposer,
+          $$OnboardingProfilesTableCreateCompanionBuilder,
+          $$OnboardingProfilesTableUpdateCompanionBuilder,
+          (
+            OnboardingProfile,
+            BaseReferences<
+              _$HajnalDatabase,
+              $OnboardingProfilesTable,
+              OnboardingProfile
+            >,
+          ),
+          OnboardingProfile,
+          PrefetchHooks Function()
+        > {
+  $$OnboardingProfilesTableTableManager(
+    _$HajnalDatabase db,
+    $OnboardingProfilesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OnboardingProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OnboardingProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OnboardingProfilesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> motivation = const Value.absent(),
+                Value<int> modules = const Value.absent(),
+                Value<bool> completed = const Value.absent(),
+              }) => OnboardingProfilesCompanion(
+                id: id,
+                motivation: motivation,
+                modules: modules,
+                completed: completed,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> motivation = const Value.absent(),
+                Value<int> modules = const Value.absent(),
+                Value<bool> completed = const Value.absent(),
+              }) => OnboardingProfilesCompanion.insert(
+                id: id,
+                motivation: motivation,
+                modules: modules,
+                completed: completed,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OnboardingProfilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $OnboardingProfilesTable,
+      OnboardingProfile,
+      $$OnboardingProfilesTableFilterComposer,
+      $$OnboardingProfilesTableOrderingComposer,
+      $$OnboardingProfilesTableAnnotationComposer,
+      $$OnboardingProfilesTableCreateCompanionBuilder,
+      $$OnboardingProfilesTableUpdateCompanionBuilder,
+      (
+        OnboardingProfile,
+        BaseReferences<
+          _$HajnalDatabase,
+          $OnboardingProfilesTable,
+          OnboardingProfile
+        >,
+      ),
+      OnboardingProfile,
+      PrefetchHooks Function()
+    >;
+typedef $$SponsorContactsTableCreateCompanionBuilder =
+    SponsorContactsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String> phone,
+    });
+typedef $$SponsorContactsTableUpdateCompanionBuilder =
+    SponsorContactsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> phone,
+    });
+
+class $$SponsorContactsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $SponsorContactsTable> {
+  $$SponsorContactsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SponsorContactsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $SponsorContactsTable> {
+  $$SponsorContactsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SponsorContactsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $SponsorContactsTable> {
+  $$SponsorContactsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+}
+
+class $$SponsorContactsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $SponsorContactsTable,
+          SponsorContact,
+          $$SponsorContactsTableFilterComposer,
+          $$SponsorContactsTableOrderingComposer,
+          $$SponsorContactsTableAnnotationComposer,
+          $$SponsorContactsTableCreateCompanionBuilder,
+          $$SponsorContactsTableUpdateCompanionBuilder,
+          (
+            SponsorContact,
+            BaseReferences<
+              _$HajnalDatabase,
+              $SponsorContactsTable,
+              SponsorContact
+            >,
+          ),
+          SponsorContact,
+          PrefetchHooks Function()
+        > {
+  $$SponsorContactsTableTableManager(
+    _$HajnalDatabase db,
+    $SponsorContactsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SponsorContactsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SponsorContactsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SponsorContactsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> phone = const Value.absent(),
+              }) => SponsorContactsCompanion(id: id, name: name, phone: phone),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String> phone = const Value.absent(),
+              }) => SponsorContactsCompanion.insert(
+                id: id,
+                name: name,
+                phone: phone,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SponsorContactsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $SponsorContactsTable,
+      SponsorContact,
+      $$SponsorContactsTableFilterComposer,
+      $$SponsorContactsTableOrderingComposer,
+      $$SponsorContactsTableAnnotationComposer,
+      $$SponsorContactsTableCreateCompanionBuilder,
+      $$SponsorContactsTableUpdateCompanionBuilder,
+      (
+        SponsorContact,
+        BaseReferences<_$HajnalDatabase, $SponsorContactsTable, SponsorContact>,
+      ),
+      SponsorContact,
+      PrefetchHooks Function()
+    >;
+typedef $$OnboardingDraftsTableCreateCompanionBuilder =
+    OnboardingDraftsCompanion Function({
+      Value<int> id,
+      required String payload,
+    });
+typedef $$OnboardingDraftsTableUpdateCompanionBuilder =
+    OnboardingDraftsCompanion Function({Value<int> id, Value<String> payload});
+
+class $$OnboardingDraftsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $OnboardingDraftsTable> {
+  $$OnboardingDraftsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$OnboardingDraftsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $OnboardingDraftsTable> {
+  $$OnboardingDraftsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$OnboardingDraftsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $OnboardingDraftsTable> {
+  $$OnboardingDraftsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+}
+
+class $$OnboardingDraftsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $OnboardingDraftsTable,
+          OnboardingDraft,
+          $$OnboardingDraftsTableFilterComposer,
+          $$OnboardingDraftsTableOrderingComposer,
+          $$OnboardingDraftsTableAnnotationComposer,
+          $$OnboardingDraftsTableCreateCompanionBuilder,
+          $$OnboardingDraftsTableUpdateCompanionBuilder,
+          (
+            OnboardingDraft,
+            BaseReferences<
+              _$HajnalDatabase,
+              $OnboardingDraftsTable,
+              OnboardingDraft
+            >,
+          ),
+          OnboardingDraft,
+          PrefetchHooks Function()
+        > {
+  $$OnboardingDraftsTableTableManager(
+    _$HajnalDatabase db,
+    $OnboardingDraftsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$OnboardingDraftsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OnboardingDraftsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OnboardingDraftsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> payload = const Value.absent(),
+              }) => OnboardingDraftsCompanion(id: id, payload: payload),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String payload,
+              }) => OnboardingDraftsCompanion.insert(id: id, payload: payload),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$OnboardingDraftsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $OnboardingDraftsTable,
+      OnboardingDraft,
+      $$OnboardingDraftsTableFilterComposer,
+      $$OnboardingDraftsTableOrderingComposer,
+      $$OnboardingDraftsTableAnnotationComposer,
+      $$OnboardingDraftsTableCreateCompanionBuilder,
+      $$OnboardingDraftsTableUpdateCompanionBuilder,
+      (
+        OnboardingDraft,
+        BaseReferences<
+          _$HajnalDatabase,
+          $OnboardingDraftsTable,
+          OnboardingDraft
+        >,
+      ),
+      OnboardingDraft,
+      PrefetchHooks Function()
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -1619,4 +2844,10 @@ class $HajnalDatabaseManager {
       $$ArtworkOverridesTableTableManager(_db, _db.artworkOverrides);
   $$LockSettingsTableTableManager get lockSettings =>
       $$LockSettingsTableTableManager(_db, _db.lockSettings);
+  $$OnboardingProfilesTableTableManager get onboardingProfiles =>
+      $$OnboardingProfilesTableTableManager(_db, _db.onboardingProfiles);
+  $$SponsorContactsTableTableManager get sponsorContacts =>
+      $$SponsorContactsTableTableManager(_db, _db.sponsorContacts);
+  $$OnboardingDraftsTableTableManager get onboardingDrafts =>
+      $$OnboardingDraftsTableTableManager(_db, _db.onboardingDrafts);
 }

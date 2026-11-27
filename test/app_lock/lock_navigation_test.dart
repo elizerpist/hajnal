@@ -14,6 +14,7 @@ void main() {
   ) async {
     final store = app_fakes.MemoryStore();
     final bootstrap = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final onboarding = app_fakes.MemoryOnboarding(bootstrap, store);
     final lock = LockController(
       lock_fakes.Store(LockMode.pin),
       lock_fakes.Finger(),
@@ -25,6 +26,7 @@ void main() {
         controller: bootstrap,
         picker: app_fakes.FakePicker(),
         lock: lock,
+        onboardingStore: onboarding,
       ),
     );
     store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
@@ -39,16 +41,24 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Onboarding'));
     await tester.pumpAndSettle();
-    expect(find.text('Kezdődátum'), findsOneWidget);
+    await app_fakes.toDate(tester, existing: true);
+    expect(find.byType(CalendarDatePicker), findsOneWidget);
+    await tester.ensureVisible(find.text('Tovább'));
+    await tester.tap(find.text('Tovább'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Megmaradó emlékeztető');
+    await tester.pumpAndSettle();
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await tester.pumpAndSettle();
-    expect(find.text('Kezdődátum'), findsNothing);
+    expect(find.text('Megmaradó emlékeztető'), findsNothing);
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
     await lock.submitPin('001234');
     await tester.pumpAndSettle();
-    expect(find.text('Kezdődátum'), findsOneWidget);
+    expect(find.text('Megmaradó emlékeztető'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     lock.dispose();
     bootstrap.dispose();

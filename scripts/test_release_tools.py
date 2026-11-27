@@ -153,7 +153,7 @@ path.write_text(json.dumps(s))
                 subprocess.run(['bash', str(script)], cwd=root, env=env, check=True, capture_output=True)
             result = json.loads(state.read_text())
             self.assertEqual(result['creates'], 1)
-            self.assertEqual(len(result['assets']), 35)
+            self.assertEqual(len(result['assets']), 43)
             result['target'] = 'b' * 40
             state.write_text(json.dumps(result))
             self.assertNotEqual(subprocess.run(['bash', str(script)], cwd=root, env=env,

@@ -80,7 +80,29 @@ class StarterSmokeTest {
             }
         }
     }
-    private fun menuOnboarding() { click("Menü"); click("Onboarding"); assertNotNull(find("Kezdődátum")) }
+    private fun menuOnboarding() { click("Menü"); click("Onboarding"); assertNotNull(find("Jó, hogy itt vagy.")) }
+    private fun clickScrolling(label: String) {
+        repeat(5) {
+            val item = device.findObject(By.textContains(label)) ?: device.findObject(By.descContains(label))
+            if (item != null && !item.visibleBounds.isEmpty) { item.click(); return }
+            val width = device.displayWidth; val height = device.displayHeight
+            device.swipe(width / 2, height * 4 / 5, width / 2, height / 3, 20)
+            device.waitForIdle()
+        }
+        click(label)
+    }
+    private fun newCalendar(editing: Boolean) {
+        if (editing) menuOnboarding()
+        click(if (editing) "Beállítások áttekintése" else "Kezdjük el")
+        click("Tovább"); click("Értem, tovább")
+        assertNotNull(find("Válaszd ki a kezdőnapot"))
+    }
+    private fun finishOnboarding(editing: Boolean) {
+        clickScrolling("Tovább")
+        clickScrolling("Később írom meg")
+        clickScrolling(if (editing) "Módosítások mentése" else "Mentés és indulás")
+        assertNotNull(find("Tiszta napok"))
+    }
     private fun installArtworkFixture() {
         val directory = File(context.filesDir, "artwork").apply { mkdirs() }
         val file = File(directory, "artwork-upgrade-fixture.img")
@@ -103,20 +125,17 @@ class StarterSmokeTest {
     }
 
     @Test fun nativePickerPersistenceAndNavigation() {
-        launch()
-        assertNotNull(find("Kezdődátum"))
-        screenshot("onboarding")
-        openPicker("picker-open")
-        device.setOrientationLeft(); device.waitForIdle(); device.pressBack()
-        device.setOrientationNatural(); device.waitForIdle()
-        openPicker("picker-selected")
-        click("OK"); click("Mentés")
-        assertNotNull(find("Tiszta napok")); screenshot("dashboard-closed")
+        launch(); assertNotNull(find("Jó, hogy itt vagy.")); screenshot("onboarding")
+        newCalendar(false); screenshot("picker-open"); clickScrolling("Ma")
+        device.setOrientationLeft(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))
+        device.setOrientationNatural(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))
+        finishOnboarding(false)
+        screenshot("dashboard-closed")
         val card = find("Napi összegzés"); assertNotNull(card)
         val bounds = card!!.visibleBounds
         assertTrue(device.swipe(bounds.centerX(), bounds.centerY(), bounds.centerX(), bounds.centerY() - 100, 20))
         Thread.sleep(500); screenshot("dashboard-open"); device.pressBack()
-        menuOnboarding(); assertNotNull(find("Dátum kiválasztása")); device.pressBack()
+        newCalendar(true); click("Bezárás")
     }
 
     @Test fun verifyRelaunch() {
@@ -124,8 +143,8 @@ class StarterSmokeTest {
     }
 
     @Test fun nightPicker() {
-        launch(); assertNotNull(find("Tiszta napok")); menuOnboarding()
-        openPicker("picker-night"); device.pressBack(); device.pressBack()
+        launch(); assertNotNull(find("Tiszta napok")); newCalendar(true)
+        screenshot("picker-night"); click("Bezárás")
     }
 
     private fun digit(value: String) {
@@ -167,13 +186,13 @@ class StarterSmokeTest {
 
     @Test fun verifyUpgradeAndCorrect() {
         launch(); assertNotNull(find("Tiszta napok")); assertEquals(state.readText(), period()); assertArtwork()
-        menuOnboarding(); openPicker("picker-after-upgrade")
+        newCalendar(true); screenshot("picker-after-upgrade")
+        File(context.getExternalFilesDir(null), "picker-after-upgrade-theme.txt").writeText("Flutter inline calendar")
         val year = LocalDate.now().year
-        val yearHeader = device.wait(Until.findObject(By.res("android:id/date_picker_header_year")), 10000)
-        assertNotNull("Calendar year selector", yearHeader); yearHeader!!.click()
-        val previousYear = device.wait(Until.findObject(By.text((year - 1).toString())), 10000)
-        assertNotNull("Previous year", previousYear); previousYear!!.click()
-        click("OK"); click("Mentés"); assertNotNull(find("Tiszta napok"))
+        click(year.toString())
+        assertNotNull(find("Év kiválasztása"))
+        click((year - 1).toString())
+        finishOnboarding(true)
         val before = state.readText().split('|'); val after = period().split('|')
         assertEquals(before[0], after[0]); assertEquals(before[2], after[2]); assertNotEquals(before[1], after[1])
         val days = ChronoUnit.DAYS.between(LocalDate.parse(after[1]), LocalDate.now()).coerceAtLeast(0)

@@ -6,6 +6,7 @@ import 'app/hajnal_app.dart';
 import 'features/app_lock/application/lock_controller.dart';
 import 'core/artwork/artwork_source.dart';
 import 'core/platform/date_picker.dart';
+import 'features/onboarding/application/onboarding_store.dart';
 
 final bootstrapProvider = Provider<BootstrapController>(
   (ref) => throw StateError('Bootstrap not initialized'),
@@ -15,6 +16,9 @@ final artworkProvider = Provider<ArtworkSource>(
 );
 final lockProvider = Provider<LockController>(
   (ref) => throw StateError('Lock not initialized'),
+);
+final onboardingProvider = Provider<OnboardingStore>(
+  (ref) => throw StateError('Onboarding not initialized'),
 );
 
 class _AppScope extends ConsumerWidget {
@@ -26,6 +30,7 @@ class _AppScope extends ConsumerWidget {
     artwork: ref.watch(artworkProvider),
     picker: PlatformDatePicker(),
     lock: ref.watch(lockProvider),
+    onboardingStore: ref.watch(onboardingProvider),
     onRetry: onRetry,
   );
 }
@@ -105,6 +110,7 @@ class _RootState extends State<_Root> {
           bootstrapProvider.overrideWithValue(current.controller),
           artworkProvider.overrideWithValue(current.artwork),
           lockProvider.overrideWithValue(current.lock),
+          onboardingProvider.overrideWithValue(current.onboarding),
         ],
         child: _AppScope(onRetry: retry),
       );

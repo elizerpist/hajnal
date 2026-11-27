@@ -3,6 +3,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/features/dashboard/application/day_tracker.dart';
 
 void main() {
+  test('publishes the local date at midnight even before a period exists', () {
+    fakeAsync((async) {
+      final origin = DateTime(2024, 3, 30, 23, 59, 50);
+      final tracker = DayTracker(() => origin.add(async.elapsed));
+      tracker.resume();
+      expect(tracker.calendarDay.value, DateTime(2024, 3, 30));
+      async.elapse(const Duration(seconds: 10));
+      expect(tracker.days, isNull);
+      expect(tracker.calendarDay.value, DateTime(2024, 3, 31));
+      tracker.dispose();
+    });
+  });
   test('updates at local midnight and stops while backgrounded', () {
     fakeAsync((async) {
       final origin = DateTime(2024, 3, 30, 23, 59, 50);

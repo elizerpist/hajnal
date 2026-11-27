@@ -17,8 +17,22 @@ class MutationCalls extends RecursiveAstVisitor<void> {
   final String source;
   final calls = <String>[];
   final dbUpdates = <String>[];
+  final dbTables = <String>[];
   @override
   void visitMethodInvocation(MethodInvocation node) {
+    if (const {'into', 'update', 'delete'}.contains(node.methodName.name)) {
+      for (final argument in node.argumentList.arguments) {
+        final expression = argument.toSource();
+        for (final table in const [
+          'recoveryPeriods',
+          'sponsorContacts',
+          'onboardingProfiles',
+          'onboardingDrafts',
+        ]) {
+          if (expression.endsWith('.$table')) dbTables.add(table);
+        }
+      }
+    }
     if (!(source == 'lib/features/app_lock/data/lock_repository.dart' &&
         node.methodName.name == 'create' &&
         node.target?.toSource() == '_hasher')) {
@@ -90,6 +104,7 @@ bool allowed(String source, String target) {
     final package = target.substring('package:'.length).split('/').first;
     if (!const {
       'flutter',
+      'flutter_localizations',
       'flutter_riverpod',
       'drift',
       'path',
@@ -103,13 +118,16 @@ bool allowed(String source, String target) {
     }
     if ((presentation || application) &&
         package != 'flutter' &&
-        !(presentation && package == 'flutter_svg')) {
+        !(presentation &&
+            (package == 'flutter_svg' || package == 'flutter_localizations'))) {
       return false;
     }
   }
   if (target.startsWith('package:drift/') &&
       source != 'lib/app/app_services.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
+      source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
@@ -171,6 +189,8 @@ bool allowed(String source, String target) {
   }
   if (target.startsWith('lib/core/database/') &&
       source != 'lib/app/app_services.dart' &&
+      source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
+      source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/core/artwork/drift_artwork_store.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
@@ -310,6 +330,8 @@ void main() {
   test('storage mutations are owned by the designated adapters', () {
     const dbWriters = {
       'lib/features/recovery/data/recovery_repository.dart',
+      'lib/features/onboarding/data/onboarding_repository.dart',
+      'lib/features/sponsor/data/sponsor_repository.dart',
       'lib/features/app_lock/data/lock_repository.dart',
       'lib/core/artwork/drift_artwork_store.dart',
     };
@@ -339,6 +361,18 @@ void main() {
         content: file.readAsStringSync(),
         path: file.path,
       ).unit.accept(visitor);
+      const tableOwners = {
+        'recoveryPeriods':
+            'lib/features/recovery/data/recovery_repository.dart',
+        'sponsorContacts': 'lib/features/sponsor/data/sponsor_repository.dart',
+        'onboardingProfiles':
+            'lib/features/onboarding/data/onboarding_repository.dart',
+        'onboardingDrafts':
+            'lib/features/onboarding/data/onboarding_repository.dart',
+      };
+      for (final table in visitor.dbTables) {
+        expect(file.path, tableOwners[table], reason: 'write owner of $table');
+      }
       if (!dbWriters.contains(file.path)) {
         expect(visitor.dbUpdates, isEmpty, reason: file.path);
         expect(visitor.calls, isNot(contains('into')), reason: file.path);

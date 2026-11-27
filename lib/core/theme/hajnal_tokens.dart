@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 abstract final class HajnalColors {
   static const navy = Color(0xff231e61);
   static const purple = Color(0xff6d52ae);
+  static const brandAccent = Color(0xffd94778);
   static const sheet = Color(0xfff9f1f7);
   static const card = Color(0xfffef9fa);
   static const border = Color(0x246d52ae);

@@ -7,7 +7,7 @@ import struct
 import sys
 
 
-SCREENSHOTS = ('html-closed.png', 'html-open.png', 'onboarding.png',
+SCREENSHOTS = ('boarding-welcome-1.png', 'boarding-welcome-2.png', 'boarding-welcome-3.png', 'boarding-date.png', 'boarding-motivation.png', 'boarding-modules.png', 'boarding-sponsor.png', 'boarding-sponsor-expanded.png', 'html-closed.png', 'html-open.png', 'onboarding.png',
                'dashboard-closed.png', 'dashboard-open.png', 'picker-open.png',
                'picker-night.png', 'picker-before-upgrade.png', 'picker-after-upgrade.png',
                'lock-settings.png', 'lock-pin-setup.png', 'lock-biometric-step.png',

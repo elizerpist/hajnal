@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
+import 'package:hajnal/features/onboarding/application/onboarding_draft.dart';
+import 'package:hajnal/features/onboarding/application/onboarding_store.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class MemoryStore implements RecoveryStore {
@@ -57,162 +59,273 @@ class CancelPicker implements DatePicker {
       const DatePickCancelled();
 }
 
+class MemoryOnboarding implements OnboardingStore {
+  MemoryOnboarding(this.bootstrap, this.recovery);
+  final BootstrapController bootstrap;
+  final MemoryStore recovery;
+  OnboardingDraft? saved;
+  @override
+  Future<OnboardingDraft> load(DateTime now) async {
+    if (saved != null) return saved!;
+    final period = bootstrap.activePeriod;
+    return OnboardingDraft(
+      periodId: period?.id,
+      date: period?.startDate ?? DateTime(now.year, now.month, now.day),
+      motivation: '',
+      modules: {},
+      sponsorName: '',
+      sponsorPhone: '',
+      completed: period != null,
+      baseline: const {},
+    );
+  }
+
+  @override
+  Future<void> saveDraft(OnboardingDraft draft) async {
+    saved = draft;
+  }
+
+  @override
+  Future<void> finish(OnboardingDraft draft, DateTime now) async {
+    if (draft.periodId == null) {
+      await recovery.initialize(draft.date, now);
+    } else {
+      await recovery.correctStart(draft.periodId!, draft.date, now);
+    }
+    saved = null;
+  }
+}
+
+Future<void> toDate(WidgetTester tester, {bool existing = false}) async {
+  await tester.tap(
+    find.text(existing ? 'Beállítások áttekintése' : 'Kezdjük el'),
+  );
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Tovább'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Értem, tovább'));
+  await tester.pumpAndSettle();
+}
+
+Future<void> toFinish(WidgetTester tester) async {
+  await tester.ensureVisible(find.text('Tovább'));
+  await tester.tap(find.text('Tovább'));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.text('Később írom meg'));
+  await tester.tap(find.text('Később írom meg'));
+  await tester.pumpAndSettle();
+}
+
+Future<void> openOnboarding(WidgetTester tester) async {
+  await tester.tap(find.byTooltip('Menü'));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Onboarding'));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   testWidgets(
     'onboarding saves and dashboard panel opens without demo features',
     (tester) async {
       final store = MemoryStore();
       final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+      final onboarding = MemoryOnboarding(controller, store);
       await tester.pumpWidget(
-        HajnalApp(controller: controller, picker: FakePicker()),
+        HajnalApp(
+          controller: controller,
+          picker: FakePicker(),
+          onboardingStore: onboarding,
+        ),
       );
       store.stream.add(null);
       await tester.pumpAndSettle();
-      expect(find.text('Kezdődátum'), findsOneWidget);
-      await tester.tap(find.text('Dátum kiválasztása'));
+      await toDate(tester);
+      tester
+          .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
+          .onDateChanged(DateTime(2024, 3, 31));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Mentés'));
+      await toFinish(tester);
+      await tester.ensureVisible(find.text('Mentés és indulás'));
+      await tester.tap(find.text('Mentés és indulás'));
       await tester.pumpAndSettle();
       expect(find.text('Tiszta napok'), findsOneWidget);
       expect(find.text('1'), findsOneWidget);
-      expect(find.text('24'), findsNothing);
       expect(find.byType(BottomNavigationBar), findsNothing);
-      expect(tester.getSize(find.byTooltip('Menü')), const Size(54, 54));
       await tester.tap(find.byKey(const Key('summary-card')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('empty-sheet')), findsOneWidget);
-      await tester.tap(find.byTooltip('Menü'));
-      await tester.pumpAndSettle();
-      expect(find.text('Onboarding'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       controller.dispose();
       await store.stream.close();
     },
   );
+
   testWidgets(
     'leaving onboarding without save shows empty counter and can reopen it',
     (tester) async {
       final store = MemoryStore();
-      final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+      final controller = BootstrapController(store, DateTime.now);
+      final onboarding = MemoryOnboarding(controller, store);
       await tester.pumpWidget(
-        HajnalApp(controller: controller, picker: FakePicker()),
+        HajnalApp(
+          controller: controller,
+          picker: FakePicker(),
+          onboardingStore: onboarding,
+        ),
       );
       store.stream.add(null);
       await tester.pumpAndSettle();
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
       expect(find.text('—'), findsOneWidget);
-      await tester.tap(find.byTooltip('Menü'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Onboarding'));
-      await tester.pumpAndSettle();
-      expect(find.text('Dátum kiválasztása'), findsOneWidget);
+      await openOnboarding(tester);
+      expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       controller.dispose();
       await store.stream.close();
     },
   );
+
   testWidgets('saved date is editable and immediately updates dashboard', (
     tester,
   ) async {
     final store = MemoryStore();
     final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
-    final picker = FakePicker();
-    await tester.pumpWidget(HajnalApp(controller: controller, picker: picker));
+    final onboarding = MemoryOnboarding(controller, store);
+    await tester.pumpWidget(
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onboardingStore: onboarding,
+      ),
+    );
     store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Dátum kiválasztása'));
-    await tester.pumpAndSettle();
-    expect(picker.initialDate, DateTime(2024, 3, 30));
+    await openOnboarding(tester);
+    await toDate(tester, existing: true);
+    expect(
+      tester
+          .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
+          .initialDate,
+      DateTime(2024, 3, 30),
+    );
+    tester
+        .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
+        .onDateChanged(DateTime(2024, 3, 31));
     expect(controller.startDate, DateTime(2024, 3, 30));
-    await tester.tap(find.text('Mentés'));
+    await tester.pumpAndSettle();
+    await toFinish(tester);
+    await tester.ensureVisible(find.text('Módosítások mentése'));
+    await tester.tap(find.text('Módosítások mentése'));
     await tester.pumpAndSettle();
     expect(find.text('1'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();
   });
+
   testWidgets('failed save remains on onboarding', (tester) async {
     final store = FailingStore();
     final controller = BootstrapController(store, DateTime.now);
+    final onboarding = MemoryOnboarding(controller, store);
     await tester.pumpWidget(
-      HajnalApp(controller: controller, picker: FakePicker()),
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onboardingStore: onboarding,
+      ),
     );
     store.stream.add(null);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Mentés'));
+    await toDate(tester);
+    await toFinish(tester);
+    await tester.ensureVisible(find.text('Mentés és indulás'));
+    await tester.tap(find.text('Mentés és indulás'));
     await tester.pumpAndSettle();
     expect(find.text('A mentés nem sikerült. Próbáld újra.'), findsOneWidget);
-    expect(find.text('Kezdődátum'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();
   });
-  testWidgets('cancel and back preserve the saved date', (tester) async {
+
+  testWidgets('back and close preserve the saved date', (tester) async {
     final store = MemoryStore();
     final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final onboarding = MemoryOnboarding(controller, store);
     await tester.pumpWidget(
-      HajnalApp(controller: controller, picker: CancelPicker()),
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onboardingStore: onboarding,
+      ),
     );
     store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
+    await openOnboarding(tester);
+    await toDate(tester, existing: true);
+    tester
+        .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
+        .onDateChanged(DateTime(2024, 3, 31));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Dátum kiválasztása'));
-    await tester.pumpAndSettle();
-    expect(controller.startDate, DateTime(2024, 3, 30));
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
-    expect(find.text('2'), findsOneWidget);
+    await tester.tap(find.byTooltip('Bezárás'));
+    await tester.pumpAndSettle();
+    expect(controller.startDate, DateTime(2024, 3, 30));
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();
   });
+
   testWidgets('correction failure leaves onboarding open', (tester) async {
     final store = FailingStore();
     final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final onboarding = MemoryOnboarding(controller, store);
     await tester.pumpWidget(
-      HajnalApp(controller: controller, picker: FakePicker()),
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onboardingStore: onboarding,
+      ),
     );
     store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Mentés'));
+    await openOnboarding(tester);
+    await toDate(tester, existing: true);
+    await toFinish(tester);
+    await tester.ensureVisible(find.text('Módosítások mentése'));
+    await tester.tap(find.text('Módosítások mentése'));
     await tester.pumpAndSettle();
     expect(find.text('A mentés nem sikerült. Próbáld újra.'), findsOneWidget);
-    expect(find.text('Kezdődátum'), findsOneWidget);
     expect(controller.startDate, DateTime(2024, 3, 30));
     await tester.pumpWidget(const SizedBox());
     controller.dispose();
     await store.stream.close();
   });
+
   testWidgets('an open edit retains its original period identity', (
     tester,
   ) async {
     final store = ChangedPeriodStore();
     final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final onboarding = MemoryOnboarding(controller, store);
     await tester.pumpWidget(
-      HajnalApp(controller: controller, picker: FakePicker()),
+      HajnalApp(
+        controller: controller,
+        picker: FakePicker(),
+        onboardingStore: onboarding,
+      ),
     );
     store.stream.add(ActiveRecovery(1, DateTime(2024, 3, 30)));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
+    await openOnboarding(tester);
+    await toDate(tester, existing: true);
     store.activeId = 2;
     store.stream.add(ActiveRecovery(2, DateTime(2024, 3, 29)));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Mentés'));
+    await toFinish(tester);
+    await tester.ensureVisible(find.text('Módosítások mentése'));
+    await tester.tap(find.text('Módosítások mentése'));
     await tester.pumpAndSettle();
     expect(store.attemptedId, 1);
     expect(controller.startDate, DateTime(2024, 3, 29));

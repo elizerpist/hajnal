@@ -161,7 +161,7 @@ jobs:
           tag="hajnal-s0-${GITHUB_SHA:0:12}"
           apk="hajnal_S0_HUMAN_${GITHUB_SHA:0:12}.apk"
           mkdir -p reviewed
-          gh release download "$tag" --pattern "$apk" --pattern 'candidate.json' --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --pattern 'lock-*.png' --dir reviewed
+          gh release download "$tag" --pattern "$apk" --pattern 'candidate.json' --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'boarding-*.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --pattern 'lock-*.png' --dir reviewed
           source_attempt="$(python3 -c 'import json; print(json.load(open("reviewed/candidate.json"))["attempt"])')"
           [[ "$source_attempt" =~ ^[0-9]+$ ]]
           gh run view "$GITHUB_RUN_ID" --attempt "$source_attempt" --json headSha,headBranch,event,status,conclusion,jobs > reviewed/run.json

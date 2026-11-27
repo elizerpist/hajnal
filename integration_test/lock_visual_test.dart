@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
+import 'package:hajnal/features/onboarding/application/onboarding_draft.dart';
+import 'package:hajnal/features/onboarding/application/onboarding_store.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 import 'package:hajnal/features/app_lock/application/biometrics.dart';
 import 'package:hajnal/features/app_lock/application/device_guard.dart';
@@ -75,6 +77,37 @@ class VisualPicker implements DatePicker {
       const DatePickCancelled();
 }
 
+class VisualOnboarding implements OnboardingStore {
+  OnboardingDraft? draft;
+  @override
+  Future<OnboardingDraft> load(DateTime now) async =>
+      draft ??
+      OnboardingDraft(
+        periodId: 1,
+        date: DateTime(now.year, now.month, now.day),
+        motivation: '',
+        modules: const {},
+        sponsorName: '',
+        sponsorPhone: '',
+        completed: true,
+        baseline: const {
+          'motivation': '',
+          'modules': 0,
+          'sponsorName': '',
+          'sponsorPhone': '',
+        },
+      );
+  @override
+  Future<void> saveDraft(OnboardingDraft value) async {
+    draft = value;
+  }
+
+  @override
+  Future<void> finish(OnboardingDraft value, DateTime now) async {
+    draft = value;
+  }
+}
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   testWidgets('capture real lock screens with simulated platform responses', (
@@ -112,8 +145,42 @@ void main() {
         controller: bootstrap,
         picker: VisualPicker(),
         lock: controller,
+        onboardingStore: VisualOnboarding(),
       ),
     );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Menü'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Onboarding'));
+    await tester.pumpAndSettle();
+    await tester.runAsync(() => vg.waitForPendingDecodes());
+    await capture('boarding-welcome-1');
+    await tester.tap(find.text('Beállítások áttekintése'));
+    await capture('boarding-welcome-2');
+    await tester.tap(find.text('Tovább'));
+    await capture('boarding-welcome-3');
+    await tester.tap(find.text('Értem, tovább'));
+    await capture('boarding-date');
+    await tester.ensureVisible(find.text('Tovább'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tovább'));
+    await capture('boarding-motivation');
+    await tester.ensureVisible(find.text('Tovább'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tovább'));
+    await capture('boarding-modules');
+    await tester.tap(find.text('Szponzor'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Tovább'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tovább'));
+    await capture('boarding-sponsor');
+    await tester.tap(find.text('Igen, hozzáadom'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('sponsor-phone')));
+    await tester.pumpAndSettle();
+    await capture('boarding-sponsor-expanded');
+    await tester.tap(find.byTooltip('Bezárás'));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Menü'));
     await tester.pumpAndSettle();

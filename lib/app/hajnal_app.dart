@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PredictiveBackEvent;
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:async';
 import '../features/onboarding/application/date_picker.dart';
+import '../features/onboarding/application/onboarding_controller.dart';
+import '../features/onboarding/application/onboarding_store.dart';
 import '../core/theme/hajnal_tokens.dart';
 import '../core/artwork/artwork_source.dart';
 import '../features/dashboard/presentation/dashboard.dart';
@@ -19,12 +22,14 @@ class HajnalApp extends StatefulWidget {
     this.artwork,
     this.onRetry,
     this.lock,
+    this.onboardingStore,
   });
   final BootstrapController controller;
   final DatePicker picker;
   final ArtworkSource? artwork;
   final VoidCallback? onRetry;
   final LockController? lock;
+  final OnboardingStore? onboardingStore;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -91,6 +96,9 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) => MaterialApp(
     title: 'Hajnal',
     debugShowCheckedModeBanner: false,
+    locale: const Locale('hu'),
+    supportedLocales: const [Locale('hu')],
+    localizationsDelegates: GlobalMaterialLocalizations.delegates,
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: HajnalColors.purple),
       scaffoldBackgroundColor: HajnalColors.sheet,
@@ -108,6 +116,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       artwork: widget.artwork,
       onRetry: widget.onRetry,
       lock: widget.lock,
+      onboardingStore: widget.onboardingStore,
     ),
   );
 }
@@ -119,25 +128,39 @@ class _Bootstrap extends StatefulWidget {
     this.artwork,
     this.onRetry,
     this.lock,
+    this.onboardingStore,
   });
   final BootstrapController controller;
   final DatePicker picker;
   final ArtworkSource? artwork;
   final VoidCallback? onRetry;
   final LockController? lock;
+  final OnboardingStore? onboardingStore;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
 
 class _BootstrapState extends State<_Bootstrap> {
   bool _first = true;
+  bool _onboardingOpen = false;
   void _openOnboarding() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            Onboarding(controller: widget.controller, picker: widget.picker),
-      ),
+    final store = widget.onboardingStore;
+    if (_onboardingOpen || store == null) return;
+    _onboardingOpen = true;
+    final flow = OnboardingController(
+      store,
+      DateTime.now,
+      dayChanges: widget.controller.tracker.calendarDay,
     );
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<void>(builder: (_) => Onboarding(controller: flow)),
+        )
+        .whenComplete(() async {
+          await flow.idle;
+          flow.dispose();
+          _onboardingOpen = false;
+        });
   }
 
   void _openLockSettings() {

@@ -29,3 +29,5 @@ const dashboardArtwork = ArtworkDefinition(
   focus: 'center-top',
   placeholder: true,
 );
+
+const welcomeArtwork = 'assets/artwork/onboarding/welcome.svg';

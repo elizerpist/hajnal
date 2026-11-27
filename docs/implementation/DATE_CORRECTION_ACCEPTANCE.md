@@ -2,6 +2,8 @@
 
 Forrás: a felhasználó 2026-11-26-i feladata; régi vizuális referencia: `docs/references/source-of-truth/onboarding.png` (a naptárra a natív Android dialogra vonatkozó új utasítás irányadó); `html-prototypes/app-shell/index.html`. A felhasználó a tervet és implementációt jóváhagyta.
 
+**Történeti megjegyzés:** a 2026-11-27-i teljes onboarding-megbízás az itt dokumentált natív dialogot beágyazott Flutter-naptárral váltja fel; a korábbi ellenőrzések a megjelölt régi commitra vonatkoznak. Az aktuális állapot: `ONBOARDING_ACCEPTANCE.md`.
+
 Tulajdonosok: a RecoveryPeriod tartós igazságforrása változatlanul a Drift/SQLite. Az aktív ID és dátum a repository streamen, szerkesztési pillanatkép az onboardingnál, mentési állapot a BootstrapControllerben, származtatott napszám a DayTrackerben van. Írás: onboarding → controller → külön korrekciós use case → RecoveryStore → Drift repository → ID-ra és aktív állapotra feltételes update. Az initialize idempotens marad. A meglévő platformadapter és natív DatePickerDialog marad; Android activity theme adja a rendszeres kinézetet. A korábbi DB-fájl, artwork és applicationId változatlan. Boundary suite az importokat és a kijelölt írási tulajdonost ellenőrzi.
 
 | ID | Forrás | Terület | Elfogadás | Ellenőrzés | Állapot |

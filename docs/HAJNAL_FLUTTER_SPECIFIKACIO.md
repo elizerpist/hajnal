@@ -470,3 +470,13 @@ Dokumentációs státusz:
 Az S0 kizárólag a `docs/implementation/HAJNAL_S0_STARTER_PROMPT.md` szerinti shell, kezdődátum, helyi adattárolás, naptárkövetés és artwork-alap. A teljes alkalmazás további moduljai nem részei az S0-nak. A fix kezdőnapot időzónaváltáskor nem konvertáljuk; a mai nap a készülék helyi dátuma, a kijelzett érték a naptári különbség legalább nullára korlátozva. Az offline készülékóra változtatása visszafelé is módosíthatja a kijelzést. Ez nem manipulációbiztos időhitelesítés.
 
 Az első adatbázis-séma v1. Minden későbbi sémaváltozás megőrző migrációval és korábbi sémafixture-ön végzett teszttel kerülhet be; adatvesztő törlés és újralétrehozás nem elfogadható. Az S0 implementáció készülő állapotát a `docs/implementation/S0_ACCEPTANCE.md` követi.
+
+## 20. Teljes onboarding (2026-11-27-i felhasználói megbízás)
+
+Az aktuális flow: három welcome oldal, inline kezdődátum, személyes emlékeztető, modulválasztás és az aktív Szponzor extra esetén szponzoroldal. A hamburgerből mindig az első welcome oldal nyílik. Az első beállítás kezdődik automatikusan; a korábbi, aktív időszakkal rendelkező telepítéseket a bővítés nem kényszeríti új onboardingra. Referenciák: `docs/references/source-of-truth/boarding1.png` és `boarding2.png`; a Welcome 2-n a hivatalos `assets/brand/logo.svg` szerepel. Az első welcome az eredeti welcome SVG-t használja.
+
+A beágyazott, magyar naptár felülírja az S0 natív dialog-előírását. Mai vagy korábbi kezdődátumot fogad; a számláló a naptári különbséget mutatja. A meglévő időszak korrekciója nem hoz létre új időszakot és megőrzi az azonosítót és létrehozási időt.
+
+A személyes emlékeztető időszaktól független, opcionális. A napi reflexió, szponzor, gyűlések és lépésmunka függetlenül választható extra; kikapcsolásuk nem töröl adatot. A szponzor kézzel megadható neve kötelező, telefonszáma opcionális; a kihagyás nem törli a mentett kapcsolatot. Az alapfunkciók nem kapcsolhatók ki. Az onboarding helyi piszkozatot ment; véglegesítéskor a kapcsolódó adatok egy tranzakcióban frissülnek, csak a módosított mezőkkel és elavult időszak ellenőrzésével. Az alkalmazászár meglévő életciklus- és navigációs védelme változatlan.
+
+A tényleges megvalósítás és ellenőrzés állapotát a `docs/implementation/ONBOARDING_ACCEPTANCE.md` tartalmazza. A későbbi pánik-, szponzor- és egyéb extra képernyők, illetve az export/import ebben a feladatban nem készülnek el.

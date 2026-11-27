@@ -51,7 +51,7 @@ if [ "$ready" != true ]; then
   wait "$visual_pid" || true
   exit 1
 fi
-for name in lock-settings lock-pin-setup lock-biometric-step; do
+for name in boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded lock-settings lock-pin-setup lock-biometric-step; do
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   python3 scripts/validate_png.py "evidence/$name.png"
 done

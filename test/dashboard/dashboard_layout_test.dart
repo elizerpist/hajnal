@@ -9,6 +9,7 @@ import 'package:hajnal/core/artwork/artwork_source.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
+import '../widget_test.dart' as app_fakes;
 
 class Store implements RecoveryStore {
   final stream = StreamController<ActiveRecovery?>.broadcast();
@@ -149,30 +150,39 @@ void main() {
     controller.dispose();
     await store.stream.close();
   });
-  testWidgets(
-    'onboarding remains scroll-free without overflow on a small screen',
-    (tester) async {
-      tester.view.physicalSize = const Size(360, 800);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      final store = Store();
-      final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
-      await tester.pumpWidget(
-        MediaQuery(
-          data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
-          child: HajnalApp(controller: controller, picker: Picker()),
+  testWidgets('onboarding starts without overflow on a small screen', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final store = app_fakes.MemoryStore();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final onboarding = app_fakes.MemoryOnboarding(controller, store);
+    await tester.pumpWidget(
+      MediaQuery(
+        data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
+        child: HajnalApp(
+          controller: controller,
+          picker: Picker(),
+          onboardingStore: onboarding,
         ),
-      );
-      store.stream.add(null);
-      await tester.pumpAndSettle();
-      expect(find.text('Mentés'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox());
-      controller.dispose();
-      await store.stream.close();
-    },
-  );
+      ),
+    );
+    store.stream.add(null);
+    await tester.pumpAndSettle();
+    expect(find.text('Kezdjük el'), findsOneWidget);
+    await tester.ensureVisible(find.text('Kezdjük el'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Kezdjük el'));
+    await tester.pumpAndSettle();
+    expect(find.text('Üdv a Hajnalban!'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    controller.dispose();
+    await store.stream.close();
+  });
   testWidgets('panel fades in 180ms while card still moves for 300ms', (
     tester,
   ) async {
