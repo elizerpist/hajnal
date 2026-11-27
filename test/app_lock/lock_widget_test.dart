@@ -40,6 +40,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    expect(tester.widget<Chip>(find.byType(Chip)).shape, isA<StadiumBorder>());
     final header = tester.getRect(find.text('PIN beállítása'));
     final lock = tester.getRect(find.byType(HajnalLockIcon));
     final firstKey = tester.getRect(find.widgetWithText(OutlinedButton, '1'));

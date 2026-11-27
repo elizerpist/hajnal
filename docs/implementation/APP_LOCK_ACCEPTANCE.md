@@ -23,6 +23,8 @@ A `9ccdb25` Android-tesztjei, aláírása és adatmegőrző upgrade-je sikeres. 
 
 A `f347e02` tesztjei és frissítése sikeresek, a PIN-lakat és aláhúzás megjelent. Az overlay további elrendezési különbséget mutatott: a PIN-fejléc, vonal és gomb függőleges pozíciója; a biometrikus kártya magassága, az ikon és a leírás térköze. A három képernyő új commitból készített overlaye szükséges a jóváhagyáshoz.
 
+A `318a1d0` képein a fő elrendezési eltérések javultak, de a PIN-lépésszámláló alakja a referenciában kapszula, az alkalmazásban szögletes volt. Az új állapotot ismét a hozzá tartozó emulátoros képen kell ellenőrizni.
+
 ## Réteghatár- és Ponytail-önellenőrzés
 
 - A feloldási munkamenet egyetlen tulajdonosa a `LockController`; a meglévő `HajnalApp` observer továbbítja az életciklust. A beállítási munkafolyamat a `LockSettingsCoordinator` felelőssége, a képernyők bemenetet és navigációt adnak.

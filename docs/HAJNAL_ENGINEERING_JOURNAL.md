@@ -43,3 +43,5 @@ A `da8e90a` futásban a natív PIN-, dátum- és launcherellenőrzés, valamint 
 A `9ccdb25` futásban az összevont integráció, minden Android-teszt, az aláírás és az adatmegőrző frissítés sikeres; a vizuális ellenőrzés a PIN-lakat hiányzó kulcslyuka és a túl halvány aláhúzás miatt nem lett jóváhagyva. A publikálási job a képi jóváhagyás hiánya miatt nem adott ki APK-t.
 
 A `f347e02` futásban a 110 Flutter-teszt, a natív ellenőrzések, az aláírás és az adatmegőrző upgrade sikeres. A képi összevetés fennmaradó függőleges eltéréseket mutatott a PIN-fejlécre, a gombra és a biometrikus lépések kártyájára; a vizuális jóváhagyás és a publikálás ezért továbbra is függőben maradt.
+
+A `318a1d0` futásban a tesztek és az adatmegőrző frissítés sikeres. A képi ellenőrzés a PIN-lépésszámláló sarkainak eltérését találta; ennek kapszula alakját célzott widgetteszt védi, és a következő képi bizonyítékon is ellenőrizni kell.

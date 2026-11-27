@@ -58,6 +58,7 @@ class _PinPadState extends State<PinPad> {
                   child: Chip(
                     label: Text(widget.step!),
                     backgroundColor: HajnalColors.selectedCard,
+                    shape: const StadiumBorder(),
                     side: BorderSide.none,
                   ),
                 ),
