@@ -83,7 +83,7 @@ class OnboardingController extends ChangeNotifier {
     );
   }
 
-  void setSponsorChoice(int value) =>
+  void setSponsorChoice(SponsorChoice value) =>
       _change(_draft!.copyWith(sponsorChoice: value));
   void setSponsorName(String value) => _change(
     _draft!.copyWith(sponsorName: value, dirty: {..._draft!.dirty, 'sponsor'}),

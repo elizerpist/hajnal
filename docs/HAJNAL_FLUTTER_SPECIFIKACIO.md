@@ -480,3 +480,12 @@ A beágyazott, magyar naptár felülírja az S0 natív dialog-előírását. Mai
 A személyes emlékeztető időszaktól független, opcionális. A napi reflexió, szponzor, gyűlések és lépésmunka függetlenül választható extra; kikapcsolásuk nem töröl adatot. A szponzor kézzel megadható neve kötelező, telefonszáma opcionális; a kihagyás nem törli a mentett kapcsolatot. Az alapfunkciók nem kapcsolhatók ki. Az onboarding helyi piszkozatot ment; véglegesítéskor a kapcsolódó adatok egy tranzakcióban frissülnek, csak a módosított mezőkkel és elavult időszak ellenőrzésével. Az alkalmazászár meglévő életciklus- és navigációs védelme változatlan.
 
 A tényleges megvalósítás és ellenőrzés állapotát a `docs/implementation/ONBOARDING_ACCEPTANCE.md` tartalmazza. A későbbi pánik-, szponzor- és egyéb extra képernyők, illetve az export/import ebben a feladatban nem készülnek el.
+
+
+## 21. Globális megjelenés és onboarding pontosítása
+
+Az alkalmazás közös, verziózott stílusdefiníciókat használ. A Stílus menüben szerkesztett szövegszerepek, kártyák, gombok és térközök minden fogyasztóra érvényesek; nincs képernyőnkénti stílusprofil. A szerkesztés piszkozatban történik, az alkalmazás egyetlen validált, revisionnel védett adatbázis-mentés után változtatja meg a mentett témát. Sérült vagy hiányzó stílusadat esetén a gyári megjelenés használható, az egyéb adatok és az alkalmazászár módosítása nélkül. A betűk helyi assetek, a rendszer szövegnagyítása érvényesül.
+
+Az onboarding naptárában a fejléc év- és hónapválasztója közös panelt használ; a böngészett hónap nem változtatja meg a kijelölt kezdőnapot. A Ma gomb a kijelölést és a megjelenített hónapot is visszaállítja. A szponzoroldalon hozzáadás vagy kihagyás választható; a kihagyás nem törli a korábbi kapcsolatot, és nem kapcsolja ki a modult. A régebbi piszkozatok kétféle kihagyási értéke megőrzően olvasható.
+
+Az első welcome-oldalon a márkajelzés, a jelmondat, a műveletgomb és az offline tájékoztató marad. Hátterének felhők nélküli felső égboltja az eredeti SVG folytonos színátmenete. Az Android és iOS launcherikon ugyanabból a központi márkaassetből generálható; a launcherre alkalmazott kivágás az alkalmazáson belüli logót nem módosítja. A konkrét ellenőrzések állapotát a `docs/implementation/GLOBAL_STYLE_ACCEPTANCE.md` tartalmazza.

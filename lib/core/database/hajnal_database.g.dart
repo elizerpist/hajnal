@@ -1729,6 +1729,253 @@ class OnboardingDraftsCompanion extends UpdateCompanion<OnboardingDraft> {
   }
 }
 
+class $StyleSettingsTable extends StyleSettings
+    with TableInfo<$StyleSettingsTable, StyleSetting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StyleSettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _revisionMeta = const VerificationMeta(
+    'revision',
+  );
+  @override
+  late final GeneratedColumn<int> revision = GeneratedColumn<int>(
+    'revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
+  @override
+  late final GeneratedColumn<String> payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, revision, payload];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'style_settings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<StyleSetting> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('revision')) {
+      context.handle(
+        _revisionMeta,
+        revision.isAcceptableOrUnknown(data['revision']!, _revisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_revisionMeta);
+    }
+    if (data.containsKey('payload')) {
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  StyleSetting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StyleSetting(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      revision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}revision'],
+      )!,
+      payload: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload'],
+      )!,
+    );
+  }
+
+  @override
+  $StyleSettingsTable createAlias(String alias) {
+    return $StyleSettingsTable(attachedDatabase, alias);
+  }
+}
+
+class StyleSetting extends DataClass implements Insertable<StyleSetting> {
+  final int id;
+  final int revision;
+  final String payload;
+  const StyleSetting({
+    required this.id,
+    required this.revision,
+    required this.payload,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['revision'] = Variable<int>(revision);
+    map['payload'] = Variable<String>(payload);
+    return map;
+  }
+
+  StyleSettingsCompanion toCompanion(bool nullToAbsent) {
+    return StyleSettingsCompanion(
+      id: Value(id),
+      revision: Value(revision),
+      payload: Value(payload),
+    );
+  }
+
+  factory StyleSetting.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StyleSetting(
+      id: serializer.fromJson<int>(json['id']),
+      revision: serializer.fromJson<int>(json['revision']),
+      payload: serializer.fromJson<String>(json['payload']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'revision': serializer.toJson<int>(revision),
+      'payload': serializer.toJson<String>(payload),
+    };
+  }
+
+  StyleSetting copyWith({int? id, int? revision, String? payload}) =>
+      StyleSetting(
+        id: id ?? this.id,
+        revision: revision ?? this.revision,
+        payload: payload ?? this.payload,
+      );
+  StyleSetting copyWithCompanion(StyleSettingsCompanion data) {
+    return StyleSetting(
+      id: data.id.present ? data.id.value : this.id,
+      revision: data.revision.present ? data.revision.value : this.revision,
+      payload: data.payload.present ? data.payload.value : this.payload,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StyleSetting(')
+          ..write('id: $id, ')
+          ..write('revision: $revision, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, revision, payload);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StyleSetting &&
+          other.id == this.id &&
+          other.revision == this.revision &&
+          other.payload == this.payload);
+}
+
+class StyleSettingsCompanion extends UpdateCompanion<StyleSetting> {
+  final Value<int> id;
+  final Value<int> revision;
+  final Value<String> payload;
+  const StyleSettingsCompanion({
+    this.id = const Value.absent(),
+    this.revision = const Value.absent(),
+    this.payload = const Value.absent(),
+  });
+  StyleSettingsCompanion.insert({
+    this.id = const Value.absent(),
+    required int revision,
+    required String payload,
+  }) : revision = Value(revision),
+       payload = Value(payload);
+  static Insertable<StyleSetting> custom({
+    Expression<int>? id,
+    Expression<int>? revision,
+    Expression<String>? payload,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (revision != null) 'revision': revision,
+      if (payload != null) 'payload': payload,
+    });
+  }
+
+  StyleSettingsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? revision,
+    Value<String>? payload,
+  }) {
+    return StyleSettingsCompanion(
+      id: id ?? this.id,
+      revision: revision ?? this.revision,
+      payload: payload ?? this.payload,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (revision.present) {
+      map['revision'] = Variable<int>(revision.value);
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(payload.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StyleSettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('revision: $revision, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -1747,6 +1994,7 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   late final $OnboardingDraftsTable onboardingDrafts = $OnboardingDraftsTable(
     this,
   );
+  late final $StyleSettingsTable styleSettings = $StyleSettingsTable(this);
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
@@ -1762,6 +2010,7 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     onboardingProfiles,
     sponsorContacts,
     onboardingDrafts,
+    styleSettings,
     oneActivePeriod,
   ];
 }
@@ -2834,6 +3083,164 @@ typedef $$OnboardingDraftsTableProcessedTableManager =
       OnboardingDraft,
       PrefetchHooks Function()
     >;
+typedef $$StyleSettingsTableCreateCompanionBuilder =
+    StyleSettingsCompanion Function({
+      Value<int> id,
+      required int revision,
+      required String payload,
+    });
+typedef $$StyleSettingsTableUpdateCompanionBuilder =
+    StyleSettingsCompanion Function({
+      Value<int> id,
+      Value<int> revision,
+      Value<String> payload,
+    });
+
+class $$StyleSettingsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $StyleSettingsTable> {
+  $$StyleSettingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$StyleSettingsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $StyleSettingsTable> {
+  $$StyleSettingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get revision => $composableBuilder(
+    column: $table.revision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$StyleSettingsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $StyleSettingsTable> {
+  $$StyleSettingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get revision =>
+      $composableBuilder(column: $table.revision, builder: (column) => column);
+
+  GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+}
+
+class $$StyleSettingsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $StyleSettingsTable,
+          StyleSetting,
+          $$StyleSettingsTableFilterComposer,
+          $$StyleSettingsTableOrderingComposer,
+          $$StyleSettingsTableAnnotationComposer,
+          $$StyleSettingsTableCreateCompanionBuilder,
+          $$StyleSettingsTableUpdateCompanionBuilder,
+          (
+            StyleSetting,
+            BaseReferences<_$HajnalDatabase, $StyleSettingsTable, StyleSetting>,
+          ),
+          StyleSetting,
+          PrefetchHooks Function()
+        > {
+  $$StyleSettingsTableTableManager(
+    _$HajnalDatabase db,
+    $StyleSettingsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$StyleSettingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$StyleSettingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$StyleSettingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> revision = const Value.absent(),
+                Value<String> payload = const Value.absent(),
+              }) => StyleSettingsCompanion(
+                id: id,
+                revision: revision,
+                payload: payload,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int revision,
+                required String payload,
+              }) => StyleSettingsCompanion.insert(
+                id: id,
+                revision: revision,
+                payload: payload,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$StyleSettingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $StyleSettingsTable,
+      StyleSetting,
+      $$StyleSettingsTableFilterComposer,
+      $$StyleSettingsTableOrderingComposer,
+      $$StyleSettingsTableAnnotationComposer,
+      $$StyleSettingsTableCreateCompanionBuilder,
+      $$StyleSettingsTableUpdateCompanionBuilder,
+      (
+        StyleSetting,
+        BaseReferences<_$HajnalDatabase, $StyleSettingsTable, StyleSetting>,
+      ),
+      StyleSetting,
+      PrefetchHooks Function()
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -2850,4 +3257,6 @@ class $HajnalDatabaseManager {
       $$SponsorContactsTableTableManager(_db, _db.sponsorContacts);
   $$OnboardingDraftsTableTableManager get onboardingDrafts =>
       $$OnboardingDraftsTableTableManager(_db, _db.onboardingDrafts);
+  $$StyleSettingsTableTableManager get styleSettings =>
+      $$StyleSettingsTableTableManager(_db, _db.styleSettings);
 }

@@ -64,6 +64,14 @@ class OnboardingDrafts extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+class StyleSettings extends Table {
+  IntColumn get id => integer()();
+  IntColumn get revision => integer()();
+  TextColumn get payload => text()();
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DriftDatabase(
   tables: [
     RecoveryPeriods,
@@ -72,13 +80,14 @@ class OnboardingDrafts extends Table {
     OnboardingProfiles,
     SponsorContacts,
     OnboardingDrafts,
+    StyleSettings,
   ],
 )
 class HajnalDatabase extends _$HajnalDatabase {
   HajnalDatabase(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -99,6 +108,9 @@ class HajnalDatabase extends _$HajnalDatabase {
         await m.createTable(onboardingProfiles);
         await m.createTable(sponsorContacts);
         await m.createTable(onboardingDrafts);
+      }
+      if (from < 4) {
+        await m.createTable(styleSettings);
       }
     },
     beforeOpen: (_) async => customStatement('PRAGMA foreign_keys = ON'),

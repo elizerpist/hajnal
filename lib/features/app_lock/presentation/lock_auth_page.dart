@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/brand/brand_assets.dart';
 import '../../../core/brand/fingerprint_icon.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
+import '../../../core/theme/hajnal_components.dart';
+import '../../../core/theme/domain/style_roles.dart';
 import '../application/lock_controller.dart';
 import '../domain/lock_mode.dart';
 import 'pin_pad.dart';
@@ -66,14 +68,18 @@ class _LockAuthPageState extends State<LockAuthPage> {
         );
       }
       return Scaffold(
-        backgroundColor: HajnalColors.sheet,
+        backgroundColor: HajnalStyle.of(context).color('background'),
         appBar: widget.reauthentication
-            ? AppBar(backgroundColor: HajnalColors.sheet)
+            ? AppBar(
+                backgroundColor: HajnalStyle.of(context).color('background'),
+              )
             : null,
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) => SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(
+                horizontal: HajnalStyle.of(context).spacing('margin'),
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
@@ -88,106 +94,42 @@ class _LockAuthPageState extends State<LockAuthPage> {
                         semanticsLabel: 'Hajnal',
                       ),
                       const Spacer(flex: 15),
-                      const Text(
-                        'Jó, hogy itt vagy.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w800,
-                          color: HajnalColors.navy,
-                        ),
-                      ),
-                      const Spacer(flex: 8),
-                      const Text(
-                        'Oldd fel a Hajnalt a folytatáshoz.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: HajnalColors.navy,
-                        ),
+                      const HajnalHeading(
+                        title: 'Jó, hogy itt vagy.',
+                        subtitle: 'Oldd fel a Hajnalt a folytatáshoz.',
                       ),
                       const Spacer(flex: 30),
                       if (mode == LockMode.pinAndBiometric)
-                        Card(
-                          color: HajnalColors.card,
-                          elevation: 2,
-                          shadowColor: HajnalColors.cardShadow,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            side: const BorderSide(
-                              color: HajnalColors.keyBorder,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 28,
-                              vertical: 29,
-                            ),
-                            child: Column(
-                              children: [
-                                _step(Icons.check_circle, '1. PIN ellenőrizve'),
-                                const SizedBox(
-                                  height: 28,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 32,
-                                        child: Center(
-                                          child: VerticalDivider(
-                                            width: 1,
-                                            thickness: 1,
-                                            color: HajnalColors.purple,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                _step(
-                                  Icons.radio_button_checked,
-                                  '2. Biometrikus azonosítás',
-                                ),
-                              ],
-                            ),
+                        HajnalCard(
+                          child: Column(
+                            children: [
+                              _step(Icons.check_circle, '1. PIN ellenőrizve'),
+                              const SizedBox(height: 28),
+                              _step(
+                                Icons.radio_button_checked,
+                                '2. Biometrikus azonosítás',
+                              ),
+                            ],
                           ),
                         ),
                       const Spacer(flex: 25),
                       const HajnalFingerprint(),
                       const Spacer(flex: 8),
-                      const Text(
+                      Text(
                         'Folytasd a telefonod azonosítójával.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: HajnalColors.navy,
-                        ),
+                        style: HajnalStyle.of(context).text(TextRole.body),
                       ),
                       if (controller.message != null)
                         Text(
                           controller.message!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: HajnalColors.navy),
+                          style: HajnalStyle.of(context).text(TextRole.body),
                         ),
                       const Spacer(flex: 59),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 60,
-                        child: FilledButton(
-                          onPressed: controller.busy ? null : bio,
-                          style: FilledButton.styleFrom(
-                            backgroundColor: HajnalColors.purple,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: const Text(
-                            'Azonosítás indítása',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
+                      HajnalAction(
+                        label: 'Azonosítás indítása',
+                        onPressed: controller.busy ? null : bio,
                       ),
                       if (mode == LockMode.biometricOrPin)
                         TextButton(
@@ -197,12 +139,9 @@ class _LockAuthPageState extends State<LockAuthPage> {
                           child: const Text('PIN használata'),
                         ),
                       const Spacer(flex: 20),
-                      const Text(
+                      Text(
                         'A rendszer saját ablaka nyílik meg.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: HajnalColors.navy,
-                        ),
+                        style: HajnalStyle.of(context).text(TextRole.helper),
                       ),
                       const Spacer(flex: 21),
                     ],
@@ -217,16 +156,12 @@ class _LockAuthPageState extends State<LockAuthPage> {
   );
   Widget _step(IconData icon, String label) => Row(
     children: [
-      Icon(icon, color: HajnalColors.purple, size: 32),
+      Icon(icon, color: HajnalStyle.of(context).color('accent'), size: 32),
       const SizedBox(width: 20),
       Expanded(
         child: Text(
           label,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: HajnalColors.navy,
-          ),
+          style: HajnalStyle.of(context).text(TextRole.cardTitle),
         ),
       ),
     ],

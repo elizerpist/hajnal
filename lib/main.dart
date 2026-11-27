@@ -7,6 +7,7 @@ import 'features/app_lock/application/lock_controller.dart';
 import 'core/artwork/artwork_source.dart';
 import 'core/platform/date_picker.dart';
 import 'features/onboarding/application/onboarding_store.dart';
+import 'core/theme/application/style_controller.dart';
 
 final bootstrapProvider = Provider<BootstrapController>(
   (ref) => throw StateError('Bootstrap not initialized'),
@@ -20,6 +21,9 @@ final lockProvider = Provider<LockController>(
 final onboardingProvider = Provider<OnboardingStore>(
   (ref) => throw StateError('Onboarding not initialized'),
 );
+final styleProvider = Provider<StyleOwner>(
+  (ref) => throw StateError('Style not initialized'),
+);
 
 class _AppScope extends ConsumerWidget {
   const _AppScope({required this.onRetry});
@@ -31,6 +35,7 @@ class _AppScope extends ConsumerWidget {
     picker: PlatformDatePicker(),
     lock: ref.watch(lockProvider),
     onboardingStore: ref.watch(onboardingProvider),
+    style: ref.watch(styleProvider),
     onRetry: onRetry,
   );
 }
@@ -111,6 +116,7 @@ class _RootState extends State<_Root> {
           artworkProvider.overrideWithValue(current.artwork),
           lockProvider.overrideWithValue(current.lock),
           onboardingProvider.overrideWithValue(current.onboarding),
+          styleProvider.overrideWithValue(current.style),
         ],
         child: _AppScope(onRetry: retry),
       );

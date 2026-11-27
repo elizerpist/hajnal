@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
-import '../theme/hajnal_tokens.dart';
+import '../theme/hajnal_theme.dart';
 
 /// Decorative fingerprint shape from the approved app-lock reference.
 class HajnalFingerprint extends StatelessWidget {
   const HajnalFingerprint({super.key});
 
   @override
-  Widget build(BuildContext context) => const ExcludeSemantics(
-    child: CustomPaint(size: Size(145, 140), painter: _FingerprintPainter()),
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: CustomPaint(
+      size: const Size(145, 140),
+      painter: _FingerprintPainter(HajnalStyle.of(context).color('accent')),
+    ),
   );
 }
 
 class _FingerprintPainter extends CustomPainter {
-  const _FingerprintPainter();
+  const _FingerprintPainter(this.color);
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
     canvas.scale(size.width / 150, size.height / 145);
     final ink = Paint()
-      ..color = HajnalColors.purple
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.5
       ..strokeCap = StrokeCap.round
@@ -53,5 +57,6 @@ class _FingerprintPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _FingerprintPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _FingerprintPainter oldDelegate) =>
+      oldDelegate.color != color;
 }

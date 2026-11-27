@@ -125,30 +125,29 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final context = tester.element(find.byType(CalendarDatePicker));
+      final context = tester.element(find.byType(OnboardingCalendar));
       expect(MaterialLocalizations.of(context).firstDayOfWeekIndex, 1);
+      await tester.tap(find.byKey(const Key('calendar-month')));
+      await tester.pumpAndSettle();
       expect(
         tester
-            .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
-            .lastDate,
-        DateTime(2026, 11, 27),
+            .widget<TextButton>(find.widgetWithText(TextButton, 'december'))
+            .onPressed,
+        isNull,
       );
-      final december = tester
-          .widgetList<DropdownMenuItem<int>>(
-            find.byType(DropdownMenuItem<int>, skipOffstage: false),
-          )
-          .firstWhere((item) => item.value == 12);
-      expect(december.enabled, isFalse);
-      await tester.tap(find.text('2026'));
+      await tester.tap(find.byKey(const Key('calendar-year')));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('2025.'));
+      await tester.tap(find.text('2025.').last);
       await tester.pumpAndSettle();
-      expect(selected.year, 2025);
-      await tester.tap(find.byType(DropdownButton<int>));
+      expect(selected, DateTime(2026, 11, 27));
+      await tester.tap(find.byKey(const Key('calendar-month')));
       await tester.pumpAndSettle();
       await tester.tap(find.text('március').last);
       await tester.pumpAndSettle();
-      expect(selected.month, 3);
+      expect(selected, DateTime(2026, 11, 27));
+      await tester.tap(find.byKey(const Key('calendar-day-2025-3-15')));
+      await tester.pumpAndSettle();
+      expect(selected, DateTime(2025, 3, 15));
       await tester.tap(find.text('Ma'));
       await tester.pumpAndSettle();
       expect(selected, DateTime(2026, 11, 27));
@@ -195,7 +194,7 @@ void main() {
       controller.next();
       controller.next();
       await tester.pumpAndSettle();
-      expect(find.byType(CalendarDatePicker), findsOneWidget);
+      expect(find.byType(OnboardingCalendar), findsOneWidget);
       expect(tester.takeException(), isNull);
       await tester.ensureVisible(find.text('Tovább'));
       await tester.pumpAndSettle();
@@ -222,7 +221,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Tovább'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Igen, hozzáadom'));
+      await tester.tap(find.text('Hozzáadom a szponzoromat'));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.byKey(const Key('sponsor-name')));
       await tester.pumpAndSettle();
@@ -268,7 +267,9 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
+    expect(find.text('Hajnal'), findsOneWidget);
+    expect(find.text('Jó, hogy itt vagy.'), findsNothing);
+    expect(find.text('Lépésről lépésre, a saját tempódban.'), findsNothing);
     await tester.tap(find.text('Kezdjük el'));
     await tester.pumpAndSettle();
     expect(find.text('Üdv a Hajnalban!'), findsOneWidget);
@@ -277,7 +278,7 @@ void main() {
     expect(find.text('Fontos tudnivalók'), findsOneWidget);
     await tester.tap(find.text('Értem, tovább'));
     await tester.pumpAndSettle();
-    expect(find.byType(CalendarDatePicker), findsOneWidget);
+    expect(find.byType(OnboardingCalendar), findsOneWidget);
     await tester.ensureVisible(find.text('Tovább'));
     await tester.tap(find.text('Tovább'));
     await tester.pumpAndSettle();
@@ -293,14 +294,9 @@ void main() {
     await tester.ensureVisible(find.text('Tovább'));
     await tester.tap(find.text('Tovább'));
     await tester.pumpAndSettle();
-    expect(find.text('Van szponzorod vagy segítő személyed?'), findsOneWidget);
-    expect(
-      tester
-          .widget<RadioListTile<int>>(find.byType(RadioListTile<int>).first)
-          .controlAffinity,
-      ListTileControlAffinity.trailing,
-    );
-    await tester.tap(find.text('Igen, hozzáadom'));
+    expect(find.text('Szeretnéd hozzáadni a szponzorodat?'), findsOneWidget);
+    expect(find.text('Most kihagyom'), findsOneWidget);
+    await tester.tap(find.text('Hozzáadom a szponzoromat'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('sponsor-name')), 'Anna');
     await tester.ensureVisible(find.text('Mentés és indulás'));

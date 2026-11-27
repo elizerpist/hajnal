@@ -6,6 +6,7 @@ import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/onboarding/application/onboarding_draft.dart';
 import 'package:hajnal/features/onboarding/application/onboarding_store.dart';
+import 'package:hajnal/features/onboarding/presentation/onboarding_calendar.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 
 class MemoryStore implements RecoveryStore {
@@ -141,8 +142,8 @@ void main() {
       await tester.pumpAndSettle();
       await toDate(tester);
       tester
-          .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
-          .onDateChanged(DateTime(2024, 3, 31));
+          .widget<OnboardingCalendar>(find.byType(OnboardingCalendar))
+          .onChanged(DateTime(2024, 3, 31));
       await tester.pumpAndSettle();
       await toFinish(tester);
       await tester.ensureVisible(find.text('Mentés és indulás'));
@@ -179,7 +180,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('—'), findsOneWidget);
       await openOnboarding(tester);
-      expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
+      expect(find.text('Hajnal'), findsOneWidget);
+      expect(find.text('Jó, hogy itt vagy.'), findsNothing);
+      expect(find.text('Lépésről lépésre, a saját tempódban.'), findsNothing);
       await tester.pumpWidget(const SizedBox());
       controller.dispose();
       await store.stream.close();
@@ -204,14 +207,12 @@ void main() {
     await openOnboarding(tester);
     await toDate(tester, existing: true);
     expect(
-      tester
-          .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
-          .initialDate,
+      tester.widget<OnboardingCalendar>(find.byType(OnboardingCalendar)).date,
       DateTime(2024, 3, 30),
     );
     tester
-        .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
-        .onDateChanged(DateTime(2024, 3, 31));
+        .widget<OnboardingCalendar>(find.byType(OnboardingCalendar))
+        .onChanged(DateTime(2024, 3, 31));
     expect(controller.startDate, DateTime(2024, 3, 30));
     await tester.pumpAndSettle();
     await toFinish(tester);
@@ -264,8 +265,8 @@ void main() {
     await openOnboarding(tester);
     await toDate(tester, existing: true);
     tester
-        .widget<CalendarDatePicker>(find.byType(CalendarDatePicker))
-        .onDateChanged(DateTime(2024, 3, 31));
+        .widget<OnboardingCalendar>(find.byType(OnboardingCalendar))
+        .onChanged(DateTime(2024, 3, 31));
     await tester.pumpAndSettle();
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();

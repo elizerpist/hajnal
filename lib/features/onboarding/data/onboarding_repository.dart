@@ -49,7 +49,7 @@ class OnboardingRepository implements OnboardingStore {
       sponsorName: name,
       sponsorPhone: phone,
       completed: profile?.completed ?? (active != null),
-      sponsorChoice: sponsor == null ? 1 : 0,
+      sponsorChoice: sponsor == null ? SponsorChoice.skip : SponsorChoice.add,
       baseline: {
         'date': active?.startLocalDate,
         'motivation': motivation,
@@ -76,7 +76,7 @@ class OnboardingRepository implements OnboardingStore {
   Future<void> finish(OnboardingDraft draft, DateTime now) async {
     final date = validatedStartDate(draft.date, now);
     if (draft.modules.contains(OnboardingModule.sponsor) &&
-        draft.sponsorChoice == 0 &&
+        draft.sponsorChoice == SponsorChoice.add &&
         draft.sponsorName.trim().isEmpty) {
       throw ArgumentError('A szponzor neve kötelező.');
     }
@@ -110,7 +110,7 @@ class OnboardingRepository implements OnboardingStore {
         modules = (modules & ~changed) | (target & changed);
       }
       if (draft.dirty.contains('sponsor') &&
-          draft.sponsorChoice == 0 &&
+          draft.sponsorChoice == SponsorChoice.add &&
           draft.modules.contains(OnboardingModule.sponsor)) {
         if ((sponsor?.name ?? '') != draft.baseline['sponsorName'] ||
             (sponsor?.phone ?? '') != draft.baseline['sponsorPhone']) {

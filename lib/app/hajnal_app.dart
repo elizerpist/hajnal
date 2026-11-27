@@ -5,7 +5,9 @@ import 'dart:async';
 import '../features/onboarding/application/date_picker.dart';
 import '../features/onboarding/application/onboarding_controller.dart';
 import '../features/onboarding/application/onboarding_store.dart';
-import '../core/theme/hajnal_tokens.dart';
+import '../core/theme/application/style_controller.dart';
+import '../core/theme/hajnal_theme.dart';
+import '../core/theme/presentation/style_editor.dart';
 import '../core/artwork/artwork_source.dart';
 import '../features/dashboard/presentation/dashboard.dart';
 import '../features/onboarding/presentation/onboarding.dart';
@@ -23,6 +25,7 @@ class HajnalApp extends StatefulWidget {
     this.onRetry,
     this.lock,
     this.onboardingStore,
+    this.style,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -30,6 +33,7 @@ class HajnalApp extends StatefulWidget {
   final VoidCallback? onRetry;
   final LockController? lock;
   final OnboardingStore? onboardingStore;
+  final StyleOwner? style;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -93,20 +97,21 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
   }
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => widget.style == null
+      ? _app(hajnalTheme())
+      : ListenableBuilder(
+          listenable: widget.style!,
+          builder: (context, _) =>
+              _app(hajnalTheme(widget.style!.current.definitions)),
+        );
+
+  Widget _app(ThemeData theme) => MaterialApp(
     title: 'Hajnal',
     debugShowCheckedModeBanner: false,
     locale: const Locale('hu'),
     supportedLocales: const [Locale('hu')],
     localizationsDelegates: GlobalMaterialLocalizations.delegates,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: HajnalColors.purple),
-      scaffoldBackgroundColor: HajnalColors.sheet,
-      textTheme: ThemeData.light().textTheme.apply(
-        bodyColor: HajnalColors.navy,
-        displayColor: HajnalColors.navy,
-      ),
-    ),
+    theme: theme,
     builder: (context, child) => widget.lock == null
         ? child!
         : LockGate(controller: widget.lock!, child: child!),
@@ -117,6 +122,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       onRetry: widget.onRetry,
       lock: widget.lock,
       onboardingStore: widget.onboardingStore,
+      style: widget.style,
     ),
   );
 }
@@ -129,6 +135,7 @@ class _Bootstrap extends StatefulWidget {
     this.onRetry,
     this.lock,
     this.onboardingStore,
+    this.style,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -136,6 +143,7 @@ class _Bootstrap extends StatefulWidget {
   final VoidCallback? onRetry;
   final LockController? lock;
   final OnboardingStore? onboardingStore;
+  final StyleOwner? style;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
@@ -171,6 +179,14 @@ class _BootstrapState extends State<_Bootstrap> {
         builder: (_) => LockSettingsPage(controller: lock),
       ),
     );
+  }
+
+  void _openStyle() {
+    final owner = widget.style;
+    if (owner == null) return;
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => StyleEditor(owner: owner)));
   }
 
   @override
@@ -209,6 +225,7 @@ class _BootstrapState extends State<_Bootstrap> {
         controller: controller,
         onOnboarding: _openOnboarding,
         onLockSettings: widget.lock == null ? null : _openLockSettings,
+        onStyle: widget.style == null ? null : _openStyle,
         artwork: widget.artwork,
       );
     },

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/artwork/artwork_catalog.dart';
 import '../../../core/brand/brand_assets.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
+import '../../../core/theme/hajnal_components.dart';
+import '../../../core/theme/domain/style_roles.dart';
 import '../application/onboarding_controller.dart';
 import '../application/onboarding_draft.dart';
 import 'onboarding_calendar.dart';
@@ -95,7 +97,7 @@ class _OnboardingState extends State<Onboarding> {
           if (!didPop && !flow.saving) back();
         },
         child: Scaffold(
-          backgroundColor: HajnalColors.sheet,
+          backgroundColor: HajnalStyle.of(context).color('background'),
           body: flow.page == 0
               ? _welcomeFirst(draft)
               : SafeArea(
@@ -105,7 +107,12 @@ class _OnboardingState extends State<Onboarding> {
                       Expanded(
                         child: SingleChildScrollView(
                           key: ValueKey('onboarding-page-${flow.page}'),
-                          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                          padding: EdgeInsets.fromLTRB(
+                            HajnalStyle.of(context).spacing('margin'),
+                            0,
+                            HajnalStyle.of(context).spacing('margin'),
+                            24,
+                          ),
                           child: Center(
                             child: ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 520),
@@ -159,8 +166,12 @@ class _OnboardingState extends State<Onboarding> {
         height: 9,
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color: i == active ? HajnalColors.purple : HajnalColors.pinUnderline,
-          borderRadius: BorderRadius.circular(8),
+          color: i == active
+              ? HajnalStyle.of(context).color('accent')
+              : HajnalStyle.of(context).color('border'),
+          borderRadius: BorderRadius.circular(
+            HajnalStyle.of(context).definitions.cards[CardRole.small]!.radius,
+          ),
         ),
       ),
     ),
@@ -178,9 +189,14 @@ class _OnboardingState extends State<Onboarding> {
       SafeArea(
         child: LayoutBuilder(
           builder: (context, size) => SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(HajnalStyle.of(context).spacing('margin')),
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: size.maxHeight - 48),
+              constraints: BoxConstraints(
+                minHeight:
+                    (size.maxHeight -
+                            2 * HajnalStyle.of(context).spacing('margin'))
+                        .clamp(0, double.infinity),
+              ),
               child: IntrinsicHeight(
                 child: Column(
                   children: [
@@ -194,57 +210,30 @@ class _OnboardingState extends State<Onboarding> {
                     ),
                     SvgPicture.asset(BrandAssets.logo, width: 104, height: 104),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       'Hajnal',
-                      style: TextStyle(
-                        fontSize: 42,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: HajnalStyle.of(context).text(TextRole.brand),
                     ),
-                    const Text(
+                    Text(
                       'Csak a mai nap.',
-                      style: TextStyle(
-                        color: HajnalColors.brandAccent,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 38),
-                    const Text(
-                      'Jó, hogy itt vagy.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Lépésről lépésre, a saját tempódban.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
+                      style: HajnalStyle.of(
+                        context,
+                      ).text(TextRole.brandTagline),
                     ),
                     const Spacer(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: flow.next,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: HajnalColors.card,
-                          foregroundColor: HajnalColors.purple,
-                          minimumSize: const Size(48, 56),
-                        ),
-                        child: Text(
-                          draft.completed
-                              ? 'Beállítások áttekintése'
-                              : 'Kezdjük el',
-                        ),
-                      ),
+                    HajnalAction(
+                      label: draft.completed
+                          ? 'Beállítások áttekintése'
+                          : 'Kezdjük el',
+                      role: ButtonRole.secondary,
+                      onPressed: flow.next,
                     ),
                     const SizedBox(height: 14),
-                    const Text(
+                    Text(
                       'Fiók nélkül. Offline.',
-                      style: TextStyle(color: Colors.white),
+                      style: HajnalStyle.of(
+                        context,
+                      ).text(TextRole.artworkHelper),
                     ),
                   ],
                 ),
@@ -256,69 +245,21 @@ class _OnboardingState extends State<Onboarding> {
     ],
   );
 
-  Widget _title(String title, [String? subtitle, double bottomSpacing = 24]) =>
-      Column(
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 27,
-              fontWeight: FontWeight.w800,
-              height: 1.18,
-            ),
-          ),
-          if (subtitle != null) ...[
-            const SizedBox(height: 12),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-          SizedBox(height: bottomSpacing),
-        ],
-      );
-
-  Widget _button(String text, VoidCallback? onPressed) => SizedBox(
-    width: double.infinity,
-    child: FilledButton(
-      onPressed: flow.saving ? null : onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: HajnalColors.purple,
-        foregroundColor: Colors.white,
-        minimumSize: const Size(48, 54),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-      ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-      ),
-    ),
+  Widget _title(String title, [String? subtitle]) => Column(
+    children: [
+      HajnalHeading(title: title, subtitle: subtitle),
+      SizedBox(height: HajnalStyle.of(context).spacing('sectionGap')),
+    ],
   );
 
-  Widget _card(
-    Widget child, {
-    Color? color,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
-  }) => Container(
-    width: double.infinity,
-    margin: const EdgeInsets.only(bottom: 12),
-    padding: padding,
-    decoration: BoxDecoration(
-      color: color ?? HajnalColors.card,
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: HajnalColors.border),
-      boxShadow: const [
-        BoxShadow(
-          color: HajnalColors.cardShadow,
-          blurRadius: 8,
-          offset: Offset(0, 3),
-        ),
-      ],
+  Widget _button(String text, VoidCallback? onPressed) =>
+      HajnalAction(label: text, onPressed: flow.saving ? null : onPressed);
+
+  Widget _card(Widget child, {bool selected = false}) => Padding(
+    padding: EdgeInsets.only(
+      bottom: HajnalStyle.of(context).spacing('cardGap'),
     ),
-    child: child,
+    child: HajnalCard(selected: selected, child: child),
   );
 
   Widget _actions(OnboardingDraft draft) {
@@ -333,7 +274,12 @@ class _OnboardingState extends State<Onboarding> {
         flow.page == 6 ||
         (flow.page == 5 && !draft.modules.contains(OnboardingModule.sponsor));
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+      padding: EdgeInsets.fromLTRB(
+        HajnalStyle.of(context).spacing('margin'),
+        8,
+        HajnalStyle.of(context).spacing('margin'),
+        0,
+      ),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),
@@ -378,10 +324,10 @@ class _OnboardingState extends State<Onboarding> {
             const SizedBox(height: 30),
             SvgPicture.asset(BrandAssets.logo, width: 190, height: 190),
             const SizedBox(height: 45),
-            const Text(
+            Text(
               'Ez az alkalmazás segít, hogy minden nap egy kicsit közelebb kerülj a számodra fontos élethez.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, height: 1.4),
+              style: HajnalStyle.of(context).text(TextRole.body),
             ),
           ],
         );
@@ -414,7 +360,6 @@ class _OnboardingState extends State<Onboarding> {
             _title(
               'Mikor kezdődött a tiszta időszakod?',
               'Válaszd ki a kezdőnapot.',
-              12,
             ),
             _card(
               OnboardingCalendar(
@@ -422,27 +367,19 @@ class _OnboardingState extends State<Onboarding> {
                 today: flow.today,
                 onChanged: flow.setDate,
               ),
-              padding: const EdgeInsets.all(8),
             ),
-            _card(
-              Column(
-                children: [
-                  Text(
-                    'Ma a ${flow.cleanDayCount}. napnál tartasz.',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 17,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    'Minden eltelt éjfél egy újabb nap.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              color: HajnalColors.selectedCard,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            Column(
+              children: [
+                Text(
+                  'Ma a ${flow.cleanDayCount}. napnál tartasz.',
+                  style: HajnalStyle.of(context).text(TextRole.cardTitle),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Minden eltelt éjfél egy újabb nap.',
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             const Text(
@@ -461,10 +398,24 @@ class _OnboardingState extends State<Onboarding> {
             _card(
               TextField(
                 controller: motivation,
+                style: HajnalStyle.of(context).text(TextRole.editor),
+                textAlign: switch (HajnalStyle.of(
+                  context,
+                ).definitions.texts[TextRole.editor]!.align) {
+                  'center' => TextAlign.center,
+                  'right' => TextAlign.right,
+                  'justify' => TextAlign.justify,
+                  _ => TextAlign.left,
+                },
                 onChanged: flow.setMotivation,
                 minLines: 6,
                 maxLines: 10,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                    left: HajnalStyle.of(
+                      context,
+                    ).definitions.texts[TextRole.editor]!.indent,
+                  ),
                   labelText: 'Saját emlékeztetőm',
                   hintText: 'Miért fontos nekem a változás?',
                   floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -488,18 +439,18 @@ class _OnboardingState extends State<Onboarding> {
               'Csak azt kapcsold be, amire szükséged van.',
             ),
             _card(
-              const ListTile(
+              ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.auto_awesome),
+                leading: const Icon(Icons.auto_awesome),
                 title: Text(
                   'Mindig veled van',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: HajnalStyle.of(context).text(TextRole.cardTitle),
                 ),
                 subtitle: Text(
                   'Tiszta napok · Pánik mód\nIdővonal · Gyakorlatkártyák',
                 ),
               ),
-              color: HajnalColors.selectedCard,
+              selected: true,
             ),
             _module(
               draft,
@@ -534,8 +485,8 @@ class _OnboardingState extends State<Onboarding> {
       default:
         return Column(
           children: [
-            _title('Van szponzorod vagy segítő személyed?'),
-            RadioGroup<int>(
+            _title('Szeretnéd hozzáadni a szponzorodat?'),
+            RadioGroup<SponsorChoice>(
               groupValue: draft.sponsorChoice,
               onChanged: (v) {
                 if (v != null) flow.setSponsorChoice(v);
@@ -543,18 +494,21 @@ class _OnboardingState extends State<Onboarding> {
               child: Column(
                 children: [
                   _sponsorChoice(
-                    0,
+                    SponsorChoice.add,
                     Icons.people,
                     (draft.baseline['sponsorName'] ?? '') == ''
-                        ? 'Igen, hozzáadom'
-                        : 'Igen, szerkesztem',
+                        ? 'Hozzáadom a szponzoromat'
+                        : 'Szerkesztem a szponzorom adatait',
                   ),
-                  _sponsorChoice(1, Icons.schedule, 'Később'),
-                  _sponsorChoice(2, Icons.person_outline, 'Nincs még'),
+                  _sponsorChoice(
+                    SponsorChoice.skip,
+                    Icons.schedule,
+                    'Most kihagyom',
+                  ),
                 ],
               ),
             ),
-            if (draft.sponsorChoice == 0)
+            if (draft.sponsorChoice == SponsorChoice.add)
               _card(
                 Column(
                   children: [
@@ -584,7 +538,7 @@ class _OnboardingState extends State<Onboarding> {
               ),
             const SizedBox(height: 8),
             const Text(
-              'A kapcsolatot később is szerkesztheted.',
+              'Szponzort később is hozzáadhatsz a Szponzor menüben.',
               textAlign: TextAlign.center,
             ),
           ],
@@ -596,16 +550,13 @@ class _OnboardingState extends State<Onboarding> {
     Row(
       children: [
         CircleAvatar(
-          backgroundColor: HajnalColors.purple,
-          foregroundColor: Colors.white,
+          backgroundColor: HajnalStyle.of(context).color('accent'),
+          foregroundColor: HajnalStyle.of(context).color('onAccent'),
           child: Icon(icon),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          ),
+          child: Text(text, style: HajnalStyle.of(context).text(TextRole.body)),
         ),
       ],
     ),
@@ -617,24 +568,30 @@ class _OnboardingState extends State<Onboarding> {
     IconData icon,
     String title,
     String subtitle,
-  ) => _card(
-    CheckboxListTile(
-      contentPadding: EdgeInsets.zero,
-      secondary: Icon(icon, color: HajnalColors.purple),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(subtitle),
-      value: draft.modules.contains(module),
-      onChanged: (value) => flow.setModule(module, value ?? false),
+  ) => Padding(
+    padding: EdgeInsets.only(
+      bottom: HajnalStyle.of(context).spacing('cardGap'),
+    ),
+    child: HajnalChoiceCard(
+      icon: icon,
+      title: title,
+      subtitle: subtitle,
+      multiple: true,
+      selected: draft.modules.contains(module),
+      onTap: () => flow.setModule(module, !draft.modules.contains(module)),
     ),
   );
 
-  Widget _sponsorChoice(int value, IconData icon, String label) => _card(
-    RadioListTile<int>(
-      contentPadding: EdgeInsets.zero,
-      secondary: Icon(icon, color: HajnalColors.purple),
-      controlAffinity: ListTileControlAffinity.trailing,
-      title: Text(label),
-      value: value,
-    ),
-  );
+  Widget _sponsorChoice(SponsorChoice value, IconData icon, String label) =>
+      Padding(
+        padding: EdgeInsets.only(
+          bottom: HajnalStyle.of(context).spacing('cardGap'),
+        ),
+        child: HajnalChoiceCard(
+          icon: icon,
+          title: label,
+          selected: flow.draft!.sponsorChoice == value,
+          onTap: () => flow.setSponsorChoice(value),
+        ),
+      );
 }

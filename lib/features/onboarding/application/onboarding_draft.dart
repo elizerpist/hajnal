@@ -2,6 +2,8 @@ import 'dart:convert';
 
 enum OnboardingModule { reflection, sponsor, meetings, steps }
 
+enum SponsorChoice { add, skip }
+
 class OnboardingDraft {
   OnboardingDraft({
     required this.periodId,
@@ -13,7 +15,7 @@ class OnboardingDraft {
     required this.completed,
     required Map<String, Object?> baseline,
     Set<String> dirty = const {},
-    this.sponsorChoice = 1,
+    this.sponsorChoice = SponsorChoice.skip,
   }) : modules = Set.unmodifiable(modules),
        baseline = Map.unmodifiable(baseline),
        dirty = Set.unmodifiable(dirty);
@@ -27,7 +29,7 @@ class OnboardingDraft {
   final bool completed;
   final Map<String, Object?> baseline;
   final Set<String> dirty;
-  final int sponsorChoice;
+  final SponsorChoice sponsorChoice;
 
   OnboardingDraft copyWith({
     DateTime? date,
@@ -36,7 +38,7 @@ class OnboardingDraft {
     String? sponsorName,
     String? sponsorPhone,
     Set<String>? dirty,
-    int? sponsorChoice,
+    SponsorChoice? sponsorChoice,
   }) => OnboardingDraft(
     periodId: periodId,
     date: date ?? this.date,
@@ -60,7 +62,7 @@ class OnboardingDraft {
     'completed': completed,
     'baseline': baseline,
     'dirty': dirty.toList(),
-    'sponsorChoice': sponsorChoice,
+    'sponsorChoice': sponsorChoice.name,
   });
 
   factory OnboardingDraft.decode(String data) {
@@ -77,7 +79,11 @@ class OnboardingDraft {
       completed: json['completed'] as bool,
       baseline: Map<String, Object?>.from(json['baseline'] as Map),
       dirty: Set<String>.from(json['dirty'] as List),
-      sponsorChoice: json['sponsorChoice'] as int,
+      sponsorChoice: switch (json['sponsorChoice']) {
+        0 || 'add' => SponsorChoice.add,
+        1 || 2 || 'skip' => SponsorChoice.skip,
+        _ => throw const FormatException('Invalid sponsor choice'),
+      },
     );
   }
 }

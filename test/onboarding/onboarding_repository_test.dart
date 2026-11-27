@@ -66,7 +66,7 @@ void main() {
         modules: {OnboardingModule.sponsor},
         sponsorName: 'Anna',
         sponsorPhone: '+361234',
-        sponsorChoice: 0,
+        sponsorChoice: SponsorChoice.add,
         dirty: {'date', 'motivation', 'modules', 'sponsor'},
       );
       await repository.saveDraft(draft);
@@ -114,7 +114,7 @@ void main() {
         motivation: 'Új',
         modules: {OnboardingModule.sponsor},
         sponsorName: 'Nem menthető',
-        sponsorChoice: 0,
+        sponsorChoice: SponsorChoice.add,
         dirty: {'date', 'motivation', 'modules', 'sponsor'},
       );
       await repository.saveDraft(draft);
@@ -157,7 +157,7 @@ void main() {
       );
       draft = draft.copyWith(
         modules: {OnboardingModule.sponsor},
-        sponsorChoice: 1,
+        sponsorChoice: SponsorChoice.skip,
         dirty: {'modules'},
       );
       await repository.finish(draft, now);

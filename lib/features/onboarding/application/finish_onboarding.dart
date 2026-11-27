@@ -9,7 +9,7 @@ class FinishOnboarding {
   Future<void> call(OnboardingDraft draft, DateTime now) {
     validatedStartDate(draft.date, now);
     if (draft.modules.contains(OnboardingModule.sponsor) &&
-        draft.sponsorChoice == 0 &&
+        draft.sponsorChoice == SponsorChoice.add &&
         draft.sponsorName.trim().isEmpty) {
       throw ArgumentError('A szponzor neve kötelező.');
     }

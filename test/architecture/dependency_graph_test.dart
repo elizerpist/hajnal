@@ -28,6 +28,7 @@ class MutationCalls extends RecursiveAstVisitor<void> {
           'sponsorContacts',
           'onboardingProfiles',
           'onboardingDrafts',
+          'styleSettings',
         ]) {
           if (expression.endsWith('.$table')) dbTables.add(table);
         }
@@ -129,6 +130,7 @@ bool allowed(String source, String target) {
       source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
+      source != 'lib/core/theme/data/style_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
   }
@@ -176,10 +178,11 @@ bool allowed(String source, String target) {
           target == 'lib/core/artwork/artwork_service.dart')) {
     return false;
   }
-  // LockMode is an immutable view contract, never a domain engine.
+  // These enum-only role files are immutable view contracts, not engines.
   if (presentation &&
       target.contains('/domain/') &&
-      target != 'lib/features/app_lock/domain/lock_mode.dart') {
+      target != 'lib/features/app_lock/domain/lock_mode.dart' &&
+      target != 'lib/core/theme/domain/style_roles.dart') {
     return false;
   }
   if (application &&
@@ -194,6 +197,7 @@ bool allowed(String source, String target) {
       source != 'lib/core/artwork/drift_artwork_store.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
+      source != 'lib/core/theme/data/style_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
     return false;
   }
@@ -334,6 +338,7 @@ void main() {
       'lib/features/sponsor/data/sponsor_repository.dart',
       'lib/features/app_lock/data/lock_repository.dart',
       'lib/core/artwork/drift_artwork_store.dart',
+      'lib/core/theme/data/style_repository.dart',
     };
     const fileOwner = 'lib/core/artwork/artwork_service.dart';
     const fileMutations = {
@@ -369,6 +374,7 @@ void main() {
             'lib/features/onboarding/data/onboarding_repository.dart',
         'onboardingDrafts':
             'lib/features/onboarding/data/onboarding_repository.dart',
+        'styleSettings': 'lib/core/theme/data/style_repository.dart',
       };
       for (final table in visitor.dbTables) {
         expect(file.path, tableOwners[table], reason: 'write owner of $table');

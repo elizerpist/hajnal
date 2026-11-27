@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
 import '../application/lock_controller.dart';
 import 'lock_auth_page.dart';
 
@@ -22,7 +22,7 @@ class LockGate extends StatelessWidget {
           ),
           if (hidden)
             ColoredBox(
-              color: HajnalColors.sheet,
+              color: HajnalStyle.of(context).color('background'),
               child: controller.obscured || controller.loading
                   ? const Center(child: CircularProgressIndicator())
                   : controller.error

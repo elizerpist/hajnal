@@ -140,7 +140,7 @@ void main() {
         modules: {OnboardingModule.sponsor},
         sponsorName: '',
         sponsorPhone: '',
-        sponsorChoice: 0,
+        sponsorChoice: SponsorChoice.add,
         completed: false,
         baseline: const {},
       );

@@ -90,17 +90,21 @@ class VisualReviewTest(unittest.TestCase):
     def test_checks_exact_commit_images_and_dimensions(self):
         with TemporaryDirectory() as temporary:
             directory = Path(temporary)
-            png = b'\x89PNG\r\n\x1a\n' + b'\0' * 8 + struct.pack('>II', 412, 892)
+            images = {}
             for filename in SCREENSHOTS:
+                size = (288, 288) if filename.startswith('launcher-mask-') else (
+                    (618, 1338) if filename == 'calendar-density240.png' else (412, 892))
+                png = b'\x89PNG\r\n\x1a\n' + b'\0' * 8 + struct.pack('>II', *size)
+                images[filename] = png
                 (directory / filename).write_bytes(png)
             review = {'commit': 'a' * 40, 'verdict': 'approved',
                       'notes': 'Compared the reference and app geometry, colors, and open state.',
-                      'screenshots': {name: hashlib.sha256(png).hexdigest() for name in SCREENSHOTS}}
+                      'screenshots': {name: hashlib.sha256(images[name]).hexdigest() for name in SCREENSHOTS}}
             (directory / 'visual-review.json').write_text(json.dumps(review))
             check(temporary, 'a' * 40)
             with self.assertRaises(ValueError):
                 check(temporary, 'b' * 40)
-            (directory / SCREENSHOTS[0]).write_bytes(png + b'changed')
+            (directory / SCREENSHOTS[0]).write_bytes(images[SCREENSHOTS[0]] + b'changed')
             with self.assertRaises(ValueError):
                 check(temporary, 'a' * 40)
 
@@ -153,7 +157,7 @@ path.write_text(json.dumps(s))
                 subprocess.run(['bash', str(script)], cwd=root, env=env, check=True, capture_output=True)
             result = json.loads(state.read_text())
             self.assertEqual(result['creates'], 1)
-            self.assertEqual(len(result['assets']), 43)
+            self.assertEqual(set(result['assets']), {file.name for file in (root / 'evidence').iterdir()})
             result['target'] = 'b' * 40
             state.write_text(json.dumps(result))
             self.assertNotEqual(subprocess.run(['bash', str(script)], cwd=root, env=env,

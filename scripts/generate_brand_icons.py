@@ -16,7 +16,7 @@ def render(path, size, *, background=None, content=None):
     offset = (size - content) / 2
     args = ['rsvg-convert', '--width', str(content), '--height', str(content),
             '--page-width', str(size), '--page-height', str(size),
-            '--left', str(offset), '--top', str(offset)]
+            f'--left={offset}', f'--top={offset}']
     if background:
         args += ['--background-color', background]
     subprocess.run([*args, '--output', str(path), str(logo)], check=True)
@@ -24,12 +24,15 @@ def render(path, size, *, background=None, content=None):
 
 for density, size in [('mdpi', 48), ('hdpi', 72), ('xhdpi', 96),
                       ('xxhdpi', 144), ('xxxhdpi', 192)]:
-    render(android / f'mipmap-{density}/ic_launcher.png', size, background='#1d1e53')
+    # Cover the system mask with the source artwork, excluding its transparent rim.
+    render(android / f'mipmap-{density}/ic_launcher.png', size,
+           background='#1d1e53', content=round(size * 1.6))
     canvas = size * 9 // 4
-    render(android / f'mipmap-{density}/ic_launcher_foreground.png', canvas, content=size * 3 // 2)
+    render(android / f'mipmap-{density}/ic_launcher_foreground.png', canvas,
+           content=round(canvas * 1.25))
 
 catalog = json.loads((ios / 'Contents.json').read_text())
 for item in catalog['images']:
     points = float(item['size'].split('x')[0])
     pixels = round(points * int(item['scale'][0]))
-    render(ios / item['filename'], pixels, background='#1d1e53')
+    render(ios / item['filename'], pixels, background='#1d1e53', content=round(pixels * 1.6))

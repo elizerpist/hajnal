@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
-import '../theme/hajnal_tokens.dart';
+import '../theme/hajnal_theme.dart';
+import '../theme/hajnal_components.dart';
 
 class HajnalBackButton extends StatelessWidget {
   const HajnalBackButton({super.key});
 
   @override
-  Widget build(BuildContext context) => IconButton(
-    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+  Widget build(BuildContext context) => HajnalNavigationIcon(
+    label: MaterialLocalizations.of(context).backButtonTooltip,
     onPressed: () => Navigator.maybePop(context),
-    icon: const Icon(CupertinoIcons.chevron_back, color: HajnalColors.navy),
+    icon: CupertinoIcons.chevron_back,
   );
 }
 
@@ -18,10 +19,12 @@ class HajnalKeyIcon extends StatelessWidget {
   const HajnalKeyIcon({super.key});
 
   @override
-  Widget build(BuildContext context) => const SizedBox(
+  Widget build(BuildContext context) => SizedBox(
     width: 30,
     height: 30,
-    child: CustomPaint(painter: _KeyPainter()),
+    child: CustomPaint(
+      painter: _KeyPainter(HajnalStyle.of(context).color('accent')),
+    ),
   );
 }
 
@@ -29,21 +32,24 @@ class HajnalLockIcon extends StatelessWidget {
   const HajnalLockIcon({super.key});
 
   @override
-  Widget build(BuildContext context) => const SizedBox(
+  Widget build(BuildContext context) => SizedBox(
     width: 54,
     height: 54,
-    child: CustomPaint(painter: _LockPainter()),
+    child: CustomPaint(
+      painter: _LockPainter(HajnalStyle.of(context).color('primary')),
+    ),
   );
 }
 
 class _LockPainter extends CustomPainter {
-  const _LockPainter();
+  const _LockPainter(this.color);
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.scale(size.width / 54, size.height / 54);
     final stroke = Paint()
-      ..color = HajnalColors.navy
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round;
@@ -62,26 +68,23 @@ class _LockPainter extends CustomPainter {
         ..lineTo(40, 23),
       stroke,
     );
-    canvas.drawCircle(
-      const Offset(27, 35),
-      3,
-      Paint()..color = HajnalColors.navy,
-    );
+    canvas.drawCircle(const Offset(27, 35), 3, Paint()..color = color);
     canvas.drawLine(const Offset(27, 37), const Offset(27, 43), stroke);
   }
 
   @override
-  bool shouldRepaint(_LockPainter oldDelegate) => false;
+  bool shouldRepaint(_LockPainter oldDelegate) => oldDelegate.color != color;
 }
 
 class _KeyPainter extends CustomPainter {
-  const _KeyPainter();
+  const _KeyPainter(this.color);
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.scale(size.width / 30, size.height / 30);
     final stroke = Paint()
-      ..color = HajnalColors.purple
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
       ..strokeJoin = StrokeJoin.round
@@ -107,5 +110,5 @@ class _KeyPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_KeyPainter oldDelegate) => false;
+  bool shouldRepaint(_KeyPainter oldDelegate) => oldDelegate.color != color;
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
+import '../../../core/theme/hajnal_components.dart';
+import '../../../core/theme/domain/style_roles.dart';
 import '../../../core/brand/security_icons.dart';
 import '../application/biometrics.dart';
 import '../application/lock_controller.dart';
@@ -94,10 +96,10 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: HajnalColors.sheet,
+    backgroundColor: HajnalStyle.of(context).color('background'),
     appBar: AppBar(
-      backgroundColor: HajnalColors.sheet,
-      foregroundColor: HajnalColors.navy,
+      backgroundColor: HajnalStyle.of(context).color('background'),
+      foregroundColor: HajnalStyle.of(context).color('primary'),
       leading: Navigator.canPop(context) ? const HajnalBackButton() : null,
     ),
     body: SafeArea(
@@ -106,25 +108,16 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
         builder: (context, _) {
           final c = widget.controller;
           return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(
+              horizontal: HajnalStyle.of(context).spacing('margin'),
+            ),
             children: [
               const SizedBox(height: 8),
-              const Text(
-                'Alkalmazászár',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 33,
-                  fontWeight: FontWeight.w800,
-                  color: HajnalColors.navy,
-                ),
+              const HajnalHeading(
+                title: 'Alkalmazászár',
+                subtitle: 'Te döntöd el, hogyan lépsz be.',
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Te döntöd el, hogyan lépsz be.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, color: HajnalColors.navy),
-              ),
-              const SizedBox(height: 32),
+              SizedBox(height: HajnalStyle.of(context).spacing('sectionGap')),
               _card(LockMode.off, 'Kikapcsolva', 'Belépés azonosítás nélkül'),
               _card(LockMode.pin, 'Csak PIN', 'Legalább 6 számjegy'),
               _card(
@@ -139,63 +132,42 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
               ),
               if (availability != null &&
                   availability != BiometricResult.success)
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     'A biometria nem érhető el, vagy nincs beállítva.',
-                    style: TextStyle(color: HajnalColors.navy),
+                    style: HajnalStyle.of(context).text(TextRole.helper),
                   ),
                 ),
               const SizedBox(height: 14),
-              const Text(
+              Text(
                 'Zárolás minden visszatéréskor.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: HajnalColors.navy),
+                style: HajnalStyle.of(context).text(TextRole.body),
               ),
               const SizedBox(height: 28),
               if (c.mode != LockMode.off)
-                Card(
-                  color: HajnalColors.card,
-                  elevation: 2,
-                  shadowColor: HajnalColors.cardShadow,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    side: const BorderSide(color: HajnalColors.keyBorder),
-                  ),
-                  child: ListTile(
-                    minTileHeight: 72,
-                    leading: const HajnalKeyIcon(),
-                    title: const Text(
-                      'PIN módosítása',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: HajnalColors.navy,
-                      ),
-                    ),
-                    trailing: const Icon(
-                      Icons.chevron_right,
-                      color: HajnalColors.navy,
-                    ),
-                    onTap: c.busy || changing
-                        ? null
-                        : () => choose(c.mode, changePin: true),
-                  ),
+                HajnalNavigationRow(
+                  label: 'PIN módosítása',
+                  leading: const HajnalKeyIcon(),
+                  onTap: c.busy || changing
+                      ? null
+                      : () => choose(c.mode, changePin: true),
                 ),
               const SizedBox(height: 22),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.lock_outline, size: 18, color: HajnalColors.navy),
-                  SizedBox(width: 8),
+                  Icon(
+                    Icons.lock_outline,
+                    size: 18,
+                    color: HajnalStyle.of(context).color('primary'),
+                  ),
+                  const SizedBox(width: 8),
                   Flexible(
                     child: Text(
                       'Az azonosítás a készülékeden történik.',
-                      style: TextStyle(
-                        color: HajnalColors.navy,
-                        fontSize: 16,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      style: HajnalStyle.of(context).text(TextRole.helper),
                     ),
                   ),
                 ],
@@ -210,64 +182,15 @@ class _LockSettingsPageState extends State<LockSettingsPage> {
   Widget _card(LockMode mode, String title, String description) {
     final selected = widget.controller.mode == mode;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Semantics(
+      padding: EdgeInsets.only(
+        bottom: HajnalStyle.of(context).spacing('cardGap'),
+      ),
+      child: HajnalChoiceCard(
+        title: title,
+        subtitle: description,
         selected: selected,
-        checked: selected,
-        inMutuallyExclusiveGroup: true,
-        button: true,
-        child: Material(
-          color: selected ? HajnalColors.selectedCard : HajnalColors.card,
-          elevation: 2,
-          shadowColor: HajnalColors.cardShadow,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-            side: const BorderSide(color: HajnalColors.keyBorder),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(18),
-            onTap: widget.controller.busy || changing
-                ? null
-                : () => choose(mode),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            color: HajnalColors.navy,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          description,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: HajnalColors.navy,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(
-                    selected
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_unchecked,
-                    color: HajnalColors.purple,
-                    size: 28,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        role: CardRole.large,
+        onTap: widget.controller.busy || changing ? null : () => choose(mode),
       ),
     );
   }

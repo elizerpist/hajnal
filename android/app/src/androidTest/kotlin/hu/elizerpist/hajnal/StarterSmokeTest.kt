@@ -18,6 +18,8 @@ import org.junit.runner.RunWith
 import java.io.File
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
 class StarterSmokeTest {
@@ -80,7 +82,7 @@ class StarterSmokeTest {
             }
         }
     }
-    private fun menuOnboarding() { click("Menü"); click("Onboarding"); assertNotNull(find("Jó, hogy itt vagy.")) }
+    private fun menuOnboarding() { click("Menü"); click("Onboarding"); assertNotNull(find("Csak a mai nap.")) }
     private fun clickScrolling(label: String) {
         repeat(5) {
             val item = device.findObject(By.textContains(label)) ?: device.findObject(By.descContains(label))
@@ -100,6 +102,10 @@ class StarterSmokeTest {
     private fun finishOnboarding(editing: Boolean) {
         clickScrolling("Tovább")
         clickScrolling("Később írom meg")
+        if (device.findObject(By.text("Tovább")) != null || device.findObject(By.desc("Tovább")) != null) {
+            clickScrolling("Tovább")
+            clickScrolling("Most kihagyom")
+        }
         clickScrolling(if (editing) "Módosítások mentése" else "Mentés és indulás")
         assertNotNull(find("Tiszta napok"))
     }
@@ -125,7 +131,7 @@ class StarterSmokeTest {
     }
 
     @Test fun nativePickerPersistenceAndNavigation() {
-        launch(); assertNotNull(find("Jó, hogy itt vagy.")); screenshot("onboarding")
+        launch(); assertNotNull(find("Csak a mai nap.")); screenshot("onboarding")
         newCalendar(false); screenshot("picker-open"); clickScrolling("Ma")
         device.setOrientationLeft(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))
         device.setOrientationNatural(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))
@@ -146,6 +152,19 @@ class StarterSmokeTest {
         launch(); assertNotNull(find("Tiszta napok")); newCalendar(true)
         screenshot("picker-night"); click("Bezárás")
     }
+
+    private fun calendarDensity(name: String) {
+        launch(); assertNotNull(find("Tiszta napok")); newCalendar(true)
+        val now = LocalDate.now(); val previous = now.minusDays(1)
+        if (previous.month != now.month) clickScrolling("Előző hónap")
+        val label = previous.format(DateTimeFormatter.ofPattern("yyyy. MMMM d.", Locale("hu", "HU")))
+        clickScrolling(label)
+        if (previous.month != now.month) clickScrolling("Következő hónap")
+        screenshot(name); click("Bezárás")
+    }
+
+    @Test fun calendarDensity160() = calendarDensity("calendar-density160")
+    @Test fun calendarDensity240() = calendarDensity("calendar-density240")
 
     private fun digit(value: String) {
         val key = device.wait(Until.findObject(By.desc(value)), 5000)
@@ -178,32 +197,65 @@ class StarterSmokeTest {
         screenshot("lock-launcher")
     }
 
+    private fun extraState(): String {
+        val db = SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READONLY)
+        return db.use { sql ->
+            listOf(
+                "SELECT motivation, modules, completed FROM onboarding_profiles WHERE id=1",
+                "SELECT name, phone FROM sponsor_contacts WHERE id=1",
+                "SELECT mode, credential_slot FROM lock_settings WHERE id=1"
+            ).joinToString("|") { query ->
+                sql.rawQuery(query, null).use { cursor ->
+                    assertTrue(cursor.moveToFirst())
+                    (0 until cursor.columnCount).joinToString(":") { cursor.getString(it) ?: "" }
+                }
+            }
+        }
+    }
+
     @Test fun prepareUpgrade() {
-        launch(); assertNotNull(find("Kezdődátum")); openPicker("picker-before-upgrade")
-        click("OK"); click("Mentés"); assertNotNull(find("Tiszta napok"))
+        launch(); newCalendar(false); screenshot("picker-before-upgrade")
+        File(context.getExternalFilesDir(null), "picker-before-upgrade-theme.txt").writeText("Flutter inline calendar")
+        clickScrolling("Ma"); finishOnboarding(false)
+        SQLiteDatabase.openDatabase(dbFile.path, null, SQLiteDatabase.OPEN_READWRITE).use { db ->
+            db.execSQL("UPDATE onboarding_profiles SET motivation=?, modules=? WHERE id=1", arrayOf("Upgrade teszt", 3))
+            db.execSQL("INSERT OR REPLACE INTO sponsor_contacts (id,name,phone) VALUES (1,?,?)", arrayOf("Teszt szponzor", "+36123456"))
+        }
+        click("Menü"); click("Alkalmazászár"); click("Csak PIN")
+        enterPin(); click("Tovább"); enterPin(); click("Tovább")
+        assertNotNull(find("PIN módosítása")); device.pressBack(); assertNotNull(find("Tiszta napok"))
         installArtworkFixture(); state.writeText(period()); assertArtwork()
+        File(context.filesDir, "upgrade-extra-before.txt").writeText(extraState())
     }
 
     @Test fun verifyUpgradeAndCorrect() {
-        launch(); assertNotNull(find("Tiszta napok")); assertEquals(state.readText(), period()); assertArtwork()
+        launch(); assertNotNull(find("Add meg a PIN-kódod")); enterPin(); click("Feloldás")
+        assertNotNull(find("Tiszta napok")); assertEquals(state.readText(), period()); assertArtwork()
+        assertEquals(File(context.filesDir, "upgrade-extra-before.txt").readText(), extraState())
         newCalendar(true); screenshot("picker-after-upgrade")
         File(context.getExternalFilesDir(null), "picker-after-upgrade-theme.txt").writeText("Flutter inline calendar")
         val year = LocalDate.now().year
-        val yearButton = device.wait(Until.findObject(By.desc(year.toString())), 10000)
-            ?: device.wait(Until.findObject(By.text(year.toString())), 10000)
+        val yearButton = device.wait(Until.findObject(By.desc("$year.")), 10000)
+            ?: device.wait(Until.findObject(By.text("$year.")), 10000)
         assertNotNull("Quick year selector", yearButton); yearButton!!.click()
-        assertNotNull(find("Év kiválasztása"))
-        click((year - 1).toString())
+        click("${year - 1}.")
+        assertEquals(state.readText(), period())
+        val chosen = LocalDate.of(year - 1, LocalDate.now().month, 15)
+            .format(DateTimeFormatter.ofPattern("yyyy. MMMM d.", Locale("hu", "HU")))
+        clickScrolling(chosen)
         finishOnboarding(true)
         val before = state.readText().split('|'); val after = period().split('|')
         assertEquals(before[0], after[0]); assertEquals(before[2], after[2]); assertNotEquals(before[1], after[1])
         val days = ChronoUnit.DAYS.between(LocalDate.parse(after[1]), LocalDate.now()).coerceAtLeast(0)
         assertNotNull(find(days.toString())); assertArtwork()
+        assertEquals(File(context.filesDir, "upgrade-extra-before.txt").readText(), extraState())
         File(context.filesDir, "upgrade-after.txt").writeText(period())
     }
 
     @Test fun verifyCorrectedRelaunch() {
-        launch(); assertNotNull(find("Tiszta napok"))
+        launch(); assertNotNull(find("Add meg a PIN-kódod")); enterPin(); click("Feloldás")
+        assertNotNull(find("Tiszta napok"))
         assertEquals(File(context.filesDir, "upgrade-after.txt").readText(), period()); assertArtwork()
+        assertEquals(File(context.filesDir, "upgrade-extra-before.txt").readText(), extraState())
     }
 }

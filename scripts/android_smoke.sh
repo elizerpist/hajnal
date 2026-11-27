@@ -24,6 +24,16 @@ adb shell cmd uimode night yes
 adb shell am force-stop hu.elizerpist.hajnal
 run_test nightPicker evidence/android-night-test.log
 adb shell cmd uimode night no
+run_test calendarDensity160 evidence/calendar-density160-test.log
+adb exec-out run-as hu.elizerpist.hajnal cat files/calendar-density160.png > evidence/calendar-density160.png
+python3 scripts/validate_png.py evidence/calendar-density160.png
+adb shell wm size 618x1338
+adb shell wm density 240
+run_test calendarDensity240 evidence/calendar-density240-test.log
+adb exec-out run-as hu.elizerpist.hajnal cat files/calendar-density240.png > evidence/calendar-density240.png
+python3 scripts/validate_png.py evidence/calendar-density240.png
+adb shell wm size 412x892
+adb shell wm density 160
 run_test appLockPinAndBackground evidence/lock-native-test.log
 run_test launcherIcon evidence/lock-launcher-test.log
 for name in onboarding dashboard-closed dashboard-open picker-open picker-night lock-real-setup lock-launcher; do
@@ -51,7 +61,7 @@ if [ "$ready" != true ]; then
   wait "$visual_pid" || true
   exit 1
 fi
-for name in boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded lock-settings lock-pin-setup lock-biometric-step; do
+for name in boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded calendar-years calendar-months calendar-today-outline style-editor style-preview-card style-onboarding style-lock lock-settings lock-pin-setup lock-biometric-step; do
   adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
   python3 scripts/validate_png.py "evidence/$name.png"
 done

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/app/hajnal_app.dart';
+import 'package:hajnal/features/onboarding/presentation/onboarding_calendar.dart';
 import 'package:hajnal/features/app_lock/application/lock_controller.dart';
 import 'package:hajnal/features/app_lock/domain/lock_mode.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
@@ -42,7 +43,7 @@ void main() {
     await tester.tap(find.text('Onboarding'));
     await tester.pumpAndSettle();
     await app_fakes.toDate(tester, existing: true);
-    expect(find.byType(CalendarDatePicker), findsOneWidget);
+    expect(find.byType(OnboardingCalendar), findsOneWidget);
     await tester.ensureVisible(find.text('Tovább'));
     await tester.tap(find.text('Tovább'));
     await tester.pumpAndSettle();

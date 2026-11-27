@@ -3,7 +3,9 @@ import '../../../app/bootstrap_controller.dart';
 import '../../../core/artwork/artwork_source.dart';
 import '../../../core/artwork/artwork_catalog.dart';
 import '../../../core/artwork/artwork_view.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
+import '../../../core/theme/domain/style_roles.dart';
+import '../../../core/theme/hajnal_components.dart';
 import 'dashboard_layout.dart';
 
 class Dashboard extends StatefulWidget {
@@ -12,11 +14,13 @@ class Dashboard extends StatefulWidget {
     required this.controller,
     required this.onOnboarding,
     this.onLockSettings,
+    this.onStyle,
     this.artwork,
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
   final VoidCallback? onLockSettings;
+  final VoidCallback? onStyle;
   final ArtworkSource? artwork;
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -84,23 +88,37 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       key: scaffoldKey,
       extendBodyBehindAppBar: true,
       drawer: Drawer(
+        backgroundColor: HajnalStyle.of(context).color('background'),
         child: SafeArea(
           child: ListView(
+            padding: EdgeInsets.all(HajnalStyle.of(context).spacing('margin')),
             children: [
-              ListTile(
-                title: const Text('Onboarding'),
+              HajnalNavigationRow(
+                label: 'Onboarding',
                 onTap: () {
                   Navigator.pop(context);
                   widget.onOnboarding();
                 },
               ),
-              if (widget.onLockSettings != null)
-                ListTile(
+              SizedBox(height: HajnalStyle.of(context).spacing('cardGap')),
+              if (widget.onLockSettings != null) ...[
+                HajnalNavigationRow(
+                  label: 'Alkalmazászár',
                   leading: const Icon(Icons.lock_outline),
-                  title: const Text('Alkalmazászár'),
                   onTap: () {
                     Navigator.pop(context);
                     widget.onLockSettings!();
+                  },
+                ),
+                SizedBox(height: HajnalStyle.of(context).spacing('cardGap')),
+              ],
+              if (widget.onStyle != null)
+                HajnalNavigationRow(
+                  label: 'Stílus',
+                  leading: const Icon(Icons.palette_outlined),
+                  onTap: () {
+                    Navigator.pop(context);
+                    widget.onStyle!();
                   },
                 ),
             ],
@@ -134,11 +152,11 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                   child: Opacity(
                     key: const Key('sheet-opacity'),
                     opacity: sheetOpacity.value,
-                    child: const DecoratedBox(
-                      key: Key('empty-sheet'),
+                    child: DecoratedBox(
+                      key: const Key('empty-sheet'),
                       decoration: BoxDecoration(
-                        color: HajnalColors.sheet,
-                        borderRadius: BorderRadius.vertical(
+                        color: HajnalStyle.of(context).color('background'),
+                        borderRadius: const BorderRadius.vertical(
                           top: Radius.elliptical(92, 70),
                         ),
                       ),
@@ -191,18 +209,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       },
                       onVerticalDragCancel: () => settle(progress.value >= .5),
                       child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: HajnalColors.card,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: HajnalColors.border),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: HajnalColors.cardShadow,
-                              blurRadius: 8,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
+                        decoration: HajnalStyle.of(
+                          context,
+                        ).card(CardRole.large),
                         child: Row(
                           children: [
                             Expanded(
@@ -225,13 +234,11 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
+                                        Text(
                                           'Tiszta napok',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w600,
-                                            color: HajnalColors.muted,
-                                          ),
+                                          style: HajnalStyle.of(
+                                            context,
+                                          ).text(TextRole.helper),
                                         ),
                                         const SizedBox(height: 3),
                                         Row(
@@ -241,21 +248,16 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                                           children: [
                                             Text(
                                               '${widget.controller.tracker.days ?? '—'}',
-                                              style: const TextStyle(
-                                                fontSize: 27,
-                                                height: 1,
-                                                fontWeight: FontWeight.w800,
-                                                color: HajnalColors.navy,
-                                              ),
+                                              style: HajnalStyle.of(
+                                                context,
+                                              ).text(TextRole.dayCount),
                                             ),
                                             const SizedBox(width: 4),
-                                            const Text(
+                                            Text(
                                               'nap',
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600,
-                                                color: HajnalColors.purple,
-                                              ),
+                                              style: HajnalStyle.of(
+                                                context,
+                                              ).text(TextRole.helper),
                                             ),
                                           ],
                                         ),
@@ -268,7 +270,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                             Container(
                               height: 74,
                               width: 1,
-                              color: HajnalColors.border,
+                              color: HajnalStyle.of(context).color('border'),
                             ),
                             const Expanded(child: SizedBox()),
                           ],
@@ -282,18 +284,11 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 top: MediaQuery.paddingOf(context).top + 8,
                 left: 20,
                 child: Builder(
-                  builder: (context) => IconButton(
-                    tooltip: 'Menü',
-                    style: IconButton.styleFrom(
-                      fixedSize: const Size(54, 54),
-                      backgroundColor: HajnalColors.heroControl,
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(
-                        color: HajnalColors.heroControlBorder,
-                      ),
-                    ),
+                  builder: (context) => HajnalNavigationIcon(
+                    label: 'Menü',
+                    overArtwork: true,
                     onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: const Icon(Icons.menu),
+                    icon: Icons.menu,
                   ),
                 ),
               ),

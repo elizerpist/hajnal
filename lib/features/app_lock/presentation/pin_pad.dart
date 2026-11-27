@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/brand/security_icons.dart';
-import '../../../core/theme/hajnal_tokens.dart';
+import '../../../core/theme/hajnal_theme.dart';
+import '../../../core/theme/hajnal_components.dart';
+import '../../../core/theme/domain/style_roles.dart';
 
 class PinPad extends StatefulWidget {
   const PinPad({
@@ -37,19 +39,19 @@ class _PinPadState extends State<PinPad> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: HajnalColors.sheet,
+    backgroundColor: HajnalStyle.of(context).color('background'),
     appBar: widget.header == null
         ? null
         : AppBar(
             toolbarHeight: 76,
-            backgroundColor: HajnalColors.sheet,
-            foregroundColor: HajnalColors.navy,
+            backgroundColor: HajnalStyle.of(context).color('background'),
+            foregroundColor: HajnalStyle.of(context).color('primary'),
             leading: Navigator.canPop(context)
                 ? const HajnalBackButton()
                 : null,
             title: Text(
               widget.header!,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+              style: HajnalStyle.of(context).text(TextRole.cardTitle),
             ),
             actions: [
               if (widget.step != null)
@@ -57,7 +59,7 @@ class _PinPadState extends State<PinPad> {
                   padding: const EdgeInsets.all(10),
                   child: Chip(
                     label: Text(widget.step!),
-                    backgroundColor: HajnalColors.selectedCard,
+                    backgroundColor: HajnalStyle.of(context).color('selected'),
                     shape: const StadiumBorder(),
                     side: BorderSide.none,
                   ),
@@ -67,7 +69,9 @@ class _PinPadState extends State<PinPad> {
     body: SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(
+            horizontal: HajnalStyle.of(context).spacing('margin'),
+          ),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: Column(
@@ -79,19 +83,12 @@ class _PinPadState extends State<PinPad> {
                 Text(
                   widget.title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 34,
-                    fontWeight: FontWeight.w800,
-                    color: HajnalColors.navy,
-                  ),
+                  style: HajnalStyle.of(context).text(TextRole.title1),
                 ),
                 Text(
                   widget.subtitle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: HajnalColors.navy,
-                  ),
+                  style: HajnalStyle.of(context).text(TextRole.title2),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 11),
@@ -115,7 +112,9 @@ class _PinPadState extends State<PinPad> {
                                       ? Icons.circle
                                       : Icons.circle_outlined,
                                   size: 22,
-                                  color: HajnalColors.purple,
+                                  color: HajnalStyle.of(
+                                    context,
+                                  ).color('accent'),
                                 ),
                               ),
                             ),
@@ -128,14 +127,14 @@ class _PinPadState extends State<PinPad> {
                 Container(
                   width: 276,
                   height: 1,
-                  color: HajnalColors.pinUnderline,
+                  color: HajnalStyle.of(context).color('border'),
                 ),
                 const SizedBox(height: 21),
                 if (widget.message != null)
                   Text(
                     widget.message!,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: HajnalColors.navy),
+                    style: HajnalStyle.of(context).text(TextRole.body),
                   ),
                 GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -165,27 +164,11 @@ class _PinPadState extends State<PinPad> {
                   ],
                 ),
                 const SizedBox(height: 23),
-                SizedBox(
-                  width: double.infinity,
-                  height: 60,
-                  child: FilledButton(
-                    onPressed: widget.busy || value.length < 6
-                        ? null
-                        : () => widget.onSubmit(value),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: HajnalColors.purple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: Text(
-                      widget.button,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
+                HajnalAction(
+                  label: widget.button,
+                  onPressed: widget.busy || value.length < 6
+                      ? null
+                      : () => widget.onSubmit(value),
                 ),
                 if (widget.footer != null)
                   Padding(
@@ -193,11 +176,7 @@ class _PinPadState extends State<PinPad> {
                     child: Text(
                       widget.footer!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: HajnalColors.navy,
-                        fontSize: 16,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      style: HajnalStyle.of(context).text(TextRole.helper),
                     ),
                   ),
               ],
@@ -213,21 +192,9 @@ class _PinPadState extends State<PinPad> {
     label: label,
     child: OutlinedButton(
       onPressed: widget.busy ? null : onTap,
-      style: OutlinedButton.styleFrom(
-        backgroundColor: HajnalColors.keyboardSurface,
-        disabledBackgroundColor: HajnalColors.keyboardSurface,
-        elevation: 2,
-        shadowColor: HajnalColors.cardShadow,
-        side: const BorderSide(color: HajnalColors.keyBorder),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
-        foregroundColor: HajnalColors.navy,
-        minimumSize: const Size(48, 48),
-      ),
+      style: HajnalStyle.of(context).button(ButtonRole.secondary),
       child: icon == null
-          ? Text(
-              label,
-              style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
-            )
+          ? Text(label, style: HajnalStyle.of(context).text(TextRole.pinDigit))
           : Icon(icon, size: 28),
     ),
   );

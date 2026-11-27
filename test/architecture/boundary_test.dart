@@ -196,7 +196,6 @@ void main() {
       '../../../core/artwork/artwork_source.dart',
       '../../../core/artwork/artwork_catalog.dart',
       '../../../core/artwork/artwork_view.dart',
-      '../../../core/theme/hajnal_tokens.dart',
       '../application/date_picker.dart',
       '../application/onboarding_controller.dart',
       '../application/onboarding_draft.dart',
@@ -213,6 +212,28 @@ void main() {
       'lock_auth_page.dart',
       'pin_pad.dart',
       'pin_setup.dart',
+    };
+    // These consumers render the shared style adapter and enum-only role contract.
+    const themeConsumers = {
+      'lib/features/dashboard/presentation/dashboard.dart',
+      'lib/features/onboarding/presentation/onboarding.dart',
+      'lib/features/onboarding/presentation/onboarding_calendar.dart',
+      'lib/features/app_lock/presentation/pin_pad.dart',
+      'lib/features/app_lock/presentation/lock_auth_page.dart',
+      'lib/features/app_lock/presentation/lock_settings.dart',
+      'lib/features/app_lock/presentation/lock_gate.dart',
+    };
+    const themeImports = {
+      '../../../core/theme/hajnal_theme.dart',
+      '../../../core/theme/hajnal_components.dart',
+      '../../../core/theme/domain/style_roles.dart',
+    };
+    const editorImports = {
+      'package:flutter/material.dart',
+      '../application/style_controller.dart',
+      '../domain/style_roles.dart',
+      '../hajnal_components.dart',
+      '../hajnal_theme.dart',
     };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
@@ -234,10 +255,15 @@ void main() {
       }
       if (file.path.contains('/presentation/')) {
         for (final match in imports.allMatches(source)) {
+          final uri = match.group(1);
           expect(
-            presentationImports,
-            contains(match.group(1)),
-            reason: file.path,
+            presentationImports.contains(uri) ||
+                (themeConsumers.contains(file.path) &&
+                    themeImports.contains(uri)) ||
+                (file.path == 'lib/core/theme/presentation/style_editor.dart' &&
+                    editorImports.contains(uri)),
+            isTrue,
+            reason: '${file.path}: $uri',
           );
         }
       }
@@ -250,6 +276,7 @@ void main() {
           'lib/features/sponsor/data/sponsor_repository.dart',
           'lib/features/app_lock/data/lock_repository.dart',
           'lib/core/artwork/drift_artwork_store.dart',
+          'lib/core/theme/data/style_repository.dart',
         ], contains(file.path));
       }
     }

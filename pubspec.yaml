@@ -78,6 +78,25 @@ flutter:
     - assets/brand/logo.svg
     - assets/artwork/onboarding/welcome.svg
     - assets/artwork/dashboard/placeholder.png
+    - assets/fonts/roboto/LICENSE
+    - assets/fonts/dejavu/LICENSE
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
+          style: italic
+    - family: DejaVu Sans
+      fonts:
+        - asset: assets/fonts/dejavu/DejaVuSans.ttf
+        - asset: assets/fonts/dejavu/DejaVuSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/dejavu/DejaVuSans-Oblique.ttf
+          style: italic
+        - asset: assets/fonts/dejavu/DejaVuSans-BoldOblique.ttf
+          weight: 700
+          style: italic
 
   # To add assets to your application, add an assets section, like this:
   # assets:
