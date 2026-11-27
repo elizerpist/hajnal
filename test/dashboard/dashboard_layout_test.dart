@@ -50,7 +50,7 @@ class Picker implements DatePicker {
 }
 
 void main() {
-  testWidgets('dashboard panel uses the saved content card radius', (
+  testWidgets('dashboard keeps its own elliptical panel geometry', (
     tester,
   ) async {
     final store = Store();
@@ -71,7 +71,7 @@ void main() {
     );
     expect(
       (panel.decoration as BoxDecoration).borderRadius,
-      BorderRadius.circular(30),
+      const BorderRadius.vertical(top: Radius.elliptical(92, 70)),
     );
     await tester.pumpWidget(const SizedBox());
     editor.dispose();

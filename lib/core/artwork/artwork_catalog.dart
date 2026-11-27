@@ -31,3 +31,15 @@ const dashboardArtwork = ArtworkDefinition(
 );
 
 const welcomeArtwork = 'assets/artwork/onboarding/welcome.svg';
+
+const panicArtwork = 'assets/artwork/panic/panik1.png';
+const relapseArtwork = 'assets/artwork/panic/milestone-60.svg';
+const survivalArtworks = [
+  'assets/artwork/survival/survival_stop_bg.png',
+  'assets/artwork/survival/survival_breathe_bg.png',
+  'assets/artwork/survival/survival_water_bg.png',
+  'assets/artwork/survival/survival_environment_bg.png',
+  'assets/artwork/survival/survival_contact_bg.png',
+  'assets/artwork/survival/survival_wait_bg.png',
+  'assets/artwork/survival/survival_reassess_bg.png',
+];

@@ -6,6 +6,7 @@ import '../../../core/artwork/artwork_view.dart';
 import '../../../core/theme/hajnal_theme.dart';
 import '../../../core/theme/domain/style_roles.dart';
 import '../../../core/theme/hajnal_components.dart';
+import '../../../core/theme/panic_visual.dart';
 import 'dashboard_layout.dart';
 
 class Dashboard extends StatefulWidget {
@@ -16,12 +17,14 @@ class Dashboard extends StatefulWidget {
     this.onLockSettings,
     this.onStyle,
     this.artwork,
+    this.onPanic,
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
   final VoidCallback? onLockSettings;
   final VoidCallback? onStyle;
   final ArtworkSource? artwork;
+  final VoidCallback? onPanic;
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -152,11 +155,86 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                   child: Opacity(
                     key: const Key('sheet-opacity'),
                     opacity: sheetOpacity.value,
-                    child: DecoratedBox(
-                      key: const Key('empty-sheet'),
-                      decoration: HajnalStyle.of(
-                        context,
-                      ).card(CardRole.content),
+                    child: IgnorePointer(
+                      ignoring: progress.value < .5,
+                      child: DecoratedBox(
+                        key: const Key('empty-sheet'),
+                        decoration: HajnalStyle.of(context)
+                            .card(CardRole.content)
+                            .copyWith(borderRadius: DashboardVisual.sheet),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              24,
+                              0,
+                              24,
+                              media.padding.bottom + 12,
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                key: const Key('dashboard-help'),
+                                borderRadius: PanicVisual.corner,
+                                onTap: widget.onPanic,
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    minHeight: 48,
+                                    minWidth: double.infinity,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 3,
+                                    ),
+                                    child: DecoratedBox(
+                                      key: const Key('dashboard-help-surface'),
+                                      decoration: BoxDecoration(
+                                        gradient: PanicVisual.helpGradient,
+                                        borderRadius: PanicVisual.corner,
+                                      ),
+                                      child: ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                          minHeight: 42,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 6,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.favorite_border,
+                                                color: PanicVisual.white,
+                                                size: 20,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Flexible(
+                                                child: Text(
+                                                  'Segítség kell',
+                                                  textAlign: TextAlign.center,
+                                                  style: HajnalStyle.of(context)
+                                                      .text(TextRole.button)
+                                                      .copyWith(
+                                                        color:
+                                                            PanicVisual.white,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -206,9 +284,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                       },
                       onVerticalDragCancel: () => settle(progress.value >= .5),
                       child: DecoratedBox(
-                        decoration: HajnalStyle.of(
-                          context,
-                        ).card(CardRole.large),
+                        decoration: HajnalStyle.of(context)
+                            .card(CardRole.large)
+                            .copyWith(borderRadius: DashboardVisual.card),
                         child: Row(
                           children: [
                             Expanded(

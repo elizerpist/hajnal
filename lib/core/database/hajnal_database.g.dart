@@ -1976,6 +1976,448 @@ class StyleSettingsCompanion extends UpdateCompanion<StyleSetting> {
   }
 }
 
+class $SurvivalSessionsTable extends SurvivalSessions
+    with TableInfo<$SurvivalSessionsTable, SurvivalSession> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurvivalSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
+  @override
+  late final GeneratedColumn<String> payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, payload];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survival_sessions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SurvivalSession> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('payload')) {
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurvivalSession map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurvivalSession(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      payload: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload'],
+      )!,
+    );
+  }
+
+  @override
+  $SurvivalSessionsTable createAlias(String alias) {
+    return $SurvivalSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class SurvivalSession extends DataClass implements Insertable<SurvivalSession> {
+  final int id;
+  final String payload;
+  const SurvivalSession({required this.id, required this.payload});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['payload'] = Variable<String>(payload);
+    return map;
+  }
+
+  SurvivalSessionsCompanion toCompanion(bool nullToAbsent) {
+    return SurvivalSessionsCompanion(id: Value(id), payload: Value(payload));
+  }
+
+  factory SurvivalSession.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurvivalSession(
+      id: serializer.fromJson<int>(json['id']),
+      payload: serializer.fromJson<String>(json['payload']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'payload': serializer.toJson<String>(payload),
+    };
+  }
+
+  SurvivalSession copyWith({int? id, String? payload}) =>
+      SurvivalSession(id: id ?? this.id, payload: payload ?? this.payload);
+  SurvivalSession copyWithCompanion(SurvivalSessionsCompanion data) {
+    return SurvivalSession(
+      id: data.id.present ? data.id.value : this.id,
+      payload: data.payload.present ? data.payload.value : this.payload,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurvivalSession(')
+          ..write('id: $id, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, payload);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurvivalSession &&
+          other.id == this.id &&
+          other.payload == this.payload);
+}
+
+class SurvivalSessionsCompanion extends UpdateCompanion<SurvivalSession> {
+  final Value<int> id;
+  final Value<String> payload;
+  const SurvivalSessionsCompanion({
+    this.id = const Value.absent(),
+    this.payload = const Value.absent(),
+  });
+  SurvivalSessionsCompanion.insert({
+    this.id = const Value.absent(),
+    required String payload,
+  }) : payload = Value(payload);
+  static Insertable<SurvivalSession> custom({
+    Expression<int>? id,
+    Expression<String>? payload,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (payload != null) 'payload': payload,
+    });
+  }
+
+  SurvivalSessionsCompanion copyWith({Value<int>? id, Value<String>? payload}) {
+    return SurvivalSessionsCompanion(
+      id: id ?? this.id,
+      payload: payload ?? this.payload,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(payload.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurvivalSessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('payload: $payload')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SurvivalNotesTable extends SurvivalNotes
+    with TableInfo<$SurvivalNotesTable, SurvivalNote> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SurvivalNotesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, DateTime> createdAtUtc =
+      GeneratedColumn<DateTime>(
+        'created_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($SurvivalNotesTable.$convertercreatedAtUtc);
+  @override
+  List<GeneratedColumn> get $columns => [id, body, createdAtUtc];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'survival_notes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SurvivalNote> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SurvivalNote map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SurvivalNote(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+      createdAtUtc: $SurvivalNotesTable.$convertercreatedAtUtc.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}created_at_utc'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $SurvivalNotesTable createAlias(String alias) {
+    return $SurvivalNotesTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, DateTime> $convertercreatedAtUtc =
+      const UtcInstant();
+}
+
+class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
+  final int id;
+  final String body;
+  final DateTime createdAtUtc;
+  const SurvivalNote({
+    required this.id,
+    required this.body,
+    required this.createdAtUtc,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['body'] = Variable<String>(body);
+    {
+      map['created_at_utc'] = Variable<DateTime>(
+        $SurvivalNotesTable.$convertercreatedAtUtc.toSql(createdAtUtc),
+      );
+    }
+    return map;
+  }
+
+  SurvivalNotesCompanion toCompanion(bool nullToAbsent) {
+    return SurvivalNotesCompanion(
+      id: Value(id),
+      body: Value(body),
+      createdAtUtc: Value(createdAtUtc),
+    );
+  }
+
+  factory SurvivalNote.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SurvivalNote(
+      id: serializer.fromJson<int>(json['id']),
+      body: serializer.fromJson<String>(json['body']),
+      createdAtUtc: serializer.fromJson<DateTime>(json['createdAtUtc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'body': serializer.toJson<String>(body),
+      'createdAtUtc': serializer.toJson<DateTime>(createdAtUtc),
+    };
+  }
+
+  SurvivalNote copyWith({int? id, String? body, DateTime? createdAtUtc}) =>
+      SurvivalNote(
+        id: id ?? this.id,
+        body: body ?? this.body,
+        createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+      );
+  SurvivalNote copyWithCompanion(SurvivalNotesCompanion data) {
+    return SurvivalNote(
+      id: data.id.present ? data.id.value : this.id,
+      body: data.body.present ? data.body.value : this.body,
+      createdAtUtc: data.createdAtUtc.present
+          ? data.createdAtUtc.value
+          : this.createdAtUtc,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurvivalNote(')
+          ..write('id: $id, ')
+          ..write('body: $body, ')
+          ..write('createdAtUtc: $createdAtUtc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, body, createdAtUtc);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SurvivalNote &&
+          other.id == this.id &&
+          other.body == this.body &&
+          other.createdAtUtc == this.createdAtUtc);
+}
+
+class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
+  final Value<int> id;
+  final Value<String> body;
+  final Value<DateTime> createdAtUtc;
+  const SurvivalNotesCompanion({
+    this.id = const Value.absent(),
+    this.body = const Value.absent(),
+    this.createdAtUtc = const Value.absent(),
+  });
+  SurvivalNotesCompanion.insert({
+    this.id = const Value.absent(),
+    required String body,
+    required DateTime createdAtUtc,
+  }) : body = Value(body),
+       createdAtUtc = Value(createdAtUtc);
+  static Insertable<SurvivalNote> custom({
+    Expression<int>? id,
+    Expression<String>? body,
+    Expression<DateTime>? createdAtUtc,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (body != null) 'body': body,
+      if (createdAtUtc != null) 'created_at_utc': createdAtUtc,
+    });
+  }
+
+  SurvivalNotesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? body,
+    Value<DateTime>? createdAtUtc,
+  }) {
+    return SurvivalNotesCompanion(
+      id: id ?? this.id,
+      body: body ?? this.body,
+      createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (createdAtUtc.present) {
+      map['created_at_utc'] = Variable<DateTime>(
+        $SurvivalNotesTable.$convertercreatedAtUtc.toSql(createdAtUtc.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SurvivalNotesCompanion(')
+          ..write('id: $id, ')
+          ..write('body: $body, ')
+          ..write('createdAtUtc: $createdAtUtc')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -1995,6 +2437,10 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     this,
   );
   late final $StyleSettingsTable styleSettings = $StyleSettingsTable(this);
+  late final $SurvivalSessionsTable survivalSessions = $SurvivalSessionsTable(
+    this,
+  );
+  late final $SurvivalNotesTable survivalNotes = $SurvivalNotesTable(this);
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
@@ -2011,6 +2457,8 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     sponsorContacts,
     onboardingDrafts,
     styleSettings,
+    survivalSessions,
+    survivalNotes,
     oneActivePeriod,
   ];
 }
@@ -3241,6 +3689,306 @@ typedef $$StyleSettingsTableProcessedTableManager =
       StyleSetting,
       PrefetchHooks Function()
     >;
+typedef $$SurvivalSessionsTableCreateCompanionBuilder =
+    SurvivalSessionsCompanion Function({
+      Value<int> id,
+      required String payload,
+    });
+typedef $$SurvivalSessionsTableUpdateCompanionBuilder =
+    SurvivalSessionsCompanion Function({Value<int> id, Value<String> payload});
+
+class $$SurvivalSessionsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $SurvivalSessionsTable> {
+  $$SurvivalSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SurvivalSessionsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $SurvivalSessionsTable> {
+  $$SurvivalSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SurvivalSessionsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $SurvivalSessionsTable> {
+  $$SurvivalSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+}
+
+class $$SurvivalSessionsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $SurvivalSessionsTable,
+          SurvivalSession,
+          $$SurvivalSessionsTableFilterComposer,
+          $$SurvivalSessionsTableOrderingComposer,
+          $$SurvivalSessionsTableAnnotationComposer,
+          $$SurvivalSessionsTableCreateCompanionBuilder,
+          $$SurvivalSessionsTableUpdateCompanionBuilder,
+          (
+            SurvivalSession,
+            BaseReferences<
+              _$HajnalDatabase,
+              $SurvivalSessionsTable,
+              SurvivalSession
+            >,
+          ),
+          SurvivalSession,
+          PrefetchHooks Function()
+        > {
+  $$SurvivalSessionsTableTableManager(
+    _$HajnalDatabase db,
+    $SurvivalSessionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SurvivalSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SurvivalSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SurvivalSessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> payload = const Value.absent(),
+              }) => SurvivalSessionsCompanion(id: id, payload: payload),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String payload,
+              }) => SurvivalSessionsCompanion.insert(id: id, payload: payload),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SurvivalSessionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $SurvivalSessionsTable,
+      SurvivalSession,
+      $$SurvivalSessionsTableFilterComposer,
+      $$SurvivalSessionsTableOrderingComposer,
+      $$SurvivalSessionsTableAnnotationComposer,
+      $$SurvivalSessionsTableCreateCompanionBuilder,
+      $$SurvivalSessionsTableUpdateCompanionBuilder,
+      (
+        SurvivalSession,
+        BaseReferences<
+          _$HajnalDatabase,
+          $SurvivalSessionsTable,
+          SurvivalSession
+        >,
+      ),
+      SurvivalSession,
+      PrefetchHooks Function()
+    >;
+typedef $$SurvivalNotesTableCreateCompanionBuilder =
+    SurvivalNotesCompanion Function({
+      Value<int> id,
+      required String body,
+      required DateTime createdAtUtc,
+    });
+typedef $$SurvivalNotesTableUpdateCompanionBuilder =
+    SurvivalNotesCompanion Function({
+      Value<int> id,
+      Value<String> body,
+      Value<DateTime> createdAtUtc,
+    });
+
+class $$SurvivalNotesTableFilterComposer
+    extends Composer<_$HajnalDatabase, $SurvivalNotesTable> {
+  $$SurvivalNotesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, DateTime>
+  get createdAtUtc => $composableBuilder(
+    column: $table.createdAtUtc,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$SurvivalNotesTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $SurvivalNotesTable> {
+  $$SurvivalNotesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtUtc => $composableBuilder(
+    column: $table.createdAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SurvivalNotesTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $SurvivalNotesTable> {
+  $$SurvivalNotesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<DateTime, DateTime> get createdAtUtc =>
+      $composableBuilder(
+        column: $table.createdAtUtc,
+        builder: (column) => column,
+      );
+}
+
+class $$SurvivalNotesTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $SurvivalNotesTable,
+          SurvivalNote,
+          $$SurvivalNotesTableFilterComposer,
+          $$SurvivalNotesTableOrderingComposer,
+          $$SurvivalNotesTableAnnotationComposer,
+          $$SurvivalNotesTableCreateCompanionBuilder,
+          $$SurvivalNotesTableUpdateCompanionBuilder,
+          (
+            SurvivalNote,
+            BaseReferences<_$HajnalDatabase, $SurvivalNotesTable, SurvivalNote>,
+          ),
+          SurvivalNote,
+          PrefetchHooks Function()
+        > {
+  $$SurvivalNotesTableTableManager(
+    _$HajnalDatabase db,
+    $SurvivalNotesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SurvivalNotesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SurvivalNotesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SurvivalNotesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<DateTime> createdAtUtc = const Value.absent(),
+              }) => SurvivalNotesCompanion(
+                id: id,
+                body: body,
+                createdAtUtc: createdAtUtc,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String body,
+                required DateTime createdAtUtc,
+              }) => SurvivalNotesCompanion.insert(
+                id: id,
+                body: body,
+                createdAtUtc: createdAtUtc,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SurvivalNotesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $SurvivalNotesTable,
+      SurvivalNote,
+      $$SurvivalNotesTableFilterComposer,
+      $$SurvivalNotesTableOrderingComposer,
+      $$SurvivalNotesTableAnnotationComposer,
+      $$SurvivalNotesTableCreateCompanionBuilder,
+      $$SurvivalNotesTableUpdateCompanionBuilder,
+      (
+        SurvivalNote,
+        BaseReferences<_$HajnalDatabase, $SurvivalNotesTable, SurvivalNote>,
+      ),
+      SurvivalNote,
+      PrefetchHooks Function()
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -3259,4 +4007,8 @@ class $HajnalDatabaseManager {
       $$OnboardingDraftsTableTableManager(_db, _db.onboardingDrafts);
   $$StyleSettingsTableTableManager get styleSettings =>
       $$StyleSettingsTableTableManager(_db, _db.styleSettings);
+  $$SurvivalSessionsTableTableManager get survivalSessions =>
+      $$SurvivalSessionsTableTableManager(_db, _db.survivalSessions);
+  $$SurvivalNotesTableTableManager get survivalNotes =>
+      $$SurvivalNotesTableTableManager(_db, _db.survivalNotes);
 }

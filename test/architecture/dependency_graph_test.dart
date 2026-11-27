@@ -29,6 +29,8 @@ class MutationCalls extends RecursiveAstVisitor<void> {
           'onboardingProfiles',
           'onboardingDrafts',
           'styleSettings',
+          'survivalSessions',
+          'survivalNotes',
         ]) {
           if (expression.endsWith('.$table')) dbTables.add(table);
         }
@@ -75,6 +77,10 @@ List<Dependency> dependencies(String source, String from) {
 }
 
 bool allowed(String source, String target) {
+  // The emergency dialer alone owns the external telephone launcher.
+  final emergencyLauncher =
+      source == 'lib/core/platform/emergency_dialer.dart' &&
+      target.startsWith('package:url_launcher/');
   // Flutter SVG exposes its backdrop rendering strategy through this one API.
   final welcomeRaster =
       source == 'lib/features/onboarding/presentation/onboarding.dart' &&
@@ -119,7 +125,8 @@ bool allowed(String source, String target) {
           'cryptography',
           'flutter_svg',
         }.contains(package) &&
-        !welcomeRaster) {
+        !welcomeRaster &&
+        !emergencyLauncher) {
       return false;
     }
     if ((presentation || application) &&
@@ -133,6 +140,7 @@ bool allowed(String source, String target) {
   if (target.startsWith('package:drift/') &&
       source != 'lib/app/app_services.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
@@ -202,6 +210,7 @@ bool allowed(String source, String target) {
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/core/artwork/drift_artwork_store.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/theme/data/style_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
@@ -309,6 +318,18 @@ void main() {
         isFalse,
       );
       expect(allowed(view, 'package:unexpected/client.dart'), isFalse);
+      expect(allowed(view, 'package:url_launcher/url_launcher.dart'), isFalse);
+      expect(
+        allowed(
+          'lib/core/platform/emergency_dialer.dart',
+          'package:url_launcher/url_launcher.dart',
+        ),
+        isTrue,
+      );
+      expect(
+        allowed(view, 'lib/features/panic/data/panic_repository.dart'),
+        isFalse,
+      );
       expect(allowed('lib/core/other.dart', 'dart:io'), isFalse);
       expect(
         allowed('lib/core/other.dart', 'package:drift/drift.dart'),
@@ -340,6 +361,7 @@ void main() {
   test('storage mutations are owned by the designated adapters', () {
     const dbWriters = {
       'lib/features/recovery/data/recovery_repository.dart',
+      'lib/features/panic/data/panic_repository.dart',
       'lib/features/onboarding/data/onboarding_repository.dart',
       'lib/features/sponsor/data/sponsor_repository.dart',
       'lib/features/app_lock/data/lock_repository.dart',
@@ -381,6 +403,8 @@ void main() {
         'onboardingDrafts':
             'lib/features/onboarding/data/onboarding_repository.dart',
         'styleSettings': 'lib/core/theme/data/style_repository.dart',
+        'survivalSessions': 'lib/features/panic/data/panic_repository.dart',
+        'survivalNotes': 'lib/features/panic/data/panic_repository.dart',
       };
       for (final table in visitor.dbTables) {
         expect(file.path, tableOwners[table], reason: 'write owner of $table');

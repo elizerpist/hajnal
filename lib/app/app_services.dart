@@ -9,6 +9,10 @@ import '../core/theme/application/style_controller.dart';
 import '../core/theme/data/style_repository.dart';
 import '../features/recovery/data/drift_recovery_store.dart';
 import '../features/recovery/data/recovery_repository.dart';
+import '../features/recovery/application/restart_recovery.dart';
+import '../features/panic/application/panic_controller.dart';
+import '../features/panic/data/panic_repository.dart';
+import '../core/platform/emergency_dialer.dart';
 import '../features/onboarding/application/onboarding_store.dart';
 import '../features/onboarding/data/onboarding_repository.dart';
 import '../features/sponsor/data/sponsor_repository.dart';
@@ -28,6 +32,7 @@ class AppServices {
     this.lock,
     this.onboarding,
     this.style,
+    this.panic,
   );
   final HajnalDatabase database;
   final BootstrapController controller;
@@ -35,6 +40,7 @@ class AppServices {
   final LockController lock;
   final OnboardingStore onboarding;
   final StyleOwner style;
+  final PanicController panic;
 
   static Future<AppServices> open() async {
     final directory = await getApplicationSupportDirectory();
@@ -50,10 +56,8 @@ class AppServices {
     try {
       await artwork.cleanup();
       final recovery = RecoveryRepository(database);
-      final controller = BootstrapController(
-        DriftRecoveryStore(recovery),
-        DateTime.now,
-      );
+      final recoveryStore = DriftRecoveryStore(recovery);
+      final controller = BootstrapController(recoveryStore, DateTime.now);
       final lock = LockController(
         LockRepository(database, const SecureLockStore(), PinHasher()),
         BiometricAdapter(),
@@ -69,6 +73,13 @@ class AppServices {
         lock,
         OnboardingRepository(database, recovery, SponsorRepository(database)),
         style,
+        PanicController(
+          PanicRepository(database),
+          RestartRecovery(recoveryStore, DateTime.now),
+          const PlatformEmergencyDialer(),
+          () => controller.activePeriod?.id,
+          DateTime.now,
+        ),
       );
     } catch (_) {
       artwork.dispose();
@@ -82,6 +93,7 @@ class AppServices {
     lock.dispose();
     artwork.dispose();
     style.dispose();
+    panic.dispose();
     await database.close();
   }
 }

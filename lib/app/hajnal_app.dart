@@ -15,6 +15,8 @@ import 'bootstrap_controller.dart';
 import '../features/app_lock/application/lock_controller.dart';
 import '../features/app_lock/presentation/lock_gate.dart';
 import '../features/app_lock/presentation/lock_settings.dart';
+import '../features/panic/application/panic_controller.dart';
+import '../features/panic/presentation/panic_page.dart';
 
 class HajnalApp extends StatefulWidget {
   const HajnalApp({
@@ -26,6 +28,7 @@ class HajnalApp extends StatefulWidget {
     this.lock,
     this.onboardingStore,
     this.style,
+    this.panic,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -34,6 +37,7 @@ class HajnalApp extends StatefulWidget {
   final LockController? lock;
   final OnboardingStore? onboardingStore;
   final StyleOwner? style;
+  final PanicController? panic;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -123,6 +127,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       lock: widget.lock,
       onboardingStore: widget.onboardingStore,
       style: widget.style,
+      panic: widget.panic,
     ),
   );
 }
@@ -136,6 +141,7 @@ class _Bootstrap extends StatefulWidget {
     this.lock,
     this.onboardingStore,
     this.style,
+    this.panic,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -144,6 +150,7 @@ class _Bootstrap extends StatefulWidget {
   final LockController? lock;
   final OnboardingStore? onboardingStore;
   final StyleOwner? style;
+  final PanicController? panic;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
@@ -189,6 +196,18 @@ class _BootstrapState extends State<_Bootstrap> {
     ).push(MaterialPageRoute<void>(builder: (_) => StyleEditor(owner: owner)));
   }
 
+  bool _panicOpen = false;
+  void _openPanic() {
+    final panic = widget.panic;
+    if (_panicOpen || panic == null) return;
+    _panicOpen = true;
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<void>(builder: (_) => PanicPage(controller: panic)),
+        )
+        .whenComplete(() => _panicOpen = false);
+  }
+
   @override
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: widget.controller,
@@ -227,6 +246,7 @@ class _BootstrapState extends State<_Bootstrap> {
         onLockSettings: widget.lock == null ? null : _openLockSettings,
         onStyle: widget.style == null ? null : _openStyle,
         artwork: widget.artwork,
+        onPanic: widget.panic == null ? null : _openPanic,
       );
     },
   );

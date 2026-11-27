@@ -5,6 +5,44 @@ import 'package:hajnal/core/database/hajnal_database.dart';
 import 'package:hajnal/features/recovery/data/recovery_repository.dart';
 
 void main() {
+  test('restart closes only the expected active period atomically', () async {
+    final db = HajnalDatabase(NativeDatabase.memory());
+    final repo = RecoveryRepository(db);
+    final now = DateTime(2025, 4, 8, 12);
+    final original = await repo.initialize(DateTime(2025, 1, 1), now);
+    await db.customStatement(
+      "INSERT INTO onboarding_profiles (id,motivation,modules,completed) VALUES (1,'marad',3,1)",
+    );
+    final next = await repo.restart(original.id, now);
+    expect(next.id, isNot(original.id));
+    expect(next.startLocalDate, '2025-04-08');
+    expect(await repo.countActive(), 1);
+    final periods = await db.select(db.recoveryPeriods).get();
+    expect(periods.length, 2);
+    expect(periods.first.id, original.id);
+    expect(periods.first.closedAtUtc, isNotNull);
+    expect(
+      (await db.select(db.onboardingProfiles).getSingle()).motivation,
+      'marad',
+    );
+    await expectLater(repo.restart(original.id, now), throwsStateError);
+    expect((await repo.active()).id, next.id);
+    await db.close();
+  });
+
+  test('failed restart rolls back closing the current period', () async {
+    final db = HajnalDatabase(NativeDatabase.memory());
+    final repo = RecoveryRepository(db);
+    final now = DateTime(2025, 4, 8);
+    final original = await repo.initialize(DateTime(2025, 1, 1), now);
+    await db.customStatement(
+      "CREATE TRIGGER reject_restart BEFORE INSERT ON recovery_periods BEGIN SELECT RAISE(ABORT, 'failure'); END",
+    );
+    await expectLater(repo.restart(original.id, now), throwsA(anything));
+    expect((await repo.active()).id, original.id);
+    expect((await db.select(db.recoveryPeriods).get()).length, 1);
+    await db.close();
+  });
   test(
     'correction preserves identity and creation time and persists',
     () async {

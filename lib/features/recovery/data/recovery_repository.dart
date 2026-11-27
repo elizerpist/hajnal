@@ -53,4 +53,26 @@ class RecoveryRepository {
       )..where((p) => p.id.equals(id))).getSingle();
     });
   }
+
+  Future<RecoveryPeriod> restart(
+    int expectedId,
+    DateTime now,
+  ) => _db.transaction(() async {
+    final changed =
+        await (_db.update(_db.recoveryPeriods)
+              ..where((p) => p.id.equals(expectedId) & p.closedAtUtc.isNull()))
+            .write(RecoveryPeriodsCompanion(closedAtUtc: Value(now.toUtc())));
+    if (changed != 1) throw StateError('Active period changed');
+    final id = await _db
+        .into(_db.recoveryPeriods)
+        .insert(
+          RecoveryPeriodsCompanion.insert(
+            startLocalDate: validatedStartDate(now, now),
+            createdAtUtc: now.toUtc(),
+          ),
+        );
+    return (_db.select(
+      _db.recoveryPeriods,
+    )..where((p) => p.id.equals(id))).getSingle();
+  });
 }

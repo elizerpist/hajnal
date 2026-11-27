@@ -222,6 +222,10 @@ void main() {
       'lib/features/app_lock/presentation/lock_auth_page.dart',
       'lib/features/app_lock/presentation/lock_settings.dart',
       'lib/features/app_lock/presentation/lock_gate.dart',
+      'lib/features/panic/presentation/panic_page.dart',
+      'lib/features/panic/presentation/panic_dialogs.dart',
+      'lib/features/panic/presentation/relapse_page.dart',
+      'lib/features/panic/presentation/survival_page.dart',
     };
     const themeImports = {
       '../../../core/theme/hajnal_theme.dart',
@@ -234,6 +238,27 @@ void main() {
       '../domain/style_roles.dart',
       '../hajnal_components.dart',
       '../hajnal_theme.dart',
+    };
+    const panicImports = <String, Set<String>>{
+      'lib/features/panic/presentation/panic_page.dart': {
+        'dart:async',
+        '../application/panic_controller.dart',
+        'panic_dialogs.dart',
+        'relapse_page.dart',
+        'survival_page.dart',
+      },
+      'lib/features/panic/presentation/panic_dialogs.dart': {
+        '../application/panic_controller.dart',
+      },
+      'lib/features/panic/presentation/relapse_page.dart': {
+        '../application/panic_controller.dart',
+      },
+      'lib/features/panic/presentation/survival_page.dart': {
+        'dart:async',
+        '../application/panic_controller.dart',
+        '../application/survival_controller.dart',
+        'panic_dialogs.dart',
+      },
     };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
@@ -258,6 +283,16 @@ void main() {
           final uri = match.group(1);
           expect(
             presentationImports.contains(uri) ||
+                (panicImports[file.path]?.contains(uri) ?? false) ||
+                (uri == '../../../core/theme/panic_visual.dart' &&
+                    (file.path ==
+                            'lib/features/dashboard/presentation/dashboard.dart' ||
+                        file.path ==
+                            'lib/features/panic/presentation/panic_page.dart' ||
+                        file.path ==
+                            'lib/features/panic/presentation/panic_dialogs.dart' ||
+                        file.path ==
+                            'lib/features/panic/presentation/relapse_page.dart')) ||
                 // Only the existing Welcome SVG selects this render strategy.
                 (file.path ==
                         'lib/features/onboarding/presentation/onboarding.dart' &&
@@ -277,6 +312,7 @@ void main() {
           source.contains('_db.delete(')) {
         expect([
           'lib/features/recovery/data/recovery_repository.dart',
+          'lib/features/panic/data/panic_repository.dart',
           'lib/features/onboarding/data/onboarding_repository.dart',
           'lib/features/sponsor/data/sponsor_repository.dart',
           'lib/features/app_lock/data/lock_repository.dart',

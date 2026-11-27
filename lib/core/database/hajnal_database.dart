@@ -72,6 +72,19 @@ class StyleSettings extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+class SurvivalSessions extends Table {
+  IntColumn get id => integer()();
+  TextColumn get payload => text()();
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+class SurvivalNotes extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get body => text()();
+  Column<DateTime> get createdAtUtc => dateTime().map(const UtcInstant())();
+}
+
 @DriftDatabase(
   tables: [
     RecoveryPeriods,
@@ -81,13 +94,15 @@ class StyleSettings extends Table {
     SponsorContacts,
     OnboardingDrafts,
     StyleSettings,
+    SurvivalSessions,
+    SurvivalNotes,
   ],
 )
 class HajnalDatabase extends _$HajnalDatabase {
   HajnalDatabase(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -111,6 +126,10 @@ class HajnalDatabase extends _$HajnalDatabase {
       }
       if (from < 4) {
         await m.createTable(styleSettings);
+      }
+      if (from < 5) {
+        await m.createTable(survivalSessions);
+        await m.createTable(survivalNotes);
       }
     },
     beforeOpen: (_) async => customStatement('PRAGMA foreign_keys = ON'),
