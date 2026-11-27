@@ -6,14 +6,14 @@ Tulajdonosok: egy lock-session controller tulajdonolja a zárolás és hitelesí
 
 | ID | Forrás | Kódterület | Elfogadás | Ellenőrzés | Állapot |
 |---|---|---|---|---|---|
-| L01 | prompt 1 + pin.png 01 | drawer/settings/tokens | négy kizárólagos kártya, állapotok, akadálymentesség, pontos vizuális egyezés | widget, screenshot/diff | PARTIAL |
-| L02 | prompt 3 + pin.png 02 | PIN komponens/use case | 6+ számjegy, 0 megőrzése, explicit gomb, megerősítés, csere, Cancel | unit/widget/screenshot | PARTIAL |
+| L01 | prompt 1 + pin.png 01 | drawer/settings/tokens | négy kizárólagos kártya, állapotok, akadálymentesség, pontos vizuális egyezés | widget, screenshot/diff | DONE |
+| L02 | prompt 3 + pin.png 02 | PIN komponens/use case | 6+ számjegy, 0 megőrzése, explicit gomb, megerősítés, csere, Cancel | unit/widget/screenshot | DONE |
 | L03 | prompt 2–4 + pin.png 03 | domain/controller/biometric adapter | négy mód, teljes újrahitelesítés, valós biometria és fallback | unit/widget/natív | PARTIAL |
 | L04 | prompt 5 | lifecycle/root | cold start, háttér, privacy, késői eredmény, route, natív dialog és Back | lifecycle/widget/natív | PARTIAL |
-| L05 | prompt 6–7 | repository/secure/crypto | sózott költséges PIN, fail-closed és crash-safe mentés, tartós throttle/óraállítás | unit/DB/restart/boundary | PARTIAL |
+| L05 | prompt 6–7 | repository/secure/crypto | sózott költséges PIN, fail-closed és crash-safe mentés, tartós throttle/óraállítás | unit/DB/restart/boundary | DONE |
 | L06 | prompt 6 | backup | biztonsági kulcs hiánya nem old; appadatok mentése nincs globálisan tiltva | backup config/restore teszt | PARTIAL |
 | L07 | vizuális kiegészítés 2–3 | assets és platform ikon | eredeti SVG, egy hivatkozás, reprodukálható Android/iOS ikonok | asset/launcher screenshot | PARTIAL |
-| L08 | prompt 8–9 | CI/release/docs | teljes teszt, képek/diff, aláírt megőrző upgrade és Release/Pages | CI/log/sha | NOT DONE |
+| L08 | prompt 8–9 | CI/release/docs | teljes teszt, képek/diff, aláírt megőrző upgrade és Release/Pages | CI/log/sha | DONE |
 
 Ellenőrzési megjegyzések: a vizuális integrációs teszt valódi Flutter komponenseket renderel, de a biometrikus platformválaszokat szimulálja; a fizikai biometrikus működés külön bizonyítékot igényel. A képernyő-összevetés és a launcher ellenőrzése az emulátoros CI eredménye alapján zárható. A telefonos mentés-visszaállítás és az iOS build/eszköz nincs helyben igazolva.
 
@@ -24,6 +24,10 @@ A `9ccdb25` Android-tesztjei, aláírása és adatmegőrző upgrade-je sikeres. 
 A `f347e02` tesztjei és frissítése sikeresek, a PIN-lakat és aláhúzás megjelent. Az overlay további elrendezési különbséget mutatott: a PIN-fejléc, vonal és gomb függőleges pozíciója; a biometrikus kártya magassága, az ikon és a leírás térköze. A három képernyő új commitból készített overlaye szükséges a jóváhagyáshoz.
 
 A `318a1d0` képein a fő elrendezési eltérések javultak, de a PIN-lépésszámláló alakja a referenciában kapszula, az alkalmazásban szögletes volt. Az új állapotot ismét a hozzá tartozó emulátoros képen kell ellenőrizni.
+
+A kiadott forráscommit `38e95860c5e8e0389541a318648cadb4fc28cbf3`: a [GitHub-futás](https://github.com/elizerpist/hajnal/actions/runs/45916242024) mindhárom jobja sikeres, 111 Flutter-teszttel és sikeres natív Android-, boundary- és adatmegőrző upgrade-ellenőrzéssel. A [Release](https://github.com/elizerpist/hajnal/releases/tag/hajnal-s0-38e95860c5e8) tartalmazza a három Android-képet, az overlayeket, a launcher- és dátumválasztó-képeket, a naplókat és a commitra és 17 képre kötött felülvizsgálatot. Az SVG-logó az explicit előírás szerint az eredeti márkaasset; a mockup raszteres rajza és az Android betűraszterezése eltérhet. Az APK versionCode-ja 30, az aláíró tanúsítvány SHA-256-a `1296390e645bae7bbaa571db0c7484472c8545d472be999d5bc64784f01f9383`, az APK SHA-256-a `408388277b94dab0194715da2acaddbe71d3fa2e97d6bbcae2a3cea9703919ea`.
+
+Nyitott ellenőrzések: a valódi biometrikus rendszerablak és érzékelő, az iOS build és fizikai eszköz, valamint a másik telefonra való tényleges mentés-visszaállítás nem volt ellenőrizhető. A biometrikus képi integráció szimulált platformválaszt használ; az Android PIN és háttérből visszatérés natív tesztelt. Export/import nem készült. Ezért L03, L04, L06 és L07 részleges marad.
 
 ## Réteghatár- és Ponytail-önellenőrzés
 
