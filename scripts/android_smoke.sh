@@ -9,6 +9,12 @@ test_apk="$(find build/app/outputs/apk/androidTest -name '*.apk' -print -quit)"
 test -n "$test_apk"
 adb install -r build/app/outputs/flutter-apk/app-debug.apk
 adb install -r -t "$test_apk"
+capture_android_failure() {
+  adb exec-out screencap -p > evidence/android-failure.png || true
+  adb logcat -d -s 'flutter:*' 'AndroidRuntime:E' 'ActivityManager:I' > evidence/android-failure-logcat.txt || true
+  adb shell uiautomator dump /sdcard/hajnal-failure.xml >/dev/null 2>&1 || true
+  adb exec-out cat /sdcard/hajnal-failure.xml > evidence/android-failure-ui.xml || true
+}
 run_test() {
   local method="$1"
   local log="$2"
@@ -16,10 +22,7 @@ run_test() {
     -e class "hu.elizerpist.hajnal.StarterSmokeTest#$method" \
     hu.elizerpist.hajnal.test/androidx.test.runner.AndroidJUnitRunner | tee "$log" ||
     ! grep -Eq '^OK \(1 test\)' "$log"; then
-    adb exec-out screencap -p > evidence/android-failure.png || true
-    adb logcat -d -s 'flutter:*' 'AndroidRuntime:E' > evidence/android-failure-logcat.txt || true
-    adb shell uiautomator dump /sdcard/hajnal-failure.xml >/dev/null 2>&1 || true
-    adb exec-out cat /sdcard/hajnal-failure.xml > evidence/android-failure-ui.xml || true
+    capture_android_failure
     return 1
   fi
 }
@@ -50,16 +53,17 @@ for name in onboarding dashboard-closed dashboard-open picker-open picker-night 
 done
 # Collect screenshots before flutter test removes the integration app.
 # Platform authentication is simulated; the actual app widgets are rendered.
-(timeout 10m flutter test --no-pub integration_test/ci_integration_test.dart | tee evidence/artwork-test.log evidence/lock-visual-test.log) &
+(timeout 5m flutter test --no-pub integration_test/ci_integration_test.dart | tee evidence/artwork-test.log evidence/lock-visual-test.log) &
 visual_pid=$!
 ready=false
-for attempt in $(seq 1 600); do
+for attempt in $(seq 1 300); do
   if adb shell run-as hu.elizerpist.hajnal test -f files/lock-visual-ready 2>/dev/null; then
     ready=true
     break
   fi
   if ! kill -0 "$visual_pid" 2>/dev/null; then
-    wait "$visual_pid"
+    wait "$visual_pid" || true
+    capture_android_failure
     exit 1
   fi
   sleep 1
@@ -67,6 +71,7 @@ done
 if [ "$ready" != true ]; then
   kill "$visual_pid" 2>/dev/null || true
   wait "$visual_pid" || true
+  capture_android_failure
   exit 1
 fi
 missing=false
@@ -81,7 +86,10 @@ done
 adb shell run-as hu.elizerpist.hajnal touch files/lock-visual-copied
 visual_result=0
 wait "$visual_pid" || visual_result=$?
-if [ "$visual_result" -ne 0 ] || [ "$missing" = true ]; then exit 1; fi
+if [ "$visual_result" -ne 0 ] || [ "$missing" = true ]; then
+  capture_android_failure
+  exit 1
+fi
 
 # This emulator contains only test data. Remove the debug-signed package before
 # testing the separately signed, normal profile APK and its upgrade path.

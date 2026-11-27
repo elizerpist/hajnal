@@ -26,14 +26,72 @@ jobs:
           cache: true
       - run: flutter pub get --enforce-lockfile
       - run: bash scripts/ci_verify.sh
-  human-apk:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/build/starter'
+  build-human:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/build/starter'
     needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.41.4
+          channel: stable
+          cache: true
+      - run: flutter pub get --enforce-lockfile
+      - name: Build signed HUMAN APK
+        env:
+          HAJNAL_KEYSTORE_BASE64: ${{ secrets.HAJNAL_KEYSTORE_BASE64 }}
+          HAJNAL_KEYSTORE_PASSWORD: ${{ secrets.HAJNAL_KEYSTORE_PASSWORD }}
+          HAJNAL_KEY_ALIAS: ${{ secrets.HAJNAL_KEY_ALIAS }}
+          HAJNAL_BUILD_SHA: ${{ github.sha }}
+        run: |
+          test -n "$HAJNAL_KEYSTORE_BASE64" && test -n "$HAJNAL_KEYSTORE_PASSWORD" && test -n "$HAJNAL_KEY_ALIAS"
+          umask 077
+          printf '%s' "$HAJNAL_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/hajnal.jks"
+          export HAJNAL_KEYSTORE_PATH="$RUNNER_TEMP/hajnal.jks"
+          flutter build apk --profile --target lib/main.dart --build-number "$GITHUB_RUN_NUMBER"
+          date -u '+%Y-%m-%dT%H:%M:%SZ' > "$RUNNER_TEMP/hajnal-build-time"
+          tools_dir="$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
+          "$tools_dir/apksigner" verify --verbose --print-certs build/app/outputs/flutter-apk/app-profile.apk > "$RUNNER_TEMP/hajnal-signature.txt"
+          python3 scripts/signing_certificate.py "$RUNNER_TEMP/hajnal-signature.txt" scripts/hajnal_signer.sha256
+          rm -f "$RUNNER_TEMP/hajnal.jks"
+      - name: Create candidate draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="hajnal-s0-${GITHUB_SHA:0:12}"
+          if ! gh release view "$tag" --json tagName >/dev/null 2>&1; then
+            gh release create "$tag" --target "$GITHUB_SHA" --draft --title "Hajnal S0 ${GITHUB_SHA:0:12}" --notes "Candidate for commit $GITHUB_SHA. Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
+          test "$(gh release view "$tag" --json isDraft --jq '.isDraft')" = true
+          target="$(gh release view "$tag" --json targetCommitish --jq '.targetCommitish')"
+          tag_sha="$(git ls-remote origin "refs/tags/$tag" "refs/tags/$tag^{}" | awk '/\^\{\}$/{peeled=$1} !/\^\{\}$/{tag=$1} END {print peeled ? peeled : tag}')"
+          if [ -n "$tag_sha" ]; then test "$tag_sha" = "$GITHUB_SHA"; else test "$target" = "$GITHUB_SHA"; fi
+      - name: Reuse immutable APK on a repeated commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/reuse_human.sh
+      - name: Stage signed HUMAN candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/stage_human.sh
+  human-apk:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/build/starter'
+    needs: [verify, build-human]
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
       contents: write
-      pages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,19 +128,24 @@ jobs:
       - run: flutter build apk --debug
       - name: Compile native smoke tests
         run: cd android && ./gradlew :app:assembleDebugAndroidTest --stacktrace
-      - name: Build signed HUMAN APK
+      - name: Verify signed HUMAN candidate
         env:
+          GH_TOKEN: ${{ github.token }}
           HAJNAL_KEYSTORE_BASE64: ${{ secrets.HAJNAL_KEYSTORE_BASE64 }}
           HAJNAL_KEYSTORE_PASSWORD: ${{ secrets.HAJNAL_KEYSTORE_PASSWORD }}
           HAJNAL_KEY_ALIAS: ${{ secrets.HAJNAL_KEY_ALIAS }}
-          HAJNAL_BUILD_SHA: ${{ github.sha }}
         run: |
+          tag="hajnal-s0-${GITHUB_SHA:0:12}"
+          apk="hajnal_S0_HUMAN_${GITHUB_SHA:0:12}.apk"
+          mkdir -p candidate
+          gh release download "$tag" --pattern "$apk" --pattern candidate.json --dir candidate
+          python3 scripts/record_validation.py candidate/candidate.json "candidate/$apk" "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > /dev/null
+          cp "candidate/$apk" build/app/outputs/flutter-apk/app-profile.apk
+          python3 -c 'import json; print(json.load(open("candidate/candidate.json"))["buildTime"])' > "$RUNNER_TEMP/hajnal-build-time"
           test -n "$HAJNAL_KEYSTORE_BASE64" && test -n "$HAJNAL_KEYSTORE_PASSWORD" && test -n "$HAJNAL_KEY_ALIAS"
           umask 077
           printf '%s' "$HAJNAL_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/hajnal.jks"
           export HAJNAL_KEYSTORE_PATH="$RUNNER_TEMP/hajnal.jks"
-          flutter build apk --profile --target lib/main.dart --build-number "$GITHUB_RUN_NUMBER"
-          date -u '+%Y-%m-%dT%H:%M:%SZ' > "$RUNNER_TEMP/hajnal-build-time"
           test_apk="$(find build/app/outputs/apk/androidTest -name '*.apk' -print -quit)"
           test -n "$test_apk"
           tools_dir="$ANDROID_HOME/build-tools/$(ls "$ANDROID_HOME/build-tools" | sort -V | tail -1)"
@@ -94,10 +157,6 @@ jobs:
           rm -f "$RUNNER_TEMP/hajnal.jks"
       - name: Get previous published HUMAN APK for upgrade test
         run: bash scripts/previous_human.sh
-      - name: Reuse immutable APK on a repeated commit
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: bash scripts/reuse_human.sh
       - name: Enable emulator acceleration
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-hajnal-kvm.rules
@@ -143,12 +202,21 @@ jobs:
         run: |
           grep -qx PASS evidence/lock-logo-status.txt
           grep -qx PASS evidence/lock-settings-status.txt
-      - name: Stage the tested HUMAN APK
+      - name: Record successful validation
         env:
           GH_TOKEN: ${{ github.token }}
-        run: bash scripts/stage_human.sh
+        run: |
+          tag="hajnal-s0-${GITHUB_SHA:0:12}"
+          python3 scripts/record_validation.py candidate/candidate.json build/app/outputs/flutter-apk/app-profile.apk "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > candidate/validation.json
+          if gh release view "$tag" --json assets --jq '.assets[].name' | grep -Fxq validation.json; then
+            mkdir -p candidate/existing
+            gh release download "$tag" --pattern validation.json --dir candidate/existing
+            python3 -c 'import json; a=json.load(open("candidate/validation.json")); b=json.load(open("candidate/existing/validation.json")); assert all(a[k] == b[k] for k in ("commit", "run", "sha256")) and int(b["attempt"]) > 0'
+          else
+            gh release upload "$tag" candidate/validation.json
+          fi
   publish-reviewed:
-    needs: [verify, human-apk]
+    needs: [verify, build-human, human-apk]
     if: github.event_name == 'push' && github.ref == 'refs/heads/build/starter'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -174,11 +242,11 @@ jobs:
           tag="hajnal-s0-${GITHUB_SHA:0:12}"
           apk="hajnal_S0_HUMAN_${GITHUB_SHA:0:12}.apk"
           mkdir -p reviewed
-          gh release download "$tag" --pattern "$apk" --pattern 'candidate.json' --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'boarding-*.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --pattern 'lock-*.png' --pattern 'calendar-*.png' --pattern 'style-*.png' --pattern 'launcher-mask-*.png' --dir reviewed
-          source_attempt="$(python3 -c 'import json; print(json.load(open("reviewed/candidate.json"))["attempt"])')"
+          gh release download "$tag" --pattern "$apk" --pattern 'candidate.json' --pattern 'validation.json' --pattern 'visual-review.json' --pattern 'html-*.png' --pattern 'onboarding.png' --pattern 'boarding-*.png' --pattern 'dashboard-*.png' --pattern 'picker-*.png' --pattern 'lock-*.png' --pattern 'calendar-*.png' --pattern 'style-*.png' --pattern 'launcher-mask-*.png' --dir reviewed
+          source_attempt="$(python3 -c 'import json; print(json.load(open("reviewed/validation.json"))["attempt"])')"
           [[ "$source_attempt" =~ ^[0-9]+$ ]]
           gh run view "$GITHUB_RUN_ID" --attempt "$source_attempt" --json headSha,headBranch,event,status,conclusion,jobs > reviewed/run.json
-          python3 scripts/verify_release_candidate.py reviewed/run.json reviewed/candidate.json "reviewed/$apk" "$GITHUB_SHA" "$GITHUB_RUN_ID"
+          python3 scripts/verify_release_candidate.py reviewed/run.json reviewed/candidate.json reviewed/validation.json "reviewed/$apk" "$GITHUB_SHA" "$GITHUB_RUN_ID"
           python3 scripts/check_visual_review.py reviewed "$GITHUB_SHA"
           python3 scripts/check_s0_acceptance.py
           python3 -c 'import json; print(json.load(open("reviewed/candidate.json"))["buildTime"])' > "$RUNNER_TEMP/hajnal-build-time"

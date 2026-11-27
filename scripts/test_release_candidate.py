@@ -6,9 +6,26 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from verify_release_candidate import check
+from record_validation import validation_for
 
 
 class CandidateTest(unittest.TestCase):
+    def test_validation_proof_binds_commit_run_attempt_and_downloaded_apk(self):
+        with TemporaryDirectory() as temp:
+            apk = Path(temp, 'candidate.apk')
+            apk.write_bytes(b'signed candidate')
+            sha = 'a' * 40
+            candidate = {'commit': sha, 'run': '42',
+                         'sha256': hashlib.sha256(apk.read_bytes()).hexdigest()}
+            proof = validation_for(candidate, apk, sha, '42', '2')
+            self.assertEqual(proof, {'commit': sha, 'run': '42', 'attempt': '2',
+                                     'sha256': candidate['sha256']})
+            with self.assertRaises(ValueError):
+                validation_for(candidate, apk, sha, '42', '0')
+            apk.write_bytes(b'other')
+            with self.assertRaises(ValueError):
+                validation_for(candidate, apk, sha, '42', '2')
+
     def test_staging_is_idempotent_and_rejects_changed_binary(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)
@@ -52,37 +69,46 @@ esac
             sha = 'a' * 40
             candidate = {'commit': sha, 'run': '42',
                          'sha256': hashlib.sha256(b'tested').hexdigest()}
+            validation = {'commit': sha, 'run': '42', 'attempt': '2',
+                          'sha256': candidate['sha256']}
             run = {'headSha': sha, 'headBranch': 'build/starter', 'event': 'push',
                    'status': 'completed', 'jobs': [
                        {'name': 'verify', 'conclusion': 'success'},
+                       {'name': 'build-human', 'conclusion': 'success', 'steps': [
+                           {'name': 'Build signed HUMAN APK', 'conclusion': 'success'},
+                           {'name': 'Stage signed HUMAN candidate', 'conclusion': 'success'}]},
                        {'name': 'human-apk', 'conclusion': 'success', 'steps': [
                            {'name': 'Run local and schema checks in the release workspace', 'conclusion': 'success'},
-                           {'name': 'Build signed HUMAN APK', 'conclusion': 'success'},
+                           {'name': 'Verify signed HUMAN candidate', 'conclusion': 'success'},
                            {'name': 'Android smoke and integration tests', 'conclusion': 'success'},
                            {'name': 'Publish evidence to a draft release', 'conclusion': 'success'},
                            {'name': 'Require rendered lock screen evidence', 'conclusion': 'success'},
-                           {'name': 'Stage the tested HUMAN APK', 'conclusion': 'success'}]}]}
-            check(run, candidate, apk, sha, '42')
+                           {'name': 'Record successful validation', 'conclusion': 'success'}]}]}
+            check(run, candidate, validation, apk, sha, '42')
             for bad in ('other', 'b' * 40):
                 with self.assertRaises(ValueError):
-                    check(run, candidate, apk, bad, '42')
+                    check(run, candidate, validation, apk, bad, '42')
             with self.assertRaises(ValueError):
-                check(run, candidate, apk, sha, '43')
+                check(run, candidate, validation, apk, sha, '43')
             apk.write_bytes(b'different')
             with self.assertRaises(ValueError):
-                check(run, candidate, apk, sha, '42')
+                check(run, candidate, validation, apk, sha, '42')
             apk.write_bytes(b'tested')
-            run['jobs'][1]['steps'][0]['conclusion'] = 'failure'
+            validation['sha256'] = 'f' * 64
             with self.assertRaises(ValueError):
-                check(run, candidate, apk, sha, '42')
-            run['jobs'][1]['steps'][0]['conclusion'] = 'success'
+                check(run, candidate, validation, apk, sha, '42')
+            validation['sha256'] = candidate['sha256']
+            run['jobs'][2]['steps'][0]['conclusion'] = 'failure'
+            with self.assertRaises(ValueError):
+                check(run, candidate, validation, apk, sha, '42')
+            run['jobs'][2]['steps'][0]['conclusion'] = 'success'
             run['jobs'][1]['conclusion'] = 'failure'
             with self.assertRaises(ValueError):
-                check(run, candidate, apk, sha, '42')
+                check(run, candidate, validation, apk, sha, '42')
             run['jobs'][1]['conclusion'] = 'success'
             run['event'] = 'pull_request'
             with self.assertRaises(ValueError):
-                check(run, candidate, apk, sha, '42')
+                check(run, candidate, validation, apk, sha, '42')
 
 
 if __name__ == '__main__':

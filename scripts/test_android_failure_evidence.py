@@ -87,6 +87,7 @@ esac
 case "$1:$2:$3" in
   shell:am:instrument) echo 'OK (1 test)';;
   exec-out:*) python3 -c 'import sys,struct; sys.stdout.buffer.write(bytes.fromhex("89504e470d0a1a0a") + bytes(8) + struct.pack(">II", 412, 892))';;
+  logcat:*) printf 'visual integration diagnostic';;
 esac
 exit 0
 ''')
@@ -102,6 +103,7 @@ exit 0
             self.assertNotEqual(result.returncode, 0)
             self.assertTrue((root / 'evidence/boarding-welcome-1.png').read_bytes())
             self.assertTrue((root / 'copied').exists())
+            self.assertIn('visual integration diagnostic', (root / 'evidence/android-failure-logcat.txt').read_text())
             self.assertIn(b'Missing or invalid screenshot', result.stderr)
 
 
