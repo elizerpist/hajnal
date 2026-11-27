@@ -157,6 +157,12 @@ void main() {
             .x,
         30,
       );
+      final backTooltip = MaterialLocalizations.of(
+        tester.element(find.text('Te döntöd el, hogyan lépsz be.')),
+      ).backButtonTooltip;
+      await tester.tap(find.byTooltip(backTooltip));
+      await tester.pumpAndSettle();
+      expect(find.byTooltip('Menü'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
       editor.dispose();
       owner.dispose();

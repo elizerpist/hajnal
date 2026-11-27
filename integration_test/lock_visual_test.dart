@@ -157,192 +157,205 @@ void main() {
     final bootstrap = BootstrapController(VisualRecovery(), DateTime.now);
     final style = StyleOwner(VisualStyleStore());
     await style.load();
-    await tester.pumpWidget(
-      HajnalApp(
-        controller: bootstrap,
-        picker: VisualPicker(),
-        lock: controller,
-        onboardingStore: VisualOnboarding(),
-        style: style,
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
-    await tester.runAsync(() => vg.waitForPendingDecodes());
-    await capture('boarding-welcome-1');
-    await tester.tap(find.text('Beállítások áttekintése'));
-    await capture('boarding-welcome-2');
-    await tester.tap(find.text('Tovább'));
-    await capture('boarding-welcome-3');
-    await tester.tap(find.text('Értem, tovább'));
-    await capture('boarding-date');
-    await tester.tap(find.byKey(const Key('calendar-year')));
-    await capture('calendar-years');
-    await tester.tap(find.byKey(const Key('calendar-month')));
-    await capture('calendar-months');
-    await tester.tap(find.byKey(const Key('calendar-month')));
-    await tester.pumpAndSettle();
-    final now = DateTime.now();
-    final previous = DateTime(now.year, now.month, now.day - 1);
-    if (previous.month != now.month) {
-      await tester.tap(find.byTooltip('Előző hónap'));
+    try {
+      await tester.pumpWidget(
+        HajnalApp(
+          controller: bootstrap,
+          picker: VisualPicker(),
+          lock: controller,
+          onboardingStore: VisualOnboarding(),
+          style: style,
+        ),
+      );
       await tester.pumpAndSettle();
-    }
-    await tester.tap(
-      find.byKey(
-        Key('calendar-day-${previous.year}-${previous.month}-${previous.day}'),
-      ),
-    );
-    await tester.pumpAndSettle();
-    if (previous.month != now.month) {
-      await tester.ensureVisible(find.byTooltip('Következő hónap'));
-      await tester.tap(find.byTooltip('Következő hónap'));
-    }
-    await capture('calendar-today-outline');
-    await tester.ensureVisible(find.text('Ma'));
-    await tester.tap(find.text('Ma'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Tovább'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Tovább'));
-    await capture('boarding-motivation');
-    await tester.ensureVisible(find.text('Tovább'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Tovább'));
-    await capture('boarding-modules');
-    await tester.tap(find.text('Szponzor'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Tovább'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Tovább'));
-    await capture('boarding-sponsor');
-    await tester.tap(find.text('Hozzáadom a szponzoromat'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byKey(const Key('sponsor-phone')));
-    await tester.pumpAndSettle();
-    await capture('boarding-sponsor-expanded');
-    await tester.tap(find.byTooltip('Bezárás'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Alkalmazászár'));
-    await tester.pumpAndSettle();
-    expect(find.text('Te döntöd el, hogyan lépsz be.'), findsOneWidget);
-    await capture('lock-settings');
-    await tester.pageBack();
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Stílus'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Title 1'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byType(Slider).first);
-    await tester.pumpAndSettle();
-    final titleSlider = tester.getRect(find.byType(Slider).first);
-    await tester.tapAt(
-      Offset(titleSlider.left + titleSlider.width * .58, titleSlider.center.dy),
-    );
-    await capture('style-editor');
-    await tester.scrollUntilVisible(
-      find.text('Nagy kártya'),
-      300,
-      scrollable: find
-          .descendant(
-            of: find.byType(ListView),
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Nagy kártya'));
-    await tester.pumpAndSettle();
-    final largeSection = find
-        .ancestor(
-          of: find.text('Nagy kártya'),
-          matching: find.byType(ExpansionTile),
-        )
-        .first;
-    final cardSliders = find.descendant(
-      of: largeSection,
-      matching: find.byType(Slider),
-    );
-    await tester.ensureVisible(cardSliders.at(1));
-    await tester.pumpAndSettle();
-    final radiusSlider = tester.getRect(cardSliders.at(1));
-    await tester.tapAt(
-      Offset(
-        radiusSlider.left + radiusSlider.width * .55,
-        radiusSlider.center.dy,
-      ),
-    );
-    await tester.ensureVisible(find.text('Példa kártya'));
-    await tester.pumpAndSettle();
-    await capture('style-preview-card');
-    await tester.tap(find.text('Alkalmazás'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Onboarding'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Beállítások áttekintése'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Tovább'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Értem, tovább'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Tovább'));
-    await tester.tap(find.text('Tovább'));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Tovább'));
-    await tester.tap(find.text('Tovább'));
-    await capture('style-onboarding');
-    await tester.tap(find.byTooltip('Bezárás'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Menü'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Alkalmazászár'));
-    await capture('style-lock');
-    final navigator = Navigator.of(
-      tester.element(find.text('Alkalmazászár').last),
-    );
-    unawaited(
-      navigator.push<void>(MaterialPageRoute(builder: (_) => const PinSetup())),
-    );
-    await tester.pumpAndSettle();
-    for (final digit in '123456'.split('')) {
-      await tester.tap(find.text(digit));
-      await tester.pump();
-    }
-    await capture('lock-pin-setup');
-    controller.background();
-    controller.resumed();
-    await controller.submitPin('123456');
-    await tester.pump();
-    await tester.pumpAndSettle();
-    expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
-    await tester.runAsync(() => vg.waitForPendingDecodes());
-    await tester.pumpAndSettle();
-    await capture('lock-biometric-step');
-    await File(
-      '${directory.path}/lock-visual-ready',
-    ).writeAsString('ready', flush: true);
-    await tester.runAsync(() async {
-      final copied = File('${directory.path}/lock-visual-copied');
-      final deadline = DateTime.now().add(const Duration(minutes: 5));
-      while (!await copied.exists()) {
-        if (DateTime.now().isAfter(deadline)) {
-          throw TimeoutException('Screenshots were not collected');
-        }
-        await Future<void>.delayed(const Duration(milliseconds: 500));
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Onboarding'));
+      await tester.pumpAndSettle();
+      await tester.runAsync(() => vg.waitForPendingDecodes());
+      await capture('boarding-welcome-1');
+      await tester.tap(find.text('Beállítások áttekintése'));
+      await capture('boarding-welcome-2');
+      await tester.tap(find.text('Tovább'));
+      await capture('boarding-welcome-3');
+      await tester.tap(find.text('Értem, tovább'));
+      await capture('boarding-date');
+      await tester.tap(find.byKey(const Key('calendar-year')));
+      await capture('calendar-years');
+      await tester.tap(find.byKey(const Key('calendar-month')));
+      await capture('calendar-months');
+      await tester.tap(find.byKey(const Key('calendar-month')));
+      await tester.pumpAndSettle();
+      final now = DateTime.now();
+      final previous = DateTime(now.year, now.month, now.day - 1);
+      if (previous.month != now.month) {
+        await tester.tap(find.byTooltip('Előző hónap'));
+        await tester.pumpAndSettle();
       }
-    });
-    await tester.pumpWidget(const SizedBox());
-    bootstrap.dispose();
-    controller.dispose();
-    style.dispose();
+      await tester.tap(
+        find.byKey(
+          Key(
+            'calendar-day-${previous.year}-${previous.month}-${previous.day}',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      if (previous.month != now.month) {
+        await tester.ensureVisible(find.byTooltip('Következő hónap'));
+        await tester.tap(find.byTooltip('Következő hónap'));
+      }
+      await capture('calendar-today-outline');
+      await tester.ensureVisible(find.text('Ma'));
+      await tester.tap(find.text('Ma'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Tovább'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Tovább'));
+      await capture('boarding-motivation');
+      await tester.ensureVisible(find.text('Tovább'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Tovább'));
+      await capture('boarding-modules');
+      await tester.tap(find.text('Szponzor'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Tovább'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Tovább'));
+      await capture('boarding-sponsor');
+      await tester.tap(find.text('Hozzáadom a szponzoromat'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('sponsor-phone')));
+      await tester.pumpAndSettle();
+      await capture('boarding-sponsor-expanded');
+      await tester.tap(find.byTooltip('Bezárás'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Alkalmazászár'));
+      await tester.pumpAndSettle();
+      expect(find.text('Te döntöd el, hogyan lépsz be.'), findsOneWidget);
+      await capture('lock-settings');
+      final backTooltip = MaterialLocalizations.of(
+        tester.element(find.text('Te döntöd el, hogyan lépsz be.')),
+      ).backButtonTooltip;
+      await tester.tap(find.byTooltip(backTooltip));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Stílus'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Title 1'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byType(Slider).first);
+      await tester.pumpAndSettle();
+      final titleSlider = tester.getRect(find.byType(Slider).first);
+      await tester.tapAt(
+        Offset(
+          titleSlider.left + titleSlider.width * .58,
+          titleSlider.center.dy,
+        ),
+      );
+      await capture('style-editor');
+      await tester.scrollUntilVisible(
+        find.text('Nagy kártya'),
+        300,
+        scrollable: find
+            .descendant(
+              of: find.byType(ListView),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Nagy kártya'));
+      await tester.pumpAndSettle();
+      final largeSection = find
+          .ancestor(
+            of: find.text('Nagy kártya'),
+            matching: find.byType(ExpansionTile),
+          )
+          .first;
+      final cardSliders = find.descendant(
+        of: largeSection,
+        matching: find.byType(Slider),
+      );
+      await tester.ensureVisible(cardSliders.at(1));
+      await tester.pumpAndSettle();
+      final radiusSlider = tester.getRect(cardSliders.at(1));
+      await tester.tapAt(
+        Offset(
+          radiusSlider.left + radiusSlider.width * .55,
+          radiusSlider.center.dy,
+        ),
+      );
+      await tester.ensureVisible(find.text('Példa kártya'));
+      await tester.pumpAndSettle();
+      await capture('style-preview-card');
+      await tester.tap(find.text('Alkalmazás'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Onboarding'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Beállítások áttekintése'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Tovább'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Értem, tovább'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Tovább'));
+      await tester.tap(find.text('Tovább'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Tovább'));
+      await tester.tap(find.text('Tovább'));
+      await capture('style-onboarding');
+      await tester.tap(find.byTooltip('Bezárás'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Menü'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Alkalmazászár'));
+      await capture('style-lock');
+      final navigator = Navigator.of(
+        tester.element(find.text('Alkalmazászár').last),
+      );
+      unawaited(
+        navigator.push<void>(
+          MaterialPageRoute(builder: (_) => const PinSetup()),
+        ),
+      );
+      await tester.pumpAndSettle();
+      for (final digit in '123456'.split('')) {
+        await tester.tap(find.text(digit));
+        await tester.pump();
+      }
+      await capture('lock-pin-setup');
+      controller.background();
+      controller.resumed();
+      await controller.submitPin('123456');
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(find.text('Jó, hogy itt vagy.'), findsOneWidget);
+      await tester.runAsync(() => vg.waitForPendingDecodes());
+      await tester.pumpAndSettle();
+      await capture('lock-biometric-step');
+    } finally {
+      await File(
+        '${directory.path}/lock-visual-ready',
+      ).writeAsString('ready', flush: true);
+      await tester.runAsync(() async {
+        final copied = File('${directory.path}/lock-visual-copied');
+        final deadline = DateTime.now().add(const Duration(minutes: 5));
+        while (!await copied.exists()) {
+          if (DateTime.now().isAfter(deadline)) {
+            throw TimeoutException('Screenshots were not collected');
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 500));
+        }
+      });
+      await tester.pumpWidget(const SizedBox());
+      bootstrap.dispose();
+      controller.dispose();
+      style.dispose();
+    }
   });
 }

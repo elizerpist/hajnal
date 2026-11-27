@@ -159,6 +159,7 @@ class StarterSmokeTest {
         if (previous.month != now.month) clickScrolling("Előző hónap")
         val label = previous.format(DateTimeFormatter.ofPattern("yyyy. MMMM d.", Locale("hu", "HU")))
         clickScrolling(label)
+        assertNotNull("Selected day is rendered", device.wait(Until.findObject(By.descContains(label).selected(true)), 10000))
         if (previous.month != now.month) clickScrolling("Következő hónap")
         screenshot(name); click("Bezárás")
     }

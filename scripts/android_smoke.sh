@@ -67,12 +67,19 @@ if [ "$ready" != true ]; then
   wait "$visual_pid" || true
   exit 1
 fi
+missing=false
 for name in boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded calendar-years calendar-months calendar-today-outline style-editor style-preview-card style-onboarding style-lock lock-settings lock-pin-setup lock-biometric-step; do
-  adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png"
-  python3 scripts/validate_png.py "evidence/$name.png"
+  if ! adb shell run-as hu.elizerpist.hajnal test -s "files/$name.png" ||
+     ! adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png" ||
+     ! python3 scripts/validate_png.py "evidence/$name.png"; then
+    echo "Missing or invalid screenshot: $name" >&2
+    missing=true
+  fi
 done
 adb shell run-as hu.elizerpist.hajnal touch files/lock-visual-copied
-wait "$visual_pid"
+visual_result=0
+wait "$visual_pid" || visual_result=$?
+if [ "$visual_result" -ne 0 ] || [ "$missing" = true ]; then exit 1; fi
 
 # This emulator contains only test data. Remove the debug-signed package before
 # testing the separately signed, normal profile APK and its upgrade path.
