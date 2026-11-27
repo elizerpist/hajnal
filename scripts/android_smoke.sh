@@ -53,7 +53,7 @@ for name in onboarding dashboard-closed dashboard-open picker-open picker-night 
 done
 # Collect screenshots before flutter test removes the integration app.
 # Platform authentication is simulated; the actual app widgets are rendered.
-(timeout 5m flutter test --no-pub integration_test/ci_integration_test.dart | tee evidence/artwork-test.log evidence/lock-visual-test.log) &
+(timeout 5m flutter test --no-pub --no-dds integration_test/ci_integration_test.dart | tee evidence/artwork-test.log evidence/lock-visual-test.log) &
 visual_pid=$!
 ready=false
 for attempt in $(seq 1 300); do

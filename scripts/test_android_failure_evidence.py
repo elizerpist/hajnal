@@ -93,7 +93,7 @@ exit 0
 ''')
             adb.chmod(0o755)
             flutter = root / 'flutter'
-            flutter.write_text('#!/bin/sh\nexit 1\n')
+            flutter.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$MOCK_ROOT/flutter-args"\nexit 1\n')
             flutter.chmod(0o755)
             script = Path(__file__).with_name('android_smoke.sh').resolve()
             result = subprocess.run(
@@ -103,6 +103,8 @@ exit 0
             self.assertNotEqual(result.returncode, 0)
             self.assertTrue((root / 'evidence/boarding-welcome-1.png').read_bytes())
             self.assertTrue((root / 'copied').exists())
+            self.assertIn('--no-dds', (root / 'flutter-args').read_text().splitlines())
+            self.assertIn('integration_test/ci_integration_test.dart', (root / 'flutter-args').read_text().splitlines())
             self.assertIn('visual integration diagnostic', (root / 'evidence/android-failure-logcat.txt').read_text())
             self.assertIn(b'Missing or invalid screenshot', result.stderr)
 
