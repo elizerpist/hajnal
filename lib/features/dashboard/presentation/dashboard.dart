@@ -154,12 +154,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                     opacity: sheetOpacity.value,
                     child: DecoratedBox(
                       key: const Key('empty-sheet'),
-                      decoration: BoxDecoration(
-                        color: HajnalStyle.of(context).color('background'),
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.elliptical(92, 70),
-                        ),
-                      ),
+                      decoration: HajnalStyle.of(
+                        context,
+                      ).card(CardRole.content),
                     ),
                   ),
                 ),

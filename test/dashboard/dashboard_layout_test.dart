@@ -6,10 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/app/bootstrap_controller.dart';
 import 'package:hajnal/core/artwork/artwork_view.dart';
 import 'package:hajnal/core/artwork/artwork_source.dart';
+import 'package:hajnal/core/theme/application/style_controller.dart';
+import 'package:hajnal/core/theme/domain/style_roles.dart';
 import 'package:hajnal/app/hajnal_app.dart';
 import 'package:hajnal/features/onboarding/application/date_picker.dart';
 import 'package:hajnal/features/recovery/application/recovery_store.dart';
 import '../widget_test.dart' as app_fakes;
+import '../theme/style_controller_test.dart' show FakeStyleStore;
 
 class Store implements RecoveryStore {
   final stream = StreamController<ActiveRecovery?>.broadcast();
@@ -47,6 +50,35 @@ class Picker implements DatePicker {
 }
 
 void main() {
+  testWidgets('dashboard panel uses the saved content card radius', (
+    tester,
+  ) async {
+    final store = Store();
+    final controller = BootstrapController(store, () => DateTime(2024, 4, 1));
+    final style = StyleOwner(FakeStyleStore());
+    await style.load();
+    await tester.pumpWidget(
+      HajnalApp(controller: controller, picker: Picker(), style: style),
+    );
+    store.stream.add(ActiveRecovery(1, DateTime(2024, 4, 1)));
+    await tester.pumpAndSettle();
+    final editor = StyleEditorController(style);
+    editor.setCard(CardRole.content, 'radius', 30.0);
+    expect(await editor.apply(), isTrue);
+    await tester.pumpAndSettle();
+    final panel = tester.widget<DecoratedBox>(
+      find.byKey(const Key('empty-sheet')),
+    );
+    expect(
+      (panel.decoration as BoxDecoration).borderRadius,
+      BorderRadius.circular(30),
+    );
+    await tester.pumpWidget(const SizedBox());
+    editor.dispose();
+    style.dispose();
+    controller.dispose();
+    await store.stream.close();
+  });
   for (final size in [
     const Size(412, 892),
     const Size(390, 844),

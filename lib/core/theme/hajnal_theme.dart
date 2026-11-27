@@ -61,6 +61,13 @@ class HajnalStyle extends ThemeExtension<HajnalStyle> {
             : null,
       );
 
+  BoxDecoration indicator({required bool selected}) => BoxDecoration(
+    color: color(selected ? 'accent' : 'border'),
+    borderRadius: BorderRadius.circular(
+      definitions.cards[CardRole.small]!.radius,
+    ),
+  );
+
   ButtonStyle button(ButtonRole role) {
     final b = definitions.buttons[role]!;
     return ButtonStyle(

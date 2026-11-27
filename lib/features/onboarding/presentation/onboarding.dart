@@ -165,14 +165,7 @@ class _OnboardingState extends State<Onboarding> {
         width: i == active ? 22 : 9,
         height: 9,
         margin: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: BoxDecoration(
-          color: i == active
-              ? HajnalStyle.of(context).color('accent')
-              : HajnalStyle.of(context).color('border'),
-          borderRadius: BorderRadius.circular(
-            HajnalStyle.of(context).definitions.cards[CardRole.small]!.radius,
-          ),
-        ),
+        decoration: HajnalStyle.of(context).indicator(selected: i == active),
       ),
     ),
   );
@@ -253,7 +246,7 @@ class _OnboardingState extends State<Onboarding> {
   );
 
   Widget _button(String text, VoidCallback? onPressed) =>
-      HajnalAction(label: text, onPressed: flow.saving ? null : onPressed);
+      HajnalAction(label: text, loading: flow.saving, onPressed: onPressed);
 
   Widget _card(Widget child, {bool selected = false}) => Padding(
     padding: EdgeInsets.only(

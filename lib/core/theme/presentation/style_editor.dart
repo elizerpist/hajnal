@@ -117,6 +117,7 @@ class _StyleEditorState extends State<StyleEditor> {
                     Expanded(
                       child: HajnalAction(
                         label: 'Alkalmazás',
+                        loading: editor.saving,
                         onPressed: editor.saving
                             ? null
                             : () async {
@@ -214,6 +215,8 @@ class _StyleEditorState extends State<StyleEditor> {
           onChanged: (v) => set('italic', v),
         ),
         _colorField('Szín', t.color, (v) => set('color', v)),
+        if (role == TextRole.button)
+          const Text('A feliratszín módosítása minden gombtípusra érvényes.'),
         _number('Sormagasság', t.lineHeight, 1, 3, (v) => set('lineHeight', v)),
         _number(
           'Betűköz',

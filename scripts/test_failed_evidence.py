@@ -24,7 +24,7 @@ if a[:2] == ['release', 'view']:
     print({'tagName': 'tag', 'isDraft': 'true', 'targetCommitish': s['target'],
            'assets': '\\n'.join(s['assets'])}[field])
 elif a[:2] == ['release', 'create']: s['exists'] = True
-elif a[:2] == ['release', 'upload']: s['assets'].append(a[-1].split('#')[-1])
+elif a[:2] == ['release', 'upload']: s['assets'].append(pathlib.Path(a[-1].split('#')[0]).name)
 else: sys.exit(2)
 p.write_text(json.dumps(s))
 ''')

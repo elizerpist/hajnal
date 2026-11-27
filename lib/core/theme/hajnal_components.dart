@@ -146,17 +146,36 @@ class HajnalAction extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.role = ButtonRole.primary,
+    this.loading = false,
   });
   final String label;
   final VoidCallback? onPressed;
   final ButtonRole role;
+  final bool loading;
   @override
   Widget build(BuildContext context) => SizedBox(
     width: double.infinity,
     child: FilledButton(
       style: HajnalStyle.of(context).button(role),
-      onPressed: onPressed,
-      child: Text(label, textAlign: TextAlign.center),
+      onPressed: loading ? null : onPressed,
+      child: loading
+          ? Semantics(
+              liveRegion: true,
+              label: '$label folyamatban',
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(child: Text(label, textAlign: TextAlign.center)),
+                ],
+              ),
+            )
+          : Text(label, textAlign: TextAlign.center),
     ),
   );
 }

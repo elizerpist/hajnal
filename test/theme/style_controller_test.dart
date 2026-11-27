@@ -19,6 +19,31 @@ class FakeStyleStore implements StyleStore {
 }
 
 void main() {
+  test(
+    'changing the global button text color reaches every button role',
+    () async {
+      final owner = StyleOwner(FakeStyleStore());
+      await owner.load();
+      final editor = StyleEditorController(owner);
+      editor.setText(TextRole.button, 'color', '#ff123456');
+      for (final button in ButtonRole.values) {
+        expect(editor.draft.buttons[button]!.foreground, '#ff123456');
+      }
+      expect(await editor.apply(), isTrue);
+      expect(
+        owner.current.definitions.buttons[ButtonRole.primary]!.foreground,
+        '#ff123456',
+      );
+      editor.setButton(ButtonRole.primary, 'radius', 30.0);
+      editor.resetText(TextRole.button);
+      expect(editor.draft.buttons[ButtonRole.primary]!.foreground, 'onAccent');
+      expect(editor.draft.buttons[ButtonRole.secondary]!.foreground, 'accent');
+      expect(editor.draft.buttons[ButtonRole.primary]!.radius, 30);
+      editor.dispose();
+      owner.dispose();
+    },
+  );
+
   test('draft is published only after a successful atomic save', () async {
     final store = FakeStyleStore();
     final owner = StyleOwner(store);

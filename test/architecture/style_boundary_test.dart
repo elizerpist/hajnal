@@ -14,7 +14,13 @@ class VisualConstruction extends RecursiveAstVisitor<void> {
   void visitInstanceCreationExpression(InstanceCreationExpression node) {
     final name = node.constructorName.type.toSource();
     if (name == 'StyleOwner') owners.add(node.toSource());
-    if (const {'TextStyle', 'Color', 'RoundedRectangleBorder'}.contains(name)) {
+    if (const {
+      'TextStyle',
+      'Color',
+      'RoundedRectangleBorder',
+      'Radius',
+      'BorderRadius',
+    }.contains(name)) {
       violations.add(node.toSource());
     }
     super.visitInstanceCreationExpression(node);
@@ -27,10 +33,33 @@ class VisualConstruction extends RecursiveAstVisitor<void> {
       'TextStyle',
       'Color',
       'RoundedRectangleBorder',
+      'Radius',
+      'BorderRadius',
     }.contains(node.methodName.name)) {
       violations.add(node.toSource());
     }
+    if (const {
+      'Color',
+      'Radius',
+      'BorderRadius',
+    }.contains(node.target?.toSource())) {
+      violations.add(node.toSource());
+    }
     super.visitMethodInvocation(node);
+  }
+
+  @override
+  void visitNamedExpression(NamedExpression node) {
+    if (const {
+      'fontSize',
+      'fontWeight',
+      'fontFamily',
+      'fontStyle',
+      'letterSpacing',
+    }.contains(node.name.label.name)) {
+      violations.add(node.toSource());
+    }
+    super.visitNamedExpression(node);
   }
 }
 

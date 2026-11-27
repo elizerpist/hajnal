@@ -12,10 +12,13 @@ target="$(gh release view "$tag" --json targetCommitish --jq '.targetCommitish')
 tag_sha="$(git ls-remote origin "refs/tags/$tag" "refs/tags/$tag^{}" | awk '/\^\{\}$/{peeled=$1} !/\^\{\}$/{tag=$1} END {print peeled ? peeled : tag}')"
 test "${tag_sha:-$target}" = "$GITHUB_SHA"
 existing="$(gh release view "$tag" --json assets --jq '.assets[].name')"
+staging="$(mktemp -d)"
+trap 'rm -rf "$staging"' EXIT
 for file in "${files[@]}"; do
   [ -f "$file" ] && [ -s "$file" ] || continue
   name="failed-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-$(basename "$file")"
   if ! printf '%s\n' "$existing" | grep -Fxq "$name"; then
-    gh release upload "$tag" "$file#$name"
+    cp -- "$file" "$staging/$name"
+    gh release upload "$tag" "$staging/$name"
   fi
 done

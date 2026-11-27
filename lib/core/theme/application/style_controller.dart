@@ -41,6 +41,12 @@ class StyleEditorController extends ChangeNotifier {
   void setText(TextRole role, String key, Object value) {
     _draft = draft.copyWith(
       texts: {...draft.texts, role: draft.texts[role]!.change(key, value)},
+      buttons: role == TextRole.button && key == 'color'
+          ? {
+              for (final entry in draft.buttons.entries)
+                entry.key: entry.value.change('foreground', value),
+            }
+          : draft.buttons,
     );
     notifyListeners();
   }
@@ -74,8 +80,18 @@ class StyleEditorController extends ChangeNotifier {
   }
 
   void resetText(TextRole role) {
+    final defaults = StyleDefinitions.defaults();
     _draft = draft.copyWith(
-      texts: {...draft.texts, role: StyleDefinitions.defaults().texts[role]!},
+      texts: {...draft.texts, role: defaults.texts[role]!},
+      buttons: role == TextRole.button
+          ? {
+              for (final entry in draft.buttons.entries)
+                entry.key: entry.value.change(
+                  'foreground',
+                  defaults.buttons[entry.key]!.foreground,
+                ),
+            }
+          : draft.buttons,
     );
     notifyListeners();
   }
