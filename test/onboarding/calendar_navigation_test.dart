@@ -4,8 +4,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hajnal/features/onboarding/presentation/onboarding_calendar.dart';
+import 'package:hajnal/core/theme/hajnal_theme.dart';
 
 void main() {
+  testWidgets('month labels stay readable at the standard phone width', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: hajnalTheme(),
+        locale: const Locale('hu'),
+        supportedLocales: const [Locale('hu')],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        home: Scaffold(
+          body: Center(
+            child: SizedBox(
+              width: 340,
+              child: OnboardingCalendar(
+                date: DateTime(2026, 11, 27),
+                today: DateTime(2026, 11, 27),
+                onChanged: (_) {},
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.byKey(const Key('calendar-month')));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('szeptember'),
+      80,
+      scrollable: find.descendant(
+        of: find.byKey(const Key('calendar-selection-panel')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    expect(tester.getSize(find.text('szeptember')).height, lessThan(30));
+  });
+
   testWidgets('today returns from a browsed month even when already selected', (
     tester,
   ) async {

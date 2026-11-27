@@ -141,6 +141,7 @@ ThemeData hajnalTheme([StyleDefinitions? definitions]) {
         minimumSize: WidgetStatePropertyAll(
           Size(style.spacing('touch'), style.spacing('touch')),
         ),
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
       ),
     ),
     iconButtonTheme: IconButtonThemeData(

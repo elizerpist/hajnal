@@ -24,15 +24,30 @@ class _OnboardingCalendarState extends State<OnboardingCalendar> {
   _Panel panel = _Panel.days;
   DateTime get today => DateUtils.dateOnly(widget.today);
   DateTime get lastMonth => DateTime(today.year, today.month);
-  int get _panelColumns =>
-      MediaQuery.textScalerOf(context).scale(1) > 1.3 ? 2 : 3;
-  double get _panelTileHeight {
+  int _panelColumns(double width) {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: 'szeptember',
+        style: Theme.of(context).textTheme.labelLarge,
+      ),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final required = painter.width + 8;
+    painter.dispose();
+    return width / 3 >= required &&
+            width / 3 >= HajnalStyle.of(context).spacing('touch')
+        ? 3
+        : 2;
+  }
+
+  double _panelTileHeight(int columns) {
     final style = HajnalStyle.of(context);
     final text = style.definitions.texts[TextRole.button]!;
     final needed =
         MediaQuery.textScalerOf(context).scale(text.size) *
             text.lineHeight *
-            (_panelColumns == 2 ? 2 : 1) +
+            (columns == 2 ? 2 : 1) +
         style.spacing('titleGap') * 2;
     return needed < style.spacing('touch') ? style.spacing('touch') : needed;
   }
@@ -85,8 +100,11 @@ class _OnboardingCalendarState extends State<OnboardingCalendar> {
     if (panel == _Panel.years) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted || !_years.hasClients) return;
+        final box = context.findRenderObject() as RenderBox;
+        final columns = _panelColumns(box.size.width);
         final offset =
-            ((displayedMonth.year - 1) ~/ _panelColumns - 2) * _panelTileHeight;
+            ((displayedMonth.year - 1) ~/ columns - 2) *
+            _panelTileHeight(columns);
         _years.jumpTo(offset.clamp(0, _years.position.maxScrollExtent));
       });
     }
@@ -175,36 +193,43 @@ class _OnboardingCalendarState extends State<OnboardingCalendar> {
     return SizedBox(
       key: const Key('calendar-selection-panel'),
       height: 208,
-      child: GridView.builder(
-        key: ValueKey(panel),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _panelColumns,
-          mainAxisExtent: _panelTileHeight,
-        ),
-        controller: years ? _years : null,
-        itemCount: years ? today.year : 12,
-        itemBuilder: (context, index) {
-          final value = index + 1;
-          final enabled =
-              years || displayedMonth.year < today.year || value <= today.month;
-          return TextButton(
-            onPressed: !enabled
-                ? null
-                : () {
-                    final year = years ? value : displayedMonth.year,
-                        month = years ? displayedMonth.month : value;
-                    final next = DateTime(year, month);
-                    setState(() {
-                      displayedMonth = next.isAfter(lastMonth)
-                          ? lastMonth
-                          : next;
-                      panel = _Panel.days;
-                    });
-                  },
-            child: Text(
-              years ? '$value.' : _monthName(l, value),
-              textAlign: TextAlign.center,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final columns = _panelColumns(constraints.maxWidth);
+          return GridView.builder(
+            key: ValueKey(panel),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: columns,
+              mainAxisExtent: _panelTileHeight(columns),
             ),
+            controller: years ? _years : null,
+            itemCount: years ? today.year : 12,
+            itemBuilder: (context, index) {
+              final value = index + 1;
+              final enabled =
+                  years ||
+                  displayedMonth.year < today.year ||
+                  value <= today.month;
+              return TextButton(
+                onPressed: !enabled
+                    ? null
+                    : () {
+                        final year = years ? value : displayedMonth.year,
+                            month = years ? displayedMonth.month : value;
+                        final next = DateTime(year, month);
+                        setState(() {
+                          displayedMonth = next.isAfter(lastMonth)
+                              ? lastMonth
+                              : next;
+                          panel = _Panel.days;
+                        });
+                      },
+                child: Text(
+                  years ? '$value.' : _monthName(l, value),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            },
           );
         },
       ),

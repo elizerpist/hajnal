@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -150,6 +152,38 @@ void main() {
       await File(
         '${directory.path}/$name.png',
       ).writeAsBytes(bytes, flush: true);
+      if (name == 'boarding-welcome-1') {
+        final pixels = await tester.runAsync(() async {
+          final codec = await ui.instantiateImageCodec(
+            Uint8List.fromList(bytes),
+          );
+          final frame = await codec.getNextFrame();
+          final width = frame.image.width;
+          final rgba = (await frame.image.toByteData(
+            format: ui.ImageByteFormat.rawRgba,
+          ))!;
+          frame.image.dispose();
+          codec.dispose();
+          return (width, rgba);
+        });
+        expect(pixels, isNotNull);
+        final (width, rgba) = pixels!;
+        expect(width, 412);
+        int channel(int x, int y, int c) =>
+            rgba.getUint8((y * width + x) * 4 + c);
+        for (final x in [80, 100, 120]) {
+          for (var c = 0; c < 3; c++) {
+            expect(
+              (channel(x, 114, c) - channel(x, 112, c)).abs(),
+              lessThan(12),
+            );
+            expect(
+              (channel(x, 114, c) - channel(x, 116, c)).abs(),
+              lessThan(12),
+            );
+          }
+        }
+      }
     }
 
     await controller.submitPin('123456');
@@ -255,6 +289,10 @@ void main() {
           titleSlider.center.dy,
         ),
       );
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Title 1')),
+        alignment: .05,
+      );
       await capture('style-editor');
       await tester.scrollUntilVisible(
         find.text('Nagy kártya'),
@@ -288,7 +326,10 @@ void main() {
           radiusSlider.center.dy,
         ),
       );
-      await tester.ensureVisible(find.text('Példa kártya'));
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Példa kártya')),
+        alignment: .2,
+      );
       await tester.pumpAndSettle();
       await capture('style-preview-card');
       await tester.tap(find.text('Alkalmazás'));

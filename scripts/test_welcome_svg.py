@@ -31,17 +31,19 @@ class WelcomeArtworkTest(unittest.TestCase):
             {'offset': '0.80351179', 'stop-color': '#B084EE'},
             {'offset': '1', 'stop-color': '#A67CDE'},
         ])
-        self.assertEqual(len([p for p in root.findall(f'.//{SVG}path')
-                              if p.get('fill') == 'url(#gradient_0)']), 1)
+        backgrounds = [p for p in root.findall(f'.//{SVG}path')
+                       if p.get('fill') == 'url(#gradient_0)']
+        self.assertEqual(len(backgrounds), 1)
+        self.assertEqual(backgrounds[0].get('d'), 'M0 0L853 0L853 1844L0 1844Z')
 
     def test_only_the_four_named_paths_were_removed(self):
         paths = ET.parse(PATH).getroot().findall(f'.//{SVG}path')
         self.assertFalse(any(p.get('fill') == '#A67CDE' and
                              p.get('d', '').startswith(REMOVED) for p in paths))
-        payload = json.dumps([p.attrib for p in paths], sort_keys=True,
+        payload = json.dumps([p.attrib for p in paths if p.get('fill') != 'url(#gradient_0)'], sort_keys=True,
                              separators=(',', ':')).encode()
         self.assertEqual(hashlib.sha256(payload).hexdigest(),
-                         'b5c73f6ecf3c69ce78d937cc632de683c3d80353745b51418ae5ef4166bac4f2')
+                         '2bcf09a6e4ac79aa559ec166fa72be0f5813e2305212c121f7421f3dfe9f4687')
 
 
 if __name__ == '__main__':
