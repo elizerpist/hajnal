@@ -29,6 +29,21 @@ class OnboardingCalendar extends StatelessWidget {
       children: [
         if (date.isAfter(last))
           const Text('A kezdőnap a mai dátumnál későbbi. Válassz új napot.'),
+        Theme(
+          data: ThemeData.from(
+            colorScheme: Theme.of(context).colorScheme,
+            textTheme: Theme.of(context).textTheme,
+            useMaterial3: false,
+          ),
+          child: CalendarDatePicker(
+            key: ValueKey('${shown.year}-${shown.month}-${shown.day}'),
+            initialDate: shown,
+            firstDate: first,
+            lastDate: last,
+            currentDate: last,
+            onDateChanged: onChanged,
+          ),
+        ),
         Wrap(
           alignment: WrapAlignment.center,
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -57,7 +72,9 @@ class OnboardingCalendar extends StatelessWidget {
               child: Text('${shown.year}'),
             ),
             SizedBox(
-              width: 200,
+              width: MediaQuery.textScalerOf(context).scale(1) > 1.2
+                  ? 200
+                  : 176,
               child: DropdownButton<int>(
                 isExpanded: true,
                 value: shown.month,
@@ -79,19 +96,11 @@ class OnboardingCalendar extends StatelessWidget {
                 },
               ),
             ),
+            OutlinedButton(
+              onPressed: () => onChanged(last),
+              child: const Text('Ma'),
+            ),
           ],
-        ),
-        CalendarDatePicker(
-          key: ValueKey('${shown.year}-${shown.month}-${shown.day}'),
-          initialDate: shown,
-          firstDate: first,
-          lastDate: last,
-          currentDate: last,
-          onDateChanged: onChanged,
-        ),
-        OutlinedButton(
-          onPressed: () => onChanged(last),
-          child: const Text('Ma'),
         ),
       ],
     );

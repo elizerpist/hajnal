@@ -189,7 +189,9 @@ class StarterSmokeTest {
         newCalendar(true); screenshot("picker-after-upgrade")
         File(context.getExternalFilesDir(null), "picker-after-upgrade-theme.txt").writeText("Flutter inline calendar")
         val year = LocalDate.now().year
-        click(year.toString())
+        val yearButton = device.wait(Until.findObject(By.desc(year.toString())), 10000)
+            ?: device.wait(Until.findObject(By.text(year.toString())), 10000)
+        assertNotNull("Quick year selector", yearButton); yearButton!!.click()
         assertNotNull(find("Év kiválasztása"))
         click((year - 1).toString())
         finishOnboarding(true)

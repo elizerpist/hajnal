@@ -25,6 +25,61 @@ class MemoryOnboarding implements OnboardingStore {
 }
 
 void main() {
+  testWidgets(
+    'standard viewport shows the preview and keeps the note reachable',
+    (tester) async {
+      tester.view.physicalSize = const Size(412, 892);
+      tester.view.devicePixelRatio = 1;
+      tester.view.padding = const FakeViewPadding(bottom: 48);
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.view.resetPadding);
+      final store = MemoryOnboarding()
+        ..draft = OnboardingDraft(
+          periodId: null,
+          date: DateTime(2026, 11, 27),
+          motivation: '',
+          modules: {},
+          sponsorName: '',
+          sponsorPhone: '',
+          completed: false,
+          baseline: const {},
+        );
+      final controller = OnboardingController(
+        store,
+        () => DateTime(2026, 11, 27),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('hu'),
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          supportedLocales: const [Locale('hu')],
+          home: Onboarding(controller: controller),
+        ),
+      );
+      await tester.pumpAndSettle();
+      controller.next();
+      controller.next();
+      controller.next();
+      await tester.pumpAndSettle();
+      final note = find.text('A kezdődátumot később is módosíthatod.');
+      final action = find.text('Tovább');
+      expect(
+        tester.getBottomLeft(find.text('Ma a 0. napnál tartasz.')).dy,
+        lessThan(tester.getTopLeft(action).dy),
+      );
+      await tester.ensureVisible(note);
+      await tester.pumpAndSettle();
+      expect(
+        tester.getBottomLeft(note).dy,
+        lessThan(tester.getTopLeft(action).dy),
+      );
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      await controller.idle;
+      controller.dispose();
+    },
+  );
   testWidgets('clock moving backwards keeps the calendar usable', (
     tester,
   ) async {
@@ -227,6 +282,7 @@ void main() {
     await tester.tap(find.text('Tovább'));
     await tester.pumpAndSettle();
     expect(find.text('Miért kezdtem el?'), findsOneWidget);
+    expect(find.text('Miért fontos nekem a változás?'), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'Az egészségemért');
     await tester.ensureVisible(find.text('Tovább'));
     await tester.tap(find.text('Tovább'));
@@ -238,6 +294,12 @@ void main() {
     await tester.tap(find.text('Tovább'));
     await tester.pumpAndSettle();
     expect(find.text('Van szponzorod vagy segítő személyed?'), findsOneWidget);
+    expect(
+      tester
+          .widget<RadioListTile<int>>(find.byType(RadioListTile<int>).first)
+          .controlAffinity,
+      ListTileControlAffinity.trailing,
+    );
     await tester.tap(find.text('Igen, hozzáadom'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key('sponsor-name')), 'Anna');

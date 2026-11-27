@@ -256,28 +256,29 @@ class _OnboardingState extends State<Onboarding> {
     ],
   );
 
-  Widget _title(String title, [String? subtitle]) => Column(
-    children: [
-      Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 27,
-          fontWeight: FontWeight.w800,
-          height: 1.18,
-        ),
-      ),
-      if (subtitle != null) ...[
-        const SizedBox(height: 12),
-        Text(
-          subtitle,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16),
-        ),
-      ],
-      const SizedBox(height: 24),
-    ],
-  );
+  Widget _title(String title, [String? subtitle, double bottomSpacing = 24]) =>
+      Column(
+        children: [
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 27,
+              fontWeight: FontWeight.w800,
+              height: 1.18,
+            ),
+          ),
+          if (subtitle != null) ...[
+            const SizedBox(height: 12),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+          SizedBox(height: bottomSpacing),
+        ],
+      );
 
   Widget _button(String text, VoidCallback? onPressed) => SizedBox(
     width: double.infinity,
@@ -297,10 +298,14 @@ class _OnboardingState extends State<Onboarding> {
     ),
   );
 
-  Widget _card(Widget child, {Color? color}) => Container(
+  Widget _card(
+    Widget child, {
+    Color? color,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+  }) => Container(
     width: double.infinity,
     margin: const EdgeInsets.only(bottom: 12),
-    padding: const EdgeInsets.all(16),
+    padding: padding,
     decoration: BoxDecoration(
       color: color ?? HajnalColors.card,
       borderRadius: BorderRadius.circular(18),
@@ -409,6 +414,7 @@ class _OnboardingState extends State<Onboarding> {
             _title(
               'Mikor kezdődött a tiszta időszakod?',
               'Válaszd ki a kezdőnapot.',
+              12,
             ),
             _card(
               OnboardingCalendar(
@@ -416,6 +422,7 @@ class _OnboardingState extends State<Onboarding> {
                 today: flow.today,
                 onChanged: flow.setDate,
               ),
+              padding: const EdgeInsets.all(8),
             ),
             _card(
               Column(
@@ -435,6 +442,7 @@ class _OnboardingState extends State<Onboarding> {
                 ],
               ),
               color: HajnalColors.selectedCard,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -459,6 +467,7 @@ class _OnboardingState extends State<Onboarding> {
                 decoration: const InputDecoration(
                   labelText: 'Saját emlékeztetőm',
                   hintText: 'Miért fontos nekem a változás?',
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
                   border: InputBorder.none,
                   alignLabelWithHint: true,
                 ),
@@ -623,6 +632,7 @@ class _OnboardingState extends State<Onboarding> {
     RadioListTile<int>(
       contentPadding: EdgeInsets.zero,
       secondary: Icon(icon, color: HajnalColors.purple),
+      controlAffinity: ListTileControlAffinity.trailing,
       title: Text(label),
       value: value,
     ),
