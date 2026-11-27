@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+adb_binary="$(type -P adb)"
+adb() { timeout --kill-after=2s 30s "$adb_binary" "$@"; }
 mkdir -p evidence
 adb shell wm size 412x892
 adb shell wm density 160

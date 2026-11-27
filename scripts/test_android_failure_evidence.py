@@ -7,6 +7,40 @@ import unittest
 
 
 class AndroidFailureEvidenceTest(unittest.TestCase):
+    def test_offline_screenshot_timeout_does_not_hide_the_test_failure(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            test_apk = root / 'build/app/outputs/apk/androidTest/test.apk'
+            test_apk.parent.mkdir(parents=True)
+            test_apk.write_bytes(b'test')
+            adb = root / 'adb'
+            adb.write_text('''#!/bin/sh
+case "$1:$2:$3" in
+  shell:am:instrument) echo 'FAILURES!!!'; exit 0;;
+  logcat:*) printf 'diagnostic log';;
+esac
+exit 0
+''')
+            adb.chmod(0o755)
+            timeout = root / 'timeout'
+            real_timeout = shutil.which('timeout')
+            self.assertIsNotNone(real_timeout)
+            timeout.write_text(f'''#!/bin/sh
+case "$*" in
+  *"30s"*"exec-out screencap"*) touch "$MOCK_ROOT/adb-timeout"; exit 124;;
+esac
+exec "{real_timeout}" "$@"
+''')
+            timeout.chmod(0o755)
+            script = Path(__file__).with_name('android_smoke.sh').resolve()
+            result = subprocess.run(
+                ['bash', str(script)], cwd=root, capture_output=True, timeout=15,
+                env=dict(os.environ, MOCK_ROOT=str(root), PATH=f'{root}:{os.environ["PATH"]}'),
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertTrue((root / 'adb-timeout').exists())
+            self.assertIn('diagnostic log', (root / 'evidence/android-failure-logcat.txt').read_text())
+
     def test_failed_instrumentation_stays_failed_and_preserves_diagnostics(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
