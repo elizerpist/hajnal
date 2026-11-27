@@ -75,6 +75,10 @@ List<Dependency> dependencies(String source, String from) {
 }
 
 bool allowed(String source, String target) {
+  // Flutter SVG exposes its backdrop rendering strategy through this one API.
+  final welcomeRaster =
+      source == 'lib/features/onboarding/presentation/onboarding.dart' &&
+      target == 'package:vector_graphics/vector_graphics_compat.dart';
   if (target.startsWith('package:local_auth/') &&
       source != 'lib/features/app_lock/data/biometric_adapter.dart') {
     return false;
@@ -104,21 +108,23 @@ bool allowed(String source, String target) {
   if (target.startsWith('package:')) {
     final package = target.substring('package:'.length).split('/').first;
     if (!const {
-      'flutter',
-      'flutter_localizations',
-      'flutter_riverpod',
-      'drift',
-      'path',
-      'path_provider',
-      'local_auth',
-      'flutter_secure_storage',
-      'cryptography',
-      'flutter_svg',
-    }.contains(package)) {
+          'flutter',
+          'flutter_localizations',
+          'flutter_riverpod',
+          'drift',
+          'path',
+          'path_provider',
+          'local_auth',
+          'flutter_secure_storage',
+          'cryptography',
+          'flutter_svg',
+        }.contains(package) &&
+        !welcomeRaster) {
       return false;
     }
     if ((presentation || application) &&
         package != 'flutter' &&
+        !welcomeRaster &&
         !(presentation &&
             (package == 'flutter_svg' || package == 'flutter_localizations'))) {
       return false;

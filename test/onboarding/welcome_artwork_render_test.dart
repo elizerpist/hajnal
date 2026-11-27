@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart'
+    show RenderingStrategy;
 
 void main() {
   testWidgets('welcome sky renders as a continuous gradient', (tester) async {
@@ -21,6 +23,7 @@ void main() {
             child: SvgPicture.asset(
               'assets/artwork/onboarding/welcome.svg',
               fit: BoxFit.cover,
+              renderingStrategy: RenderingStrategy.raster,
             ),
           ),
         ),
@@ -36,6 +39,10 @@ void main() {
     ))!;
     int channel(int x, int y, int component) =>
         bytes.getUint8((y * image.width + x) * 4 + component);
+    expect(channel(80, 114, 3), 255);
+    expect(channel(80, 114, 0), inInclusiveRange(145, 200));
+    expect(channel(80, 114, 1), inInclusiveRange(100, 160));
+    expect(channel(80, 114, 2), inInclusiveRange(210, 255));
     for (final x in [80, 100, 120, 270, 360]) {
       for (var c = 0; c < 3; c++) {
         expect(

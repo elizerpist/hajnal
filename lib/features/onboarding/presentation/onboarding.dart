@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart'
+    show RenderingStrategy;
 import '../../../core/artwork/artwork_catalog.dart';
 import '../../../core/brand/brand_assets.dart';
 import '../../../core/theme/hajnal_theme.dart';
@@ -175,6 +177,7 @@ class _OnboardingState extends State<Onboarding> {
       Positioned.fill(
         child: SvgPicture.asset(
           welcomeArtwork,
+          renderingStrategy: RenderingStrategy.raster,
           fit: BoxFit.cover,
           alignment: Alignment.center,
         ),

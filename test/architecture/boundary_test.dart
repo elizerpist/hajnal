@@ -258,6 +258,11 @@ void main() {
           final uri = match.group(1);
           expect(
             presentationImports.contains(uri) ||
+                // Only the existing Welcome SVG selects this render strategy.
+                (file.path ==
+                        'lib/features/onboarding/presentation/onboarding.dart' &&
+                    uri ==
+                        'package:vector_graphics/vector_graphics_compat.dart') ||
                 (themeConsumers.contains(file.path) &&
                     themeImports.contains(uri)) ||
                 (file.path == 'lib/core/theme/presentation/style_editor.dart' &&
