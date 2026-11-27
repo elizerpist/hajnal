@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.util.TypedValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -51,6 +53,20 @@ class StarterSmokeTest {
         val file = File(context.filesDir, "$name.png")
         assertTrue(device.takeScreenshot(file))
         if (name.contains("upgrade")) file.copyTo(File(context.getExternalFilesDir(null), "$name.png"), overwrite = true)
+    }
+    private fun screenshotWelcomeWhenRendered() {
+        val file = File(context.filesDir, "onboarding.png")
+        val deadline = android.os.SystemClock.elapsedRealtime() + 15000
+        while (android.os.SystemClock.elapsedRealtime() < deadline) {
+            screenshot("onboarding")
+            val image = BitmapFactory.decodeFile(file.path) ?: continue
+            val sky = image.getPixel(image.width / 4, image.height / 8)
+            val logo = image.getPixel(image.width * 200 / 412, image.height * 180 / 892)
+            image.recycle()
+            if (Color.red(sky) < 215 && Color.blue(sky) - Color.red(sky) > 20 &&
+                Color.red(logo) < 80 && Color.blue(logo) < 150) return
+        }
+        fail("Welcome artwork and logo did not render before screenshot deadline")
     }
     private fun openPicker(name: String) {
         click("Dátum kiválasztása")
@@ -131,7 +147,7 @@ class StarterSmokeTest {
     }
 
     @Test fun nativePickerPersistenceAndNavigation() {
-        launch(); assertNotNull(find("Csak a mai nap.")); screenshot("onboarding")
+        launch(); assertNotNull(find("Csak a mai nap.")); screenshotWelcomeWhenRendered()
         newCalendar(false); screenshot("picker-open"); clickScrolling("Ma")
         device.setOrientationLeft(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))
         device.setOrientationNatural(); device.waitForIdle(); assertNotNull(find("Válaszd ki a kezdőnapot"))

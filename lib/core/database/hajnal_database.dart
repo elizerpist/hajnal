@@ -83,6 +83,8 @@ class SurvivalNotes extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get body => text()();
   Column<DateTime> get createdAtUtc => dateTime().map(const UtcInstant())();
+  IntColumn get periodId =>
+      integer().nullable().references(RecoveryPeriods, #id)();
 }
 
 @DriftDatabase(
@@ -102,7 +104,7 @@ class HajnalDatabase extends _$HajnalDatabase {
   HajnalDatabase(super.executor);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -130,6 +132,9 @@ class HajnalDatabase extends _$HajnalDatabase {
       if (from < 5) {
         await m.createTable(survivalSessions);
         await m.createTable(survivalNotes);
+      }
+      if (from >= 5 && from < 6) {
+        await m.addColumn(survivalNotes, survivalNotes.periodId);
       }
     },
     beforeOpen: (_) async => customStatement('PRAGMA foreign_keys = ON'),

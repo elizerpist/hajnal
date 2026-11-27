@@ -40,11 +40,19 @@ class PanicRepository implements PanicStore {
   }
 
   @override
-  Future<void> saveNote(String body, DateTime now) async {
+  Future<void> saveNote(String body, DateTime now) => _db.transaction(() async {
+    final active = await (_db.select(
+      _db.recoveryPeriods,
+    )..where((period) => period.closedAtUtc.isNull())).getSingleOrNull();
+    if (active == null) throw StateError('No active recovery period');
     await _db
         .into(_db.survivalNotes)
         .insert(
-          SurvivalNotesCompanion.insert(body: body, createdAtUtc: now.toUtc()),
+          SurvivalNotesCompanion.insert(
+            body: body,
+            createdAtUtc: now.toUtc(),
+            periodId: Value(active.id),
+          ),
         );
-  }
+  });
 }

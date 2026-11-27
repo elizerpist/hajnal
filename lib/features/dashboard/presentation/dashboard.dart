@@ -18,6 +18,7 @@ class Dashboard extends StatefulWidget {
     this.onStyle,
     this.artwork,
     this.onPanic,
+    this.onHistory,
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
@@ -25,6 +26,7 @@ class Dashboard extends StatefulWidget {
   final VoidCallback? onStyle;
   final ArtworkSource? artwork;
   final VoidCallback? onPanic;
+  final VoidCallback? onHistory;
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -367,6 +369,17 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+              if (widget.onHistory != null)
+                Positioned(
+                  top: MediaQuery.paddingOf(context).top + 8,
+                  right: 20,
+                  child: HajnalNavigationIcon(
+                    label: 'Történetem',
+                    overArtwork: true,
+                    onPressed: widget.onHistory,
+                    icon: Icons.timeline,
+                  ),
+                ),
             ],
           );
         },

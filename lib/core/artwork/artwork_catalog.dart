@@ -43,3 +43,5 @@ const survivalArtworks = [
   'assets/artwork/survival/survival_wait_bg.png',
   'assets/artwork/survival/survival_reassess_bg.png',
 ];
+
+const historyArtwork = 'assets/artwork/history/current_richer.png';

@@ -9,6 +9,7 @@ import 'core/platform/date_picker.dart';
 import 'features/onboarding/application/onboarding_store.dart';
 import 'core/theme/application/style_controller.dart';
 import 'features/panic/application/panic_controller.dart';
+import 'features/history/application/history_store.dart';
 
 final bootstrapProvider = Provider<BootstrapController>(
   (ref) => throw StateError('Bootstrap not initialized'),
@@ -28,6 +29,9 @@ final styleProvider = Provider<StyleOwner>(
 final panicProvider = Provider<PanicController>(
   (ref) => throw StateError('Panic not initialized'),
 );
+final historyProvider = Provider<HistoryStore>(
+  (ref) => throw StateError('History not initialized'),
+);
 
 class _AppScope extends ConsumerWidget {
   const _AppScope({required this.onRetry});
@@ -41,6 +45,7 @@ class _AppScope extends ConsumerWidget {
     onboardingStore: ref.watch(onboardingProvider),
     style: ref.watch(styleProvider),
     panic: ref.watch(panicProvider),
+    history: ref.watch(historyProvider),
     onRetry: onRetry,
   );
 }
@@ -123,6 +128,7 @@ class _RootState extends State<_Root> {
           onboardingProvider.overrideWithValue(current.onboarding),
           styleProvider.overrideWithValue(current.style),
           panicProvider.overrideWithValue(current.panic),
+          historyProvider.overrideWithValue(current.history),
         ],
         child: _AppScope(onRetry: retry),
       );

@@ -17,6 +17,9 @@ import '../features/app_lock/presentation/lock_gate.dart';
 import '../features/app_lock/presentation/lock_settings.dart';
 import '../features/panic/application/panic_controller.dart';
 import '../features/panic/presentation/panic_page.dart';
+import '../features/history/application/history_store.dart';
+import '../features/history/application/history_controller.dart';
+import '../features/history/presentation/history_page.dart';
 
 class HajnalApp extends StatefulWidget {
   const HajnalApp({
@@ -29,6 +32,7 @@ class HajnalApp extends StatefulWidget {
     this.onboardingStore,
     this.style,
     this.panic,
+    this.history,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -38,6 +42,7 @@ class HajnalApp extends StatefulWidget {
   final OnboardingStore? onboardingStore;
   final StyleOwner? style;
   final PanicController? panic;
+  final HistoryStore? history;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -128,6 +133,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       onboardingStore: widget.onboardingStore,
       style: widget.style,
       panic: widget.panic,
+      history: widget.history,
     ),
   );
 }
@@ -142,6 +148,7 @@ class _Bootstrap extends StatefulWidget {
     this.onboardingStore,
     this.style,
     this.panic,
+    this.history,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -151,6 +158,7 @@ class _Bootstrap extends StatefulWidget {
   final OnboardingStore? onboardingStore;
   final StyleOwner? style;
   final PanicController? panic;
+  final HistoryStore? history;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
@@ -197,6 +205,24 @@ class _BootstrapState extends State<_Bootstrap> {
   }
 
   bool _panicOpen = false;
+  bool _historyOpen = false;
+  void _openHistory() {
+    final history = widget.history;
+    if (_historyOpen || history == null) return;
+    _historyOpen = true;
+    final controller = HistoryController(history, DateTime.now);
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<void>(
+            builder: (_) => HistoryPage(controller: controller),
+          ),
+        )
+        .whenComplete(() {
+          controller.dispose();
+          _historyOpen = false;
+        });
+  }
+
   void _openPanic() {
     final panic = widget.panic;
     if (_panicOpen || panic == null) return;
@@ -247,6 +273,7 @@ class _BootstrapState extends State<_Bootstrap> {
         onStyle: widget.style == null ? null : _openStyle,
         artwork: widget.artwork,
         onPanic: widget.panic == null ? null : _openPanic,
+        onHistory: widget.history == null ? null : _openHistory,
       );
     },
   );

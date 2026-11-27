@@ -2203,8 +2203,22 @@ class $SurvivalNotesTable extends SurvivalNotes
         type: DriftSqlType.dateTime,
         requiredDuringInsert: true,
       ).withConverter<DateTime>($SurvivalNotesTable.$convertercreatedAtUtc);
+  static const VerificationMeta _periodIdMeta = const VerificationMeta(
+    'periodId',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, body, createdAtUtc];
+  late final GeneratedColumn<int> periodId = GeneratedColumn<int>(
+    'period_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES recovery_periods (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, body, createdAtUtc, periodId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2227,6 +2241,12 @@ class $SurvivalNotesTable extends SurvivalNotes
       );
     } else if (isInserting) {
       context.missing(_bodyMeta);
+    }
+    if (data.containsKey('period_id')) {
+      context.handle(
+        _periodIdMeta,
+        periodId.isAcceptableOrUnknown(data['period_id']!, _periodIdMeta),
+      );
     }
     return context;
   }
@@ -2251,6 +2271,10 @@ class $SurvivalNotesTable extends SurvivalNotes
           data['${effectivePrefix}created_at_utc'],
         )!,
       ),
+      periodId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}period_id'],
+      ),
     );
   }
 
@@ -2267,10 +2291,12 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
   final int id;
   final String body;
   final DateTime createdAtUtc;
+  final int? periodId;
   const SurvivalNote({
     required this.id,
     required this.body,
     required this.createdAtUtc,
+    this.periodId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2282,6 +2308,9 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
         $SurvivalNotesTable.$convertercreatedAtUtc.toSql(createdAtUtc),
       );
     }
+    if (!nullToAbsent || periodId != null) {
+      map['period_id'] = Variable<int>(periodId);
+    }
     return map;
   }
 
@@ -2290,6 +2319,9 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
       id: Value(id),
       body: Value(body),
       createdAtUtc: Value(createdAtUtc),
+      periodId: periodId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(periodId),
     );
   }
 
@@ -2302,6 +2334,7 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
       id: serializer.fromJson<int>(json['id']),
       body: serializer.fromJson<String>(json['body']),
       createdAtUtc: serializer.fromJson<DateTime>(json['createdAtUtc']),
+      periodId: serializer.fromJson<int?>(json['periodId']),
     );
   }
   @override
@@ -2311,15 +2344,21 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
       'id': serializer.toJson<int>(id),
       'body': serializer.toJson<String>(body),
       'createdAtUtc': serializer.toJson<DateTime>(createdAtUtc),
+      'periodId': serializer.toJson<int?>(periodId),
     };
   }
 
-  SurvivalNote copyWith({int? id, String? body, DateTime? createdAtUtc}) =>
-      SurvivalNote(
-        id: id ?? this.id,
-        body: body ?? this.body,
-        createdAtUtc: createdAtUtc ?? this.createdAtUtc,
-      );
+  SurvivalNote copyWith({
+    int? id,
+    String? body,
+    DateTime? createdAtUtc,
+    Value<int?> periodId = const Value.absent(),
+  }) => SurvivalNote(
+    id: id ?? this.id,
+    body: body ?? this.body,
+    createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+    periodId: periodId.present ? periodId.value : this.periodId,
+  );
   SurvivalNote copyWithCompanion(SurvivalNotesCompanion data) {
     return SurvivalNote(
       id: data.id.present ? data.id.value : this.id,
@@ -2327,6 +2366,7 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
       createdAtUtc: data.createdAtUtc.present
           ? data.createdAtUtc.value
           : this.createdAtUtc,
+      periodId: data.periodId.present ? data.periodId.value : this.periodId,
     );
   }
 
@@ -2335,46 +2375,53 @@ class SurvivalNote extends DataClass implements Insertable<SurvivalNote> {
     return (StringBuffer('SurvivalNote(')
           ..write('id: $id, ')
           ..write('body: $body, ')
-          ..write('createdAtUtc: $createdAtUtc')
+          ..write('createdAtUtc: $createdAtUtc, ')
+          ..write('periodId: $periodId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, body, createdAtUtc);
+  int get hashCode => Object.hash(id, body, createdAtUtc, periodId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SurvivalNote &&
           other.id == this.id &&
           other.body == this.body &&
-          other.createdAtUtc == this.createdAtUtc);
+          other.createdAtUtc == this.createdAtUtc &&
+          other.periodId == this.periodId);
 }
 
 class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
   final Value<int> id;
   final Value<String> body;
   final Value<DateTime> createdAtUtc;
+  final Value<int?> periodId;
   const SurvivalNotesCompanion({
     this.id = const Value.absent(),
     this.body = const Value.absent(),
     this.createdAtUtc = const Value.absent(),
+    this.periodId = const Value.absent(),
   });
   SurvivalNotesCompanion.insert({
     this.id = const Value.absent(),
     required String body,
     required DateTime createdAtUtc,
+    this.periodId = const Value.absent(),
   }) : body = Value(body),
        createdAtUtc = Value(createdAtUtc);
   static Insertable<SurvivalNote> custom({
     Expression<int>? id,
     Expression<String>? body,
     Expression<DateTime>? createdAtUtc,
+    Expression<int>? periodId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (body != null) 'body': body,
       if (createdAtUtc != null) 'created_at_utc': createdAtUtc,
+      if (periodId != null) 'period_id': periodId,
     });
   }
 
@@ -2382,11 +2429,13 @@ class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
     Value<int>? id,
     Value<String>? body,
     Value<DateTime>? createdAtUtc,
+    Value<int?>? periodId,
   }) {
     return SurvivalNotesCompanion(
       id: id ?? this.id,
       body: body ?? this.body,
       createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+      periodId: periodId ?? this.periodId,
     );
   }
 
@@ -2404,6 +2453,9 @@ class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
         $SurvivalNotesTable.$convertercreatedAtUtc.toSql(createdAtUtc.value),
       );
     }
+    if (periodId.present) {
+      map['period_id'] = Variable<int>(periodId.value);
+    }
     return map;
   }
 
@@ -2412,7 +2464,8 @@ class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
     return (StringBuffer('SurvivalNotesCompanion(')
           ..write('id: $id, ')
           ..write('body: $body, ')
-          ..write('createdAtUtc: $createdAtUtc')
+          ..write('createdAtUtc: $createdAtUtc, ')
+          ..write('periodId: $periodId')
           ..write(')'))
         .toString();
   }
@@ -2478,6 +2531,41 @@ typedef $$RecoveryPeriodsTableUpdateCompanionBuilder =
       Value<DateTime?> closedAtUtc,
     });
 
+final class $$RecoveryPeriodsTableReferences
+    extends
+        BaseReferences<
+          _$HajnalDatabase,
+          $RecoveryPeriodsTable,
+          RecoveryPeriod
+        > {
+  $$RecoveryPeriodsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$SurvivalNotesTable, List<SurvivalNote>>
+  _survivalNotesRefsTable(_$HajnalDatabase db) => MultiTypedResultKey.fromTable(
+    db.survivalNotes,
+    aliasName: $_aliasNameGenerator(
+      db.recoveryPeriods.id,
+      db.survivalNotes.periodId,
+    ),
+  );
+
+  $$SurvivalNotesTableProcessedTableManager get survivalNotesRefs {
+    final manager = $$SurvivalNotesTableTableManager(
+      $_db,
+      $_db.survivalNotes,
+    ).filter((f) => f.periodId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_survivalNotesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$RecoveryPeriodsTableFilterComposer
     extends Composer<_$HajnalDatabase, $RecoveryPeriodsTable> {
   $$RecoveryPeriodsTableFilterComposer({
@@ -2508,6 +2596,31 @@ class $$RecoveryPeriodsTableFilterComposer
     column: $table.closedAtUtc,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
+
+  Expression<bool> survivalNotesRefs(
+    Expression<bool> Function($$SurvivalNotesTableFilterComposer f) f,
+  ) {
+    final $$SurvivalNotesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.survivalNotes,
+      getReferencedColumn: (t) => t.periodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SurvivalNotesTableFilterComposer(
+            $db: $db,
+            $table: $db.survivalNotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$RecoveryPeriodsTableOrderingComposer
@@ -2568,6 +2681,31 @@ class $$RecoveryPeriodsTableAnnotationComposer
         column: $table.closedAtUtc,
         builder: (column) => column,
       );
+
+  Expression<T> survivalNotesRefs<T extends Object>(
+    Expression<T> Function($$SurvivalNotesTableAnnotationComposer a) f,
+  ) {
+    final $$SurvivalNotesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.survivalNotes,
+      getReferencedColumn: (t) => t.periodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SurvivalNotesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.survivalNotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$RecoveryPeriodsTableTableManager
@@ -2581,16 +2719,9 @@ class $$RecoveryPeriodsTableTableManager
           $$RecoveryPeriodsTableAnnotationComposer,
           $$RecoveryPeriodsTableCreateCompanionBuilder,
           $$RecoveryPeriodsTableUpdateCompanionBuilder,
-          (
-            RecoveryPeriod,
-            BaseReferences<
-              _$HajnalDatabase,
-              $RecoveryPeriodsTable,
-              RecoveryPeriod
-            >,
-          ),
+          (RecoveryPeriod, $$RecoveryPeriodsTableReferences),
           RecoveryPeriod,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool survivalNotesRefs})
         > {
   $$RecoveryPeriodsTableTableManager(
     _$HajnalDatabase db,
@@ -2630,9 +2761,45 @@ class $$RecoveryPeriodsTableTableManager
                 closedAtUtc: closedAtUtc,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$RecoveryPeriodsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({survivalNotesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (survivalNotesRefs) db.survivalNotes,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (survivalNotesRefs)
+                    await $_getPrefetchedData<
+                      RecoveryPeriod,
+                      $RecoveryPeriodsTable,
+                      SurvivalNote
+                    >(
+                      currentTable: table,
+                      referencedTable: $$RecoveryPeriodsTableReferences
+                          ._survivalNotesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$RecoveryPeriodsTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).survivalNotesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.periodId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -2647,12 +2814,9 @@ typedef $$RecoveryPeriodsTableProcessedTableManager =
       $$RecoveryPeriodsTableAnnotationComposer,
       $$RecoveryPeriodsTableCreateCompanionBuilder,
       $$RecoveryPeriodsTableUpdateCompanionBuilder,
-      (
-        RecoveryPeriod,
-        BaseReferences<_$HajnalDatabase, $RecoveryPeriodsTable, RecoveryPeriod>,
-      ),
+      (RecoveryPeriod, $$RecoveryPeriodsTableReferences),
       RecoveryPeriod,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool survivalNotesRefs})
     >;
 typedef $$ArtworkOverridesTableCreateCompanionBuilder =
     ArtworkOverridesCompanion Function({
@@ -3832,13 +3996,44 @@ typedef $$SurvivalNotesTableCreateCompanionBuilder =
       Value<int> id,
       required String body,
       required DateTime createdAtUtc,
+      Value<int?> periodId,
     });
 typedef $$SurvivalNotesTableUpdateCompanionBuilder =
     SurvivalNotesCompanion Function({
       Value<int> id,
       Value<String> body,
       Value<DateTime> createdAtUtc,
+      Value<int?> periodId,
     });
+
+final class $$SurvivalNotesTableReferences
+    extends
+        BaseReferences<_$HajnalDatabase, $SurvivalNotesTable, SurvivalNote> {
+  $$SurvivalNotesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $RecoveryPeriodsTable _periodIdTable(_$HajnalDatabase db) =>
+      db.recoveryPeriods.createAlias(
+        $_aliasNameGenerator(db.survivalNotes.periodId, db.recoveryPeriods.id),
+      );
+
+  $$RecoveryPeriodsTableProcessedTableManager? get periodId {
+    final $_column = $_itemColumn<int>('period_id');
+    if ($_column == null) return null;
+    final manager = $$RecoveryPeriodsTableTableManager(
+      $_db,
+      $_db.recoveryPeriods,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_periodIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
 
 class $$SurvivalNotesTableFilterComposer
     extends Composer<_$HajnalDatabase, $SurvivalNotesTable> {
@@ -3864,6 +4059,29 @@ class $$SurvivalNotesTableFilterComposer
     column: $table.createdAtUtc,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
+
+  $$RecoveryPeriodsTableFilterComposer get periodId {
+    final $$RecoveryPeriodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableFilterComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SurvivalNotesTableOrderingComposer
@@ -3889,6 +4107,29 @@ class $$SurvivalNotesTableOrderingComposer
     column: $table.createdAtUtc,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$RecoveryPeriodsTableOrderingComposer get periodId {
+    final $$RecoveryPeriodsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableOrderingComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SurvivalNotesTableAnnotationComposer
@@ -3911,6 +4152,29 @@ class $$SurvivalNotesTableAnnotationComposer
         column: $table.createdAtUtc,
         builder: (column) => column,
       );
+
+  $$RecoveryPeriodsTableAnnotationComposer get periodId {
+    final $$RecoveryPeriodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SurvivalNotesTableTableManager
@@ -3924,12 +4188,9 @@ class $$SurvivalNotesTableTableManager
           $$SurvivalNotesTableAnnotationComposer,
           $$SurvivalNotesTableCreateCompanionBuilder,
           $$SurvivalNotesTableUpdateCompanionBuilder,
-          (
-            SurvivalNote,
-            BaseReferences<_$HajnalDatabase, $SurvivalNotesTable, SurvivalNote>,
-          ),
+          (SurvivalNote, $$SurvivalNotesTableReferences),
           SurvivalNote,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool periodId})
         > {
   $$SurvivalNotesTableTableManager(
     _$HajnalDatabase db,
@@ -3949,25 +4210,74 @@ class $$SurvivalNotesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> body = const Value.absent(),
                 Value<DateTime> createdAtUtc = const Value.absent(),
+                Value<int?> periodId = const Value.absent(),
               }) => SurvivalNotesCompanion(
                 id: id,
                 body: body,
                 createdAtUtc: createdAtUtc,
+                periodId: periodId,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String body,
                 required DateTime createdAtUtc,
+                Value<int?> periodId = const Value.absent(),
               }) => SurvivalNotesCompanion.insert(
                 id: id,
                 body: body,
                 createdAtUtc: createdAtUtc,
+                periodId: periodId,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$SurvivalNotesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({periodId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (periodId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.periodId,
+                                referencedTable: $$SurvivalNotesTableReferences
+                                    ._periodIdTable(db),
+                                referencedColumn: $$SurvivalNotesTableReferences
+                                    ._periodIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -3982,12 +4292,9 @@ typedef $$SurvivalNotesTableProcessedTableManager =
       $$SurvivalNotesTableAnnotationComposer,
       $$SurvivalNotesTableCreateCompanionBuilder,
       $$SurvivalNotesTableUpdateCompanionBuilder,
-      (
-        SurvivalNote,
-        BaseReferences<_$HajnalDatabase, $SurvivalNotesTable, SurvivalNote>,
-      ),
+      (SurvivalNote, $$SurvivalNotesTableReferences),
       SurvivalNote,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool periodId})
     >;
 
 class $HajnalDatabaseManager {

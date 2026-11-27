@@ -42,6 +42,9 @@ void main() {
       await db.customStatement(
         "INSERT INTO onboarding_profiles (id,motivation,modules,completed) VALUES (1,'Saját szó',0,1)",
       );
+      await db.customStatement(
+        "INSERT INTO recovery_periods (start_local_date,created_at_utc) VALUES ('2024-01-02',1)",
+      );
       var repository = PanicRepository(db);
       final session = SurvivalSession(
         startedAt: DateTime.utc(2025),

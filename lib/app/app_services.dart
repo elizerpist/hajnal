@@ -12,6 +12,8 @@ import '../features/recovery/data/recovery_repository.dart';
 import '../features/recovery/application/restart_recovery.dart';
 import '../features/panic/application/panic_controller.dart';
 import '../features/panic/data/panic_repository.dart';
+import '../features/history/application/history_store.dart';
+import '../features/history/data/history_repository.dart';
 import '../core/platform/emergency_dialer.dart';
 import '../features/onboarding/application/onboarding_store.dart';
 import '../features/onboarding/data/onboarding_repository.dart';
@@ -33,6 +35,7 @@ class AppServices {
     this.onboarding,
     this.style,
     this.panic,
+    this.history,
   );
   final HajnalDatabase database;
   final BootstrapController controller;
@@ -41,6 +44,7 @@ class AppServices {
   final OnboardingStore onboarding;
   final StyleOwner style;
   final PanicController panic;
+  final HistoryStore history;
 
   static Future<AppServices> open() async {
     final directory = await getApplicationSupportDirectory();
@@ -80,6 +84,7 @@ class AppServices {
           () => controller.activePeriod?.id,
           DateTime.now,
         ),
+        HistoryRepository(database),
       );
     } catch (_) {
       artwork.dispose();

@@ -140,6 +140,7 @@ bool allowed(String source, String target) {
   if (target.startsWith('package:drift/') &&
       source != 'lib/app/app_services.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/history/data/history_repository.dart' &&
       source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
@@ -210,6 +211,7 @@ bool allowed(String source, String target) {
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/core/artwork/drift_artwork_store.dart' &&
       source != 'lib/features/recovery/data/recovery_repository.dart' &&
+      source != 'lib/features/history/data/history_repository.dart' &&
       source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/theme/data/style_repository.dart' &&

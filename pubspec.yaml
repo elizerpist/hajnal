@@ -82,6 +82,7 @@ flutter:
     - assets/artwork/dashboard/placeholder.png
     - assets/artwork/panic/
     - assets/artwork/survival/
+    - assets/artwork/history/
     - assets/fonts/roboto/LICENSE
     - assets/fonts/dejavu/LICENSE
 

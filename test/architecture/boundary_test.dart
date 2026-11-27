@@ -226,6 +226,10 @@ void main() {
       'lib/features/panic/presentation/panic_dialogs.dart',
       'lib/features/panic/presentation/relapse_page.dart',
       'lib/features/panic/presentation/survival_page.dart',
+      'lib/features/history/presentation/history_page.dart',
+      'lib/features/history/presentation/history_calendar.dart',
+      'lib/features/history/presentation/history_event_list.dart',
+      'lib/features/history/presentation/history_switch.dart',
     };
     const themeImports = {
       '../../../core/theme/hajnal_theme.dart',
@@ -260,6 +264,31 @@ void main() {
         'panic_dialogs.dart',
       },
     };
+    // History reads only the view contract and its own renderers; the visual
+    // treatment is shared by the history hero and event-node renderers.
+    const historyImports = <String, Set<String>>{
+      'lib/features/history/presentation/history_page.dart': {
+        '../application/history_controller.dart',
+        '../application/history_store.dart',
+        '../../../core/theme/history_visual.dart',
+        'history_calendar.dart',
+        'history_event_list.dart',
+        'history_switch.dart',
+      },
+      'lib/features/history/presentation/history_calendar.dart': {
+        '../application/history_store.dart',
+        '../../../core/theme/history_visual.dart',
+        'history_event_list.dart',
+        'history_switch.dart',
+      },
+      'lib/features/history/presentation/history_event_list.dart': {
+        '../application/history_store.dart',
+        '../../../core/theme/history_visual.dart',
+      },
+      'lib/features/history/presentation/history_switch.dart': {
+        '../../../core/theme/history_visual.dart',
+      },
+    };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
         .listSync(recursive: true)
@@ -284,6 +313,7 @@ void main() {
           expect(
             presentationImports.contains(uri) ||
                 (panicImports[file.path]?.contains(uri) ?? false) ||
+                (historyImports[file.path]?.contains(uri) ?? false) ||
                 (uri == '../../../core/theme/panic_visual.dart' &&
                     (file.path ==
                             'lib/features/dashboard/presentation/dashboard.dart' ||
