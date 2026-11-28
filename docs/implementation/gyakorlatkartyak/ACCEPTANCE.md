@@ -19,3 +19,5 @@ A tartós állapot kizárólagos forrása a közös HajnalDatabase `practice_car
 | PR-09 | prompt átadás | CI/build | egyetlen záró futás és aláírt APK; a teszteredmények ténylegesek | workflow + checksum | NOT DONE |
 
 A referencia kézzel megnyitva és a két érintési cél kipróbálva. A tényleges Android-képek és az egyetlen CI-futás eredménye a záró ellenőrzésben igazolandó.
+
+CI #49 (`5b200f5`): a 220×320 / 3× szövegnagyítás / alsó inset főmenüteszt túlcsordulással megbukott; az APK-építés nem indult. A panel görgethetőségének helyi javítása elkészült, a CI-ben hibás teszt és az új, gyakorlattal futó szélsőséges méretű próba helyben átment. A dashboard, a kezelő és a kiválasztott gondolatindítós szerkesztő tényleges Flutter-widget képei össze lettek vetve a futó HTML-lel és a PDF-fel; Android-emulátoros kép még nincs.

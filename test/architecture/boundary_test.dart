@@ -265,6 +265,7 @@ void main() {
         '../../practice/application/practice_controller.dart',
         '../../practice/presentation/practice_manager.dart',
         '../../../core/artwork/practice_artwork.dart',
+        '../../../core/theme/practice_visual.dart',
       },
       'lib/features/practice/presentation/practice_manager.dart': {
         '../../../core/artwork/practice_artwork.dart',

@@ -135,6 +135,11 @@ class _PracticeEditorState extends State<PracticeEditor> {
     }
   }
 
+  Widget _promptArtwork(int index, double size) =>
+      _prompts[index].icon.endsWith('.svg')
+      ? SvgPicture.asset(_prompts[index].icon, width: size, height: size)
+      : Image.asset(_prompts[index].icon, width: size, height: size);
+
   Widget _promptTile(BuildContext context, int i) => Semantics(
     button: true,
     selected: selected == i,
@@ -160,13 +165,7 @@ class _PracticeEditorState extends State<PracticeEditor> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _prompts[i].icon.endsWith('.svg')
-                        ? SvgPicture.asset(
-                            _prompts[i].icon,
-                            width: 30,
-                            height: 30,
-                          )
-                        : Image.asset(_prompts[i].icon, width: 30, height: 30),
+                    _promptArtwork(i, 30),
                     Text(_prompts[i].name, textAlign: TextAlign.center),
                     Text(
                       _prompts[i].subtitle,
@@ -242,11 +241,13 @@ class _PracticeEditorState extends State<PracticeEditor> {
                   bottom: 0,
                   child: Opacity(
                     opacity: .35,
-                    child: Image.asset(
-                      PracticeArtwork.forId(widget.card?.id ?? 2).image,
-                      width: 65,
-                      height: 65,
-                    ),
+                    child: selected == null
+                        ? Image.asset(
+                            PracticeArtwork.forId(widget.card?.id ?? 2).image,
+                            width: 65,
+                            height: 65,
+                          )
+                        : _promptArtwork(selected!, 65),
                   ),
                 ),
                 TextField(

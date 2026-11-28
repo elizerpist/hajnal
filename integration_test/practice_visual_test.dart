@@ -76,9 +76,11 @@ void main() {
       }
 
       await capture('practice-manager');
-      await tester.tap(find.text('＋ Új kártya hozzáadása'));
+      await tester.tap(find.text('Új kártya hozzáadása'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Segíts elindulni'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Apró lépés'));
       await tester.pumpAndSettle();
       await capture('practice-editor');
     } finally {

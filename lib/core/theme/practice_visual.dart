@@ -11,6 +11,12 @@ abstract final class PracticeVisual {
   static final rowRadius = BorderRadius.circular(20);
   static final promptRadius = BorderRadius.circular(12);
   static final fieldRadius = BorderRadius.circular(16);
+  static TextStyle homeText(BuildContext context) =>
+      HajnalStyle.of(context).text(TextRole.cardTitle).copyWith(fontSize: 15);
+  static TextStyle cardTitle(BuildContext context) =>
+      HajnalStyle.of(context).text(TextRole.cardTitle).copyWith(fontSize: 14);
+  static TextStyle caption(BuildContext context) =>
+      HajnalStyle.of(context).text(TextRole.helper).copyWith(fontSize: 10);
   static TextStyle footer(BuildContext context) => HajnalStyle.of(context)
       .text(TextRole.helper)
       .copyWith(fontStyle: FontStyle.italic, color: muted(context));
@@ -19,6 +25,7 @@ abstract final class PracticeVisual {
     foregroundColor: accent(context),
     minimumSize: const Size(48, 50),
     shape: const StadiumBorder(),
+    side: BorderSide.none,
   );
   static ButtonStyle iconButton(BuildContext context) => IconButton.styleFrom(
     backgroundColor: lavender(context),

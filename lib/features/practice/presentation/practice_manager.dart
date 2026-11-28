@@ -94,43 +94,42 @@ class _PracticeManagerState extends State<PracticeManager> {
                         onTap: active == null ? null : () => edit(active),
                         child: Padding(
                           padding: const EdgeInsets.all(9),
-                          child: Row(
-                            children: [
-                              _Artwork(id: active?.id ?? 0),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'MOST GYAKORLOM',
-                                      style: PracticeVisual.label(context),
-                                    ),
-                                    Text(
-                                      active?.label ??
-                                          'Most nincs aktív gyakorlatod.',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall
-                                          ?.copyWith(
-                                            color: PracticeVisual.ink(context),
-                                          ),
-                                    ),
-                                    Text(
-                                      active?.sourceName ??
-                                          (active == null
-                                              ? 'Válassz egyet a kártyáid közül.'
-                                              : 'Saját kártya'),
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall,
-                                    ),
-                                  ],
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(minHeight: 72),
+                            child: Row(
+                              children: [
+                                _Artwork(id: active?.id ?? 0),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'MOST GYAKORLOM',
+                                        style: PracticeVisual.label(context),
+                                      ),
+                                      Text(
+                                        active?.label ??
+                                            'Most nincs aktív gyakorlatod.',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: PracticeVisual.cardTitle(
+                                          context,
+                                        ),
+                                      ),
+                                      Text(
+                                        active?.sourceName ??
+                                            (active == null
+                                                ? 'Válassz egyet a kártyáid közül.'
+                                                : 'Saját kártya'),
+                                        style: PracticeVisual.caption(context),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -169,75 +168,80 @@ class _PracticeManagerState extends State<PracticeManager> {
                                         color: PracticeVisual.border(context),
                                       ),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () => edit(card),
-                                            borderRadius:
-                                                PracticeVisual.rowRadius,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(7),
-                                              child: Row(
-                                                children: [
-                                                  _Artwork(id: card.id),
-                                                  const SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          card.label,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: Theme.of(context)
-                                                              .textTheme
-                                                              .titleSmall
-                                                              ?.copyWith(
-                                                                color:
-                                                                    PracticeVisual.ink(
-                                                                      context,
-                                                                    ),
-                                                              ),
-                                                        ),
-                                                        Text(
-                                                          card.sourceName ??
-                                                              'Saját kártya',
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: Theme.of(
-                                                            context,
-                                                          ).textTheme.bodySmall,
-                                                        ),
-                                                      ],
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minHeight: 72,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () => edit(card),
+                                              borderRadius:
+                                                  PracticeVisual.rowRadius,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  7,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    _Artwork(id: card.id),
+                                                    const SizedBox(width: 8),
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            card.label,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style:
+                                                                PracticeVisual.cardTitle(
+                                                                  context,
+                                                                ),
+                                                          ),
+                                                          Text(
+                                                            card.sourceName ??
+                                                                'Saját kártya',
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style:
+                                                                PracticeVisual.caption(
+                                                                  context,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          tooltip: '${card.label} aktiválása',
-                                          style: PracticeVisual.iconButton(
-                                            context,
-                                          ),
-                                          onPressed: widget.controller.saving
-                                              ? null
-                                              : () => widget.controller
-                                                    .activate(card.id),
-                                          icon: Icon(
-                                            Icons.chevron_right,
-                                            color: PracticeVisual.accent(
+                                          IconButton(
+                                            tooltip: '${card.label} aktiválása',
+                                            style: PracticeVisual.iconButton(
                                               context,
                                             ),
+                                            onPressed: widget.controller.saving
+                                                ? null
+                                                : () => widget.controller
+                                                      .activate(card.id),
+                                            icon: Icon(
+                                              Icons.chevron_right,
+                                              color: PracticeVisual.accent(
+                                                context,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
@@ -249,7 +253,19 @@ class _PracticeManagerState extends State<PracticeManager> {
                     FilledButton.tonal(
                       style: PracticeVisual.addButton(context),
                       onPressed: () => edit(),
-                      child: const Text('＋ Új kártya hozzáadása'),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.add),
+                          SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              'Új kártya hozzáadása',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Icon(

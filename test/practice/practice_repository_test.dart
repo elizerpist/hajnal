@@ -5,8 +5,42 @@ import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:hajnal/core/database/hajnal_database.dart';
 import 'package:hajnal/features/practice/application/practice_store.dart';
 import 'package:hajnal/features/practice/data/practice_repository.dart';
+import 'package:hajnal/features/recovery/data/recovery_repository.dart';
+import 'package:hajnal/features/history/data/history_repository.dart';
 
 void main() {
+  test(
+    'period restart and disabling extras preserve cards without history notes',
+    () async {
+      final db = HajnalDatabase(NativeDatabase.memory());
+      final recovery = RecoveryRepository(db);
+      final first = await recovery.initialize(
+        DateTime(2026, 1, 1),
+        DateTime(2026, 1, 2),
+      );
+      final practice = PracticeRepository(db);
+      await practice.add(
+        const PracticeContent(text: 'Megmaradó gyakorlat'),
+        activate: true,
+      );
+      final id = (await practice.watch().first).single.id;
+      await db.customStatement(
+        "INSERT INTO onboarding_profiles (id, motivation, modules, completed) VALUES (1, '', 15, 1)",
+      );
+      await db.customStatement(
+        'UPDATE onboarding_profiles SET modules = 0 WHERE id = 1',
+      );
+      await recovery.restart(first.id, DateTime(2026, 2, 1));
+      final saved = (await practice.watch().first).single;
+      expect(saved.id, id);
+      expect(saved.text, 'Megmaradó gyakorlat');
+      expect(saved.status, 'active');
+      final periods = await HistoryRepository(db).watch().first;
+      expect(periods, hasLength(2));
+      expect(periods.every((period) => period.notes.isEmpty), isTrue);
+      await db.close();
+    },
+  );
   test(
     'v6 migration, one active, atomic switch, edit and restart persistence',
     () async {

@@ -22,6 +22,7 @@ class MemoryPracticeStore implements PracticeStore {
         id: c.id,
         text: text ?? c.text,
         status: status ?? c.status,
+        title: c.title,
         createdAt: c.createdAt,
         updatedAt: c.updatedAt,
       );
@@ -38,6 +39,7 @@ class MemoryPracticeStore implements PracticeStore {
       PracticeCard(
         id: next++,
         text: content.text,
+        title: content.title,
         status: activate ? 'active' : 'paused',
         createdAt: DateTime.utc(2026),
         updatedAt: DateTime.utc(2026),
@@ -72,6 +74,48 @@ class MemoryPracticeStore implements PracticeStore {
 }
 
 void main() {
+  testWidgets('dashboard practice remains reachable with extreme text scale', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(220, 320);
+    tester.view.devicePixelRatio = 1;
+    tester.view.padding = const FakeViewPadding(top: 24, bottom: 48);
+    tester.platformDispatcher.textScaleFactorTestValue = 3;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.view.resetPadding);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final recovery = Store();
+    final bootstrap = BootstrapController(recovery, DateTime.now);
+    final store = MemoryPracticeStore();
+    final practice = PracticeController(store);
+    await store.add(const PracticeContent(text: 'Egy kártya'), activate: true);
+    await tester.pumpWidget(
+      HajnalApp(controller: bootstrap, picker: Picker(), practice: practice),
+    );
+    recovery.stream.add(ActiveRecovery(1, DateTime(2024)));
+    await tester.pumpAndSettle();
+    await tester.drag(
+      find.byKey(const Key('summary-card')),
+      const Offset(0, -80),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.ensureVisible(find.byKey(const Key('dashboard-practice')));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('dashboard-practice')),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Ezt szeretném gyakorolni'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    bootstrap.dispose();
+    practice.dispose();
+    await recovery.stream.close();
+    await store.events.close();
+  });
   testWidgets('small viewport and large text keep practice controls usable', (
     tester,
   ) async {
@@ -117,9 +161,9 @@ void main() {
     );
     await tester.tap(find.text('Kártyák'));
     await tester.pumpAndSettle();
-    expect(find.text('＋ Új kártya hozzáadása'), findsOneWidget);
-    await tester.ensureVisible(find.text('＋ Új kártya hozzáadása'));
-    await tester.tap(find.text('＋ Új kártya hozzáadása'));
+    expect(find.text('Új kártya hozzáadása'), findsOneWidget);
+    await tester.ensureVisible(find.text('Új kártya hozzáadása'));
+    await tester.tap(find.text('Új kártya hozzáadása'));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Segíts elindulni'));
     await tester.tap(find.text('Segíts elindulni'));
@@ -143,7 +187,10 @@ void main() {
     final bootstrap = BootstrapController(recovery, DateTime.now);
     final store = MemoryPracticeStore();
     final practice = PracticeController(store);
-    await store.add(const PracticeContent(text: 'Első szöveg'), activate: true);
+    await store.add(
+      const PracticeContent(text: 'Első szöveg', title: 'Első cím'),
+      activate: true,
+    );
     await store.add(
       const PracticeContent(text: 'Második szöveg'),
       activate: false,
@@ -192,7 +239,7 @@ void main() {
       );
       await tester.tap(find.text('Amit gyakorlok'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('＋ Új kártya hozzáadása'));
+      await tester.tap(find.text('Új kártya hozzáadása'));
       await tester.pumpAndSettle();
       expect(find.text('Mit írnál magadnak?'), findsOneWidget);
       await tester.tap(find.text('Segíts elindulni'));
@@ -217,7 +264,7 @@ void main() {
       await tester.tap(find.text('Most ezt választom'));
       await tester.pumpAndSettle();
       expect(controller.active?.text, 'Saját mondatom');
-      await tester.tap(find.text('＋ Új kártya hozzáadása'));
+      await tester.tap(find.text('Új kártya hozzáadása'));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField).first, 'Második mondat');
       await tester.pump();

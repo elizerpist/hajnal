@@ -1,3 +1,4 @@
+import '../../../core/theme/practice_visual.dart';
 import '../../practice/application/practice_controller.dart';
 import '../../practice/presentation/practice_manager.dart';
 import '../../../core/artwork/practice_artwork.dart';
@@ -199,151 +200,185 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                               ),
                             Align(
                               alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(
-                                  24,
-                                  0,
-                                  24,
-                                  media.padding.bottom + 12,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    if (widget.practice != null)
-                                      AnimatedBuilder(
-                                        animation: widget.practice!,
-                                        builder: (context, _) {
-                                          final active =
-                                              widget.practice!.active;
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Amit gyakorlok',
-                                                style: HajnalStyle.of(
-                                                  context,
-                                                ).text(TextRole.cardTitle),
-                                              ),
-                                              InkWell(
-                                                key: const Key(
-                                                  'dashboard-practice',
-                                                ),
-                                                onTap: () => showDialog<void>(
-                                                  context: context,
-                                                  builder: (_) =>
-                                                      PracticeManager(
-                                                        controller:
-                                                            widget.practice!,
+                              child: LayoutBuilder(
+                                builder: (context, sheetSize) => SingleChildScrollView(
+                                  reverse: true,
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight: sheetSize.maxHeight,
+                                    ),
+                                    child: IntrinsicHeight(
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                          24,
+                                          widget.practice == null ? 0 : 54,
+                                          24,
+                                          media.padding.bottom + 12,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            if (widget.practice != null)
+                                              AnimatedBuilder(
+                                                animation: widget.practice!,
+                                                builder: (context, _) {
+                                                  final active =
+                                                      widget.practice!.active;
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'Amit gyakorlok',
+                                                        style:
+                                                            HajnalStyle.of(
+                                                              context,
+                                                            ).text(
+                                                              TextRole
+                                                                  .cardTitle,
+                                                            ),
                                                       ),
+                                                      InkWell(
+                                                        key: const Key(
+                                                          'dashboard-practice',
+                                                        ),
+                                                        onTap: () => showDialog<void>(
+                                                          context: context,
+                                                          builder: (_) =>
+                                                              PracticeManager(
+                                                                controller: widget
+                                                                    .practice!,
+                                                              ),
+                                                        ),
+                                                        child: ConstrainedBox(
+                                                          constraints:
+                                                              const BoxConstraints(
+                                                                minHeight: 48,
+                                                              ),
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  active?.text ??
+                                                                      'Még nem választottál gyakorlatot.',
+                                                                  maxLines: 2,
+                                                                  style:
+                                                                      PracticeVisual.homeText(
+                                                                        context,
+                                                                      ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                Icons
+                                                                    .chevron_right,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 12,
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            const Spacer(),
+                                            Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                key: const Key(
+                                                  'dashboard-help',
                                                 ),
+                                                borderRadius:
+                                                    PanicVisual.corner,
+                                                onTap: widget.onPanic,
                                                 child: ConstrainedBox(
                                                   constraints:
                                                       const BoxConstraints(
                                                         minHeight: 48,
+                                                        minWidth:
+                                                            double.infinity,
                                                       ),
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Text(
-                                                          active?.label ??
-                                                              'Még nem választottál gyakorlatot.',
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          vertical: 3,
                                                         ),
+                                                    child: DecoratedBox(
+                                                      key: const Key(
+                                                        'dashboard-help-surface',
                                                       ),
-                                                      const Icon(
-                                                        Icons.chevron_right,
+                                                      decoration: BoxDecoration(
+                                                        gradient: PanicVisual
+                                                            .helpGradient,
+                                                        borderRadius:
+                                                            PanicVisual.corner,
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        key: const Key('dashboard-help'),
-                                        borderRadius: PanicVisual.corner,
-                                        onTap: widget.onPanic,
-                                        child: ConstrainedBox(
-                                          constraints: const BoxConstraints(
-                                            minHeight: 48,
-                                            minWidth: double.infinity,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 3,
-                                            ),
-                                            child: DecoratedBox(
-                                              key: const Key(
-                                                'dashboard-help-surface',
-                                              ),
-                                              decoration: BoxDecoration(
-                                                gradient:
-                                                    PanicVisual.helpGradient,
-                                                borderRadius:
-                                                    PanicVisual.corner,
-                                              ),
-                                              child: ConstrainedBox(
-                                                constraints:
-                                                    const BoxConstraints(
-                                                      minHeight: 42,
-                                                    ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 6,
-                                                      ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.favorite_border,
-                                                        color:
-                                                            PanicVisual.white,
-                                                        size: 20,
-                                                      ),
-                                                      const SizedBox(width: 8),
-                                                      Flexible(
-                                                        child: Text(
-                                                          'Segítség kell',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              HajnalStyle.of(
-                                                                    context,
-                                                                  )
-                                                                  .text(
-                                                                    TextRole
-                                                                        .button,
-                                                                  )
-                                                                  .copyWith(
-                                                                    color: PanicVisual
+                                                      child: ConstrainedBox(
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                              minHeight: 42,
+                                                            ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                horizontal: 8,
+                                                                vertical: 6,
+                                                              ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              const Icon(
+                                                                Icons
+                                                                    .favorite_border,
+                                                                color:
+                                                                    PanicVisual
                                                                         .white,
-                                                                  ),
+                                                                size: 20,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Flexible(
+                                                                child: Text(
+                                                                  'Segítség kell',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: HajnalStyle.of(context)
+                                                                      .text(
+                                                                        TextRole
+                                                                            .button,
+                                                                      )
+                                                                      .copyWith(
+                                                                        color: PanicVisual
+                                                                            .white,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
