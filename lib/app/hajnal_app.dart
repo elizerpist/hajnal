@@ -1,3 +1,4 @@
+import '../features/practice/application/practice_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PredictiveBackEvent;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -33,6 +34,7 @@ class HajnalApp extends StatefulWidget {
     this.style,
     this.panic,
     this.history,
+    this.practice,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -43,6 +45,7 @@ class HajnalApp extends StatefulWidget {
   final StyleOwner? style;
   final PanicController? panic;
   final HistoryStore? history;
+  final PracticeController? practice;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -134,6 +137,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       style: widget.style,
       panic: widget.panic,
       history: widget.history,
+      practice: widget.practice,
     ),
   );
 }
@@ -149,6 +153,7 @@ class _Bootstrap extends StatefulWidget {
     this.style,
     this.panic,
     this.history,
+    this.practice,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -159,6 +164,7 @@ class _Bootstrap extends StatefulWidget {
   final StyleOwner? style;
   final PanicController? panic;
   final HistoryStore? history;
+  final PracticeController? practice;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
@@ -274,6 +280,7 @@ class _BootstrapState extends State<_Bootstrap> {
         artwork: widget.artwork,
         onPanic: widget.panic == null ? null : _openPanic,
         onHistory: widget.history == null ? null : _openHistory,
+        practice: widget.practice,
       );
     },
   );

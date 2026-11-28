@@ -18,6 +18,7 @@ void main() {
     );
     await db.customStatement('DROP TABLE survival_sessions');
     await db.customStatement('DROP TABLE survival_notes');
+    await db.customStatement('DROP TABLE practice_cards');
     await db.customStatement('PRAGMA user_version=4');
     await db.close();
     db = HajnalDatabase(NativeDatabase(file));

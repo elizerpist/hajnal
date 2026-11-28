@@ -2471,6 +2471,681 @@ class SurvivalNotesCompanion extends UpdateCompanion<SurvivalNote> {
   }
 }
 
+class $PracticeCardsTable extends PracticeCards
+    with TableInfo<$PracticeCardsTable, PracticeCardData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PracticeCardsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _cardTextMeta = const VerificationMeta(
+    'cardText',
+  );
+  @override
+  late final GeneratedColumn<String> cardText = GeneratedColumn<String>(
+    'card_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _promptKindMeta = const VerificationMeta(
+    'promptKind',
+  );
+  @override
+  late final GeneratedColumn<String> promptKind = GeneratedColumn<String>(
+    'prompt_kind',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceReferenceMeta = const VerificationMeta(
+    'sourceReference',
+  );
+  @override
+  late final GeneratedColumn<String> sourceReference = GeneratedColumn<String>(
+    'source_reference',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceNameMeta = const VerificationMeta(
+    'sourceName',
+  );
+  @override
+  late final GeneratedColumn<String> sourceName = GeneratedColumn<String>(
+    'source_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceTextMeta = const VerificationMeta(
+    'sourceText',
+  );
+  @override
+  late final GeneratedColumn<String> sourceText = GeneratedColumn<String>(
+    'source_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, DateTime> createdAtUtc =
+      GeneratedColumn<DateTime>(
+        'created_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($PracticeCardsTable.$convertercreatedAtUtc);
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, DateTime> updatedAtUtc =
+      GeneratedColumn<DateTime>(
+        'updated_at_utc',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($PracticeCardsTable.$converterupdatedAtUtc);
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime?, DateTime>
+  activatedAtUtc = GeneratedColumn<DateTime>(
+    'activated_at_utc',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  ).withConverter<DateTime?>($PracticeCardsTable.$converteractivatedAtUtcn);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    cardText,
+    title,
+    promptKind,
+    status,
+    sourceReference,
+    sourceName,
+    sourceText,
+    createdAtUtc,
+    updatedAtUtc,
+    activatedAtUtc,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'practice_cards';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PracticeCardData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('card_text')) {
+      context.handle(
+        _cardTextMeta,
+        cardText.isAcceptableOrUnknown(data['card_text']!, _cardTextMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cardTextMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    }
+    if (data.containsKey('prompt_kind')) {
+      context.handle(
+        _promptKindMeta,
+        promptKind.isAcceptableOrUnknown(data['prompt_kind']!, _promptKindMeta),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('source_reference')) {
+      context.handle(
+        _sourceReferenceMeta,
+        sourceReference.isAcceptableOrUnknown(
+          data['source_reference']!,
+          _sourceReferenceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_name')) {
+      context.handle(
+        _sourceNameMeta,
+        sourceName.isAcceptableOrUnknown(data['source_name']!, _sourceNameMeta),
+      );
+    }
+    if (data.containsKey('source_text')) {
+      context.handle(
+        _sourceTextMeta,
+        sourceText.isAcceptableOrUnknown(data['source_text']!, _sourceTextMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PracticeCardData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PracticeCardData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      cardText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}card_text'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      ),
+      promptKind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prompt_kind'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      sourceReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_reference'],
+      ),
+      sourceName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_name'],
+      ),
+      sourceText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_text'],
+      ),
+      createdAtUtc: $PracticeCardsTable.$convertercreatedAtUtc.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}created_at_utc'],
+        )!,
+      ),
+      updatedAtUtc: $PracticeCardsTable.$converterupdatedAtUtc.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}updated_at_utc'],
+        )!,
+      ),
+      activatedAtUtc: $PracticeCardsTable.$converteractivatedAtUtcn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}activated_at_utc'],
+        ),
+      ),
+    );
+  }
+
+  @override
+  $PracticeCardsTable createAlias(String alias) {
+    return $PracticeCardsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DateTime, DateTime> $convertercreatedAtUtc =
+      const UtcInstant();
+  static TypeConverter<DateTime, DateTime> $converterupdatedAtUtc =
+      const UtcInstant();
+  static TypeConverter<DateTime, DateTime> $converteractivatedAtUtc =
+      const UtcInstant();
+  static TypeConverter<DateTime?, DateTime?> $converteractivatedAtUtcn =
+      NullAwareTypeConverter.wrap($converteractivatedAtUtc);
+}
+
+class PracticeCardData extends DataClass
+    implements Insertable<PracticeCardData> {
+  final int id;
+  final String cardText;
+  final String? title;
+  final String? promptKind;
+  final String status;
+  final String? sourceReference;
+  final String? sourceName;
+  final String? sourceText;
+  final DateTime createdAtUtc;
+  final DateTime updatedAtUtc;
+  final DateTime? activatedAtUtc;
+  const PracticeCardData({
+    required this.id,
+    required this.cardText,
+    this.title,
+    this.promptKind,
+    required this.status,
+    this.sourceReference,
+    this.sourceName,
+    this.sourceText,
+    required this.createdAtUtc,
+    required this.updatedAtUtc,
+    this.activatedAtUtc,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['card_text'] = Variable<String>(cardText);
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    if (!nullToAbsent || promptKind != null) {
+      map['prompt_kind'] = Variable<String>(promptKind);
+    }
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || sourceReference != null) {
+      map['source_reference'] = Variable<String>(sourceReference);
+    }
+    if (!nullToAbsent || sourceName != null) {
+      map['source_name'] = Variable<String>(sourceName);
+    }
+    if (!nullToAbsent || sourceText != null) {
+      map['source_text'] = Variable<String>(sourceText);
+    }
+    {
+      map['created_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$convertercreatedAtUtc.toSql(createdAtUtc),
+      );
+    }
+    {
+      map['updated_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$converterupdatedAtUtc.toSql(updatedAtUtc),
+      );
+    }
+    if (!nullToAbsent || activatedAtUtc != null) {
+      map['activated_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$converteractivatedAtUtcn.toSql(activatedAtUtc),
+      );
+    }
+    return map;
+  }
+
+  PracticeCardsCompanion toCompanion(bool nullToAbsent) {
+    return PracticeCardsCompanion(
+      id: Value(id),
+      cardText: Value(cardText),
+      title: title == null && nullToAbsent
+          ? const Value.absent()
+          : Value(title),
+      promptKind: promptKind == null && nullToAbsent
+          ? const Value.absent()
+          : Value(promptKind),
+      status: Value(status),
+      sourceReference: sourceReference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceReference),
+      sourceName: sourceName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceName),
+      sourceText: sourceText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourceText),
+      createdAtUtc: Value(createdAtUtc),
+      updatedAtUtc: Value(updatedAtUtc),
+      activatedAtUtc: activatedAtUtc == null && nullToAbsent
+          ? const Value.absent()
+          : Value(activatedAtUtc),
+    );
+  }
+
+  factory PracticeCardData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PracticeCardData(
+      id: serializer.fromJson<int>(json['id']),
+      cardText: serializer.fromJson<String>(json['cardText']),
+      title: serializer.fromJson<String?>(json['title']),
+      promptKind: serializer.fromJson<String?>(json['promptKind']),
+      status: serializer.fromJson<String>(json['status']),
+      sourceReference: serializer.fromJson<String?>(json['sourceReference']),
+      sourceName: serializer.fromJson<String?>(json['sourceName']),
+      sourceText: serializer.fromJson<String?>(json['sourceText']),
+      createdAtUtc: serializer.fromJson<DateTime>(json['createdAtUtc']),
+      updatedAtUtc: serializer.fromJson<DateTime>(json['updatedAtUtc']),
+      activatedAtUtc: serializer.fromJson<DateTime?>(json['activatedAtUtc']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'cardText': serializer.toJson<String>(cardText),
+      'title': serializer.toJson<String?>(title),
+      'promptKind': serializer.toJson<String?>(promptKind),
+      'status': serializer.toJson<String>(status),
+      'sourceReference': serializer.toJson<String?>(sourceReference),
+      'sourceName': serializer.toJson<String?>(sourceName),
+      'sourceText': serializer.toJson<String?>(sourceText),
+      'createdAtUtc': serializer.toJson<DateTime>(createdAtUtc),
+      'updatedAtUtc': serializer.toJson<DateTime>(updatedAtUtc),
+      'activatedAtUtc': serializer.toJson<DateTime?>(activatedAtUtc),
+    };
+  }
+
+  PracticeCardData copyWith({
+    int? id,
+    String? cardText,
+    Value<String?> title = const Value.absent(),
+    Value<String?> promptKind = const Value.absent(),
+    String? status,
+    Value<String?> sourceReference = const Value.absent(),
+    Value<String?> sourceName = const Value.absent(),
+    Value<String?> sourceText = const Value.absent(),
+    DateTime? createdAtUtc,
+    DateTime? updatedAtUtc,
+    Value<DateTime?> activatedAtUtc = const Value.absent(),
+  }) => PracticeCardData(
+    id: id ?? this.id,
+    cardText: cardText ?? this.cardText,
+    title: title.present ? title.value : this.title,
+    promptKind: promptKind.present ? promptKind.value : this.promptKind,
+    status: status ?? this.status,
+    sourceReference: sourceReference.present
+        ? sourceReference.value
+        : this.sourceReference,
+    sourceName: sourceName.present ? sourceName.value : this.sourceName,
+    sourceText: sourceText.present ? sourceText.value : this.sourceText,
+    createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+    updatedAtUtc: updatedAtUtc ?? this.updatedAtUtc,
+    activatedAtUtc: activatedAtUtc.present
+        ? activatedAtUtc.value
+        : this.activatedAtUtc,
+  );
+  PracticeCardData copyWithCompanion(PracticeCardsCompanion data) {
+    return PracticeCardData(
+      id: data.id.present ? data.id.value : this.id,
+      cardText: data.cardText.present ? data.cardText.value : this.cardText,
+      title: data.title.present ? data.title.value : this.title,
+      promptKind: data.promptKind.present
+          ? data.promptKind.value
+          : this.promptKind,
+      status: data.status.present ? data.status.value : this.status,
+      sourceReference: data.sourceReference.present
+          ? data.sourceReference.value
+          : this.sourceReference,
+      sourceName: data.sourceName.present
+          ? data.sourceName.value
+          : this.sourceName,
+      sourceText: data.sourceText.present
+          ? data.sourceText.value
+          : this.sourceText,
+      createdAtUtc: data.createdAtUtc.present
+          ? data.createdAtUtc.value
+          : this.createdAtUtc,
+      updatedAtUtc: data.updatedAtUtc.present
+          ? data.updatedAtUtc.value
+          : this.updatedAtUtc,
+      activatedAtUtc: data.activatedAtUtc.present
+          ? data.activatedAtUtc.value
+          : this.activatedAtUtc,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PracticeCardData(')
+          ..write('id: $id, ')
+          ..write('cardText: $cardText, ')
+          ..write('title: $title, ')
+          ..write('promptKind: $promptKind, ')
+          ..write('status: $status, ')
+          ..write('sourceReference: $sourceReference, ')
+          ..write('sourceName: $sourceName, ')
+          ..write('sourceText: $sourceText, ')
+          ..write('createdAtUtc: $createdAtUtc, ')
+          ..write('updatedAtUtc: $updatedAtUtc, ')
+          ..write('activatedAtUtc: $activatedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    cardText,
+    title,
+    promptKind,
+    status,
+    sourceReference,
+    sourceName,
+    sourceText,
+    createdAtUtc,
+    updatedAtUtc,
+    activatedAtUtc,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PracticeCardData &&
+          other.id == this.id &&
+          other.cardText == this.cardText &&
+          other.title == this.title &&
+          other.promptKind == this.promptKind &&
+          other.status == this.status &&
+          other.sourceReference == this.sourceReference &&
+          other.sourceName == this.sourceName &&
+          other.sourceText == this.sourceText &&
+          other.createdAtUtc == this.createdAtUtc &&
+          other.updatedAtUtc == this.updatedAtUtc &&
+          other.activatedAtUtc == this.activatedAtUtc);
+}
+
+class PracticeCardsCompanion extends UpdateCompanion<PracticeCardData> {
+  final Value<int> id;
+  final Value<String> cardText;
+  final Value<String?> title;
+  final Value<String?> promptKind;
+  final Value<String> status;
+  final Value<String?> sourceReference;
+  final Value<String?> sourceName;
+  final Value<String?> sourceText;
+  final Value<DateTime> createdAtUtc;
+  final Value<DateTime> updatedAtUtc;
+  final Value<DateTime?> activatedAtUtc;
+  const PracticeCardsCompanion({
+    this.id = const Value.absent(),
+    this.cardText = const Value.absent(),
+    this.title = const Value.absent(),
+    this.promptKind = const Value.absent(),
+    this.status = const Value.absent(),
+    this.sourceReference = const Value.absent(),
+    this.sourceName = const Value.absent(),
+    this.sourceText = const Value.absent(),
+    this.createdAtUtc = const Value.absent(),
+    this.updatedAtUtc = const Value.absent(),
+    this.activatedAtUtc = const Value.absent(),
+  });
+  PracticeCardsCompanion.insert({
+    this.id = const Value.absent(),
+    required String cardText,
+    this.title = const Value.absent(),
+    this.promptKind = const Value.absent(),
+    required String status,
+    this.sourceReference = const Value.absent(),
+    this.sourceName = const Value.absent(),
+    this.sourceText = const Value.absent(),
+    required DateTime createdAtUtc,
+    required DateTime updatedAtUtc,
+    this.activatedAtUtc = const Value.absent(),
+  }) : cardText = Value(cardText),
+       status = Value(status),
+       createdAtUtc = Value(createdAtUtc),
+       updatedAtUtc = Value(updatedAtUtc);
+  static Insertable<PracticeCardData> custom({
+    Expression<int>? id,
+    Expression<String>? cardText,
+    Expression<String>? title,
+    Expression<String>? promptKind,
+    Expression<String>? status,
+    Expression<String>? sourceReference,
+    Expression<String>? sourceName,
+    Expression<String>? sourceText,
+    Expression<DateTime>? createdAtUtc,
+    Expression<DateTime>? updatedAtUtc,
+    Expression<DateTime>? activatedAtUtc,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (cardText != null) 'card_text': cardText,
+      if (title != null) 'title': title,
+      if (promptKind != null) 'prompt_kind': promptKind,
+      if (status != null) 'status': status,
+      if (sourceReference != null) 'source_reference': sourceReference,
+      if (sourceName != null) 'source_name': sourceName,
+      if (sourceText != null) 'source_text': sourceText,
+      if (createdAtUtc != null) 'created_at_utc': createdAtUtc,
+      if (updatedAtUtc != null) 'updated_at_utc': updatedAtUtc,
+      if (activatedAtUtc != null) 'activated_at_utc': activatedAtUtc,
+    });
+  }
+
+  PracticeCardsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? cardText,
+    Value<String?>? title,
+    Value<String?>? promptKind,
+    Value<String>? status,
+    Value<String?>? sourceReference,
+    Value<String?>? sourceName,
+    Value<String?>? sourceText,
+    Value<DateTime>? createdAtUtc,
+    Value<DateTime>? updatedAtUtc,
+    Value<DateTime?>? activatedAtUtc,
+  }) {
+    return PracticeCardsCompanion(
+      id: id ?? this.id,
+      cardText: cardText ?? this.cardText,
+      title: title ?? this.title,
+      promptKind: promptKind ?? this.promptKind,
+      status: status ?? this.status,
+      sourceReference: sourceReference ?? this.sourceReference,
+      sourceName: sourceName ?? this.sourceName,
+      sourceText: sourceText ?? this.sourceText,
+      createdAtUtc: createdAtUtc ?? this.createdAtUtc,
+      updatedAtUtc: updatedAtUtc ?? this.updatedAtUtc,
+      activatedAtUtc: activatedAtUtc ?? this.activatedAtUtc,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (cardText.present) {
+      map['card_text'] = Variable<String>(cardText.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (promptKind.present) {
+      map['prompt_kind'] = Variable<String>(promptKind.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (sourceReference.present) {
+      map['source_reference'] = Variable<String>(sourceReference.value);
+    }
+    if (sourceName.present) {
+      map['source_name'] = Variable<String>(sourceName.value);
+    }
+    if (sourceText.present) {
+      map['source_text'] = Variable<String>(sourceText.value);
+    }
+    if (createdAtUtc.present) {
+      map['created_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$convertercreatedAtUtc.toSql(createdAtUtc.value),
+      );
+    }
+    if (updatedAtUtc.present) {
+      map['updated_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$converterupdatedAtUtc.toSql(updatedAtUtc.value),
+      );
+    }
+    if (activatedAtUtc.present) {
+      map['activated_at_utc'] = Variable<DateTime>(
+        $PracticeCardsTable.$converteractivatedAtUtcn.toSql(
+          activatedAtUtc.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PracticeCardsCompanion(')
+          ..write('id: $id, ')
+          ..write('cardText: $cardText, ')
+          ..write('title: $title, ')
+          ..write('promptKind: $promptKind, ')
+          ..write('status: $status, ')
+          ..write('sourceReference: $sourceReference, ')
+          ..write('sourceName: $sourceName, ')
+          ..write('sourceText: $sourceText, ')
+          ..write('createdAtUtc: $createdAtUtc, ')
+          ..write('updatedAtUtc: $updatedAtUtc, ')
+          ..write('activatedAtUtc: $activatedAtUtc')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -2494,9 +3169,14 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     this,
   );
   late final $SurvivalNotesTable survivalNotes = $SurvivalNotesTable(this);
+  late final $PracticeCardsTable practiceCards = $PracticeCardsTable(this);
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
+  );
+  late final Index oneActivePractice = Index(
+    'one_active_practice',
+    'CREATE UNIQUE INDEX one_active_practice ON practice_cards (status) WHERE status = \'active\'',
   );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -2512,7 +3192,9 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     styleSettings,
     survivalSessions,
     survivalNotes,
+    practiceCards,
     oneActivePeriod,
+    oneActivePractice,
   ];
 }
 
@@ -4296,6 +4978,340 @@ typedef $$SurvivalNotesTableProcessedTableManager =
       SurvivalNote,
       PrefetchHooks Function({bool periodId})
     >;
+typedef $$PracticeCardsTableCreateCompanionBuilder =
+    PracticeCardsCompanion Function({
+      Value<int> id,
+      required String cardText,
+      Value<String?> title,
+      Value<String?> promptKind,
+      required String status,
+      Value<String?> sourceReference,
+      Value<String?> sourceName,
+      Value<String?> sourceText,
+      required DateTime createdAtUtc,
+      required DateTime updatedAtUtc,
+      Value<DateTime?> activatedAtUtc,
+    });
+typedef $$PracticeCardsTableUpdateCompanionBuilder =
+    PracticeCardsCompanion Function({
+      Value<int> id,
+      Value<String> cardText,
+      Value<String?> title,
+      Value<String?> promptKind,
+      Value<String> status,
+      Value<String?> sourceReference,
+      Value<String?> sourceName,
+      Value<String?> sourceText,
+      Value<DateTime> createdAtUtc,
+      Value<DateTime> updatedAtUtc,
+      Value<DateTime?> activatedAtUtc,
+    });
+
+class $$PracticeCardsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $PracticeCardsTable> {
+  $$PracticeCardsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cardText => $composableBuilder(
+    column: $table.cardText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get promptKind => $composableBuilder(
+    column: $table.promptKind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceReference => $composableBuilder(
+    column: $table.sourceReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceName => $composableBuilder(
+    column: $table.sourceName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceText => $composableBuilder(
+    column: $table.sourceText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, DateTime>
+  get createdAtUtc => $composableBuilder(
+    column: $table.createdAtUtc,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, DateTime>
+  get updatedAtUtc => $composableBuilder(
+    column: $table.updatedAtUtc,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime?, DateTime, DateTime>
+  get activatedAtUtc => $composableBuilder(
+    column: $table.activatedAtUtc,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+}
+
+class $$PracticeCardsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $PracticeCardsTable> {
+  $$PracticeCardsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cardText => $composableBuilder(
+    column: $table.cardText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get promptKind => $composableBuilder(
+    column: $table.promptKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceReference => $composableBuilder(
+    column: $table.sourceReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceName => $composableBuilder(
+    column: $table.sourceName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceText => $composableBuilder(
+    column: $table.sourceText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAtUtc => $composableBuilder(
+    column: $table.createdAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtUtc => $composableBuilder(
+    column: $table.updatedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get activatedAtUtc => $composableBuilder(
+    column: $table.activatedAtUtc,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PracticeCardsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $PracticeCardsTable> {
+  $$PracticeCardsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get cardText =>
+      $composableBuilder(column: $table.cardText, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get promptKind => $composableBuilder(
+    column: $table.promptKind,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceReference => $composableBuilder(
+    column: $table.sourceReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceName => $composableBuilder(
+    column: $table.sourceName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceText => $composableBuilder(
+    column: $table.sourceText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DateTime, DateTime> get createdAtUtc =>
+      $composableBuilder(
+        column: $table.createdAtUtc,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<DateTime, DateTime> get updatedAtUtc =>
+      $composableBuilder(
+        column: $table.updatedAtUtc,
+        builder: (column) => column,
+      );
+
+  GeneratedColumnWithTypeConverter<DateTime?, DateTime> get activatedAtUtc =>
+      $composableBuilder(
+        column: $table.activatedAtUtc,
+        builder: (column) => column,
+      );
+}
+
+class $$PracticeCardsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $PracticeCardsTable,
+          PracticeCardData,
+          $$PracticeCardsTableFilterComposer,
+          $$PracticeCardsTableOrderingComposer,
+          $$PracticeCardsTableAnnotationComposer,
+          $$PracticeCardsTableCreateCompanionBuilder,
+          $$PracticeCardsTableUpdateCompanionBuilder,
+          (
+            PracticeCardData,
+            BaseReferences<
+              _$HajnalDatabase,
+              $PracticeCardsTable,
+              PracticeCardData
+            >,
+          ),
+          PracticeCardData,
+          PrefetchHooks Function()
+        > {
+  $$PracticeCardsTableTableManager(
+    _$HajnalDatabase db,
+    $PracticeCardsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PracticeCardsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PracticeCardsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PracticeCardsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> cardText = const Value.absent(),
+                Value<String?> title = const Value.absent(),
+                Value<String?> promptKind = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> sourceReference = const Value.absent(),
+                Value<String?> sourceName = const Value.absent(),
+                Value<String?> sourceText = const Value.absent(),
+                Value<DateTime> createdAtUtc = const Value.absent(),
+                Value<DateTime> updatedAtUtc = const Value.absent(),
+                Value<DateTime?> activatedAtUtc = const Value.absent(),
+              }) => PracticeCardsCompanion(
+                id: id,
+                cardText: cardText,
+                title: title,
+                promptKind: promptKind,
+                status: status,
+                sourceReference: sourceReference,
+                sourceName: sourceName,
+                sourceText: sourceText,
+                createdAtUtc: createdAtUtc,
+                updatedAtUtc: updatedAtUtc,
+                activatedAtUtc: activatedAtUtc,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String cardText,
+                Value<String?> title = const Value.absent(),
+                Value<String?> promptKind = const Value.absent(),
+                required String status,
+                Value<String?> sourceReference = const Value.absent(),
+                Value<String?> sourceName = const Value.absent(),
+                Value<String?> sourceText = const Value.absent(),
+                required DateTime createdAtUtc,
+                required DateTime updatedAtUtc,
+                Value<DateTime?> activatedAtUtc = const Value.absent(),
+              }) => PracticeCardsCompanion.insert(
+                id: id,
+                cardText: cardText,
+                title: title,
+                promptKind: promptKind,
+                status: status,
+                sourceReference: sourceReference,
+                sourceName: sourceName,
+                sourceText: sourceText,
+                createdAtUtc: createdAtUtc,
+                updatedAtUtc: updatedAtUtc,
+                activatedAtUtc: activatedAtUtc,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PracticeCardsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $PracticeCardsTable,
+      PracticeCardData,
+      $$PracticeCardsTableFilterComposer,
+      $$PracticeCardsTableOrderingComposer,
+      $$PracticeCardsTableAnnotationComposer,
+      $$PracticeCardsTableCreateCompanionBuilder,
+      $$PracticeCardsTableUpdateCompanionBuilder,
+      (
+        PracticeCardData,
+        BaseReferences<_$HajnalDatabase, $PracticeCardsTable, PracticeCardData>,
+      ),
+      PracticeCardData,
+      PrefetchHooks Function()
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -4318,4 +5334,6 @@ class $HajnalDatabaseManager {
       $$SurvivalSessionsTableTableManager(_db, _db.survivalSessions);
   $$SurvivalNotesTableTableManager get survivalNotes =>
       $$SurvivalNotesTableTableManager(_db, _db.survivalNotes);
+  $$PracticeCardsTableTableManager get practiceCards =>
+      $$PracticeCardsTableTableManager(_db, _db.practiceCards);
 }

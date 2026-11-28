@@ -83,6 +83,9 @@ flutter:
     - assets/artwork/panic/
     - assets/artwork/survival/
     - assets/artwork/history/
+    - assets/artwork/practice/
+    - assets/artwork/practice/decor/
+    - assets/artwork/practice/prompts/
     - assets/fonts/roboto/LICENSE
     - assets/fonts/dejavu/LICENSE
 

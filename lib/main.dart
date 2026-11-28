@@ -1,3 +1,4 @@
+import 'features/practice/application/practice_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app/app_services.dart';
@@ -33,6 +34,10 @@ final historyProvider = Provider<HistoryStore>(
   (ref) => throw StateError('History not initialized'),
 );
 
+final practiceProvider = Provider<PracticeController>(
+  (ref) => throw StateError('Practice not initialized'),
+);
+
 class _AppScope extends ConsumerWidget {
   const _AppScope({required this.onRetry});
   final VoidCallback onRetry;
@@ -46,6 +51,7 @@ class _AppScope extends ConsumerWidget {
     style: ref.watch(styleProvider),
     panic: ref.watch(panicProvider),
     history: ref.watch(historyProvider),
+    practice: ref.watch(practiceProvider),
     onRetry: onRetry,
   );
 }
@@ -129,6 +135,7 @@ class _RootState extends State<_Root> {
           styleProvider.overrideWithValue(current.style),
           panicProvider.overrideWithValue(current.panic),
           historyProvider.overrideWithValue(current.history),
+          practiceProvider.overrideWithValue(current.practice),
         ],
         child: _AppScope(onRetry: retry),
       );

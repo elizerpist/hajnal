@@ -75,7 +75,7 @@ if [ "$ready" != true ]; then
   exit 1
 fi
 missing=false
-for name in boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded calendar-years calendar-months calendar-today-outline style-editor style-preview-card style-onboarding style-lock lock-settings lock-pin-setup lock-biometric-step; do
+for name in practice-manager practice-editor boarding-welcome-1 boarding-welcome-2 boarding-welcome-3 boarding-date boarding-motivation boarding-modules boarding-sponsor boarding-sponsor-expanded calendar-years calendar-months calendar-today-outline style-editor style-preview-card style-onboarding style-lock lock-settings lock-pin-setup lock-biometric-step; do
   if ! adb shell run-as hu.elizerpist.hajnal test -s "files/$name.png" ||
      ! adb exec-out run-as hu.elizerpist.hajnal cat "files/$name.png" > "evidence/$name.png" ||
      ! python3 scripts/validate_png.py "evidence/$name.png"; then

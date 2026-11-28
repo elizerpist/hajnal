@@ -2,6 +2,23 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('practice persistence has one repository owner', () {
+    final files = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart') && !f.path.endsWith('.g.dart'));
+    for (final file in files) {
+      final source = file.readAsStringSync();
+      if (file.path != 'lib/features/practice/data/practice_repository.dart' &&
+          file.path != 'lib/core/database/hajnal_database.dart') {
+        expect(source, isNot(contains('_db.practiceCards')), reason: file.path);
+      }
+    }
+    expect(
+      File('lib/features/practice/data/practice_repository.dart').existsSync(),
+      isTrue,
+    );
+  });
   test('domain and presentation do not depend on platform or storage', () {
     final root = Directory('lib/features');
     expect(root.existsSync(), isTrue);
@@ -243,6 +260,27 @@ void main() {
       '../hajnal_components.dart',
       '../hajnal_theme.dart',
     };
+    const practiceImports = <String, Set<String>>{
+      'lib/features/dashboard/presentation/dashboard.dart': {
+        '../../practice/application/practice_controller.dart',
+        '../../practice/presentation/practice_manager.dart',
+        '../../../core/artwork/practice_artwork.dart',
+      },
+      'lib/features/practice/presentation/practice_manager.dart': {
+        '../../../core/artwork/practice_artwork.dart',
+        '../../../core/theme/practice_visual.dart',
+        '../application/practice_controller.dart',
+        '../application/practice_store.dart',
+        'practice_editor.dart',
+      },
+      'lib/features/practice/presentation/practice_editor.dart': {
+        'package:flutter_svg/flutter_svg.dart',
+        '../../../core/artwork/practice_artwork.dart',
+        '../../../core/theme/practice_visual.dart',
+        '../application/practice_controller.dart',
+        '../application/practice_store.dart',
+      },
+    };
     const panicImports = <String, Set<String>>{
       'lib/features/panic/presentation/panic_page.dart': {
         'dart:async',
@@ -312,6 +350,7 @@ void main() {
           final uri = match.group(1);
           expect(
             presentationImports.contains(uri) ||
+                (practiceImports[file.path]?.contains(uri) ?? false) ||
                 (panicImports[file.path]?.contains(uri) ?? false) ||
                 (historyImports[file.path]?.contains(uri) ?? false) ||
                 (uri == '../../../core/theme/panic_visual.dart' &&
@@ -343,6 +382,7 @@ void main() {
         expect([
           'lib/features/recovery/data/recovery_repository.dart',
           'lib/features/panic/data/panic_repository.dart',
+          'lib/features/practice/data/practice_repository.dart',
           'lib/features/onboarding/data/onboarding_repository.dart',
           'lib/features/sponsor/data/sponsor_repository.dart',
           'lib/features/app_lock/data/lock_repository.dart',

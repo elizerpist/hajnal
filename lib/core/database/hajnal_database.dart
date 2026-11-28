@@ -87,6 +87,25 @@ class SurvivalNotes extends Table {
       integer().nullable().references(RecoveryPeriods, #id)();
 }
 
+@TableIndex.sql(
+  "CREATE UNIQUE INDEX one_active_practice ON practice_cards(status) WHERE status = 'active'",
+)
+@DataClassName('PracticeCardData')
+class PracticeCards extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get cardText => text()();
+  TextColumn get title => text().nullable()();
+  TextColumn get promptKind => text().nullable()();
+  TextColumn get status => text()();
+  TextColumn get sourceReference => text().nullable()();
+  TextColumn get sourceName => text().nullable()();
+  TextColumn get sourceText => text().nullable()();
+  Column<DateTime> get createdAtUtc => dateTime().map(const UtcInstant())();
+  Column<DateTime> get updatedAtUtc => dateTime().map(const UtcInstant())();
+  Column<DateTime> get activatedAtUtc =>
+      dateTime().map(const UtcInstant()).nullable()();
+}
+
 @DriftDatabase(
   tables: [
     RecoveryPeriods,
@@ -98,13 +117,14 @@ class SurvivalNotes extends Table {
     StyleSettings,
     SurvivalSessions,
     SurvivalNotes,
+    PracticeCards,
   ],
 )
 class HajnalDatabase extends _$HajnalDatabase {
   HajnalDatabase(super.executor);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -132,6 +152,12 @@ class HajnalDatabase extends _$HajnalDatabase {
       if (from < 5) {
         await m.createTable(survivalSessions);
         await m.createTable(survivalNotes);
+      }
+      if (from < 7) {
+        await m.createTable(practiceCards);
+        await customStatement(
+          "CREATE UNIQUE INDEX one_active_practice ON practice_cards(status) WHERE status = 'active'",
+        );
       }
       if (from >= 5 && from < 6) {
         await m.addColumn(survivalNotes, survivalNotes.periodId);

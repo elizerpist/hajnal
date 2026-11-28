@@ -200,7 +200,7 @@ Az adatbázis-változások összehangolt tranzakcióban történjenek. A fájlt�
 
 A HTML `Amit gyakorlok` blokkja és gyakorlatkezelője alapján tervezett működés:
 - Saját gyakorlat létrehozása és szerkesztése.
-- Cím, kiváltó helyzet és vállalt cselekvés/szándék megadása.
+- Kötelező saját kártyaszöveg; a cím és a gondolatindító opcionális. A meglévő kártya Mentés művelete kizárólag a tartalmat módosítja, az aktív állapotot nem.
 - Aktív, szüneteltetett és archivált állapot.
 - Egyszerre legfeljebb egy aktív gyakorlat; új aktiválásakor az előző szüneteltetett lesz.
 - Mentés későbbre aktiválás nélkül.
@@ -212,9 +212,9 @@ Tervezett adatmezők:
 | Mező | Jelentés |
 | --- | --- |
 | practiceId | Stabil saját azonosító |
-| title | A gyakorlat címe |
-| triggerText | A helyzet, amelyben gyakorolni szeretném |
-| intentionText | Amit ebben a helyzetben tenni szeretnék |
+| title | Opcionális cím; hiányában a saját mondat azonosítja a kártyát |
+| text | Kötelező saját kártyaszöveg |
+| promptKind | Opcionális gondolatindító típusa |
 | status | active / paused / archived |
 | createdAt, updatedAt, activatedAt | Létrehozás, módosítás, aktiválás időpontja |
 | sourceKind | Saját gyakorlat vagy opcionálisan lépésválaszból indított gyakorlat |
@@ -229,7 +229,7 @@ A HTML lépésválaszból is tud gyakorlatot indítani. Ez opcionális belépés
 
 **Elfogadott kiegészítés: gyakorlat-pillanatkép a napi reflexióban.** A napi reflexió az akkori aktív gyakorlat pillanatképét és az ahhoz opcionálisan írt megfigyelést is tárolja.
 
-- A pillanatkép a reflexióhoz való első hozzárendeléskor rögzíti a gyakorlat címét, kiváltó helyzetét és vállalt cselekvését. Újranyitáskor nem frissül automatikusan az élő gyakorlatból.
+- A pillanatkép a reflexióhoz való első hozzárendeléskor rögzíti a gyakorlat opcionális címét és saját szövegét. Újranyitáskor nem frissül automatikusan az élő gyakorlatból.
 - A pillanatkép és a megfigyelés tulajdonosa a Reflection. Nem új Practice entitás és nem külön idővonalesemény.
 - Az idővonal továbbra is csak a reflexióra hivatkozik; a gyakorlatkártyára nem.
 - A gyakorlat későbbi szerkesztése, állapotváltása vagy törlése nem módosítja és nem törli a korábbi reflexió pillanatképét vagy megfigyelését. A megjelenítéshez nem szükséges élő Practice rekord.
