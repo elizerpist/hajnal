@@ -1,6 +1,8 @@
 import '../../../core/theme/practice_visual.dart';
+import '../../../core/theme/reflection_visual.dart';
 import '../../practice/application/practice_controller.dart';
 import '../../practice/presentation/practice_manager.dart';
+import '../../reflection/application/reflection_store.dart';
 import '../../../core/artwork/practice_artwork.dart';
 import 'package:flutter/material.dart';
 import '../../../app/bootstrap_controller.dart';
@@ -24,6 +26,8 @@ class Dashboard extends StatefulWidget {
     this.onPanic,
     this.onHistory,
     this.practice,
+    this.reflection,
+    this.onReflection,
   });
   final BootstrapController controller;
   final VoidCallback onOnboarding;
@@ -33,6 +37,8 @@ class Dashboard extends StatefulWidget {
   final VoidCallback? onPanic;
   final VoidCallback? onHistory;
   final PracticeController? practice;
+  final ReflectionStore? reflection;
+  final VoidCallback? onReflection;
   @override
   State<Dashboard> createState() => _DashboardState();
 }
@@ -50,6 +56,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   final sheetOpen = ValueNotifier(false);
   bool moved = false;
   double drag = 0;
+  Stream<bool>? reflectionEnabled;
   void settle(bool open) {
     if (open || progress.value == 0) sheetOpen.value = open;
     if (MediaQuery.disableAnimationsOf(context)) {
@@ -65,6 +72,15 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     progress.addListener(_refreshBack);
+    reflectionEnabled = widget.reflection?.watchEnabled();
+  }
+
+  @override
+  void didUpdateWidget(covariant Dashboard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.reflection != widget.reflection) {
+      reflectionEnabled = widget.reflection?.watchEnabled();
+    }
   }
 
   void _refreshBack() {
@@ -497,7 +513,71 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                               width: 1,
                               color: HajnalStyle.of(context).color('border'),
                             ),
-                            const Expanded(child: SizedBox()),
+                            Expanded(
+                              child: widget.reflection == null
+                                  ? const SizedBox()
+                                  : StreamBuilder<bool>(
+                                      stream: reflectionEnabled,
+                                      builder: (context, snapshot) =>
+                                          snapshot.data != true ||
+                                              widget.onReflection == null
+                                          ? const SizedBox()
+                                          : Material(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                key: const Key(
+                                                  'daily-reflection-entry',
+                                                ),
+                                                onTap: widget.onReflection,
+                                                child: Center(
+                                                  child: FittedBox(
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          width: 48,
+                                                          height: 48,
+                                                          decoration:
+                                                              ReflectionVisual.dashboardIcon(
+                                                                HajnalStyle.of(
+                                                                  context,
+                                                                ).color(
+                                                                  'accent',
+                                                                ),
+                                                              ),
+                                                          child: Icon(
+                                                            Icons.favorite,
+                                                            color:
+                                                                HajnalStyle.of(
+                                                                  context,
+                                                                ).color(
+                                                                  'surface',
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 8,
+                                                        ),
+                                                        Text(
+                                                          'Napi\nreflexió',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              HajnalStyle.of(
+                                                                context,
+                                                              ).text(
+                                                                TextRole.helper,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                    ),
+                            ),
                           ],
                         ),
                       ),

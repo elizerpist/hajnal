@@ -10,10 +10,12 @@ class HistoryCalendar extends StatefulWidget {
   const HistoryCalendar({
     super.key,
     required this.events,
+    this.onReflection,
     required this.initialDate,
     required this.active,
   });
   final List<HistoryEvent> events;
+  final ValueChanged<int>? onReflection;
   final DateTime initialDate;
   final bool active;
   @override
@@ -212,6 +214,7 @@ class _HistoryCalendarState extends State<HistoryCalendar> {
         const SizedBox(height: 8),
         HistoryEventList(
           events: selectedEvents,
+          onReflection: widget.onReflection,
           active: widget.active,
           scrollable: false,
         ),

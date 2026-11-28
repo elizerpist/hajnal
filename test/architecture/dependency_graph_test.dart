@@ -32,6 +32,7 @@ class MutationCalls extends RecursiveAstVisitor<void> {
           'survivalSessions',
           'survivalNotes',
           'practiceCards',
+          'dailyReflections',
         ]) {
           if (expression.endsWith('.$table')) dbTables.add(table);
         }
@@ -144,6 +145,7 @@ bool allowed(String source, String target) {
       source != 'lib/features/history/data/history_repository.dart' &&
       source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/practice/data/practice_repository.dart' &&
+      source != 'lib/features/reflection/data/reflection_repository.dart' &&
       source != 'lib/features/onboarding/data/onboarding_repository.dart' &&
       source != 'lib/features/sponsor/data/sponsor_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
@@ -216,6 +218,7 @@ bool allowed(String source, String target) {
       source != 'lib/features/history/data/history_repository.dart' &&
       source != 'lib/features/panic/data/panic_repository.dart' &&
       source != 'lib/features/practice/data/practice_repository.dart' &&
+      source != 'lib/features/reflection/data/reflection_repository.dart' &&
       source != 'lib/features/app_lock/data/lock_repository.dart' &&
       source != 'lib/core/theme/data/style_repository.dart' &&
       source != 'lib/core/database/hajnal_database.dart') {
@@ -368,6 +371,7 @@ void main() {
       'lib/features/recovery/data/recovery_repository.dart',
       'lib/features/panic/data/panic_repository.dart',
       'lib/features/practice/data/practice_repository.dart',
+      'lib/features/reflection/data/reflection_repository.dart',
       'lib/features/onboarding/data/onboarding_repository.dart',
       'lib/features/sponsor/data/sponsor_repository.dart',
       'lib/features/app_lock/data/lock_repository.dart',
@@ -412,6 +416,8 @@ void main() {
         'survivalSessions': 'lib/features/panic/data/panic_repository.dart',
         'survivalNotes': 'lib/features/panic/data/panic_repository.dart',
         'practiceCards': 'lib/features/practice/data/practice_repository.dart',
+        'dailyReflections':
+            'lib/features/reflection/data/reflection_repository.dart',
       };
       for (final table in visitor.dbTables) {
         expect(file.path, tableOwners[table], reason: 'write owner of $table');

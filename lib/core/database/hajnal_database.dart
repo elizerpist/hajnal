@@ -106,6 +106,22 @@ class PracticeCards extends Table {
       dateTime().map(const UtcInstant()).nullable()();
 }
 
+@TableIndex.sql(
+  'CREATE UNIQUE INDEX reflection_period_day ON daily_reflections(period_id, local_date)',
+)
+class DailyReflections extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get periodId => integer().references(RecoveryPeriods, #id)();
+  TextColumn get localDate => text()();
+  IntColumn get mood => integer().nullable()();
+  TextColumn get prompt => text().withDefault(const Constant('best'))();
+  TextColumn get body => text().withDefault(const Constant(''))();
+  TextColumn get practiceSnapshot => text().nullable()();
+  TextColumn get observation => text().nullable()();
+  TextColumn get note => text().withDefault(const Constant(''))();
+  BoolColumn get completed => boolean().withDefault(const Constant(false))();
+}
+
 @DriftDatabase(
   tables: [
     RecoveryPeriods,
@@ -118,13 +134,14 @@ class PracticeCards extends Table {
     SurvivalSessions,
     SurvivalNotes,
     PracticeCards,
+    DailyReflections,
   ],
 )
 class HajnalDatabase extends _$HajnalDatabase {
   HajnalDatabase(super.executor);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -161,6 +178,12 @@ class HajnalDatabase extends _$HajnalDatabase {
       }
       if (from >= 5 && from < 6) {
         await m.addColumn(survivalNotes, survivalNotes.periodId);
+      }
+      if (from < 8) {
+        await m.createTable(dailyReflections);
+        await customStatement(
+          'CREATE UNIQUE INDEX reflection_period_day ON daily_reflections(period_id, local_date)',
+        );
       }
     },
     beforeOpen: (_) async => customStatement('PRAGMA foreign_keys = ON'),

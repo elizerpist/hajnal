@@ -45,3 +45,8 @@ const survivalArtworks = [
 ];
 
 const historyArtwork = 'assets/artwork/history/current_richer.png';
+const reflectionArtworks = [
+  'assets/artwork/reflection/daily_reflection_mood.png',
+  'assets/artwork/reflection/daily_reflection_writing.png',
+  'assets/artwork/reflection/daily_reflection_practice.png',
+];

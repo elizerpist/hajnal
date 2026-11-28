@@ -86,6 +86,7 @@ flutter:
     - assets/artwork/practice/
     - assets/artwork/practice/decor/
     - assets/artwork/practice/prompts/
+    - assets/artwork/reflection/
     - assets/fonts/roboto/LICENSE
     - assets/fonts/dejavu/LICENSE
 

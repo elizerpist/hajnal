@@ -1,4 +1,7 @@
 import '../features/practice/application/practice_controller.dart';
+import '../features/reflection/application/reflection_store.dart';
+import '../features/reflection/application/reflection_controller.dart';
+import '../features/reflection/presentation/reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PredictiveBackEvent;
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,6 +38,7 @@ class HajnalApp extends StatefulWidget {
     this.panic,
     this.history,
     this.practice,
+    this.reflection,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -46,6 +50,7 @@ class HajnalApp extends StatefulWidget {
   final PanicController? panic;
   final HistoryStore? history;
   final PracticeController? practice;
+  final ReflectionStore? reflection;
   @override
   State<HajnalApp> createState() => _HajnalAppState();
 }
@@ -138,6 +143,7 @@ class _HajnalAppState extends State<HajnalApp> with WidgetsBindingObserver {
       panic: widget.panic,
       history: widget.history,
       practice: widget.practice,
+      reflection: widget.reflection,
     ),
   );
 }
@@ -154,6 +160,7 @@ class _Bootstrap extends StatefulWidget {
     this.panic,
     this.history,
     this.practice,
+    this.reflection,
   });
   final BootstrapController controller;
   final DatePicker picker;
@@ -165,11 +172,38 @@ class _Bootstrap extends StatefulWidget {
   final PanicController? panic;
   final HistoryStore? history;
   final PracticeController? practice;
+  final ReflectionStore? reflection;
   @override
   State<_Bootstrap> createState() => _BootstrapState();
 }
 
 class _BootstrapState extends State<_Bootstrap> {
+  bool _reflectionOpen = false;
+  void _openReflection([int? id]) {
+    final store = widget.reflection;
+    final periodId = widget.controller.activePeriod?.id;
+    if (_reflectionOpen || store == null || (id == null && periodId == null)) {
+      return;
+    }
+    _reflectionOpen = true;
+    final controller = ReflectionController(store);
+    final opening = id == null
+        ? controller.open(periodId!, DateTime.now())
+        : controller.openById(id);
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<void>(
+            builder: (_) => ReflectionPage(controller: controller),
+          ),
+        )
+        .whenComplete(() async {
+          await opening;
+          await controller.idle;
+          controller.dispose();
+          _reflectionOpen = false;
+        });
+  }
+
   bool _first = true;
   bool _onboardingOpen = false;
   void _openOnboarding() {
@@ -220,7 +254,10 @@ class _BootstrapState extends State<_Bootstrap> {
     Navigator.of(context)
         .push(
           MaterialPageRoute<void>(
-            builder: (_) => HistoryPage(controller: controller),
+            builder: (_) => HistoryPage(
+              controller: controller,
+              onReflection: _openReflection,
+            ),
           ),
         )
         .whenComplete(() {
@@ -281,6 +318,10 @@ class _BootstrapState extends State<_Bootstrap> {
         onPanic: widget.panic == null ? null : _openPanic,
         onHistory: widget.history == null ? null : _openHistory,
         practice: widget.practice,
+        reflection: widget.reflection,
+        onReflection: widget.reflection == null
+            ? null
+            : () => _openReflection(),
       );
     },
   );

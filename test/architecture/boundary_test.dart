@@ -2,6 +2,42 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('reflection writes have one repository owner', () {
+    final files = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart') && !f.path.endsWith('.g.dart'));
+    for (final file in files) {
+      final source = file.readAsStringSync();
+      if (file.path !=
+          'lib/features/reflection/data/reflection_repository.dart') {
+        expect(
+          source,
+          isNot(contains('into(_db.dailyReflections)')),
+          reason: file.path,
+        );
+        expect(
+          source,
+          isNot(contains('update(_db.dailyReflections)')),
+          reason: file.path,
+        );
+      }
+    }
+  });
+  test('reflection session state is exposed read only', () {
+    final source = File(
+      'lib/features/reflection/application/reflection_controller.dart',
+    ).readAsStringSync();
+    for (final name in ['entry', 'error', 'step', 'saving']) {
+      expect(source, contains('get $name'), reason: name);
+    }
+    expect(
+      RegExp(
+        r'\b(?:ReflectionEntry\?|Object\?|int|bool)\s+(entry|error|step|saving)\s*[;=]',
+      ).hasMatch(source),
+      isFalse,
+    );
+  });
   test('practice persistence has one repository owner', () {
     final files = Directory('lib')
         .listSync(recursive: true)
@@ -247,6 +283,7 @@ void main() {
       'lib/features/history/presentation/history_calendar.dart',
       'lib/features/history/presentation/history_event_list.dart',
       'lib/features/history/presentation/history_switch.dart',
+      'lib/features/reflection/presentation/reflection_page.dart',
     };
     const themeImports = {
       '../../../core/theme/hajnal_theme.dart',
@@ -262,6 +299,8 @@ void main() {
     };
     const practiceImports = <String, Set<String>>{
       'lib/features/dashboard/presentation/dashboard.dart': {
+        '../../../core/theme/reflection_visual.dart',
+        '../../reflection/application/reflection_store.dart',
         '../../practice/application/practice_controller.dart',
         '../../practice/presentation/practice_manager.dart',
         '../../../core/artwork/practice_artwork.dart',
@@ -328,6 +367,13 @@ void main() {
         '../../../core/theme/history_visual.dart',
       },
     };
+    // The reflection renderer consumes its controller; dashboard owns the module subscription.
+    const reflectionImports = <String, Set<String>>{
+      'lib/features/reflection/presentation/reflection_page.dart': {
+        '../application/reflection_controller.dart',
+        '../../../core/theme/reflection_visual.dart',
+      },
+    };
     final imports = RegExp(r"""^import\s+['"]([^'"]+)['"]""", multiLine: true);
     final files = Directory('lib')
         .listSync(recursive: true)
@@ -354,6 +400,7 @@ void main() {
                 (practiceImports[file.path]?.contains(uri) ?? false) ||
                 (panicImports[file.path]?.contains(uri) ?? false) ||
                 (historyImports[file.path]?.contains(uri) ?? false) ||
+                (reflectionImports[file.path]?.contains(uri) ?? false) ||
                 (uri == '../../../core/theme/panic_visual.dart' &&
                     (file.path ==
                             'lib/features/dashboard/presentation/dashboard.dart' ||
@@ -384,6 +431,7 @@ void main() {
           'lib/features/recovery/data/recovery_repository.dart',
           'lib/features/panic/data/panic_repository.dart',
           'lib/features/practice/data/practice_repository.dart',
+          'lib/features/reflection/data/reflection_repository.dart',
           'lib/features/onboarding/data/onboarding_repository.dart',
           'lib/features/sponsor/data/sponsor_repository.dart',
           'lib/features/app_lock/data/lock_repository.dart',

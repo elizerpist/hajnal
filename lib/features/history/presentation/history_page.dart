@@ -11,8 +11,9 @@ import 'history_event_list.dart';
 import 'history_switch.dart';
 
 class HistoryPage extends StatefulWidget {
-  const HistoryPage({super.key, required this.controller});
+  const HistoryPage({super.key, required this.controller, this.onReflection});
   final HistoryController controller;
+  final ValueChanged<int>? onReflection;
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
@@ -78,6 +79,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   controller: c,
                   period: period,
                   calendar: _calendar,
+                  onReflection: widget.onReflection,
                 );
               },
             ),
@@ -134,10 +136,12 @@ class _HistoryChapter extends StatefulWidget {
     required this.controller,
     required this.period,
     required this.calendar,
+    this.onReflection,
   });
   final HistoryController controller;
   final HistoryPeriod period;
   final bool calendar;
+  final ValueChanged<int>? onReflection;
   @override
   State<_HistoryChapter> createState() => _HistoryChapterState();
 }
@@ -335,12 +339,17 @@ class _HistoryChapterState extends State<_HistoryChapter> {
                     ? HistoryCalendar(
                         key: ValueKey('calendar-${p.id}'),
                         events: events,
+                        onReflection: widget.onReflection,
                         initialDate: p.active
                             ? widget.controller.now()
                             : p.start,
                         active: p.active,
                       )
-                    : HistoryEventList(events: events, active: p.active),
+                    : HistoryEventList(
+                        events: events,
+                        active: p.active,
+                        onReflection: widget.onReflection,
+                      ),
               ),
             ],
           ),

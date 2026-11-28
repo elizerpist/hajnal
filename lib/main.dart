@@ -1,4 +1,5 @@
 import 'features/practice/application/practice_controller.dart';
+import 'features/reflection/application/reflection_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app/app_services.dart';
@@ -37,6 +38,9 @@ final historyProvider = Provider<HistoryStore>(
 final practiceProvider = Provider<PracticeController>(
   (ref) => throw StateError('Practice not initialized'),
 );
+final reflectionProvider = Provider<ReflectionStore>(
+  (ref) => throw StateError('Reflection not initialized'),
+);
 
 class _AppScope extends ConsumerWidget {
   const _AppScope({required this.onRetry});
@@ -52,6 +56,7 @@ class _AppScope extends ConsumerWidget {
     panic: ref.watch(panicProvider),
     history: ref.watch(historyProvider),
     practice: ref.watch(practiceProvider),
+    reflection: ref.watch(reflectionProvider),
     onRetry: onRetry,
   );
 }
@@ -136,6 +141,7 @@ class _RootState extends State<_Root> {
           panicProvider.overrideWithValue(current.panic),
           historyProvider.overrideWithValue(current.history),
           practiceProvider.overrideWithValue(current.practice),
+          reflectionProvider.overrideWithValue(current.reflection),
         ],
         child: _AppScope(onRetry: retry),
       );

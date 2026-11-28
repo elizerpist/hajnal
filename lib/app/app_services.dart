@@ -1,5 +1,7 @@
 import '../features/practice/application/practice_controller.dart';
 import '../features/practice/data/practice_repository.dart';
+import '../features/reflection/application/reflection_store.dart';
+import '../features/reflection/data/reflection_repository.dart';
 import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -39,6 +41,7 @@ class AppServices {
     this.panic,
     this.history,
     this.practice,
+    this.reflection,
   );
   final HajnalDatabase database;
   final BootstrapController controller;
@@ -49,6 +52,7 @@ class AppServices {
   final PanicController panic;
   final HistoryStore history;
   final PracticeController practice;
+  final ReflectionStore reflection;
 
   static Future<AppServices> open() async {
     final directory = await getApplicationSupportDirectory();
@@ -74,6 +78,7 @@ class AppServices {
       await lock.initialize();
       final style = StyleOwner(StyleRepository(database));
       await style.load();
+      final practiceRepository = PracticeRepository(database);
       return AppServices._(
         database,
         controller,
@@ -89,7 +94,8 @@ class AppServices {
           DateTime.now,
         ),
         HistoryRepository(database),
-        PracticeController(PracticeRepository(database)),
+        PracticeController(practiceRepository),
+        ReflectionRepository(database, practiceRepository),
       );
     } catch (_) {
       artwork.dispose();

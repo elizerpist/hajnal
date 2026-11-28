@@ -72,6 +72,13 @@ class HistoryController extends ChangeNotifier {
           note.text,
           noteId: note.id,
         ),
+      for (final reflection in period.reflections)
+        HistoryEvent(
+          HistoryEventType.reflection,
+          reflection.date,
+          reflection.text,
+          reflectionId: reflection.id,
+        ),
       if (period.closedAt != null)
         HistoryEvent(
           HistoryEventType.close,

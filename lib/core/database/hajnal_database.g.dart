@@ -3146,6 +3146,607 @@ class PracticeCardsCompanion extends UpdateCompanion<PracticeCardData> {
   }
 }
 
+class $DailyReflectionsTable extends DailyReflections
+    with TableInfo<$DailyReflectionsTable, DailyReflection> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DailyReflectionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _periodIdMeta = const VerificationMeta(
+    'periodId',
+  );
+  @override
+  late final GeneratedColumn<int> periodId = GeneratedColumn<int>(
+    'period_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES recovery_periods (id)',
+    ),
+  );
+  static const VerificationMeta _localDateMeta = const VerificationMeta(
+    'localDate',
+  );
+  @override
+  late final GeneratedColumn<String> localDate = GeneratedColumn<String>(
+    'local_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _moodMeta = const VerificationMeta('mood');
+  @override
+  late final GeneratedColumn<int> mood = GeneratedColumn<int>(
+    'mood',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _promptMeta = const VerificationMeta('prompt');
+  @override
+  late final GeneratedColumn<String> prompt = GeneratedColumn<String>(
+    'prompt',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('best'),
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _practiceSnapshotMeta = const VerificationMeta(
+    'practiceSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> practiceSnapshot = GeneratedColumn<String>(
+    'practice_snapshot',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _observationMeta = const VerificationMeta(
+    'observation',
+  );
+  @override
+  late final GeneratedColumn<String> observation = GeneratedColumn<String>(
+    'observation',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _completedMeta = const VerificationMeta(
+    'completed',
+  );
+  @override
+  late final GeneratedColumn<bool> completed = GeneratedColumn<bool>(
+    'completed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("completed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    periodId,
+    localDate,
+    mood,
+    prompt,
+    body,
+    practiceSnapshot,
+    observation,
+    note,
+    completed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'daily_reflections';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DailyReflection> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('period_id')) {
+      context.handle(
+        _periodIdMeta,
+        periodId.isAcceptableOrUnknown(data['period_id']!, _periodIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_periodIdMeta);
+    }
+    if (data.containsKey('local_date')) {
+      context.handle(
+        _localDateMeta,
+        localDate.isAcceptableOrUnknown(data['local_date']!, _localDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localDateMeta);
+    }
+    if (data.containsKey('mood')) {
+      context.handle(
+        _moodMeta,
+        mood.isAcceptableOrUnknown(data['mood']!, _moodMeta),
+      );
+    }
+    if (data.containsKey('prompt')) {
+      context.handle(
+        _promptMeta,
+        prompt.isAcceptableOrUnknown(data['prompt']!, _promptMeta),
+      );
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    }
+    if (data.containsKey('practice_snapshot')) {
+      context.handle(
+        _practiceSnapshotMeta,
+        practiceSnapshot.isAcceptableOrUnknown(
+          data['practice_snapshot']!,
+          _practiceSnapshotMeta,
+        ),
+      );
+    }
+    if (data.containsKey('observation')) {
+      context.handle(
+        _observationMeta,
+        observation.isAcceptableOrUnknown(
+          data['observation']!,
+          _observationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('completed')) {
+      context.handle(
+        _completedMeta,
+        completed.isAcceptableOrUnknown(data['completed']!, _completedMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DailyReflection map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DailyReflection(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      periodId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}period_id'],
+      )!,
+      localDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_date'],
+      )!,
+      mood: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mood'],
+      ),
+      prompt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prompt'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+      practiceSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}practice_snapshot'],
+      ),
+      observation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}observation'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      )!,
+      completed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}completed'],
+      )!,
+    );
+  }
+
+  @override
+  $DailyReflectionsTable createAlias(String alias) {
+    return $DailyReflectionsTable(attachedDatabase, alias);
+  }
+}
+
+class DailyReflection extends DataClass implements Insertable<DailyReflection> {
+  final int id;
+  final int periodId;
+  final String localDate;
+  final int? mood;
+  final String prompt;
+  final String body;
+  final String? practiceSnapshot;
+  final String? observation;
+  final String note;
+  final bool completed;
+  const DailyReflection({
+    required this.id,
+    required this.periodId,
+    required this.localDate,
+    this.mood,
+    required this.prompt,
+    required this.body,
+    this.practiceSnapshot,
+    this.observation,
+    required this.note,
+    required this.completed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['period_id'] = Variable<int>(periodId);
+    map['local_date'] = Variable<String>(localDate);
+    if (!nullToAbsent || mood != null) {
+      map['mood'] = Variable<int>(mood);
+    }
+    map['prompt'] = Variable<String>(prompt);
+    map['body'] = Variable<String>(body);
+    if (!nullToAbsent || practiceSnapshot != null) {
+      map['practice_snapshot'] = Variable<String>(practiceSnapshot);
+    }
+    if (!nullToAbsent || observation != null) {
+      map['observation'] = Variable<String>(observation);
+    }
+    map['note'] = Variable<String>(note);
+    map['completed'] = Variable<bool>(completed);
+    return map;
+  }
+
+  DailyReflectionsCompanion toCompanion(bool nullToAbsent) {
+    return DailyReflectionsCompanion(
+      id: Value(id),
+      periodId: Value(periodId),
+      localDate: Value(localDate),
+      mood: mood == null && nullToAbsent ? const Value.absent() : Value(mood),
+      prompt: Value(prompt),
+      body: Value(body),
+      practiceSnapshot: practiceSnapshot == null && nullToAbsent
+          ? const Value.absent()
+          : Value(practiceSnapshot),
+      observation: observation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(observation),
+      note: Value(note),
+      completed: Value(completed),
+    );
+  }
+
+  factory DailyReflection.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DailyReflection(
+      id: serializer.fromJson<int>(json['id']),
+      periodId: serializer.fromJson<int>(json['periodId']),
+      localDate: serializer.fromJson<String>(json['localDate']),
+      mood: serializer.fromJson<int?>(json['mood']),
+      prompt: serializer.fromJson<String>(json['prompt']),
+      body: serializer.fromJson<String>(json['body']),
+      practiceSnapshot: serializer.fromJson<String?>(json['practiceSnapshot']),
+      observation: serializer.fromJson<String?>(json['observation']),
+      note: serializer.fromJson<String>(json['note']),
+      completed: serializer.fromJson<bool>(json['completed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'periodId': serializer.toJson<int>(periodId),
+      'localDate': serializer.toJson<String>(localDate),
+      'mood': serializer.toJson<int?>(mood),
+      'prompt': serializer.toJson<String>(prompt),
+      'body': serializer.toJson<String>(body),
+      'practiceSnapshot': serializer.toJson<String?>(practiceSnapshot),
+      'observation': serializer.toJson<String?>(observation),
+      'note': serializer.toJson<String>(note),
+      'completed': serializer.toJson<bool>(completed),
+    };
+  }
+
+  DailyReflection copyWith({
+    int? id,
+    int? periodId,
+    String? localDate,
+    Value<int?> mood = const Value.absent(),
+    String? prompt,
+    String? body,
+    Value<String?> practiceSnapshot = const Value.absent(),
+    Value<String?> observation = const Value.absent(),
+    String? note,
+    bool? completed,
+  }) => DailyReflection(
+    id: id ?? this.id,
+    periodId: periodId ?? this.periodId,
+    localDate: localDate ?? this.localDate,
+    mood: mood.present ? mood.value : this.mood,
+    prompt: prompt ?? this.prompt,
+    body: body ?? this.body,
+    practiceSnapshot: practiceSnapshot.present
+        ? practiceSnapshot.value
+        : this.practiceSnapshot,
+    observation: observation.present ? observation.value : this.observation,
+    note: note ?? this.note,
+    completed: completed ?? this.completed,
+  );
+  DailyReflection copyWithCompanion(DailyReflectionsCompanion data) {
+    return DailyReflection(
+      id: data.id.present ? data.id.value : this.id,
+      periodId: data.periodId.present ? data.periodId.value : this.periodId,
+      localDate: data.localDate.present ? data.localDate.value : this.localDate,
+      mood: data.mood.present ? data.mood.value : this.mood,
+      prompt: data.prompt.present ? data.prompt.value : this.prompt,
+      body: data.body.present ? data.body.value : this.body,
+      practiceSnapshot: data.practiceSnapshot.present
+          ? data.practiceSnapshot.value
+          : this.practiceSnapshot,
+      observation: data.observation.present
+          ? data.observation.value
+          : this.observation,
+      note: data.note.present ? data.note.value : this.note,
+      completed: data.completed.present ? data.completed.value : this.completed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyReflection(')
+          ..write('id: $id, ')
+          ..write('periodId: $periodId, ')
+          ..write('localDate: $localDate, ')
+          ..write('mood: $mood, ')
+          ..write('prompt: $prompt, ')
+          ..write('body: $body, ')
+          ..write('practiceSnapshot: $practiceSnapshot, ')
+          ..write('observation: $observation, ')
+          ..write('note: $note, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    periodId,
+    localDate,
+    mood,
+    prompt,
+    body,
+    practiceSnapshot,
+    observation,
+    note,
+    completed,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DailyReflection &&
+          other.id == this.id &&
+          other.periodId == this.periodId &&
+          other.localDate == this.localDate &&
+          other.mood == this.mood &&
+          other.prompt == this.prompt &&
+          other.body == this.body &&
+          other.practiceSnapshot == this.practiceSnapshot &&
+          other.observation == this.observation &&
+          other.note == this.note &&
+          other.completed == this.completed);
+}
+
+class DailyReflectionsCompanion extends UpdateCompanion<DailyReflection> {
+  final Value<int> id;
+  final Value<int> periodId;
+  final Value<String> localDate;
+  final Value<int?> mood;
+  final Value<String> prompt;
+  final Value<String> body;
+  final Value<String?> practiceSnapshot;
+  final Value<String?> observation;
+  final Value<String> note;
+  final Value<bool> completed;
+  const DailyReflectionsCompanion({
+    this.id = const Value.absent(),
+    this.periodId = const Value.absent(),
+    this.localDate = const Value.absent(),
+    this.mood = const Value.absent(),
+    this.prompt = const Value.absent(),
+    this.body = const Value.absent(),
+    this.practiceSnapshot = const Value.absent(),
+    this.observation = const Value.absent(),
+    this.note = const Value.absent(),
+    this.completed = const Value.absent(),
+  });
+  DailyReflectionsCompanion.insert({
+    this.id = const Value.absent(),
+    required int periodId,
+    required String localDate,
+    this.mood = const Value.absent(),
+    this.prompt = const Value.absent(),
+    this.body = const Value.absent(),
+    this.practiceSnapshot = const Value.absent(),
+    this.observation = const Value.absent(),
+    this.note = const Value.absent(),
+    this.completed = const Value.absent(),
+  }) : periodId = Value(periodId),
+       localDate = Value(localDate);
+  static Insertable<DailyReflection> custom({
+    Expression<int>? id,
+    Expression<int>? periodId,
+    Expression<String>? localDate,
+    Expression<int>? mood,
+    Expression<String>? prompt,
+    Expression<String>? body,
+    Expression<String>? practiceSnapshot,
+    Expression<String>? observation,
+    Expression<String>? note,
+    Expression<bool>? completed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (periodId != null) 'period_id': periodId,
+      if (localDate != null) 'local_date': localDate,
+      if (mood != null) 'mood': mood,
+      if (prompt != null) 'prompt': prompt,
+      if (body != null) 'body': body,
+      if (practiceSnapshot != null) 'practice_snapshot': practiceSnapshot,
+      if (observation != null) 'observation': observation,
+      if (note != null) 'note': note,
+      if (completed != null) 'completed': completed,
+    });
+  }
+
+  DailyReflectionsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? periodId,
+    Value<String>? localDate,
+    Value<int?>? mood,
+    Value<String>? prompt,
+    Value<String>? body,
+    Value<String?>? practiceSnapshot,
+    Value<String?>? observation,
+    Value<String>? note,
+    Value<bool>? completed,
+  }) {
+    return DailyReflectionsCompanion(
+      id: id ?? this.id,
+      periodId: periodId ?? this.periodId,
+      localDate: localDate ?? this.localDate,
+      mood: mood ?? this.mood,
+      prompt: prompt ?? this.prompt,
+      body: body ?? this.body,
+      practiceSnapshot: practiceSnapshot ?? this.practiceSnapshot,
+      observation: observation ?? this.observation,
+      note: note ?? this.note,
+      completed: completed ?? this.completed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (periodId.present) {
+      map['period_id'] = Variable<int>(periodId.value);
+    }
+    if (localDate.present) {
+      map['local_date'] = Variable<String>(localDate.value);
+    }
+    if (mood.present) {
+      map['mood'] = Variable<int>(mood.value);
+    }
+    if (prompt.present) {
+      map['prompt'] = Variable<String>(prompt.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (practiceSnapshot.present) {
+      map['practice_snapshot'] = Variable<String>(practiceSnapshot.value);
+    }
+    if (observation.present) {
+      map['observation'] = Variable<String>(observation.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (completed.present) {
+      map['completed'] = Variable<bool>(completed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DailyReflectionsCompanion(')
+          ..write('id: $id, ')
+          ..write('periodId: $periodId, ')
+          ..write('localDate: $localDate, ')
+          ..write('mood: $mood, ')
+          ..write('prompt: $prompt, ')
+          ..write('body: $body, ')
+          ..write('practiceSnapshot: $practiceSnapshot, ')
+          ..write('observation: $observation, ')
+          ..write('note: $note, ')
+          ..write('completed: $completed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$HajnalDatabase extends GeneratedDatabase {
   _$HajnalDatabase(QueryExecutor e) : super(e);
   $HajnalDatabaseManager get managers => $HajnalDatabaseManager(this);
@@ -3170,6 +3771,9 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   );
   late final $SurvivalNotesTable survivalNotes = $SurvivalNotesTable(this);
   late final $PracticeCardsTable practiceCards = $PracticeCardsTable(this);
+  late final $DailyReflectionsTable dailyReflections = $DailyReflectionsTable(
+    this,
+  );
   late final Index oneActivePeriod = Index(
     'one_active_period',
     'CREATE UNIQUE INDEX one_active_period ON recovery_periods ((1)) WHERE closed_at_utc IS NULL',
@@ -3177,6 +3781,10 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
   late final Index oneActivePractice = Index(
     'one_active_practice',
     'CREATE UNIQUE INDEX one_active_practice ON practice_cards (status) WHERE status = \'active\'',
+  );
+  late final Index reflectionPeriodDay = Index(
+    'reflection_period_day',
+    'CREATE UNIQUE INDEX reflection_period_day ON daily_reflections (period_id, local_date)',
   );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
@@ -3193,8 +3801,10 @@ abstract class _$HajnalDatabase extends GeneratedDatabase {
     survivalSessions,
     survivalNotes,
     practiceCards,
+    dailyReflections,
     oneActivePeriod,
     oneActivePractice,
+    reflectionPeriodDay,
   ];
 }
 
@@ -3242,6 +3852,30 @@ final class $$RecoveryPeriodsTableReferences
     ).filter((f) => f.periodId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_survivalNotesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$DailyReflectionsTable, List<DailyReflection>>
+  _dailyReflectionsRefsTable(_$HajnalDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.dailyReflections,
+        aliasName: $_aliasNameGenerator(
+          db.recoveryPeriods.id,
+          db.dailyReflections.periodId,
+        ),
+      );
+
+  $$DailyReflectionsTableProcessedTableManager get dailyReflectionsRefs {
+    final manager = $$DailyReflectionsTableTableManager(
+      $_db,
+      $_db.dailyReflections,
+    ).filter((f) => f.periodId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _dailyReflectionsRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -3295,6 +3929,31 @@ class $$RecoveryPeriodsTableFilterComposer
           }) => $$SurvivalNotesTableFilterComposer(
             $db: $db,
             $table: $db.survivalNotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> dailyReflectionsRefs(
+    Expression<bool> Function($$DailyReflectionsTableFilterComposer f) f,
+  ) {
+    final $$DailyReflectionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dailyReflections,
+      getReferencedColumn: (t) => t.periodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DailyReflectionsTableFilterComposer(
+            $db: $db,
+            $table: $db.dailyReflections,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3388,6 +4047,31 @@ class $$RecoveryPeriodsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> dailyReflectionsRefs<T extends Object>(
+    Expression<T> Function($$DailyReflectionsTableAnnotationComposer a) f,
+  ) {
+    final $$DailyReflectionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dailyReflections,
+      getReferencedColumn: (t) => t.periodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DailyReflectionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dailyReflections,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$RecoveryPeriodsTableTableManager
@@ -3403,7 +4087,10 @@ class $$RecoveryPeriodsTableTableManager
           $$RecoveryPeriodsTableUpdateCompanionBuilder,
           (RecoveryPeriod, $$RecoveryPeriodsTableReferences),
           RecoveryPeriod,
-          PrefetchHooks Function({bool survivalNotesRefs})
+          PrefetchHooks Function({
+            bool survivalNotesRefs,
+            bool dailyReflectionsRefs,
+          })
         > {
   $$RecoveryPeriodsTableTableManager(
     _$HajnalDatabase db,
@@ -3450,38 +4137,63 @@ class $$RecoveryPeriodsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({survivalNotesRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [
-                if (survivalNotesRefs) db.survivalNotes,
-              ],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (survivalNotesRefs)
-                    await $_getPrefetchedData<
-                      RecoveryPeriod,
-                      $RecoveryPeriodsTable,
-                      SurvivalNote
-                    >(
-                      currentTable: table,
-                      referencedTable: $$RecoveryPeriodsTableReferences
-                          ._survivalNotesRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$RecoveryPeriodsTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).survivalNotesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.periodId == item.id),
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({survivalNotesRefs = false, dailyReflectionsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (survivalNotesRefs) db.survivalNotes,
+                    if (dailyReflectionsRefs) db.dailyReflections,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (survivalNotesRefs)
+                        await $_getPrefetchedData<
+                          RecoveryPeriod,
+                          $RecoveryPeriodsTable,
+                          SurvivalNote
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RecoveryPeriodsTableReferences
+                              ._survivalNotesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RecoveryPeriodsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).survivalNotesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.periodId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (dailyReflectionsRefs)
+                        await $_getPrefetchedData<
+                          RecoveryPeriod,
+                          $RecoveryPeriodsTable,
+                          DailyReflection
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RecoveryPeriodsTableReferences
+                              ._dailyReflectionsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RecoveryPeriodsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).dailyReflectionsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.periodId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -3498,7 +4210,10 @@ typedef $$RecoveryPeriodsTableProcessedTableManager =
       $$RecoveryPeriodsTableUpdateCompanionBuilder,
       (RecoveryPeriod, $$RecoveryPeriodsTableReferences),
       RecoveryPeriod,
-      PrefetchHooks Function({bool survivalNotesRefs})
+      PrefetchHooks Function({
+        bool survivalNotesRefs,
+        bool dailyReflectionsRefs,
+      })
     >;
 typedef $$ArtworkOverridesTableCreateCompanionBuilder =
     ArtworkOverridesCompanion Function({
@@ -5312,6 +6027,434 @@ typedef $$PracticeCardsTableProcessedTableManager =
       PracticeCardData,
       PrefetchHooks Function()
     >;
+typedef $$DailyReflectionsTableCreateCompanionBuilder =
+    DailyReflectionsCompanion Function({
+      Value<int> id,
+      required int periodId,
+      required String localDate,
+      Value<int?> mood,
+      Value<String> prompt,
+      Value<String> body,
+      Value<String?> practiceSnapshot,
+      Value<String?> observation,
+      Value<String> note,
+      Value<bool> completed,
+    });
+typedef $$DailyReflectionsTableUpdateCompanionBuilder =
+    DailyReflectionsCompanion Function({
+      Value<int> id,
+      Value<int> periodId,
+      Value<String> localDate,
+      Value<int?> mood,
+      Value<String> prompt,
+      Value<String> body,
+      Value<String?> practiceSnapshot,
+      Value<String?> observation,
+      Value<String> note,
+      Value<bool> completed,
+    });
+
+final class $$DailyReflectionsTableReferences
+    extends
+        BaseReferences<
+          _$HajnalDatabase,
+          $DailyReflectionsTable,
+          DailyReflection
+        > {
+  $$DailyReflectionsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $RecoveryPeriodsTable _periodIdTable(_$HajnalDatabase db) =>
+      db.recoveryPeriods.createAlias(
+        $_aliasNameGenerator(
+          db.dailyReflections.periodId,
+          db.recoveryPeriods.id,
+        ),
+      );
+
+  $$RecoveryPeriodsTableProcessedTableManager get periodId {
+    final $_column = $_itemColumn<int>('period_id')!;
+
+    final manager = $$RecoveryPeriodsTableTableManager(
+      $_db,
+      $_db.recoveryPeriods,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_periodIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DailyReflectionsTableFilterComposer
+    extends Composer<_$HajnalDatabase, $DailyReflectionsTable> {
+  $$DailyReflectionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get mood => $composableBuilder(
+    column: $table.mood,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get prompt => $composableBuilder(
+    column: $table.prompt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get practiceSnapshot => $composableBuilder(
+    column: $table.practiceSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get observation => $composableBuilder(
+    column: $table.observation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get completed => $composableBuilder(
+    column: $table.completed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$RecoveryPeriodsTableFilterComposer get periodId {
+    final $$RecoveryPeriodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableFilterComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DailyReflectionsTableOrderingComposer
+    extends Composer<_$HajnalDatabase, $DailyReflectionsTable> {
+  $$DailyReflectionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get localDate => $composableBuilder(
+    column: $table.localDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get mood => $composableBuilder(
+    column: $table.mood,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get prompt => $composableBuilder(
+    column: $table.prompt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get practiceSnapshot => $composableBuilder(
+    column: $table.practiceSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get observation => $composableBuilder(
+    column: $table.observation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get completed => $composableBuilder(
+    column: $table.completed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$RecoveryPeriodsTableOrderingComposer get periodId {
+    final $$RecoveryPeriodsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableOrderingComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DailyReflectionsTableAnnotationComposer
+    extends Composer<_$HajnalDatabase, $DailyReflectionsTable> {
+  $$DailyReflectionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get localDate =>
+      $composableBuilder(column: $table.localDate, builder: (column) => column);
+
+  GeneratedColumn<int> get mood =>
+      $composableBuilder(column: $table.mood, builder: (column) => column);
+
+  GeneratedColumn<String> get prompt =>
+      $composableBuilder(column: $table.prompt, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumn<String> get practiceSnapshot => $composableBuilder(
+    column: $table.practiceSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get observation => $composableBuilder(
+    column: $table.observation,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<bool> get completed =>
+      $composableBuilder(column: $table.completed, builder: (column) => column);
+
+  $$RecoveryPeriodsTableAnnotationComposer get periodId {
+    final $$RecoveryPeriodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.periodId,
+      referencedTable: $db.recoveryPeriods,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RecoveryPeriodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.recoveryPeriods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DailyReflectionsTableTableManager
+    extends
+        RootTableManager<
+          _$HajnalDatabase,
+          $DailyReflectionsTable,
+          DailyReflection,
+          $$DailyReflectionsTableFilterComposer,
+          $$DailyReflectionsTableOrderingComposer,
+          $$DailyReflectionsTableAnnotationComposer,
+          $$DailyReflectionsTableCreateCompanionBuilder,
+          $$DailyReflectionsTableUpdateCompanionBuilder,
+          (DailyReflection, $$DailyReflectionsTableReferences),
+          DailyReflection,
+          PrefetchHooks Function({bool periodId})
+        > {
+  $$DailyReflectionsTableTableManager(
+    _$HajnalDatabase db,
+    $DailyReflectionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DailyReflectionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DailyReflectionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DailyReflectionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> periodId = const Value.absent(),
+                Value<String> localDate = const Value.absent(),
+                Value<int?> mood = const Value.absent(),
+                Value<String> prompt = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<String?> practiceSnapshot = const Value.absent(),
+                Value<String?> observation = const Value.absent(),
+                Value<String> note = const Value.absent(),
+                Value<bool> completed = const Value.absent(),
+              }) => DailyReflectionsCompanion(
+                id: id,
+                periodId: periodId,
+                localDate: localDate,
+                mood: mood,
+                prompt: prompt,
+                body: body,
+                practiceSnapshot: practiceSnapshot,
+                observation: observation,
+                note: note,
+                completed: completed,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int periodId,
+                required String localDate,
+                Value<int?> mood = const Value.absent(),
+                Value<String> prompt = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<String?> practiceSnapshot = const Value.absent(),
+                Value<String?> observation = const Value.absent(),
+                Value<String> note = const Value.absent(),
+                Value<bool> completed = const Value.absent(),
+              }) => DailyReflectionsCompanion.insert(
+                id: id,
+                periodId: periodId,
+                localDate: localDate,
+                mood: mood,
+                prompt: prompt,
+                body: body,
+                practiceSnapshot: practiceSnapshot,
+                observation: observation,
+                note: note,
+                completed: completed,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DailyReflectionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({periodId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (periodId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.periodId,
+                                referencedTable:
+                                    $$DailyReflectionsTableReferences
+                                        ._periodIdTable(db),
+                                referencedColumn:
+                                    $$DailyReflectionsTableReferences
+                                        ._periodIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DailyReflectionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$HajnalDatabase,
+      $DailyReflectionsTable,
+      DailyReflection,
+      $$DailyReflectionsTableFilterComposer,
+      $$DailyReflectionsTableOrderingComposer,
+      $$DailyReflectionsTableAnnotationComposer,
+      $$DailyReflectionsTableCreateCompanionBuilder,
+      $$DailyReflectionsTableUpdateCompanionBuilder,
+      (DailyReflection, $$DailyReflectionsTableReferences),
+      DailyReflection,
+      PrefetchHooks Function({bool periodId})
+    >;
 
 class $HajnalDatabaseManager {
   final _$HajnalDatabase _db;
@@ -5336,4 +6479,6 @@ class $HajnalDatabaseManager {
       $$SurvivalNotesTableTableManager(_db, _db.survivalNotes);
   $$PracticeCardsTableTableManager get practiceCards =>
       $$PracticeCardsTableTableManager(_db, _db.practiceCards);
+  $$DailyReflectionsTableTableManager get dailyReflections =>
+      $$DailyReflectionsTableTableManager(_db, _db.dailyReflections);
 }

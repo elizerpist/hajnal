@@ -229,6 +229,8 @@ A HTML lépésválaszból is tud gyakorlatot indítani. Ez opcionális belépés
 
 **Elfogadott kiegészítés: gyakorlat-pillanatkép a napi reflexióban.** A napi reflexió az akkori aktív gyakorlat pillanatképét és az ahhoz opcionálisan írt megfigyelést is tárolja.
 
+Az offline napi reflexiót az onboarding véglegesített reflexiómodulja teszi elérhetővé a dashboardon. Egy helyi naphoz és időszakhoz egy stabil azonosítójú bejegyzés tartozik; a piszkozat automatikusan mentődik, és az első tartalmas befejezés után jelenik meg a Történetem idővonalán és naptárában. Egy hangulatválasztás is tartalmas. A modul kikapcsolása a korábbi bejegyzéseket és a piszkozatot megőrzi; az idővonali bejegyzésből a régebbi reflexió is szerkeszthető. A gyakorlat címe és szövege pillanatkép, így az eredeti kártya későbbi változtatása vagy törlése nem módosítja.
+
 - A pillanatkép a reflexióhoz való első hozzárendeléskor rögzíti a gyakorlat opcionális címét és saját szövegét. Újranyitáskor nem frissül automatikusan az élő gyakorlatból.
 - A pillanatkép és a megfigyelés tulajdonosa a Reflection. Nem új Practice entitás és nem külön idővonalesemény.
 - Az idővonal továbbra is csak a reflexióra hivatkozik; a gyakorlatkártyára nem.

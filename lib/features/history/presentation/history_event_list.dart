@@ -13,9 +13,11 @@ class HistoryEventList extends StatelessWidget {
     required this.events,
     required this.active,
     this.scrollable = true,
+    this.onReflection,
   });
   final List<HistoryEvent> events;
   final bool active, scrollable;
+  final ValueChanged<int>? onReflection;
   @override
   Widget build(BuildContext context) {
     if (events.isEmpty) {
@@ -47,11 +49,13 @@ class HistoryEventList extends StatelessWidget {
           HistoryEventType.start => 'Kezdet',
           HistoryEventType.close => 'Lezárás',
           HistoryEventType.note => 'Pánikjegyzet',
+          HistoryEventType.reflection => 'Napi reflexió',
         };
         final icon = switch (event.type) {
           HistoryEventType.start => Icons.flag_outlined,
           HistoryEventType.close => Icons.check,
           HistoryEventType.note => Icons.favorite_border,
+          HistoryEventType.reflection => Icons.favorite_border,
         };
         return Stack(
           children: [
@@ -93,33 +97,36 @@ class HistoryEventList extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: HistoryVisual.eventCorner,
-                      onTap: () => showDialog<void>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text(title),
-                          content: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  MaterialLocalizations.of(
-                                    context,
-                                  ).formatFullDate(event.date),
+                      onTap: event.reflectionId != null && onReflection != null
+                          ? () => onReflection!(event.reflectionId!)
+                          : () => showDialog<void>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(title),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        MaterialLocalizations.of(
+                                          context,
+                                        ).formatFullDate(event.date),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text(event.detail),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 12),
-                                Text(event.detail),
-                              ],
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Bezárás'),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Bezárás'),
-                            ),
-                          ],
-                        ),
-                      ),
                       child: Container(
                         constraints: const BoxConstraints(minHeight: 64),
                         padding: const EdgeInsets.symmetric(
